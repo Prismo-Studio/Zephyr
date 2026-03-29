@@ -28,52 +28,55 @@
 </script>
 
 <Dialog bind:open title={m.aboutDialog_title()}>
-	<div class="h-3"></div>
-	<img src="logo.png" alt="Zephyr Logo" class="float-right size-20 rounded-lg" />
-	<div>
-		<h3 class="text-xl font-semibold text-white">Zephyr</h3>
-		<p class="text-sm text-[#556677]">by Prismo Studio</p>
-		<p class="text-[#8899AA]">
-			{m.aboutDialog_version({ version: version })}
-			<br />
-			GNU General Public License v3.0
-		</p>
-		<div class="mt-3 flex items-center gap-2">
-			<Icon icon="mdi:file-document" class="text-xl text-white" />
-			<Link href="https://github.com/prismo-studio/zephyr/blob/main/CHANGELOG.md"
-				>{m.aboutDialog_changelog()}</Link
-			>
+	<div class="mt-4 flex items-start gap-5">
+		<div class="shrink-0">
+			<img src="logo.png" alt="Zephyr Logo" class="size-20 rounded-2xl shadow-lg" style="box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);" />
 		</div>
-		<div class="mt-1 flex items-center gap-2">
-			<Icon icon="mdi:github" class="text-xl text-white" />
-			<Link href="https://github.com/prismo-studio/zephyr">GitHub</Link>
+		<div class="grow">
+			<h3 class="text-2xl font-bold text-white">Zephyr</h3>
+			<p class="mt-0.5 text-sm text-[#8899AA]">by <span class="text-[#2D8CF0]">Prismo Studio</span></p>
+			<p class="mt-2 text-sm text-[#556677]">
+				{m.aboutDialog_version({ version: version })} &middot; GPL-3.0
+			</p>
 		</div>
-		<div class="mt-1 flex items-center gap-2">
-			<Icon icon="mdi:web" class="text-xl text-white" />
-			<Link href="https://prismo-studio.com">prismo-studio.com</Link>
-		</div>
-		<div class="mt-3 flex items-center gap-2">
-			<Button
-				onclick={() => updates.refresh().then(() => (checkedUpdate = true))}
-				loading={updates.isChecking}
-				color="primary"
-				class="mr-2"
-				icon="mdi:refresh"
-			>
-				{m.aboutDialog_checkUpdate()}
-			</Button>
+	</div>
 
-			{#if !updates.isChecking && checkedUpdate}
-				{#if updates.next}
-					<Icon icon="mdi:arrow-up-circle" class="text-[#2D8CF0] inline text-xl" />
-					<span class="text-[#2D8CF0]"
-						>{m.aboutDialog_newVersion({ version: updates.next.version })}</span
-					>
-				{:else}
-					<Icon icon="mdi:check" class="text-[#8899AA] text-xl" />
-					<span class="text-[#8899AA]">{m.aboutDialog_latestVersion()}</span>
-				{/if}
+	<div class="mt-5 flex flex-col gap-1.5 rounded-xl border border-[#1A2A42] bg-[#0B1628] p-3">
+		<a href="https://github.com/prismo-studio/zephyr/blob/main/CHANGELOG.md" target="_blank" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-[#8899AA] hover:bg-[#142240] hover:text-[#E8ECF1] transition-colors">
+			<Icon icon="mdi:file-document" class="text-lg text-[#556677]" />
+			{m.aboutDialog_changelog()}
+		</a>
+		<a href="https://github.com/prismo-studio/zephyr" target="_blank" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-[#8899AA] hover:bg-[#142240] hover:text-[#E8ECF1] transition-colors">
+			<Icon icon="mdi:github" class="text-lg text-[#556677]" />
+			GitHub
+		</a>
+		<a href="https://prismo-studio.com" target="_blank" class="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-[#8899AA] hover:bg-[#142240] hover:text-[#E8ECF1] transition-colors">
+			<Icon icon="mdi:web" class="text-lg text-[#556677]" />
+			prismo-studio.com
+		</a>
+	</div>
+
+	<div class="mt-4 flex items-center gap-2">
+		<Button
+			onclick={() => updates.refresh().then(() => (checkedUpdate = true))}
+			loading={updates.isChecking}
+			color="primary"
+			class="mr-2"
+			icon="mdi:refresh"
+		>
+			{m.aboutDialog_checkUpdate()}
+		</Button>
+
+		{#if !updates.isChecking && checkedUpdate}
+			{#if updates.next}
+				<Icon icon="mdi:arrow-up-circle" class="text-[#00D4AA] inline text-lg" />
+				<span class="text-sm text-[#00D4AA]"
+					>{m.aboutDialog_newVersion({ version: updates.next.version })}</span
+				>
+			{:else}
+				<Icon icon="mdi:check-circle" class="text-[#8899AA] text-lg" />
+				<span class="text-sm text-[#8899AA]">{m.aboutDialog_latestVersion()}</span>
 			{/if}
-		</div>
+		{/if}
 	</div>
 </Dialog>

@@ -92,7 +92,7 @@
 </script>
 
 <div
-	class="light-scrollbar border-[#1A2A42] bg-[#142240] w-[20%] min-w-72 overflow-hidden overflow-y-auto border-r"
+	class="light-scrollbar border-[#1A2A42] bg-[#0B1628] w-[20%] min-w-72 overflow-hidden overflow-y-auto border-r"
 >
 	{#if files === null}
 		<div class="text-[#8899AA] flex h-full w-full items-center justify-center text-lg">
