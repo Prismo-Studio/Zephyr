@@ -306,8 +306,8 @@ export type Color =
 
 const root = document.querySelector(':root') as HTMLElement;
 const fallbacks: Record<ColorCategory, Color> = {
-	accent: { type: 'default', name: 'green' },
-	primary: { type: 'default', name: 'slate' }
+	accent: { type: 'custom', hex: '#2D8CF0' },
+	primary: { type: 'custom', hex: '#0B1628' }
 };
 
 export function setColor(category: ColorCategory, color: Color) {
@@ -350,7 +350,7 @@ export function refreshColor(category: ColorCategory) {
 	setColor(category, getColor(category));
 }
 
-const defaultFont = 'Nunito Sans';
+const defaultFont = 'Inter';
 
 export function setFont(fontFamily: string) {
 	root.style.fontFamily = `'${fontFamily}', '${defaultFont}', sans-serif`;
