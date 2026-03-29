@@ -23,7 +23,7 @@
 </script>
 
 <Dialog title={m.exportCodeDialog_title()} bind:open={isOpen}>
-	<p class="flex-center text-primary-400 mb-1 flex">
+	<p class="flex-center text-[#556677] mb-1 flex">
 		{#await codePromise}
 			<Spinner class="text-lg" />
 			{m.exportCodeDialog_content_1({
@@ -35,7 +35,7 @@
 	</p>
 
 	{#await codePromise then code}
-		<code class="bg-primary-900 text-primary-400 rounded-sm px-3 py-1 text-lg">
+		<code class="bg-[#0B1628] text-[#556677] rounded-sm px-3 py-1 text-lg">
 			{code}
 		</code>
 	{/await}

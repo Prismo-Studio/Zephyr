@@ -27,7 +27,7 @@
 	}
 </script>
 
-<div class="text-primary-300 even:bg-primary-900 space-y-2 px-4 py-2">
+<div class="text-[#8899AA] even:bg-[#0B1628] space-y-2 px-4 py-2">
 	<div class="flex items-center">
 		<div class="w-60 truncate">{profile.name}</div>
 		<Select

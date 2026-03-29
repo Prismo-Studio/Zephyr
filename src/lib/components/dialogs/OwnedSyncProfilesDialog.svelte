@@ -51,18 +51,18 @@
 <Dialog bind:open onclose={onClose} title={m.ownedSyncProfilesDialog_title()}>
 	<div class="mt-4 flex max-h-80 flex-col space-y-4 overflow-y-auto px-2">
 		{#if sortedProfiles.length === 0}
-			<div class="text-primary-200 w-full text-center text-lg">
+			<div class="text-[#E8ECF1] w-full text-center text-lg">
 				{m.ownedSyncProfilesDialog_content_1()}
 			</div>
 		{/if}
 
 		{#each sortedProfiles as profile (profile.id)}
-			<div class="group text-primary-400 flex items-center gap-1 rounded-lg">
+			<div class="group text-[#556677] flex items-center gap-1 rounded-lg">
 				<div class="mr-auto">
 					<div>
 						<span class="font-medium text-white">{profile.name}</span>
 
-						<span class="text-primary-300 bg-primary-900 ml-1 rounded px-2 py-0.5 font-mono">
+						<span class="text-[#8899AA] bg-[#0B1628] ml-1 rounded px-2 py-0.5 font-mono">
 							{profile.id}
 						</span>
 					</div>
@@ -70,7 +70,7 @@
 					<div>
 						<span>{games.list.find((game) => game.slug === profile.community)?.name}</span>
 
-						<span class="text-primary-500 mx-1">|</span>
+						<span class="text-[#3A4A5C] mx-1">|</span>
 
 						<span>
 							<Icon icon="mdi:clock-outline" class="mb-0.5 inline text-sm" />

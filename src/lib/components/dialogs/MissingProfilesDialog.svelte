@@ -37,15 +37,15 @@
 </script>
 
 <Dialog open={missingProfiles.length > 0} canClose={false} title="Missing Profiles">
-	<div class="text-primary-300 mb-2">
+	<div class="text-[#8899AA] mb-2">
 		<p class="mb-2">
-			Gale detected missing profiles while loading. This can happen if you moved or deleted profiles
-			from outside Gale.
+			Zephyr detected missing profiles while loading. This can happen if you moved or deleted profiles
+			from outside Zephyr.
 		</p>
 		<p>Please resolve each missing profile before continuing.</p>
 	</div>
 
-	<div class="border-primary-900 relative overflow-hidden rounded-lg border-2">
+	<div class="border-[#1A2A42] relative overflow-hidden rounded-lg border-2">
 		{#each missingProfiles as profile, i (profile.id)}
 			<MissingProfileItem
 				{profile}

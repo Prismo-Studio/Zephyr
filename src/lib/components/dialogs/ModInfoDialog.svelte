@@ -29,12 +29,12 @@
 
 <Dialog large bind:open>
 	{#await promise}
-		<Icon class="text-primary-300 animate-spin text-4xl" icon="mdi:loading" />
+		<Icon class="text-[#8899AA] animate-spin text-4xl" icon="mdi:loading" />
 	{:then value}
 		{#if value !== null}
 			<Markdown source={value} />
 		{:else}
-			<div class="text-primary-300 flex items-center justify-center gap-2">
+			<div class="text-[#8899AA] flex items-center justify-center gap-2">
 				{m.modInfoDialog_noFound({ type })}
 			</div>
 		{/if}
