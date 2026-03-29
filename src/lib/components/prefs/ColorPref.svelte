@@ -60,7 +60,7 @@
 		{#snippet label({ defaultLabel })}
 			{@render colorIcon(value)}
 
-			<div class="text-primary-300">
+			<div class="text-[#8899AA]">
 				{defaultLabel}
 			</div>
 		{/snippet}
@@ -91,7 +91,7 @@
 
 {#snippet colorIcon(value: Color, className?: ClassValue)}
 	{#if value.type === 'custom'}
-		<Icon class={clsx(className, 'text-primary-400 size-4')} icon="mdi:edit" />
+		<Icon class={clsx(className, 'text-[#556677] size-4')} icon="mdi:edit" />
 	{:else}
 		<span
 			class={[className, 'inline-block size-4 rounded-full']}

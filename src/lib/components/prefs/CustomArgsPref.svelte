@@ -82,7 +82,7 @@
 </div>
 
 {#if enabled}
-	<div class="text-primary-300 mt-1 flex flex-col gap-1 pl-[35%]" role="list">
+	<div class="text-[#8899AA] mt-1 flex flex-col gap-1 pl-[35%]" role="list">
 		{#each value as argument, i}
 			<div
 				role="listitem"
@@ -94,7 +94,7 @@
 				{ondragend}
 			>
 				<button
-					class="text-primary-400 hover:bg-primary-700 hover:text-primary-300 rounded-lg p-1.5 text-xl"
+					class="text-[#556677] hover:bg-[#142240] hover:text-[#8899AA] rounded-lg p-1.5 text-xl"
 					onclick={() => {
 						value = value.filter((_, index) => index !== i);
 						setValue(value);
@@ -112,7 +112,7 @@
 				/>
 				{#if value.length > 1}
 					<button
-						class="text-primary-400 hover:bg-primary-700 hover:text-primary-300 cursor-move rounded-lg p-1.5 text-xl"
+						class="text-[#556677] hover:bg-[#142240] hover:text-[#8899AA] cursor-move rounded-lg p-1.5 text-xl"
 					>
 						<Icon icon="material-symbols:drag-indicator" />
 					</button>

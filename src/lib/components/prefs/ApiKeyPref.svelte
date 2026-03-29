@@ -33,17 +33,17 @@
 	</Info>
 
 	<button
-		class="group bg-primary-900 hover:border-primary-500 relative flex grow items-center truncate rounded-lg border border-transparent px-3 py-1 text-right"
+		class="group bg-[#0B1628] hover:border-[#1A2A42] relative flex grow items-center truncate rounded-lg border border-transparent px-3 py-1 text-right"
 		onclick={() => (apiKeyDialog.open = true)}
 	>
 		<div class="mr-2 rounded-sm">
 			<Icon
 				icon={hasToken ? 'mdi:key' : 'mdi:key-remove'}
-				class="text-primary-300 group-hover:text-primary-200 align-middle"
+				class="text-[#8899AA] group-hover:text-[#E8ECF1] align-middle"
 			/>
 		</div>
 
-		<div class="text-primary-300 group-hover:text-primary-200 truncate">
+		<div class="text-[#8899AA] group-hover:text-[#E8ECF1] truncate">
 			{m[`apiKeyPref_hasToken_${hasToken ? 'has' : 'no'}`]()}
 		</div>
 

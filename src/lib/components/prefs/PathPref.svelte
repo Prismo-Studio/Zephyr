@@ -37,7 +37,7 @@
 	{#snippet field()}
 		{#if canClear}
 			<button
-				class="text-primary-400 hover:bg-primary-800 hover:text-primary-300 ml-auto rounded-sm p-1 text-lg"
+				class="text-[#556677] hover:bg-[#0F1D32] hover:text-[#8899AA] ml-auto rounded-sm p-1 text-lg"
 				onclick={(evt) => {
 					evt.stopPropagation();
 					value = null;
