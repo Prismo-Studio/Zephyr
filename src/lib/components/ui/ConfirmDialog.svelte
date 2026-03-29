@@ -24,7 +24,7 @@
 </script>
 
 <Dialog {title} onclose={onCancel} bind:open>
-	<p class="text-primary-300">
+	<p class="text-[#8899AA]">
 		{#if children}{@render children()}{:else}
 			{description}
 		{/if}

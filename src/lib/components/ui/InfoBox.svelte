@@ -25,8 +25,8 @@
 			},
 			info: {
 				icon: 'mdi:info',
-				bgClass: 'bg-accent-600',
-				iconClass: 'text-accent-600'
+				bgClass: 'bg-[#2D8CF0]',
+				iconClass: 'text-[#2D8CF0]'
 			}
 		}[type]
 	);
@@ -34,7 +34,7 @@
 
 <div
 	class={[
-		'bg-primary-800 border-primary-700 relative my-2 overflow-hidden rounded-md border shadow',
+		'bg-[#0F1D32] border-[#1A2A42] relative my-2 overflow-hidden rounded-md border shadow',
 		classProp
 	]}
 >

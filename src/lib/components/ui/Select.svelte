@@ -58,11 +58,11 @@
 	<Select.Trigger
 		class={[
 			triggerClass,
-			'group bg-primary-900 enabled:hover:border-primary-500 flex items-center gap-2 overflow-hidden rounded-lg border border-transparent py-1 pr-2 pl-3'
+			'group bg-[#0B1628] enabled:hover:border-[#2D8CF0] flex items-center gap-2 overflow-hidden rounded-lg border border-[#1A2A42] py-2 pr-2 pl-3 transition-colors'
 		]}
 	>
 		{#if icon}
-			<Icon class="text-primary-400 shrink-0 text-lg" {icon} />
+			<Icon class="text-[#556677] shrink-0 text-lg" {icon} />
 		{/if}
 
 		{#if label && typeof label !== 'string'}
@@ -70,15 +70,15 @@
 		{:else}
 			<div
 				class={[
-					label || selectedLabel ? 'text-primary-300' : 'text-primary-400',
-					'group-disabled:text-primary-400 shrink grow truncate text-left'
+					label || selectedLabel ? 'text-[#E8ECF1]' : 'text-[#556677]',
+					'group-disabled:text-[#556677] shrink grow truncate text-left'
 				]}
 			>
 				{label ?? selectedLabel ?? placeholder}
 			</div>
 		{/if}
 
-		<DropdownArrow {open} class="text-primary-400 group-disabled:text-primary-500 ml-auto" />
+		<DropdownArrow {open} class="text-[#556677] group-disabled:text-[#3A4A5C] ml-auto" />
 	</Select.Trigger>
 	<Select.Portal>
 		<Select.Content forceMount {avoidCollisions}>
@@ -87,7 +87,7 @@
 					{#if open}
 						<div
 							{...props}
-							class="border-primary-600 bg-primary-800 flex max-h-96 w-(--bits-select-anchor-width) gap-0.5 overflow-y-auto rounded-lg border p-1 shadow-xl"
+							class="border-[#1A2A42] bg-[#0F1D32] flex max-h-96 w-(--bits-select-anchor-width) gap-0.5 overflow-y-auto rounded-xl border p-1.5 shadow-[0_15px_40px_rgba(0,0,0,0.5)]"
 							in:fly={dropIn}
 							out:fade={dropOut}
 						>
@@ -95,7 +95,7 @@
 								{#each items as item, i (i + item.value)}
 									<Select.Item
 										{...item}
-										class="hover:bg-primary-700 hover:text-primary-200 group flex w-full cursor-default items-center rounded-md px-3 py-1"
+										class="hover:bg-[#142240] hover:text-[#E8ECF1] group flex w-full cursor-default items-center rounded-lg px-3 py-1.5 transition-colors"
 									>
 										{#snippet children({ selected })}
 											{#if itemSnippet}
@@ -105,13 +105,13 @@
 											<span
 												class={[
 													selected
-														? 'text-primary-300'
-														: 'text-primary-400 group-hover:text-primary-300'
+														? 'text-[#E8ECF1]'
+														: 'text-[#8899AA] group-hover:text-[#E8ECF1]'
 												]}>{item.label}</span
 											>
 
 											{#if selected}
-												<Icon icon="mdi:check" class="text-accent-400 ml-auto text-lg" />
+												<Icon icon="mdi:check" class="text-[#2D8CF0] ml-auto text-lg" />
 											{/if}
 										{/snippet}
 									</Select.Item>

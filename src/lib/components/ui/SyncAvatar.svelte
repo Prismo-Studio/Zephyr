@@ -22,6 +22,6 @@
 {:else}
 	<Icon
 		icon="mdi:account-circle"
-		class={clsx(classProp, 'text-primary-500 block size-8 shadow-lg')}
+		class={clsx(classProp, 'text-[#3A4A5C] block size-8 shadow-lg')}
 	/>
 {/if}

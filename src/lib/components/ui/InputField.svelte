@@ -37,6 +37,6 @@
 		classProp,
 		`text-${size}`,
 		`placeholder:text-${size}`,
-		'valid:focus:ring-accent-500! disabled:text-primary-400 bg-primary-900 text-primary-300 placeholder-primary-400 enabled:hover:ring-primary-500 min-w-0 grow rounded-lg px-3 py-1 invalid:ring-1 invalid:ring-red-500 invalid:hover:ring-2 invalid:hover:ring-red-500 focus:ring-2! focus:outline-hidden enabled:hover:ring-1 disabled:cursor-not-allowed'
+		'valid:focus:ring-[#2D8CF0]! disabled:text-[#556677] bg-[#0B1628] text-[#E8ECF1] placeholder-[#556677] enabled:hover:ring-[#1A2A42] min-w-0 grow rounded-lg border border-[#1A2A42] px-3 py-2 invalid:ring-1 invalid:ring-red-500 invalid:hover:ring-2 invalid:hover:ring-red-500 focus:ring-2! focus:border-[#2D8CF0] focus:outline-hidden enabled:hover:ring-1 disabled:cursor-not-allowed transition-colors'
 	]}
 />

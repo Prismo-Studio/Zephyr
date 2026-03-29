@@ -24,9 +24,9 @@
 
 	let colorClasses = $derived(
 		{
-			primary: 'text-primary-400 hover:bg-primary-600 hover:text-primary-300',
-			accent: 'text-primary-400 hover:bg-accent-700 hover:text-accent-300',
-			red: 'text-primary-400 hover:bg-red-800 hover:text-red-300'
+			primary: 'text-[#556677] hover:bg-[#1A2A42] hover:text-[#8899AA]',
+			accent: 'text-[#556677] hover:bg-[#2D8CF0] hover:text-[#00D4AA]',
+			red: 'text-[#556677] hover:bg-red-800 hover:text-red-300'
 		}[color]
 	);
 </script>

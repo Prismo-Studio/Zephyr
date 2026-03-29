@@ -11,14 +11,14 @@
 	let { label, description, required = false, children }: Props = $props();
 </script>
 
-<div class="my-1 invalid:mx-5">
-	<div class="mb-[-3px] pl-0.5">
-		<span class="text-primary-100 text-lg font-medium">{label}</span>
+<div class="my-2 rounded-xl border border-[#1A2A42] bg-[#0B1628]/50 p-4">
+	<div class="mb-1">
+		<span class="text-[#E8ECF1] text-base font-semibold">{label}</span>
 		{#if required}
-			<span class="text-red-400">*</span>
+			<span class="text-[#2D8CF0] ml-0.5">*</span>
 		{/if}
 	</div>
-	<p class="text-primary-300 pb-1 pl-0.5">{description}</p>
+	<p class="text-[#556677] pb-2 text-sm">{description}</p>
 
 	{@render children?.()}
 </div>

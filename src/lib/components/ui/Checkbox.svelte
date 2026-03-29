@@ -19,8 +19,8 @@
 
 	let stateClasses = $derived(
 		checked
-			? [!disabled && 'hover:bg-accent-600', 'bg-accent-700']
-			: [!disabled && 'hover:bg-primary-700', 'bg-primary-800 border border-primary-500']
+			? [!disabled && 'hover:bg-[#2D8CF0]/80', 'bg-[#2D8CF0]']
+			: [!disabled && 'hover:bg-[#142240]', 'bg-[#0B1628] border border-[#1A2A42]']
 	);
 </script>
 

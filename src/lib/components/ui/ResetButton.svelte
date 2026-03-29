@@ -10,7 +10,7 @@
 <button
 	class={[
 		classProp,
-		'text-primary-400 disabled:text-primary-500 enabled:hover:bg-primary-700 enabled:hover:text-primary-300 rounded-md p-1.5 text-lg disabled:cursor-not-allowed'
+		'text-[#556677] disabled:text-[#3A4A5C] enabled:hover:bg-[#142240] enabled:hover:text-[#8899AA] rounded-md p-1.5 text-lg disabled:cursor-not-allowed'
 	]}
 	{...restProps}
 >

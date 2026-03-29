@@ -9,7 +9,7 @@
 <a
 	target="_blank"
 	rel="noopener noreferrer"
-	class={[classProp, 'text-accent-400 hover:text-accent-300 cursor-pointer hover:underline']}
+	class={[classProp, 'text-[#2D8CF0] hover:text-[#00D4AA] cursor-pointer hover:underline']}
 	{...props}
 >
 	{@render children?.()}

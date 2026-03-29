@@ -25,12 +25,12 @@
 	let { contentClass, itemClass } = $derived(
 		{
 			dark: {
-				contentClass: 'border-primary-600 bg-primary-800',
-				itemClass: 'text-primary-400 hover:text-primary-200 hover:bg-primary-700'
+				contentClass: 'border-[#1A2A42] bg-[#0F1D32]',
+				itemClass: 'text-[#8899AA] hover:text-[#E8ECF1] hover:bg-[#142240]'
 			},
 			light: {
-				contentClass: 'border-primary-500 bg-primary-700',
-				itemClass: 'text-primary-300 hover:text-primary-100 hover:bg-primary-600'
+				contentClass: 'border-[#1A2A42] bg-[#142240]',
+				itemClass: 'text-[#8899AA] hover:text-[#E8ECF1] hover:bg-[#1A2A42]'
 			}
 		}[style]
 	);

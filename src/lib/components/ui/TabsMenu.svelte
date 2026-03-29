@@ -12,11 +12,11 @@
 </script>
 
 <Tabs.Root bind:value>
-	<Tabs.List class="bg-primary-900 text-primary-300 my-1 flex gap-1 rounded-xl p-1">
+	<Tabs.List class="bg-[#0B1628] text-[#8899AA] my-1 flex gap-1 rounded-xl p-1">
 		{#each options as option}
 			<Tabs.Trigger
 				value={option.value}
-				class="hover:bg-primary-800 hover:text-primary-100 data-[state=active]:bg-primary-700 data-[state=active]:text-primary-100 grow rounded-lg px-2 py-0.5 data-[state=active]:font-semibold"
+				class="hover:bg-[#0F1D32] hover:text-[#E8ECF1] data-[state=active]:bg-[#142240] data-[state=active]:text-[#E8ECF1] grow rounded-lg px-2 py-0.5 data-[state=active]:font-semibold"
 			>
 				{option.label}
 			</Tabs.Trigger>
