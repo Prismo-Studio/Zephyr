@@ -249,10 +249,10 @@
 			{#snippet placeholder()}
 				{#if hasRefreshed}
 					{#if totalModCount === 0}
-						<Icon icon="ph:ghost" class="text-primary-500 mx-auto mt-4 text-9xl" />
+						<Icon icon="ph:ghost" class="text-[#3A4A5C] mx-auto mt-4 text-9xl" />
 
 						<div class="mt-1 text-lg">{m.page_modList_noMods_1()}</div>
-						<a href="/browse" class="text-accent-400 hover:text-accent-300 hover:underline"
+						<a href="/browse" class="text-[#2D8CF0] hover:text-[#00D4AA] hover:underline"
 							><Icon
 								icon="mdi:store-search"
 								class="mr-0.5 ml-1  inline"
@@ -261,7 +261,7 @@
 						>
 					{:else}
 						<div class="mt-4 text-lg">{m.page_modList_noResults_1()}</div>
-						<div class="text-primary-400">{m.page_modList_noResults_2()}</div>
+						<div class="text-[#556677]">{m.page_modList_noResults_2()}</div>
 					{/if}
 				{/if}
 			{/snippet}
@@ -288,7 +288,7 @@
 		<ModDetails {locked} mod={selectedMod} {contextItems} onclose={() => (selectedMod = null)}>
 			{#if selectedMod && isOutdated(selectedMod) && !locked}
 				<button
-					class="bg-accent-600 hover:bg-accent-500 mt-2 flex w-full items-center justify-center gap-2 rounded-lg py-2 text-lg font-medium"
+					class="bg-[#2D8CF0] hover:bg-[#2D8CF0]/80 mt-2 flex w-full items-center justify-center gap-2 rounded-lg py-2 text-lg font-medium"
 					onclick={() => updateMod(selectedMod)}
 				>
 					<Icon icon="mdi:arrow-up-circle" class="align-middle text-xl" />
@@ -303,7 +303,7 @@
 	title={m.page_dialog_title({ name: activeMod?.name ?? m.unknown() })}
 	bind:open={dependantsOpen}
 >
-	<div class="text-primary-300 mt-4 text-center">
+	<div class="text-[#8899AA] mt-4 text-center">
 		{#if dependants.length === 0}
 			{m.page_dialog_noDependants()}
 		{:else}

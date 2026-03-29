@@ -74,7 +74,7 @@
 	}
 </script>
 
-<div class="mx-auto flex w-full max-w-4xl flex-col gap-1 overflow-y-auto px-6 pt-2 pb-6">
+<div class="mx-auto flex h-full w-full max-w-4xl grow flex-col gap-1 overflow-y-auto px-6 pt-2 pb-6">
 	{#if prefs !== null && gamePrefs !== null}
 		<LargeHeading>{m.prefs_global_title()}</LargeHeading>
 

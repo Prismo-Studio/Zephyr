@@ -106,7 +106,7 @@
 			{#snippet placeholder()}
 				{#if hasRefreshed}
 					<div class="mt-4 text-lg">{m.browse_modList_content_1()}</div>
-					<div class="text-primary-400">{m.browse_modList_content_2()}</div>
+					<div class="text-[#556677]">{m.browse_modList_content_2()}</div>
 				{/if}
 			{/snippet}
 

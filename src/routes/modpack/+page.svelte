@@ -211,9 +211,15 @@
 	});
 </script>
 
-<div class="relative mx-auto flex w-full max-w-4xl flex-col gap-1.5 overflow-y-auto px-6 py-4">
+<div class="relative mx-auto flex h-full w-full max-w-4xl grow flex-col gap-3 overflow-y-auto px-8 py-6">
+	<!-- Page Header -->
+	<div class="mb-4">
+		<h1 class="text-2xl font-bold text-[#E8ECF1]">{m.modpack_header_title()}</h1>
+		<p class="mt-1 text-sm text-[#556677]">{m.modpack_header_description()}</p>
+	</div>
+
 	{#if loading}
-		<div class="text-primary-200 absolute inset-0 flex items-center justify-center gap-2 text-lg">
+		<div class="absolute inset-0 flex items-center justify-center gap-3 text-lg text-[#8899AA]">
 			<Spinner />
 			{loading}
 		</div>
@@ -274,15 +280,15 @@
 			>
 				{#snippet label()}
 					{#if selectedCategories.length === 0}
-						<span class="text-primary-400 truncate pl-2">{m.modpack_categories_content()}</span>
+						<span class="text-[#556677] truncate pl-2">{m.modpack_categories_content()}</span>
 					{:else}
 						<div class="flex flex-wrap gap-1">
 							{#each selectedCategories as category}
-								<div class="bg-primary-800 text-primary-200 rounded-md py-1 pr-1 pl-3 text-sm">
+								<div class="bg-[#142240] text-[#E8ECF1] rounded-md py-1 pr-1 pl-3 text-sm">
 									<span class="truncate overflow-hidden">{toHeaderCase(category)}</span>
 
 									<button
-										class="hover:bg-primary-700 ml-1 rounded-md px-1.5"
+										class="hover:bg-[#1A2A42] ml-1 rounded-md px-1.5"
 										onclick={(evt) => {
 											evt.stopPropagation();
 											selectedCategories = selectedCategories.filter((cat) => cat !== category);
@@ -344,11 +350,11 @@
 			/>
 
 			<details class="mt-1">
-				<summary class="text-primary-300 cursor-pointer text-sm">
+				<summary class="text-[#2D8CF0] cursor-pointer text-sm hover:text-[#00D4AA] transition-colors">
 					{m.modpack_readme_preview()}
 				</summary>
 				<Markdown class="mt-1 px-4" source={readme} />
-				<div class="bg-primary-500 mt-4 h-[2px]"></div>
+				<div class="bg-[#1A2A42] mt-4 h-px"></div>
 			</details>
 		</FormField>
 
@@ -371,9 +377,9 @@
 			</Button>
 
 			<details class="mt-1">
-				<summary class="text-primary-300 cursor-pointer text-sm">{m.modpack_changeLog_preview()}</summary>
+				<summary class="text-[#2D8CF0] cursor-pointer text-sm hover:text-[#00D4AA] transition-colors">{m.modpack_changeLog_preview()}</summary>
 				<Markdown class="mt-1 px-4" source={changelog} />
-				<div class="bg-primary-500 mt-4 h-[2px]"></div>
+				<div class="bg-[#1A2A42] mt-4 h-px"></div>
 			</details>
 		</FormField>
 
@@ -382,7 +388,7 @@
 			description={m.modpack_includeFiles_description()}
 		>
 			<details>
-				<summary class="text-primary-300 cursor-pointer text-sm">{m.modpack_includeFiles_preview()}</summary>
+				<summary class="text-[#2D8CF0] cursor-pointer text-sm hover:text-[#00D4AA] transition-colors">{m.modpack_includeFiles_preview()}</summary>
 				<InputField bind:value={includedFilesSearch} class="w-full" placeholder={m.modpack_includeFiles_placeholder()} />
 				<Checklist
 					class="mt-1"
@@ -398,19 +404,19 @@
 			</details>
 		</FormField>
 
-		<div class="text-primary-200 mt-1 flex items-center text-lg font-medium">
+		<div class="text-[#E8ECF1] mt-3 flex items-center rounded-xl border border-[#1A2A42] bg-[#0B1628] px-4 py-3 text-base font-medium">
 			<span class="max-w-96 grow">{m.modpack_NSFW_title()}</span>
 
 			<Checkbox onCheckedChange={saveArgs} bind:checked={nsfw} />
 		</div>
 
-		<div class="text-primary-200 flex items-center text-lg font-medium">
+		<div class="text-[#E8ECF1] flex items-center rounded-xl border border-[#1A2A42] bg-[#0B1628] px-4 py-3 text-base font-medium">
 			<span class="max-w-96 grow">{m.modpack_disabled_title()}</span>
 
 			<Checkbox onCheckedChange={saveArgs} bind:checked={includeDisabled} />
 		</div>
 
-		<div class="mt-3 flex justify-end gap-2">
+		<div class="mt-6 flex justify-end gap-3 border-t border-[#1A2A42] pt-6">
 			<Button color="primary" icon="mdi:export" onclick={exportToFile}>
 				{m.modpack_button_export()}
 			</Button>
@@ -424,14 +430,14 @@
 <ApiKeyDialog />
 
 <Dialog bind:open={doneDialogOpen} title={m.modpack_dialog_title()}>
-	<p class="text-primary-300">
+	<p class="text-[#8899AA] mt-2">
 		{m.modpack_dialog_content_1({name, versionNumber})}
 		<Link href="https://thunderstore.io/c/{games.active?.slug}/p/{author}/{name}">
 			{m.modpack_dialog_content_2()}
 		</Link>
 	</p>
 
-	<div class="text-primary-400 mt-2 text-sm">
+	<div class="text-[#556677] mt-3 text-sm">
 		{m.modpack_dialog_content_3()}
 		<br />
 		{m.modpack_dialog_content_4()}

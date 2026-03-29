@@ -27,7 +27,7 @@
 			<div class="shrink-0 truncate px-4 text-2xl font-bold text-white">
 				{selectedFile.relativePath}
 				{#if selectedSection}
-					<span class="text-primary-400">/</span>
+					<span class="text-[#556677]">/</span>
 					{selectedSection.name.length > 0 ? selectedSection.name : m.config_nameLess()}
 				{/if}
 			</div>
@@ -39,7 +39,7 @@
 					locked={profiles.activeLocked}
 				/>
 			{:else if selectedFile.type === 'unsupported'}
-				<div class="text-primary-400 mb-1 px-4">
+				<div class="text-[#556677] mb-1 px-4">
 					{m.config_unsupported_content()}
 				</div>
 				<Button
@@ -51,10 +51,10 @@
 					{m.config_unsupported_button()}
 				</Button>
 			{:else if selectedFile.type === 'err'}
-				<div class="text-primary-400 mb-1 px-4">
+				<div class="text-[#556677] mb-1 px-4">
 					{m.config_err_content()}
 				</div>
-				<code class="bg-primary-900 mx-4 mb-1 flex rounded-sm p-4 text-red-500">
+				<code class="bg-[#0B1628] mx-4 mb-1 flex rounded-sm p-4 text-red-500">
 					{capitalize(selectedFile.error)}
 				</code>
 				<Button
@@ -67,7 +67,7 @@
 				</Button>
 			{/if}
 		{:else}
-			<div class="text-primary-400 flex w-full grow items-center justify-center text-lg">
+			<div class="text-[#556677] flex w-full grow items-center justify-center text-lg">
 				{m.config_content()}
 			</div>
 		{/if}
