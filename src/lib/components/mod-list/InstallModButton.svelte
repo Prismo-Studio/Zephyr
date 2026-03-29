@@ -47,9 +47,11 @@
 	});
 </script>
 
-<div class="mt-2 flex text-lg text-white">
+<div class="mt-2 flex text-base text-white">
 	<button
-		class="enabled:bg-[#2D8CF0] enabled:hover:bg-[#2D8CF0] disabled:bg-[#1A2A42] disabled:text-[#8899AA] flex grow items-center justify-center gap-2 rounded-l-lg py-2 font-semibold disabled:cursor-not-allowed"
+		class="zephyr-install-main enabled:hover:shadow-[0_0_20px_rgba(45,140,240,0.3)] flex grow items-center justify-center gap-2 rounded-l-xl py-2.5 font-semibold transition-all duration-200 disabled:cursor-not-allowed"
+		class:installed={mod.isInstalled}
+		class:locked
 		onclick={() => {
 			install(modId);
 			loading = true;
@@ -57,25 +59,28 @@
 		{disabled}
 	>
 		{#if locked}
+			<Icon icon="mdi:lock" class="text-lg" />
 			{m.installModButton_button_locked()}
 		{:else if mod.isInstalled}
+			<Icon icon="mdi:check-circle" class="text-lg text-[#00D4AA]" />
 			{m.installModButton_button_isInstalled()}
 		{:else if loading}
 			<Spinner />
-
 			{m.installModButton_button_loading()}
 		{:else}
 			<Icon icon="mdi:download" class="align-middle text-xl" />
 			{m.installModButton_button_install()}
 
 			{#if downloadSize}
-				({shortenFileSize(downloadSize)})
+				<span class="text-sm font-normal opacity-80">({shortenFileSize(downloadSize)})</span>
 			{/if}
 		{/if}
 	</button>
 	<DropdownMenu.Root bind:open={versionsOpen}>
 		<DropdownMenu.Trigger
-			class="enabled:bg-[#2D8CF0] enabled:hover:bg-[#2D8CF0] disabled:bg-[#1A2A42] disabled:text-[#8899AA] ml-0.5 gap-2 rounded-r-lg px-1.5 py-2 text-2xl disabled:cursor-not-allowed"
+			class="zephyr-install-versions ml-px rounded-r-xl px-2 py-2.5 text-xl transition-all duration-200 disabled:cursor-not-allowed"
+			class:installed={mod.isInstalled}
+			class:locked
 			{disabled}
 		>
 			<DropdownArrow open={versionsOpen} class="text-white" />
@@ -88,3 +93,30 @@
 		/>
 	</DropdownMenu.Root>
 </div>
+
+<style>
+	.zephyr-install-main {
+		background: linear-gradient(135deg, #2D8CF0, #2575D0);
+	}
+	.zephyr-install-main:hover:not(:disabled) {
+		background: linear-gradient(135deg, #3D9CFF, #2D8CF0);
+	}
+	.zephyr-install-main.installed,
+	.zephyr-install-main.locked {
+		background: #142240;
+		color: #8899AA;
+	}
+
+	.zephyr-install-versions {
+		background: linear-gradient(135deg, #2575D0, #2D8CF0);
+		color: white;
+	}
+	.zephyr-install-versions:hover:not(:disabled) {
+		background: #3D9CFF;
+	}
+	.zephyr-install-versions.installed,
+	.zephyr-install-versions.locked {
+		background: #142240;
+		color: #8899AA;
+	}
+</style>

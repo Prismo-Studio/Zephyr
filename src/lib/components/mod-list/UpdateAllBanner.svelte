@@ -41,20 +41,20 @@
 </script>
 
 {#if shownUpdates.length > updateBanner.threshold}
-	<div class="bg-[#2D8CF0] text-accent-100 mr-3 mb-1 flex items-center rounded-lg py-1 pr-1 pl-3">
-		<Icon icon="mdi:arrow-up-circle" class="mr-2 text-xl" />
+	<div class="zephyr-update-banner mr-3 mb-1 flex items-center rounded-xl py-1.5 pr-1.5 pl-3.5 text-sm text-white">
+		<Icon icon="mdi:arrow-up-circle" class="mr-2 text-lg" />
 		{pluralizeOption(shownUpdates.length, m.updateAllBanner_content_is(), 'is', 'are')}
 		<b class="mx-1">{shownUpdates.length}</b>
 		{pluralizeOption(shownUpdates.length, m.updateAllBanner_content_update(), 'update', 'updates')}
 		<button
-			class="hover:text-white ml-1 font-semibold text-white hover:underline"
+			class="hover:text-white ml-1 font-semibold text-white/90 hover:underline"
 			onclick={() => (dialogOpen = true)}
 		>
 			{m.updateAllBanner_button()}
 		</button>
 
 		<button
-			class="hover:bg-[#2D8CF0] ml-auto rounded-md p-1 text-xl"
+			class="hover:bg-white/10 ml-auto rounded-lg p-1 text-lg text-white/70 hover:text-white transition-colors"
 			onclick={() => (updateBanner.threshold = shownUpdates.length)}
 		>
 			<Icon icon="mdi:close" />
@@ -100,3 +100,10 @@
 		>
 	{/snippet}
 </ConfirmDialog>
+
+<style>
+	.zephyr-update-banner {
+		background: linear-gradient(135deg, #2D8CF0, #1A6DD0);
+		box-shadow: 0 2px 12px rgba(45, 140, 240, 0.2);
+	}
+</style>
