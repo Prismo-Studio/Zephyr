@@ -2,44 +2,44 @@
 	import NavbarLink from './NavbarLink.svelte';
 	import { m } from '$lib/paraglide/messages';
 
-	const links = [
+	let links = $derived([
 		{
 			to: '/dashboard',
 			icon: 'mdi:home-variant-outline',
-			label: 'Home',
-			tooltip: 'Dashboard'
+			label: m.navBar_label_home(),
+			tooltip: m.navBar_link_home()
 		},
 		{
 			to: '/',
 			icon: 'mdi:view-dashboard',
-			label: 'Mods',
+			label: m.navBar_label_mods(),
 			tooltip: m.navBar_link_profile()
 		},
 		{
 			to: '/browse',
 			icon: 'mdi:store-search-outline',
-			label: 'Browse',
+			label: m.navBar_label_browse(),
 			tooltip: m.navBar_link_browse()
 		},
 		{
 			to: '/config',
 			icon: 'mdi:tune-variant',
-			label: 'Config',
+			label: m.navBar_label_config(),
 			tooltip: m.navBar_link_config()
 		},
 		{
 			to: '/modpack',
 			icon: 'mdi:package-variant-closed',
-			label: 'Export',
+			label: m.navBar_label_export(),
 			tooltip: m.navBar_link_modpack()
 		},
 		{
 			to: '/prefs',
 			icon: 'mdi:cog-outline',
-			label: 'Settings',
+			label: m.navBar_label_settings(),
 			tooltip: m.navBar_link_prefs()
 		}
-	];
+	]);
 </script>
 
 <nav class="zephyr-sidebar relative flex w-[68px] shrink-0 flex-col items-center gap-1 py-3 px-2">
