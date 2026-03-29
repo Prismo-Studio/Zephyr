@@ -64,7 +64,7 @@
 </script>
 
 {#if mods.length === 0}
-	<div class="text-primary-300 text-center">
+	<div class="text-[#8899AA] text-center">
 		{@render placeholder?.()}
 	</div>
 {:else}

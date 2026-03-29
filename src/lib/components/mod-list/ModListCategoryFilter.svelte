@@ -22,17 +22,17 @@
 <Select {items} type="multiple" bind:value={selected} {icon} triggerClass="w-full py-1.5">
 	{#snippet label()}
 		{#if selected.length === 0}
-			<span class="text-primary-300 truncate">{text}</span>
+			<span class="text-[#8899AA] truncate">{text}</span>
 		{:else}
 			<div class="mr-2 flex flex-wrap gap-1">
 				{#each selected as category}
 					<div
-						class="bg-primary-800 text-primary-200 overflow-hidden rounded-lg py-0.5 pr-0.5 pl-2 text-sm"
+						class="bg-[#0F1D32] text-[#E8ECF1] overflow-hidden rounded-lg py-0.5 pr-0.5 pl-2 text-sm"
 					>
 						<span class="truncate overflow-hidden">{category}</span>
 
 						<button
-							class="hover:bg-primary-700 ml-0.5 rounded-lg px-1.5"
+							class="hover:bg-[#142240] ml-0.5 rounded-lg px-1.5"
 							onclick={(evt) => {
 								evt.stopPropagation();
 								selected = selected.filter((cat) => cat !== category);

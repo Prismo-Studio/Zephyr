@@ -23,7 +23,7 @@
 	let loading = $state(false);
 
 	let descriptionClasses = $derived(
-		isSelected ? 'text-primary-300' : 'text-primary-400 group-hover:text-primary-300'
+		isSelected ? 'text-[#8899AA]' : 'text-[#556677] group-hover:text-[#8899AA]'
 	);
 
 	$effect(() => {
@@ -45,9 +45,9 @@
 >
 	<ContextMenu.Trigger class="contents">
 		<button
-			class="group flex w-full rounded-lg border p-2 {isSelected
-				? 'border-primary-500 bg-primary-700'
-				: 'hover:bg-primary-700 border-transparent'}"
+			class="group flex w-full rounded-xl border p-2.5 transition-colors {isSelected
+				? 'border-[#2D8CF0]/40 bg-[#142240]'
+				: 'hover:bg-[#142240]/60 border-transparent'}"
 			{onclick}
 		>
 			<img src={modIconSrc(mod)} alt={mod.name} class="size-12 rounded-sm" />
@@ -57,13 +57,13 @@
 						{formatModName(mod.name)}
 					</div>
 					{#if mod.isPinned}
-						<Icon class="text-primary-400 shrink-0" icon="mdi:pin" />
+						<Icon class="text-[#556677] shrink-0" icon="mdi:pin" />
 					{/if}
 					{#if mod.isDeprecated}
 						<Icon class="shrink-0 text-red-500" icon="mdi:error" />
 					{/if}
 					{#if mod.isInstalled}
-						<Icon class="text-accent-500 shrink-0" icon="mdi:check-circle" />
+						<Icon class="text-[#00D4AA] shrink-0" icon="mdi:check-circle" />
 					{/if}
 				</div>
 
@@ -78,7 +78,7 @@
 				<!-- svelte-ignore node_invalid_placement_ssr -->
 				<!-- we're not using ssr -->
 				<button
-					class="bg-accent-600 hover:bg-accent-500 disabled:bg-primary-600 disabled:text-primary-300 mt-0.5 mr-0.5 ml-2 hidden rounded-lg p-2.5 align-middle text-2xl text-white group-hover:inline"
+					class="bg-[#2D8CF0] hover:bg-[#2D8CF0]/80 disabled:bg-[#1A2A42] disabled:text-[#556677] mt-0.5 mr-0.5 ml-2 hidden rounded-lg p-2.5 align-middle text-2xl text-white group-hover:inline transition-colors"
 					disabled={loading}
 					onclick={(evt) => {
 						evt.stopPropagation();

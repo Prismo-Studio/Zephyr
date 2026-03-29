@@ -49,7 +49,7 @@
 
 <div class="mt-2 flex text-lg text-white">
 	<button
-		class="enabled:bg-accent-600 enabled:hover:bg-accent-500 disabled:bg-primary-600 disabled:text-primary-300 flex grow items-center justify-center gap-2 rounded-l-lg py-2 font-semibold disabled:cursor-not-allowed"
+		class="enabled:bg-[#2D8CF0] enabled:hover:bg-[#2D8CF0] disabled:bg-[#1A2A42] disabled:text-[#8899AA] flex grow items-center justify-center gap-2 rounded-l-lg py-2 font-semibold disabled:cursor-not-allowed"
 		onclick={() => {
 			install(modId);
 			loading = true;
@@ -75,7 +75,7 @@
 	</button>
 	<DropdownMenu.Root bind:open={versionsOpen}>
 		<DropdownMenu.Trigger
-			class="enabled:bg-accent-600 enabled:hover:bg-accent-500 disabled:bg-primary-600 disabled:text-primary-300 ml-0.5 gap-2 rounded-r-lg px-1.5 py-2 text-2xl disabled:cursor-not-allowed"
+			class="enabled:bg-[#2D8CF0] enabled:hover:bg-[#2D8CF0] disabled:bg-[#1A2A42] disabled:text-[#8899AA] ml-0.5 gap-2 rounded-r-lg px-1.5 py-2 text-2xl disabled:cursor-not-allowed"
 			{disabled}
 		>
 			<DropdownArrow open={versionsOpen} class="text-white" />

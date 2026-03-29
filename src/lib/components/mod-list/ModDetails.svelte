@@ -68,13 +68,13 @@
 </script>
 
 <div
-	class="border-primary-600 bg-primary-700 relative flex w-[40%] min-w-72 flex-col border-l px-6 pt-6 pb-4 text-white"
+	class="border-[#1A2A42] bg-[#0B1628] relative flex w-[40%] min-w-72 flex-col border-l px-6 pt-6 pb-4 text-white"
 >
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger
-			class="bg-primary-700 hover:bg-primary-600 absolute right-2 mt-0.5 rounded-full p-1"
+			class="bg-[#142240] hover:bg-[#1A2A42] absolute right-2 mt-0.5 rounded-full p-1 transition-colors"
 		>
-			<Icon class="text-primary-200 text-2xl" icon="mdi:dots-vertical" />
+			<Icon class="text-[#8899AA] text-2xl" icon="mdi:dots-vertical" />
 		</DropdownMenu.Trigger>
 		<ModContextMenuContent style="light" {mod} {locked} items={allContextItems} type="dropdown" />
 	</DropdownMenu.Root>
@@ -95,7 +95,7 @@
 				>
 
 				{#if mod.author}
-					<div class="text-primary-300 text-xl xl:text-2xl">
+					<div class="text-[#8899AA] text-xl xl:text-2xl">
 						{m.modDetails_by()}
 						<a class="hover:underline" href={communityUrl(mod.author)} target="_blank">
 							{mod.author}
@@ -104,7 +104,7 @@
 				{/if}
 
 				{#if mod.version}
-					<div class="text-primary-300 text-xl xl:text-2xl">v{mod.version}</div>
+					<div class="text-[#8899AA] text-xl xl:text-2xl">v{mod.version}</div>
 				{/if}
 			</div>
 		</div>
@@ -128,7 +128,7 @@
 		{#if mod.categories}
 			<div class="mt-4 mb-1 flex flex-wrap gap-1">
 				{#each mod.categories as category}
-					<div class="bg-primary-600 text-primary-200 rounded-full px-4 py-1">
+					<div class="bg-[#142240] text-[#E8ECF1] rounded-full px-4 py-1">
 						{category}
 					</div>
 				{/each}
@@ -144,18 +144,18 @@
 				<Icon class="shrink-0 text-green-400" icon="mdi:download" />
 				<span class="mr-4 text-green-400">{shortenNum(mod.downloads)}</span>
 			{/if}
-			<Icon class="text-primary-400 shrink-0" icon="mdi:weight" />
-			<span class="text-primary-400">{shortenFileSize(mod.fileSize)}</span>
+			<Icon class="text-[#556677] shrink-0" icon="mdi:weight" />
+			<span class="text-[#556677]">{shortenFileSize(mod.fileSize)}</span>
 		</div>
 
 		{#if mod.lastUpdated !== null}
-			<div class="text-primary-400 mt-1 text-lg">
+			<div class="text-[#556677] mt-1 text-lg">
 				{m.modDetails_lastUpdated({ time: timeSince(new Date(mod.lastUpdated)) })}
 			</div>
 		{/if}
 
 		{#if mod.description !== null}
-			<p class="text-primary-300 mt-2 text-xl lg:hidden">
+			<p class="text-[#8899AA] mt-2 text-xl lg:hidden">
 				{mod.description}
 			</p>
 		{/if}
@@ -163,10 +163,10 @@
 		<div class="hidden lg:block">
 			{#await readmePromise}
 				<div role="status" class="animate-pulse">
-					<div class="bg-primary-600 mt-4 h-8 w-80 rounded-xl"></div>
-					<div class="bg-primary-600 mt-6 h-3 max-w-[500px] rounded-full"></div>
-					<div class="bg-primary-600 mt-2.5 h-3 max-w-[460px] rounded-full"></div>
-					<div class="bg-primary-600 mt-2.5 mb-4 h-3 max-w-[400px] rounded-full"></div>
+					<div class="bg-[#142240] mt-4 h-8 w-80 rounded-xl"></div>
+					<div class="bg-[#142240] mt-6 h-3 max-w-[500px] rounded-full"></div>
+					<div class="bg-[#142240] mt-2.5 h-3 max-w-[460px] rounded-full"></div>
+					<div class="bg-[#142240] mt-2.5 mb-4 h-3 max-w-[400px] rounded-full"></div>
 				</div>
 			{:then readme}
 				<Markdown source={readme ?? m.modDetails_noFound()} />
@@ -176,7 +176,7 @@
 
 	{#if mod.configFile}
 		<div
-			class="text-accent-400 hover:text-accent-300 my-2 flex items-center gap-2 text-lg hover:underline"
+			class="text-[#2D8CF0] hover:text-[#00D4AA] my-2 flex items-center gap-2 text-lg hover:underline"
 		>
 			<Icon class="text-xl" icon="mdi:file-cog" />
 			<a href={'/config?file=' + mod.configFile}>{m.modDetails_editConfig()}</a>
@@ -184,7 +184,7 @@
 	{/if}
 
 	<button
-		class="group bg-primary-600 hover:bg-primary-500 flex items-center rounded-md py-1 pr-1.5 pl-3 text-white"
+		class="group bg-[#142240] hover:bg-[#1A2A42] flex items-center rounded-md py-1 pr-1.5 pl-3 text-white"
 		onmouseenter={() => changelog.fetchMarkdown()}
 		onclick={() => (changelogOpen = true)}
 	>
@@ -193,7 +193,7 @@
 	</button>
 
 	<button
-		class="group bg-primary-600 hover:bg-primary-500 mt-1 flex items-center rounded-md py-1 pr-1.5 pl-3 text-white"
+		class="group bg-[#142240] hover:bg-[#1A2A42] mt-1 flex items-center rounded-md py-1 pr-1.5 pl-3 text-white"
 		onmouseenter={() => readme.fetchMarkdown()}
 		onclick={() => (readmeOpen = true)}
 	>
@@ -203,12 +203,12 @@
 
 	{#if mod.dependencies !== null && mod.dependencies.length > 0}
 		<button
-			class="group bg-primary-600 hover:bg-primary-500 mt-1 flex items-center rounded-md py-1 pr-1 pl-3 text-white"
+			class="group bg-[#142240] hover:bg-[#1A2A42] mt-1 flex items-center rounded-md py-1 pr-1 pl-3 text-white"
 			onclick={() => (dependenciesOpen = true)}
 		>
 			<Icon icon="material-symbols:network-node" class="mr-2 text-lg" />
 			{m.modDetails_dependencies()}
-			<div class="bg-primary-500 group-hover:bg-primary-400 ml-auto rounded-md px-3 py-0.5 text-sm">
+			<div class="bg-[#1A2A42] group-hover:bg-[#2D8CF0]/20 ml-auto rounded-md px-3 py-0.5 text-sm">
 				{mod.dependencies.length}
 			</div>
 		</button>

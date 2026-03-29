@@ -41,20 +41,20 @@
 </script>
 
 {#if shownUpdates.length > updateBanner.threshold}
-	<div class="bg-accent-700 text-accent-100 mr-3 mb-1 flex items-center rounded-lg py-1 pr-1 pl-3">
+	<div class="bg-[#2D8CF0] text-accent-100 mr-3 mb-1 flex items-center rounded-lg py-1 pr-1 pl-3">
 		<Icon icon="mdi:arrow-up-circle" class="mr-2 text-xl" />
 		{pluralizeOption(shownUpdates.length, m.updateAllBanner_content_is(), 'is', 'are')}
 		<b class="mx-1">{shownUpdates.length}</b>
 		{pluralizeOption(shownUpdates.length, m.updateAllBanner_content_update(), 'update', 'updates')}
 		<button
-			class="hover:text-accent-200 ml-1 font-semibold text-white hover:underline"
+			class="hover:text-white ml-1 font-semibold text-white hover:underline"
 			onclick={() => (dialogOpen = true)}
 		>
 			{m.updateAllBanner_button()}
 		</button>
 
 		<button
-			class="hover:bg-accent-600 ml-auto rounded-md p-1 text-xl"
+			class="hover:bg-[#2D8CF0] ml-auto rounded-md p-1 text-xl"
 			onclick={() => (updateBanner.threshold = shownUpdates.length)}
 		>
 			<Icon icon="mdi:close" />
@@ -76,13 +76,13 @@
 		{#snippet item({ item: update })}
 			<ModCard fullName={update.fullName} showVersion={false} />
 
-			<span class="text-light text-primary-400 ml-auto pl-1">{update.old}</span>
-			<Icon icon="mdi:arrow-right" class="text-primary-400 mx-1.5 text-lg" />
-			<span class="text-accent-400 text-lg font-semibold">{update.new}</span>
+			<span class="text-light text-[#556677] ml-auto pl-1">{update.old}</span>
+			<Icon icon="mdi:arrow-right" class="text-[#556677] mx-1.5 text-lg" />
+			<span class="text-[#2D8CF0] text-lg font-semibold">{update.new}</span>
 
 			<Tooltip text={m.updateAllBanner_dialog_list_content()} side="left" sideOffset={-2}>
 				<button
-					class="text-primary-400 hover:bg-primary-700 hover:text-primary-200 ml-2 rounded-sm p-1.5"
+					class="text-[#556677] hover:bg-[#142240] hover:text-[#E8ECF1] ml-2 rounded-sm p-1.5"
 					onclick={() => {
 						update.ignore = true;
 						include.delete(update);

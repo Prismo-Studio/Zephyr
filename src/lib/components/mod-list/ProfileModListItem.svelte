@@ -39,10 +39,10 @@
 
 	let descriptionClasses = $derived(
 		mod.enabled === false
-			? 'text-primary-500 line-through'
+			? 'text-[#3A4A5C] line-through'
 			: isSelected
-				? 'text-primary-300'
-				: 'text-primary-400 group-hover:text-primary-300'
+				? 'text-[#8899AA]'
+				: 'text-[#556677] group-hover:text-[#8899AA]'
 	);
 
 	$effect(() => {
@@ -64,9 +64,9 @@
 >
 	<ContextMenu.Trigger class="contents">
 		<button
-			class="group flex w-full items-center rounded-lg border p-2 {isSelected
-				? 'border-primary-500 bg-primary-700'
-				: 'hover:bg-primary-700 border-transparent'}"
+			class="group flex w-full items-center rounded-xl border p-2.5 transition-colors {isSelected
+				? 'border-[#2D8CF0]/40 bg-[#142240]'
+				: 'hover:bg-[#142240]/60 border-transparent'}"
 			data-uuid={mod.uuid}
 			data-index={index}
 			draggable={reorderable}
@@ -80,7 +80,7 @@
 				<div class="flex items-center gap-1 overflow-hidden">
 					<div
 						class={[
-							mod.enabled === false ? 'text-primary-300 line-through' : 'text-white',
+							mod.enabled === false ? 'text-[#556677] line-through' : 'text-[#E8ECF1]',
 							'shrink truncate font-medium'
 						]}
 					>
@@ -90,13 +90,13 @@
 						{mod.version ?? '?.?.?'}
 					</div>
 					{#if mod.isPinned}
-						<Icon class="text-primary-400 shrink-0" icon="mdi:pin" />
+						<Icon class="text-[#556677] shrink-0" icon="mdi:pin" />
 					{/if}
 					{#if mod.isDeprecated}
 						<Icon class="shrink-0 text-red-500" icon="mdi:error" />
 					{/if}
 					{#if isOutdated(mod)}
-						<Icon class="text-accent-500 shrink-0" icon="mdi:arrow-up-circle" />
+						<Icon class="text-[#00D4AA] shrink-0" icon="mdi:arrow-up-circle" />
 					{/if}
 				</div>
 
@@ -110,7 +110,7 @@
 			{#if reorderable && !locked}
 				<Icon
 					icon="material-symbols:drag-indicator"
-					class="text-primary-400 mr-4 shrink-0 cursor-move text-2xl"
+					class="text-[#556677] mr-4 shrink-0 cursor-move text-2xl"
 				/>
 			{/if}
 
@@ -122,10 +122,10 @@
 					disabled={locked}
 					checked={mod.enabled ?? true}
 					onCheckedChange={ontoggle}
-					class="group data-[state=checked]:bg-accent-700 data-[state=checked]:hover:bg-accent-600 bg-primary-600 hover:bg-primary-500 mr-1 flex h-6 w-12 shrink-0 rounded-full px-1 py-1"
+					class="group data-[state=checked]:bg-[#2D8CF0] data-[state=checked]:hover:bg-[#2D8CF0]/80 bg-[#1A2A42] hover:bg-[#1A2A42]/80 mr-1 flex h-6 w-12 shrink-0 rounded-full px-1 py-1 transition-colors"
 				>
 					<Switch.Thumb
-						class="data-[state=checked]:bg-accent-200 bg-primary-300 pointer-events-none h-full w-4 rounded-full transition-transform duration-75 ease-out data-[state=checked]:translate-x-6"
+						class="data-[state=checked]:bg-white bg-[#556677] pointer-events-none h-full w-4 rounded-full transition-transform duration-75 ease-out data-[state=checked]:translate-x-6"
 					/>
 				</Switch.Root>
 			</div>
