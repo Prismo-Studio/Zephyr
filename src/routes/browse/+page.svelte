@@ -15,6 +15,7 @@
 	import profiles from '$lib/state/profile.svelte';
 	import { modQuery } from '$lib/state/misc.svelte';
 	import { m } from '$lib/paraglide/messages';
+	import Icon from '@iconify/svelte';
 
 	const sortOptions: SortBy[] = ['lastUpdated', 'newest', 'rating', 'downloads'];
 	const contextItems = [...defaultContextItems];
@@ -105,8 +106,13 @@
 		>
 			{#snippet placeholder()}
 				{#if hasRefreshed}
-					<div class="mt-4 text-lg">{m.browse_modList_content_1()}</div>
-					<div class="text-[#556677]">{m.browse_modList_content_2()}</div>
+					<div class="flex flex-col items-center py-8">
+						<div class="rounded-2xl bg-[#142240]/50 p-5">
+							<Icon icon="mdi:package-variant-remove" class="text-[#3A4A5C] text-5xl" />
+						</div>
+						<div class="mt-3 text-base font-medium text-[#8899AA]">{m.browse_modList_content_1()}</div>
+						<div class="mt-1 text-sm text-[#556677]">{m.browse_modList_content_2()}</div>
+					</div>
 				{/if}
 			{/snippet}
 

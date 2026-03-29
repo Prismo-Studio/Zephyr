@@ -206,17 +206,18 @@
 		display: block;
 		background: #0B1628;
 		border: 1px solid #1A2A42;
-		border-radius: 12px;
+		border-radius: 16px;
 		padding: 1.25rem;
-		transition: all 0.2s ease;
+		transition: all 0.25s ease;
 		text-align: left;
 		text-decoration: none;
 		color: inherit;
 	}
 
 	.zephyr-stat-card:hover {
-		border-color: #2D8CF0;
-		box-shadow: 0 0 20px rgba(45, 140, 240, 0.08);
+		border-color: rgba(45, 140, 240, 0.4);
+		box-shadow: 0 4px 24px rgba(45, 140, 240, 0.08);
+		transform: translateY(-1px);
 	}
 
 	.zephyr-action-card {
@@ -226,47 +227,50 @@
 		justify-content: center;
 		background: #0B1628;
 		border: 1px solid #1A2A42;
-		border-radius: 12px;
+		border-radius: 16px;
 		padding: 1.5rem 1rem;
-		transition: all 0.2s ease;
+		transition: all 0.25s ease;
 		text-align: center;
 		text-decoration: none;
 		color: inherit;
 	}
 
 	.zephyr-action-card:hover {
-		border-color: #2D8CF0;
-		background: rgba(45, 140, 240, 0.05);
+		border-color: rgba(45, 140, 240, 0.35);
+		background: rgba(45, 140, 240, 0.04);
 		transform: translateY(-2px);
+		box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 	}
 
 	.zephyr-source-card {
 		background: #0B1628;
 		border: 1px solid #1A2A42;
-		border-radius: 10px;
+		border-radius: 14px;
 		padding: 0.875rem;
 		transition: all 0.2s ease;
 	}
 
 	.zephyr-source-card:hover {
-		border-color: #1A2A42;
+		border-color: rgba(26, 42, 66, 0.8);
 		background: #0D1A30;
 	}
 
 	.zephyr-profile-item {
 		background: #0B1628;
 		border: 1px solid #1A2A42;
-		border-radius: 10px;
+		border-radius: 14px;
 		padding: 0.75rem;
-		transition: all 0.15s ease;
+		transition: all 0.2s ease;
 	}
 
 	.zephyr-profile-item:hover {
 		background: #0D1A30;
+		border-color: rgba(26, 42, 66, 0.8);
 	}
 
 	.zephyr-profile-item.active {
 		border-color: rgba(45, 140, 240, 0.3);
-		background: rgba(45, 140, 240, 0.05);
+		background: rgba(45, 140, 240, 0.04);
+		box-shadow: 0 0 16px rgba(45, 140, 240, 0.06);
 	}
 </style>

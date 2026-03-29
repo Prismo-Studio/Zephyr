@@ -2,6 +2,7 @@
 	import * as api from '$lib/api';
 	import type { ConfigSection, ConfigFile } from '$lib/types';
 	import { capitalize } from '$lib/util';
+	import Icon from '@iconify/svelte';
 	import ExpandedConfigEntryDialog from '$lib/components/dialogs/ExpandedConfigEntryDialog.svelte';
 
 	import Button from '$lib/components/ui/Button.svelte';
@@ -24,11 +25,11 @@
 		{/if}
 
 		{#if selectedFile !== null}
-			<div class="shrink-0 truncate px-4 text-2xl font-bold text-white">
+			<div class="shrink-0 truncate px-4 text-xl font-bold text-[#E8ECF1]">
 				{selectedFile.relativePath}
 				{#if selectedSection}
-					<span class="text-[#556677]">/</span>
-					{selectedSection.name.length > 0 ? selectedSection.name : m.config_nameLess()}
+					<span class="mx-1 text-[#3A4A5C]">/</span>
+					<span class="text-[#8899AA]">{selectedSection.name.length > 0 ? selectedSection.name : m.config_nameLess()}</span>
 				{/if}
 			</div>
 
@@ -67,8 +68,11 @@
 				</Button>
 			{/if}
 		{:else}
-			<div class="text-[#556677] flex w-full grow items-center justify-center text-lg">
-				{m.config_content()}
+			<div class="flex w-full grow flex-col items-center justify-center gap-2">
+				<div class="rounded-2xl bg-[#142240]/40 p-5">
+					<Icon icon="mdi:tune-variant" class="text-[#3A4A5C] text-5xl" />
+				</div>
+				<div class="text-base font-medium text-[#8899AA]">{m.config_content()}</div>
 			</div>
 		{/if}
 	</div>

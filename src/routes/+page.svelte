@@ -249,19 +249,23 @@
 			{#snippet placeholder()}
 				{#if hasRefreshed}
 					{#if totalModCount === 0}
-						<Icon icon="ph:ghost" class="text-[#3A4A5C] mx-auto mt-4 text-9xl" />
-
-						<div class="mt-1 text-lg">{m.page_modList_noMods_1()}</div>
-						<a href="/browse" class="text-[#2D8CF0] hover:text-[#00D4AA] hover:underline"
-							><Icon
-								icon="mdi:store-search"
-								class="mr-0.5 ml-1  inline"
-								inline
-							/>{m.page_modList_noMods_2()}</a
-						>
+						<div class="flex flex-col items-center py-8">
+							<div class="rounded-2xl bg-[#142240]/50 p-6">
+								<Icon icon="ph:ghost" class="text-[#3A4A5C] text-7xl" />
+							</div>
+							<div class="mt-4 text-lg font-medium text-[#8899AA]">{m.page_modList_noMods_1()}</div>
+							<a href="/browse" class="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-[#2D8CF0]/10 px-4 py-2 text-sm font-medium text-[#2D8CF0] hover:bg-[#2D8CF0]/20 transition-colors"
+								><Icon icon="mdi:store-search" class="text-lg" />{m.page_modList_noMods_2()}</a
+							>
+						</div>
 					{:else}
-						<div class="mt-4 text-lg">{m.page_modList_noResults_1()}</div>
-						<div class="text-[#556677]">{m.page_modList_noResults_2()}</div>
+						<div class="flex flex-col items-center py-8">
+							<div class="rounded-2xl bg-[#142240]/50 p-5">
+								<Icon icon="mdi:filter-remove-outline" class="text-[#3A4A5C] text-5xl" />
+							</div>
+							<div class="mt-3 text-base font-medium text-[#8899AA]">{m.page_modList_noResults_1()}</div>
+							<div class="mt-1 text-sm text-[#556677]">{m.page_modList_noResults_2()}</div>
+						</div>
 					{/if}
 				{/if}
 			{/snippet}
@@ -288,7 +292,10 @@
 		<ModDetails {locked} mod={selectedMod} {contextItems} onclose={() => (selectedMod = null)}>
 			{#if selectedMod && isOutdated(selectedMod) && !locked}
 				<button
-					class="bg-[#2D8CF0] hover:bg-[#2D8CF0]/80 mt-2 flex w-full items-center justify-center gap-2 rounded-lg py-2 text-lg font-medium"
+					class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-base font-semibold text-white transition-all duration-200"
+					style="background: linear-gradient(135deg, #00D4AA, #2D8CF0); box-shadow: 0 2px 12px rgba(0, 212, 170, 0.2);"
+					onmouseenter={(e) => { e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 212, 170, 0.35)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+					onmouseleave={(e) => { e.currentTarget.style.boxShadow = '0 2px 12px rgba(0, 212, 170, 0.2)'; e.currentTarget.style.transform = 'none'; }}
 					onclick={() => updateMod(selectedMod)}
 				>
 					<Icon icon="mdi:arrow-up-circle" class="align-middle text-xl" />
