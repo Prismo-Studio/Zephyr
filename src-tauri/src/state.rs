@@ -1,4 +1,4 @@
-use std::sync::{Mutex, MutexGuard};
+use std::sync::{Arc, Mutex, MutexGuard};
 
 use eyre::{Context, Result};
 use tauri::{command, AppHandle, Manager};
@@ -7,6 +7,7 @@ use crate::{
     db::{self, Db},
     prefs::Prefs,
     profile::{self, install::queue::InstallQueue, sync, ModManager},
+    source::SourceRegistry,
     thunderstore::{self, Thunderstore},
 };
 
@@ -15,6 +16,7 @@ pub struct AppState {
     pub prefs: Mutex<Prefs>,
     pub manager: Mutex<ModManager>,
     pub thunderstore: Mutex<Thunderstore>,
+    pub source_registry: SourceRegistry,
     pub db: Db,
     pub install_queue: InstallQueue,
     pub sync_auth: sync::auth::State,
@@ -38,7 +40,7 @@ impl AppState {
 
 pub fn setup(app: &AppHandle) -> Result<()> {
     let http = reqwest::Client::builder()
-        .user_agent(concat!("Kesomannen-Gale/", env!("CARGO_PKG_VERSION")))
+        .user_agent(concat!("PrismoStudio-Zephyr/", env!("CARGO_PKG_VERSION")))
         .build()
         .context("failed to init http client")?;
 
@@ -51,12 +53,22 @@ pub fn setup(app: &AppHandle) -> Result<()> {
     let manager = profile::setup(data, &prefs, &db, app).context("failed to init profiles")?;
     let thunderstore = Thunderstore::new();
 
+    // Initialize the multi-source registry
+    let mut source_registry = SourceRegistry::new();
+
+    // Register Thunderstore as the first (and currently only active) source.
+    // Additional sources (NexusMods, CurseForge, GitHub) will be registered
+    // here once their adapters are implemented.
+    let ts_source = crate::source::thunderstore_adapter::ThunderstoreSource::new(app.to_owned());
+    source_registry.register(Arc::new(ts_source));
+
     let state = AppState {
         db,
         http,
         prefs: Mutex::new(prefs),
         manager: Mutex::new(manager),
         thunderstore: Mutex::new(thunderstore),
+        source_registry,
         sync_auth: sync::auth::State::new(creds),
         sync_socket: sync::socket::State::new(app.to_owned()),
         install_queue: InstallQueue::new(app.to_owned()),
@@ -107,6 +119,10 @@ pub trait ManagerExt<R> {
 
     fn sync_socket(&self) -> &sync::socket::State {
         &self.app_state().sync_socket
+    }
+
+    fn source_registry(&self) -> &SourceRegistry {
+        &self.app_state().source_registry
     }
 }
 

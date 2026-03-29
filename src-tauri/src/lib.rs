@@ -18,13 +18,14 @@ mod game;
 mod logger;
 mod prefs;
 mod profile;
+pub mod source;
 mod state;
 mod thunderstore;
 mod util;
 
 fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
     info!(
-        "gale v{} running on {}",
+        "zephyr v{} running on {}",
         env!("CARGO_PKG_VERSION"),
         std::env::consts::OS,
     );
@@ -33,7 +34,7 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         error!("setup error: {:?}", err);
 
         app.dialog()
-            .message(format!("Failed to launch Gale: {err:?}"))
+            .message(format!("Failed to launch Zephyr: {err:?}"))
             .blocking_show();
 
         return Err(err.into());
@@ -43,8 +44,8 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         warn!("failed to register ror2mm deep link protocol: {:#}", err);
     }
 
-    if let Err(err) = app.deep_link().register("gale") {
-        warn!("failed to register gale deep link protocol: {:#}", err);
+    if let Err(err) = app.deep_link().register("zephyr") {
+        warn!("failed to register zephyr deep link protocol: {:#}", err);
     }
 
     let args = env::args().collect_vec();
@@ -100,8 +101,9 @@ pub fn run() {
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            logger::open_gale_log,
+            logger::open_zephyr_log,
             logger::log_err,
+            source::commands::get_sources,
             state::is_first_run,
             thunderstore::commands::query_thunderstore,
             thunderstore::commands::stop_querying_thunderstore,
