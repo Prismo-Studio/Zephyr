@@ -67,27 +67,34 @@
 	});
 </script>
 
-<div
-	class="border-[#1A2A42] bg-[#0B1628] relative flex w-[40%] min-w-72 flex-col border-l px-6 pt-6 pb-4 text-white"
->
+<div class="zephyr-details">
+	<!-- Close & menu buttons -->
+	<button
+		class="absolute top-4 right-12 z-10 rounded-lg p-1.5 text-[#556677] transition-colors hover:bg-[#142240] hover:text-[#E8ECF1]"
+		onclick={onclose}
+	>
+		<Icon icon="mdi:close" class="text-xl" />
+	</button>
+
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger
-			class="bg-[#142240] hover:bg-[#1A2A42] absolute right-2 mt-0.5 rounded-full p-1 transition-colors"
+			class="absolute top-4 right-4 z-10 rounded-lg p-1.5 text-[#556677] transition-colors hover:bg-[#142240] hover:text-[#E8ECF1]"
 		>
-			<Icon class="text-[#8899AA] text-2xl" icon="mdi:dots-vertical" />
+			<Icon icon="mdi:dots-vertical" class="text-xl" />
 		</DropdownMenu.Trigger>
 		<ModContextMenuContent style="light" {mod} {locked} items={allContextItems} type="dropdown" />
 	</DropdownMenu.Root>
 
-	<div class="light-scrollbar grow overflow-x-hidden overflow-y-auto pb-2">
-		<div class="flex flex-wrap gap-4 xl:items-center">
-			<img src={modIconSrc(mod)} class="max-h-30 max-w-30 rounded-lg" alt="" />
+	<div class="light-scrollbar grow overflow-x-hidden overflow-y-auto">
+		<!-- Hero section -->
+		<div class="zephyr-details-hero">
+			<img src={modIconSrc(mod)} class="zephyr-details-icon" alt="" />
 
-			<div>
+			<div class="mt-4">
 				<svelte:element
 					this={mod.type === ModType.Remote ? 'a' : 'div'}
 					class={[
-						'pr-4 text-left text-3xl font-bold break-words text-white xl:text-4xl',
+						'text-2xl font-bold text-white break-words leading-tight',
 						mod.type === ModType.Remote && 'hover:underline'
 					]}
 					href={communityUrl(`${mod.author}/${mod.name}`)}
@@ -95,78 +102,90 @@
 				>
 
 				{#if mod.author}
-					<div class="text-[#8899AA] text-xl xl:text-2xl">
+					<div class="mt-1 text-sm text-[#8899AA]">
 						{m.modDetails_by()}
-						<a class="hover:underline" href={communityUrl(mod.author)} target="_blank">
+						<a class="text-[#2D8CF0] hover:underline" href={communityUrl(mod.author)} target="_blank">
 							{mod.author}
 						</a>
 					</div>
 				{/if}
 
 				{#if mod.version}
-					<div class="text-[#8899AA] text-xl xl:text-2xl">v{mod.version}</div>
+					<span class="mt-2 inline-block rounded-md bg-[#142240] px-2.5 py-0.5 text-xs font-mono text-[#8899AA]">
+						v{mod.version}
+					</span>
 				{/if}
 			</div>
 		</div>
 
-		<div class="flex flex-wrap gap-1">
+		<!-- Tags -->
+		<div class="flex flex-wrap gap-1.5 px-5">
 			{#if mod.isDeprecated}
-				<div class="my-1 flex items-center rounded-lg bg-red-600 px-3 py-1 text-white">
-					<Icon class="mr-1 text-xl" icon="mdi:error" />
+				<div class="flex items-center gap-1 rounded-lg bg-red-500/15 px-2.5 py-1 text-xs font-medium text-red-400">
+					<Icon icon="mdi:error" class="text-sm" />
 					{m.modDetails_deprecated()}
 				</div>
 			{/if}
 
 			{#if mod.containsNsfw}
-				<div class="my-1 flex items-center rounded-lg bg-red-600 px-3 py-1 text-white">
-					<Icon class="mr-1 text-xl" icon="material-symbols:explicit" />
+				<div class="flex items-center gap-1 rounded-lg bg-red-500/15 px-2.5 py-1 text-xs font-medium text-red-400">
+					<Icon icon="material-symbols:explicit" class="text-sm" />
 					{m.modDetails_NSFW()}
 				</div>
 			{/if}
 		</div>
 
-		{#if mod.categories}
-			<div class="mt-4 mb-1 flex flex-wrap gap-1">
-				{#each mod.categories as category}
-					<div class="bg-[#142240] text-[#E8ECF1] rounded-full px-4 py-1">
-						{category}
-					</div>
-				{/each}
-			</div>
-		{/if}
-
-		<div class="mt-2 flex items-center gap-1.5 text-lg">
+		<!-- Stats -->
+		<div class="mx-5 mt-4 grid grid-cols-3 gap-2">
 			{#if mod.rating !== null}
-				<Icon class="shrink-0 text-yellow-400" icon="mdi:star" />
-				<span class="mr-4 text-yellow-400">{shortenNum(mod.rating)}</span>
+				<div class="zephyr-stat">
+					<Icon icon="mdi:star" class="text-yellow-400 text-lg" />
+					<span class="text-sm font-semibold text-[#E8ECF1]">{shortenNum(mod.rating)}</span>
+				</div>
 			{/if}
 			{#if mod.downloads !== null}
-				<Icon class="shrink-0 text-green-400" icon="mdi:download" />
-				<span class="mr-4 text-green-400">{shortenNum(mod.downloads)}</span>
+				<div class="zephyr-stat">
+					<Icon icon="mdi:download" class="text-[#00D4AA] text-lg" />
+					<span class="text-sm font-semibold text-[#E8ECF1]">{shortenNum(mod.downloads)}</span>
+				</div>
 			{/if}
-			<Icon class="text-[#556677] shrink-0" icon="mdi:weight" />
-			<span class="text-[#556677]">{shortenFileSize(mod.fileSize)}</span>
+			<div class="zephyr-stat">
+				<Icon icon="mdi:weight" class="text-[#556677] text-lg" />
+				<span class="text-sm font-semibold text-[#E8ECF1]">{shortenFileSize(mod.fileSize)}</span>
+			</div>
 		</div>
 
 		{#if mod.lastUpdated !== null}
-			<div class="text-[#556677] mt-1 text-lg">
+			<div class="mx-5 mt-2 text-xs text-[#556677]">
 				{m.modDetails_lastUpdated({ time: timeSince(new Date(mod.lastUpdated)) })}
 			</div>
 		{/if}
 
+		<!-- Categories -->
+		{#if mod.categories}
+			<div class="mx-5 mt-3 flex flex-wrap gap-1">
+				{#each mod.categories as category}
+					<span class="rounded-full bg-[#142240] px-3 py-0.5 text-[11px] font-medium text-[#8899AA]">
+						{category}
+					</span>
+				{/each}
+			</div>
+		{/if}
+
 		{#if mod.description !== null}
-			<p class="text-[#8899AA] mt-2 text-xl lg:hidden">
+			<p class="mx-5 mt-3 text-sm leading-relaxed text-[#8899AA] lg:hidden">
 				{mod.description}
 			</p>
 		{/if}
 
-		<div class="hidden lg:block">
+		<!-- Readme -->
+		<div class="mx-5 hidden lg:block">
 			{#await readmePromise}
-				<div role="status" class="animate-pulse">
-					<div class="bg-[#142240] mt-4 h-8 w-80 rounded-xl"></div>
-					<div class="bg-[#142240] mt-6 h-3 max-w-[500px] rounded-full"></div>
-					<div class="bg-[#142240] mt-2.5 h-3 max-w-[460px] rounded-full"></div>
-					<div class="bg-[#142240] mt-2.5 mb-4 h-3 max-w-[400px] rounded-full"></div>
+				<div role="status" class="animate-pulse mt-4">
+					<div class="bg-[#142240] h-6 w-48 rounded-lg"></div>
+					<div class="bg-[#142240] mt-3 h-3 w-full rounded-full"></div>
+					<div class="bg-[#142240] mt-2 h-3 w-4/5 rounded-full"></div>
+					<div class="bg-[#142240] mt-2 h-3 w-3/5 rounded-full"></div>
 				</div>
 			{:then readme}
 				<Markdown source={readme ?? m.modDetails_noFound()} />
@@ -174,47 +193,53 @@
 		</div>
 	</div>
 
-	{#if mod.configFile}
-		<div
-			class="text-[#2D8CF0] hover:text-[#00D4AA] my-2 flex items-center gap-2 text-lg hover:underline"
-		>
-			<Icon class="text-xl" icon="mdi:file-cog" />
-			<a href={'/config?file=' + mod.configFile}>{m.modDetails_editConfig()}</a>
+	<!-- Bottom actions -->
+	<div class="zephyr-details-actions">
+		{#if mod.configFile}
+			<a
+				href={'/config?file=' + mod.configFile}
+				class="zephyr-action-link"
+			>
+				<Icon icon="mdi:file-cog" class="text-base" />
+				{m.modDetails_editConfig()}
+			</a>
+		{/if}
+
+		<div class="flex gap-1.5">
+			<button
+				class="zephyr-action-btn grow"
+				onmouseenter={() => changelog.fetchMarkdown()}
+				onclick={() => (changelogOpen = true)}
+			>
+				<Icon icon="mdi:file-document" class="text-base" />
+				{m.modDetails_changeLog()}
+			</button>
+
+			<button
+				class="zephyr-action-btn grow"
+				onmouseenter={() => readme.fetchMarkdown()}
+				onclick={() => (readmeOpen = true)}
+			>
+				<Icon icon="mdi:info" class="text-base" />
+				{m.modDetails_details()}
+			</button>
 		</div>
-	{/if}
 
-	<button
-		class="group bg-[#142240] hover:bg-[#1A2A42] flex items-center rounded-md py-1 pr-1.5 pl-3 text-white"
-		onmouseenter={() => changelog.fetchMarkdown()}
-		onclick={() => (changelogOpen = true)}
-	>
-		<Icon icon="mdi:file-document" class="mr-2 text-lg" />
-		{m.modDetails_changeLog()}
-	</button>
+		{#if mod.dependencies !== null && mod.dependencies.length > 0}
+			<button
+				class="zephyr-action-btn"
+				onclick={() => (dependenciesOpen = true)}
+			>
+				<Icon icon="material-symbols:network-node" class="text-base" />
+				{m.modDetails_dependencies()}
+				<span class="ml-auto rounded-md bg-[#0B1628] px-2 py-0.5 text-[11px] font-semibold text-[#2D8CF0]">
+					{mod.dependencies.length}
+				</span>
+			</button>
+		{/if}
 
-	<button
-		class="group bg-[#142240] hover:bg-[#1A2A42] mt-1 flex items-center rounded-md py-1 pr-1.5 pl-3 text-white"
-		onmouseenter={() => readme.fetchMarkdown()}
-		onclick={() => (readmeOpen = true)}
-	>
-		<Icon icon="mdi:info" class="mr-2 text-lg" />
-		{m.modDetails_details()}
-	</button>
-
-	{#if mod.dependencies !== null && mod.dependencies.length > 0}
-		<button
-			class="group bg-[#142240] hover:bg-[#1A2A42] mt-1 flex items-center rounded-md py-1 pr-1 pl-3 text-white"
-			onclick={() => (dependenciesOpen = true)}
-		>
-			<Icon icon="material-symbols:network-node" class="mr-2 text-lg" />
-			{m.modDetails_dependencies()}
-			<div class="bg-[#1A2A42] group-hover:bg-[#2D8CF0]/20 ml-auto rounded-md px-3 py-0.5 text-sm">
-				{mod.dependencies.length}
-			</div>
-		</button>
-	{/if}
-
-	{@render children?.()}
+		{@render children?.()}
+	</div>
 </div>
 
 <Dialog title="Dependencies of {mod.name}" bind:open={dependenciesOpen}>
@@ -231,3 +256,87 @@
 	useLatest={true}
 	type="changelog"
 />
+
+<style>
+	.zephyr-details {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		width: 40%;
+		min-width: 18rem;
+		border-left: 1px solid #1A2A42;
+		background: #0B1628;
+		color: white;
+	}
+
+	.zephyr-details-hero {
+		padding: 1.5rem 1.25rem 1rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.zephyr-details-icon {
+		width: 80px;
+		height: 80px;
+		border-radius: 16px;
+		object-fit: cover;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+		border: 1px solid #1A2A42;
+	}
+
+	.zephyr-stat {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		background: #0F1D32;
+		border: 1px solid #1A2A42;
+		border-radius: 10px;
+		padding: 8px 10px;
+	}
+
+	.zephyr-details-actions {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 12px 16px;
+		border-top: 1px solid #1A2A42;
+	}
+
+	.zephyr-action-btn {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 12px;
+		border-radius: 10px;
+		background: #142240;
+		color: #E8ECF1;
+		font-size: 13px;
+		font-weight: 500;
+		transition: all 0.15s ease;
+	}
+
+	.zephyr-action-btn:hover {
+		background: #1A2A42;
+		transform: translateY(-1px);
+	}
+
+	.zephyr-action-link {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 12px;
+		border-radius: 10px;
+		background: rgba(45, 140, 240, 0.1);
+		color: #2D8CF0;
+		font-size: 13px;
+		font-weight: 500;
+		transition: all 0.15s ease;
+		text-decoration: none;
+	}
+
+	.zephyr-action-link:hover {
+		background: rgba(45, 140, 240, 0.18);
+		color: #4DA3FF;
+	}
+</style>
