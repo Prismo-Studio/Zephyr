@@ -146,7 +146,7 @@
 				{#if open}
 					<div
 						{...props}
-						class="border-[#1A2A42] bg-[#0F1D32] z-10 w-80 rounded-lg border px-6 py-4 shadow-xl"
+						class="border-[#1A2A42] bg-[#0F1D32] z-10 w-80 rounded-xl border px-5 py-4 shadow-[0_15px_40px_rgba(0,0,0,0.5)]"
 						in:fly={dropIn}
 						out:fade={dropOut}
 					>
@@ -171,11 +171,11 @@
 						<Progress.Root
 							value={shownProgress.current}
 							max={1}
-							class="bg-[#0B1628] relative mt-2 h-4 w-full overflow-hidden rounded-full"
+							class="bg-[#0B1628] relative mt-2 h-3 w-full overflow-hidden rounded-full border border-[#1A2A42]"
 						>
 							<div
-								class="bg-[#2D8CF0] absolute top-0 left-0 h-full rounded-l-full"
-								style="width: {shownProgress.current * 100}%"
+								class="absolute top-0 left-0 h-full rounded-l-full transition-[width] duration-200"
+								style="width: {shownProgress.current * 100}%; background: linear-gradient(90deg, #2D8CF0, #00D4AA);"
 							></div>
 						</Progress.Root>
 					</div>

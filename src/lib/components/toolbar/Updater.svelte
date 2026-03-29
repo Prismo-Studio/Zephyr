@@ -59,16 +59,16 @@
 
 {#if updates.next}
 	<button
-		class="bg-[#2D8CF0] enabled:hover:bg-[#2D8CF0] text-[#E8ECF1] mx-2 my-auto ml-auto flex items-center gap-1 rounded-md px-2.5 py-1 text-sm font-bold"
+		class="zephyr-update-btn mx-2 my-auto ml-auto flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold text-white transition-all duration-200"
 		disabled={loading}
 		onclick={() => (dialogOpen = true)}
 	>
 		{#if loading}
 			<Icon icon="mdi:loading" class="animate-spin" />
 		{:else}
-			<Icon icon="mdi:arrow-up-circle" />
+			<Icon icon="mdi:arrow-up-circle" class="text-lg" />
 		{/if}
-		<div class="truncate text-sm">
+		<div class="truncate text-[13px]">
 			{m[`updater_content_${loading ? 'downloading' : 'available'}`]()}
 		</div>
 	</button>
@@ -94,3 +94,22 @@
 		<Button color="accent" onclick={update}>{m.updater_confirmDialog_button()}</Button>
 	{/snippet}
 </ConfirmDialog>
+
+<style>
+	.zephyr-update-btn {
+		background: linear-gradient(135deg, #00D4AA, #2D8CF0);
+		box-shadow: 0 2px 12px rgba(0, 212, 170, 0.2);
+		animation: pulse-update-btn 2s ease-in-out infinite;
+	}
+	.zephyr-update-btn:hover:not(:disabled) {
+		box-shadow: 0 4px 20px rgba(0, 212, 170, 0.35);
+		transform: translateY(-1px);
+	}
+	.zephyr-update-btn:disabled {
+		opacity: 0.7;
+	}
+	@keyframes pulse-update-btn {
+		0%, 100% { box-shadow: 0 2px 12px rgba(0, 212, 170, 0.2); }
+		50% { box-shadow: 0 2px 20px rgba(0, 212, 170, 0.35); }
+	}
+</style>

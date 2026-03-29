@@ -15,9 +15,9 @@
 <div
 	class={[
 		games.active?.slug === game.slug
-			? ' border-[#1A2A42] bg-[#142240]'
-			: 'hover:bg-[#142240] border-transparent',
-		'group hover:bg-[#142240] mr-2 flex cursor-pointer items-center rounded-lg border p-1.5 '
+			? 'border-[rgba(45,140,240,0.3)] bg-[#142240] shadow-[0_0_12px_rgba(45,140,240,0.05)]'
+			: 'hover:bg-[#142240]/60 border-transparent',
+		'group mr-2 flex cursor-pointer items-center rounded-xl border p-2 transition-all duration-150'
 	]}
 	onclick={() => {
 		games.setActive(game.slug);
@@ -26,20 +26,19 @@
 	role="button"
 	tabindex="0"
 >
-	<img src={gameIconSrc(game)} alt={game.name} class="mr-2 size-12 rounded-sm" />
+	<img src={gameIconSrc(game)} alt={game.name} class="mr-3 size-11 rounded-lg object-cover" />
 
-	<div class="grow pl-1 text-left">
-		<div class="font-medium text-white">
+	<div class="grow text-left">
+		<div class="text-sm font-semibold text-[#E8ECF1]">
 			{game.name}
 		</div>
 
-		<div class="text-[#556677]">
-			<span>{game.modLoader} </span>
+		<div class="mt-0.5 text-xs text-[#556677]">
+			<span>{game.modLoader}</span>
 
 			{#if game.platforms.length > 0}
-				<span class="text-[#3A4A5C] mx-1">|</span>
-
-				<span class="mr-1">{game.platforms.map(toHeaderCase).join(', ')}</span>
+				<span class="text-[#3A4A5C] mx-1">&middot;</span>
+				<span>{game.platforms.map(toHeaderCase).join(', ')}</span>
 			{/if}
 		</div>
 	</div>
@@ -47,7 +46,7 @@
 	<button
 		class={[
 			game.favorite ? 'block' : 'hidden group-hover:block',
-			'hover:bg-[#1A2A42] mr-1 rounded p-1.5'
+			'hover:bg-[#1A2A42] mr-1 rounded-lg p-1.5 transition-colors'
 		]}
 		onclick={(evt) => {
 			evt.stopPropagation();
@@ -55,6 +54,6 @@
 			api.profile.favoriteGame(game.slug);
 		}}
 	>
-		<Icon icon={game.favorite ? 'mdi:star' : 'mdi:star-outline'} class="text-[#00D4AA] text-xl" />
+		<Icon icon={game.favorite ? 'mdi:star' : 'mdi:star-outline'} class="text-yellow-400 text-lg" />
 	</button>
 </div>

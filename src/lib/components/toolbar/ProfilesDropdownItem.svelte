@@ -33,23 +33,23 @@
 <DropdownMenu.Item
 	class={[
 		isActive
-			? 'text-[#8899AA] hover:text-[#E8ECF1] font-medium'
-			: 'text-[#556677] hover:text-[#8899AA]',
-		'group hover:bg-[#142240] flex cursor-default items-center rounded-sm py-1 pr-1 pl-3 text-left'
+			? 'text-[#E8ECF1] font-medium bg-[#142240]/50'
+			: 'text-[#8899AA] hover:text-[#E8ECF1]',
+		'group hover:bg-[#142240] flex cursor-default items-center rounded-lg py-1.5 pr-1.5 pl-3 text-left transition-colors duration-150'
 	]}
 	onclick={() => profiles.setActive(index)}
 >
 	{#if profile.sync !== null}
-		<Icon icon="mdi:cloud" class="mr-2" />
+		<Icon icon="mdi:cloud" class="mr-2 text-[#2D8CF0]" />
 	{/if}
 
-	<span class="mr-3 grow">
+	<span class="mr-3 grow truncate text-sm">
 		{profile.name}
 	</span>
 
-	<Icon icon="mdi:check" class={clsx(!isActive && 'invisible', 'text-[#00D4AA] mx-2 text-lg')} />
+	<Icon icon="mdi:check" class={clsx(!isActive && 'invisible', 'text-[#00D4AA] mx-1.5 text-lg')} />
 
-	<div class="bg-[#142240] group-hover:bg-[#1A2A42] mr-1 rounded-sm px-1.5 py-0.5 text-xs">
+	<div class="bg-[#0B1628] group-hover:bg-[#1A2A42] mr-1 rounded-md px-1.5 py-0.5 text-[11px] font-semibold tabular-nums text-[#556677]">
 		{profile.modCount}
 	</div>
 

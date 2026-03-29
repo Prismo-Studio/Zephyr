@@ -179,11 +179,11 @@
 <button
 	class={[
 		style.classes,
-		'bg-[#0F1D32] hover:bg-[#142240] mx-2 my-auto flex items-center gap-1.5 rounded-md px-2.5 py-1 text-sm'
+		'bg-[#0F1D32] hover:bg-[#142240] mx-2 my-auto flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] transition-colors duration-150'
 	]}
 	onclick={() => (mainDialogOpen = true)}
 >
-	<Icon icon={style.icon} />
+	<Icon icon={style.icon} class="text-base" />
 
 	<div class="truncate">{style.label}</div>
 </button>

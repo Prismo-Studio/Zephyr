@@ -39,29 +39,31 @@
 <div class="zephyr-toolbar flex h-12 shrink-0 flex-row items-stretch">
 	<!-- Launch button with gradient -->
 	<button
-		class="zephyr-launch-btn flex shrink-0 items-center gap-2 border-r border-[#1A2A42] px-6 font-semibold text-white transition-all duration-200"
+		class="zephyr-launch-btn group flex shrink-0 items-center gap-2.5 border-r border-[#1A2A42] px-6 font-semibold text-white transition-all duration-200"
 		onclick={launchGame}
 	>
-		<div class="flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D8CF0] to-[#00D4AA] p-1">
-			<Icon icon="mdi:play" class="text-sm text-white" />
+		<div class="zephyr-launch-icon flex items-center justify-center rounded-lg p-1.5">
+			<Icon icon="mdi:play" class="text-sm text-white drop-shadow-sm" />
 		</div>
-		<span class="text-sm">{m.toolBar_launchGame_button()}</span>
+		<span class="text-[13px] tracking-wide uppercase">{m.toolBar_launchGame_button()}</span>
 	</button>
 
 	<!-- Game selector -->
 	<button
 		onclick={() => (gamesOpen = !gamesOpen)}
-		class="group flex shrink-0 items-center gap-2 border-r border-[#1A2A42] px-4 transition-all duration-200 hover:bg-[#142240]"
+		class="zephyr-game-btn group flex shrink-0 items-center gap-2.5 border-r border-[#1A2A42] px-4 transition-all duration-200"
 	>
-		<img
-			src={games.active ? gameIconSrc(games.active) : ''}
-			class="max-h-7 max-w-7 rounded"
-			alt={games.active?.name}
-		/>
+		<div class="zephyr-game-icon-wrap">
+			<img
+				src={games.active ? gameIconSrc(games.active) : ''}
+				class="max-h-7 max-w-7 rounded-md"
+				alt={games.active?.name}
+			/>
+		</div>
 		<span class="text-sm font-medium text-[#E8ECF1]">{games.active?.name}</span>
 		<Icon
 			icon="mdi:chevron-down"
-			class="text-[#556677] group-hover:text-[#8899AA] text-lg transition-colors"
+			class="text-[#556677] group-hover:text-[#8899AA] text-lg transition-all duration-200 {gamesOpen ? 'rotate-180' : ''}"
 		/>
 	</button>
 
@@ -97,10 +99,32 @@
 	}
 
 	.zephyr-launch-btn {
-		background: rgba(45, 140, 240, 0.08);
+		background: rgba(45, 140, 240, 0.06);
 	}
 
 	.zephyr-launch-btn:hover {
-		background: rgba(45, 140, 240, 0.15);
+		background: rgba(45, 140, 240, 0.12);
+	}
+
+	.zephyr-launch-btn:hover .zephyr-launch-icon {
+		box-shadow: 0 0 16px rgba(0, 212, 170, 0.3);
+		transform: scale(1.05);
+	}
+
+	.zephyr-launch-icon {
+		background: linear-gradient(135deg, #2D8CF0, #00D4AA);
+		border-radius: 8px;
+		transition: all 0.2s ease;
+		box-shadow: 0 2px 8px rgba(45, 140, 240, 0.25);
+	}
+
+	.zephyr-game-btn:hover {
+		background: rgba(20, 34, 64, 0.8);
+	}
+
+	.zephyr-game-icon-wrap {
+		padding: 2px;
+		border-radius: 8px;
+		background: rgba(26, 42, 66, 0.5);
 	}
 </style>

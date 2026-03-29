@@ -15,14 +15,15 @@
 
 <DropdownMenu.Root bind:open>
 	<DropdownMenu.Trigger
-		class="group border-[#1A2A42] text-[#8899AA] group-hover:text-[#E8ECF1] hover:bg-[#0F1D32] flex min-w-40 shrink items-center border-r pr-4 pl-6"
+		class="group border-[#1A2A42] text-[#8899AA] group-hover:text-[#E8ECF1] hover:bg-[#0F1D32] flex min-w-40 shrink items-center border-r pr-4 pl-6 transition-colors duration-150"
 	>
-		<span class="mr-auto shrink truncate font-semibold">
+		<Icon icon="mdi:layers-outline" class="mr-2 text-lg text-[#556677] group-hover:text-[#2D8CF0] transition-colors" />
+		<span class="mr-auto shrink truncate font-semibold text-sm">
 			{profiles.active?.name}
 		</span>
 
 		<div
-			class="bg-[#0F1D32] group-hover:bg-[#142240] mr-2 ml-6 rounded-sm px-2 py-0.5 text-sm font-medium"
+			class="bg-[#0F1D32] group-hover:bg-[#142240] mr-2 ml-4 rounded-md px-2 py-0.5 text-xs font-semibold text-[#2D8CF0] tabular-nums"
 		>
 			{profiles.active?.modCount}
 		</div>
@@ -35,7 +36,7 @@
 				{#if open}
 					<div
 						{...props}
-						class="border-[#1A2A42] bg-[#0F1D32] z-30 flex max-h-[80lvh] min-w-40 flex-col gap-0.5 overflow-y-auto rounded-b-lg border p-1 shadow-lg"
+						class="border-[#1A2A42] bg-[#0F1D32] z-30 flex max-h-[80lvh] min-w-44 flex-col gap-0.5 overflow-y-auto rounded-xl border p-1.5 shadow-[0_15px_40px_rgba(0,0,0,0.5)]"
 						in:fly={dropIn}
 						out:fade={dropOut}
 					>
@@ -44,10 +45,10 @@
 						{/each}
 
 						<DropdownMenu.Item
-							class="bg-[#2D8CF0] hover:bg-[#2D8CF0] flex cursor-pointer items-center justify-center rounded-sm py-1 text-white"
+							class="bg-[#2D8CF0] hover:bg-[#3D9CFF] flex cursor-pointer items-center justify-center rounded-lg py-1.5 text-sm font-medium text-white transition-colors"
 							onclick={() => (createDialogOpen = true)}
 						>
-							<Icon icon="mdi:plus" class="mr-1 text-lg" />
+							<Icon icon="mdi:plus" class="mr-1.5 text-lg" />
 							{m.profilesDropdown_button()}
 						</DropdownMenu.Item>
 					</div>
