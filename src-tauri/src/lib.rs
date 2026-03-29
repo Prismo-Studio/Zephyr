@@ -95,6 +95,18 @@ fn handle_single_instance(app: &AppHandle, args: Vec<String>, _cwd: String) {
 }
 
 pub fn run() {
+    // Workaround for WebKitGTK crash on Wayland compositors (e.g. CachyOS, Hyprland)
+    // Force X11 backend if not explicitly set by the user
+    #[cfg(target_os = "linux")]
+    {
+        if env::var("GDK_BACKEND").is_err() {
+            env::set_var("GDK_BACKEND", "x11");
+        }
+        if env::var("WEBKIT_DISABLE_COMPOSITING_MODE").is_err() {
+            env::set_var("WEBKIT_DISABLE_COMPOSITING_MODE", "1");
+        }
+    }
+
     logger::setup().unwrap_or_else(|err| {
         eprintln!("failed to set up logger: {err:#}");
     });
