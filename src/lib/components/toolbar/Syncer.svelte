@@ -44,12 +44,12 @@
 			off: {
 				icon: 'mdi:cloud-off',
 				label: m.syncer_style_off(),
-				classes: 'text-primary-400'
+				classes: 'text-[#556677]'
 			},
 			synced: {
 				icon: 'mdi:cloud-check-variant',
 				label: m.syncer_style_synced(),
-				classes: 'text-accent-400'
+				classes: 'text-[#2D8CF0]'
 			},
 			outdated: {
 				icon: 'mdi:cloud-refresh-variant',
@@ -168,7 +168,7 @@
 	async function copyLink() {
 		if (!syncInfo) return;
 
-		let url = `https://gale.kesomannen.com/api/desktop/profile/sync/clone/${syncInfo.id}`;
+		let url = `https://gale.kesomannen.com/api/desktop/profile/sync/clone/${syncInfo.id}`; // TODO: migrate to Zephyr sync backend
 		await writeText(url);
 		pushInfoToast({
 			message: m.syncer_copyLink_message()
@@ -179,7 +179,7 @@
 <button
 	class={[
 		style.classes,
-		'bg-primary-800 hover:bg-primary-700 mx-2 my-auto flex items-center gap-1.5 rounded-md px-2.5 py-1 text-sm'
+		'bg-[#0F1D32] hover:bg-[#142240] mx-2 my-auto flex items-center gap-1.5 rounded-md px-2.5 py-1 text-sm'
 	]}
 	onclick={() => (mainDialogOpen = true)}
 >
@@ -200,7 +200,7 @@
 	{#if syncInfo}
 		{#if syncState !== 'missing'}
 			{#if !isOwner}
-				<div class="text-primary-300 mt-2 flex items-center gap-2">
+				<div class="text-[#8899AA] mt-2 flex items-center gap-2">
 					<SyncAvatar user={syncInfo.owner} />
 					<div>
 						{m.syncer_content_1()}{syncInfo.owner.displayName}
@@ -210,7 +210,7 @@
 
 			<div class="mt-2 flex items-center gap-2">
 				<button
-					class="bg-primary-900 text-primary-300 rounded-md px-4 py-1 font-mono text-lg"
+					class="bg-[#0B1628] text-[#8899AA] rounded-md px-4 py-1 font-mono text-lg"
 					onclick={copyCode}
 				>
 					{syncInfo.id}
@@ -269,7 +269,7 @@
 		</Button>
 	{/if}
 
-	<div class="text-primary-300 mt-4 flex items-center gap-1">
+	<div class="text-[#8899AA] mt-4 flex items-center gap-1">
 		{#if auth.user === null}
 			<Button
 				onclick={onLoginClicked}
@@ -283,7 +283,7 @@
 			<SyncAvatar user={auth.user} />
 
 			<DropdownMenu.Root>
-				<DropdownMenu.Trigger class="bg-primary-800 hover:bg-primary-700 rounded-full p-1">
+				<DropdownMenu.Trigger class="bg-[#0F1D32] hover:bg-[#142240] rounded-full p-1">
 					<Icon class="text-2xl" icon="mdi:dots-vertical" />
 				</DropdownMenu.Trigger>
 				<ContextMenuContent type="dropdown" style="dark" items={dropdownItems} />
@@ -292,11 +292,11 @@
 	</div>
 
 	<div
-		class="text-primary-400 hover:text-accent-400 mt-4 flex max-w-max items-center gap-1 text-sm hover:underline"
+		class="text-[#556677] hover:text-[#2D8CF0] mt-4 flex max-w-max items-center gap-1 text-sm hover:underline"
 	>
 		<Icon icon="mdi:help-circle" inline />
 
-		<a target="_blank" href="https://github.com/Kesomannen/gale/wiki/Profile-sync/"
+		<a target="_blank" href="https://github.com/prismo-studio/zephyr/wiki/Profile-sync/"
 			>{m.syncer_content_help()}</a
 		>
 	</div>

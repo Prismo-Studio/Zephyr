@@ -63,8 +63,8 @@
 				/>
 			{/each}
 		{:else}
-			<div class="text-primary-300 mt-4 text-center">{m.gameSelect_content_1()}</div>
-			<div class="text-primary-400 mt-2 max-w-[35rem] text-sm">
+			<div class="text-[#8899AA] mt-4 text-center">{m.gameSelect_content_1()}</div>
+			<div class="text-[#556677] mt-2 max-w-[35rem] text-sm">
 				{m.gameSelect_content_2()}
 				<Link href="https://thunderstore.io">thunderstore.io</Link>
 				{m.gameSelect_content_3()}

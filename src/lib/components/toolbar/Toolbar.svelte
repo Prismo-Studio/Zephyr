@@ -36,36 +36,41 @@
 	}
 </script>
 
-<div class="border-primary-600 bg-primary-900 flex h-12 shrink-0 flex-row border-t border-b">
+<div class="zephyr-toolbar flex h-12 shrink-0 flex-row items-stretch">
+	<!-- Launch button with gradient -->
 	<button
-		class="text-accent-400 hover:text-accent-400 border-primary-600 hover:bg-primary-800 flex shrink-0 items-center border-r pr-8 pl-6 font-semibold"
+		class="zephyr-launch-btn flex shrink-0 items-center gap-2 border-r border-[#1A2A42] px-6 font-semibold text-white transition-all duration-200"
 		onclick={launchGame}
 	>
-		<Icon icon="mdi:play-circle" class="mr-2 text-xl" />
-		{m.toolBar_launchGame_button()}
+		<div class="flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D8CF0] to-[#00D4AA] p-1">
+			<Icon icon="mdi:play" class="text-sm text-white" />
+		</div>
+		<span class="text-sm">{m.toolBar_launchGame_button()}</span>
 	</button>
 
+	<!-- Game selector -->
 	<button
 		onclick={() => (gamesOpen = !gamesOpen)}
-		class="group border-primary-600 text-primary-300 group-hover:text-primary-200 hover:bg-primary-800 flex shrink-0 items-center justify-between border-r pr-4 pl-2 font-semibold"
+		class="group flex shrink-0 items-center gap-2 border-r border-[#1A2A42] px-4 transition-all duration-200 hover:bg-[#142240]"
 	>
 		<img
 			src={games.active ? gameIconSrc(games.active) : ''}
-			class="mr-2 max-h-8 max-w-8 rounded-sm"
+			class="max-h-7 max-w-7 rounded"
 			alt={games.active?.name}
 		/>
-
-		{games.active?.name}
-
+		<span class="text-sm font-medium text-[#E8ECF1]">{games.active?.name}</span>
 		<Icon
-			icon="mdi:menu"
-			class="text-primary-300 group-hover:text-primary-200 ml-6 shrink-0 text-lg"
+			icon="mdi:chevron-down"
+			class="text-[#556677] group-hover:text-[#8899AA] text-lg transition-colors"
 		/>
 	</button>
 
 	<ProfilesDropdown />
 	<Syncer />
 	<InstallPopover />
+
+	<div class="grow"></div>
+
 	<Updater />
 </div>
 
@@ -73,14 +78,29 @@
 	title={m.toolBar_dialog_launch_title({ name: games.active?.name ?? m.unknown() })}
 	bind:open={launchDialogOpen}
 >
-	<p class="text-primary-400">
+	<p class="text-[#556677]">
 		{m.toolBar_dialog_launch_content()}
 	</p>
 </Dialog>
 
 <Dialog title={m.toolBar_dialog_games_title()} bind:open={gamesOpen}>
 	<GameSelect onselect={() => (gamesOpen = false)} />
-	<div class="text-primary-400 my-1 text-center text-sm">
+	<div class="text-[#556677] my-1 text-center text-sm">
 		{m.toolBar_dialog_games_lastUpdated({ time: timeSinceGamesUpdate })}
 	</div>
 </Dialog>
+
+<style>
+	.zephyr-toolbar {
+		background: #0B1628;
+		border-bottom: 1px solid #1A2A42;
+	}
+
+	.zephyr-launch-btn {
+		background: rgba(45, 140, 240, 0.08);
+	}
+
+	.zephyr-launch-btn:hover {
+		background: rgba(45, 140, 240, 0.15);
+	}
+</style>

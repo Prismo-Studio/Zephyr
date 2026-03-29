@@ -59,7 +59,7 @@
 
 {#if updates.next}
 	<button
-		class="bg-accent-700 enabled:hover:bg-accent-600 text-primary-100 mx-2 my-auto ml-auto flex items-center gap-1 rounded-md px-2.5 py-1 text-sm font-bold"
+		class="bg-[#2D8CF0] enabled:hover:bg-[#2D8CF0] text-[#E8ECF1] mx-2 my-auto ml-auto flex items-center gap-1 rounded-md px-2.5 py-1 text-sm font-bold"
 		disabled={loading}
 		onclick={() => (dialogOpen = true)}
 	>
@@ -75,7 +75,7 @@
 {/if}
 
 <ConfirmDialog title={m.updater_confirmDialog_title()} bind:open={dialogOpen}>
-	<Dialog.Description class="text-primary-300">
+	<Dialog.Description class="text-[#8899AA]">
 		<p>
 			{#if updates.next}
 				{m.updater_confirmDialog_content_next({

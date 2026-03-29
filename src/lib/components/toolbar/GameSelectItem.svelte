@@ -15,9 +15,9 @@
 <div
 	class={[
 		games.active?.slug === game.slug
-			? ' border-primary-500 bg-primary-700'
-			: 'hover:bg-primary-700 border-transparent',
-		'group hover:bg-primary-700 mr-2 flex cursor-pointer items-center rounded-lg border p-1.5 '
+			? ' border-[#1A2A42] bg-[#142240]'
+			: 'hover:bg-[#142240] border-transparent',
+		'group hover:bg-[#142240] mr-2 flex cursor-pointer items-center rounded-lg border p-1.5 '
 	]}
 	onclick={() => {
 		games.setActive(game.slug);
@@ -33,11 +33,11 @@
 			{game.name}
 		</div>
 
-		<div class="text-primary-400">
+		<div class="text-[#556677]">
 			<span>{game.modLoader} </span>
 
 			{#if game.platforms.length > 0}
-				<span class="text-primary-500 mx-1">|</span>
+				<span class="text-[#3A4A5C] mx-1">|</span>
 
 				<span class="mr-1">{game.platforms.map(toHeaderCase).join(', ')}</span>
 			{/if}
@@ -47,7 +47,7 @@
 	<button
 		class={[
 			game.favorite ? 'block' : 'hidden group-hover:block',
-			'hover:bg-primary-600 mr-1 rounded p-1.5'
+			'hover:bg-[#1A2A42] mr-1 rounded p-1.5'
 		]}
 		onclick={(evt) => {
 			evt.stopPropagation();
@@ -55,6 +55,6 @@
 			api.profile.favoriteGame(game.slug);
 		}}
 	>
-		<Icon icon={game.favorite ? 'mdi:star' : 'mdi:star-outline'} class="text-accent-500 text-xl" />
+		<Icon icon={game.favorite ? 'mdi:star' : 'mdi:star-outline'} class="text-[#00D4AA] text-xl" />
 	</button>
 </div>

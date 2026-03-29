@@ -132,7 +132,7 @@
 
 <Popover.Root bind:open>
 	<Popover.Trigger
-		class={['hover:bg-primary-800 text-accent-500 my-auto rounded-md text-xl', shown && 'p-1.5']}
+		class={['hover:bg-[#0F1D32] text-[#00D4AA] my-auto rounded-md text-xl', shown && 'p-1.5']}
 	>
 		{#if shown}
 			<div in:scale={{ start: 2, duration: 250, easing: quadOut }}>
@@ -146,11 +146,11 @@
 				{#if open}
 					<div
 						{...props}
-						class="border-primary-600 bg-primary-800 z-10 w-80 rounded-lg border px-6 py-4 shadow-xl"
+						class="border-[#1A2A42] bg-[#0F1D32] z-10 w-80 rounded-lg border px-6 py-4 shadow-xl"
 						in:fly={dropIn}
 						out:fade={dropOut}
 					>
-						<div class="text-primary-300 flex items-center justify-between font-semibold">
+						<div class="text-[#8899AA] flex items-center justify-between font-semibold">
 							<div>{m.installPopover_content()}({completedMods}/{totalMods})</div>
 							{#if showCancel}
 								<IconButton
@@ -163,7 +163,7 @@
 						</div>
 
 						{#if task && name}
-							<div class="text-primary-400 text-sm">
+							<div class="text-[#556677] text-sm">
 								{taskText}
 							</div>
 						{/if}
@@ -171,10 +171,10 @@
 						<Progress.Root
 							value={shownProgress.current}
 							max={1}
-							class="bg-primary-900 relative mt-2 h-4 w-full overflow-hidden rounded-full"
+							class="bg-[#0B1628] relative mt-2 h-4 w-full overflow-hidden rounded-full"
 						>
 							<div
-								class="bg-accent-600 absolute top-0 left-0 h-full rounded-l-full"
+								class="bg-[#2D8CF0] absolute top-0 left-0 h-full rounded-l-full"
 								style="width: {shownProgress.current * 100}%"
 							></div>
 						</Progress.Root>

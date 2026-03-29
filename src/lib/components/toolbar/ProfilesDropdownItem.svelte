@@ -33,9 +33,9 @@
 <DropdownMenu.Item
 	class={[
 		isActive
-			? 'text-primary-300 hover:text-primary-200 font-medium'
-			: 'text-primary-400 hover:text-primary-300',
-		'group hover:bg-primary-700 flex cursor-default items-center rounded-sm py-1 pr-1 pl-3 text-left'
+			? 'text-[#8899AA] hover:text-[#E8ECF1] font-medium'
+			: 'text-[#556677] hover:text-[#8899AA]',
+		'group hover:bg-[#142240] flex cursor-default items-center rounded-sm py-1 pr-1 pl-3 text-left'
 	]}
 	onclick={() => profiles.setActive(index)}
 >
@@ -47,9 +47,9 @@
 		{profile.name}
 	</span>
 
-	<Icon icon="mdi:check" class={clsx(!isActive && 'invisible', 'text-accent-500 mx-2 text-lg')} />
+	<Icon icon="mdi:check" class={clsx(!isActive && 'invisible', 'text-[#00D4AA] mx-2 text-lg')} />
 
-	<div class="bg-primary-700 group-hover:bg-primary-600 mr-1 rounded-sm px-1.5 py-0.5 text-xs">
+	<div class="bg-[#142240] group-hover:bg-[#1A2A42] mr-1 rounded-sm px-1.5 py-0.5 text-xs">
 		{profile.modCount}
 	</div>
 

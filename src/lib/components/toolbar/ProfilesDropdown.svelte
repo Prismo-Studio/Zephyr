@@ -15,14 +15,14 @@
 
 <DropdownMenu.Root bind:open>
 	<DropdownMenu.Trigger
-		class="group border-primary-600 text-primary-300 group-hover:text-primary-200 hover:bg-primary-800 flex min-w-40 shrink items-center border-r pr-4 pl-6"
+		class="group border-[#1A2A42] text-[#8899AA] group-hover:text-[#E8ECF1] hover:bg-[#0F1D32] flex min-w-40 shrink items-center border-r pr-4 pl-6"
 	>
 		<span class="mr-auto shrink truncate font-semibold">
 			{profiles.active?.name}
 		</span>
 
 		<div
-			class="bg-primary-800 group-hover:bg-primary-700 mr-2 ml-6 rounded-sm px-2 py-0.5 text-sm font-medium"
+			class="bg-[#0F1D32] group-hover:bg-[#142240] mr-2 ml-6 rounded-sm px-2 py-0.5 text-sm font-medium"
 		>
 			{profiles.active?.modCount}
 		</div>
@@ -35,7 +35,7 @@
 				{#if open}
 					<div
 						{...props}
-						class="border-primary-600 bg-primary-800 z-30 flex max-h-[80lvh] min-w-40 flex-col gap-0.5 overflow-y-auto rounded-b-lg border p-1 shadow-lg"
+						class="border-[#1A2A42] bg-[#0F1D32] z-30 flex max-h-[80lvh] min-w-40 flex-col gap-0.5 overflow-y-auto rounded-b-lg border p-1 shadow-lg"
 						in:fly={dropIn}
 						out:fade={dropOut}
 					>
@@ -44,7 +44,7 @@
 						{/each}
 
 						<DropdownMenu.Item
-							class="bg-accent-700 hover:bg-accent-600 flex cursor-pointer items-center justify-center rounded-sm py-1 text-white"
+							class="bg-[#2D8CF0] hover:bg-[#2D8CF0] flex cursor-pointer items-center justify-center rounded-sm py-1 text-white"
 							onclick={() => (createDialogOpen = true)}
 						>
 							<Icon icon="mdi:plus" class="mr-1 text-lg" />
