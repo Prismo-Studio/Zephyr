@@ -155,7 +155,7 @@ pub fn copy_debug_info(app: AppHandle) -> Result<()> {
         .and_then(|path| fs::read_to_string(path).map_err(|err| anyhow!(err)));
 
     let content = format!(
-        "OS: {}\nGale version: {}\n\nMods ({}):\n{}\n\nLatest log:\n{}",
+        "OS: {}\nZephyr version: {}\n\nMods ({}):\n{}\n\nLatest log:\n{}",
         std::env::consts::OS,
         env!("CARGO_PKG_VERSION"),
         profile.mods.len(),

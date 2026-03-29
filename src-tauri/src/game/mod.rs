@@ -25,6 +25,7 @@ pub mod platform;
 
 pub const CACHE_FILE_NAME: &str = "games.json";
 
+// TODO: migrate games.json to prismo-studio/zephyr repo once forked games list is ready
 const GITHUB_API_URL: &str =
     "https://api.github.com/repos/Kesomannen/gale/commits?path=src-tauri/games.json&per_page=1";
 const GAMES_JSON_URL: &str =

@@ -27,13 +27,13 @@ pub fn handle(app: &AppHandle, args: Vec<String>) -> bool {
 
     if url.starts_with("ror2mm://") {
         handle_inner_task(app.clone(), handle_r2_install(url, app));
-    } else if url.starts_with("gale://auth/callback") {
+    } else if url.starts_with("zephyr://auth/callback") {
         handle_inner_task(app.clone(), async move {
             profile::sync::auth::handle_callback(url, &app).await
         });
-    } else if url.starts_with("gale://profile/import") {
+    } else if url.starts_with("zephyr://profile/import") {
         handle_inner_task(app.clone(), import_profile_code(url, app));
-    } else if url.starts_with("gale://profile/sync/clone") {
+    } else if url.starts_with("zephyr://profile/sync/clone") {
         handle_inner_task(app.clone(), clone_sync_profile(url, app));
     } else if url.ends_with("r2z") {
         handle_inner_task(app.clone(), async move { import_profile_file(&url, &app) });
@@ -95,7 +95,7 @@ fn import_profile_file(url: &str, app: &AppHandle) -> Result<()> {
 
 async fn import_profile_code(url: String, app: AppHandle) -> Result<()> {
     let key = url
-        .strip_prefix("gale://profile/import/")
+        .strip_prefix("zephyr://profile/import/")
         .ok_or_eyre("invalid url format")
         .and_then(|str| Uuid::parse_str(str).context("invalid UUID"))?;
 
@@ -108,7 +108,7 @@ async fn import_profile_code(url: String, app: AppHandle) -> Result<()> {
 
 async fn clone_sync_profile(url: String, app: AppHandle) -> Result<()> {
     let id = url
-        .strip_prefix("gale://profile/sync/clone/")
+        .strip_prefix("zephyr://profile/sync/clone/")
         .ok_or_eyre("invalid url format")?;
 
     let import_data = profile::sync::read_profile(id, &app).await?;

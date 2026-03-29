@@ -485,7 +485,7 @@ impl ManagedGame {
     }
 
     pub fn update_window_title(&self, app: &AppHandle) -> Result<()> {
-        let title = format!("{} | {} - Gale", self.active_profile().name, self.game.name);
+        let title = format!("{} | {} - Zephyr", self.active_profile().name, self.game.name);
         app.get_webview_window("main")
             .unwrap()
             .set_title(&title)
@@ -714,7 +714,7 @@ impl ModManager {
     fn add_saved_game(&mut self, base_path: &Path, saved_game: db::ManagedGameData) -> Result<()> {
         let game = game::from_slug(&saved_game.slug).ok_or_else(|| {
             eyre!(
-                "unknown game in save: {} (has Gale been downgraded?)",
+                "unknown game in save: {} (has Zephyr been downgraded?)",
                 saved_game.slug
             )
         })?;

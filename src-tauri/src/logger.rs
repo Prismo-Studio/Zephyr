@@ -50,7 +50,7 @@ pub fn setup() -> Result<()> {
                 .with_ansi(true)
                 .with_filter(
                     Targets::new()
-                        .with_target("gale", Level::DEBUG)
+                        .with_target("zephyr", Level::DEBUG)
                         .with_default(Level::INFO),
                 ),
         )
@@ -68,7 +68,7 @@ pub fn setup() -> Result<()> {
 }
 
 #[command]
-pub fn open_gale_log() -> util::cmd::Result<()> {
+pub fn open_zephyr_log() -> util::cmd::Result<()> {
     let path = log_path()
         .exists_or_none()
         .ok_or_eyre("no log file found")?;

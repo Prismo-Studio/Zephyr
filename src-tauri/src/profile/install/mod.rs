@@ -1,6 +1,6 @@
 /// Handles downloading, extraction and (un)installation of mods.
 ///
-/// Installation in Gale happens like the following:
+/// Installation in Zephyr happens like the following:
 ///
 /// 1) The mod ZIP is downloaded from Thunderstore and extracted according to the modloader-specific rules.
 /// This is handled by [`PackageInstaller::extract`], implemented in the respective `installers` submodules.
@@ -263,7 +263,7 @@ pub async fn handle_exit(app: AppHandle) {
     let wait_for_install = install_queue.wait_for_empty();
 
     app.dialog()
-        .message("Gale is busy installing mods.")
+        .message("Zephyr is busy installing mods.")
         .buttons(tauri_plugin_dialog::MessageDialogButtons::OkCancelCustom(
             "Continue in background".to_string(),
             "Cancel".to_string(),
