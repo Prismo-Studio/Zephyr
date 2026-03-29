@@ -16,35 +16,36 @@
 	}
 </script>
 
-<div class="absolute bottom-0 z-50 flex w-full flex-col items-end gap-1 p-2">
+<div class="absolute bottom-0 z-50 flex w-full flex-col items-end gap-1.5 p-3">
 	{#each $toasts as toast, i (toast.id)}
 		<div
-			class="bg-primary-800 border-primary-700 relative max-w-3xl overflow-hidden rounded-md border shadow-xl"
-			in:slide={{ duration: 150, easing: expoOut }}
-			out:fade={{ duration: 50 }}
+			class="zephyr-toast relative max-w-3xl overflow-hidden rounded-xl shadow-2xl"
+			in:slide={{ duration: 200, easing: expoOut }}
+			out:fade={{ duration: 100 }}
 		>
+			<!-- Accent bar -->
 			<div
 				class={[
-					toast.type === 'error' ? 'bg-red-600' : 'bg-accent-600',
-					'absolute left-0 h-full w-1.5'
+					toast.type === 'error' ? 'bg-red-500' : 'bg-gradient-to-b from-[#2D8CF0] to-[#00D4AA]',
+					'absolute left-0 h-full w-1'
 				]}
 			></div>
 
-			<div class="flex items-center p-2">
+			<div class="flex items-center p-3 pl-4">
 				<Icon
 					class={clsx(
-						toast.type === 'error' ? 'text-red-600' : 'text-accent-600',
-						'mx-2 shrink-0 text-xl'
+						toast.type === 'error' ? 'text-red-400' : 'text-[#00D4AA]',
+						'mr-3 shrink-0 text-xl'
 					)}
-					icon={toast.type === 'error' ? 'mdi:error' : 'mdi:check-circle'}
+					icon={toast.type === 'error' ? 'mdi:alert-circle' : 'mdi:check-circle'}
 				/>
 
 				<div class="mr-4 grow overflow-hidden">
 					{#if toast.name}
-						<span class="text-primary-300">{toast.name}:</span>
+						<span class="text-[#8899AA] text-sm">{toast.name}:</span>
 					{/if}
 
-					<span class="text-primary-100 font-medium break-words">{toast.message}</span>
+					<span class="text-[#E8ECF1] text-sm font-medium break-words">{toast.message}</span>
 				</div>
 
 				{#if toast.type === 'error'}
@@ -64,3 +65,11 @@
 		</div>
 	{/each}
 </div>
+
+<style>
+	.zephyr-toast {
+		background: #142240;
+		border: 1px solid #1A2A42;
+		backdrop-filter: blur(12px);
+	}
+</style>

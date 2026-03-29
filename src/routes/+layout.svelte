@@ -65,14 +65,16 @@
 />
 
 <Tooltip.Provider skipDelayDuration={1} disableCloseOnTriggerClick>
-	<main class="bg-primary-800 relative flex flex-col overflow-hidden">
+	<main class="zephyr-app relative flex flex-col overflow-hidden">
 		<Menubar />
 		<Toolbar />
 
 		<div class="relative flex grow overflow-hidden">
 			<Navbar />
 
-			{@render children?.()}
+			<div class="zephyr-content flex grow flex-col overflow-hidden">
+				{@render children?.()}
+			</div>
 		</div>
 
 		<Statusbar />
@@ -83,3 +85,16 @@
 	<WelcomeDialog />
 	<MissingProfilesDialog />
 </Tooltip.Provider>
+
+<style>
+	.zephyr-app {
+		height: 100vh;
+		background: #0B1628;
+		color: #E8ECF1;
+	}
+
+	.zephyr-content {
+		background: #0F1D32;
+		border-radius: 12px 0 0 0;
+	}
+</style>

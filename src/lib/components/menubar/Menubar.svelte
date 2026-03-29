@@ -64,7 +64,7 @@
 				},
 				{
 					text: m.menuBar_file_item_4(),
-					onclick: api.logger.openGaleLog
+					onclick: api.logger.openZephyrLog
 				},
 				'',
 				{
@@ -451,11 +451,11 @@
 
 <header
 	data-tauri-drag-region
-	class="bg-primary-800 flex h-8 shrink-0"
+	class="zephyr-menubar flex h-8 shrink-0"
 	class:hidden={useNativeMenu.current}
 >
 	<Menubar.Root class="flex items-center py-1">
-		<img src="favicon.png" alt="Gale logo" class="mr-2 ml-4 h-5 w-5 opacity-50" />
+		<span class="ml-4 mr-2 text-xs font-bold tracking-wider text-[#556677] select-none">ZEPHYR</span>
 		{#each submenus as submenu}
 			<MenubarMenu label={submenu.text}>
 				{#each submenu.items as item}
@@ -470,13 +470,13 @@
 	</Menubar.Root>
 
 	{#snippet button(className: string, icon: string, onclick: () => void)}
-		<button class={[className, 'group hover:bg-primary-700 px-3 py-1.5']} {onclick}>
-			<Icon {icon} class="text-primary-500 group-hover:text-white" />
+		<button class={[className, 'group px-3 py-1.5 transition-colors duration-150']} {onclick}>
+			<Icon {icon} class="text-[#556677] group-hover:text-[#E8ECF1]" />
 		</button>
 	{/snippet}
 
-	{@render button('hover:bg-primary-700 ml-auto', 'mdi:minimize', appWindow.minimize)}
-	{@render button('hover:bg-primary-700', 'mdi:maximize', appWindow.toggleMaximize)}
+	{@render button('hover:bg-[#142240] ml-auto', 'mdi:minimize', appWindow.minimize)}
+	{@render button('hover:bg-[#142240]', 'mdi:maximize', appWindow.toggleMaximize)}
 	{@render button('hover:bg-red-700', 'mdi:close', appWindow.close)}
 </header>
 
@@ -485,7 +485,7 @@
 	canClose={!profileOperationInProgress}
 	bind:open={profileOperationOpen}
 >
-	<p class="text-primary-300 mb-1">
+	<p class="text-[#8899AA] mb-1">
 		{m[`menuBar_dialog_content_${profileOperation}`]()}
 	</p>
 
