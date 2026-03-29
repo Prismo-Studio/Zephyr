@@ -30,7 +30,7 @@
 					"url": "https://thunderstore.io/api/*"
 				},
 				{
-					"url": "https://raw.githubusercontent.com/Kesomannen/gale/master/*"
+					"url": "https://raw.githubusercontent.com/prismo-studio/zephyr/main/*"
 				}
 			],
 			"deny": []

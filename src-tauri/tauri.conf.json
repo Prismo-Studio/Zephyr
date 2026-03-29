@@ -1,7 +1,7 @@
 {
-	"productName": "Gale",
+	"productName": "Zephyr",
 	"version": "1.13.0",
-	"identifier": "com.kesomannen.gale",
+	"identifier": "com.prismo-studio.zephyr",
 	"build": {
 		"beforeBuildCommand": "pnpm run build",
 		"beforeDevCommand": "pnpm run dev",
@@ -15,7 +15,7 @@
 		"targets": "all",
 		"externalBin": [],
 		"createUpdaterArtifacts": true,
-		"shortDescription": "A modern mod manager for Thunderstore",
+		"shortDescription": "A fast, modern mod manager for all your games",
 		"longDescription": "",
 		"icon": [
 			"icons/32x32.png",
@@ -51,7 +51,7 @@
 		},
 		"deep-link": {
 			"desktop": {
-				"schemes": ["ror2mm", "gale"]
+				"schemes": ["ror2mm", "zephyr"]
 			}
 		}
 	},
@@ -62,7 +62,7 @@
 				"fullscreen": false,
 				"transparent": false,
 				"resizable": true,
-				"title": "Gale",
+				"title": "Zephyr",
 				"width": 900,
 				"height": 700,
 				"minWidth": 800,
