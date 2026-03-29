@@ -46,6 +46,7 @@
 		font-family: 'Inter', 'Nunito Sans', sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
 	}
 
 	main {
@@ -55,21 +56,21 @@
 	/* Zephyr scrollbar */
 	* {
 		scrollbar-width: thin;
-		scrollbar-color: #1A2A42 #0B1628;
+		scrollbar-color: #1A2A42 transparent;
 	}
 
 	*:hover {
-		scrollbar-color: #2D8CF0 #0B1628;
+		scrollbar-color: #2D4A6A #0B1628;
 	}
 
 	.light-scrollbar {
-		scrollbar-color: #1A2A42 #0F1D32;
+		scrollbar-color: #1A2A42 transparent;
 	}
 
 	/* Zephyr menubar styling */
 	.zephyr-menubar {
-		background: #080F1C;
-		border-bottom: 1px solid #1A2A42;
+		background: #060C18;
+		border-bottom: 1px solid rgba(26, 42, 66, 0.6);
 	}
 
 	/* Selection color */
@@ -80,8 +81,19 @@
 
 	/* Focus ring */
 	:focus-visible {
-		outline: 2px solid #2D8CF0;
+		outline: 2px solid rgba(45, 140, 240, 0.5);
 		outline-offset: 2px;
+		border-radius: 4px;
+	}
+
+	/* Smooth transitions for interactive elements */
+	a, button {
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	/* Premium image rendering */
+	img {
+		image-rendering: -webkit-optimize-contrast;
 	}
 
 	/* Markdown */

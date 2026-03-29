@@ -95,6 +95,7 @@
 
 	.zephyr-content {
 		background: #0F1D32;
-		border-radius: 12px 0 0 0;
+		border-radius: 16px 0 0 0;
+		box-shadow: inset 0 1px 0 rgba(26, 42, 66, 0.5);
 	}
 </style>
