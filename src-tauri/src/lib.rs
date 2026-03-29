@@ -95,13 +95,15 @@ fn handle_single_instance(app: &AppHandle, args: Vec<String>, _cwd: String) {
 }
 
 pub fn run() {
-    // Workaround for WebKitGTK crash on Wayland compositors (e.g. CachyOS, Hyprland)
-    // Force X11 backend if not explicitly set by the user
+    // Workaround for WebKitGTK issues on Linux (Wayland crash, blank window on GPU)
+    // These env vars fix rendering on CachyOS, Hyprland, and similar compositors
     #[cfg(target_os = "linux")]
     {
-        if env::var("GDK_BACKEND").is_err() {
-            env::set_var("GDK_BACKEND", "x11");
+        // Fix blank/empty WebView on newer WebKitGTK with DMA-BUF renderer
+        if env::var("WEBKIT_DISABLE_DMABUF_RENDERER").is_err() {
+            env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
         }
+        // Disable GPU compositing which can cause rendering issues
         if env::var("WEBKIT_DISABLE_COMPOSITING_MODE").is_err() {
             env::set_var("WEBKIT_DISABLE_COMPOSITING_MODE", "1");
         }
