@@ -49,7 +49,7 @@
 
 	{#if showExpandButton && !locked}
 		<button
-			class="bg-primary-900 text-primary-400 hover:bg-primary-800 absolute top-1 right-1 rounded-lg p-1 text-lg"
+			class="bg-[#0B1628] text-[#556677] hover:bg-[#0F1D32] absolute top-1 right-1 rounded-lg p-1 text-lg"
 			onclick={() => (config.expandedEntry = entryId)}
 		>
 			<Icon icon="mdi:arrow-expand" />

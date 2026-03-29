@@ -92,15 +92,15 @@
 </script>
 
 <div
-	class="light-scrollbar border-primary-600 bg-primary-700 w-[20%] min-w-72 overflow-hidden overflow-y-auto border-r"
+	class="light-scrollbar border-[#1A2A42] bg-[#142240] w-[20%] min-w-72 overflow-hidden overflow-y-auto border-r"
 >
 	{#if files === null}
-		<div class="text-primary-300 flex h-full w-full items-center justify-center text-lg">
+		<div class="text-[#8899AA] flex h-full w-full items-center justify-center text-lg">
 			<Spinner class="mr-2" />
 			{m.configFileList_loading()}
 		</div>
 	{:else if files.length === 0}
-		<div class="text-primary-300 flex h-full items-center justify-center text-lg">
+		<div class="text-[#8899AA] flex h-full items-center justify-center text-lg">
 			{m.configFileList_noFiles()}
 		</div>
 	{:else}

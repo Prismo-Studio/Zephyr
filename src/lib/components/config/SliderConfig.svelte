@@ -78,7 +78,7 @@
 />
 
 <div
-	class="group bg-primary-900 h-5 grow rounded-full py-1 pr-2 pl-1"
+	class="group bg-[#0B1628] h-5 grow rounded-full py-1 pr-2 pl-1"
 	role="slider"
 	aria-valuemin={range.start}
 	aria-valuemax={range.end}
@@ -105,15 +105,15 @@
 	}}
 >
 	<div
-		class={[!locked && 'group-hover:bg-primary-600', 'relative h-full min-w-1 rounded-l-full']}
+		class={[!locked && 'group-hover:bg-[#1A2A42]', 'relative h-full min-w-1 rounded-l-full']}
 		style="width: {fillPercent}%;"
-		class:bg-primary-700={!isDragging}
-		class:bg-primary-600={isDragging}
+		class:bg-[#142240]={!isDragging}
+		class:bg-[#1A2A42]={isDragging}
 	>
 		<div
 			class="absolute right-[-0.5rem] h-3 w-3 rounded-full"
-			class:bg-primary-400={!isDragging}
-			class:bg-primary-300={isDragging}
+			class:bg-[#556677]={!isDragging}
+			class:bg-[#8899AA]={isDragging}
 			draggable="false"
 		></div>
 	</div>
@@ -140,7 +140,7 @@
 
 		inputString = content.value.toString();
 	}}
-	class="focus:ring-accent-500 bg-primary-900 text-primary-300 placeholder-primary-400 enabled:hover:ring-primary-500 disabled:text-primary-400 ml-3 w-1/6 min-w-0 shrink rounded-lg px-3 py-1 focus:ring-2 focus:outline-hidden enabled:hover:ring-1"
+	class="focus:ring-[#00D4AA] bg-[#0B1628] text-[#8899AA] placeholder-[#556677] enabled:hover:ring-[#1A2A42] disabled:text-[#556677] ml-3 w-1/6 min-w-0 shrink rounded-lg px-3 py-1 focus:ring-2 focus:outline-hidden enabled:hover:ring-1"
 />
 
 <ResetConfigButton {entryId} {locked} {onReset} />

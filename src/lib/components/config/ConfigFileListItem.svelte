@@ -36,9 +36,9 @@
 
 	let { colorClasses, icon } = $derived(
 		{
-			ok: { colorClasses: 'text-primary-200', icon: 'mdi:chevron-down' },
+			ok: { colorClasses: 'text-[#E8ECF1]', icon: 'mdi:chevron-down' },
 			err: { colorClasses: 'text-red-400', icon: 'mdi:error' },
-			unsupported: { colorClasses: 'text-primary-400', icon: 'mdi:help' }
+			unsupported: { colorClasses: 'text-[#556677]', icon: 'mdi:help' }
 		}[file.type]
 	);
 
@@ -82,7 +82,7 @@
 			onclick={() => file.type !== 'ok' && onFileClicked(file)}
 			class={[
 				colorClasses,
-				isSelected ? 'bg-primary-600 font-semibold' : 'hover:bg-primary-600',
+				isSelected ? 'bg-[#1A2A42] font-semibold' : 'hover:bg-[#1A2A42]',
 				'group flex w-full items-center overflow-hidden px-2 py-0.5'
 			]}
 		>
@@ -98,7 +98,7 @@
 				&#x200E;
 				{fileLabel().name}
 				{#if fileLabel().disambiguator}
-					<span class="text-primary-400">
+					<span class="text-[#556677]">
 						({fileLabel().disambiguator})
 					</span>
 				{/if}
@@ -137,8 +137,8 @@
 								onclick={() => onSectionClicked(file, section)}
 								class={[
 									selectedSection === section
-										? 'bg-primary-600 text-primary-200 font-medium'
-										: 'text-primary-300 hover:bg-primary-600',
+										? 'bg-[#1A2A42] text-[#E8ECF1] font-medium'
+										: 'text-[#8899AA] hover:bg-[#1A2A42]',
 									'truncate py-0.5 pr-2 pl-9 text-left text-sm'
 								]}
 							>

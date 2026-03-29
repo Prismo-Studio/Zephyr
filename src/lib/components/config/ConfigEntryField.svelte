@@ -59,15 +59,15 @@
 </script>
 
 <!-- odd:bg-[#1b2433] -->
-<div class="text-primary-300 flex items-center py-0.5 pr-4 pl-6">
-	<div class="text-primary-300 w-[45%] min-w-52 shrink-0 cursor-auto truncate pr-2 text-left">
+<div class="text-[#8899AA] flex items-center py-0.5 pr-4 pl-6">
+	<div class="text-[#8899AA] w-[45%] min-w-52 shrink-0 cursor-auto truncate pr-2 text-left">
 		{toSentenceCase(entry.name)}
 	</div>
 
 	<Info>
 		<h4>
 			<span class="text-lg font-semibold text-white">{entry.name}</span>
-			<span class="text-primary-400 ml-1"> ({typeName})</span>
+			<span class="text-[#556677] ml-1"> ({typeName})</span>
 		</h4>
 
 		{#if entry.description}
@@ -78,7 +78,7 @@
 
 		{#if entry.default}
 			<p class="break-words">
-				<span class="text-primary-100 font-medium">{m.configEntryField_default()}</span>
+				<span class="text-[#E8ECF1] font-medium">{m.configEntryField_default()}</span>
 				{valueToString(entry.default)}
 			</p>
 		{/if}
