@@ -49,9 +49,12 @@
 
 <div class="mt-2 flex text-base text-white">
 	<button
-		class="zephyr-install-main enabled:hover:shadow-[0_0_20px_rgba(45,140,240,0.3)] flex grow items-center justify-center gap-2 rounded-l-xl py-2.5 font-semibold transition-all duration-200 disabled:cursor-not-allowed"
-		class:installed={mod.isInstalled}
-		class:locked
+		class={[
+			'flex grow items-center justify-center gap-2 rounded-l-xl py-2.5 font-semibold transition-all duration-200 disabled:cursor-not-allowed',
+			mod.isInstalled || locked
+				? 'bg-[#142240] text-[#8899AA]'
+				: 'bg-gradient-to-r from-[#2D8CF0] to-[#2575D0] enabled:hover:from-[#3D9CFF] enabled:hover:to-[#2D8CF0] enabled:hover:shadow-[0_0_20px_rgba(45,140,240,0.3)]'
+		]}
 		onclick={() => {
 			install(modId);
 			loading = true;
@@ -78,9 +81,12 @@
 	</button>
 	<DropdownMenu.Root bind:open={versionsOpen}>
 		<DropdownMenu.Trigger
-			class="zephyr-install-versions ml-px rounded-r-xl px-2 py-2.5 text-xl transition-all duration-200 disabled:cursor-not-allowed"
-			class:installed={mod.isInstalled}
-			class:locked
+			class={[
+				'ml-px rounded-r-xl px-2 py-2.5 text-xl transition-all duration-200 disabled:cursor-not-allowed',
+				mod.isInstalled || locked
+					? 'bg-[#142240] text-[#8899AA]'
+					: 'bg-gradient-to-r from-[#2575D0] to-[#2D8CF0] text-white hover:bg-[#3D9CFF]'
+			]}
 			{disabled}
 		>
 			<DropdownArrow open={versionsOpen} class="text-white" />
@@ -94,29 +100,3 @@
 	</DropdownMenu.Root>
 </div>
 
-<style>
-	.zephyr-install-main {
-		background: linear-gradient(135deg, #2D8CF0, #2575D0);
-	}
-	.zephyr-install-main:hover:not(:disabled) {
-		background: linear-gradient(135deg, #3D9CFF, #2D8CF0);
-	}
-	.zephyr-install-main.installed,
-	.zephyr-install-main.locked {
-		background: #142240;
-		color: #8899AA;
-	}
-
-	.zephyr-install-versions {
-		background: linear-gradient(135deg, #2575D0, #2D8CF0);
-		color: white;
-	}
-	.zephyr-install-versions:hover:not(:disabled) {
-		background: #3D9CFF;
-	}
-	.zephyr-install-versions.installed,
-	.zephyr-install-versions.locked {
-		background: #142240;
-		color: #8899AA;
-	}
-</style>
