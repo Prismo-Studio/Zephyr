@@ -74,6 +74,12 @@ pub struct SourceRegistry {
     enabled: RwLock<Vec<SourceId>>,
 }
 
+impl Default for SourceRegistry {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl SourceRegistry {
     pub fn new() -> Self {
         Self {
