@@ -168,7 +168,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		min-height: 180px;
-		background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.1));
+		background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1));
 	}
 
 	.z-hero-title {
@@ -193,7 +193,9 @@
 		color: var(--text-secondary);
 	}
 
-	.z-hero-mods { color: var(--text-muted); }
+	.z-hero-mods {
+		color: var(--text-muted);
+	}
 
 	.z-hero-actions {
 		display: flex;
@@ -207,7 +209,7 @@
 		gap: 6px;
 		padding: var(--space-sm) var(--space-lg);
 		border-radius: var(--radius-md);
-		background: rgba(255,255,255,0.1);
+		background: rgba(255, 255, 255, 0.1);
 		color: var(--text-primary);
 		text-decoration: none;
 		font-size: 13px;
@@ -217,7 +219,7 @@
 	}
 
 	.z-hero-action:hover {
-		background: rgba(255,255,255,0.18);
+		background: rgba(255, 255, 255, 0.18);
 	}
 
 	/* Stats */

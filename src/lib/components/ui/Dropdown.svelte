@@ -19,9 +19,7 @@
 	let wrapperEl: HTMLDivElement | undefined = $state();
 	let dropdownEl: HTMLDivElement | undefined = $state();
 
-	let selectedLabel = $derived(
-		options.find((o) => o.value === value)?.label ?? placeholder
-	);
+	let selectedLabel = $derived(options.find((o) => o.value === value)?.label ?? placeholder);
 
 	function select(option: Option) {
 		onchange(option.value);
@@ -71,10 +69,7 @@
 </script>
 
 <div class="z-dropdown-wrapper" bind:this={wrapperEl}>
-	<button
-		class="z-dropdown-trigger"
-		onclick={toggle}
-	>
+	<button class="z-dropdown-trigger" onclick={toggle}>
 		<span class="z-dropdown-label">{selectedLabel}</span>
 		<Icon icon="mdi:chevron-down" class="z-dropdown-chevron {open ? 'open' : ''}" />
 	</button>

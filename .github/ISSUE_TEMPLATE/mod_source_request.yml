@@ -1,6 +1,6 @@
 name: Mod Source Request
 description: Request support for a new mod source (e.g., NexusMods, CurseForge)
-labels: ["mod-source", "enhancement"]
+labels: ['mod-source', 'enhancement']
 body:
   - type: input
     id: source-name

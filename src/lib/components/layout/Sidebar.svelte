@@ -25,10 +25,12 @@
 	let currentPath = $state(window.location.pathname);
 
 	onMount(() => {
-		const update = () => { currentPath = window.location.pathname; };
+		const update = () => {
+			currentPath = window.location.pathname;
+		};
 		window.addEventListener('popstate', update);
 		const origPush = history.pushState.bind(history);
-		history.pushState = function(data: any, unused: string, url?: string | URL | null) {
+		history.pushState = function (data: any, unused: string, url?: string | URL | null) {
 			origPush(data, unused, url);
 			currentPath = window.location.pathname;
 		};
@@ -55,15 +57,8 @@
 	<div class="z-sidebar-game">
 		{#if games.active}
 			<Tooltip text={games.active.name} position="right" delay={300}>
-				<button
-					class="z-game-btn"
-					onclick={() => (gameMenuOpen = !gameMenuOpen)}
-				>
-					<img
-						src={gameIconSrc(games.active)}
-						alt={games.active.name}
-						class="z-game-icon"
-					/>
+				<button class="z-game-btn" onclick={() => (gameMenuOpen = !gameMenuOpen)}>
+					<img src={gameIconSrc(games.active)} alt={games.active.name} class="z-game-icon" />
 				</button>
 			</Tooltip>
 		{:else}
@@ -89,7 +84,7 @@
 					<img src={gameIconSrc(game)} alt={game.name} class="z-game-dropdown-icon" />
 					<span class="z-game-dropdown-name">{game.name}</span>
 					{#if game.favorite}
-						<Icon icon="mdi:star" class="text-amber-400 text-xs" />
+						<Icon icon="mdi:star" class="text-xs text-amber-400" />
 					{/if}
 				</button>
 			{/each}
@@ -100,11 +95,7 @@
 	<nav class="z-sidebar-nav">
 		{#each navItems as item}
 			<Tooltip text={item.label} position="right" delay={300}>
-				<a
-					href={item.path}
-					class="z-nav-item"
-					class:active={isActive(item.path)}
-				>
+				<a href={item.path} class="z-nav-item" class:active={isActive(item.path)}>
 					<Icon icon={item.icon} class="z-nav-icon" />
 					<span class="z-nav-label">{item.label}</span>
 					{#if isActive(item.path)}

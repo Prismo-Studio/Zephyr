@@ -70,7 +70,7 @@
 		if (response.type === 'done') {
 			await refresh();
 		} else if (response.type === 'hasDependants') {
-			await api.profile.forceToggleMods([mod.uuid, ...response.dependants.map(d => d.uuid)]);
+			await api.profile.forceToggleMods([mod.uuid, ...response.dependants.map((d) => d.uuid)]);
 			await refresh();
 		}
 		// Force update selectedMod with fresh data
@@ -85,7 +85,7 @@
 			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
 			await refresh();
 		} else if (response.type === 'hasDependants') {
-			await api.profile.forceRemoveMods([mod.uuid, ...response.dependants.map(d => d.uuid)]);
+			await api.profile.forceRemoveMods([mod.uuid, ...response.dependants.map((d) => d.uuid)]);
 			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
 			await refresh();
 		}
@@ -114,7 +114,14 @@
 	<div class="z-browse-main">
 		<Header title="Browse" subtitle="Thunderstore">
 			{#snippet actions()}
-				<button class="z-refresh-btn" onclick={() => { api.thunderstore.triggerModFetch(); refresh(); }} title="Refresh">
+				<button
+					class="z-refresh-btn"
+					onclick={() => {
+						api.thunderstore.triggerModFetch();
+						refresh();
+					}}
+					title="Refresh"
+				>
 					<Icon icon="mdi:refresh" />
 				</button>
 			{/snippet}
@@ -157,9 +164,7 @@
 						/>
 					{/each}
 
-					<button class="z-load-more" onclick={() => (maxCount += 30)}>
-						Load more
-					</button>
+					<button class="z-load-more" onclick={() => (maxCount += 30)}> Load more </button>
 				{/if}
 			</div>
 		</div>
@@ -247,7 +252,8 @@
 		gap: 2px;
 	}
 
-	.z-browse-empty, .z-browse-loading {
+	.z-browse-empty,
+	.z-browse-loading {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -267,8 +273,15 @@
 		color: var(--text-muted);
 	}
 
-	.z-browse-empty-title { font-size: 15px; font-weight: 600; color: var(--text-secondary); }
-	.z-browse-empty-desc { font-size: 13px; color: var(--text-muted); }
+	.z-browse-empty-title {
+		font-size: 15px;
+		font-weight: 600;
+		color: var(--text-secondary);
+	}
+	.z-browse-empty-desc {
+		font-size: 13px;
+		color: var(--text-muted);
+	}
 
 	.z-browse-loading {
 		flex-direction: row;
@@ -286,7 +299,11 @@
 		animation: spin 0.6s linear infinite;
 	}
 
-	@keyframes spin { to { transform: rotate(360deg); } }
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
 
 	.z-load-more {
 		padding: var(--space-md);

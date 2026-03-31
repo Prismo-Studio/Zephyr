@@ -204,8 +204,12 @@
 		flex-shrink: 0;
 		font-size: 12px;
 	}
-	:global(.z-mod-badge-icon.pinned) { color: var(--text-muted); }
-	:global(.z-mod-badge-icon.deprecated) { color: var(--error); }
+	:global(.z-mod-badge-icon.pinned) {
+		color: var(--text-muted);
+	}
+	:global(.z-mod-badge-icon.deprecated) {
+		color: var(--error);
+	}
 
 	.z-mod-desc {
 		font-size: 12px;

@@ -29,27 +29,37 @@
 
 	function configValueStr(value: ConfigValue): string {
 		switch (value.type) {
-			case 'bool': return value.content ? 'true' : 'false';
-			case 'string': return value.content;
+			case 'bool':
+				return value.content ? 'true' : 'false';
+			case 'string':
+				return value.content;
 			case 'int':
-			case 'float': return value.content.value.toString();
-			case 'enum': return value.content.options[value.content.index];
-			case 'flags': return value.content.indicies.map(i => value.content.options[i]).join(', ');
-			default: return '???';
+			case 'float':
+				return value.content.value.toString();
+			case 'enum':
+				return value.content.options[value.content.index];
+			case 'flags':
+				return value.content.indicies.map((i) => value.content.options[i]).join(', ');
+			default:
+				return '???';
 		}
 	}
 
-	async function setEntry(file: ConfigFile, section: ConfigSection, entry: ConfigEntry, value: ConfigValue) {
-		await api.config.setEntry(
-			{ file: { relativePath: file.relativePath }, section, entry },
-			value
-		);
+	async function setEntry(
+		file: ConfigFile,
+		section: ConfigSection,
+		entry: ConfigEntry,
+		value: ConfigValue
+	) {
+		await api.config.setEntry({ file: { relativePath: file.relativePath }, section, entry }, value);
 	}
 
 	async function resetEntry(file: ConfigFile, section: ConfigSection, entry: ConfigEntry) {
-		const newVal = await api.config.resetEntry(
-			{ file: { relativePath: file.relativePath }, section, entry }
-		);
+		const newVal = await api.config.resetEntry({
+			file: { relativePath: file.relativePath },
+			section,
+			entry
+		});
 		entry.value = newVal;
 	}
 
@@ -93,7 +103,11 @@
 						onclick={() => (selectedFile = file)}
 					>
 						<Icon
-							icon={file.type === 'ok' ? 'mdi:file-cog' : file.type === 'err' ? 'mdi:file-alert' : 'mdi:file-question'}
+							icon={file.type === 'ok'
+								? 'mdi:file-cog'
+								: file.type === 'err'
+									? 'mdi:file-alert'
+									: 'mdi:file-question'}
 							class={file.type === 'err' ? 'text-error' : ''}
 						/>
 						<span>{displayName(file)}</span>
@@ -153,7 +167,10 @@
 												type="text"
 												value={entry.value.content}
 												onchange={(e) => {
-													const newVal = { type: 'string' as const, content: e.currentTarget.value };
+													const newVal = {
+														type: 'string' as const,
+														content: e.currentTarget.value
+													};
 													entry.value = newVal;
 													setEntry(selectedFile!, section, entry, newVal);
 												}}
@@ -167,10 +184,14 @@
 												max={entry.value.content.range?.end}
 												step={entry.value.type === 'float' ? 0.1 : 1}
 												onchange={(e) => {
-													const numVal = entry.value.type === 'float'
-														? parseFloat(e.currentTarget.value)
-														: parseInt(e.currentTarget.value);
-													const c = entry.value.content as { value: number; range: { start: number; end: number } | null };
+													const numVal =
+														entry.value.type === 'float'
+															? parseFloat(e.currentTarget.value)
+															: parseInt(e.currentTarget.value);
+													const c = entry.value.content as {
+														value: number;
+														range: { start: number; end: number } | null;
+													};
 													const newVal = {
 														type: entry.value.type as 'int' | 'float',
 														content: { value: numVal, range: c.range }
@@ -283,8 +304,14 @@
 		text-align: left;
 	}
 
-	.z-config-file:hover { background: var(--bg-hover); color: var(--text-primary); }
-	.z-config-file.active { background: var(--bg-active); color: var(--text-accent); }
+	.z-config-file:hover {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+	}
+	.z-config-file.active {
+		background: var(--bg-active);
+		color: var(--text-accent);
+	}
 
 	.z-config-file span {
 		overflow: hidden;
@@ -330,7 +357,9 @@
 		transition: background var(--transition-fast);
 	}
 
-	.z-config-entry:hover { background: var(--bg-hover); }
+	.z-config-entry:hover {
+		background: var(--bg-hover);
+	}
 
 	.z-entry-header {
 		display: flex;
@@ -347,7 +376,8 @@
 	.z-entry-reset {
 		display: flex;
 		align-items: center;
-		width: 24px; height: 24px;
+		width: 24px;
+		height: 24px;
 		border-radius: var(--radius-sm);
 		border: none;
 		background: transparent;
@@ -357,7 +387,10 @@
 		justify-content: center;
 	}
 
-	.z-entry-reset:hover { background: var(--bg-hover); color: var(--text-accent); }
+	.z-entry-reset:hover {
+		background: var(--bg-hover);
+		color: var(--text-accent);
+	}
 
 	.z-entry-desc {
 		font-size: 11px;
@@ -392,7 +425,8 @@
 		color: var(--text-accent);
 	}
 
-	.z-entry-input, .z-entry-select {
+	.z-entry-input,
+	.z-entry-select {
 		padding: 6px 10px;
 		border-radius: var(--radius-sm);
 		border: 1px solid var(--border-default);
@@ -405,7 +439,8 @@
 		min-width: 200px;
 	}
 
-	.z-entry-input:focus, .z-entry-select:focus {
+	.z-entry-input:focus,
+	.z-entry-select:focus {
 		border-color: var(--accent-400);
 	}
 
@@ -426,7 +461,9 @@
 		color: var(--text-secondary);
 	}
 
-	.z-config-error, .z-config-unsupported, .z-config-placeholder {
+	.z-config-error,
+	.z-config-unsupported,
+	.z-config-placeholder {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -436,7 +473,11 @@
 		font-size: 14px;
 	}
 
-	.z-config-error { color: var(--error); }
+	.z-config-error {
+		color: var(--error);
+	}
 
-	:global(.text-error) { color: var(--error); }
+	:global(.text-error) {
+		color: var(--error);
+	}
 </style>

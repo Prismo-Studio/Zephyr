@@ -80,8 +80,12 @@
 		cursor: not-allowed;
 	}
 
-	.z-input.has-icon-left { padding-left: 36px; }
-	.z-input.has-icon-right { padding-right: 36px; }
+	.z-input.has-icon-left {
+		padding-left: 36px;
+	}
+	.z-input.has-icon-right {
+		padding-right: 36px;
+	}
 
 	.z-input-icon {
 		position: absolute;
@@ -91,6 +95,10 @@
 		font-size: 16px;
 		pointer-events: none;
 	}
-	.z-input-icon.left { left: 10px; }
-	.z-input-icon.right { right: 10px; }
+	.z-input-icon.left {
+		left: 10px;
+	}
+	.z-input-icon.right {
+		right: 10px;
+	}
 </style>

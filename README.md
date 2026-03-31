@@ -65,12 +65,12 @@ pnpm tauri build
 
 ## Tech Stack
 
-| Layer    | Technology              |
-|----------|-------------------------|
-| Framework | Tauri 2                |
+| Layer     | Technology            |
+| --------- | --------------------- |
+| Framework | Tauri 2               |
 | Frontend  | Svelte 5              |
-| Backend   | Rust                   |
-| Styling   | CSS Custom Properties  |
+| Backend   | Rust                  |
+| Styling   | CSS Custom Properties |
 
 ## Fork Info
 

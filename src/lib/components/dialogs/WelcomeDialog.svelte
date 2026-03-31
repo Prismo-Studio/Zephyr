@@ -19,8 +19,7 @@
 			<span class="text-gradient z-welcome-brand">Zephyr</span>
 		</div>
 		<p class="z-welcome-text">
-			A fast, modern mod manager for all your games.
-			Select a game from the sidebar to get started.
+			A fast, modern mod manager for all your games. Select a game from the sidebar to get started.
 		</p>
 	</div>
 

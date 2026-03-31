@@ -16,7 +16,11 @@
 <div
 	class="z-card z-card-{variant} {className}"
 	{onclick}
-	onkeydown={onclick ? (e) => { if (e.key === 'Enter') onclick?.(e as any); } : undefined}
+	onkeydown={onclick
+		? (e) => {
+				if (e.key === 'Enter') onclick?.(e as any);
+			}
+		: undefined}
 	role={onclick ? 'button' : undefined}
 	tabindex={onclick ? 0 : undefined}
 >
