@@ -51,7 +51,8 @@
 		if (!renameName.trim() || renameId === null) return;
 		const index = getProfileIndex(renameId);
 		if (index === -1) return;
-		const previousActiveIndex = profiles.activeId !== null ? getProfileIndex(profiles.activeId) : -1;
+		const previousActiveIndex =
+			profiles.activeId !== null ? getProfileIndex(profiles.activeId) : -1;
 		const needsSwitch = renameId !== profiles.activeId;
 		if (needsSwitch) {
 			await api.profile.setActive(index);
@@ -90,10 +91,7 @@
 	<div class="z-profiles-content">
 		<div class="z-profiles-grid">
 			{#each profiles.list as profile (profile.id)}
-				<div
-					class="z-profile-card"
-					class:active={profile.id === profiles.activeId}
-				>
+				<div class="z-profile-card" class:active={profile.id === profiles.activeId}>
 					<button class="z-profile-select" onclick={() => selectProfile(profile.id)}>
 						<div class="z-profile-header">
 							<div class="z-profile-icon">
@@ -118,14 +116,26 @@
 					</button>
 
 					<div class="z-profile-actions">
-						<button class="z-profile-action" onclick={() => startRename(profile.id, profile.name)} title="Rename">
+						<button
+							class="z-profile-action"
+							onclick={() => startRename(profile.id, profile.name)}
+							title="Rename"
+						>
 							<Icon icon="mdi:pencil" />
 						</button>
-						<button class="z-profile-action" onclick={() => duplicateProfile(profile.id, profile.name)} title="Duplicate">
+						<button
+							class="z-profile-action"
+							onclick={() => duplicateProfile(profile.id, profile.name)}
+							title="Duplicate"
+						>
 							<Icon icon="mdi:content-copy" />
 						</button>
 						{#if profiles.list.length > 1}
-							<button class="z-profile-action danger" onclick={() => deleteProfile(profile.id)} title="Delete">
+							<button
+								class="z-profile-action danger"
+								onclick={() => deleteProfile(profile.id)}
+								title="Delete"
+							>
 								<Icon icon="mdi:delete" />
 							</button>
 						{/if}
@@ -142,7 +152,9 @@
 		<Input
 			bind:value={newName}
 			placeholder="Profile name"
-			onkeydown={(e) => { if (e.key === 'Enter') createProfile(); }}
+			onkeydown={(e) => {
+				if (e.key === 'Enter') createProfile();
+			}}
 		/>
 	</div>
 
@@ -158,7 +170,9 @@
 		<Input
 			bind:value={renameName}
 			placeholder="New name"
-			onkeydown={(e) => { if (e.key === 'Enter') confirmRename(); }}
+			onkeydown={(e) => {
+				if (e.key === 'Enter') confirmRename();
+			}}
 		/>
 	</div>
 

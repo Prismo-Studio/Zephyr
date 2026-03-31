@@ -59,10 +59,14 @@
 
 	function taskIcon(task: string) {
 		switch (task) {
-			case 'download': return 'mdi:download';
-			case 'extract': return 'mdi:zip-box';
-			case 'install': return 'mdi:package-variant-plus';
-			default: return 'mdi:progress-wrench';
+			case 'download':
+				return 'mdi:download';
+			case 'extract':
+				return 'mdi:zip-box';
+			case 'install':
+				return 'mdi:package-variant-plus';
+			default:
+				return 'mdi:progress-wrench';
 		}
 	}
 </script>

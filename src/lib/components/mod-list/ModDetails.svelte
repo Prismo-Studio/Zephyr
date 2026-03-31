@@ -1,7 +1,14 @@
 <script lang="ts">
 	import type { Mod, ModId } from '$lib/types';
 	import Icon from '@iconify/svelte';
-	import { formatModName, modIconSrc, shortenNum, shortenFileSize, timeSince, getMarkdown } from '$lib/util';
+	import {
+		formatModName,
+		modIconSrc,
+		shortenNum,
+		shortenFileSize,
+		timeSince,
+		getMarkdown
+	} from '$lib/util';
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Tabs from '$lib/components/ui/Tabs.svelte';
@@ -109,20 +116,12 @@
 		<!-- Action buttons -->
 		{#if mod.isInstalled}
 			<div class="z-details-actions">
-				<button
-					class="z-action-btn"
-					class:disabled={locked}
-					disabled={locked}
-					onclick={ontoggle}
-				>
+				<button class="z-action-btn" class:disabled={locked} disabled={locked} onclick={ontoggle}>
 					<Icon icon={mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off'} />
 					<span>{mod.enabled === false ? 'Enable' : 'Disable'}</span>
 				</button>
 
-				<button
-					class="z-action-btn"
-					onclick={() => api.profile.openModDir(mod.uuid)}
-				>
+				<button class="z-action-btn" onclick={() => api.profile.openModDir(mod.uuid)}>
 					<Icon icon="mdi:folder-open" />
 					<span>Open folder</span>
 				</button>
@@ -145,7 +144,11 @@
 
 	<!-- Tabs + Content -->
 	<div class="z-details-content">
-		<Tabs {tabs} bind:active={activeTab} onchange={(id) => loadMarkdown(id as 'readme' | 'changelog')} />
+		<Tabs
+			{tabs}
+			bind:active={activeTab}
+			onchange={(id) => loadMarkdown(id as 'readme' | 'changelog')}
+		/>
 
 		<div class="z-details-body">
 			{#if loadingMarkdown}
@@ -178,8 +181,14 @@
 	}
 
 	@keyframes slideIn {
-		from { transform: translateX(20px); opacity: 0; }
-		to { transform: translateX(0); opacity: 1; }
+		from {
+			transform: translateX(20px);
+			opacity: 0;
+		}
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
 	}
 
 	.z-details-header {

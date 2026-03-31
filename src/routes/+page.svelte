@@ -74,12 +74,21 @@
 
 	async function toggleMod(mod: Mod) {
 		const response = await api.profile.toggleMod(mod.uuid);
-		if (response.type === 'done') await refresh();
+		if (response.type === 'done') {
+			await refresh();
+		} else if (response.type === 'hasDependants') {
+			await api.profile.forceToggleMods([mod.uuid, ...response.dependants.map((d) => d.uuid)]);
+			await refresh();
+		}
 	}
 
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
+			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
+			await refresh();
+		} else if (response.type === 'hasDependants') {
+			await api.profile.forceRemoveMods([mod.uuid, ...response.dependants.map((d) => d.uuid)]);
 			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
 			await refresh();
 		}
@@ -198,7 +207,8 @@
 			{#if unknownMods.length > 0}
 				<div class="z-unknown-banner">
 					<Icon icon="mdi:help-circle" />
-					<span>{unknownMods.length} unknown mod{unknownMods.length > 1 ? 's' : ''} in profile</span>
+					<span>{unknownMods.length} unknown mod{unknownMods.length > 1 ? 's' : ''} in profile</span
+					>
 				</div>
 			{/if}
 
@@ -220,7 +230,7 @@
 						<ModCard
 							{mod}
 							isSelected={selectedMod?.uuid === mod.uuid}
-							locked={locked}
+							{locked}
 							showInstallBtn={false}
 							onclick={() => (selectedMod = selectedMod?.uuid === mod.uuid ? null : mod)}
 							oncontextmenu={openModContextMenu}
@@ -252,12 +262,7 @@
 
 <!-- Context menu -->
 {#if ctxMenu}
-	<ContextMenu
-		items={ctxMenu.items}
-		x={ctxMenu.x}
-		y={ctxMenu.y}
-		onclose={() => (ctxMenu = null)}
-	/>
+	<ContextMenu items={ctxMenu.items} x={ctxMenu.x} y={ctxMenu.y} onclose={() => (ctxMenu = null)} />
 {/if}
 
 <style>

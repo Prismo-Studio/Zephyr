@@ -15,24 +15,25 @@
 
 	function show() {
 		if (delay > 0) {
-			timer = setTimeout(() => { visible = true; }, delay);
+			timer = setTimeout(() => {
+				visible = true;
+			}, delay);
 		} else {
 			visible = true;
 		}
 	}
 
 	function hide() {
-		if (timer) { clearTimeout(timer); timer = null; }
+		if (timer) {
+			clearTimeout(timer);
+			timer = null;
+		}
 		visible = false;
 	}
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div
-	class="z-tooltip-trigger"
-	onmouseenter={show}
-	onmouseleave={hide}
->
+<div class="z-tooltip-trigger" onmouseenter={show} onmouseleave={hide}>
 	{#if children}{@render children()}{/if}
 	{#if visible && text}
 		<div class="z-tooltip z-tooltip-{position}" role="tooltip">
@@ -128,15 +129,31 @@
 	}
 
 	@keyframes tooltipIn {
-		from { opacity: 0; transform: translateX(-50%) scale(0.95); }
-		to { opacity: 1; transform: translateX(-50%) scale(1); }
+		from {
+			opacity: 0;
+			transform: translateX(-50%) scale(0.95);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(-50%) scale(1);
+		}
 	}
 
-	.z-tooltip-left { animation: tooltipInY 150ms ease; }
-	.z-tooltip-right { animation: tooltipInY 150ms ease; }
+	.z-tooltip-left {
+		animation: tooltipInY 150ms ease;
+	}
+	.z-tooltip-right {
+		animation: tooltipInY 150ms ease;
+	}
 
 	@keyframes tooltipInY {
-		from { opacity: 0; transform: translateY(-50%) scale(0.95); }
-		to { opacity: 1; transform: translateY(-50%) scale(1); }
+		from {
+			opacity: 0;
+			transform: translateY(-50%) scale(0.95);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(-50%) scale(1);
+		}
 	}
 </style>

@@ -10,7 +10,14 @@
 		actions?: Snippet;
 	};
 
-	let { open = $bindable(false), onclose, title = '', class: className = '', children, actions }: Props = $props();
+	let {
+		open = $bindable(false),
+		onclose,
+		title = '',
+		class: className = '',
+		children,
+		actions
+	}: Props = $props();
 
 	function handleBackdrop() {
 		open = false;
@@ -34,7 +41,12 @@
 					<h3>{title}</h3>
 					<button class="z-modal-close" onclick={handleBackdrop}>
 						<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-							<path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+							<path
+								d="M1 1L13 13M13 1L1 13"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+							/>
 						</svg>
 					</button>
 				</div>

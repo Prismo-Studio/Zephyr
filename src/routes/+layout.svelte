@@ -64,7 +64,11 @@
 		const anchor = (evt.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null;
 		if (!anchor) return;
 		const href = anchor.href;
-		if (href && (href.startsWith('http://') || href.startsWith('https://')) && new URL(href).origin !== window.location.origin) {
+		if (
+			href &&
+			(href.startsWith('http://') || href.startsWith('https://')) &&
+			new URL(href).origin !== window.location.origin
+		) {
 			evt.preventDefault();
 			open(href);
 		}

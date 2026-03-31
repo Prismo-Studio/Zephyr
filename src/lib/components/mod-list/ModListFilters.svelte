@@ -10,7 +10,11 @@
 		showCategories?: boolean;
 	};
 
-	let { queryArgs, sortOptions = ['rating', 'downloads', 'lastUpdated', 'newest', 'name'], showCategories = false }: Props = $props();
+	let {
+		queryArgs,
+		sortOptions = ['rating', 'downloads', 'lastUpdated', 'newest', 'name'],
+		showCategories = false
+	}: Props = $props();
 
 	let showFilters = $state(false);
 	let sortOpen = $state(false);
@@ -35,27 +39,24 @@
 
 <div class="z-filters">
 	<div class="z-filters-row">
-		<Input
-			bind:value={queryArgs.searchTerm}
-			placeholder="Search mods..."
-			class="z-search-input"
-		>
+		<Input bind:value={queryArgs.searchTerm} placeholder="Search mods..." class="z-search-input">
 			{#snippet iconLeft()}
 				<Icon icon="mdi:magnify" />
 			{/snippet}
 		</Input>
 
-		<button class="z-filter-btn" class:active={showFilters} onclick={() => (showFilters = !showFilters)}>
+		<button
+			class="z-filter-btn"
+			class:active={showFilters}
+			onclick={() => (showFilters = !showFilters)}
+		>
 			<Icon icon="mdi:filter-variant" />
 		</button>
 
 		<!-- Custom sort dropdown -->
 		<div class="z-sort-group">
 			<div class="z-sort-wrapper">
-				<button
-					class="z-sort-trigger"
-					onclick={() => (sortOpen = !sortOpen)}
-				>
+				<button class="z-sort-trigger" onclick={() => (sortOpen = !sortOpen)}>
 					<span>{sortLabels[queryArgs.sortBy]}</span>
 					<Icon icon="mdi:chevron-down" class="z-sort-chevron {sortOpen ? 'open' : ''}" />
 				</button>
@@ -86,7 +87,9 @@
 				}}
 				title={queryArgs.sortOrder === 'ascending' ? 'Ascending' : 'Descending'}
 			>
-				<Icon icon={queryArgs.sortOrder === 'ascending' ? 'mdi:sort-ascending' : 'mdi:sort-descending'} />
+				<Icon
+					icon={queryArgs.sortOrder === 'ascending' ? 'mdi:sort-ascending' : 'mdi:sort-descending'}
+				/>
 			</button>
 		</div>
 	</div>
@@ -111,7 +114,9 @@
 							onclick={() => {
 								const idx = queryArgs.includeCategories.indexOf(cat.slug);
 								if (idx >= 0) {
-									queryArgs.includeCategories = queryArgs.includeCategories.filter((c) => c !== cat.slug);
+									queryArgs.includeCategories = queryArgs.includeCategories.filter(
+										(c) => c !== cat.slug
+									);
 								} else {
 									queryArgs.includeCategories = [...queryArgs.includeCategories, cat.slug];
 								}
@@ -160,7 +165,8 @@
 		font-size: 18px;
 	}
 
-	.z-filter-btn:hover, .z-filter-btn.active {
+	.z-filter-btn:hover,
+	.z-filter-btn.active {
 		color: var(--text-accent);
 		border-color: var(--border-accent);
 		background: var(--bg-active);

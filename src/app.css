@@ -253,13 +253,19 @@ body {
 	user-select: none;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
 	font-family: var(--font-display);
 	font-weight: 700;
 	letter-spacing: -0.02em;
 }
 
-code, pre, .font-mono {
+code,
+pre,
+.font-mono {
 	font-family: var(--font-mono);
 }
 
@@ -329,52 +335,122 @@ code, pre, .font-mono {
    Animations
    ============================================================ */
 @keyframes fadeIn {
-	from { opacity: 0; }
-	to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes slideUp {
-	from { opacity: 0; transform: translateY(8px); }
-	to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes slideDown {
-	from { opacity: 0; transform: translateY(-8px); }
-	to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes scaleIn {
-	from { opacity: 0; transform: scale(0.95); }
-	to { opacity: 1; transform: scale(1); }
+	from {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 @keyframes pulse-glow {
-	0%, 100% { box-shadow: 0 0 8px rgba(26, 255, 250, 0.2); }
-	50% { box-shadow: 0 0 20px rgba(26, 255, 250, 0.4); }
+	0%,
+	100% {
+		box-shadow: 0 0 8px rgba(26, 255, 250, 0.2);
+	}
+	50% {
+		box-shadow: 0 0 20px rgba(26, 255, 250, 0.4);
+	}
 }
 
 @keyframes shimmer {
-	0% { background-position: -200% 0; }
-	100% { background-position: 200% 0; }
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
 }
 
-.animate-fade-in { animation: fadeIn var(--transition-normal) ease both; }
-.animate-slide-up { animation: slideUp var(--transition-normal) ease both; }
-.animate-slide-down { animation: slideDown var(--transition-normal) ease both; }
-.animate-scale-in { animation: scaleIn var(--transition-normal) ease both; }
-.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-fade-in {
+	animation: fadeIn var(--transition-normal) ease both;
+}
+.animate-slide-up {
+	animation: slideUp var(--transition-normal) ease both;
+}
+.animate-slide-down {
+	animation: slideDown var(--transition-normal) ease both;
+}
+.animate-scale-in {
+	animation: scaleIn var(--transition-normal) ease both;
+}
+.animate-pulse-glow {
+	animation: pulse-glow 2s ease-in-out infinite;
+}
 
 /* ============================================================
    Markdown Rendering
    ============================================================ */
-.markdown h1 { font-size: 1.75rem; margin-top: 1.5em; margin-bottom: 0.5em; }
-.markdown h2 { font-size: 1.4rem; margin-top: 1.3em; margin-bottom: 0.4em; }
-.markdown h3 { font-size: 1.15rem; margin-top: 1em; margin-bottom: 0.3em; }
-.markdown p { margin-bottom: 0.75em; line-height: 1.7; color: var(--text-secondary); }
-.markdown ul, .markdown ol { padding-left: 1.5em; margin-bottom: 0.75em; color: var(--text-secondary); }
-.markdown li { margin-bottom: 0.25em; }
-.markdown a { color: var(--text-accent); text-decoration: underline; text-underline-offset: 2px; }
-.markdown a:hover { opacity: 0.8; }
+.markdown h1 {
+	font-size: 1.75rem;
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+}
+.markdown h2 {
+	font-size: 1.4rem;
+	margin-top: 1.3em;
+	margin-bottom: 0.4em;
+}
+.markdown h3 {
+	font-size: 1.15rem;
+	margin-top: 1em;
+	margin-bottom: 0.3em;
+}
+.markdown p {
+	margin-bottom: 0.75em;
+	line-height: 1.7;
+	color: var(--text-secondary);
+}
+.markdown ul,
+.markdown ol {
+	padding-left: 1.5em;
+	margin-bottom: 0.75em;
+	color: var(--text-secondary);
+}
+.markdown li {
+	margin-bottom: 0.25em;
+}
+.markdown a {
+	color: var(--text-accent);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+.markdown a:hover {
+	opacity: 0.8;
+}
 .markdown code {
 	font-family: var(--font-mono);
 	font-size: 0.85em;

@@ -41,7 +41,11 @@
 		<button class="z-titlebar-btn" onclick={minimize} title="Minimize">
 			<Icon icon="mdi:minus" />
 		</button>
-		<button class="z-titlebar-btn" onclick={toggleMaximize} title={maximized ? 'Restore' : 'Maximize'}>
+		<button
+			class="z-titlebar-btn"
+			onclick={toggleMaximize}
+			title={maximized ? 'Restore' : 'Maximize'}
+		>
 			<Icon icon={maximized ? 'mdi:window-restore' : 'mdi:window-maximize'} />
 		</button>
 		<button class="z-titlebar-btn z-titlebar-close" onclick={close} title="Close">
