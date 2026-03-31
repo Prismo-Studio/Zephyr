@@ -13,10 +13,12 @@
 		mod: Mod;
 		locked?: boolean;
 		onclose?: () => void;
+		ontoggle?: () => void;
+		onremove?: () => void;
 		children?: Snippet;
 	};
 
-	let { mod, locked = false, onclose, children }: Props = $props();
+	let { mod, locked = false, onclose, ontoggle, onremove, children }: Props = $props();
 
 	let activeTab = $state('readme');
 	let markdown = $state('');
@@ -103,6 +105,39 @@
 				</div>
 			{/if}
 		</div>
+
+		<!-- Action buttons -->
+		{#if mod.isInstalled}
+			<div class="z-details-actions">
+				<button
+					class="z-action-btn"
+					class:disabled={locked}
+					disabled={locked}
+					onclick={ontoggle}
+				>
+					<Icon icon={mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off'} />
+					<span>{mod.enabled === false ? 'Enable' : 'Disable'}</span>
+				</button>
+
+				<button
+					class="z-action-btn"
+					onclick={() => api.profile.openModDir(mod.uuid)}
+				>
+					<Icon icon="mdi:folder-open" />
+					<span>Open folder</span>
+				</button>
+
+				<button
+					class="z-action-btn danger"
+					class:disabled={locked}
+					disabled={locked}
+					onclick={onremove}
+				>
+					<Icon icon="mdi:delete" />
+					<span>Uninstall</span>
+				</button>
+			</div>
+		{/if}
 
 		<!-- Install button slot -->
 		{#if children}{@render children()}{/if}
@@ -223,6 +258,46 @@
 		display: flex;
 		align-items: center;
 		gap: 4px;
+	}
+
+	.z-details-actions {
+		display: flex;
+		gap: 6px;
+	}
+
+	.z-action-btn {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-elevated);
+		color: var(--text-secondary);
+		font-family: var(--font-body);
+		font-size: 12px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.z-action-btn:hover:not(:disabled) {
+		background: var(--bg-hover);
+		border-color: var(--border-default);
+		color: var(--text-primary);
+	}
+
+	.z-action-btn.danger:hover:not(:disabled) {
+		background: rgba(255, 92, 92, 0.1);
+		border-color: rgba(255, 92, 92, 0.3);
+		color: var(--error);
+	}
+
+	.z-action-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
 	}
 
 	.z-details-content {

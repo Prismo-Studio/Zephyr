@@ -13,6 +13,7 @@
 	let { queryArgs, sortOptions = ['rating', 'downloads', 'lastUpdated', 'newest', 'name'], showCategories = false }: Props = $props();
 
 	let showFilters = $state(false);
+	let sortOpen = $state(false);
 
 	const sortLabels: Record<SortBy, string> = {
 		newest: 'Newest',
@@ -25,6 +26,11 @@
 		custom: 'Custom',
 		diskSpace: 'Size'
 	};
+
+	function selectSort(option: SortBy) {
+		queryArgs.sortBy = option;
+		sortOpen = false;
+	}
 </script>
 
 <div class="z-filters">
@@ -43,16 +49,36 @@
 			<Icon icon="mdi:filter-variant" />
 		</button>
 
-		<!-- Sort selector -->
+		<!-- Custom sort dropdown -->
 		<div class="z-sort-group">
-			<select
-				class="z-sort-select"
-				bind:value={queryArgs.sortBy}
-			>
-				{#each sortOptions as option}
-					<option value={option}>{sortLabels[option]}</option>
-				{/each}
-			</select>
+			<div class="z-sort-wrapper">
+				<button
+					class="z-sort-trigger"
+					onclick={() => (sortOpen = !sortOpen)}
+				>
+					<span>{sortLabels[queryArgs.sortBy]}</span>
+					<Icon icon="mdi:chevron-down" class="z-sort-chevron {sortOpen ? 'open' : ''}" />
+				</button>
+
+				{#if sortOpen}
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<div class="z-sort-dropdown" onmouseleave={() => (sortOpen = false)}>
+						{#each sortOptions as option}
+							<button
+								class="z-sort-option"
+								class:active={queryArgs.sortBy === option}
+								onclick={() => selectSort(option)}
+							>
+								{#if queryArgs.sortBy === option}
+									<Icon icon="mdi:check" class="z-sort-check" />
+								{/if}
+								<span>{sortLabels[option]}</span>
+							</button>
+						{/each}
+					</div>
+				{/if}
+			</div>
+
 			<button
 				class="z-sort-order"
 				onclick={() => {
@@ -140,15 +166,23 @@
 		background: var(--bg-active);
 	}
 
+	/* Sort group */
 	.z-sort-group {
 		display: flex;
 		align-items: center;
 		gap: 2px;
 	}
 
-	.z-sort-select {
+	.z-sort-wrapper {
+		position: relative;
+	}
+
+	.z-sort-trigger {
+		display: flex;
+		align-items: center;
+		gap: 6px;
 		height: 36px;
-		padding: 0 var(--space-md);
+		padding: 0 12px;
 		border-radius: var(--radius-md) 0 0 var(--radius-md);
 		border: 1px solid var(--border-default);
 		border-right: none;
@@ -156,17 +190,71 @@
 		color: var(--text-primary);
 		font-family: var(--font-body);
 		font-size: 12px;
+		font-weight: 500;
 		cursor: pointer;
-		outline: none;
+		transition: all var(--transition-fast);
+		white-space: nowrap;
 	}
 
-	.z-sort-select:focus {
-		border-color: var(--accent-400);
+	.z-sort-trigger:hover {
+		border-color: var(--border-strong);
+		background: var(--bg-overlay);
 	}
 
-	.z-sort-select option {
+	:global(.z-sort-chevron) {
+		font-size: 16px;
+		color: var(--text-muted);
+		transition: transform var(--transition-fast);
+	}
+
+	:global(.z-sort-chevron.open) {
+		transform: rotate(180deg);
+	}
+
+	.z-sort-dropdown {
+		position: absolute;
+		top: calc(100% + 4px);
+		right: 0;
+		min-width: 160px;
 		background: var(--bg-elevated);
+		border: 1px solid var(--border-default);
+		border-radius: var(--radius-lg);
+		padding: 4px;
+		z-index: var(--z-dropdown);
+		box-shadow: var(--shadow-lg);
+		animation: scaleIn 100ms ease;
+	}
+
+	.z-sort-option {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		width: 100%;
+		padding: 8px 12px;
+		border-radius: var(--radius-sm);
+		border: none;
+		background: transparent;
+		color: var(--text-secondary);
+		font-family: var(--font-body);
+		font-size: 13px;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		text-align: left;
+	}
+
+	.z-sort-option:hover {
+		background: var(--bg-hover);
 		color: var(--text-primary);
+	}
+
+	.z-sort-option.active {
+		color: var(--text-accent);
+		background: var(--bg-active);
+	}
+
+	:global(.z-sort-check) {
+		font-size: 14px;
+		color: var(--text-accent);
 	}
 
 	.z-sort-order {
@@ -186,8 +274,10 @@
 
 	.z-sort-order:hover {
 		color: var(--text-primary);
+		background: var(--bg-overlay);
 	}
 
+	/* Filters expanded */
 	.z-filters-expanded {
 		display: flex;
 		flex-wrap: wrap;

@@ -201,6 +201,35 @@
 	--glass-blur: 20px;
 }
 
+[data-theme='hotdog'] {
+	--bg-base: #ff0000;
+	--bg-surface: #cc0000;
+	--bg-elevated: #ff3333;
+	--bg-overlay: #aa0000;
+	--bg-hover: rgba(255, 255, 0, 0.15);
+	--bg-active: rgba(255, 255, 0, 0.25);
+
+	--border-subtle: rgba(255, 255, 0, 0.2);
+	--border-default: rgba(255, 255, 0, 0.4);
+	--border-strong: rgba(255, 255, 0, 0.6);
+	--border-accent: #ffff00;
+
+	--text-primary: #ffff00;
+	--text-secondary: #ffee55;
+	--text-muted: #cc9900;
+	--text-accent: #ffff00;
+	--text-inverse: #ff0000;
+
+	--success: #ffff00;
+	--warning: #ff8800;
+	--error: #ffffff;
+	--info: #ffff00;
+
+	--glass-bg: rgba(204, 0, 0, 0.8);
+	--glass-border: rgba(255, 255, 0, 0.3);
+	--glass-blur: 12px;
+}
+
 /* ============================================================
    Base Styles
    ============================================================ */

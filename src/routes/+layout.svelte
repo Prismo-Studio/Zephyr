@@ -16,6 +16,7 @@
 	import profiles from '$lib/state/profile.svelte';
 	import { updateBanner } from '$lib/state/misc.svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
+	import { open } from '@tauri-apps/plugin-shell';
 	import type { ProfileInfo, ManagedGameInfo } from '$lib/types';
 	import { refreshLanguage } from '$lib/i18n';
 
@@ -59,6 +60,15 @@
 	oncontextmenu={(evt) => {
 		if (window.location.hostname === 'tauri.localhost') {
 			evt.preventDefault();
+		}
+	}}
+	onclick={(evt) => {
+		const anchor = (evt.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null;
+		if (!anchor) return;
+		const href = anchor.href;
+		if (href && (href.startsWith('http://') || href.startsWith('https://')) && new URL(href).origin !== window.location.origin) {
+			evt.preventDefault();
+			open(href);
 		}
 	}}
 />

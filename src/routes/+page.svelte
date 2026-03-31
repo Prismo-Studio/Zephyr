@@ -9,13 +9,17 @@
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
+	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
+	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
 
 	import { onMount } from 'svelte';
 	import { emit, listen, type UnlistenFn } from '@tauri-apps/api/event';
+	import { open } from '@tauri-apps/plugin-shell';
 	import { profileQuery } from '$lib/state/misc.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import Icon from '@iconify/svelte';
 	import type { AvailableUpdate, ProfileQuery } from '$lib/types';
+	import { communityUrl, isOutdated } from '$lib/util';
 
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
@@ -25,6 +29,9 @@
 	let totalModCount = $state(0);
 	let maxCount = $state(40);
 	let selectedMod: Mod | null = $state(null);
+
+	// Context menu state
+	let ctxMenu: { items: ContextMenuItem[]; x: number; y: number } | null = $state(null);
 
 	let refreshing = false;
 
@@ -72,16 +79,10 @@
 
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
-		if (response.type === 'done') await refresh();
-	}
-
-	async function reorderMod(uuid: string, delta: number) {
-		await emit('reorder_mod', { uuid, delta });
-	}
-
-	async function finishReorder() {
-		await emit('finish_reorder', {});
-		await refresh();
+		if (response.type === 'done') {
+			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
+			await refresh();
+		}
 	}
 
 	async function updateAllMods() {
@@ -90,6 +91,74 @@
 			await api.profile.update.mods(uuids, true);
 			await refresh();
 		}
+	}
+
+	function openModContextMenu(e: MouseEvent, mod: Mod) {
+		const locked = profiles.activeLocked;
+		const items: ContextMenuItem[] = [];
+
+		// Toggle enable/disable
+		if (mod.isInstalled) {
+			items.push({
+				label: mod.enabled === false ? 'Enable' : 'Disable',
+				icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
+				disabled: locked,
+				onclick: () => toggleMod(mod)
+			});
+		}
+
+		// Open website
+		if (mod.websiteUrl) {
+			items.push({
+				label: 'Open on Thunderstore',
+				icon: 'mdi:open-in-new',
+				onclick: () => open(mod.websiteUrl!)
+			});
+		}
+
+		// Donate
+		if (mod.donateUrl) {
+			items.push({
+				label: 'Donate',
+				icon: 'mdi:heart',
+				onclick: () => open(mod.donateUrl!)
+			});
+		}
+
+		// Open mod folder
+		if (mod.isInstalled) {
+			items.push({
+				label: 'Open folder',
+				icon: 'mdi:folder-open',
+				onclick: () => api.profile.openModDir(mod.uuid)
+			});
+		}
+
+		// Config file
+		if (mod.configFile) {
+			items.push({
+				label: 'Edit config',
+				icon: 'mdi:file-cog',
+				onclick: () => {
+					// Navigate to config page
+					window.location.href = '/config';
+				}
+			});
+		}
+
+		// Separator + destructive
+		if (mod.isInstalled) {
+			items.push({ label: '', separator: true });
+			items.push({
+				label: 'Uninstall',
+				icon: 'mdi:delete',
+				danger: true,
+				disabled: locked,
+				onclick: () => removeMod(mod)
+			});
+		}
+
+		ctxMenu = { items, x: e.clientX, y: e.clientY };
 	}
 
 	$effect(() => {
@@ -154,6 +223,7 @@
 							locked={locked}
 							showInstallBtn={false}
 							onclick={() => (selectedMod = selectedMod?.uuid === mod.uuid ? null : mod)}
+							oncontextmenu={openModContextMenu}
 						/>
 					{/each}
 
@@ -168,11 +238,27 @@
 	</div>
 
 	{#if selectedMod}
-		<ModDetails mod={selectedMod} {locked} onclose={() => (selectedMod = null)}>
+		<ModDetails
+			mod={selectedMod}
+			{locked}
+			onclose={() => (selectedMod = null)}
+			ontoggle={() => toggleMod(selectedMod!)}
+			onremove={() => removeMod(selectedMod!)}
+		>
 			<InstallModButton mod={selectedMod} {install} {locked} />
 		</ModDetails>
 	{/if}
 </div>
+
+<!-- Context menu -->
+{#if ctxMenu}
+	<ContextMenu
+		items={ctxMenu.items}
+		x={ctxMenu.x}
+		y={ctxMenu.y}
+		onclose={() => (ctxMenu = null)}
+	/>
+{/if}
 
 <style>
 	.z-mods-page {

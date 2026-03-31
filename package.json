@@ -49,6 +49,7 @@
 		"clsx": "^2.1.1",
 		"highlight.js": "^11.11.1",
 		"js-convert-case": "^4.2.0",
+		"marked": "^17.0.5",
 		"rehype-highlight": "^7.0.2",
 		"rehype-raw": "^7.0.0",
 		"runed": "^0.29.2",

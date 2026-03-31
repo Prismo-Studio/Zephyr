@@ -11,6 +11,7 @@ import games from './state/game.svelte';
 import { isLatinAlphabet } from './i18n';
 import { m } from './paraglide/messages';
 import * as api from '$lib/api';
+import { marked } from 'marked';
 
 export function shortenFileSize(size: number): string {
 	var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
@@ -182,17 +183,24 @@ export function emptyOrUndefined(str: string) {
 }
 
 export async function getMarkdown(mod: Mod, type: MarkdownType, useLatest = false) {
+	let raw: string | null = null;
+
 	switch (mod.type) {
 		case ModType.Remote:
-			return await api.thunderstore.getMarkdown(
+			raw = await api.thunderstore.getMarkdown(
 				{
 					packageUuid: mod.uuid,
 					versionUuid: useLatest ? mod.versions[0].uuid : mod.versionUuid
 				},
 				type
 			);
+			break;
 
 		case ModType.Local:
-			return await api.profile.getLocalMarkdown(mod.uuid, type);
+			raw = await api.profile.getLocalMarkdown(mod.uuid, type);
+			break;
 	}
+
+	if (!raw) return raw;
+	return await marked(raw);
 }

@@ -15,6 +15,10 @@
 	let renameId: number | null = $state(null);
 	let renameName = $state('');
 
+	function getProfileIndex(id: number): number {
+		return profiles.list.findIndex((p) => p.id === id);
+	}
+
 	async function createProfile() {
 		if (!newName.trim()) return;
 		await api.profile.create(newName.trim(), null);
@@ -28,7 +32,12 @@
 		await profiles.refresh();
 	}
 
-	async function duplicateProfile(name: string) {
+	async function duplicateProfile(id: number, name: string) {
+		const index = getProfileIndex(id);
+		if (index === -1) return;
+		if (id !== profiles.activeId) {
+			await api.profile.setActive(index);
+		}
 		await api.profile.duplicate(name + ' (copy)');
 		await profiles.refresh();
 	}
@@ -40,14 +49,26 @@
 
 	async function confirmRename() {
 		if (!renameName.trim() || renameId === null) return;
-		await api.profile.setActive(renameId);
+		const index = getProfileIndex(renameId);
+		if (index === -1) return;
+		const previousActiveIndex = profiles.activeId !== null ? getProfileIndex(profiles.activeId) : -1;
+		const needsSwitch = renameId !== profiles.activeId;
+		if (needsSwitch) {
+			await api.profile.setActive(index);
+		}
 		await api.profile.rename(renameName.trim());
+		if (needsSwitch && previousActiveIndex !== -1) {
+			await api.profile.setActive(previousActiveIndex);
+		}
 		await profiles.refresh();
 		renameId = null;
 	}
 
 	async function selectProfile(id: number) {
-		await profiles.setActive(id);
+		const index = getProfileIndex(id);
+		if (index === -1) return;
+		await profiles.setActive(index);
+		await profiles.refresh();
 	}
 
 	async function exportCode() {
@@ -100,7 +121,7 @@
 						<button class="z-profile-action" onclick={() => startRename(profile.id, profile.name)} title="Rename">
 							<Icon icon="mdi:pencil" />
 						</button>
-						<button class="z-profile-action" onclick={() => duplicateProfile(profile.name)} title="Duplicate">
+						<button class="z-profile-action" onclick={() => duplicateProfile(profile.id, profile.name)} title="Duplicate">
 							<Icon icon="mdi:content-copy" />
 						</button>
 						{#if profiles.list.length > 1}

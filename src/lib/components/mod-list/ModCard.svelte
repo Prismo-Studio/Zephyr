@@ -13,6 +13,7 @@
 		showInstallBtn?: boolean;
 		onclick?: MouseEventHandler<HTMLButtonElement>;
 		oninstall?: () => void;
+		oncontextmenu?: (e: MouseEvent, mod: Mod) => void;
 	};
 
 	let {
@@ -21,10 +22,17 @@
 		locked = false,
 		showInstallBtn = true,
 		onclick,
-		oninstall
+		oninstall,
+		oncontextmenu
 	}: Props = $props();
 
 	let installing = $state(false);
+
+	function handleContextMenu(e: MouseEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		oncontextmenu?.(e, mod);
+	}
 </script>
 
 <button
@@ -32,6 +40,7 @@
 	class:selected={isSelected}
 	class:disabled-mod={mod.enabled === false}
 	{onclick}
+	oncontextmenu={handleContextMenu}
 >
 	<!-- Icon -->
 	<div class="z-mod-icon">

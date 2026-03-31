@@ -2,23 +2,44 @@
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Toggle from '$lib/components/ui/Toggle.svelte';
+	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Icon from '@iconify/svelte';
 
 	import * as api from '$lib/api';
 	import type { Prefs } from '$lib/types';
-	import { themes, getTheme, setTheme, type ThemeId } from '$lib/design-system/tokens';
+	import { getTheme, setTheme, type ThemeId, getVisibleThemes } from '$lib/design-system/tokens';
 	import { setFont, getFont } from '$lib/theme';
+	import { setLanguage, languageTitle } from '$lib/i18n';
+	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
 	import { onMount } from 'svelte';
 
 	let prefs: Prefs | null = $state(null);
 	let currentTheme: ThemeId = $state(getTheme());
 	let systemFonts: string[] = $state([]);
 	let currentFont = $state(getFont());
+	let currentLocale: Locale = $state(getLocale() as Locale);
+	let visibleThemes = $state(getVisibleThemes());
+
+	let fontOptions = $derived([
+		{ value: 'Inter', label: 'Inter (default)' },
+		{ value: 'Outfit', label: 'Outfit' },
+		{ value: 'DM Sans', label: 'DM Sans' },
+		...systemFonts.slice(0, 50).map((f) => ({ value: f, label: f }))
+	]);
+
+	let languageOptions = $derived(
+		locales.map((l) => ({ value: l, label: languageTitle[l] }))
+	);
 
 	onMount(async () => {
 		prefs = await api.prefs.get();
 		systemFonts = await api.prefs.getSystemFonts();
+
+		window.addEventListener('hotdog-unlocked', () => {
+			visibleThemes = getVisibleThemes();
+			currentTheme = 'hotdog';
+		});
 	});
 
 	async function savePrefs() {
@@ -33,6 +54,15 @@
 	function changeFont(font: string) {
 		currentFont = font;
 		setFont(font);
+	}
+
+	async function changeLanguage(locale: string) {
+		currentLocale = locale as Locale;
+		if (prefs) {
+			prefs.language = locale;
+			await savePrefs();
+		}
+		setLanguage(locale);
 	}
 
 	async function clearCache(soft: boolean) {
@@ -55,7 +85,7 @@
 				Theme
 			</h3>
 			<div class="z-theme-grid">
-				{#each themes as theme}
+				{#each visibleThemes as theme}
 					<button
 						class="z-theme-option"
 						class:active={currentTheme === theme.id}
@@ -80,14 +110,16 @@
 				<Icon icon="mdi:format-font" />
 				Font
 			</h3>
-			<select class="z-settings-select" value={currentFont} onchange={(e) => changeFont(e.currentTarget.value)}>
-				<option value="Inter">Inter (default)</option>
-				<option value="Outfit">Outfit</option>
-				<option value="DM Sans">DM Sans</option>
-				{#each systemFonts.slice(0, 50) as font}
-					<option value={font}>{font}</option>
-				{/each}
-			</select>
+			<Dropdown options={fontOptions} value={currentFont} onchange={changeFont} placeholder="Select font" />
+		</section>
+
+		<!-- Language -->
+		<section class="z-settings-section">
+			<h3 class="z-settings-heading">
+				<Icon icon="mdi:translate" />
+				Language
+			</h3>
+			<Dropdown options={languageOptions} value={currentLocale} onchange={changeLanguage} placeholder="Select language" />
 		</section>
 
 		{#if prefs}
@@ -271,25 +303,6 @@
 	.z-settings-desc {
 		font-size: 11px;
 		color: var(--text-muted);
-	}
-
-	.z-settings-select {
-		width: 100%;
-		padding: var(--space-sm) var(--space-md);
-		border-radius: var(--radius-md);
-		border: 1px solid var(--border-default);
-		background: var(--bg-elevated);
-		color: var(--text-primary);
-		font-family: var(--font-body);
-		font-size: 13px;
-		outline: none;
-	}
-
-	.z-settings-select:focus { border-color: var(--accent-400); }
-
-	.z-settings-select option {
-		background: var(--bg-elevated);
-		color: var(--text-primary);
 	}
 
 	/* Paths */

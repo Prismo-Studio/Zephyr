@@ -81,6 +81,7 @@
 <style>
 	.z-install-btn-group {
 		display: flex;
+		align-items: stretch;
 		margin-top: var(--space-md);
 		font-size: 14px;
 	}
@@ -135,7 +136,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: var(--space-md) var(--space-sm);
+		height: 100%;
+		padding: 0 var(--space-sm);
 		border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
 		background: linear-gradient(135deg, var(--accent-600), var(--accent-700));
 		color: var(--text-inverse);

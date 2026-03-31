@@ -84,7 +84,7 @@
 				</div>
 			</div>
 			<div class="z-stat-card">
-				<div class="z-stat-icon"><Icon icon="mdi:package-variant" /></div>
+				<div class="z-stat-icon"><Icon icon="mdi:puzzle" /></div>
 				<div class="z-stat-info">
 					<span class="z-stat-value">{profiles.active?.modCount ?? 0}</span>
 					<span class="z-stat-label">Mods installed</span>
@@ -238,15 +238,9 @@
 	}
 
 	.z-stat-icon {
-		width: 40px;
-		height: 40px;
-		border-radius: var(--radius-md);
-		background: var(--bg-active);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 20px;
+		font-size: 24px;
 		color: var(--text-accent);
+		flex-shrink: 0;
 	}
 
 	.z-stat-info {

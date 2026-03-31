@@ -244,7 +244,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
-		padding: 0 var(--space-sm);
+		padding: 0;
 		flex: 1;
 	}
 
@@ -254,7 +254,7 @@
 		align-items: center;
 		gap: 3px;
 		padding: var(--space-sm) 0;
-		border-radius: var(--radius-md);
+		border-radius: 0;
 		color: var(--text-muted);
 		text-decoration: none;
 		transition: all var(--transition-fast);
@@ -267,12 +267,16 @@
 	}
 
 	.z-nav-item.active {
-		color: var(--text-accent);
-		background: var(--bg-active);
+		color: #1afffa;
+		background: rgba(26, 255, 250, 0.15);
 	}
 
 	:global(.z-nav-icon) {
 		font-size: 20px;
+	}
+
+	.z-nav-item.active :global(.z-nav-icon) {
+		color: #1afffa;
 	}
 
 	.z-nav-label {
