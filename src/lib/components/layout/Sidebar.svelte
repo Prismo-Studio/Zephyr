@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import games from '$lib/state/game.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import { gameIconSrc } from '$lib/util';
@@ -26,7 +27,6 @@
 	onMount(() => {
 		const update = () => { currentPath = window.location.pathname; };
 		window.addEventListener('popstate', update);
-		// SvelteKit uses history.pushState — observe navigation
 		const origPush = history.pushState.bind(history);
 		history.pushState = function(data: any, unused: string, url?: string | URL | null) {
 			origPush(data, unused, url);
@@ -54,17 +54,18 @@
 	<!-- Game icon / selector -->
 	<div class="z-sidebar-game">
 		{#if games.active}
-			<button
-				class="z-game-btn"
-				onclick={() => (gameMenuOpen = !gameMenuOpen)}
-				title={games.active.name}
-			>
-				<img
-					src={gameIconSrc(games.active)}
-					alt={games.active.name}
-					class="z-game-icon"
-				/>
-			</button>
+			<Tooltip text={games.active.name} position="right" delay={300}>
+				<button
+					class="z-game-btn"
+					onclick={() => (gameMenuOpen = !gameMenuOpen)}
+				>
+					<img
+						src={gameIconSrc(games.active)}
+						alt={games.active.name}
+						class="z-game-icon"
+					/>
+				</button>
+			</Tooltip>
 		{:else}
 			<div class="z-game-btn z-game-placeholder">
 				<Icon icon="mdi:gamepad-variant" />
@@ -98,34 +99,37 @@
 	<!-- Navigation -->
 	<nav class="z-sidebar-nav">
 		{#each navItems as item}
-			<a
-				href={item.path}
-				class="z-nav-item"
-				class:active={isActive(item.path)}
-				title={item.label}
-			>
-				<Icon icon={item.icon} class="z-nav-icon" />
-				<span class="z-nav-label">{item.label}</span>
-				{#if isActive(item.path)}
-					<span class="z-nav-indicator"></span>
-				{/if}
-			</a>
+			<Tooltip text={item.label} position="right" delay={300}>
+				<a
+					href={item.path}
+					class="z-nav-item"
+					class:active={isActive(item.path)}
+				>
+					<Icon icon={item.icon} class="z-nav-icon" />
+					<span class="z-nav-label">{item.label}</span>
+					{#if isActive(item.path)}
+						<span class="z-nav-indicator"></span>
+					{/if}
+				</a>
+			</Tooltip>
 		{/each}
 	</nav>
 
 	<!-- Bottom section -->
 	<div class="z-sidebar-bottom">
-		<!-- Launch button -->
-		<button class="z-launch-btn" onclick={launchGame} title="Launch Game">
-			<Icon icon="mdi:rocket-launch" />
-		</button>
+		<Tooltip text="Launch Game" position="right" delay={300}>
+			<button class="z-launch-btn" onclick={launchGame}>
+				<Icon icon="mdi:rocket-launch" />
+			</button>
+		</Tooltip>
 
-		<!-- Profile name -->
 		{#if profiles.active}
-			<div class="z-sidebar-profile" title={profiles.active.name}>
-				<Icon icon="mdi:account-circle" class="text-xs" />
-				<span>{profiles.active.name}</span>
-			</div>
+			<Tooltip text={profiles.active.name} position="right" delay={300}>
+				<div class="z-sidebar-profile" role="status">
+					<Icon icon="mdi:account-circle" class="text-xs" />
+					<span>{profiles.active.name}</span>
+				</div>
+			</Tooltip>
 		{/if}
 	</div>
 </aside>
@@ -259,6 +263,7 @@
 		text-decoration: none;
 		transition: all var(--transition-fast);
 		position: relative;
+		width: 100%;
 	}
 
 	.z-nav-item:hover {

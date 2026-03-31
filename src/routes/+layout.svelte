@@ -58,9 +58,7 @@
 
 <svelte:body
 	oncontextmenu={(evt) => {
-		if (window.location.hostname === 'tauri.localhost') {
-			evt.preventDefault();
-		}
+		evt.preventDefault();
 	}}
 	onclick={(evt) => {
 		const anchor = (evt.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null;
