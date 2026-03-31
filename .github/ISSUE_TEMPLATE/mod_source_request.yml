@@ -1,0 +1,39 @@
+name: Mod Source Request
+description: Request support for a new mod source (e.g., NexusMods, CurseForge)
+labels: ["mod-source", "enhancement"]
+body:
+  - type: input
+    id: source-name
+    attributes:
+      label: Source Name
+      description: The name of the mod source.
+      placeholder: e.g. NexusMods, CurseForge, Thunderstore
+    validations:
+      required: true
+
+  - type: input
+    id: source-url
+    attributes:
+      label: Source URL
+      description: The URL of the mod source website.
+      placeholder: e.g. https://www.nexusmods.com
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: Why should Zephyr support this mod source? What games or communities use it?
+      placeholder: Explain why this source should be supported...
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Info
+      description: Any extra information, such as API documentation links or relevant details.
+      placeholder: Add any additional info here...
+    validations:
+      required: false
