@@ -1,0 +1,43 @@
+name: Game Request
+description: Request support for a new game
+labels: ["game-support"]
+body:
+  - type: input
+    id: game-name
+    attributes:
+      label: Game Name
+      description: The name of the game you'd like Zephyr to support.
+      placeholder: e.g. Baldur's Gate 3
+    validations:
+      required: true
+
+  - type: dropdown
+    id: store
+    attributes:
+      label: Store
+      description: Where is the game available?
+      options:
+        - Steam
+        - Epic
+        - GOG
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: mod-loader
+    attributes:
+      label: Mod Loader
+      description: If applicable, which mod loader does this game use?
+      placeholder: e.g. BepInEx, Fabric, Forge
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Info
+      description: Any extra details, such as links to modding resources or community pages.
+      placeholder: Add any additional info here...
+    validations:
+      required: false
