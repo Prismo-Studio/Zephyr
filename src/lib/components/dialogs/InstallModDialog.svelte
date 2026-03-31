@@ -1,57 +1,62 @@
 <script lang="ts">
+	import Modal from '$lib/components/ui/Modal.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import ConfirmDialog from '$lib/components/ui/ConfirmDialog.svelte';
-	import Select from '$lib/components/ui/Select.svelte';
-	import * as api from '$lib/api';
-	import type { Mod } from '$lib/types';
-	import { selectItems } from '$lib/util';
-	import { listen } from '@tauri-apps/api/event';
+	import ModCard from '$lib/components/mod-list/ModCard.svelte';
+	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
-	import profiles from '$lib/state/profile.svelte';
-	import { m } from '$lib/paraglide/messages';
+	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
+	import type { Mod } from '$lib/types';
+	import * as api from '$lib/api';
 
 	let open = $state(false);
 	let mod: Mod | null = $state(null);
-
-	let profileName: string = $state('');
+	let unlisten: UnlistenFn | undefined;
 
 	onMount(() => {
 		listen<Mod>('install_mod', (evt) => {
 			mod = evt.payload;
-			profileName = profiles.active?.name ?? profiles.list[0].name;
-
 			open = true;
-		});
+		}).then((cb) => (unlisten = cb));
+
+		return () => unlisten?.();
 	});
 
 	async function install() {
-		if (mod === null) return;
-
-		let profileIndex = profiles.list.findIndex((profile) => profile.name === profileName);
-		if (profileIndex === -1) return;
-
-		open = false;
-
-		await profiles.setActive(profileIndex);
+		if (!mod || mod.versions.length === 0) return;
 		await api.profile.install.mod({
 			packageUuid: mod.uuid,
-			versionUuid: mod.versionUuid
+			versionUuid: mod.versions[0].uuid
 		});
+		open = false;
 	}
 </script>
 
-<ConfirmDialog bind:open title={m.installModDialog_title({ name: mod?.name ?? m.unknown() })}>
-	<p class="text-[#8899AA]">{m.installModDialog_content()}</p>
+<Modal bind:open title="Install Mod">
+	{#if mod}
+		<div class="z-install-dialog">
+			<ModCard {mod} showInstallBtn={false} />
+			<p class="z-install-confirm">Do you want to install this mod?</p>
+		</div>
+	{/if}
 
-	<Select
-		triggerClass="w-full"
-		items={selectItems(profiles.list.map((profile) => profile.name))}
-		avoidCollisions={false}
-		type="single"
-		bind:value={profileName}
-	/>
-
-	{#snippet buttons()}
-		<Button icon="mdi:download" onclick={install}>{m.installModDialog_button()}</Button>
+	{#snippet actions()}
+		<Button variant="ghost" onclick={() => (open = false)}>Cancel</Button>
+		<Button variant="primary" onclick={install}>
+			{#snippet icon()}<Icon icon="mdi:download" />{/snippet}
+			Install
+		</Button>
 	{/snippet}
-</ConfirmDialog>
+</Modal>
+
+<style>
+	.z-install-dialog {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.z-install-confirm {
+		font-size: 13px;
+		color: var(--text-secondary);
+	}
+</style>

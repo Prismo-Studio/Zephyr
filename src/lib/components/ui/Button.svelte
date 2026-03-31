@@ -1,80 +1,150 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type { Snippet } from 'svelte';
+	import type { MouseEventHandler } from 'svelte/elements';
+
+	type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'accent';
+	type Size = 'sm' | 'md' | 'lg';
 
 	type Props = {
-		color?: 'accent' | 'primary' | 'red' | 'gradient';
-		icon?: string;
+		variant?: Variant;
+		size?: Size;
+		disabled?: boolean;
 		loading?: boolean;
-	} & HTMLButtonAttributes;
+		class?: string;
+		onclick?: MouseEventHandler<HTMLButtonElement>;
+		children?: Snippet;
+		icon?: Snippet;
+	};
 
 	let {
-		disabled: disabledProp,
-		color = 'accent',
-		icon,
+		variant = 'secondary',
+		size = 'md',
+		disabled = false,
 		loading = false,
-		class: classProp,
+		class: className = '',
+		onclick,
 		children,
-		...restProps
+		icon
 	}: Props = $props();
-
-	let disabled = $derived(disabledProp || loading);
-	let renderedIcon = $derived(loading ? 'mdi:loading' : icon);
 </script>
 
 <button
-	class={[
-		classProp,
-		color === 'gradient'
-			? 'zephyr-btn-gradient font-medium text-white'
-			: color === 'accent'
-				? 'zephyr-btn-accent font-medium text-white'
-				: color === 'red'
-					? 'zephyr-btn-red text-white'
-					: 'zephyr-btn-primary text-[#E8ECF1]',
-		'inline-flex items-center overflow-hidden rounded-lg px-4 py-2 text-nowrap text-sm transition-all duration-200',
-		'disabled:opacity-50 disabled:cursor-not-allowed'
-	]}
-	{disabled}
-	{...restProps}
+	class="z-btn z-btn-{variant} z-btn-{size} {className}"
+	disabled={disabled || loading}
+	{onclick}
 >
-	{#if renderedIcon}
-		<Icon icon={renderedIcon} class="mr-2 text-lg {loading && 'animate-spin'}" />
+	{#if loading}
+		<span class="z-btn-spinner"></span>
+	{:else if icon}
+		<span class="z-btn-icon">{@render icon()}</span>
 	{/if}
-
-	{@render children?.()}
+	{#if children}
+		<span class="z-btn-label">{@render children()}</span>
+	{/if}
 </button>
 
 <style>
-	.zephyr-btn-gradient {
-		background: linear-gradient(135deg, #2D8CF0, #00D4AA);
-	}
-	.zephyr-btn-gradient:hover:not(:disabled) {
-		background: linear-gradient(135deg, #3D9CFF, #10E4BA);
-		box-shadow: 0 0 20px rgba(45, 140, 240, 0.3);
-	}
-
-	.zephyr-btn-accent {
-		background: #2D8CF0;
-	}
-	.zephyr-btn-accent:hover:not(:disabled) {
-		background: #3D9CFF;
-		box-shadow: 0 0 16px rgba(45, 140, 240, 0.25);
-	}
-
-	.zephyr-btn-primary {
-		background: #142240;
-		border: 1px solid #1A2A42;
-	}
-	.zephyr-btn-primary:hover:not(:disabled) {
-		background: #1A2A42;
-		border-color: #2D8CF0;
+	.z-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		border: 1px solid transparent;
+		border-radius: var(--radius-md);
+		font-family: var(--font-body);
+		font-weight: 600;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		white-space: nowrap;
+		position: relative;
+		overflow: hidden;
 	}
 
-	.zephyr-btn-red {
-		background: #991B1B;
+	.z-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
 	}
-	.zephyr-btn-red:hover:not(:disabled) {
-		background: #B91C1C;
+
+	/* Sizes */
+	.z-btn-sm { padding: 6px 12px; font-size: 12px; border-radius: var(--radius-sm); }
+	.z-btn-md { padding: 8px 16px; font-size: 13px; }
+	.z-btn-lg { padding: 12px 24px; font-size: 15px; border-radius: var(--radius-lg); }
+
+	/* Primary */
+	.z-btn-primary {
+		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
+		color: var(--text-inverse);
+		border-color: var(--accent-400);
+		box-shadow: 0 0 12px rgba(26, 255, 250, 0.15);
+	}
+	.z-btn-primary:hover:not(:disabled) {
+		box-shadow: 0 0 24px rgba(26, 255, 250, 0.3);
+		transform: translateY(-1px);
+	}
+	.z-btn-primary:active:not(:disabled) {
+		transform: translateY(0);
+	}
+
+	/* Accent */
+	.z-btn-accent {
+		background: var(--accent-400);
+		color: var(--text-inverse);
+		font-weight: 700;
+	}
+	.z-btn-accent:hover:not(:disabled) {
+		background: var(--accent-300);
+		box-shadow: var(--shadow-glow);
+	}
+
+	/* Secondary */
+	.z-btn-secondary {
+		background: var(--bg-elevated);
+		color: var(--text-primary);
+		border-color: var(--border-default);
+	}
+	.z-btn-secondary:hover:not(:disabled) {
+		background: var(--bg-overlay);
+		border-color: var(--border-strong);
+	}
+
+	/* Ghost */
+	.z-btn-ghost {
+		background: transparent;
+		color: var(--text-secondary);
+	}
+	.z-btn-ghost:hover:not(:disabled) {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+	}
+
+	/* Danger */
+	.z-btn-danger {
+		background: rgba(255, 92, 92, 0.1);
+		color: var(--error);
+		border-color: rgba(255, 92, 92, 0.2);
+	}
+	.z-btn-danger:hover:not(:disabled) {
+		background: rgba(255, 92, 92, 0.2);
+		border-color: rgba(255, 92, 92, 0.4);
+	}
+
+	/* Spinner */
+	.z-btn-spinner {
+		width: 14px;
+		height: 14px;
+		border: 2px solid currentColor;
+		border-top-color: transparent;
+		border-radius: 50%;
+		animation: spin 0.6s linear infinite;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	.z-btn-icon {
+		display: flex;
+		align-items: center;
+		font-size: 1.1em;
 	}
 </style>

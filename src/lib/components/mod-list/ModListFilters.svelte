@@ -1,108 +1,252 @@
 <script lang="ts">
-	import SearchBar from '$lib/components/ui/SearchBar.svelte';
-	import { selectItems } from '$lib/util';
-	import { type SortBy, type QueryModsArgsWithoutMax } from '$lib/types';
-	import type { Writable } from 'svelte/store';
-	import ModListCategoryFilter from './ModListCategoryFilter.svelte';
-	import Select from '$lib/components/ui/Select.svelte';
-	import { toSentenceCase } from '$lib/i18n';
-	import { m } from '$lib/paraglide/messages';
+	import type { QueryModsArgsWithoutMax, SortBy, SortOrder } from '$lib/types';
+	import Icon from '@iconify/svelte';
+	import Input from '$lib/components/ui/Input.svelte';
+	import games from '$lib/state/game.svelte';
 
 	type Props = {
-		sortOptions: SortBy[];
 		queryArgs: QueryModsArgsWithoutMax;
+		sortOptions?: SortBy[];
+		showCategories?: boolean;
 	};
 
-	let { sortOptions, queryArgs }: Props = $props();
+	let { queryArgs, sortOptions = ['rating', 'downloads', 'lastUpdated', 'newest', 'name'], showCategories = false }: Props = $props();
 
-	function getSelectedIncludes() {
-		let selected = [];
+	let showFilters = $state(false);
 
-		if (queryArgs.includeDeprecated) selected.push('deprecated');
-		if (queryArgs.includeNsfw) selected.push('NSFW');
-		if (queryArgs.includeEnabled) selected.push('enabled');
-		if (queryArgs.includeDisabled) selected.push('disabled');
-
-		return selected;
-	}
-
-	const optionsTranslate: Record<string, string> = {
-		deprecated: m.modListFilters_options_deprecated(),
-		NSFW: m.modListFilters_options_NSFW(),
-		enabled: m.modListFilters_options_enabled(),
-		disabled: m.modListFilters_options_disabled(),
-		ascending: m.modListFilters_options_ascending(),
-		descending: m.modListFilters_options_descending(),
-		lastUpdated: m.modListFilters_options_lastUpdated(),
-		newest: m.modListFilters_options_newest(),
-		rating: m.modListFilters_options_rating(),
-		downloads: m.modListFilters_options_downloads(),
-		custom: m.modListFilters_options_custom(),
-		installDate: m.modListFilters_options_installDate(),
-		diskSpace: m.modListFilters_options_diskSpace(),
-		name: m.modListFilters_options_name(),
-		author: m.modListFilters_options_author()
+	const sortLabels: Record<SortBy, string> = {
+		newest: 'Newest',
+		name: 'Name',
+		author: 'Author',
+		lastUpdated: 'Updated',
+		downloads: 'Downloads',
+		rating: 'Rating',
+		installDate: 'Install date',
+		custom: 'Custom',
+		diskSpace: 'Size'
 	};
-
-	function getOptionsLabel(item: string): string {
-		return optionsTranslate[item] ?? toSentenceCase(item);
-	}
 </script>
 
-<div class="mb-1.5 flex flex-wrap gap-1.5 pr-3">
-	<div class="relative flex-grow-3">
-		<SearchBar
+<div class="z-filters">
+	<div class="z-filters-row">
+		<Input
 			bind:value={queryArgs.searchTerm}
-			placeholder={m.modListFilters_searchBar_placeholder()}
-		/>
+			placeholder="Search mods..."
+			class="z-search-input"
+		>
+			{#snippet iconLeft()}
+				<Icon icon="mdi:magnify" />
+			{/snippet}
+		</Input>
+
+		<button class="z-filter-btn" class:active={showFilters} onclick={() => (showFilters = !showFilters)}>
+			<Icon icon="mdi:filter-variant" />
+		</button>
+
+		<!-- Sort selector -->
+		<div class="z-sort-group">
+			<select
+				class="z-sort-select"
+				bind:value={queryArgs.sortBy}
+			>
+				{#each sortOptions as option}
+					<option value={option}>{sortLabels[option]}</option>
+				{/each}
+			</select>
+			<button
+				class="z-sort-order"
+				onclick={() => {
+					queryArgs.sortOrder = queryArgs.sortOrder === 'ascending' ? 'descending' : 'ascending';
+				}}
+				title={queryArgs.sortOrder === 'ascending' ? 'Ascending' : 'Descending'}
+			>
+				<Icon icon={queryArgs.sortOrder === 'ascending' ? 'mdi:sort-ascending' : 'mdi:sort-descending'} />
+			</button>
+		</div>
 	</div>
 
-	<div class="flex grow gap-1.5">
-		<Select
-			icon={queryArgs.sortOrder === 'descending' ? 'mdi:sort-descending' : 'mdi:sort-ascending'}
-			triggerClass="grow basis-0 py-1.5"
-			items={selectItems(['descending', 'ascending'], getOptionsLabel)}
-			bind:value={queryArgs.sortOrder}
-			type="single"
-		/>
+	{#if showFilters}
+		<div class="z-filters-expanded">
+			<label class="z-filter-toggle">
+				<input type="checkbox" bind:checked={queryArgs.includeNsfw} />
+				<span>NSFW</span>
+			</label>
+			<label class="z-filter-toggle">
+				<input type="checkbox" bind:checked={queryArgs.includeDeprecated} />
+				<span>Deprecated</span>
+			</label>
 
-		<Select
-			icon="mdi:sort"
-			triggerClass="grow basis-0 py-1.5"
-			items={selectItems(sortOptions, getOptionsLabel)}
-			bind:value={queryArgs.sortBy}
-			type="single"
-		/>
-	</div>
+			{#if showCategories && games.categories.length > 0}
+				<div class="z-filter-categories">
+					{#each games.categories.slice(0, 20) as cat}
+						<button
+							class="z-category-chip"
+							class:active={queryArgs.includeCategories.includes(cat.slug)}
+							onclick={() => {
+								const idx = queryArgs.includeCategories.indexOf(cat.slug);
+								if (idx >= 0) {
+									queryArgs.includeCategories = queryArgs.includeCategories.filter((c) => c !== cat.slug);
+								} else {
+									queryArgs.includeCategories = [...queryArgs.includeCategories, cat.slug];
+								}
+							}}
+						>
+							{cat.name}
+						</button>
+					{/each}
+				</div>
+			{/if}
+		</div>
+	{/if}
 </div>
 
-<div class="mb-1.5 flex items-start gap-1.5 pr-3">
-	<ModListCategoryFilter
-		label={m.modListFilters_filter_include()}
-		icon="mdi:filter"
-		bind:selected={queryArgs.includeCategories}
-		bind:excluded={queryArgs.excludeCategories}
-	/>
+<style>
+	.z-filters {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+		padding-bottom: var(--space-md);
+	}
 
-	<ModListCategoryFilter
-		label={m.modListFilters_filter_exclude()}
-		icon="mdi:filter-remove"
-		bind:selected={queryArgs.excludeCategories}
-		bind:excluded={queryArgs.includeCategories}
-	/>
+	.z-filters-row {
+		display: flex;
+		gap: var(--space-sm);
+		align-items: center;
+	}
 
-	<Select
-		label={m.modListFilters_select_title()}
-		icon="mdi:filter"
-		triggerClass="min-w-36 grow basis-0 py-1.5"
-		items={selectItems(['deprecated', 'NSFW', 'enabled', 'disabled'], getOptionsLabel)}
-		onValueChange={(items) => {
-			queryArgs.includeEnabled = items.includes('enabled');
-			queryArgs.includeDeprecated = items.includes('deprecated');
-			queryArgs.includeNsfw = items.includes('NSFW');
-			queryArgs.includeDisabled = items.includes('disabled');
-		}}
-		value={getSelectedIncludes()}
-		type="multiple"
-	/>
-</div>
+	:global(.z-search-input) {
+		flex: 1;
+	}
+
+	.z-filter-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		flex-shrink: 0;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border-default);
+		background: var(--bg-elevated);
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-size: 18px;
+	}
+
+	.z-filter-btn:hover, .z-filter-btn.active {
+		color: var(--text-accent);
+		border-color: var(--border-accent);
+		background: var(--bg-active);
+	}
+
+	.z-sort-group {
+		display: flex;
+		align-items: center;
+		gap: 2px;
+	}
+
+	.z-sort-select {
+		height: 36px;
+		padding: 0 var(--space-md);
+		border-radius: var(--radius-md) 0 0 var(--radius-md);
+		border: 1px solid var(--border-default);
+		border-right: none;
+		background: var(--bg-elevated);
+		color: var(--text-primary);
+		font-family: var(--font-body);
+		font-size: 12px;
+		cursor: pointer;
+		outline: none;
+	}
+
+	.z-sort-select:focus {
+		border-color: var(--accent-400);
+	}
+
+	.z-sort-select option {
+		background: var(--bg-elevated);
+		color: var(--text-primary);
+	}
+
+	.z-sort-order {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border-radius: 0 var(--radius-md) var(--radius-md) 0;
+		border: 1px solid var(--border-default);
+		background: var(--bg-elevated);
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-size: 16px;
+	}
+
+	.z-sort-order:hover {
+		color: var(--text-primary);
+	}
+
+	.z-filters-expanded {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-sm);
+		padding: var(--space-md);
+		border-radius: var(--radius-md);
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-subtle);
+		animation: slideDown var(--transition-fast) ease;
+	}
+
+	.z-filter-toggle {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 12px;
+		color: var(--text-secondary);
+		cursor: pointer;
+		padding: 4px 10px;
+		border-radius: var(--radius-sm);
+		transition: background var(--transition-fast);
+	}
+
+	.z-filter-toggle:hover {
+		background: var(--bg-hover);
+	}
+
+	.z-filter-toggle input {
+		accent-color: var(--accent-400);
+	}
+
+	.z-filter-categories {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+		width: 100%;
+		padding-top: var(--space-sm);
+		border-top: 1px solid var(--border-subtle);
+	}
+
+	.z-category-chip {
+		padding: 3px 10px;
+		border-radius: var(--radius-full);
+		font-size: 11px;
+		border: 1px solid var(--border-subtle);
+		background: transparent;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.z-category-chip:hover {
+		border-color: var(--border-default);
+		color: var(--text-secondary);
+	}
+
+	.z-category-chip.active {
+		background: var(--bg-active);
+		border-color: var(--border-accent);
+		color: var(--text-accent);
+	}
+</style>

@@ -1,14 +1,9 @@
 <script lang="ts">
-	import ContextMenuContent from '$lib/components/ui/ContextMenuContent.svelte';
 	import * as api from '$lib/api';
-	import type { ContextItem, Mod, ModId } from '$lib/types';
+	import type { Mod, ModId } from '$lib/types';
 	import { shortenFileSize } from '$lib/util';
 	import Icon from '@iconify/svelte';
-	import { DropdownMenu } from 'bits-ui';
-	import clsx from 'clsx';
-	import DropdownArrow from '$lib/components/ui/DropdownArrow.svelte';
-	import Spinner from '../ui/Spinner.svelte';
-	import { m } from '$lib/paraglide/messages';
+	import Spinner from '$lib/components/ui/Spinner.svelte';
 
 	type Props = {
 		mod: Mod;
@@ -18,10 +13,8 @@
 
 	let { mod, locked, install }: Props = $props();
 
-	let versionsOpen = $state(false);
-	let downloadSize: number | null = $state(null);
-
 	let loading = $state(false);
+	let downloadSize: number | null = $state(null);
 
 	let disabled = $derived(mod.isInstalled || locked || loading);
 
@@ -30,31 +23,17 @@
 		versionUuid: mod.versionUuid
 	});
 
-	let contextItems: ContextItem[] = $derived(
-		mod.versions.map((version) => ({
-			label: version.name,
-			onclick: () =>
-				install({
-					packageUuid: mod.uuid,
-					versionUuid: version.uuid
-				})
-		}))
-	);
-
 	$effect(() => {
 		loading = false;
 		api.profile.install.getDownloadSize(modId).then((size) => (downloadSize = size));
 	});
 </script>
 
-<div class="mt-2 flex text-base text-white">
+<div class="z-install-btn-group">
 	<button
-		class={[
-			'flex grow items-center justify-center gap-2 rounded-l-xl py-2.5 font-semibold transition-all duration-200 disabled:cursor-not-allowed',
-			mod.isInstalled || locked
-				? 'bg-[#142240] text-[#8899AA]'
-				: 'bg-gradient-to-r from-[#2D8CF0] to-[#2575D0] enabled:hover:from-[#3D9CFF] enabled:hover:to-[#2D8CF0] enabled:hover:shadow-[0_0_20px_rgba(45,140,240,0.3)]'
-		]}
+		class="z-install-main"
+		class:installed={mod.isInstalled}
+		class:is-locked={locked}
 		onclick={() => {
 			install(modId);
 			loading = true;
@@ -62,41 +41,156 @@
 		{disabled}
 	>
 		{#if locked}
-			<Icon icon="mdi:lock" class="text-lg" />
-			{m.installModButton_button_locked()}
+			<Icon icon="mdi:lock" class="text-base" />
+			<span>Locked</span>
 		{:else if mod.isInstalled}
-			<Icon icon="mdi:check-circle" class="text-lg text-[#00D4AA]" />
-			{m.installModButton_button_isInstalled()}
+			<Icon icon="mdi:check-circle" class="text-base" style="color: var(--success)" />
+			<span>Installed</span>
 		{:else if loading}
-			<Spinner />
-			{m.installModButton_button_loading()}
+			<Spinner size={16} />
+			<span>Installing...</span>
 		{:else}
-			<Icon icon="mdi:download" class="align-middle text-xl" />
-			{m.installModButton_button_install()}
-
+			<Icon icon="mdi:download" class="text-lg" />
+			<span>Install</span>
 			{#if downloadSize}
-				<span class="text-sm font-normal opacity-80">({shortenFileSize(downloadSize)})</span>
+				<span class="z-install-size">({shortenFileSize(downloadSize)})</span>
 			{/if}
 		{/if}
 	</button>
-	<DropdownMenu.Root bind:open={versionsOpen}>
-		<DropdownMenu.Trigger
-			class={[
-				'ml-px rounded-r-xl px-2 py-2.5 text-xl transition-all duration-200 disabled:cursor-not-allowed',
-				mod.isInstalled || locked
-					? 'bg-[#142240] text-[#8899AA]'
-					: 'bg-gradient-to-r from-[#2575D0] to-[#2D8CF0] text-white hover:bg-[#3D9CFF]'
-			]}
-			{disabled}
-		>
-			<DropdownArrow open={versionsOpen} class="text-white" />
-		</DropdownMenu.Trigger>
-		<ContextMenuContent
-			type="dropdown"
-			style="light"
-			items={contextItems}
-			class="max-h-90 overflow-y-auto text-base"
-		/>
-	</DropdownMenu.Root>
+
+	<!-- Version dropdown -->
+	{#if mod.versions.length > 1 && !locked}
+		<details class="z-version-dropdown">
+			<summary class="z-version-trigger" class:installed={mod.isInstalled || locked}>
+				<Icon icon="mdi:chevron-down" class="text-base" />
+			</summary>
+			<div class="z-version-list">
+				{#each mod.versions as version}
+					<button
+						class="z-version-item"
+						onclick={() => install({ packageUuid: mod.uuid, versionUuid: version.uuid })}
+					>
+						{version.name}
+					</button>
+				{/each}
+			</div>
+		</details>
+	{/if}
 </div>
 
+<style>
+	.z-install-btn-group {
+		display: flex;
+		margin-top: var(--space-md);
+		font-size: 14px;
+	}
+
+	.z-install-main {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-sm);
+		padding: var(--space-md) var(--space-lg);
+		border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+		border: none;
+		font-weight: 700;
+		font-family: var(--font-body);
+		cursor: pointer;
+		transition: all var(--transition-normal);
+		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
+		color: var(--text-inverse);
+		box-shadow: 0 0 12px rgba(26, 255, 250, 0.15);
+	}
+
+	.z-install-main:hover:not(:disabled) {
+		box-shadow: 0 0 24px rgba(26, 255, 250, 0.3);
+		transform: translateY(-1px);
+	}
+
+	.z-install-main:disabled {
+		cursor: not-allowed;
+		opacity: 0.7;
+	}
+
+	.z-install-main.installed,
+	.z-install-main.is-locked {
+		background: var(--bg-overlay);
+		color: var(--text-secondary);
+		box-shadow: none;
+	}
+
+	.z-install-size {
+		font-size: 12px;
+		font-weight: 400;
+		opacity: 0.8;
+	}
+
+	/* Version dropdown */
+	.z-version-dropdown {
+		position: relative;
+	}
+
+	.z-version-trigger {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: var(--space-md) var(--space-sm);
+		border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+		background: linear-gradient(135deg, var(--accent-600), var(--accent-700));
+		color: var(--text-inverse);
+		cursor: pointer;
+		margin-left: 1px;
+		transition: all var(--transition-fast);
+		list-style: none;
+	}
+
+	.z-version-trigger::-webkit-details-marker {
+		display: none;
+	}
+
+	.z-version-trigger.installed {
+		background: var(--bg-overlay);
+		color: var(--text-secondary);
+	}
+
+	.z-version-trigger:hover {
+		background: var(--accent-500);
+	}
+
+	.z-version-list {
+		position: absolute;
+		bottom: calc(100% + 4px);
+		right: 0;
+		min-width: 160px;
+		max-height: 300px;
+		overflow-y: auto;
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-default);
+		border-radius: var(--radius-lg);
+		padding: var(--space-xs);
+		z-index: var(--z-dropdown);
+		box-shadow: var(--shadow-lg);
+		animation: slideDown var(--transition-fast) ease;
+	}
+
+	.z-version-item {
+		display: block;
+		width: 100%;
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-sm);
+		border: none;
+		background: transparent;
+		color: var(--text-secondary);
+		font-family: var(--font-mono);
+		font-size: 12px;
+		cursor: pointer;
+		text-align: left;
+		transition: all var(--transition-fast);
+	}
+
+	.z-version-item:hover {
+		background: var(--bg-hover);
+		color: var(--text-accent);
+	}
+</style>

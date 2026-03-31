@@ -1,342 +1,256 @@
 <script lang="ts">
-	import Dialog from '$lib/components/ui/Dialog.svelte';
-	import Markdown from '$lib/components/ui/Markdown.svelte';
-
-	import ModInfoDialog from '../dialogs/ModInfoDialog.svelte';
-	import ModCardList from '../ui/ModCardList.svelte';
-	import ModContextMenuContent from './ModContextMenuContent.svelte';
-
-	import { ModType, type Mod, type ModContextItem } from '$lib/types';
-	import {
-		communityUrl,
-		formatModName,
-		getMarkdown,
-		modIconSrc,
-		shortenFileSize,
-		shortenNum,
-		timeSince
-	} from '$lib/util';
-
-	import { DropdownMenu } from 'bits-ui';
-
+	import type { Mod, ModId } from '$lib/types';
 	import Icon from '@iconify/svelte';
-	import { type Snippet } from 'svelte';
+	import { formatModName, modIconSrc, shortenNum, shortenFileSize, timeSince, getMarkdown } from '$lib/util';
+	import Badge from '$lib/components/ui/Badge.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import Tabs from '$lib/components/ui/Tabs.svelte';
+	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import * as api from '$lib/api';
-	import { m } from '$lib/paraglide/messages';
+	import type { Snippet } from 'svelte';
 
 	type Props = {
 		mod: Mod;
-		contextItems?: ModContextItem[];
-		locked: boolean;
-		onclose: () => void;
+		locked?: boolean;
+		onclose?: () => void;
 		children?: Snippet;
 	};
 
-	let { mod, contextItems = [], locked, onclose, children }: Props = $props();
+	let { mod, locked = false, onclose, children }: Props = $props();
 
-	let dependenciesOpen = $state(false);
+	let activeTab = $state('readme');
+	let markdown = $state('');
+	let loadingMarkdown = $state(false);
 
-	let readmeOpen = $state(false);
-	let readme: ModInfoDialog;
+	const tabs = [
+		{ id: 'readme', label: 'Readme' },
+		{ id: 'changelog', label: 'Changelog' }
+	];
 
-	let changelogOpen = $state(false);
-	let changelog: ModInfoDialog;
-
-	let allContextItems = $derived([
-		...contextItems,
-		{
-			label: m.modDetails_allContextItems_close(),
-			icon: 'mdi:close',
-			onclick: onclose
+	async function loadMarkdown(type: 'readme' | 'changelog') {
+		loadingMarkdown = true;
+		try {
+			const result = await getMarkdown(mod, type);
+			markdown = result ?? '';
+		} catch {
+			markdown = '';
 		}
-	]);
-
-	let readmePromise: Promise<string | null> | null = $state(null);
-
-	function formatReadme(readme: string | null) {
-		if (readme === null) return null;
-
-		return readme
-			.split('\n')
-			.filter((line) => !line.startsWith('# '))
-			.join('\n');
+		loadingMarkdown = false;
 	}
 
 	$effect(() => {
-		readmePromise = getMarkdown(mod, 'readme').then(formatReadme);
+		if (mod) {
+			loadMarkdown(activeTab as 'readme' | 'changelog');
+		}
 	});
 </script>
 
-<div class="zephyr-details">
-	<!-- Close & menu buttons -->
-	<button
-		class="absolute top-4 right-12 z-10 rounded-lg p-1.5 text-[#556677] transition-colors hover:bg-[#142240] hover:text-[#E8ECF1]"
-		onclick={onclose}
-	>
-		<Icon icon="mdi:close" class="text-xl" />
-	</button>
+<div class="z-mod-details">
+	<!-- Header -->
+	<div class="z-details-header">
+		<button class="z-details-close" onclick={onclose}>
+			<Icon icon="mdi:close" />
+		</button>
 
-	<DropdownMenu.Root>
-		<DropdownMenu.Trigger
-			class="absolute top-4 right-4 z-10 rounded-lg p-1.5 text-[#556677] transition-colors hover:bg-[#142240] hover:text-[#E8ECF1]"
-		>
-			<Icon icon="mdi:dots-vertical" class="text-xl" />
-		</DropdownMenu.Trigger>
-		<ModContextMenuContent style="light" {mod} {locked} items={allContextItems} type="dropdown" />
-	</DropdownMenu.Root>
-
-	<div class="light-scrollbar grow overflow-x-hidden overflow-y-auto">
-		<!-- Hero section -->
-		<div class="zephyr-details-hero">
-			<img src={modIconSrc(mod)} class="zephyr-details-icon" alt="" />
-
-			<div class="mt-4">
-				<svelte:element
-					this={mod.type === ModType.Remote ? 'a' : 'div'}
-					class={[
-						'text-2xl font-bold text-white break-words leading-tight',
-						mod.type === ModType.Remote && 'hover:underline'
-					]}
-					href={communityUrl(`${mod.author}/${mod.name}`)}
-					target="_blank">{formatModName(mod.name)}</svelte:element
-				>
-
+		<div class="z-details-hero">
+			<img src={modIconSrc(mod)} alt={mod.name} class="z-details-icon" />
+			<div class="z-details-title">
+				<h2>{formatModName(mod.name)}</h2>
 				{#if mod.author}
-					<div class="mt-1 text-sm text-[#8899AA]">
-						{m.modDetails_by()}
-						<a class="text-[#2D8CF0] hover:underline" href={communityUrl(mod.author)} target="_blank">
-							{mod.author}
-						</a>
-					</div>
-				{/if}
-
-				{#if mod.version}
-					<span class="mt-2 inline-block rounded-md bg-[#142240] px-2.5 py-0.5 text-xs font-mono text-[#8899AA]">
-						v{mod.version}
-					</span>
+					<span class="z-details-author">by {mod.author}</span>
 				{/if}
 			</div>
 		</div>
 
-		<!-- Tags -->
-		<div class="flex flex-wrap gap-1.5 px-5">
-			{#if mod.isDeprecated}
-				<div class="flex items-center gap-1 rounded-lg bg-red-500/15 px-2.5 py-1 text-xs font-medium text-red-400">
-					<Icon icon="mdi:error" class="text-sm" />
-					{m.modDetails_deprecated()}
-				</div>
+		<!-- Badges -->
+		<div class="z-details-badges">
+			{#if mod.version}
+				<Badge variant="accent">{mod.version}</Badge>
 			{/if}
-
-			{#if mod.containsNsfw}
-				<div class="flex items-center gap-1 rounded-lg bg-red-500/15 px-2.5 py-1 text-xs font-medium text-red-400">
-					<Icon icon="material-symbols:explicit" class="text-sm" />
-					{m.modDetails_NSFW()}
-				</div>
+			{#if mod.isInstalled}
+				<Badge variant="success">Installed</Badge>
+			{/if}
+			{#if mod.isDeprecated}
+				<Badge variant="error">Deprecated</Badge>
+			{/if}
+			{#if mod.isPinned}
+				<Badge>Pinned</Badge>
 			{/if}
 		</div>
 
 		<!-- Stats -->
-		<div class="mx-5 mt-4 grid grid-cols-3 gap-2">
-			{#if mod.rating !== null}
-				<div class="zephyr-stat">
-					<Icon icon="mdi:star" class="text-yellow-400 text-lg" />
-					<span class="text-sm font-semibold text-[#E8ECF1]">{shortenNum(mod.rating)}</span>
+		<div class="z-details-stats">
+			{#if mod.downloads != null}
+				<div class="z-stat">
+					<Icon icon="mdi:download" />
+					<span>{shortenNum(mod.downloads)}</span>
 				</div>
 			{/if}
-			{#if mod.downloads !== null}
-				<div class="zephyr-stat">
-					<Icon icon="mdi:download" class="text-[#00D4AA] text-lg" />
-					<span class="text-sm font-semibold text-[#E8ECF1]">{shortenNum(mod.downloads)}</span>
+			{#if mod.rating != null}
+				<div class="z-stat">
+					<Icon icon="mdi:thumb-up" />
+					<span>{shortenNum(mod.rating)}</span>
 				</div>
 			{/if}
-			<div class="zephyr-stat">
-				<Icon icon="mdi:weight" class="text-[#556677] text-lg" />
-				<span class="text-sm font-semibold text-[#E8ECF1]">{shortenFileSize(mod.fileSize)}</span>
+			<div class="z-stat">
+				<Icon icon="mdi:file" />
+				<span>{shortenFileSize(mod.fileSize)}</span>
 			</div>
-		</div>
-
-		{#if mod.lastUpdated !== null}
-			<div class="mx-5 mt-2 text-xs text-[#556677]">
-				{m.modDetails_lastUpdated({ time: timeSince(new Date(mod.lastUpdated)) })}
-			</div>
-		{/if}
-
-		<!-- Categories -->
-		{#if mod.categories}
-			<div class="mx-5 mt-3 flex flex-wrap gap-1">
-				{#each mod.categories as category}
-					<span class="rounded-full bg-[#142240] px-3 py-0.5 text-[11px] font-medium text-[#8899AA]">
-						{category}
-					</span>
-				{/each}
-			</div>
-		{/if}
-
-		{#if mod.description !== null}
-			<p class="mx-5 mt-3 text-sm leading-relaxed text-[#8899AA] lg:hidden">
-				{mod.description}
-			</p>
-		{/if}
-
-		<!-- Readme -->
-		<div class="mx-5 hidden lg:block">
-			{#await readmePromise}
-				<div role="status" class="animate-pulse mt-4">
-					<div class="bg-[#142240] h-6 w-48 rounded-lg"></div>
-					<div class="bg-[#142240] mt-3 h-3 w-full rounded-full"></div>
-					<div class="bg-[#142240] mt-2 h-3 w-4/5 rounded-full"></div>
-					<div class="bg-[#142240] mt-2 h-3 w-3/5 rounded-full"></div>
+			{#if mod.lastUpdated}
+				<div class="z-stat">
+					<Icon icon="mdi:clock-outline" />
+					<span>{timeSince(mod.lastUpdated)}</span>
 				</div>
-			{:then readme}
-				<Markdown source={readme ?? m.modDetails_noFound()} />
-			{/await}
+			{/if}
 		</div>
+
+		<!-- Install button slot -->
+		{#if children}{@render children()}{/if}
 	</div>
 
-	<!-- Bottom actions -->
-	<div class="zephyr-details-actions">
-		{#if mod.configFile}
-			<a
-				href={'/config?file=' + mod.configFile}
-				class="zephyr-action-link"
-			>
-				<Icon icon="mdi:file-cog" class="text-base" />
-				{m.modDetails_editConfig()}
-			</a>
-		{/if}
+	<!-- Tabs + Content -->
+	<div class="z-details-content">
+		<Tabs {tabs} bind:active={activeTab} onchange={(id) => loadMarkdown(id as 'readme' | 'changelog')} />
 
-		<div class="flex gap-1.5">
-			<button
-				class="zephyr-action-btn grow"
-				onmouseenter={() => changelog.fetchMarkdown()}
-				onclick={() => (changelogOpen = true)}
-			>
-				<Icon icon="mdi:file-document" class="text-base" />
-				{m.modDetails_changeLog()}
-			</button>
-
-			<button
-				class="zephyr-action-btn grow"
-				onmouseenter={() => readme.fetchMarkdown()}
-				onclick={() => (readmeOpen = true)}
-			>
-				<Icon icon="mdi:info" class="text-base" />
-				{m.modDetails_details()}
-			</button>
+		<div class="z-details-body">
+			{#if loadingMarkdown}
+				<div class="z-details-loading">
+					<Spinner size={20} />
+				</div>
+			{:else if markdown}
+				<div class="markdown">
+					{@html markdown}
+				</div>
+			{:else}
+				<p class="z-details-empty">No content available.</p>
+			{/if}
 		</div>
-
-		{#if mod.dependencies !== null && mod.dependencies.length > 0}
-			<button
-				class="zephyr-action-btn"
-				onclick={() => (dependenciesOpen = true)}
-			>
-				<Icon icon="material-symbols:network-node" class="text-base" />
-				{m.modDetails_dependencies()}
-				<span class="ml-auto rounded-md bg-[#0B1628] px-2 py-0.5 text-[11px] font-semibold text-[#2D8CF0]">
-					{mod.dependencies.length}
-				</span>
-			</button>
-		{/if}
-
-		{@render children?.()}
 	</div>
 </div>
 
-<Dialog title="Dependencies of {mod.name}" bind:open={dependenciesOpen}>
-	{#if mod.dependencies}
-		<ModCardList names={mod.dependencies} class="mt-4" />
-	{/if}
-</Dialog>
-
-<ModInfoDialog bind:this={readme} bind:open={readmeOpen} {mod} type="readme" />
-<ModInfoDialog
-	bind:this={changelog}
-	bind:open={changelogOpen}
-	{mod}
-	useLatest={true}
-	type="changelog"
-/>
-
 <style>
-	.zephyr-details {
-		position: relative;
-		display: flex;
-		flex-direction: column;
+	.z-mod-details {
 		width: 40%;
-		min-width: 18rem;
-		border-left: 1px solid #1A2A42;
-		background: #0B1628;
-		color: white;
-	}
-
-	.zephyr-details-hero {
-		padding: 1.5rem 1.25rem 1rem;
+		min-width: 320px;
+		max-width: 480px;
+		height: 100%;
+		background: var(--bg-surface);
+		border-left: 1px solid var(--border-subtle);
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
+		overflow: hidden;
+		animation: slideIn var(--transition-normal) ease;
 	}
 
-	.zephyr-details-icon {
-		width: 80px;
-		height: 80px;
-		border-radius: 16px;
+	@keyframes slideIn {
+		from { transform: translateX(20px); opacity: 0; }
+		to { transform: translateX(0); opacity: 1; }
+	}
+
+	.z-details-header {
+		padding: var(--space-xl);
+		border-bottom: 1px solid var(--border-subtle);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+		position: relative;
+	}
+
+	.z-details-close {
+		position: absolute;
+		top: var(--space-md);
+		right: var(--space-md);
+		width: 28px;
+		height: 28px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: var(--radius-sm);
+		border: none;
+		background: transparent;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.z-details-close:hover {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+	}
+
+	.z-details-hero {
+		display: flex;
+		align-items: center;
+		gap: var(--space-lg);
+	}
+
+	.z-details-icon {
+		width: 64px;
+		height: 64px;
+		border-radius: var(--radius-lg);
 		object-fit: cover;
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-		border: 1px solid #1A2A42;
+		background: var(--bg-overlay);
+		border: 1px solid var(--border-subtle);
 	}
 
-	.zephyr-stat {
+	.z-details-title h2 {
+		font-family: var(--font-display);
+		font-size: 18px;
+		font-weight: 800;
+		color: var(--text-primary);
+		letter-spacing: -0.02em;
+	}
+
+	.z-details-author {
+		font-size: 13px;
+		color: var(--text-muted);
+	}
+
+	.z-details-badges {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.z-details-stats {
+		display: flex;
+		gap: var(--space-lg);
+		font-size: 12px;
+		color: var(--text-muted);
+	}
+
+	.z-stat {
 		display: flex;
 		align-items: center;
-		gap: 6px;
-		background: #0F1D32;
-		border: 1px solid #1A2A42;
-		border-radius: 10px;
-		padding: 8px 10px;
+		gap: 4px;
 	}
 
-	.zephyr-details-actions {
+	.z-details-content {
+		flex: 1;
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
-		padding: 12px 16px;
-		border-top: 1px solid #1A2A42;
+		overflow: hidden;
+		padding: var(--space-lg);
+		gap: var(--space-md);
 	}
 
-	.zephyr-action-btn {
+	.z-details-body {
+		flex: 1;
+		overflow-y: auto;
+		padding-top: var(--space-sm);
+	}
+
+	.z-details-loading {
 		display: flex;
-		align-items: center;
-		gap: 8px;
-		padding: 8px 12px;
-		border-radius: 10px;
-		background: #142240;
-		color: #E8ECF1;
+		justify-content: center;
+		padding: var(--space-2xl);
+		color: var(--text-muted);
+	}
+
+	.z-details-empty {
+		text-align: center;
+		color: var(--text-muted);
 		font-size: 13px;
-		font-weight: 500;
-		transition: all 0.15s ease;
-	}
-
-	.zephyr-action-btn:hover {
-		background: #1A2A42;
-		transform: translateY(-1px);
-	}
-
-	.zephyr-action-link {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		padding: 8px 12px;
-		border-radius: 10px;
-		background: rgba(45, 140, 240, 0.1);
-		color: #2D8CF0;
-		font-size: 13px;
-		font-weight: 500;
-		transition: all 0.15s ease;
-		text-decoration: none;
-	}
-
-	.zephyr-action-link:hover {
-		background: rgba(45, 140, 240, 0.18);
-		color: #4DA3FF;
+		padding: var(--space-2xl);
 	}
 </style>

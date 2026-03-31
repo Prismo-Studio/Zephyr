@@ -1,351 +1,298 @@
 <script lang="ts">
 	import * as api from '$lib/api';
-	import DependantsDialog from '$lib/components/dialogs/DependantsDialog.svelte';
-	import type { Mod, AvailableUpdate, Dependant, ModContextItem, SortBy } from '$lib/types';
-	import ModList from '$lib/components/mod-list/ModList.svelte';
-	import { isOutdated } from '$lib/util';
-	import Icon from '@iconify/svelte';
-	import Dialog from '$lib/components/ui/Dialog.svelte';
-	import ModCardList from '$lib/components/ui/ModCardList.svelte';
-	import ProfileModListItem from '$lib/components/mod-list/ProfileModListItem.svelte';
-	import UpdateAllBanner from '$lib/components/mod-list/UpdateAllBanner.svelte';
-	import { emit } from '@tauri-apps/api/event';
-	import ProfileLockedBanner from '$lib/components/mod-list/ProfileLockedBanner.svelte';
-	import { defaultContextItems } from '$lib/context';
+	import type { Mod, ModId, SortBy } from '$lib/types';
+
+	import ModCard from '$lib/components/mod-list/ModCard.svelte';
 	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
 	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
-	import UnknownModsBanner from '$lib/components/mod-list/UnknownModsBanner.svelte';
-	import profiles from '$lib/state/profile.svelte';
+	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
+	import Header from '$lib/components/layout/Header.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import Badge from '$lib/components/ui/Badge.svelte';
+
+	import { onMount } from 'svelte';
+	import { emit, listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import { profileQuery } from '$lib/state/misc.svelte';
-	import { m, page_dialog_title } from '$lib/paraglide/messages';
+	import profiles from '$lib/state/profile.svelte';
+	import Icon from '@iconify/svelte';
+	import type { AvailableUpdate, ProfileQuery } from '$lib/types';
 
-	const sortOptions: SortBy[] = [
-		'custom',
-		'installDate',
-		'lastUpdated',
-		'newest',
-		'diskSpace',
-		'name',
-		'author',
-		'rating',
-		'downloads'
-	];
-
-	const contextItems: ModContextItem[] = [
-		{
-			label: m.page_modContextItem_uninstall(),
-			icon: 'mdi:delete',
-			onclick: (mod) =>
-				uninstall({
-					uuid: mod.uuid,
-					fullName: mod.name
-				}),
-			showFor: (_, profileLocked) => !profileLocked
-		},
-		{
-			label: m.page_modContextItem_changeVersion(),
-			icon: 'mdi:edit',
-			onclick: () => {},
-			showFor: (mod, profileLocked) => mod.versions.length > 1 && !profileLocked,
-			children: (mod) =>
-				mod.versions.map((version) => ({
-					label: version.name,
-					onclick: () => updateMod(mod, version.uuid)
-				}))
-		},
-		{
-			label: m.page_modContextItem_showDependants(),
-			icon: 'mdi:source-branch',
-			onclick: openDependants
-		},
-		{
-			label: m.page_modContextItem_openFolder(),
-			icon: 'mdi:folder',
-			onclick: (mod) => api.profile.openModDir(mod.uuid)
-		},
-		...defaultContextItems
-	];
+	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
 	let mods: Mod[] = $state([]);
-	let totalModCount = $state(0);
-	let unknownMods: Dependant[] = $state([]);
 	let updates: AvailableUpdate[] = $state([]);
-
-	let modList: ModList;
-	let maxCount: number = $state(20);
+	let unknownMods: { fullName: string; uuid: string }[] = $state([]);
+	let totalModCount = $state(0);
+	let maxCount = $state(40);
 	let selectedMod: Mod | null = $state(null);
 
-	let removeDependants: DependantsDialog;
-	let disableDependants: DependantsDialog;
-	let enableDependencies: DependantsDialog;
-
-	let dependantsOpen = $state(false);
-	let dependants: string[] = $state([]);
-
-	let activeMod: Mod | null = $state(null);
-
-	let hasRefreshed = $state(false);
 	let refreshing = false;
 
 	async function refresh() {
 		if (refreshing) return;
 		refreshing = true;
 
-		let result = await api.profile.query({ ...profileQuery.current, maxCount });
+		try {
+			const result: ProfileQuery = await api.profile.query({
+				...profileQuery.current,
+				maxCount
+			});
 
-		mods = result.mods;
-		totalModCount = result.totalModCount;
-		unknownMods = result.unknownMods;
-		updates = result.updates;
+			mods = result.mods;
+			totalModCount = result.totalModCount;
+			updates = result.updates;
+			unknownMods = result.unknownMods;
+
+			if (selectedMod) {
+				selectedMod = mods.find((m) => m.uuid === selectedMod!.uuid) ?? null;
+			}
+		} catch {}
 
 		refreshing = false;
-		hasRefreshed = true;
 	}
 
-	async function toggleMod(mod: Mod, newState: boolean) {
-		mod.enabled = !mod.enabled;
-		let response = await api.profile.toggleMod(mod.uuid);
-
-		if (response.type == 'done') {
-			refresh();
-			return;
-		}
-
-		if (newState) {
-			enableDependencies.openFor(mod, response.dependants);
-		} else {
-			disableDependants.openFor(mod, response.dependants);
-		}
-	}
-
-	async function uninstall(mod: Dependant) {
-		let response = await api.profile.removeMod(mod.uuid);
-
-		if (response.type == 'done') {
-			selectedMod = null;
-		} else {
-			removeDependants.openFor(mod, response.dependants);
-		}
-	}
-
-	async function openDependants(mod: Mod) {
-		dependants = await api.profile.getDependants(mod.uuid);
-
-		activeMod = mod;
-		dependantsOpen = true;
-	}
-
-	async function updateMod(mod: Mod | null, versionUuid?: string) {
-		if (mod === null) return;
-
-		if (versionUuid === undefined) {
-			await api.profile.update.mods([mod.uuid], false);
-		} else {
-			await api.profile.update.changeModVersion({
-				packageUuid: mod.uuid,
-				versionUuid: versionUuid
-			});
-		}
-
+	async function installLatest(mod: Mod) {
+		if (mod.versions.length === 0) return;
+		await api.profile.install.mod({
+			packageUuid: mod.uuid,
+			versionUuid: mod.versions[0].uuid
+		});
 		await refresh();
+	}
 
-		if (selectedMod !== null) {
-			selectedMod = mods.find((mod) => mod.uuid === selectedMod!.uuid) ?? null;
+	async function install(id: ModId) {
+		await api.profile.install.mod(id);
+		await refresh();
+	}
+
+	async function toggleMod(mod: Mod) {
+		const response = await api.profile.toggleMod(mod.uuid);
+		if (response.type === 'done') await refresh();
+	}
+
+	async function removeMod(mod: Mod) {
+		const response = await api.profile.removeMod(mod.uuid);
+		if (response.type === 'done') await refresh();
+	}
+
+	async function reorderMod(uuid: string, delta: number) {
+		await emit('reorder_mod', { uuid, delta });
+	}
+
+	async function finishReorder() {
+		await emit('finish_reorder', {});
+		await refresh();
+	}
+
+	async function updateAllMods() {
+		const uuids = updates.filter((u) => !u.ignore).map((u) => u.packageUuid);
+		if (uuids.length > 0) {
+			await api.profile.update.mods(uuids, true);
+			await refresh();
 		}
-	}
-
-	let reorderUuid: string;
-	let reorderPrevIndex: number;
-
-	function ondragstart(evt: DragEvent) {
-		if (!isDragApplicable(evt)) return;
-
-		let element = evt.currentTarget as HTMLElement;
-
-		reorderUuid = element.dataset.uuid!;
-		reorderPrevIndex = parseInt(element.dataset.index!);
-
-		evt.dataTransfer!.effectAllowed = 'move';
-		evt.dataTransfer!.setData('text/html', element.outerHTML);
-	}
-
-	async function ondragover(evt: DragEvent) {
-		if (!isDragApplicable(evt)) return;
-
-		let target = evt.currentTarget as HTMLElement;
-		let newIndex = parseInt(target.dataset.index!);
-		let delta = newIndex - reorderPrevIndex;
-
-		if (delta === 0) {
-			return;
-		}
-
-		let temp = mods[reorderPrevIndex];
-		mods[reorderPrevIndex] = mods[newIndex];
-		mods[newIndex] = temp;
-
-		reorderPrevIndex = newIndex;
-
-		if (profileQuery.current.sortOrder === 'descending') {
-			delta *= -1; // list is reversed
-		}
-
-		await emit('reorder_mod', { uuid: reorderUuid, delta });
-	}
-
-	async function ondragend(evt: DragEvent) {
-		if (!isDragApplicable(evt)) return;
-		await emit('finish_reorder');
-	}
-
-	function isDragApplicable(evt: DragEvent) {
-		if (!reorderable || evt.dataTransfer === null) return false;
-		let items = [...evt.dataTransfer.items];
-		return items.length === 0 || items[0].kind !== 'file';
 	}
 
 	$effect(() => {
 		if (maxCount > 0) {
-			profiles.active;
 			profileQuery.current;
+			profiles.active;
 			refresh();
 		}
 	});
 
-	let reorderable = $derived(
-		profileQuery.current.sortBy === 'custom' &&
-			profileQuery.current.searchTerm === '' &&
-			profileQuery.current.excludeCategories.length === 0 &&
-			profileQuery.current.includeCategories.length === 0 &&
-			profileQuery.current.includeDeprecated &&
-			profileQuery.current.includeNsfw &&
-			profileQuery.current.includeDisabled
-	);
-
 	let locked = $derived(profiles.activeLocked);
 </script>
 
-<div class="flex grow overflow-hidden">
-	<div class="flex w-[60%] grow flex-col overflow-hidden pt-3 pl-3">
-		<ModListFilters {sortOptions} queryArgs={profileQuery.current} />
-
-		{#if locked}
-			<ProfileLockedBanner class="mr-4 mb-1" />
-		{:else}
-			<UpdateAllBanner {updates} />
-		{/if}
-
-		{#if unknownMods.length > 0}
-			<UnknownModsBanner mods={unknownMods} {uninstall} />
-		{/if}
-
-		<ModList
-			{mods}
-			queryArgs={profileQuery.current}
-			bind:this={modList}
-			bind:maxCount
-			bind:selected={selectedMod}
-		>
-			{#snippet placeholder()}
-				{#if hasRefreshed}
-					{#if totalModCount === 0}
-						<div class="flex flex-col items-center py-8">
-							<div class="rounded-2xl bg-[#142240]/50 p-6">
-								<Icon icon="ph:ghost" class="text-[#3A4A5C] text-7xl" />
-							</div>
-							<div class="mt-4 text-lg font-medium text-[#8899AA]">{m.page_modList_noMods_1()}</div>
-							<a href="/browse" class="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-[#2D8CF0]/10 px-4 py-2 text-sm font-medium text-[#2D8CF0] hover:bg-[#2D8CF0]/20 transition-colors"
-								><Icon icon="mdi:store-search" class="text-lg" />{m.page_modList_noMods_2()}</a
-							>
-						</div>
-					{:else}
-						<div class="flex flex-col items-center py-8">
-							<div class="rounded-2xl bg-[#142240]/50 p-5">
-								<Icon icon="mdi:filter-remove-outline" class="text-[#3A4A5C] text-5xl" />
-							</div>
-							<div class="mt-3 text-base font-medium text-[#8899AA]">{m.page_modList_noResults_1()}</div>
-							<div class="mt-1 text-sm text-[#556677]">{m.page_modList_noResults_2()}</div>
-						</div>
-					{/if}
+<div class="z-mods-page">
+	<div class="z-mods-main">
+		<Header title="Mods" subtitle="{totalModCount} installed">
+			{#snippet actions()}
+				{#if updates.length > 0}
+					<Button variant="accent" size="sm" onclick={updateAllMods}>
+						{#snippet icon()}<Icon icon="mdi:update" />{/snippet}
+						Update {updates.length}
+					</Button>
+				{/if}
+				{#if locked}
+					<Badge variant="warning">
+						<Icon icon="mdi:lock" class="text-xs" /> Locked
+					</Badge>
 				{/if}
 			{/snippet}
+		</Header>
 
-			{#snippet item({ mod, index, isSelected })}
-				<ProfileModListItem
-					{mod}
-					{index}
-					{isSelected}
-					{contextItems}
-					{reorderable}
-					{locked}
-					{ondragstart}
-					{ondragover}
-					{ondragend}
-					ontoggle={(newState) => toggleMod(mod, newState)}
-					onclick={() => modList.selectMod(mod)}
-				/>
-			{/snippet}
-		</ModList>
+		<div class="z-mods-content">
+			<div class="z-mods-filters">
+				<ModListFilters queryArgs={profileQuery.current} {sortOptions} />
+			</div>
+
+			{#if unknownMods.length > 0}
+				<div class="z-unknown-banner">
+					<Icon icon="mdi:help-circle" />
+					<span>{unknownMods.length} unknown mod{unknownMods.length > 1 ? 's' : ''} in profile</span>
+				</div>
+			{/if}
+
+			<div class="z-mods-list">
+				{#if mods.length === 0}
+					<div class="z-mods-empty">
+						<div class="z-empty-icon">
+							<Icon icon="mdi:package-variant" />
+						</div>
+						<p class="z-empty-title">No mods installed</p>
+						<p class="z-empty-desc">Browse the store to find mods for your game</p>
+						<a href="/browse" class="z-empty-action">
+							<Icon icon="mdi:store-search" />
+							Browse mods
+						</a>
+					</div>
+				{:else}
+					{#each mods as mod (mod.uuid)}
+						<ModCard
+							{mod}
+							isSelected={selectedMod?.uuid === mod.uuid}
+							locked={locked}
+							showInstallBtn={false}
+							onclick={() => (selectedMod = selectedMod?.uuid === mod.uuid ? null : mod)}
+						/>
+					{/each}
+
+					{#if mods.length < totalModCount}
+						<button class="z-load-more" onclick={() => (maxCount += 40)}>
+							Load more ({totalModCount - mods.length} remaining)
+						</button>
+					{/if}
+				{/if}
+			</div>
+		</div>
 	</div>
 
 	{#if selectedMod}
-		<ModDetails {locked} mod={selectedMod} {contextItems} onclose={() => (selectedMod = null)}>
-			{#if selectedMod && isOutdated(selectedMod) && !locked}
-				<button
-					class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-base font-semibold text-white transition-all duration-200"
-					style="background: linear-gradient(135deg, #00D4AA, #2D8CF0); box-shadow: 0 2px 12px rgba(0, 212, 170, 0.2);"
-					onmouseenter={(e) => { e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 212, 170, 0.35)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-					onmouseleave={(e) => { e.currentTarget.style.boxShadow = '0 2px 12px rgba(0, 212, 170, 0.2)'; e.currentTarget.style.transform = 'none'; }}
-					onclick={() => updateMod(selectedMod)}
-				>
-					<Icon icon="mdi:arrow-up-circle" class="align-middle text-xl" />
-					{m.page_modDetails_button({ version: selectedMod.versions[0].name })}
-				</button>
-			{/if}
+		<ModDetails mod={selectedMod} {locked} onclose={() => (selectedMod = null)}>
+			<InstallModButton mod={selectedMod} {install} {locked} />
 		</ModDetails>
 	{/if}
 </div>
 
-<Dialog
-	title={m.page_dialog_title({ name: activeMod?.name ?? m.unknown() })}
-	bind:open={dependantsOpen}
->
-	<div class="text-[#8899AA] mt-4 text-center">
-		{#if dependants.length === 0}
-			{m.page_dialog_noDependants()}
-		{:else}
-			<ModCardList names={dependants} showVersion={false} />
-		{/if}
-	</div>
-</Dialog>
+<style>
+	.z-mods-page {
+		display: flex;
+		height: 100%;
+		overflow: hidden;
+	}
 
-<DependantsDialog
-	bind:this={removeDependants}
-	title={m.page_dependantsDialog_uninstall_title()}
-	verb={m.page_dependantsDialog_uninstall_verb()}
-	description={m.page_dependantsDialog_uninstall_description()}
-	commandName="remove_mod"
-	onExecute={() => {
-		selectedMod = null;
-	}}
-	onCancel={refresh}
-/>
+	.z-mods-main {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		min-width: 0;
+	}
 
-<DependantsDialog
-	bind:this={disableDependants}
-	title={m.page_dependantsDialog_disable_title()}
-	verb={m.page_dependantsDialog_disable_verb()}
-	description={m.page_dependantsDialog_disable_description()}
-	commandName="toggle_mod"
-	onCancel={refresh}
-/>
+	.z-mods-content {
+		flex: 1;
+		overflow-y: auto;
+		padding: 0 var(--space-xl);
+		padding-bottom: var(--space-xl);
+	}
 
-<DependantsDialog
-	bind:this={enableDependencies}
-	title={m.page_dependantsDialog_enable_title()}
-	verb={m.page_dependantsDialog_enable_verb()}
-	description={m.page_dependantsDialog_enable_description()}
-	commandName="toggle_mod"
-	onCancel={refresh}
-	positive
-/>
+	.z-mods-filters {
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		padding-top: var(--space-sm);
+		background: var(--bg-base);
+	}
+
+	.z-mods-list {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.z-unknown-banner {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-md);
+		background: rgba(255, 179, 71, 0.08);
+		border: 1px solid rgba(255, 179, 71, 0.2);
+		color: var(--warning);
+		font-size: 12px;
+		margin-bottom: var(--space-sm);
+	}
+
+	/* Empty state */
+	.z-mods-empty {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: var(--space-3xl) var(--space-xl);
+		gap: var(--space-sm);
+	}
+
+	.z-empty-icon {
+		width: 64px;
+		height: 64px;
+		border-radius: var(--radius-xl);
+		background: var(--bg-elevated);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 28px;
+		color: var(--text-muted);
+		margin-bottom: var(--space-sm);
+	}
+
+	.z-empty-title {
+		font-family: var(--font-display);
+		font-size: 16px;
+		font-weight: 700;
+		color: var(--text-primary);
+	}
+
+	.z-empty-desc {
+		font-size: 13px;
+		color: var(--text-muted);
+	}
+
+	.z-empty-action {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin-top: var(--space-md);
+		padding: var(--space-sm) var(--space-lg);
+		border-radius: var(--radius-md);
+		background: var(--bg-active);
+		color: var(--text-accent);
+		font-size: 13px;
+		font-weight: 600;
+		text-decoration: none;
+		transition: all var(--transition-fast);
+	}
+
+	.z-empty-action:hover {
+		background: rgba(26, 255, 250, 0.12);
+		box-shadow: var(--shadow-glow);
+	}
+
+	.z-load-more {
+		padding: var(--space-md);
+		text-align: center;
+		font-size: 12px;
+		color: var(--text-muted);
+		background: transparent;
+		border: 1px dashed var(--border-subtle);
+		border-radius: var(--radius-md);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		margin-top: var(--space-sm);
+	}
+
+	.z-load-more:hover {
+		border-color: var(--border-accent);
+		color: var(--text-accent);
+		background: var(--bg-hover);
+	}
+</style>

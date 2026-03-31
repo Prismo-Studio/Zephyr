@@ -1,186 +1,181 @@
 <script lang="ts">
-	import profiles from '$lib/state/profile.svelte';
-	import type { InstallEvent, InstallTask } from '$lib/types';
+	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
-	import { Popover, Progress } from 'bits-ui';
-	import { onDestroy, onMount } from 'svelte';
+	import type { InstallEvent } from '$lib/types';
 	import Icon from '@iconify/svelte';
-	import { fade, fly, scale } from 'svelte/transition';
-	import { expoInOut, quadOut } from 'svelte/easing';
-	import { dropIn, dropOut } from '$lib/transitions';
-	import { Tween } from 'svelte/motion';
-	import IconButton from '$lib/components/ui/IconButton.svelte';
+	import Progress from '$lib/components/ui/Progress.svelte';
+	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import * as api from '$lib/api';
-	import { m } from '$lib/paraglide/messages';
 
-	let shown = $state(false);
-	let showCancel = $state(false);
-	let open = $state(false);
-
+	let visible = $state(false);
 	let totalMods = $state(0);
 	let totalBytes = $state(0);
+	let progressMods = $state(0);
+	let progressBytes = $state(0);
+	let currentTask = $state('');
+	let currentMod = $state('');
 
-	let completedMods = $state(0);
-	let completedBytes = $state(0);
+	let unlisten: UnlistenFn | undefined;
 
-	let name: string | null = $state(null);
-	let task: InstallTask | null = $state(null);
-
-	let hideTimeout: number | null = $state(null);
-
-	let taskText = $derived(
-		task
-			? {
-					download: m.installPopover_taskText_download(),
-					extract: m.installPopover_taskText_extract(),
-					install: m.installPopover_taskText_install()
-				}[task] + name!.replace(/_/g, ' ')
-			: null
-	);
-
-	let progress = $derived(totalBytes === 0 ? 0 : completedBytes / totalBytes);
-	let shownProgress = new Tween(0);
-
-	$effect(() => {
-		shownProgress.target = progress;
-	});
-
-	let unlisten: UnlistenFn | null = null;
-
-	onMount(async () => {
-		unlisten = await listen<InstallEvent>('install_event', (event) => {
-			switch (event.payload.type) {
+	onMount(() => {
+		listen<InstallEvent>('install_event', (evt) => {
+			const e = evt.payload;
+			switch (e.type) {
 				case 'show':
-					shown = true;
-					open = true;
-					showCancel = true;
-
-					if (hideTimeout) {
-						clearTimeout(hideTimeout);
-					}
-
+					visible = true;
+					totalMods = 0;
+					totalBytes = 0;
+					progressMods = 0;
+					progressBytes = 0;
+					currentTask = '';
+					currentMod = '';
 					break;
-
 				case 'hide':
-					showCancel = false;
-
-					let hideDelay = 0;
-					if (event.payload.reason === 'done') {
-						hideDelay = 500;
-
-						taskText = m.installPopover_taskText_done();
-						shownProgress.set(1, { duration: 250, easing: expoInOut });
-					}
-
-					hideTimeout = setTimeout(() => {
-						open = false;
-
-						totalMods = 0;
-						totalBytes = 0;
-
-						completedMods = 0;
-						completedBytes = 0;
-
-						name = null;
-						task = null;
-
-						hideTimeout = setTimeout(() => {
-							shown = false;
-
-							shownProgress.set(0, { delay: 50, duration: 0 });
-
-							hideTimeout = null;
-						}, 100);
-					}, hideDelay);
-
+					visible = false;
 					break;
-
 				case 'addCount':
-					totalMods += event.payload.mods;
-					totalBytes += event.payload.bytes;
-
-					shownProgress.set(progress, { duration: 0 });
-
-					if (event.payload.mods > 0) {
-						open = true;
-					}
+					totalMods += e.mods;
+					totalBytes += e.bytes;
 					break;
-
 				case 'addProgress':
-					completedMods += event.payload.mods;
-					completedBytes += event.payload.bytes;
+					progressMods += e.mods;
+					progressBytes += e.bytes;
 					break;
-
 				case 'setTask':
-					name = event.payload.name;
-					task = event.payload.task;
+					currentMod = e.name;
+					currentTask = e.task;
 					break;
 			}
-		});
+		}).then((cb) => (unlisten = cb));
+
+		return () => unlisten?.();
 	});
 
-	onDestroy(() => {
-		unlisten?.();
-	});
+	let modsPercent = $derived(totalMods > 0 ? (progressMods / totalMods) * 100 : 0);
 
-	async function cancel() {
-		open = false;
-		showCancel = false;
+	async function cancelAll() {
 		await api.profile.install.cancelAll();
+	}
+
+	function taskIcon(task: string) {
+		switch (task) {
+			case 'download': return 'mdi:download';
+			case 'extract': return 'mdi:zip-box';
+			case 'install': return 'mdi:package-variant-plus';
+			default: return 'mdi:progress-wrench';
+		}
 	}
 </script>
 
-<Popover.Root bind:open>
-	<Popover.Trigger
-		class={['hover:bg-[#0F1D32] text-[#00D4AA] my-auto rounded-md text-xl', shown && 'p-1.5']}
-	>
-		{#if shown}
-			<div in:scale={{ start: 2, duration: 250, easing: quadOut }}>
-				<Icon icon="mdi:download" class="animate-pulse" />
+{#if visible}
+	<div class="z-install-popover">
+		<div class="z-install-header">
+			<div class="z-install-title">
+				<Spinner size={14} />
+				<span>Installing mods...</span>
 			</div>
-		{/if}
-	</Popover.Trigger>
-	<Popover.Content forceMount>
-		{#snippet child({ wrapperProps, props, open })}
-			<div {...wrapperProps}>
-				{#if open}
-					<div
-						{...props}
-						class="border-[#1A2A42] bg-[#0F1D32] z-10 w-80 rounded-xl border px-5 py-4 shadow-[0_15px_40px_rgba(0,0,0,0.5)]"
-						in:fly={dropIn}
-						out:fade={dropOut}
-					>
-						<div class="text-[#8899AA] flex items-center justify-between font-semibold">
-							<div>{m.installPopover_content()}({completedMods}/{totalMods})</div>
-							{#if showCancel}
-								<IconButton
-									label={m.installPopover_button()}
-									icon="mdi:cancel"
-									color="red"
-									onclick={cancel}
-								/>
-							{/if}
-						</div>
+			<button class="z-install-cancel" onclick={cancelAll} title="Cancel">
+				<Icon icon="mdi:close" />
+			</button>
+		</div>
 
-						{#if task && name}
-							<div class="text-[#556677] text-sm">
-								{taskText}
-							</div>
-						{/if}
+		<Progress value={modsPercent} />
 
-						<Progress.Root
-							value={shownProgress.current}
-							max={1}
-							class="bg-[#0B1628] relative mt-2 h-3 w-full overflow-hidden rounded-full border border-[#1A2A42]"
-						>
-							<div
-								class="absolute top-0 left-0 h-full rounded-l-full transition-[width] duration-200"
-								style="width: {shownProgress.current * 100}%; background: linear-gradient(90deg, #2D8CF0, #00D4AA);"
-							></div>
-						</Progress.Root>
-					</div>
-				{/if}
+		<div class="z-install-info">
+			<div class="z-install-task">
+				<Icon icon={taskIcon(currentTask)} class="text-xs" />
+				<span class="z-install-task-label">{currentTask}</span>
 			</div>
-		{/snippet}
-	</Popover.Content>
-</Popover.Root>
+			<span class="z-install-mod">{currentMod}</span>
+		</div>
+
+		<div class="z-install-stats">
+			<span>{progressMods} / {totalMods} mods</span>
+		</div>
+	</div>
+{/if}
+
+<style>
+	.z-install-popover {
+		position: fixed;
+		bottom: 32px;
+		right: var(--space-xl);
+		width: 320px;
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-default);
+		border-radius: var(--radius-xl);
+		padding: var(--space-lg);
+		box-shadow: var(--shadow-lg);
+		z-index: var(--z-modal);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+		animation: slideUp var(--transition-normal) ease;
+	}
+
+	.z-install-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.z-install-title {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+
+	.z-install-cancel {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		border-radius: var(--radius-sm);
+		border: none;
+		background: transparent;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.z-install-cancel:hover {
+		background: rgba(255, 92, 92, 0.1);
+		color: var(--error);
+	}
+
+	.z-install-info {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		font-size: 11px;
+	}
+
+	.z-install-task {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		color: var(--text-accent);
+		text-transform: capitalize;
+	}
+
+	.z-install-task-label {
+		font-weight: 600;
+	}
+
+	.z-install-mod {
+		color: var(--text-secondary);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.z-install-stats {
+		font-size: 11px;
+		color: var(--text-muted);
+		text-align: right;
+	}
+</style>

@@ -1,6 +1,6 @@
 {
 	"productName": "Zephyr",
-	"version": "1.13.0",
+	"version": "0.2.0",
 	"identifier": "com.prismo-studio.zephyr",
 	"build": {
 		"beforeBuildCommand": "pnpm run build",
@@ -58,7 +58,7 @@
 	"app": {
 		"windows": [
 			{
-				"decorations": true,
+				"decorations": false,
 				"fullscreen": false,
 				"transparent": false,
 				"resizable": true,

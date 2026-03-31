@@ -2,29 +2,24 @@
 	import * as api from '$lib/api';
 	import type { SortBy, Mod, ModId } from '$lib/types';
 
-	import ModList from '$lib/components/mod-list/ModList.svelte';
+	import ModCard from '$lib/components/mod-list/ModCard.svelte';
+	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
+	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
+	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
+	import Header from '$lib/components/layout/Header.svelte';
 
 	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
-	import ModListItem from '$lib/components/mod-list/ModListItem.svelte';
-	import ProfileLockedBanner from '$lib/components/mod-list/ProfileLockedBanner.svelte';
-	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
-	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
-	import { defaultContextItems } from '$lib/context';
-	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
-	import profiles from '$lib/state/profile.svelte';
 	import { modQuery } from '$lib/state/misc.svelte';
-	import { m } from '$lib/paraglide/messages';
+	import profiles from '$lib/state/profile.svelte';
 	import Icon from '@iconify/svelte';
 
 	const sortOptions: SortBy[] = ['lastUpdated', 'newest', 'rating', 'downloads'];
-	const contextItems = [...defaultContextItems];
 
 	let mods: Mod[] = $state([]);
-
-	let modList: ModList;
-	let maxCount: number = $state(20);
+	let maxCount: number = $state(30);
 	let selectedMod: Mod | null = $state(null);
+	let hasRefreshed = $state(false);
 
 	let unlistenFromQuery: UnlistenFn | undefined;
 
@@ -41,18 +36,18 @@
 		};
 	});
 
-	let hasRefreshed = $state(false);
 	let refreshing = false;
 
 	async function refresh() {
 		if (refreshing) return;
 		refreshing = true;
 
-		mods = await api.thunderstore.query({ ...modQuery.current, maxCount });
-		if (selectedMod) {
-			// isInstalled might have changed
-			selectedMod = mods.find((mod) => mod.uuid === selectedMod!.uuid) ?? null;
-		}
+		try {
+			mods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+			if (selectedMod) {
+				selectedMod = mods.find((mod) => mod.uuid === selectedMod!.uuid) ?? null;
+			}
+		} catch {}
 
 		refreshing = false;
 		hasRefreshed = true;
@@ -74,7 +69,7 @@
 		if (evt.ctrlKey) {
 			installLatest(mod);
 		} else {
-			modList.selectMod(mod);
+			selectedMod = selectedMod?.uuid === mod.uuid ? null : mod;
 		}
 	}
 
@@ -89,49 +84,194 @@
 	let locked = $derived(profiles.activeLocked);
 </script>
 
-<div class="flex grow overflow-hidden">
-	<div class="flex w-[60%] grow flex-col overflow-hidden pt-3 pl-3">
-		<ModListFilters {sortOptions} queryArgs={modQuery.current} />
+<div class="z-browse-page">
+	<div class="z-browse-main">
+		<Header title="Browse" subtitle="Thunderstore">
+			{#snippet actions()}
+				<button class="z-refresh-btn" onclick={() => { api.thunderstore.triggerModFetch(); refresh(); }} title="Refresh">
+					<Icon icon="mdi:refresh" />
+				</button>
+			{/snippet}
+		</Header>
 
-		{#if locked}
-			<ProfileLockedBanner class="mr-4 mb-1" />
-		{/if}
+		<div class="z-browse-content">
+			<div class="z-browse-filters">
+				<ModListFilters queryArgs={modQuery.current} {sortOptions} showCategories />
+			</div>
 
-		<ModList
-			{mods}
-			queryArgs={modQuery.current}
-			bind:this={modList}
-			bind:maxCount
-			bind:selected={selectedMod}
-		>
-			{#snippet placeholder()}
-				{#if hasRefreshed}
-					<div class="flex flex-col items-center py-8">
-						<div class="rounded-2xl bg-[#142240]/50 p-5">
-							<Icon icon="mdi:package-variant-remove" class="text-[#3A4A5C] text-5xl" />
+			{#if locked}
+				<div class="z-locked-banner">
+					<Icon icon="mdi:lock" />
+					<span>Profile is locked — you can browse but not install mods</span>
+				</div>
+			{/if}
+
+			<div class="z-browse-list">
+				{#if mods.length === 0 && hasRefreshed}
+					<div class="z-browse-empty">
+						<div class="z-browse-empty-icon">
+							<Icon icon="mdi:package-variant-remove" />
 						</div>
-						<div class="mt-3 text-base font-medium text-[#8899AA]">{m.browse_modList_content_1()}</div>
-						<div class="mt-1 text-sm text-[#556677]">{m.browse_modList_content_2()}</div>
+						<p class="z-browse-empty-title">No mods found</p>
+						<p class="z-browse-empty-desc">Try adjusting your search or filters</p>
 					</div>
-				{/if}
-			{/snippet}
+				{:else if mods.length === 0}
+					<div class="z-browse-loading">
+						<span class="z-browse-spinner"></span>
+						<span>Loading mods...</span>
+					</div>
+				{:else}
+					{#each mods as mod (mod.uuid)}
+						<ModCard
+							{mod}
+							isSelected={selectedMod?.uuid === mod.uuid}
+							{locked}
+							onclick={(evt) => onModClicked(evt, mod)}
+							oninstall={() => installLatest(mod)}
+						/>
+					{/each}
 
-			{#snippet item({ mod, isSelected })}
-				<ModListItem
-					{mod}
-					{isSelected}
-					{contextItems}
-					locked={profiles.activeLocked}
-					oninstall={() => installLatest(mod)}
-					onclick={(evt) => onModClicked(evt, mod)}
-				/>
-			{/snippet}
-		</ModList>
+					<button class="z-load-more" onclick={() => (maxCount += 30)}>
+						Load more
+					</button>
+				{/if}
+			</div>
+		</div>
 	</div>
 
 	{#if selectedMod}
-		<ModDetails {locked} mod={selectedMod} {contextItems} onclose={() => (selectedMod = null)}>
+		<ModDetails mod={selectedMod} {locked} onclose={() => (selectedMod = null)}>
 			<InstallModButton mod={selectedMod} {install} {locked} />
 		</ModDetails>
 	{/if}
 </div>
+
+<style>
+	.z-browse-page {
+		display: flex;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	.z-browse-main {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		min-width: 0;
+	}
+
+	.z-browse-content {
+		flex: 1;
+		overflow-y: auto;
+		padding: 0 var(--space-xl);
+		padding-bottom: var(--space-xl);
+	}
+
+	.z-browse-filters {
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		padding-top: var(--space-sm);
+		background: var(--bg-base);
+	}
+
+	.z-refresh-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border-default);
+		background: var(--bg-elevated);
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-size: 18px;
+	}
+
+	.z-refresh-btn:hover {
+		color: var(--text-accent);
+		border-color: var(--border-accent);
+	}
+
+	.z-locked-banner {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-md);
+		background: rgba(255, 179, 71, 0.08);
+		border: 1px solid rgba(255, 179, 71, 0.2);
+		color: var(--warning);
+		font-size: 12px;
+		margin-bottom: var(--space-sm);
+	}
+
+	.z-browse-list {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.z-browse-empty, .z-browse-loading {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: var(--space-3xl);
+		gap: var(--space-sm);
+	}
+
+	.z-browse-empty-icon {
+		width: 64px;
+		height: 64px;
+		border-radius: var(--radius-xl);
+		background: var(--bg-elevated);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 28px;
+		color: var(--text-muted);
+	}
+
+	.z-browse-empty-title { font-size: 15px; font-weight: 600; color: var(--text-secondary); }
+	.z-browse-empty-desc { font-size: 13px; color: var(--text-muted); }
+
+	.z-browse-loading {
+		flex-direction: row;
+		gap: var(--space-md);
+		color: var(--text-muted);
+		font-size: 13px;
+	}
+
+	.z-browse-spinner {
+		width: 18px;
+		height: 18px;
+		border: 2px solid var(--text-muted);
+		border-top-color: transparent;
+		border-radius: 50%;
+		animation: spin 0.6s linear infinite;
+	}
+
+	@keyframes spin { to { transform: rotate(360deg); } }
+
+	.z-load-more {
+		padding: var(--space-md);
+		text-align: center;
+		font-size: 12px;
+		color: var(--text-muted);
+		background: transparent;
+		border: 1px dashed var(--border-subtle);
+		border-radius: var(--radius-md);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		margin-top: var(--space-sm);
+	}
+
+	.z-load-more:hover {
+		border-color: var(--border-accent);
+		color: var(--text-accent);
+		background: var(--bg-hover);
+	}
+</style>

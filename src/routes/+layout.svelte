@@ -1,24 +1,23 @@
 <script lang="ts">
 	import '../app.css';
 
-	import { Tooltip } from 'bits-ui';
-
-	import Menubar from '$lib/components/menubar/Menubar.svelte';
-	import Toolbar from '$lib/components/toolbar/Toolbar.svelte';
-	import Statusbar from '$lib/components/misc/Statusbar.svelte';
-	import Toasts from '$lib/components/misc/Toasts.svelte';
+	import Titlebar from '$lib/components/layout/Titlebar.svelte';
+	import Sidebar from '$lib/components/layout/Sidebar.svelte';
+	import Statusbar from '$lib/components/layout/Statusbar.svelte';
+	import Toasts from '$lib/components/ui/Toasts.svelte';
+	import InstallPopover from '$lib/components/toolbar/InstallPopover.svelte';
+	import InstallModDialog from '$lib/components/dialogs/InstallModDialog.svelte';
+	import WelcomeDialog from '$lib/components/dialogs/WelcomeDialog.svelte';
+	import ImportProfileDialog from '$lib/components/dialogs/ImportProfileDialog.svelte';
 
 	import { onMount, type Snippet } from 'svelte';
 	import { refreshColor, refreshFont } from '$lib/theme';
-	import InstallModDialog from '$lib/components/dialogs/InstallModDialog.svelte';
-	import WelcomeDialog from '$lib/components/dialogs/WelcomeDialog.svelte';
-	import Navbar from '$lib/components/misc/Navbar.svelte';
+	import { initTheme } from '$lib/design-system/tokens';
 	import profiles from '$lib/state/profile.svelte';
 	import { updateBanner } from '$lib/state/misc.svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import type { ProfileInfo, ManagedGameInfo } from '$lib/types';
 	import { refreshLanguage } from '$lib/i18n';
-	import MissingProfilesDialog from '$lib/components/dialogs/MissingProfilesDialog.svelte';
 
 	type Props = {
 		children?: Snippet;
@@ -30,6 +29,7 @@
 	let unlistenGames: UnlistenFn | null;
 
 	onMount(() => {
+		initTheme();
 		refreshFont();
 		refreshColor('accent');
 		refreshColor('primary');
@@ -57,45 +57,62 @@
 
 <svelte:body
 	oncontextmenu={(evt) => {
-		// hide context menu in release builds
 		if (window.location.hostname === 'tauri.localhost') {
 			evt.preventDefault();
 		}
 	}}
 />
 
-<Tooltip.Provider skipDelayDuration={1} disableCloseOnTriggerClick>
-	<main class="zephyr-app relative flex flex-col overflow-hidden">
-		<Menubar />
-		<Toolbar />
+<main class="z-app">
+	<Titlebar />
 
-		<div class="relative flex grow overflow-hidden">
-			<Navbar />
+	<div class="z-app-body">
+		<Sidebar />
 
-			<div class="zephyr-content flex grow flex-col overflow-hidden">
+		<div class="z-main">
+			<div class="z-content">
 				{@render children?.()}
 			</div>
+			<Statusbar />
 		</div>
+	</div>
 
-		<Statusbar />
-		<Toasts />
-	</main>
-
+	<Toasts />
+	<InstallPopover />
 	<InstallModDialog />
 	<WelcomeDialog />
-	<MissingProfilesDialog />
-</Tooltip.Provider>
+	<ImportProfileDialog />
+</main>
 
 <style>
-	.zephyr-app {
+	.z-app {
+		display: flex;
+		flex-direction: column;
 		height: 100vh;
-		background: #0B1628;
-		color: #E8ECF1;
+		width: 100vw;
+		overflow: hidden;
+		background: var(--bg-base);
+		color: var(--text-primary);
 	}
 
-	.zephyr-content {
-		background: #0F1D32;
-		border-radius: 16px 0 0 0;
-		box-shadow: inset 0 1px 0 rgba(26, 42, 66, 0.5);
+	.z-app-body {
+		display: flex;
+		flex: 1;
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	.z-main {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+	}
+
+	.z-content {
+		flex: 1;
+		overflow-y: auto;
+		overflow-x: hidden;
 	}
 </style>

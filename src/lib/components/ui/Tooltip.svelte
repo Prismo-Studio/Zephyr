@@ -1,66 +1,54 @@
 <script lang="ts">
-	import { dropInTo, dropOutFrom } from '$lib/transitions';
-	import { Tooltip } from 'bits-ui';
 	import type { Snippet } from 'svelte';
-	import { fade, fly } from 'svelte/transition';
 
 	type Props = {
-		text?: string;
-		side?: 'top' | 'right' | 'bottom' | 'left';
-		sideOffset?: number;
-		delayDuration?: number;
-		disabled?: boolean;
-		class?: string;
+		text: string;
+		position?: 'top' | 'bottom' | 'left' | 'right';
 		children?: Snippet;
-	} & (
-		| { text: string; tooltip?: never }
-		| {
-				text?: never;
-				tooltip: Snippet;
-		  }
-	);
+	};
 
-	let {
-		text = '',
-		side = 'top',
-		sideOffset = 0,
-		delayDuration = 400,
-		disabled = false,
-		class: triggerClass,
-		children,
-		tooltip
-	}: Props = $props();
+	let { text, position = 'top', children }: Props = $props();
 
-	let distance = $derived(
-		{
-			top: { x: 0, y: 5 },
-			right: { x: -5, y: 0 },
-			bottom: { x: 0, y: -5 },
-			left: { x: 5, y: 0 }
-		}[side]
-	);
+	let visible = $state(false);
 </script>
 
-<Tooltip.Root {delayDuration}>
-	<Tooltip.Trigger class={triggerClass} {disabled}>
-		{@render children?.()}
-	</Tooltip.Trigger>
-	<Tooltip.Content forceMount {sideOffset} {side}>
-		{#snippet child({ wrapperProps, props, open })}
-			<div {...wrapperProps}>
-				{#if open}
-					<div
-						class="relative z-50 max-w-lg rounded-lg border border-[#1A2A42] bg-[#142240] px-3 py-1.5 text-sm text-[#E8ECF1] shadow-xl"
-						{...props}
-						in:fly={dropInTo(distance)}
-						out:fade={dropOutFrom(distance)}
-					>
-						{#if tooltip}{@render tooltip()}{:else}
-							{text}
-						{/if}
-					</div>
-				{/if}
-			</div>
-		{/snippet}
-	</Tooltip.Content>
-</Tooltip.Root>
+<span
+	class="z-tooltip-trigger"
+	onmouseenter={() => (visible = true)}
+	onmouseleave={() => (visible = false)}
+>
+	{#if children}{@render children()}{/if}
+	{#if visible && text}
+		<span class="z-tooltip z-tooltip-{position}" role="tooltip">
+			{text}
+		</span>
+	{/if}
+</span>
+
+<style>
+	.z-tooltip-trigger {
+		position: relative;
+		display: inline-flex;
+	}
+
+	.z-tooltip {
+		position: absolute;
+		padding: 4px 10px;
+		font-size: 11px;
+		font-weight: 500;
+		color: var(--text-primary);
+		background: var(--bg-overlay);
+		border: 1px solid var(--border-default);
+		border-radius: var(--radius-sm);
+		white-space: nowrap;
+		pointer-events: none;
+		z-index: var(--z-tooltip);
+		animation: fadeIn 100ms ease;
+		box-shadow: var(--shadow-md);
+	}
+
+	.z-tooltip-top { bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); }
+	.z-tooltip-bottom { top: calc(100% + 6px); left: 50%; transform: translateX(-50%); }
+	.z-tooltip-left { right: calc(100% + 6px); top: 50%; transform: translateY(-50%); }
+	.z-tooltip-right { left: calc(100% + 6px); top: 50%; transform: translateY(-50%); }
+</style>

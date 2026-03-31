@@ -1,276 +1,364 @@
 <script lang="ts">
+	import Header from '$lib/components/layout/Header.svelte';
+	import Card from '$lib/components/ui/Card.svelte';
+	import Badge from '$lib/components/ui/Badge.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import Icon from '@iconify/svelte';
-	import { onMount } from 'svelte';
-	import * as api from '$lib/api';
-	import type { SourceInfo } from '$lib/api/sources';
-	import type { ManagedGameInfo } from '$lib/types';
+
 	import games from '$lib/state/game.svelte';
+	import profiles from '$lib/state/profile.svelte';
 	import { gameIconSrc } from '$lib/util';
-	import { m } from '$lib/paraglide/messages';
+	import * as api from '$lib/api';
 
-	let sources = $state<SourceInfo[]>([]);
-	let gameInfo = $state<ManagedGameInfo | null>(null);
+	let favorites = $derived(games.list.filter((g) => g.favorite));
+	let recentGames = $derived(games.list.slice(0, 8));
 
-	let modCount = $derived(
-		gameInfo?.profiles.find((p: { id: number }) => p.id === gameInfo?.activeId)?.modCount ?? 0
-	);
-	let profileCount = $derived(gameInfo?.profiles.length ?? 0);
-	let gameName = $derived(games.active?.name ?? m.dashboard_noGame());
-	let gameIcon = $derived(games.active ? gameIconSrc(games.active) : '');
+	async function selectGame(slug: string) {
+		await games.setActive(slug);
+	}
 
-	onMount(async () => {
-		try {
-			sources = await api.sources.getSources();
-		} catch {
-			sources = [];
-		}
-
-		try {
-			gameInfo = await api.profile.getInfo();
-		} catch {
-			gameInfo = null;
-		}
-	});
+	async function launch() {
+		await api.profile.launch.launchGame();
+	}
 </script>
 
-<div class="zephyr-dashboard h-full overflow-y-auto p-6">
-	<!-- Header -->
-	<div class="mb-8 flex items-center justify-between">
-		<div>
-			<h1 class="text-2xl font-bold text-[#E8ECF1]">{m.dashboard_title()}</h1>
-			<p class="mt-1 text-sm text-[#8899AA]">{m.dashboard_subtitle()}</p>
-		</div>
+<div class="z-dashboard">
+	<Header title="Dashboard">
+		{#snippet actions()}
+			{#if games.active}
+				<Button variant="primary" onclick={launch}>
+					{#snippet icon()}<Icon icon="mdi:rocket-launch" />{/snippet}
+					Launch {games.active.name}
+				</Button>
+			{/if}
+		{/snippet}
+	</Header>
 
+	<div class="z-dashboard-content">
+		<!-- Active game hero -->
 		{#if games.active}
-			<div class="flex items-center gap-3 rounded-xl border border-[#1A2A42] bg-[#0B1628] px-4 py-2.5">
-				<img src={gameIcon} alt={gameName} class="size-8 rounded" />
-				<div>
-					<div class="text-sm font-semibold text-[#E8ECF1]">{gameName}</div>
-					<div class="text-xs text-[#556677]">{m.dashboard_activeGame()}</div>
+			<div class="z-hero-card glass">
+				<img src={gameIconSrc(games.active)} alt={games.active.name} class="z-hero-bg" />
+				<div class="z-hero-overlay">
+					<div class="z-hero-info">
+						<h2 class="z-hero-title">{games.active.name}</h2>
+						<div class="z-hero-meta">
+							<Badge variant="accent">{games.active.modLoader}</Badge>
+							{#if profiles.active}
+								<span class="z-hero-profile">
+									<Icon icon="mdi:account-circle" />
+									{profiles.active.name}
+									<span class="z-hero-mods">· {profiles.active.modCount} mods</span>
+								</span>
+							{/if}
+						</div>
+					</div>
+					<div class="z-hero-actions">
+						<a href="/" class="z-hero-action">
+							<Icon icon="mdi:package-variant" />
+							<span>View mods</span>
+						</a>
+						<a href="/browse" class="z-hero-action">
+							<Icon icon="mdi:store-search" />
+							<span>Browse</span>
+						</a>
+					</div>
 				</div>
 			</div>
 		{/if}
-	</div>
 
-	<!-- Stats Grid -->
-	<div class="mb-8 grid grid-cols-3 gap-4">
-		<a href="/" class="zephyr-stat-card">
-			<div class="flex items-center justify-between">
-				<div class="rounded-lg bg-[#2D8CF0]/10 p-2">
-					<Icon icon="mdi:package-variant" class="text-xl text-[#2D8CF0]" />
-				</div>
-				<Icon icon="mdi:arrow-right" class="text-[#1A2A42] group-hover:text-[#556677] text-lg transition-colors" />
-			</div>
-			<div class="mt-3 text-left">
-				<div class="text-2xl font-bold text-[#E8ECF1]">{modCount}</div>
-				<div class="text-xs text-[#8899AA]">{m.dashboard_stats_modsInstalled()}</div>
-			</div>
-		</a>
-
-		<div class="zephyr-stat-card">
-			<div class="flex items-center justify-between">
-				<div class="rounded-lg bg-[#00D4AA]/10 p-2">
-					<Icon icon="mdi:folder-multiple" class="text-xl text-[#00D4AA]" />
+		<!-- Quick stats -->
+		<div class="z-stats-row">
+			<div class="z-stat-card">
+				<div class="z-stat-icon"><Icon icon="mdi:gamepad-variant" /></div>
+				<div class="z-stat-info">
+					<span class="z-stat-value">{games.list.length}</span>
+					<span class="z-stat-label">Games</span>
 				</div>
 			</div>
-			<div class="mt-3">
-				<div class="text-2xl font-bold text-[#E8ECF1]">{profileCount}</div>
-				<div class="text-xs text-[#8899AA]">{m.dashboard_stats_profiles()}</div>
+			<div class="z-stat-card">
+				<div class="z-stat-icon"><Icon icon="mdi:account-group" /></div>
+				<div class="z-stat-info">
+					<span class="z-stat-value">{profiles.list.length}</span>
+					<span class="z-stat-label">Profiles</span>
+				</div>
+			</div>
+			<div class="z-stat-card">
+				<div class="z-stat-icon"><Icon icon="mdi:package-variant" /></div>
+				<div class="z-stat-info">
+					<span class="z-stat-value">{profiles.active?.modCount ?? 0}</span>
+					<span class="z-stat-label">Mods installed</span>
+				</div>
 			</div>
 		</div>
 
-		<a href="/browse" class="zephyr-stat-card">
-			<div class="flex items-center justify-between">
-				<div class="rounded-lg bg-[#FFAA00]/10 p-2">
-					<Icon icon="mdi:store-search" class="text-xl text-[#FFAA00]" />
-				</div>
-				<Icon icon="mdi:arrow-right" class="text-[#1A2A42] group-hover:text-[#556677] text-lg transition-colors" />
+		<!-- Games grid -->
+		<section class="z-section">
+			<div class="z-section-header">
+				<h3>Your Games</h3>
+				{#if favorites.length > 0}
+					<Badge variant="accent">{favorites.length} favorites</Badge>
+				{/if}
 			</div>
-			<div class="mt-3 text-left">
-				<div class="text-2xl font-bold text-[#E8ECF1]">{m.dashboard_stats_browse()}</div>
-				<div class="text-xs text-[#8899AA]">{m.dashboard_stats_findMods()}</div>
-			</div>
-		</a>
-	</div>
 
-	<!-- Quick Actions -->
-	<div class="mb-8">
-		<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-[#556677]">{m.dashboard_quickActions_title()}</h2>
-		<div class="grid grid-cols-4 gap-3">
-			<a href="/browse" class="zephyr-action-card">
-				<Icon icon="mdi:store-search-outline" class="text-2xl text-[#2D8CF0]" />
-				<span class="mt-2 text-sm font-medium text-[#E8ECF1]">{m.dashboard_quickActions_browse()}</span>
-				<span class="text-xs text-[#556677]">{m.dashboard_quickActions_browse_desc()}</span>
-			</a>
-
-			<a href="/" class="zephyr-action-card">
-				<Icon icon="mdi:view-dashboard" class="text-2xl text-[#00D4AA]" />
-				<span class="mt-2 text-sm font-medium text-[#E8ECF1]">{m.dashboard_quickActions_myMods()}</span>
-				<span class="text-xs text-[#556677]">{m.dashboard_quickActions_myMods_desc()}</span>
-			</a>
-
-			<a href="/config" class="zephyr-action-card">
-				<Icon icon="mdi:tune-variant" class="text-2xl text-[#FFAA00]" />
-				<span class="mt-2 text-sm font-medium text-[#E8ECF1]">{m.dashboard_quickActions_config()}</span>
-				<span class="text-xs text-[#556677]">{m.dashboard_quickActions_config_desc()}</span>
-			</a>
-
-			<a href="/modpack" class="zephyr-action-card">
-				<Icon icon="mdi:package-variant-closed" class="text-2xl text-[#FF4757]" />
-				<span class="mt-2 text-sm font-medium text-[#E8ECF1]">{m.dashboard_quickActions_export()}</span>
-				<span class="text-xs text-[#556677]">{m.dashboard_quickActions_export_desc()}</span>
-			</a>
-		</div>
-	</div>
-
-	<!-- Sources Status -->
-	<div class="mb-8">
-		<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-[#556677]">{m.dashboard_sources_title()}</h2>
-		<div class="grid grid-cols-2 gap-3">
-			{#each sources as source}
-				<div class="zephyr-source-card">
-					<div class="flex items-center gap-3">
-						<div class="rounded-lg p-2" style:background={source.isEnabled ? 'rgba(45, 140, 240, 0.1)' : '#1A2A42'}>
-							<Icon
-								icon={source.id === 'thunderstore' ? 'mdi:store' :
-									source.id === 'nexusmods' ? 'mdi:hexagon-multiple' :
-									source.id === 'curseforge' ? 'mdi:fire' :
-									'mdi:github'}
-								class="text-lg {source.isEnabled ? 'text-[#2D8CF0]' : 'text-[#556677]'}"
-							/>
-						</div>
-						<div class="grow">
-							<div class="text-sm font-medium text-[#E8ECF1]">{source.displayName}</div>
-							<div class="text-xs text-[#556677]">
-								{#if source.isEnabled}
-									{#if source.requiresAuth && !source.isAuthenticated}
-										<span class="text-[#FFAA00]">{m.dashboard_sources_needsApiKey()}</span>
-									{:else}
-										<span class="text-[#00D4AA]">{m.dashboard_sources_connected()}</span>
-									{/if}
-								{:else}
-									{m.dashboard_sources_comingSoon()}
-								{/if}
-							</div>
-						</div>
-						<div
-							class="size-2 rounded-full"
-							style:background={!source.isEnabled ? '#556677' : source.isAuthenticated ? '#00D4AA' : '#FFAA00'}
-						></div>
-					</div>
-				</div>
-			{/each}
-		</div>
-	</div>
-
-	<!-- Profiles List -->
-	{#if gameInfo && gameInfo.profiles.length > 0}
-		<div class="mb-8">
-			<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-[#556677]">{m.dashboard_profiles_title()}</h2>
-			<div class="space-y-2">
-				{#each gameInfo.profiles as profile}
-					<div
-						class="zephyr-profile-item flex items-center gap-3 {profile.id === gameInfo?.activeId ? 'active' : ''}"
+			<div class="z-games-grid">
+				{#each recentGames as game (game.slug)}
+					<button
+						class="z-game-card"
+						class:active={game.slug === games.active?.slug}
+						onclick={() => selectGame(game.slug)}
 					>
-						<div class="rounded-lg bg-[#142240] p-2">
-							<Icon icon="mdi:folder-account" class="text-lg text-[#8899AA]" />
+						<img src={gameIconSrc(game)} alt={game.name} class="z-game-card-img" />
+						<div class="z-game-card-info">
+							<span class="z-game-card-name">{game.name}</span>
+							<span class="z-game-card-loader">{game.modLoader}</span>
 						</div>
-						<div class="grow">
-							<div class="text-sm font-medium text-[#E8ECF1]">{profile.name}</div>
-							<div class="text-xs text-[#556677]">{m.dashboard_profiles_modCount({ count: profile.modCount })}</div>
-						</div>
-						{#if profile.id === gameInfo?.activeId}
-							<span class="rounded-md bg-[#2D8CF0]/15 px-2 py-0.5 text-xs font-medium text-[#2D8CF0]">{m.dashboard_profiles_active()}</span>
+						{#if game.favorite}
+							<Icon icon="mdi:star" class="z-game-star" />
 						{/if}
-					</div>
+						{#if game.slug === games.active?.slug}
+							<span class="z-game-active-dot"></span>
+						{/if}
+					</button>
 				{/each}
 			</div>
-		</div>
-	{/if}
-
-	<!-- Footer -->
-	<div class="mt-4 pb-4 text-center">
-		<p class="text-xs text-[#556677]">
-			{m.dashboard_footer()} <a href="https://prismo-studio.com" target="_blank" class="text-[#2D8CF0] hover:text-[#00D4AA] transition-colors">Prismo Studio</a>
-		</p>
+		</section>
 	</div>
 </div>
 
 <style>
-	.zephyr-dashboard {
-		scrollbar-width: thin;
-		scrollbar-color: #1A2A42 transparent;
-	}
-
-	.zephyr-stat-card {
-		display: block;
-		background: #0B1628;
-		border: 1px solid #1A2A42;
-		border-radius: 16px;
-		padding: 1.25rem;
-		transition: all 0.25s ease;
-		text-align: left;
-		text-decoration: none;
-		color: inherit;
-	}
-
-	.zephyr-stat-card:hover {
-		border-color: rgba(45, 140, 240, 0.4);
-		box-shadow: 0 4px 24px rgba(45, 140, 240, 0.08);
-		transform: translateY(-1px);
-	}
-
-	.zephyr-action-card {
+	.z-dashboard {
 		display: flex;
 		flex-direction: column;
+		height: 100%;
+	}
+
+	.z-dashboard-content {
+		flex: 1;
+		overflow-y: auto;
+		padding: 0 var(--space-xl) var(--space-xl);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xl);
+	}
+
+	/* Hero */
+	.z-hero-card {
+		position: relative;
+		border-radius: var(--radius-xl);
+		overflow: hidden;
+		min-height: 180px;
+	}
+
+	.z-hero-bg {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: blur(40px) brightness(0.3);
+		transform: scale(1.2);
+	}
+
+	.z-hero-overlay {
+		position: relative;
+		z-index: 1;
+		padding: var(--space-xl);
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-height: 180px;
+		background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.1));
+	}
+
+	.z-hero-title {
+		font-family: var(--font-display);
+		font-size: 28px;
+		font-weight: 800;
+		letter-spacing: -0.03em;
+	}
+
+	.z-hero-meta {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		margin-top: var(--space-sm);
+	}
+
+	.z-hero-profile {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		font-size: 13px;
+		color: var(--text-secondary);
+	}
+
+	.z-hero-mods { color: var(--text-muted); }
+
+	.z-hero-actions {
+		display: flex;
+		gap: var(--space-sm);
+		margin-top: var(--space-lg);
+	}
+
+	.z-hero-action {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: var(--space-sm) var(--space-lg);
+		border-radius: var(--radius-md);
+		background: rgba(255,255,255,0.1);
+		color: var(--text-primary);
+		text-decoration: none;
+		font-size: 13px;
+		font-weight: 600;
+		transition: all var(--transition-fast);
+		backdrop-filter: blur(8px);
+	}
+
+	.z-hero-action:hover {
+		background: rgba(255,255,255,0.18);
+	}
+
+	/* Stats */
+	.z-stats-row {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--space-md);
+	}
+
+	.z-stat-card {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		padding: var(--space-lg);
+		border-radius: var(--radius-lg);
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+	}
+
+	.z-stat-icon {
+		width: 40px;
+		height: 40px;
+		border-radius: var(--radius-md);
+		background: var(--bg-active);
+		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: #0B1628;
-		border: 1px solid #1A2A42;
-		border-radius: 16px;
-		padding: 1.5rem 1rem;
-		transition: all 0.25s ease;
-		text-align: center;
-		text-decoration: none;
-		color: inherit;
+		font-size: 20px;
+		color: var(--text-accent);
 	}
 
-	.zephyr-action-card:hover {
-		border-color: rgba(45, 140, 240, 0.35);
-		background: rgba(45, 140, 240, 0.04);
-		transform: translateY(-2px);
-		box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+	.z-stat-info {
+		display: flex;
+		flex-direction: column;
 	}
 
-	.zephyr-source-card {
-		background: #0B1628;
-		border: 1px solid #1A2A42;
-		border-radius: 14px;
-		padding: 0.875rem;
-		transition: all 0.2s ease;
+	.z-stat-value {
+		font-family: var(--font-display);
+		font-size: 22px;
+		font-weight: 800;
+		color: var(--text-primary);
 	}
 
-	.zephyr-source-card:hover {
-		border-color: rgba(26, 42, 66, 0.8);
-		background: #0D1A30;
+	.z-stat-label {
+		font-size: 11px;
+		color: var(--text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
 
-	.zephyr-profile-item {
-		background: #0B1628;
-		border: 1px solid #1A2A42;
-		border-radius: 14px;
-		padding: 0.75rem;
-		transition: all 0.2s ease;
+	/* Section */
+	.z-section-header {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		margin-bottom: var(--space-md);
 	}
 
-	.zephyr-profile-item:hover {
-		background: #0D1A30;
-		border-color: rgba(26, 42, 66, 0.8);
+	.z-section-header h3 {
+		font-family: var(--font-display);
+		font-size: 16px;
+		font-weight: 700;
 	}
 
-	.zephyr-profile-item.active {
-		border-color: rgba(45, 140, 240, 0.3);
-		background: rgba(45, 140, 240, 0.04);
-		box-shadow: 0 0 16px rgba(45, 140, 240, 0.06);
+	/* Games grid */
+	.z-games-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		gap: var(--space-md);
+	}
+
+	.z-game-card {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		position: relative;
+		text-align: left;
+	}
+
+	.z-game-card:hover {
+		border-color: var(--border-default);
+		background: var(--bg-elevated);
+		transform: translateY(-1px);
+		box-shadow: var(--shadow-md);
+	}
+
+	.z-game-card.active {
+		border-color: var(--border-accent);
+		background: var(--bg-active);
+	}
+
+	.z-game-card-img {
+		width: 40px;
+		height: 40px;
+		border-radius: var(--radius-md);
+		object-fit: cover;
+		flex-shrink: 0;
+	}
+
+	.z-game-card-info {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+
+	.z-game-card-name {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-primary);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.z-game-card-loader {
+		font-size: 11px;
+		color: var(--text-muted);
+	}
+
+	:global(.z-game-star) {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		font-size: 14px;
+		color: #fbbf24;
+	}
+
+	.z-game-active-dot {
+		position: absolute;
+		bottom: 8px;
+		right: 8px;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: var(--accent-400);
+		box-shadow: 0 0 6px rgba(26, 255, 250, 0.5);
 	}
 </style>

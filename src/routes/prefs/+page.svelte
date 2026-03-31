@@ -1,193 +1,356 @@
 <script lang="ts">
-	import PathPref from '$lib/components/prefs/PathPref.svelte';
-	import LaunchModePref from '$lib/components/prefs/LaunchModePref.svelte';
-	import ZoomLevelPref from '$lib/components/prefs/ZoomFactorPref.svelte';
-	import TogglePref from '$lib/components/prefs/TogglePref.svelte';
-	import ApiKeyPref from '$lib/components/prefs/ApiKeyPref.svelte';
-	import ApiKeyDialog from '$lib/components/dialogs/ApiKeyDialog.svelte';
-	import CustomArgsPref from '$lib/components/prefs/CustomArgsPref.svelte';
-	import LargeHeading from '$lib/components/prefs/LargeHeading.svelte';
-	import SmallHeading from '$lib/components/prefs/SmallHeading.svelte';
-	import PlatformPref from '$lib/components/prefs/PlatformPref.svelte';
+	import Header from '$lib/components/layout/Header.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import Toggle from '$lib/components/ui/Toggle.svelte';
+	import Card from '$lib/components/ui/Card.svelte';
+	import Icon from '@iconify/svelte';
 
-	import type { Prefs, GamePrefs, Platform } from '$lib/types';
-	import { onMount } from 'svelte';
 	import * as api from '$lib/api';
-
-	import { platform } from '@tauri-apps/plugin-os';
-	import ColorPref from '$lib/components/prefs/ColorPref.svelte';
-
-	import Label from '$lib/components/ui/Label.svelte';
-	import { useNativeMenu } from '$lib/theme';
-	import Checkbox from '$lib/components/ui/Checkbox.svelte';
-	import games from '$lib/state/game.svelte';
-	import profiles from '$lib/state/profile.svelte';
-	import FontFamilyPref from '$lib/components/prefs/FontFamilyPref.svelte';
-	import LanguagePref from '$lib/components/prefs/LanguagePref.svelte';
-	import { m } from '$lib/paraglide/messages';
+	import type { Prefs } from '$lib/types';
+	import { themes, getTheme, setTheme, type ThemeId } from '$lib/design-system/tokens';
+	import { setFont, getFont } from '$lib/theme';
+	import { onMount } from 'svelte';
 
 	let prefs: Prefs | null = $state(null);
-	let gamePrefs: GamePrefs | null = $state(null);
-
-	let gameSlug = $derived(games.active?.slug ?? '');
-
-	$effect(() => {
-		gamePrefs = prefs?.gamePrefs.get(gameSlug) ?? {
-			launchMode: { type: 'launcher' },
-			dirOverride: null,
-			customArgs: [],
-			customArgsEnabled: false,
-			platform: null
-		};
-	});
-
-	let platforms = $derived(games.active?.platforms ?? []);
-	let needsDirectory = $derived(
-		!platforms.some(
-			(p) => p === 'steam' || (platform() === 'windows' && (p === 'epicGames' || p === 'xboxStore'))
-		)
-	);
+	let currentTheme: ThemeId = $state(getTheme());
+	let systemFonts: string[] = $state([]);
+	let currentFont = $state(getFont());
 
 	onMount(async () => {
-		await refresh();
+		prefs = await api.prefs.get();
+		systemFonts = await api.prefs.getSystemFonts();
 	});
 
-	function set<T>(update: (value: T, prefs: Prefs) => void) {
-		return async (value: T) => {
-			if (prefs === null) return;
-
-			update(value, prefs);
-			prefs.gamePrefs.set(gameSlug, gamePrefs!);
-			try {
-				await api.prefs.set(prefs);
-			} catch (error) {
-				await refresh();
-				throw error;
-			}
-		};
+	async function savePrefs() {
+		if (prefs) await api.prefs.set(prefs);
 	}
 
-	async function refresh() {
-		let newPrefs = await api.prefs.get();
-		newPrefs.gamePrefs = new Map(Object.entries(newPrefs.gamePrefs));
-		prefs = newPrefs;
+	function switchTheme(id: ThemeId) {
+		currentTheme = id;
+		setTheme(id);
+	}
+
+	function changeFont(font: string) {
+		currentFont = font;
+		setFont(font);
+	}
+
+	async function clearCache(soft: boolean) {
+		const freed = await api.profile.install.clearDownloadCache(soft);
+	}
+
+	async function openLog() {
+		await api.logger.openZephyrLog();
 	}
 </script>
 
-<div class="mx-auto flex h-full w-full max-w-4xl grow flex-col gap-1 overflow-y-auto px-6 pt-2 pb-6">
-	{#if prefs !== null && gamePrefs !== null}
-		<LargeHeading>{m.prefs_global_title()}</LargeHeading>
+<div class="z-settings-page">
+	<Header title="Settings" />
 
-		<SmallHeading>{m.prefs_locations_title()}</SmallHeading>
+	<div class="z-settings-content">
+		<!-- Theme -->
+		<section class="z-settings-section">
+			<h3 class="z-settings-heading">
+				<Icon icon="mdi:palette" />
+				Theme
+			</h3>
+			<div class="z-theme-grid">
+				{#each themes as theme}
+					<button
+						class="z-theme-option"
+						class:active={currentTheme === theme.id}
+						onclick={() => switchTheme(theme.id)}
+					>
+						<div class="z-theme-preview" data-theme={theme.id}>
+							<div class="z-theme-dots">
+								<span style="background: var(--accent-400)"></span>
+								<span style="background: var(--bg-elevated)"></span>
+								<span style="background: var(--text-primary)"></span>
+							</div>
+						</div>
+						<span>{theme.label}</span>
+					</button>
+				{/each}
+			</div>
+		</section>
 
-		<PathPref
-			label={m.prefs_locations_dataFolder()}
-			type="dir"
-			value={prefs.dataDir}
-			set={set((value, prefs) => (prefs.dataDir = value as string))}
-		>
-			{m.prefs_locations_dataFolder_content()}
-		</PathPref>
+		<!-- Font -->
+		<section class="z-settings-section">
+			<h3 class="z-settings-heading">
+				<Icon icon="mdi:format-font" />
+				Font
+			</h3>
+			<select class="z-settings-select" value={currentFont} onchange={(e) => changeFont(e.currentTarget.value)}>
+				<option value="Inter">Inter (default)</option>
+				<option value="Outfit">Outfit</option>
+				<option value="DM Sans">DM Sans</option>
+				{#each systemFonts.slice(0, 50) as font}
+					<option value={font}>{font}</option>
+				{/each}
+			</select>
+		</section>
 
-		<SmallHeading>{m.prefs_appearance_title()}</SmallHeading>
+		{#if prefs}
+			<!-- Behavior -->
+			<section class="z-settings-section">
+				<h3 class="z-settings-heading">
+					<Icon icon="mdi:cog" />
+					Behavior
+				</h3>
 
-		<LanguagePref value={prefs.language} set={set((value, prefs) => { prefs.language = value })} />
+				<div class="z-settings-row">
+					<div class="z-settings-label">
+						<span>Fetch mods automatically</span>
+						<span class="z-settings-desc">Auto-refresh mod list when opening browse</span>
+					</div>
+					<Toggle bind:checked={prefs.fetchModsAutomatically} onchange={savePrefs} />
+				</div>
 
-		<ColorPref category="primary" default="slate">{m.prefs_appearance_color_primary_content()}</ColorPref>
-		<ColorPref category="accent" default="green">{m.prefs_appearance_color_accent_content()}</ColorPref>
+				<div class="z-settings-row">
+					<div class="z-settings-label">
+						<span>Pull before launch</span>
+						<span class="z-settings-desc">Sync profile before launching game</span>
+					</div>
+					<Toggle bind:checked={prefs.pullBeforeLaunch} onchange={savePrefs} />
+				</div>
+			</section>
 
-		<FontFamilyPref />
-
-		<ZoomLevelPref
-			value={prefs.zoomFactor}
-			set={set((value, prefs) => (prefs.zoomFactor = value))}
-		/>
-
-		<div class="my-1 flex items-center">
-			<Label>{m.prefs_appearance_nativeMenubar_title()}</Label>
-
-			<Checkbox
-				checked={useNativeMenu.current}
-				onCheckedChange={(value) => {
-					useNativeMenu.current = value;
-				}}
-			/>
-		</div>
-
-		<SmallHeading>{m.prefs_miscellaneous_title()}</SmallHeading>
-
-		<ApiKeyPref />
-
-		<TogglePref
-			label={m.prefs_miscellaneous_fetchMods_title()}
-			value={prefs.fetchModsAutomatically}
-			set={set((value, prefs) => (prefs.fetchModsAutomatically = value))}
-		>
-			{m.prefs_miscellaneous_fetchMods_content_1()}
-			<br />
-			{m.prefs_miscellaneous_fetchMods_content_2()}<b>{m.prefs_miscellaneous_fetchMods_content_3()}</b>.
-		</TogglePref>
-		<TogglePref
-			label={m.prefs_miscellaneous_pullBeforeLaunch_title()}
-			value={prefs.pullBeforeLaunch}
-			set={set((value, prefs) => (prefs.pullBeforeLaunch = value))}
-		>
-			{m.prefs_miscellaneous_pullBeforeLaunch_content()}
-		</TogglePref>
-
-		<LargeHeading>
-			{m.prefs_gameSettings_title({ game : games.active?.name ?? m.unknown() })}
-		</LargeHeading>
-
-		<SmallHeading>{m.prefs_gameSettings_locations_title()}</SmallHeading>
-
-		{#if platforms.length > 0}
-			<PlatformPref
-				value={gamePrefs.platform}
-				set={set((value) => (gamePrefs!.platform = value))}
-			/>
+			<!-- Paths -->
+			<section class="z-settings-section">
+				<h3 class="z-settings-heading">
+					<Icon icon="mdi:folder" />
+					Paths
+				</h3>
+				<div class="z-settings-path">
+					<span class="z-settings-path-label">Data directory</span>
+					<code>{prefs.dataDir}</code>
+				</div>
+				<div class="z-settings-path">
+					<span class="z-settings-path-label">Cache directory</span>
+					<code>{prefs.cacheDir}</code>
+				</div>
+			</section>
 		{/if}
 
-		<PathPref
-			label={m[`prefs_gameSettings_locations_dirOverride_title${needsDirectory ? '_needs' : ''}`]()}
-			type="dir"
-			canClear={true}
-			value={gamePrefs.dirOverride}
-			set={set((value) => (gamePrefs!.dirOverride = value))}
-		>
-		{m[`prefs_gameSettings_locations_dirOverride_content${needsDirectory ? '_needs' : ''}`]({ game: games.active?.name ?? m.unknown() })}
-		</PathPref>
+		<!-- Actions -->
+		<section class="z-settings-section">
+			<h3 class="z-settings-heading">
+				<Icon icon="mdi:wrench" />
+				Actions
+			</h3>
+			<div class="z-settings-actions">
+				<Button variant="secondary" size="sm" onclick={() => clearCache(true)}>
+					{#snippet icon()}<Icon icon="mdi:broom" />{/snippet}
+					Clear old cache
+				</Button>
+				<Button variant="secondary" size="sm" onclick={() => clearCache(false)}>
+					{#snippet icon()}<Icon icon="mdi:delete-sweep" />{/snippet}
+					Clear all cache
+				</Button>
+				<Button variant="ghost" size="sm" onclick={openLog}>
+					{#snippet icon()}<Icon icon="mdi:file-document" />{/snippet}
+					Open log file
+				</Button>
+			</div>
+		</section>
 
-		<SmallHeading>{m.prefs_gameSettings_launch_title()}</SmallHeading>
-
-		<LaunchModePref
-			platform={gamePrefs.platform ?? games.active?.platforms[0] ?? m.unknown()}
-			value={gamePrefs.launchMode}
-			set={set((value) => (gamePrefs!.launchMode = value))}
-		/>
-
-		<CustomArgsPref
-			value={gamePrefs.customArgs}
-			enabled={gamePrefs.customArgsEnabled}
-			setValue={set((value) => (gamePrefs!.customArgs = value))}
-			setEnabled={set((value) => (gamePrefs!.customArgsEnabled = value))}
-		/>
-
-		{#if profiles.active}
-			<LargeHeading>{m.prefs_profileSettings_title()}</LargeHeading>
-
-			<SmallHeading>{m.prefs_profileSettings_launch_title()}</SmallHeading>
-
-			<CustomArgsPref
-				value={profiles.active.customArgs}
-				enabled={profiles.active.customArgsEnabled}
-				setValue={async (value) =>
-					await api.profile.setCustomArgs(value, profiles.active!.customArgsEnabled)}
-				setEnabled={async (value) =>
-					await api.profile.setCustomArgs(profiles.active!.customArgs, value)}
-			/>
-		{/if}
-	{/if}
+		<!-- About -->
+		<section class="z-settings-section z-about">
+			<div class="z-about-brand">
+				<span class="z-about-name text-gradient">Zephyr</span>
+				<span class="z-about-version">v0.2.0</span>
+			</div>
+			<p class="z-about-desc">A fast, modern mod manager for all your games</p>
+		</section>
+	</div>
 </div>
 
-<ApiKeyDialog />
+<style>
+	.z-settings-page {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.z-settings-content {
+		flex: 1;
+		overflow-y: auto;
+		padding: 0 var(--space-xl) var(--space-2xl);
+		max-width: 640px;
+	}
+
+	.z-settings-section {
+		margin-bottom: var(--space-2xl);
+	}
+
+	.z-settings-heading {
+		font-family: var(--font-display);
+		font-size: 14px;
+		font-weight: 700;
+		color: var(--text-primary);
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		margin-bottom: var(--space-lg);
+		padding-bottom: var(--space-sm);
+		border-bottom: 1px solid var(--border-subtle);
+	}
+
+	/* Theme grid */
+	.z-theme-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: var(--space-md);
+	}
+
+	.z-theme-option {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-md);
+		border-radius: var(--radius-lg);
+		border: 2px solid var(--border-subtle);
+		background: var(--bg-surface);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-family: var(--font-body);
+		font-size: 12px;
+		color: var(--text-secondary);
+	}
+
+	.z-theme-option:hover { border-color: var(--border-default); }
+	.z-theme-option.active {
+		border-color: var(--accent-400);
+		color: var(--text-accent);
+		box-shadow: var(--shadow-glow);
+	}
+
+	.z-theme-preview {
+		width: 100%;
+		height: 40px;
+		border-radius: var(--radius-sm);
+		background: var(--bg-base);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.z-theme-dots {
+		display: flex;
+		gap: 6px;
+	}
+
+	.z-theme-dots span {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+	}
+
+	/* Settings rows */
+	.z-settings-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: var(--space-md) 0;
+		border-bottom: 1px solid var(--border-subtle);
+	}
+
+	.z-settings-label {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.z-settings-label > span:first-child {
+		font-size: 13px;
+		font-weight: 500;
+		color: var(--text-primary);
+	}
+
+	.z-settings-desc {
+		font-size: 11px;
+		color: var(--text-muted);
+	}
+
+	.z-settings-select {
+		width: 100%;
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border-default);
+		background: var(--bg-elevated);
+		color: var(--text-primary);
+		font-family: var(--font-body);
+		font-size: 13px;
+		outline: none;
+	}
+
+	.z-settings-select:focus { border-color: var(--accent-400); }
+
+	.z-settings-select option {
+		background: var(--bg-elevated);
+		color: var(--text-primary);
+	}
+
+	/* Paths */
+	.z-settings-path {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		margin-bottom: var(--space-md);
+	}
+
+	.z-settings-path-label {
+		font-size: 12px;
+		color: var(--text-muted);
+	}
+
+	.z-settings-path code {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--text-secondary);
+		padding: var(--space-sm) var(--space-md);
+		background: var(--bg-elevated);
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-subtle);
+		word-break: break-all;
+	}
+
+	/* Actions */
+	.z-settings-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-sm);
+	}
+
+	/* About */
+	.z-about {
+		text-align: center;
+		padding-top: var(--space-xl);
+	}
+
+	.z-about-brand {
+		display: flex;
+		align-items: baseline;
+		justify-content: center;
+		gap: var(--space-sm);
+	}
+
+	.z-about-name {
+		font-family: var(--font-display);
+		font-size: 28px;
+		font-weight: 800;
+	}
+
+	.z-about-version {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--text-muted);
+	}
+
+	.z-about-desc {
+		font-size: 13px;
+		color: var(--text-muted);
+		margin-top: var(--space-sm);
+	}
+</style>
