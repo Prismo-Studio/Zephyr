@@ -25,10 +25,13 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Compile Paraglide
-        run: npx @inlang/paraglide-js compile --project ./project.inlang
+        run: npx @inlang/paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide
+
+      - name: SvelteKit sync
+        run: npx svelte-kit sync
 
       - name: Svelte check
-        run: pnpm check
+        run: npx svelte-check --tsconfig ./tsconfig.json --threshold warning
 
       - name: Lint (Prettier)
         run: pnpm lint
@@ -54,7 +57,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Compile Paraglide
-        run: npx @inlang/paraglide-js compile --project ./project.inlang
+        run: npx @inlang/paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide
 
       - name: Build frontend
         run: pnpm build
