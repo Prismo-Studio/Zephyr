@@ -24,7 +24,10 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Compile Paraglide
+        run: npx @inlang/paraglide-js compile --project ./project.inlang
 
       - name: Svelte check
         run: pnpm check
@@ -50,7 +53,10 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Compile Paraglide
+        run: npx @inlang/paraglide-js compile --project ./project.inlang
 
       - name: Build frontend
         run: pnpm build

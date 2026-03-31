@@ -74,12 +74,21 @@
 
 	async function toggleMod(mod: Mod) {
 		const response = await api.profile.toggleMod(mod.uuid);
-		if (response.type === 'done') await refresh();
+		if (response.type === 'done') {
+			await refresh();
+		} else if (response.type === 'hasDependants') {
+			await api.profile.forceToggleMods([mod.uuid, ...response.dependants.map(d => d.uuid)]);
+			await refresh();
+		}
 	}
 
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
+			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
+			await refresh();
+		} else if (response.type === 'hasDependants') {
+			await api.profile.forceRemoveMods([mod.uuid, ...response.dependants.map(d => d.uuid)]);
 			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
 			await refresh();
 		}
