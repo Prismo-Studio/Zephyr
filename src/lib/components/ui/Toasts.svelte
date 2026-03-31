@@ -65,8 +65,12 @@
 		margin-top: 1px;
 	}
 
-	.z-toast-error :global(.z-toast-icon) { color: var(--error); }
-	.z-toast-info :global(.z-toast-icon) { color: var(--accent-400); }
+	.z-toast-error :global(.z-toast-icon) {
+		color: var(--error);
+	}
+	.z-toast-info :global(.z-toast-icon) {
+		color: var(--accent-400);
+	}
 
 	.z-toast-content {
 		flex: 1;

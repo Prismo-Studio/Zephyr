@@ -66,9 +66,20 @@
 	}
 
 	/* Sizes */
-	.z-btn-sm { padding: 6px 12px; font-size: 12px; border-radius: var(--radius-sm); }
-	.z-btn-md { padding: 8px 16px; font-size: 13px; }
-	.z-btn-lg { padding: 12px 24px; font-size: 15px; border-radius: var(--radius-lg); }
+	.z-btn-sm {
+		padding: 6px 12px;
+		font-size: 12px;
+		border-radius: var(--radius-sm);
+	}
+	.z-btn-md {
+		padding: 8px 16px;
+		font-size: 13px;
+	}
+	.z-btn-lg {
+		padding: 12px 24px;
+		font-size: 15px;
+		border-radius: var(--radius-lg);
+	}
 
 	/* Primary */
 	.z-btn-primary {
@@ -139,7 +150,9 @@
 	}
 
 	@keyframes spin {
-		to { transform: rotate(360deg); }
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.z-btn-icon {

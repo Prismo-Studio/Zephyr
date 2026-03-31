@@ -1,6 +1,6 @@
 name: Game Request
 description: Request support for a new game
-labels: ["game-support"]
+labels: ['game-support']
 body:
   - type: input
     id: game-name

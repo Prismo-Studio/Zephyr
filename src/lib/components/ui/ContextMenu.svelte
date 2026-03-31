@@ -42,7 +42,14 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="z-ctx-backdrop" onclick={onclose} oncontextmenu={(e) => { e.preventDefault(); onclose(); }}>
+<div
+	class="z-ctx-backdrop"
+	onclick={onclose}
+	oncontextmenu={(e) => {
+		e.preventDefault();
+		onclose();
+	}}
+>
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
 		class="z-ctx-menu"
@@ -85,7 +92,9 @@
 		border: 1px solid var(--border-default);
 		border-radius: var(--radius-lg);
 		padding: 4px;
-		box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,0,0,0.1);
+		box-shadow:
+			var(--shadow-lg),
+			0 0 0 1px rgba(0, 0, 0, 0.1);
 		animation: scaleIn 80ms ease;
 		z-index: var(--z-dropdown);
 	}

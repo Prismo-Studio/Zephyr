@@ -28,9 +28,7 @@
 		...systemFonts.slice(0, 50).map((f) => ({ value: f, label: f }))
 	]);
 
-	let languageOptions = $derived(
-		locales.map((l) => ({ value: l, label: languageTitle[l] }))
-	);
+	let languageOptions = $derived(locales.map((l) => ({ value: l, label: languageTitle[l] })));
 
 	onMount(async () => {
 		prefs = await api.prefs.get();
@@ -110,7 +108,12 @@
 				<Icon icon="mdi:format-font" />
 				Font
 			</h3>
-			<Dropdown options={fontOptions} value={currentFont} onchange={changeFont} placeholder="Select font" />
+			<Dropdown
+				options={fontOptions}
+				value={currentFont}
+				onchange={changeFont}
+				placeholder="Select font"
+			/>
 		</section>
 
 		<!-- Language -->
@@ -119,7 +122,12 @@
 				<Icon icon="mdi:translate" />
 				Language
 			</h3>
-			<Dropdown options={languageOptions} value={currentLocale} onchange={changeLanguage} placeholder="Select language" />
+			<Dropdown
+				options={languageOptions}
+				value={currentLocale}
+				onchange={changeLanguage}
+				placeholder="Select language"
+			/>
 		</section>
 
 		{#if prefs}
@@ -251,7 +259,9 @@
 		color: var(--text-secondary);
 	}
 
-	.z-theme-option:hover { border-color: var(--border-default); }
+	.z-theme-option:hover {
+		border-color: var(--border-default);
+	}
 	.z-theme-option.active {
 		border-color: var(--accent-400);
 		color: var(--text-accent);

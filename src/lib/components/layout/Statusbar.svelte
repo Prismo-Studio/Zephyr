@@ -40,7 +40,8 @@
 		gap: var(--space-lg);
 	}
 
-	.z-statusbar-left, .z-statusbar-right {
+	.z-statusbar-left,
+	.z-statusbar-right {
 		display: flex;
 		align-items: center;
 		gap: var(--space-md);

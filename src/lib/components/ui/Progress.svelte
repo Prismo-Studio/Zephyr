@@ -7,7 +7,13 @@
 		class?: string;
 	};
 
-	let { value, max = 100, variant = 'accent', size = 'md', class: className = '' }: Props = $props();
+	let {
+		value,
+		max = 100,
+		variant = 'accent',
+		size = 'md',
+		class: className = ''
+	}: Props = $props();
 
 	let percent = $derived(Math.min(100, Math.max(0, (value / max) * 100)));
 </script>
@@ -24,8 +30,12 @@
 		overflow: hidden;
 	}
 
-	.z-progress-sm { height: 4px; }
-	.z-progress-md { height: 6px; }
+	.z-progress-sm {
+		height: 4px;
+	}
+	.z-progress-md {
+		height: 6px;
+	}
 
 	.z-progress-bar {
 		height: 100%;
