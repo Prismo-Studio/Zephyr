@@ -14,6 +14,9 @@
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { pushToast } from '$lib/toast';
+
+	const MAX_PROFILES = 20;
 
 	let createOpen = $state(false);
 	let newName = $state('');
@@ -24,8 +27,21 @@
 		return profiles.list.findIndex((p) => p.id === id);
 	}
 
+	function checkProfileLimit(): boolean {
+		if (profiles.list.length >= MAX_PROFILES) {
+			pushToast({
+				type: 'error',
+				name: 'Limite atteinte',
+				message: `Vous ne pouvez pas avoir plus de ${MAX_PROFILES} profils.`
+			});
+			return false;
+		}
+		return true;
+	}
+
 	async function createProfile() {
 		if (!newName.trim()) return;
+		if (!checkProfileLimit()) return;
 		await api.profile.create(newName.trim(), null);
 		await profiles.refresh();
 		newName = '';
@@ -37,13 +53,26 @@
 		await profiles.refresh();
 	}
 
+	function getUniqueCopyName(baseName: string): string {
+		const existingNames = new Set(profiles.list.map((p) => p.name));
+		const copyName = `${baseName} (copy)`;
+		if (!existingNames.has(copyName)) return copyName;
+
+		let i = 2;
+		while (existingNames.has(`${baseName} (copy ${i})`)) {
+			i++;
+		}
+		return `${baseName} (copy ${i})`;
+	}
+
 	async function duplicateProfile(id: number, name: string) {
+		if (!checkProfileLimit()) return;
 		const index = getProfileIndex(id);
 		if (index === -1) return;
 		if (id !== profiles.activeId) {
 			await api.profile.setActive(index);
 		}
-		await api.profile.duplicate(name + ' (copy)');
+		await api.profile.duplicate(getUniqueCopyName(name));
 		await profiles.refresh();
 	}
 
