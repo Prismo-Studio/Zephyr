@@ -27,6 +27,22 @@ export const modQuery = new PersistedState<QueryModsArgsWithoutMax>('modQuery', 
 	sortOrder: 'descending'
 });
 
+// Locally pinned mod UUIDs (always shown at top of mod list)
+export const pinnedMods = new PersistedState<string[]>('pinnedMods', []);
+
+export function togglePin(uuid: string) {
+	const current = pinnedMods.current;
+	if (current.includes(uuid)) {
+		pinnedMods.current = current.filter((id) => id !== uuid);
+	} else {
+		pinnedMods.current = [...current, uuid];
+	}
+}
+
+export function isModPinned(uuid: string): boolean {
+	return pinnedMods.current.includes(uuid);
+}
+
 export const profileQuery = new PersistedState<QueryModsArgsWithoutMax>('profileQuery', {
 	searchTerm: '',
 	includeCategories: [],

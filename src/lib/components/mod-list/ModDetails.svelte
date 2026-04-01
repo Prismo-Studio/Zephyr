@@ -17,6 +17,7 @@
 	import type { Snippet } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { togglePin, isModPinned } from '$lib/state/misc.svelte';
 
 	type Props = {
 		mod: Mod;
@@ -66,7 +67,19 @@
 		<div class="z-details-hero">
 			<img src={modIconSrc(mod)} alt={mod.name} class="z-details-icon" />
 			<div class="z-details-title">
-				<h2>{formatModName(mod.name)}</h2>
+				<div class="z-details-name-row">
+					<h2>{formatModName(mod.name)}</h2>
+					{#if mod.isInstalled}
+						<button
+							class="z-pin-toggle"
+							class:pinned={isModPinned(mod.uuid)}
+							onclick={() => togglePin(mod.uuid)}
+							title={isModPinned(mod.uuid) ? 'Désépingler' : 'Épingler'}
+						>
+							<Icon icon={isModPinned(mod.uuid) ? 'mdi:pin' : 'mdi:pin-outline'} />
+						</button>
+					{/if}
+				</div>
 				{#if mod.author}
 					<span class="z-details-author">{i18nState.locale && m.modDetails_by()} {mod.author}</span>
 				{/if}
@@ -83,9 +96,6 @@
 			{/if}
 			{#if mod.isDeprecated}
 				<Badge variant="error">{i18nState.locale && m.modDetails_deprecated()}</Badge>
-			{/if}
-			{#if mod.isPinned}
-				<Badge>{m.modDetails_pinned()}</Badge>
 			{/if}
 		</div>
 
@@ -242,12 +252,48 @@
 		border: 1px solid var(--border-subtle);
 	}
 
+	.z-details-name-row {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+
 	.z-details-title h2 {
 		font-family: var(--font-display);
 		font-size: 18px;
 		font-weight: 800;
 		color: var(--text-primary);
 		letter-spacing: -0.02em;
+	}
+
+	.z-pin-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		border-radius: var(--radius-sm);
+		border: none;
+		background: transparent;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		flex-shrink: 0;
+		font-size: 16px;
+	}
+
+	.z-pin-toggle:hover {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+	}
+
+	.z-pin-toggle.pinned {
+		color: var(--text-accent);
+	}
+
+	.z-pin-toggle.pinned:hover {
+		color: var(--error);
+		background: rgba(255, 92, 92, 0.1);
 	}
 
 	.z-details-author {

@@ -7,11 +7,15 @@
 	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
 	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
 	import RemoveModDialog from '$lib/components/mod-list/RemoveModDialog.svelte';
+	import ToggleModDialog from '$lib/components/mod-list/ToggleModDialog.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 
 	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
-	import { modQuery } from '$lib/state/misc.svelte';
+	import { modQuery, togglePin, isModPinned, pinnedMods } from '$lib/state/misc.svelte';
+	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
+	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
+	import { open } from '@tauri-apps/plugin-shell';
 	import profiles from '$lib/state/profile.svelte';
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
@@ -27,6 +31,14 @@
 
 	// Remove-mod dialog state
 	let removeDialog: { open: boolean; mod: Mod; dependants: Dependant[] } | null = $state(null);
+
+	// Toggle-mod dialog state
+	let toggleDialog: {
+		open: boolean;
+		mod: Mod;
+		dependants: Dependant[];
+		isDisabling: boolean;
+	} | null = $state(null);
 
 	let unlistenFromQuery: UnlistenFn | undefined;
 
@@ -77,17 +89,30 @@
 		if (response.type === 'done') {
 			await refresh();
 		} else if (response.type === 'confirm') {
-			const names = response.dependants.map((d) => d.fullName).join(', ');
-			pushToast({
-				type: 'error',
-				name: m.toast_cannotDisable_title({ name: mod.name }),
-				message: m.toast_cannotDisable_message({ dependants: names })
-			});
+			toggleDialog = {
+				open: true,
+				mod,
+				dependants: response.dependants,
+				isDisabling: mod.enabled !== false
+			};
 		}
 		// Force update selectedMod with fresh data
 		if (selectedMod) {
 			selectedMod = mods.find((m) => m.uuid === selectedMod!.uuid) ?? null;
 		}
+	}
+
+	async function doForceToggleOne(mod: Mod) {
+		await api.profile.forceToggleMods([mod.uuid]);
+		toggleDialog = null;
+		await refresh();
+	}
+
+	async function doForceToggleAll(mod: Mod, dependants: Dependant[]) {
+		const uuids = [mod.uuid, ...dependants.map((d) => d.uuid)];
+		await api.profile.forceToggleMods(uuids);
+		toggleDialog = null;
+		await refresh();
 	}
 
 	async function removeMod(mod: Mod) {
@@ -133,6 +158,65 @@
 	});
 
 	let locked = $derived(profiles.activeLocked);
+
+	// Context menu state
+	let ctxMenu: { items: ContextMenuItem[]; x: number; y: number } | null = $state(null);
+
+	function openModContextMenu(e: MouseEvent, mod: Mod) {
+		const items: ContextMenuItem[] = [];
+
+		// Install
+		if (!mod.isInstalled && !locked) {
+			items.push({
+				label: 'Installer',
+				icon: 'mdi:download',
+				onclick: () => installLatest(mod)
+			});
+		}
+
+		// Toggle enable/disable
+		if (mod.isInstalled) {
+			items.push({
+				label: mod.enabled === false ? m.mods_contextMenu_enable() : m.mods_contextMenu_disable(),
+				icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
+				disabled: locked,
+				onclick: () => toggleMod(mod)
+			});
+		}
+
+		// Pin/unpin
+		if (mod.isInstalled) {
+			const pinned = isModPinned(mod.uuid);
+			items.push({
+				label: pinned ? 'Désépingler' : 'Épingler en haut',
+				icon: pinned ? 'mdi:pin-off' : 'mdi:pin',
+				onclick: () => togglePin(mod.uuid)
+			});
+		}
+
+		// Open website
+		if (mod.websiteUrl) {
+			items.push({
+				label: m.mods_contextMenu_openThunderstore(),
+				icon: 'mdi:open-in-new',
+				onclick: () => open(mod.websiteUrl!)
+			});
+		}
+
+		// Uninstall
+		if (mod.isInstalled) {
+			items.push({ label: '', separator: true });
+			items.push({
+				label: m.mods_contextMenu_uninstall(),
+				icon: 'mdi:delete',
+				danger: true,
+				disabled: locked,
+				onclick: () => removeMod(mod)
+			});
+		}
+
+		ctxMenu = { items, x: e.clientX, y: e.clientY };
+	}
 </script>
 
 <div class="z-browse-page">
@@ -186,6 +270,7 @@
 							{locked}
 							onclick={(evt: MouseEvent) => onModClicked(evt, mod)}
 							oninstall={() => installLatest(mod)}
+							oncontextmenu={openModContextMenu}
 						/>
 					{/each}
 
@@ -219,6 +304,24 @@
 		oncancel={() => (removeDialog = null)}
 		onremoveOne={() => doForceRemoveOne(removeDialog!.mod)}
 		onremoveAll={() => doForceRemoveAll(removeDialog!.mod, removeDialog!.dependants)}
+	/>
+{/if}
+
+<!-- Context menu -->
+{#if ctxMenu}
+	<ContextMenu items={ctxMenu.items} x={ctxMenu.x} y={ctxMenu.y} onclose={() => (ctxMenu = null)} />
+{/if}
+
+<!-- Toggle mod confirmation dialog -->
+{#if toggleDialog}
+	<ToggleModDialog
+		bind:open={toggleDialog.open}
+		modName={toggleDialog.mod.name}
+		isDisabling={toggleDialog.isDisabling}
+		dependants={toggleDialog.dependants}
+		oncancel={() => (toggleDialog = null)}
+		ontoggleOne={() => doForceToggleOne(toggleDialog!.mod)}
+		ontoggleAll={() => doForceToggleAll(toggleDialog!.mod, toggleDialog!.dependants)}
 	/>
 {/if}
 
