@@ -3,6 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import { formatModName, modIconSrc, shortenNum, timeSince } from '$lib/util';
 	import Badge from '$lib/components/ui/Badge.svelte';
+	import { m } from '$lib/paraglide/messages';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
 
@@ -63,7 +64,7 @@
 				<Icon icon="mdi:alert" class="z-mod-badge-icon deprecated" />
 			{/if}
 			{#if mod.enabled === false}
-				<Badge variant="warning">Disabled</Badge>
+				<Badge variant="warning">{m.modCard_disabled()}</Badge>
 			{/if}
 		</div>
 

@@ -15,6 +15,7 @@
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import * as api from '$lib/api';
 	import type { Snippet } from 'svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	type Props = {
 		mod: Mod;
@@ -66,7 +67,7 @@
 			<div class="z-details-title">
 				<h2>{formatModName(mod.name)}</h2>
 				{#if mod.author}
-					<span class="z-details-author">by {mod.author}</span>
+					<span class="z-details-author">{m.modDetails_by()} {mod.author}</span>
 				{/if}
 			</div>
 		</div>
@@ -77,13 +78,13 @@
 				<Badge variant="accent">{mod.version}</Badge>
 			{/if}
 			{#if mod.isInstalled}
-				<Badge variant="success">Installed</Badge>
+				<Badge variant="success">{m.modDetails_installed()}</Badge>
 			{/if}
 			{#if mod.isDeprecated}
-				<Badge variant="error">Deprecated</Badge>
+				<Badge variant="error">{m.modDetails_deprecated()}</Badge>
 			{/if}
 			{#if mod.isPinned}
-				<Badge>Pinned</Badge>
+				<Badge>{m.modDetails_pinned()}</Badge>
 			{/if}
 		</div>
 
@@ -118,12 +119,12 @@
 			<div class="z-details-actions">
 				<button class="z-action-btn" class:disabled={locked} disabled={locked} onclick={ontoggle}>
 					<Icon icon={mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off'} />
-					<span>{mod.enabled === false ? 'Enable' : 'Disable'}</span>
+					<span>{mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable()}</span>
 				</button>
 
 				<button class="z-action-btn" onclick={() => api.profile.openModDir(mod.uuid)}>
 					<Icon icon="mdi:folder-open" />
-					<span>Open folder</span>
+					<span>{m.modDetails_openFolder()}</span>
 				</button>
 
 				<button
@@ -133,7 +134,7 @@
 					onclick={onremove}
 				>
 					<Icon icon="mdi:delete" />
-					<span>Uninstall</span>
+					<span>{m.modDetails_uninstall()}</span>
 				</button>
 			</div>
 		{/if}
@@ -160,7 +161,7 @@
 					{@html markdown}
 				</div>
 			{:else}
-				<p class="z-details-empty">No content available.</p>
+				<p class="z-details-empty">{m.modDetails_noContent()}</p>
 			{/if}
 		</div>
 	</div>

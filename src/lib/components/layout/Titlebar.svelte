@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import Icon from '@iconify/svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	const appWindow = getCurrentWindow();
 
@@ -38,17 +39,17 @@
 	<div class="z-titlebar-center" data-tauri-drag-region></div>
 
 	<div class="z-titlebar-controls">
-		<button class="z-titlebar-btn" onclick={minimize} title="Minimize">
+		<button class="z-titlebar-btn" onclick={minimize} title={m.titlebar_minimize()}>
 			<Icon icon="mdi:minus" />
 		</button>
 		<button
 			class="z-titlebar-btn"
 			onclick={toggleMaximize}
-			title={maximized ? 'Restore' : 'Maximize'}
+			title={maximized ? m.titlebar_restore() : m.titlebar_maximize()}
 		>
 			<Icon icon={maximized ? 'mdi:window-restore' : 'mdi:window-maximize'} />
 		</button>
-		<button class="z-titlebar-btn z-titlebar-close" onclick={close} title="Close">
+		<button class="z-titlebar-btn z-titlebar-close" onclick={close} title={m.titlebar_close()}>
 			<Icon icon="mdi:close" />
 		</button>
 	</div>

@@ -3,6 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import games from '$lib/state/game.svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	type Props = {
 		queryArgs: QueryModsArgsWithoutMax;
@@ -20,15 +21,15 @@
 	let sortOpen = $state(false);
 
 	const sortLabels: Record<SortBy, string> = {
-		newest: 'Newest',
-		name: 'Name',
-		author: 'Author',
-		lastUpdated: 'Updated',
-		downloads: 'Downloads',
-		rating: 'Rating',
-		installDate: 'Install date',
-		custom: 'Custom',
-		diskSpace: 'Size'
+		newest: m.modListFilters_options_newest(),
+		name: m.modListFilters_options_name(),
+		author: m.modListFilters_options_author(),
+		lastUpdated: m.modListFilters_options_lastUpdated(),
+		downloads: m.modListFilters_options_downloads(),
+		rating: m.modListFilters_options_rating(),
+		installDate: m.modListFilters_options_installDate(),
+		custom: m.modListFilters_options_custom(),
+		diskSpace: m.modListFilters_options_diskSpace()
 	};
 
 	function selectSort(option: SortBy) {
@@ -39,7 +40,11 @@
 
 <div class="z-filters">
 	<div class="z-filters-row">
-		<Input bind:value={queryArgs.searchTerm} placeholder="Search mods..." class="z-search-input">
+		<Input
+			bind:value={queryArgs.searchTerm}
+			placeholder={m.modListFilters_searchBar_placeholder()}
+			class="z-search-input"
+		>
 			{#snippet iconLeft()}
 				<Icon icon="mdi:magnify" />
 			{/snippet}
@@ -85,7 +90,9 @@
 				onclick={() => {
 					queryArgs.sortOrder = queryArgs.sortOrder === 'ascending' ? 'descending' : 'ascending';
 				}}
-				title={queryArgs.sortOrder === 'ascending' ? 'Ascending' : 'Descending'}
+				title={queryArgs.sortOrder === 'ascending'
+					? m.modListFilters_options_ascending()
+					: m.modListFilters_options_descending()}
 			>
 				<Icon
 					icon={queryArgs.sortOrder === 'ascending' ? 'mdi:sort-ascending' : 'mdi:sort-descending'}
@@ -98,11 +105,11 @@
 		<div class="z-filters-expanded">
 			<label class="z-filter-toggle">
 				<input type="checkbox" bind:checked={queryArgs.includeNsfw} />
-				<span>NSFW</span>
+				<span>{m.modListFilters_options_NSFW()}</span>
 			</label>
 			<label class="z-filter-toggle">
 				<input type="checkbox" bind:checked={queryArgs.includeDeprecated} />
-				<span>Deprecated</span>
+				<span>{m.modListFilters_options_deprecated()}</span>
 			</label>
 
 			{#if showCategories && games.categories.length > 0}

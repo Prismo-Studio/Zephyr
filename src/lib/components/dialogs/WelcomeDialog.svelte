@@ -4,6 +4,7 @@
 	import Icon from '@iconify/svelte';
 	import * as api from '$lib/api';
 	import { onMount } from 'svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	let open = $state(false);
 
@@ -13,18 +14,18 @@
 	});
 </script>
 
-<Modal bind:open title="Welcome to Zephyr">
+<Modal bind:open title={m.welcomeDialog_title()}>
 	<div class="z-welcome">
 		<div class="z-welcome-logo">
 			<span class="text-gradient z-welcome-brand">Zephyr</span>
 		</div>
 		<p class="z-welcome-text">
-			A fast, modern mod manager for all your games. Select a game from the sidebar to get started.
+			{m.prefs_aboutDesc()}
 		</p>
 	</div>
 
 	{#snippet actions()}
-		<Button variant="primary" onclick={() => (open = false)}>Get Started</Button>
+		<Button variant="primary" onclick={() => (open = false)}>{m.dialog_getStarted()}</Button>
 	{/snippet}
 </Modal>
 

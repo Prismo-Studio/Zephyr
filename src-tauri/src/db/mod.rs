@@ -113,6 +113,7 @@ pub struct ProfileData {
     pub sync_data: Option<profile::sync::SyncProfileData>,
     pub custom_args: Option<Vec<String>>,
     pub custom_args_enabled: Option<bool>,
+    pub icon: Option<String>,
 }
 
 pub struct SaveData {
@@ -202,7 +203,7 @@ impl Db {
 
         let mut profiles = conn
             .prepare(
-                "SELECT id, name, path, game_slug, mods, modpack, ignored_updates, sync_data, custom_args, custom_args_enabled FROM profiles",
+                "SELECT id, name, path, game_slug, mods, modpack, ignored_updates, sync_data, custom_args, custom_args_enabled, icon FROM profiles",
             )?
             .query_map((), |row| {
                 let mut mods : Vec<profile::ProfileMod> = map_json_row(row, 4)?;
@@ -219,6 +220,7 @@ impl Db {
                     sync_data: map_json_option_row(row, 7)?,
                     custom_args: map_json_option_row(row, 8)?,
                     custom_args_enabled: row.get(9)?,
+                    icon: row.get(10)?,
                 })
             })?
             .collect::<rusqlite::Result<Vec<_>>>()?;
@@ -318,9 +320,9 @@ impl Db {
         profiles: impl Iterator<Item = &'a Profile>,
     ) -> Result<()> {
         let mut stmt = tx.prepare(
-            "INSERT OR REPLACE INTO profiles 
-                (id, name, path, game_slug, mods, modpack, ignored_updates, sync_data, custom_args, custom_args_enabled) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT OR REPLACE INTO profiles
+                (id, name, path, game_slug, mods, modpack, ignored_updates, sync_data, custom_args, custom_args_enabled, icon)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         )?;
 
         for profile in profiles {
@@ -348,7 +350,8 @@ impl Db {
                 ignored_updates,
                 sync_data,
                 custom_args,
-                profile.custom_args_enabled
+                profile.custom_args_enabled,
+                profile.icon
             ])?;
         }
 

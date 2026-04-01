@@ -484,3 +484,46 @@ pub fn forget_profile(profile_id: i64, app: AppHandle) -> Result<()> {
 
     Ok(())
 }
+
+#[command]
+pub fn set_profile_icon(profile_id: i64, image_path: String, app: AppHandle) -> Result<String> {
+    let mut manager = app.lock_manager();
+    let (_, profile) = manager.profile_by_id_mut(profile_id)?;
+
+    let src = PathBuf::from(&image_path);
+    if !src.exists() {
+        return Err(eyre!("image file does not exist").into());
+    }
+
+    // Load and resize to 128x128
+    let img = image::open(&src).context("failed to open image")?;
+    let resized = img.resize_to_fill(128, 128, image::imageops::FilterType::Lanczos3);
+
+    // Save as PNG in profile directory
+    let icon_path = profile.path.join(".profile-icon.png");
+    resized.save(&icon_path).context("failed to save icon")?;
+
+    let icon_str = icon_path.to_string_lossy().to_string();
+    profile.icon = Some(icon_str.clone());
+    profile.save(&app, true)?;
+
+    Ok(icon_str)
+}
+
+#[command]
+pub fn remove_profile_icon(profile_id: i64, app: AppHandle) -> Result<()> {
+    let mut manager = app.lock_manager();
+    let (_, profile) = manager.profile_by_id_mut(profile_id)?;
+
+    if let Some(ref icon) = profile.icon {
+        let path = PathBuf::from(icon);
+        if path.exists() {
+            std::fs::remove_file(&path).ok();
+        }
+    }
+
+    profile.icon = None;
+    profile.save(&app, true)?;
+
+    Ok(())
+}
