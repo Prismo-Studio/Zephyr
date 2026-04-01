@@ -586,5 +586,22 @@
 	"browsePage_refresh": "Odśwież",
 	"installPopover_cancelAll": "Anuluj wszystko",
 	"modpackPage_title": "Modpack",
-	"modpackPage_subtitle": "Eksportuj i importuj"
+	"modpackPage_subtitle": "Eksportuj i importuj",
+
+	"toast_cannotEnable_title": "Nie można włączyć {name}",
+	"toast_cannotEnable_message": "Ten mod zależy od: {dependants}. Najpierw włącz te mody.",
+
+	"toggleModDialog_disable_title": "Wyłączyć {name}?",
+	"toggleModDialog_disable_description": "Następujące mody zależą od {name} i również zostaną wyłączone:",
+	"toggleModDialog_disable_hint": "Możesz wyłączyć tylko ten mod (zależne mody mogą przestać działać) lub wyłączyć wszystkie naraz.",
+	"toggleModDialog_disable_one": "Wyłącz tylko {name}",
+	"toggleModDialog_disable_all": "Wyłącz wszystkie ({count} modów)",
+
+	"toggleModDialog_enable_title": "Włączyć {name}?",
+	"toggleModDialog_enable_description": "{name} zależy od następujących wyłączonych modów:",
+	"toggleModDialog_enable_hint": "Możesz włączyć tylko ten mod (może nie działać) lub włączyć wszystkie zależności naraz.",
+	"toggleModDialog_enable_one": "Włącz tylko {name}",
+	"toggleModDialog_enable_all": "Włącz wszystkie ({count} modów)",
+
+	"toggleModDialog_cancel": "Anuluj"
 }

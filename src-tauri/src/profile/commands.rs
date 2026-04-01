@@ -369,6 +369,15 @@ pub fn force_toggle_mods(uuids: Vec<Uuid>, app: AppHandle) -> Result<()> {
 }
 
 #[command]
+pub fn reorder_mod(uuid: Uuid, delta: i32, app: AppHandle) -> Result<()> {
+    let mut manager = app.lock_manager();
+    let profile = manager.active_profile_mut();
+    profile.reorder_mod(uuid, delta)?;
+    profile.save(&app, true)?;
+    Ok(())
+}
+
+#[command]
 pub fn get_dependants(uuid: Uuid, app: AppHandle) -> Result<Vec<VersionIdent>> {
     let manager = app.lock_manager();
     let thunderstore = app.lock_thunderstore();

@@ -9,6 +9,7 @@
 	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
 	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
 	import RemoveModDialog from '$lib/components/mod-list/RemoveModDialog.svelte';
+	import ToggleModDialog from '$lib/components/mod-list/ToggleModDialog.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
@@ -16,15 +17,128 @@
 	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
 
 	import { onMount } from 'svelte';
-	import { emit, listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import { open } from '@tauri-apps/plugin-shell';
-	import { profileQuery } from '$lib/state/misc.svelte';
+	import { profileQuery, togglePin, isModPinned, pinnedMods } from '$lib/state/misc.svelte';
 	import { communityUrl, isOutdated } from '$lib/util';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { pushToast } from '$lib/toast';
 
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
+
+	// Drag & drop state
+	let draggedMod: Mod | null = $state(null);
+	let dragFromIndex = -1;
+	let insertPos = -1; // target position in post-removal array
+	let placeholderIndex: number = $state(-1); // index in mods[] for template display
+	let ghostEl: HTMLDivElement | null = null;
+	let dragOffsetX = 0;
+	let dragOffsetY = 0;
+
+	let isCustomSort = $derived(profileQuery.current.sortBy === 'custom');
+	let canDrag = $derived(isCustomSort && !profiles.activeLocked);
+
+	function handleDragHandleDown(e: PointerEvent, mod: Mod) {
+		if (!canDrag || isModPinned(mod.uuid)) return;
+		e.preventDefault();
+		e.stopPropagation();
+
+		dragFromIndex = sortedMods.findIndex((m) => m.uuid === mod.uuid);
+		draggedMod = mod;
+		insertPos = -1;
+		placeholderIndex = -1;
+
+		const card = (e.target as HTMLElement).closest('.z-mod-card') as HTMLElement;
+		if (!card) return;
+
+		const rect = card.getBoundingClientRect();
+		dragOffsetX = e.clientX - rect.left;
+		dragOffsetY = e.clientY - rect.top;
+
+		ghostEl = card.cloneNode(true) as HTMLDivElement;
+		ghostEl.style.cssText = `
+			position: fixed;
+			left: ${rect.left}px;
+			top: ${rect.top}px;
+			width: ${rect.width}px;
+			pointer-events: none;
+			z-index: 9999;
+			opacity: 0.9;
+			border: 1px solid var(--accent-400);
+			box-shadow: 0 8px 32px rgba(26, 255, 250, 0.2), 0 0 0 1px rgba(26, 255, 250, 0.3);
+			background: var(--bg-elevated);
+			border-radius: var(--radius-lg);
+			transform: scale(1.02);
+			cursor: grabbing;
+		`;
+		document.body.appendChild(ghostEl);
+
+		window.addEventListener('pointermove', handlePointerMove);
+		window.addEventListener('pointerup', handlePointerUp);
+	}
+
+	function handlePointerMove(e: PointerEvent) {
+		if (!draggedMod || !ghostEl) return;
+
+		ghostEl.style.left = e.clientX - dragOffsetX + 'px';
+		ghostEl.style.top = e.clientY - dragOffsetY + 'px';
+
+		// Count how many non-dragged cards have their center ABOVE the cursor
+		const wrappers = document.querySelectorAll('[data-mod-index]');
+		let aboveCount = 0;
+
+		wrappers.forEach((el) => {
+			const idx = parseInt(el.getAttribute('data-mod-index')!);
+			if (idx === dragFromIndex) return;
+
+			const rect = el.getBoundingClientRect();
+			const midY = rect.top + rect.height / 2;
+			if (midY < e.clientY) aboveCount++;
+		});
+
+		insertPos = aboveCount;
+
+		// Convert insertPos (post-removal position) to template index for placeholder
+		if (insertPos <= dragFromIndex) {
+			placeholderIndex = insertPos;
+		} else {
+			placeholderIndex = insertPos + 1;
+		}
+
+		// Don't show placeholder at current position (no-op)
+		if (insertPos === dragFromIndex) {
+			placeholderIndex = -1;
+		}
+	}
+
+	async function handlePointerUp(_e: PointerEvent) {
+		window.removeEventListener('pointermove', handlePointerMove);
+		window.removeEventListener('pointerup', handlePointerUp);
+
+		if (ghostEl) {
+			ghostEl.remove();
+			ghostEl = null;
+		}
+
+		if (draggedMod && insertPos >= 0 && insertPos !== dragFromIndex) {
+			// Sort order is descending by default, so visual order is reversed from array order
+			const isDescending = profileQuery.current.sortOrder === 'descending';
+			const delta = isDescending ? -(insertPos - dragFromIndex) : insertPos - dragFromIndex;
+			if (delta !== 0) {
+				try {
+					await api.profile.reorderMod(draggedMod.uuid, delta);
+					await refresh();
+				} catch (err) {
+					console.error('Failed to reorder mod:', err);
+				}
+			}
+		}
+
+		draggedMod = null;
+		insertPos = -1;
+		placeholderIndex = -1;
+		dragFromIndex = -1;
+	}
 
 	let mods: Mod[] = $state([]);
 	let updates: AvailableUpdate[] = $state([]);
@@ -38,6 +152,14 @@
 
 	// Remove-mod dialog state
 	let removeDialog: { open: boolean; mod: Mod; dependants: Dependant[] } | null = $state(null);
+
+	// Toggle-mod dialog state
+	let toggleDialog: {
+		open: boolean;
+		mod: Mod;
+		dependants: Dependant[];
+		isDisabling: boolean;
+	} | null = $state(null);
 
 	let refreshing = false;
 
@@ -84,20 +206,36 @@
 			if (response.type === 'done') {
 				await refresh();
 			} else if (response.type === 'confirm') {
-				const names = response.dependants.map((d) => d.fullName).join(', ');
-				pushToast({
-					type: 'error',
-					name: m.toast_cannotDisable_title({ name: mod.name }),
-					message: m.toast_cannotDisable_message({ dependants: names })
-				});
+				toggleDialog = {
+					open: true,
+					mod,
+					dependants: response.dependants,
+					isDisabling: mod.enabled !== false
+				};
 			}
 		} catch (err: any) {
 			pushToast({
 				type: 'error',
-				name: m.toast_cannotDisable_title({ name: mod.name }),
+				name:
+					mod.enabled === false
+						? m.toast_cannotEnable_title({ name: mod.name })
+						: m.toast_cannotDisable_title({ name: mod.name }),
 				message: String(err?.message ?? err)
 			});
 		}
+	}
+
+	async function doForceToggleOne(mod: Mod) {
+		await api.profile.forceToggleMods([mod.uuid]);
+		toggleDialog = null;
+		await refresh();
+	}
+
+	async function doForceToggleAll(mod: Mod, dependants: Dependant[]) {
+		const uuids = [mod.uuid, ...dependants.map((d) => d.uuid)];
+		await api.profile.forceToggleMods(uuids);
+		toggleDialog = null;
+		await refresh();
 	}
 
 	async function removeMod(mod: Mod) {
@@ -145,6 +283,16 @@
 				icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
 				disabled: locked,
 				onclick: () => toggleMod(mod)
+			});
+		}
+
+		// Pin/unpin
+		if (mod.isInstalled) {
+			const pinned = isModPinned(mod.uuid);
+			items.push({
+				label: pinned ? 'Désépingler' : 'Épingler en haut',
+				icon: pinned ? 'mdi:pin-off' : 'mdi:pin',
+				onclick: () => togglePin(mod.uuid)
 			});
 		}
 
@@ -211,6 +359,19 @@
 	});
 
 	let locked = $derived(profiles.activeLocked);
+
+	// Sort pinned mods to top
+	let sortedMods = $derived.by(() => {
+		const pinned = pinnedMods.current;
+		if (pinned.length === 0) return mods;
+		return [...mods].sort((a, b) => {
+			const aPinned = pinned.includes(a.uuid);
+			const bPinned = pinned.includes(b.uuid);
+			if (aPinned && !bPinned) return -1;
+			if (!aPinned && bPinned) return 1;
+			return 0;
+		});
+	});
 </script>
 
 <div class="z-mods-page">
@@ -248,7 +409,7 @@
 			{/if}
 
 			<div class="z-mods-list">
-				{#if mods.length === 0}
+				{#if sortedMods.length === 0}
 					<div class="z-mods-empty">
 						<div class="z-empty-icon">
 							<Icon icon="mdi:package-variant" />
@@ -261,16 +422,38 @@
 						</a>
 					</div>
 				{:else}
-					{#each mods as mod (mod.uuid)}
-						<ModCard
-							{mod}
-							isSelected={selectedMod?.uuid === mod.uuid}
-							{locked}
-							showInstallBtn={false}
-							onclick={() => (selectedMod = selectedMod?.uuid === mod.uuid ? null : mod)}
-							oncontextmenu={openModContextMenu}
-						/>
+					{#each sortedMods as mod, i (mod.uuid)}
+						{#if draggedMod && placeholderIndex === i}
+							<div class="z-drop-placeholder">
+								<div class="z-drop-line"></div>
+								<Icon icon="mdi:plus-circle" class="z-drop-icon" />
+								<div class="z-drop-line"></div>
+							</div>
+						{/if}
+
+						<div data-mod-index={i} class:z-dragging-card={draggedMod?.uuid === mod.uuid}>
+							<ModCard
+								{mod}
+								isSelected={selectedMod?.uuid === mod.uuid}
+								{locked}
+								showInstallBtn={false}
+								showDragHandle={canDrag}
+								onclick={() => {
+									if (!draggedMod) selectedMod = selectedMod?.uuid === mod.uuid ? null : mod;
+								}}
+								oncontextmenu={openModContextMenu}
+								onpointerdownHandle={handleDragHandleDown}
+							/>
+						</div>
 					{/each}
+
+					{#if draggedMod && placeholderIndex === sortedMods.length}
+						<div class="z-drop-placeholder">
+							<div class="z-drop-line"></div>
+							<Icon icon="mdi:plus-circle" class="z-drop-icon" />
+							<div class="z-drop-line"></div>
+						</div>
+					{/if}
 
 					{#if mods.length < totalModCount}
 						<button class="z-load-more" onclick={() => (maxCount += 40)}>
@@ -312,6 +495,19 @@
 	/>
 {/if}
 
+<!-- Toggle mod confirmation dialog -->
+{#if toggleDialog}
+	<ToggleModDialog
+		bind:open={toggleDialog.open}
+		modName={toggleDialog.mod.name}
+		isDisabling={toggleDialog.isDisabling}
+		dependants={toggleDialog.dependants}
+		oncancel={() => (toggleDialog = null)}
+		ontoggleOne={() => doForceToggleOne(toggleDialog!.mod)}
+		ontoggleAll={() => doForceToggleAll(toggleDialog!.mod, toggleDialog!.dependants)}
+	/>
+{/if}
+
 <style>
 	.z-mods-page {
 		display: flex;
@@ -346,6 +542,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
+		user-select: none;
 	}
 
 	.z-unknown-banner {
@@ -432,5 +629,43 @@
 		border-color: var(--border-accent);
 		color: var(--text-accent);
 		background: var(--bg-hover);
+	}
+
+	.z-dragging-card {
+		opacity: 0.25;
+		pointer-events: none;
+	}
+
+	/* Drop placeholder */
+	.z-drop-placeholder {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm) 0;
+		animation: placeholderIn 150ms ease;
+	}
+
+	.z-drop-line {
+		flex: 1;
+		height: 2px;
+		border-top: 2px dashed var(--accent-400);
+		opacity: 0.6;
+	}
+
+	:global(.z-drop-icon) {
+		font-size: 18px;
+		color: var(--accent-400);
+		flex-shrink: 0;
+	}
+
+	@keyframes placeholderIn {
+		from {
+			opacity: 0;
+			padding: 0;
+		}
+		to {
+			opacity: 1;
+			padding: var(--space-sm) 0;
+		}
 	}
 </style>

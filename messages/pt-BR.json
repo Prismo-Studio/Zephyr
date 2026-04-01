@@ -523,5 +523,22 @@
 	"browsePage_refresh": "Atualizar",
 	"installPopover_cancelAll": "Cancelar tudo",
 	"modpackPage_title": "Modpack",
-	"modpackPage_subtitle": "Exportar e importar"
+	"modpackPage_subtitle": "Exportar e importar",
+
+	"toast_cannotEnable_title": "Não é possível ativar {name}",
+	"toast_cannotEnable_message": "Este mod depende de: {dependants}. Ative esses mods primeiro.",
+
+	"toggleModDialog_disable_title": "Desativar {name}?",
+	"toggleModDialog_disable_description": "Os seguintes mods dependem de {name} e também serão desativados:",
+	"toggleModDialog_disable_hint": "Você pode desativar apenas este mod (os dependentes podem parar de funcionar) ou desativar todos de uma vez.",
+	"toggleModDialog_disable_one": "Desativar apenas {name}",
+	"toggleModDialog_disable_all": "Desativar todos ({count} mods)",
+
+	"toggleModDialog_enable_title": "Ativar {name}?",
+	"toggleModDialog_enable_description": "{name} depende dos seguintes mods desativados:",
+	"toggleModDialog_enable_hint": "Você pode ativar apenas este mod (pode não funcionar) ou ativar todas as dependências de uma vez.",
+	"toggleModDialog_enable_one": "Ativar apenas {name}",
+	"toggleModDialog_enable_all": "Ativar todos ({count} mods)",
+
+	"toggleModDialog_cancel": "Cancelar"
 }

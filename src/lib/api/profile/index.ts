@@ -33,6 +33,7 @@ export const removeMod = (uuid: string) => invoke<ModActionResponse>('remove_mod
 export const toggleMod = (uuid: string) => invoke<ModActionResponse>('toggle_mod', { uuid });
 export const forceRemoveMods = (uuids: string[]) => invoke('force_remove_mods', { uuids });
 export const forceToggleMods = (uuids: string[]) => invoke('force_toggle_mods', { uuids });
+export const reorderMod = (uuid: string, delta: number) => invoke('reorder_mod', { uuid, delta });
 export const setAllModsState = (enable: boolean) =>
 	invoke<number>('set_all_mods_state', { enable });
 export const removeDisabledMods = () => invoke<number>('remove_disabled_mods');

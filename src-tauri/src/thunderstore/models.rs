@@ -260,6 +260,8 @@ pub struct FrontendMod {
     pub uuid: Uuid,
     pub version_uuid: Uuid,
     pub is_installed: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     pub last_updated: Option<String>,
     pub versions: Vec<FrontendVersion>,
     pub icon: Option<PathBuf>,

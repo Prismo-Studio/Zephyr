@@ -48,7 +48,7 @@
 <div class="z-titlebar" data-tauri-drag-region>
 	<div class="z-titlebar-left" data-tauri-drag-region>
 		<span class="z-titlebar-brand" data-tauri-drag-region>
-			<span class="z-titlebar-logo">Z</span>
+			<img src="/logo.png" alt="Zephyr" class="z-titlebar-logo" />
 			<span class="z-titlebar-name">Zephyr</span>
 		</span>
 	</div>
@@ -108,18 +108,10 @@
 	}
 
 	.z-titlebar-logo {
-		font-family: var(--font-display);
-		font-size: 14px;
-		font-weight: 900;
-		width: 20px;
-		height: 20px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 5px;
-		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
-		color: var(--text-inverse);
-		line-height: 1;
+		width: 18px;
+		height: 18px;
+		object-fit: contain;
+		border-radius: 4px;
 	}
 
 	.z-titlebar-name {

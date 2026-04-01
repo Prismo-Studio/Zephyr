@@ -513,6 +513,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
+		max-height: 240px;
+		overflow-y: auto;
 	}
 
 	.z-profile-item {

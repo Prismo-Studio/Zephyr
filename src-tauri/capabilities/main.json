@@ -36,6 +36,7 @@
 			],
 			"deny": []
 		},
-		"os:allow-locale"
+		"os:allow-locale",
+		"window-state:default"
 	]
 }

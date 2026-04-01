@@ -208,19 +208,6 @@ impl Profile {
         self.game.mod_loader.installer_for(&profile_mod.full_name())
     }
 
-    fn reorder_mod(&mut self, uuid: Uuid, delta: i32) -> Result<()> {
-        let index = self
-            .mods
-            .iter()
-            .position(|m| m.uuid() == uuid)
-            .ok_or_eyre("mod not found in profile")?;
-
-        let target = (index as i32 + delta).clamp(0, self.mods.len() as i32 - 1) as usize;
-        let profile_mod = self.mods.remove(index);
-        self.mods.insert(target, profile_mod);
-
-        Ok(())
-    }
 }
 
 fn handle_reorder_event(event: tauri::Event, app: &AppHandle) -> Result<()> {

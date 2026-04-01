@@ -523,5 +523,22 @@
 	"browsePage_refresh": "Uppdatera",
 	"installPopover_cancelAll": "Avbryt alla",
 	"modpackPage_title": "Moddpaket",
-	"modpackPage_subtitle": "Exportera och importera"
+	"modpackPage_subtitle": "Exportera och importera",
+
+	"toast_cannotEnable_title": "Kan inte aktivera {name}",
+	"toast_cannotEnable_message": "Denna modd beror på: {dependants}. Aktivera dessa moddar först.",
+
+	"toggleModDialog_disable_title": "Inaktivera {name}?",
+	"toggleModDialog_disable_description": "Följande moddar beror på {name} och kommer också att inaktiveras:",
+	"toggleModDialog_disable_hint": "Du kan inaktivera bara denna modd (beroende moddar kan sluta fungera), eller inaktivera alla på en gång.",
+	"toggleModDialog_disable_one": "Inaktivera bara {name}",
+	"toggleModDialog_disable_all": "Inaktivera alla ({count} moddar)",
+
+	"toggleModDialog_enable_title": "Aktivera {name}?",
+	"toggleModDialog_enable_description": "{name} beror på följande inaktiverade moddar:",
+	"toggleModDialog_enable_hint": "Du kan aktivera bara denna modd (den kanske inte fungerar), eller aktivera alla beroenden på en gång.",
+	"toggleModDialog_enable_one": "Aktivera bara {name}",
+	"toggleModDialog_enable_all": "Aktivera alla ({count} moddar)",
+
+	"toggleModDialog_cancel": "Avbryt"
 }
