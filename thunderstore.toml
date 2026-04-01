@@ -2,10 +2,10 @@
 repository = "https://thunderstore.io"
 
 [package]
-name = "GaleModManager"
-namespace = "Kesomannen"
-description = "A modern and lightweight mod manager for many games on Thunderstore."
-websiteUrl = "https://github.com/Kesomannen/gale"
+name = "Zephyr"
+namespace = "PrismoStudio"
+description = "A fast, modern mod manager for all your games."
+websiteUrl = "https://github.com/Prismo-Studio/Zephyr"
 
 [build]
 icon = "images/icons/app-icon@0,25x.png"

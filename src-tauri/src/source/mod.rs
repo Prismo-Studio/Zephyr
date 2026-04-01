@@ -2,7 +2,7 @@
 //!
 //! This module defines the `ModSource` trait that all mod sources must implement,
 //! along with common types used across sources. This is what makes Zephyr different
-//! from Gale — instead of hardcoding Thunderstore, we abstract over multiple sources.
+//! Instead of hardcoding Thunderstore, we abstract over multiple sources.
 
 pub mod commands;
 pub mod registry;

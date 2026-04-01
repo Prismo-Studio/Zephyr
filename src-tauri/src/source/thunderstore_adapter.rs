@@ -1,6 +1,6 @@
 //! Adapter that wraps the existing Thunderstore module to implement the ModSource trait.
 //!
-//! This bridges the gap between Gale's original Thunderstore-specific code and
+//! This bridges the gap between the original Thunderstore-specific code and
 //! Zephyr's multi-source abstraction. The existing query/fetch/cache infrastructure
 //! continues to work unchanged — this adapter just provides a unified interface.
 
