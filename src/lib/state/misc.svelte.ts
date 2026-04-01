@@ -1,5 +1,6 @@
 import type { ConfigEntryId, QueryModsArgsWithoutMax } from '$lib/types';
 import { PersistedState } from 'runed';
+import profiles from './profile.svelte';
 
 export const apiKeyDialog = $state({
 	open: false
@@ -27,16 +28,31 @@ export const modQuery = new PersistedState<QueryModsArgsWithoutMax>('modQuery', 
 	sortOrder: 'descending'
 });
 
-// Locally pinned mod UUIDs (always shown at top of mod list)
-export const pinnedMods = new PersistedState<string[]>('pinnedMods', []);
+// Locally pinned mod UUIDs per profile (always shown at top of mod list)
+export const pinnedModsMap = new PersistedState<Record<string, string[]>>('pinnedModsPerProfile', {});
+
+function getActiveProfileKey(): string {
+	// Lazy import to avoid circular deps
+	const id = profiles?.activeId;
+	return id != null ? String(id) : '_default';
+}
+
+export const pinnedMods = {
+	get current(): string[] {
+		return pinnedModsMap.current[getActiveProfileKey()] ?? [];
+	}
+};
 
 export function togglePin(uuid: string) {
-	const current = pinnedMods.current;
+	const key = getActiveProfileKey();
+	const map = { ...pinnedModsMap.current };
+	const current = map[key] ?? [];
 	if (current.includes(uuid)) {
-		pinnedMods.current = current.filter((id) => id !== uuid);
+		map[key] = current.filter((id) => id !== uuid);
 	} else {
-		pinnedMods.current = [...current, uuid];
+		map[key] = [...current, uuid];
 	}
+	pinnedModsMap.current = map;
 }
 
 export function isModPinned(uuid: string): boolean {

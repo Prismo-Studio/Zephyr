@@ -12,7 +12,7 @@
 
 	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
-	import { modQuery, togglePin, isModPinned, pinnedMods } from '$lib/state/misc.svelte';
+	import { modQuery, togglePin, isModPinned } from '$lib/state/misc.svelte';
 	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
 	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
 	import { open } from '@tauri-apps/plugin-shell';
