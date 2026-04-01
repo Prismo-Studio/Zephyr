@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as api from '$lib/api';
-	import type { Mod, ModId, SortBy, AvailableUpdate, ProfileQuery } from '$lib/types';
+	import type { Mod, ModId, SortBy, AvailableUpdate, ProfileQuery, Dependant } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import profiles from '$lib/state/profile.svelte';
 
@@ -8,6 +8,7 @@
 	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
 	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
 	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
+	import RemoveModDialog from '$lib/components/mod-list/RemoveModDialog.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
@@ -21,6 +22,7 @@
 	import { communityUrl, isOutdated } from '$lib/util';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { pushToast } from '$lib/toast';
 
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
@@ -33,6 +35,9 @@
 
 	// Context menu state
 	let ctxMenu: { items: ContextMenuItem[]; x: number; y: number } | null = $state(null);
+
+	// Remove-mod dialog state
+	let removeDialog: { open: boolean; mod: Mod; dependants: Dependant[] } | null = $state(null);
 
 	let refreshing = false;
 
@@ -74,12 +79,24 @@
 	}
 
 	async function toggleMod(mod: Mod) {
-		const response = await api.profile.toggleMod(mod.uuid);
-		if (response.type === 'done') {
-			await refresh();
-		} else if (response.type === 'hasDependants') {
-			await api.profile.forceToggleMods([mod.uuid, ...response.dependants.map((d) => d.uuid)]);
-			await refresh();
+		try {
+			const response = await api.profile.toggleMod(mod.uuid);
+			if (response.type === 'done') {
+				await refresh();
+			} else if (response.type === 'confirm') {
+				const names = response.dependants.map((d) => d.fullName).join(', ');
+				pushToast({
+					type: 'error',
+					name: m.toast_cannotDisable_title({ name: mod.name }),
+					message: m.toast_cannotDisable_message({ dependants: names })
+				});
+			}
+		} catch (err: any) {
+			pushToast({
+				type: 'error',
+				name: m.toast_cannotDisable_title({ name: mod.name }),
+				message: String(err?.message ?? err)
+			});
 		}
 	}
 
@@ -88,11 +105,25 @@
 		if (response.type === 'done') {
 			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
 			await refresh();
-		} else if (response.type === 'hasDependants') {
-			await api.profile.forceRemoveMods([mod.uuid, ...response.dependants.map((d) => d.uuid)]);
-			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
-			await refresh();
+		} else if (response.type === 'confirm') {
+			// Show cascade-delete dialog
+			removeDialog = { open: true, mod, dependants: response.dependants };
 		}
+	}
+
+	async function doForceRemoveOne(mod: Mod) {
+		await api.profile.forceRemoveMods([mod.uuid]);
+		if (selectedMod?.uuid === mod.uuid) selectedMod = null;
+		removeDialog = null;
+		await refresh();
+	}
+
+	async function doForceRemoveAll(mod: Mod, dependants: Dependant[]) {
+		const uuids = [mod.uuid, ...dependants.map((d) => d.uuid)];
+		await api.profile.forceRemoveMods(uuids);
+		if (selectedMod && uuids.includes(selectedMod.uuid)) selectedMod = null;
+		removeDialog = null;
+		await refresh();
 	}
 
 	async function updateAllMods() {
@@ -267,6 +298,18 @@
 <!-- Context menu -->
 {#if ctxMenu}
 	<ContextMenu items={ctxMenu.items} x={ctxMenu.x} y={ctxMenu.y} onclose={() => (ctxMenu = null)} />
+{/if}
+
+<!-- Remove mod confirmation dialog -->
+{#if removeDialog}
+	<RemoveModDialog
+		bind:open={removeDialog.open}
+		modName={removeDialog.mod.name}
+		dependants={removeDialog.dependants}
+		oncancel={() => (removeDialog = null)}
+		onremoveOne={() => doForceRemoveOne(removeDialog!.mod)}
+		onremoveAll={() => doForceRemoveAll(removeDialog!.mod, removeDialog!.dependants)}
+	/>
 {/if}
 
 <style>

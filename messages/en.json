@@ -594,5 +594,15 @@
 	"installPopover_cancelAll": "Cancel all",
 
 	"modpackPage_title": "Modpack",
-	"modpackPage_subtitle": "Export & Import"
+	"modpackPage_subtitle": "Export & Import",
+
+	"toast_cannotDisable_title": "Cannot disable {name}",
+	"toast_cannotDisable_message": "This mod is required by: {dependants}. Disable those mods first.",
+
+	"removeModDialog_title": "Uninstall {name}?",
+	"removeModDialog_description": "The following mods depend on {name} and will likely break if it is removed:",
+	"removeModDialog_hint": "You can remove just this mod (leaving dependants installed but broken), or remove all of them at once.",
+	"removeModDialog_cancel": "Cancel",
+	"removeModDialog_removeOne": "Remove {name} only",
+	"removeModDialog_removeAll": "Remove all ({count} mods)"
 }

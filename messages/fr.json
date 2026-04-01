@@ -586,5 +586,8 @@
 	"browsePage_refresh": "Actualiser",
 	"installPopover_cancelAll": "Tout annuler",
 	"modpackPage_title": "Modpack",
-	"modpackPage_subtitle": "Exporter et importer"
+	"modpackPage_subtitle": "Exporter et importer",
+
+	"toast_cannotDisable_title": "Impossible de désactiver {name}",
+	"toast_cannotDisable_message": "Ce mod est requis par : {dependants}. Désactivez ces mods d'abord."
 }
