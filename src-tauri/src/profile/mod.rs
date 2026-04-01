@@ -260,6 +260,14 @@ impl Profile {
         self.get_mod(uuid).is_ok()
     }
 
+    pub fn reorder_mod(&mut self, uuid: Uuid, delta: i32) -> Result<()> {
+        let index = self.index_of(uuid)?;
+        let target = (index as i32 + delta).clamp(0, self.mods.len() as i32 - 1) as usize;
+        let profile_mod = self.mods.remove(index);
+        self.mods.insert(target, profile_mod);
+        Ok(())
+    }
+
     fn thunderstore_mods(&self) -> impl Iterator<Item = (&ThunderstoreMod, bool)> {
         self.mods.iter().filter_map(ProfileMod::as_thunderstore)
     }

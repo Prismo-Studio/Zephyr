@@ -173,6 +173,7 @@ pub fn run() {
             profile::commands::force_remove_mods,
             profile::commands::toggle_mod,
             profile::commands::force_toggle_mods,
+            profile::commands::reorder_mod,
             profile::commands::set_all_mods_state,
             profile::commands::remove_disabled_mods,
             profile::commands::open_profile_dir,
