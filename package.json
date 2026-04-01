@@ -24,6 +24,7 @@
 		"@sveltejs/vite-plugin-svelte": "^4.0.4",
 		"@tailwindcss/vite": "^4.1.18",
 		"@tauri-apps/cli": "^2.10.1",
+		"@types/node": "^25.5.0",
 		"prettier": "^3.8.1",
 		"prettier-plugin-svelte": "^3.4.1",
 		"prettier-plugin-tailwindcss": "^0.7.2",

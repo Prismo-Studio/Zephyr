@@ -1,35 +1,18 @@
+/// <reference types="svelte" />
 import { m } from '$lib/paraglide/messages';
 import { getLocale, locales, setLocale, type Locale } from '$lib/paraglide/runtime';
 import { toSentenceCase as toSentenceCaseLatin } from 'js-convert-case';
-import * as api from '$lib/api';
-import { locale } from '@tauri-apps/plugin-os';
 
-export function setLanguage(lang: Locale | string) {
+// Reactive state for the current locale to trigger Svelte re-renders
+// We've renamed this to 'i18nCore' to break all stale Vite caches.
+export const i18nState = $state({
+	locale: getLocale()
+});
+
+export function updateAppLanguage(lang: Locale | string) {
 	setLocale(lang as Locale);
-	console.log(`Language changed to ${lang}`);
-}
-
-export async function refreshLanguage() {
-	let lang: string;
-	let prefs = await api.prefs.get();
-
-	if (await api.state.isFirstRun()) {
-		let systemLocale = await locale();
-		if (!systemLocale || !locales.includes(systemLocale as Locale)) {
-			return;
-		}
-
-		lang = systemLocale;
-
-		prefs.language = lang;
-		await api.prefs.set(prefs);
-	} else {
-		lang = prefs.language;
-	}
-
-	if (lang !== getLocale()) {
-		setLanguage(lang);
-	}
+	i18nState.locale = lang as Locale;
+	console.log(`[i18nCore] Language updated to ${lang}`);
 }
 
 export const languageTitle: Record<Locale, string> = locales.reduce(

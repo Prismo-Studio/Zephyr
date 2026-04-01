@@ -44,6 +44,4 @@ class ProfilesState {
 
 const profiles = new ProfilesState();
 
-profiles.refresh();
-
 export default profiles;

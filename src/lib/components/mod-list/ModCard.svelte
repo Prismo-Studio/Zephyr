@@ -6,13 +6,14 @@
 	import { m } from '$lib/paraglide/messages';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	type Props = {
 		mod: Mod;
 		isSelected?: boolean;
 		locked?: boolean;
 		showInstallBtn?: boolean;
-		onclick?: MouseEventHandler<HTMLButtonElement>;
+		onclick?: MouseEventHandler<HTMLDivElement>;
 		oninstall?: () => void;
 		oncontextmenu?: (e: MouseEvent, mod: Mod) => void;
 	};
@@ -36,12 +37,16 @@
 	}
 </script>
 
-<button
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<div
 	class="z-mod-card"
 	class:selected={isSelected}
 	class:disabled-mod={mod.enabled === false}
 	{onclick}
 	oncontextmenu={handleContextMenu}
+	role="button"
+	tabindex="0"
 >
 	<!-- Icon -->
 	<div class="z-mod-icon">
@@ -64,7 +69,7 @@
 				<Icon icon="mdi:alert" class="z-mod-badge-icon deprecated" />
 			{/if}
 			{#if mod.enabled === false}
-				<Badge variant="warning">{m.modCard_disabled()}</Badge>
+				<Badge variant="warning">{i18nState.locale && m.modCard_disabled()}</Badge>
 			{/if}
 		</div>
 
@@ -112,7 +117,7 @@
 			{/if}
 		</button>
 	{/if}
-</button>
+</div>
 
 <style>
 	.z-mod-card {

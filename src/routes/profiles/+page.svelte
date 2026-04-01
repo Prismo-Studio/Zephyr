@@ -13,6 +13,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import { convertFileSrc } from '@tauri-apps/api/core';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let createOpen = $state(false);
 	let newName = $state('');
@@ -100,13 +101,13 @@
 
 <div class="z-profiles-page">
 	<Header
-		title={m.menuBar_profile_title()}
-		subtitle={m.profiles_total({ count: profiles.list.length.toString() })}
+		title={i18nState.locale && m.menuBar_profile_title()}
+		subtitle={i18nState.locale && m.profiles_total({ count: profiles.list.length.toString() })}
 	>
 		{#snippet actions()}
 			<Button variant="primary" size="sm" onclick={() => (createOpen = true)}>
 				{#snippet icon()}<Icon icon="mdi:plus" />{/snippet}
-				{m.profiles_newProfile()}
+				{i18nState.locale && m.profiles_newProfile()}
 			</Button>
 		{/snippet}
 	</Header>
@@ -152,7 +153,8 @@
 									{/if}
 								</div>
 								<span class="z-profile-mods"
-									>{m.profiles_mods({ count: profile.modCount.toString() })}</span
+									>{i18nState.locale &&
+										m.profiles_mods({ count: profile.modCount.toString() })}</span
 								>
 							</div>
 						</div>
@@ -161,15 +163,16 @@
 					<div class="z-profile-footer">
 						<div class="z-profile-badges">
 							{#if profile.id === profiles.activeId}
-								<span class="z-profile-badge accent">{m.profiles_active()}</span>
+								<span class="z-profile-badge accent">{i18nState.locale && m.profiles_active()}</span
+								>
 							{/if}
 							{#if profile.sync}
-								<span class="z-profile-badge info">{m.profiles_synced()}</span>
+								<span class="z-profile-badge info">{i18nState.locale && m.profiles_synced()}</span>
 							{/if}
 						</div>
 
 						<div class="z-profile-actions">
-							<Tooltip text={m.profiles_rename()} position="bottom" delay={200}>
+							<Tooltip text={i18nState.locale && m.profiles_rename()} position="bottom" delay={200}>
 								<button
 									class="z-profile-action"
 									onclick={() => startRename(profile.id, profile.name)}
@@ -177,7 +180,11 @@
 									<Icon icon="mdi:pencil" />
 								</button>
 							</Tooltip>
-							<Tooltip text={m.profiles_duplicate()} position="bottom" delay={200}>
+							<Tooltip
+								text={i18nState.locale && m.profiles_duplicate()}
+								position="bottom"
+								delay={200}
+							>
 								<button
 									class="z-profile-action"
 									onclick={() => duplicateProfile(profile.id, profile.name)}
@@ -186,7 +193,11 @@
 								</button>
 							</Tooltip>
 							{#if profiles.list.length > 1}
-								<Tooltip text={m.profiles_delete()} position="bottom" delay={200}>
+								<Tooltip
+									text={i18nState.locale && m.profiles_delete()}
+									position="bottom"
+									delay={200}
+								>
 									<button class="z-profile-action danger" onclick={() => deleteProfile(profile.id)}>
 										<Icon icon="mdi:delete" />
 									</button>
@@ -201,11 +212,11 @@
 </div>
 
 <!-- Create modal -->
-<Modal bind:open={createOpen} title={m.profiles_newProfile()}>
+<Modal bind:open={createOpen} title={i18nState.locale && m.profiles_newProfile()}>
 	<div class="z-modal-form">
 		<Input
 			bind:value={newName}
-			placeholder={m.profiles_profileName()}
+			placeholder={i18nState.locale && m.profiles_profileName()}
 			onkeydown={(e) => {
 				if (e.key === 'Enter') createProfile();
 			}}
@@ -213,9 +224,11 @@
 	</div>
 
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (createOpen = false)}>{m.dialog_cancel()}</Button>
+		<Button variant="ghost" onclick={() => (createOpen = false)}
+			>{i18nState.locale && m.dialog_cancel()}</Button
+		>
 		<Button variant="primary" onclick={createProfile} disabled={!newName.trim()}
-			>{m.profiles_create()}</Button
+			>{i18nState.locale && m.profiles_create()}</Button
 		>
 	{/snippet}
 </Modal>
@@ -224,12 +237,12 @@
 <Modal
 	open={renameId !== null}
 	onclose={() => (renameId = null)}
-	title={m.profiles_renameProfile()}
+	title={i18nState.locale && m.profiles_renameProfile()}
 >
 	<div class="z-modal-form">
 		<Input
 			bind:value={renameName}
-			placeholder={m.profiles_newName()}
+			placeholder={i18nState.locale && m.profiles_newName()}
 			onkeydown={(e) => {
 				if (e.key === 'Enter') confirmRename();
 			}}
@@ -237,9 +250,11 @@
 	</div>
 
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (renameId = null)}>{m.dialog_cancel()}</Button>
+		<Button variant="ghost" onclick={() => (renameId = null)}
+			>{i18nState.locale && m.dialog_cancel()}</Button
+		>
 		<Button variant="primary" onclick={confirmRename} disabled={!renameName.trim()}
-			>{m.profiles_rename()}</Button
+			>{i18nState.locale && m.profiles_rename()}</Button
 		>
 	{/snippet}
 </Modal>

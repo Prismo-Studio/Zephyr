@@ -72,7 +72,7 @@
 	"menuBar_uninstallDisabledMods_confirm": "Êtes-vous sûr de vouloir désinstaller tous les mods désactivés ?",
 	"menuBar_uninstallDisabledMods_message": "{count} mods désactivés désinstallés.",
 	"menuBar_copyLaunchArgs_message": "Arguments de lancement copiés dans le presse-papiers.",
-	"menuBar_clearModCache_confirm": "Supprimer tout le cache des mods ? Cela peut doubler l'espace disque utilisé par les mods. À faire uniquement si vous savez ce que vous faites.",
+	"menuBar_clearModCache_confirm": "Supprimer tout le cache des mods ? Cela peut doubler l'espace disque utilisé par les mods. ì faire uniquement si vous savez ce que vous faites.",
 	"menuBar_clearModCache_message": "Cache des mods supprimé ({size} libérés).",
 	"menuBar_clearModCache_message_unsed": "Cache des mods inutilisés supprimé ({size} libérés).",
 	"menuBar_copyModList_message": "Liste des mods copiée dans le presse-papiers.",
@@ -478,7 +478,6 @@
 	"modpack_includeFiles_placeholder": "Filtrer les fichiers...",
 	"toolBar_dialog_games_lastUpdated": "Mis à jour il y a {time}",
 	"installPopover_taskText_done": "Finalisation...",
-
 	"dashboard_title": "Tableau de bord",
 	"dashboard_subtitle": "Bienvenue — gérez vos mods depuis ici.",
 	"dashboard_activeGame": "Jeu actif",
@@ -504,10 +503,8 @@
 	"dashboard_profiles_modCount": "{count} mods",
 	"dashboard_profiles_active": "Actif",
 	"dashboard_footer": "Zephyr v0.1.0 par",
-
 	"modpack_header_title": "Exporter le modpack",
 	"modpack_header_description": "Créez et partagez votre pack de mods avec la communauté.",
-
 	"prefs_locations_cacheFolder": "Dossier de cache",
 	"browse_loading": "Chargement des mods...",
 	"browse_loadMore": "Charger plus",
@@ -574,5 +571,20 @@
 	"installButton_installed": "Installé",
 	"installButton_installing": "Installation...",
 	"installButton_install": "Installer",
-	"prefs_aboutDesc": "Un gestionnaire de mods rapide et moderne pour tous vos jeux"
+	"prefs_aboutDesc": "Un gestionnaire de mods rapide et moderne pour tous vos jeux",
+	"configPage_title": "Éditeur de config",
+	"configPage_openFile": "Ouvrir le fichier",
+	"configPage_searchPlaceholder": "Rechercher des fichiers de config...",
+	"configPage_noFilesFound": "Aucun fichier de config trouvé",
+	"configPage_selectFile": "Sélectionner un fichier de config",
+	"configPage_error": "Erreur lors de la lecture du fichier : ",
+	"configPage_unsupported": "Format de config non pris en charge",
+	"configPage_resetToDefault": "Réinitialiser par défaut",
+	"profilePage_rename": "Renommer",
+	"profilePage_duplicate": "Dupliquer",
+	"profilePage_delete": "Supprimer",
+	"browsePage_refresh": "Actualiser",
+	"installPopover_cancelAll": "Tout annuler",
+	"modpackPage_title": "Modpack",
+	"modpackPage_subtitle": "Exporter et importer"
 }

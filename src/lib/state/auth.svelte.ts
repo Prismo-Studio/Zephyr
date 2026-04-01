@@ -22,6 +22,4 @@ class AuthState {
 
 const auth = new AuthState();
 
-auth.refresh();
-
 export default auth;

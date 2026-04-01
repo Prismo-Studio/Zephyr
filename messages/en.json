@@ -574,5 +574,25 @@
 	"installButton_installed": "Installed",
 	"installButton_installing": "Installing...",
 	"installButton_install": "Install",
-	"prefs_aboutDesc": "A fast, modern mod manager for all your games"
+	"prefs_aboutDesc": "A fast, modern mod manager for all your games",
+
+	"configPage_title": "Config Editor",
+	"configPage_openFile": "Open file",
+	"configPage_searchPlaceholder": "Search config files...",
+	"configPage_noFilesFound": "No config files found",
+	"configPage_selectFile": "Select a config file",
+	"configPage_error": "Error reading file: ",
+	"configPage_unsupported": "Unsupported config format",
+	"configPage_resetToDefault": "Reset to default",
+
+	"profilePage_rename": "Rename",
+	"profilePage_duplicate": "Duplicate",
+	"profilePage_delete": "Delete",
+
+	"browsePage_refresh": "Refresh",
+
+	"installPopover_cancelAll": "Cancel all",
+
+	"modpackPage_title": "Modpack",
+	"modpackPage_subtitle": "Export & Import"
 }

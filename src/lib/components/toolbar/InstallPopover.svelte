@@ -6,6 +6,8 @@
 	import Progress from '$lib/components/ui/Progress.svelte';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import * as api from '$lib/api';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let visible = $state(false);
 	let totalMods = $state(0);
@@ -76,9 +78,13 @@
 		<div class="z-install-header">
 			<div class="z-install-title">
 				<Spinner size={14} />
-				<span>Installing mods...</span>
+				<span>{i18nState.locale && m.installPopover_content()}</span>
 			</div>
-			<button class="z-install-cancel" onclick={cancelAll} title="Cancel">
+			<button
+				class="z-install-cancel"
+				onclick={cancelAll}
+				title={i18nState.locale && m.dialog_cancel()}
+			>
 				<Icon icon="mdi:close" />
 			</button>
 		</div>

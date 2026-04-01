@@ -442,12 +442,16 @@ impl ManagedGame {
             dirs_next::desktop_dir().ok_or_eyre("could not find desktop directory")?;
 
         #[cfg(target_os = "windows")]
-        let shortcut_path =
-            desktop_path.join(format!("Zephyr - {} - {}.lnk", self.game.name, profile.name));
+        let shortcut_path = desktop_path.join(format!(
+            "Zephyr - {} - {}.lnk",
+            self.game.name, profile.name
+        ));
 
         #[cfg(target_os = "linux")]
-        let shortcut_path =
-            desktop_path.join(format!("zephyr-{}-{}.desktop", self.game.name, profile.name));
+        let shortcut_path = desktop_path.join(format!(
+            "zephyr-{}-{}.desktop",
+            self.game.name, profile.name
+        ));
 
         if shortcut_path.exists() {
             bail!("shortcut already exists");

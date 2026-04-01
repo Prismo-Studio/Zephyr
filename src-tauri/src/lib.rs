@@ -9,6 +9,8 @@ use tracing::{error, info, warn};
 
 #[cfg(target_os = "linux")]
 extern crate webkit2gtk;
+#[cfg(target_os = "linux")]
+use gtk::prelude::GtkWindowExt;
 
 mod cli;
 mod config;
@@ -29,6 +31,19 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         env!("CARGO_PKG_VERSION"),
         std::env::consts::OS,
     );
+
+    // On Linux (Wayland + X11), GTK can ignore the `decorations: false` config and
+    // draw its own title bar. Calling set_decorated(false) on the underlying GtkWindow
+    // directly is the reliable fix.
+    #[cfg(target_os = "linux")]
+    {
+        use tauri::Manager;
+        if let Some(window) = app.get_webview_window("main") {
+            if let Ok(gtk_window) = window.gtk_window() {
+                gtk_window.set_decorated(false);
+            }
+        }
+    }
 
     if let Err(err) = state::setup(app.handle()) {
         error!("setup error: {:?}", err);
@@ -106,6 +121,18 @@ pub fn run() {
         // Disable GPU compositing which can cause rendering issues
         if env::var("WEBKIT_DISABLE_COMPOSITING_MODE").is_err() {
             env::set_var("WEBKIT_DISABLE_COMPOSITING_MODE", "1");
+        }
+        // Disable GTK client-side decorations (CSD) so the native title bar
+        // doesn't appear on Wayland/X11 when decorations: false is set in tauri.conf.json.
+        // Without this, GTK falls back to drawing its own CSD title bar.
+        if env::var("GTK_CSD").is_err() {
+            env::set_var("GTK_CSD", "0");
+        }
+        // Force GDK to use the X11 backend on Wayland (via XWayland).
+        // WebKitGTK's native Wayland backend has known issues rendering images/logos,
+        // causing blank/missing visuals. XWayland provides a more stable rendering path.
+        if env::var("GDK_BACKEND").is_err() {
+            env::set_var("GDK_BACKEND", "x11");
         }
     }
 

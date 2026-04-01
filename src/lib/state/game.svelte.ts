@@ -54,6 +54,4 @@ class GamesState {
 
 const games = new GamesState();
 
-games.refresh();
-
 export default games;

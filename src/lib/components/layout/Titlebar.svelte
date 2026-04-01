@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import Icon from '@iconify/svelte';
+	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	const appWindow = getCurrentWindow();
 
@@ -24,8 +26,23 @@
 		await appWindow.close();
 	}
 
-	// Check on mount
-	checkMaximized();
+	onMount(() => {
+		// Forcefully remove native window decorations at runtime.
+		// This is the most reliable approach because it runs after the window is
+		// fully realized - the point where GTK/WM decorations can sneak back in
+		// despite decorations: false being set in tauri.conf.json (known Tauri v2 bug).
+		appWindow
+			.setDecorations(false)
+			.then(async () => {
+				// On Linux, removing decorations causes GTK to adjust the window geometry,
+				// which can make the WebView miscalculate its content bounds (sidebar disappears).
+				// Re-setting the size to the current value forces a WebView relayout.
+				const size = await appWindow.innerSize();
+				await appWindow.setSize(size);
+			})
+			.catch(() => {});
+		checkMaximized();
+	});
 </script>
 
 <div class="z-titlebar" data-tauri-drag-region>
@@ -39,17 +56,25 @@
 	<div class="z-titlebar-center" data-tauri-drag-region></div>
 
 	<div class="z-titlebar-controls">
-		<button class="z-titlebar-btn" onclick={minimize} title={m.titlebar_minimize()}>
+		<button
+			class="z-titlebar-btn"
+			onclick={minimize}
+			title={i18nState.locale && m.titlebar_minimize()}
+		>
 			<Icon icon="mdi:minus" />
 		</button>
 		<button
 			class="z-titlebar-btn"
 			onclick={toggleMaximize}
-			title={maximized ? m.titlebar_restore() : m.titlebar_maximize()}
+			title={i18nState.locale && (maximized ? m.titlebar_restore() : m.titlebar_maximize())}
 		>
 			<Icon icon={maximized ? 'mdi:window-restore' : 'mdi:window-maximize'} />
 		</button>
-		<button class="z-titlebar-btn z-titlebar-close" onclick={close} title={m.titlebar_close()}>
+		<button
+			class="z-titlebar-btn z-titlebar-close"
+			onclick={close}
+			title={i18nState.locale && m.titlebar_close()}
+		>
 			<Icon icon="mdi:close" />
 		</button>
 	</div>

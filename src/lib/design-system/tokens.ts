@@ -9,7 +9,10 @@ export const themes: { id: ThemeId; label: string; hidden?: boolean }[] = [
 ];
 
 const HOTDOG_KEY = 'zephyr-hotdog-unlocked';
-const SEQUENCE = 'hotdogstand';
+const HOTDOG_SEQUENCE = 'hotdogstand';
+
+// Wingdings easter egg — session-only (cleared on app restart)
+const WINGDINGS_SEQUENCE = 'wingdings';
 
 let buffer = '';
 let listener: ((e: KeyboardEvent) => void) | null = null;
@@ -22,22 +25,40 @@ export function unlockHotdog() {
 	localStorage.setItem(HOTDOG_KEY, 'true');
 }
 
+// Wingdings: session-only, not stored in localStorage
+export function isWingdingsUnlocked(): boolean {
+	return sessionStorage.getItem('zephyr-wingdings-unlocked') === 'true';
+}
+
+export function unlockWingdings() {
+	sessionStorage.setItem('zephyr-wingdings-unlocked', 'true');
+}
+
 export function getVisibleThemes() {
 	return themes.filter((t) => !t.hidden || (t.id === 'hotdog' && isHotdogUnlocked()));
 }
 
 export function initEasterEgg() {
 	if (listener) return;
+	const maxLen = Math.max(HOTDOG_SEQUENCE.length, WINGDINGS_SEQUENCE.length);
 	listener = (e: KeyboardEvent) => {
 		if (e.key === ' ') return;
 		buffer += e.key.toLowerCase();
-		if (buffer.length > SEQUENCE.length) {
-			buffer = buffer.slice(-SEQUENCE.length);
+		if (buffer.length > maxLen) {
+			buffer = buffer.slice(-maxLen);
 		}
-		if (buffer === SEQUENCE && !isHotdogUnlocked()) {
+
+		// Hotdog theme unlock
+		if (buffer.endsWith(HOTDOG_SEQUENCE) && !isHotdogUnlocked()) {
 			unlockHotdog();
 			setTheme('hotdog');
 			window.dispatchEvent(new CustomEvent('hotdog-unlocked'));
+		}
+
+		// Wingdings font unlock (session-only)
+		if (buffer.endsWith(WINGDINGS_SEQUENCE) && !isWingdingsUnlocked()) {
+			unlockWingdings();
+			window.dispatchEvent(new CustomEvent('wingdings-unlocked'));
 		}
 	};
 	window.addEventListener('keydown', listener);

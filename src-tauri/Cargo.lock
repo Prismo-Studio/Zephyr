@@ -7968,6 +7968,7 @@ dependencies = [
  "flate2",
  "font-kit",
  "futures-util",
+ "gtk",
  "heck 0.5.0",
  "image",
  "include_dir",

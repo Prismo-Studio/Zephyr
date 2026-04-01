@@ -1,6 +1,8 @@
 <script lang="ts">
 	import * as api from '$lib/api';
-	import type { Mod, ModId, SortBy } from '$lib/types';
+	import type { Mod, ModId, SortBy, AvailableUpdate, ProfileQuery } from '$lib/types';
+	import Icon from '@iconify/svelte';
+	import profiles from '$lib/state/profile.svelte';
 
 	import ModCard from '$lib/components/mod-list/ModCard.svelte';
 	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
@@ -16,11 +18,9 @@
 	import { emit, listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { profileQuery } from '$lib/state/misc.svelte';
-	import profiles from '$lib/state/profile.svelte';
-	import Icon from '@iconify/svelte';
-	import type { AvailableUpdate, ProfileQuery } from '$lib/types';
 	import { communityUrl, isOutdated } from '$lib/util';
 	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
@@ -185,8 +185,8 @@
 <div class="z-mods-page">
 	<div class="z-mods-main">
 		<Header
-			title={m.navBar_label_mods()}
-			subtitle={m.mods_installed({ count: totalModCount.toString() })}
+			title={i18nState.locale && m.navBar_label_mods()}
+			subtitle={i18nState.locale && m.mods_installed({ count: totalModCount.toString() })}
 		>
 			{#snippet actions()}
 				{#if updates.length > 0}
@@ -222,11 +222,11 @@
 						<div class="z-empty-icon">
 							<Icon icon="mdi:package-variant" />
 						</div>
-						<p class="z-empty-title">{m.mods_noMods()}</p>
-						<p class="z-empty-desc">{m.mods_noMods_desc()}</p>
+						<p class="z-empty-title">{i18nState.locale && m.mods_noMods()}</p>
+						<p class="z-empty-desc">{i18nState.locale && m.mods_noMods_desc()}</p>
 						<a href="/browse" class="z-empty-action">
 							<Icon icon="mdi:store-search" />
-							{m.mods_browseMods()}
+							{i18nState.locale && m.mods_browseMods()}
 						</a>
 					</div>
 				{:else}

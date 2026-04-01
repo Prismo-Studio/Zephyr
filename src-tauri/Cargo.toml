@@ -84,6 +84,7 @@ winreg = "0.52"
 
 [target.'cfg(target_os="linux")'.dependencies]
 webkit2gtk = "2.0.1"
+gtk = "0.18"
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]
