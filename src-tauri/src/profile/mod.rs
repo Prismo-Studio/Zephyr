@@ -77,6 +77,7 @@ pub struct Profile {
     pub custom_args: Vec<String>,
     pub custom_args_enabled: bool,
     pub missing: bool,
+    pub icon: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -318,6 +319,7 @@ impl Profile {
             custom_args: self.custom_args.clone(),
             custom_args_enabled: self.custom_args_enabled,
             missing: self.missing,
+            icon: self.icon.clone(),
         }
     }
 
@@ -352,6 +354,7 @@ pub struct FrontendProfile {
     custom_args: Vec<String>,
     custom_args_enabled: bool,
     missing: bool,
+    icon: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
@@ -572,6 +575,7 @@ impl ModManager {
                 custom_args: saved_profile.custom_args.unwrap_or_default(),
                 custom_args_enabled: saved_profile.custom_args_enabled.unwrap_or(false),
                 missing,
+                icon: saved_profile.icon,
             };
 
             manager

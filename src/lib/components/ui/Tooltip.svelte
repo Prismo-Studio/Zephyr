@@ -46,8 +46,7 @@
 <style>
 	.z-tooltip-trigger {
 		position: relative;
-		display: flex;
-		width: 100%;
+		display: inline-flex;
 	}
 
 	.z-tooltip {

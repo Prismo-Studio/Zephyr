@@ -321,6 +321,7 @@ impl ManagedGame {
             custom_args: Vec::new(),
             custom_args_enabled: false,
             missing: false,
+            icon: None,
         };
 
         let index = self.target_profile_index(&profile.name);

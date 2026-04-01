@@ -13,6 +13,9 @@
 	import { setLanguage, languageTitle } from '$lib/i18n';
 	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
 	import { onMount } from 'svelte';
+	import { pushInfoToast } from '$lib/toast';
+	import { shortenFileSize } from '$lib/util';
+	import { m } from '$lib/paraglide/messages';
 
 	let prefs: Prefs | null = $state(null);
 	let currentTheme: ThemeId = $state(getTheme());
@@ -60,11 +63,20 @@
 			prefs.language = locale;
 			await savePrefs();
 		}
+		// setLanguage doit être appelé APRÈS savePrefs
+		// car setLocale() trigger un reload de page,
+		// et refreshLanguage() au mount lira prefs.language
 		setLanguage(locale);
 	}
 
 	async function clearCache(soft: boolean) {
 		const freed = await api.profile.install.clearDownloadCache(soft);
+		const messageText = soft
+			? m.menuBar_clearModCache_message_unsed
+			: m.menuBar_clearModCache_message;
+		pushInfoToast({
+			message: messageText({ size: shortenFileSize(freed) })
+		});
 	}
 
 	async function openLog() {
@@ -73,14 +85,14 @@
 </script>
 
 <div class="z-settings-page">
-	<Header title="Settings" />
+	<Header title={m.navBar_label_settings()} />
 
 	<div class="z-settings-content">
 		<!-- Theme -->
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:palette" />
-				Theme
+				{m.prefs_appearance_title()}
 			</h3>
 			<div class="z-theme-grid">
 				{#each visibleThemes as theme}
@@ -106,13 +118,13 @@
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:format-font" />
-				Font
+				{m.fontFamilyPref_title()}
 			</h3>
 			<Dropdown
 				options={fontOptions}
 				value={currentFont}
 				onchange={changeFont}
-				placeholder="Select font"
+				placeholder={m.fontFamilyPref_placeholder()}
 			/>
 		</section>
 
@@ -120,13 +132,13 @@
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:translate" />
-				Language
+				{m.languagePref_title()}
 			</h3>
 			<Dropdown
 				options={languageOptions}
 				value={currentLocale}
 				onchange={changeLanguage}
-				placeholder="Select language"
+				placeholder={m.languagePref_title()}
 			/>
 		</section>
 
@@ -135,21 +147,21 @@
 			<section class="z-settings-section">
 				<h3 class="z-settings-heading">
 					<Icon icon="mdi:cog" />
-					Behavior
+					{m.prefs_miscellaneous_title()}
 				</h3>
 
 				<div class="z-settings-row">
 					<div class="z-settings-label">
-						<span>Fetch mods automatically</span>
-						<span class="z-settings-desc">Auto-refresh mod list when opening browse</span>
+						<span>{m.prefs_miscellaneous_fetchMods_title()}</span>
+						<span class="z-settings-desc">{m.prefs_miscellaneous_fetchMods_content_1()}</span>
 					</div>
 					<Toggle bind:checked={prefs.fetchModsAutomatically} onchange={savePrefs} />
 				</div>
 
 				<div class="z-settings-row">
 					<div class="z-settings-label">
-						<span>Pull before launch</span>
-						<span class="z-settings-desc">Sync profile before launching game</span>
+						<span>{m.prefs_miscellaneous_pullBeforeLaunch_title()}</span>
+						<span class="z-settings-desc">{m.prefs_miscellaneous_pullBeforeLaunch_content()}</span>
 					</div>
 					<Toggle bind:checked={prefs.pullBeforeLaunch} onchange={savePrefs} />
 				</div>
@@ -159,14 +171,14 @@
 			<section class="z-settings-section">
 				<h3 class="z-settings-heading">
 					<Icon icon="mdi:folder" />
-					Paths
+					{m.prefs_locations_title()}
 				</h3>
 				<div class="z-settings-path">
-					<span class="z-settings-path-label">Data directory</span>
+					<span class="z-settings-path-label">{m.prefs_locations_dataFolder()}</span>
 					<code>{prefs.dataDir}</code>
 				</div>
 				<div class="z-settings-path">
-					<span class="z-settings-path-label">Cache directory</span>
+					<span class="z-settings-path-label">{m.prefs_locations_cacheFolder()}</span>
 					<code>{prefs.cacheDir}</code>
 				</div>
 			</section>
@@ -176,20 +188,20 @@
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:wrench" />
-				Actions
+				{m.dashboard_quickActions_title()}
 			</h3>
 			<div class="z-settings-actions">
 				<Button variant="secondary" size="sm" onclick={() => clearCache(true)}>
 					{#snippet icon()}<Icon icon="mdi:broom" />{/snippet}
-					Clear old cache
+					{m.menuBar_file_item_6()}
 				</Button>
 				<Button variant="secondary" size="sm" onclick={() => clearCache(false)}>
 					{#snippet icon()}<Icon icon="mdi:delete-sweep" />{/snippet}
-					Clear all cache
+					{m.menuBar_file_item_5()}
 				</Button>
 				<Button variant="ghost" size="sm" onclick={openLog}>
 					{#snippet icon()}<Icon icon="mdi:file-document" />{/snippet}
-					Open log file
+					{m.menuBar_file_item_4()}
 				</Button>
 			</div>
 		</section>
@@ -200,7 +212,7 @@
 				<span class="z-about-name text-gradient">Zephyr</span>
 				<span class="z-about-version">v0.2.0</span>
 			</div>
-			<p class="z-about-desc">A fast, modern mod manager for all your games</p>
+			<p class="z-about-desc">{m.prefs_aboutDesc()}</p>
 		</section>
 	</div>
 </div>

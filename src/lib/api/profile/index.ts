@@ -48,3 +48,7 @@ export const setCustomArgs = (customArgs: string[], enabled: boolean) =>
 export const setProfilePath = (profileId: number, newPath: string) =>
 	invoke('set_profile_path', { profileId, newPath });
 export const forgetProfile = (profileId: number) => invoke('forget_profile', { profileId });
+export const setProfileIcon = (profileId: number, imagePath: string) =>
+	invoke<string>('set_profile_icon', { profileId, imagePath });
+export const removeProfileIcon = (profileId: number) =>
+	invoke('remove_profile_icon', { profileId });

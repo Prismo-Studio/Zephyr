@@ -156,6 +156,8 @@ pub fn run() {
             profile::commands::set_custom_args,
             profile::commands::set_profile_path,
             profile::commands::forget_profile,
+            profile::commands::set_profile_icon,
+            profile::commands::remove_profile_icon,
             profile::launch::commands::launch_game,
             profile::launch::commands::get_launch_args,
             profile::launch::commands::open_game_dir,

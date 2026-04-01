@@ -4,6 +4,7 @@
 	import { shortenFileSize } from '$lib/util';
 	import Icon from '@iconify/svelte';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	type Props = {
 		mod: Mod;
@@ -42,16 +43,16 @@
 	>
 		{#if locked}
 			<Icon icon="mdi:lock" class="text-base" />
-			<span>Locked</span>
+			<span>{m.installButton_locked()}</span>
 		{:else if mod.isInstalled}
 			<Icon icon="mdi:check-circle" class="text-base" style="color: var(--success)" />
-			<span>Installed</span>
+			<span>{m.installButton_installed()}</span>
 		{:else if loading}
 			<Spinner size={16} />
-			<span>Installing...</span>
+			<span>{m.installButton_installing()}</span>
 		{:else}
 			<Icon icon="mdi:download" class="text-lg" />
-			<span>Install</span>
+			<span>{m.installButton_install()}</span>
 			{#if downloadSize}
 				<span class="z-install-size">({shortenFileSize(downloadSize)})</span>
 			{/if}

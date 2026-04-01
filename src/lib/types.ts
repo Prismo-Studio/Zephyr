@@ -58,6 +58,7 @@ export type ProfileInfo = {
 	customArgs: string[];
 	customArgsEnabled: boolean;
 	missing: boolean;
+	icon: string | null;
 };
 
 export type SyncProfileInfo = {

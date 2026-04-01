@@ -6,20 +6,21 @@
 	import { gameIconSrc } from '$lib/util';
 	import * as api from '$lib/api';
 	import { onMount } from 'svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	type NavItem = {
 		path: string;
 		icon: string;
-		label: string;
+		label: () => string;
 	};
 
 	const navItems: NavItem[] = [
-		{ path: '/dashboard', icon: 'mdi:view-dashboard', label: 'Dashboard' },
-		{ path: '/', icon: 'mdi:package-variant', label: 'Mods' },
-		{ path: '/browse', icon: 'mdi:store-search', label: 'Browse' },
-		{ path: '/profiles', icon: 'mdi:account-group', label: 'Profiles' },
-		{ path: '/config', icon: 'mdi:cog', label: 'Config' },
-		{ path: '/prefs', icon: 'mdi:tune-vertical', label: 'Settings' }
+		{ path: '/dashboard', icon: 'mdi:view-dashboard', label: () => m.navBar_label_home() },
+		{ path: '/', icon: 'mdi:package-variant', label: () => m.navBar_label_mods() },
+		{ path: '/browse', icon: 'mdi:store-search', label: () => m.navBar_label_browse() },
+		{ path: '/profiles', icon: 'mdi:account-group', label: () => m.menuBar_profile_title() },
+		{ path: '/config', icon: 'mdi:cog', label: () => m.navBar_label_config() },
+		{ path: '/prefs', icon: 'mdi:tune-vertical', label: () => m.navBar_label_settings() }
 	];
 
 	let currentPath = $state(window.location.pathname);
@@ -94,10 +95,10 @@
 	<!-- Navigation -->
 	<nav class="z-sidebar-nav">
 		{#each navItems as item}
-			<Tooltip text={item.label} position="right" delay={300}>
+			<Tooltip text={item.label()} position="right" delay={300}>
 				<a href={item.path} class="z-nav-item" class:active={isActive(item.path)}>
 					<Icon icon={item.icon} class="z-nav-icon" />
-					<span class="z-nav-label">{item.label}</span>
+					<span class="z-nav-label">{item.label()}</span>
 					{#if isActive(item.path)}
 						<span class="z-nav-indicator"></span>
 					{/if}
@@ -108,7 +109,7 @@
 
 	<!-- Bottom section -->
 	<div class="z-sidebar-bottom">
-		<Tooltip text="Launch Game" position="right" delay={300}>
+		<Tooltip text={m.toolBar_launchGame_button()} position="right" delay={300}>
 			<button class="z-launch-btn" onclick={launchGame}>
 				<Icon icon="mdi:rocket-launch" />
 			</button>

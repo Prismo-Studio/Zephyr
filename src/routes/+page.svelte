@@ -20,6 +20,7 @@
 	import Icon from '@iconify/svelte';
 	import type { AvailableUpdate, ProfileQuery } from '$lib/types';
 	import { communityUrl, isOutdated } from '$lib/util';
+	import { m } from '$lib/paraglide/messages';
 
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
@@ -109,7 +110,7 @@
 		// Toggle enable/disable
 		if (mod.isInstalled) {
 			items.push({
-				label: mod.enabled === false ? 'Enable' : 'Disable',
+				label: mod.enabled === false ? m.mods_contextMenu_enable() : m.mods_contextMenu_disable(),
 				icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
 				disabled: locked,
 				onclick: () => toggleMod(mod)
@@ -119,7 +120,7 @@
 		// Open website
 		if (mod.websiteUrl) {
 			items.push({
-				label: 'Open on Thunderstore',
+				label: m.mods_contextMenu_openThunderstore(),
 				icon: 'mdi:open-in-new',
 				onclick: () => open(mod.websiteUrl!)
 			});
@@ -128,7 +129,7 @@
 		// Donate
 		if (mod.donateUrl) {
 			items.push({
-				label: 'Donate',
+				label: m.mods_contextMenu_donate(),
 				icon: 'mdi:heart',
 				onclick: () => open(mod.donateUrl!)
 			});
@@ -137,7 +138,7 @@
 		// Open mod folder
 		if (mod.isInstalled) {
 			items.push({
-				label: 'Open folder',
+				label: m.mods_contextMenu_openFolder(),
 				icon: 'mdi:folder-open',
 				onclick: () => api.profile.openModDir(mod.uuid)
 			});
@@ -146,7 +147,7 @@
 		// Config file
 		if (mod.configFile) {
 			items.push({
-				label: 'Edit config',
+				label: m.mods_contextMenu_editConfig(),
 				icon: 'mdi:file-cog',
 				onclick: () => {
 					// Navigate to config page
@@ -159,7 +160,7 @@
 		if (mod.isInstalled) {
 			items.push({ label: '', separator: true });
 			items.push({
-				label: 'Uninstall',
+				label: m.mods_contextMenu_uninstall(),
 				icon: 'mdi:delete',
 				danger: true,
 				disabled: locked,
@@ -183,17 +184,21 @@
 
 <div class="z-mods-page">
 	<div class="z-mods-main">
-		<Header title="Mods" subtitle="{totalModCount} installed">
+		<Header
+			title={m.navBar_label_mods()}
+			subtitle={m.mods_installed({ count: totalModCount.toString() })}
+		>
 			{#snippet actions()}
 				{#if updates.length > 0}
 					<Button variant="accent" size="sm" onclick={updateAllMods}>
 						{#snippet icon()}<Icon icon="mdi:update" />{/snippet}
-						Update {updates.length}
+						{m.mods_update({ count: updates.length.toString() })}
 					</Button>
 				{/if}
 				{#if locked}
 					<Badge variant="warning">
-						<Icon icon="mdi:lock" class="text-xs" /> Locked
+						<Icon icon="mdi:lock" class="text-xs" />
+						{m.mods_locked()}
 					</Badge>
 				{/if}
 			{/snippet}
@@ -207,8 +212,7 @@
 			{#if unknownMods.length > 0}
 				<div class="z-unknown-banner">
 					<Icon icon="mdi:help-circle" />
-					<span>{unknownMods.length} unknown mod{unknownMods.length > 1 ? 's' : ''} in profile</span
-					>
+					<span>{m.mods_unknownMods({ count: unknownMods.length.toString() })}</span>
 				</div>
 			{/if}
 
@@ -218,11 +222,11 @@
 						<div class="z-empty-icon">
 							<Icon icon="mdi:package-variant" />
 						</div>
-						<p class="z-empty-title">No mods installed</p>
-						<p class="z-empty-desc">Browse the store to find mods for your game</p>
+						<p class="z-empty-title">{m.mods_noMods()}</p>
+						<p class="z-empty-desc">{m.mods_noMods_desc()}</p>
 						<a href="/browse" class="z-empty-action">
 							<Icon icon="mdi:store-search" />
-							Browse mods
+							{m.mods_browseMods()}
 						</a>
 					</div>
 				{:else}
@@ -239,7 +243,7 @@
 
 					{#if mods.length < totalModCount}
 						<button class="z-load-more" onclick={() => (maxCount += 40)}>
-							Load more ({totalModCount - mods.length} remaining)
+							{m.mods_loadMore({ count: (totalModCount - mods.length).toString() })}
 						</button>
 					{/if}
 				{/if}
