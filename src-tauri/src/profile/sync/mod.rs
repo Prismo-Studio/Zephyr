@@ -18,7 +18,7 @@ pub mod socket;
 // TODO: migrate to Zephyr sync backend when ready
 static API_URL: LazyLock<Cow<'static, str>> = LazyLock::new(|| match env::var("ZEPHYR_SYNC_URL") {
     Ok(var) => var.into(),
-    Err(_) => "https://gale.kesomannen.com/api".into(), // uses Gale sync until Zephyr backend is deployed
+    Err(_) => "https://gale.kesomannen.com/api".into(), // TODO: migrate to Zephyr sync backend
 });
 
 async fn request(method: Method, path: impl Display, app: &AppHandle) -> reqwest::RequestBuilder {

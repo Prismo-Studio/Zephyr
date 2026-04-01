@@ -118,7 +118,7 @@ export function modIconSrc(mod: Mod) {
 }
 
 export function gameIconSrc(game: Game) {
-	return `https://raw.githubusercontent.com/Kesomannen/gale/refs/heads/master/images/games/${game.slug}.webp`; // TODO: host game icons on prismo-studio repo
+	return `https://raw.githubusercontent.com/Prismo-Studio/Zephyr/refs/heads/dev/images/games/${game.slug}.webp`;
 }
 
 export function thunderstoreIconUrl(fullName: string) {
