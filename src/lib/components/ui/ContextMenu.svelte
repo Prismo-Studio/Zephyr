@@ -56,6 +56,7 @@
 		bind:this={menuEl}
 		style="left: {x}px; top: {y}px;"
 		onclick={(e) => e.stopPropagation()}
+		onmousedown={(e) => e.stopPropagation()}
 	>
 		{#each items as item}
 			{#if item.separator}

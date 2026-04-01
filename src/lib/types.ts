@@ -176,9 +176,7 @@ export type ModId = {
 	versionUuid: string;
 };
 
-export type ModActionResponse =
-	| { type: 'done' }
-	| { type: 'hasDependants'; dependants: Dependant[] };
+export type ModActionResponse = { type: 'done' } | { type: 'confirm'; dependants: Dependant[] };
 
 export type InstallTask = 'download' | 'extract' | 'install';
 

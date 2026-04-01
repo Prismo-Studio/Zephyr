@@ -578,5 +578,12 @@
 	"browsePage_refresh": "刷新",
 	"installPopover_cancelAll": "全部取消",
 	"modpackPage_title": "模组包",
-	"modpackPage_subtitle": "导出与导入"
+	"modpackPage_subtitle": "导出与导入",
+
+	"removeModDialog_title": "卸载 {name}？",
+	"removeModDialog_description": "以下模组依赖于 {name}，如果卸载该模组，它们可能会无法运行：",
+	"removeModDialog_hint": "你可以仅卸载此模组（依赖它的模组会保留但可能崩溃），也可以一次性全部卸载。",
+	"removeModDialog_cancel": "取消",
+	"removeModDialog_removeOne": "仅卸载 {name}",
+	"removeModDialog_removeAll": "全部卸载（{count} 个模组）"
 }
