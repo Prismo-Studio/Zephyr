@@ -213,7 +213,10 @@
 											{/if}
 										{:else if entry.value.type === 'enum'}
 											<Dropdown
-												options={entry.value.content.options.map((opt, i) => ({ value: String(i), label: opt }))}
+												options={entry.value.content.options.map((opt, i) => ({
+													value: String(i),
+													label: opt
+												}))}
 												value={String(entry.value.content.index)}
 												onchange={(val) => {
 													const idx = parseInt(val);
