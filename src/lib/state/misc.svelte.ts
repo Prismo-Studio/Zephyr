@@ -29,7 +29,10 @@ export const modQuery = new PersistedState<QueryModsArgsWithoutMax>('modQuery', 
 });
 
 // Locally pinned mod UUIDs per profile (always shown at top of mod list)
-export const pinnedModsMap = new PersistedState<Record<string, string[]>>('pinnedModsPerProfile', {});
+export const pinnedModsMap = new PersistedState<Record<string, string[]>>(
+	'pinnedModsPerProfile',
+	{}
+);
 
 function getActiveProfileKey(): string {
 	// Lazy import to avoid circular deps
