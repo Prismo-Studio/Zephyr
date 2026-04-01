@@ -9,21 +9,24 @@
 	type Props = {
 		open?: boolean;
 		modName: string;
+		/** true = we're trying to disable, false = trying to enable */
+		isDisabling: boolean;
 		dependants: Dependant[];
 		oncancel?: () => void;
-		/** Remove only the target mod, ignoring dependants */
-		onremoveOne?: () => void;
-		/** Remove the target mod AND all dependants */
-		onremoveAll?: () => void;
+		/** Toggle only the target mod */
+		ontoggleOne?: () => void;
+		/** Toggle the target mod AND all dependants */
+		ontoggleAll?: () => void;
 	};
 
 	let {
 		open = $bindable(false),
 		modName,
+		isDisabling,
 		dependants,
 		oncancel,
-		onremoveOne,
-		onremoveAll
+		ontoggleOne,
+		ontoggleAll
 	}: Props = $props();
 
 	function handleCancel() {
@@ -31,69 +34,98 @@
 		oncancel?.();
 	}
 
-	function handleRemoveOne() {
+	function handleToggleOne() {
 		open = false;
-		onremoveOne?.();
+		ontoggleOne?.();
 	}
 
-	function handleRemoveAll() {
+	function handleToggleAll() {
 		open = false;
-		onremoveAll?.();
+		ontoggleAll?.();
 	}
+
+	let title = $derived(
+		isDisabling
+			? m.toggleModDialog_disable_title({ name: modName })
+			: m.toggleModDialog_enable_title({ name: modName })
+	);
+
+	let description = $derived(
+		isDisabling
+			? m.toggleModDialog_disable_description({ name: modName })
+			: m.toggleModDialog_enable_description({ name: modName })
+	);
+
+	let hint = $derived(
+		isDisabling ? m.toggleModDialog_disable_hint() : m.toggleModDialog_enable_hint()
+	);
+
+	let toggleOneLabel = $derived(
+		isDisabling
+			? m.toggleModDialog_disable_one({ name: modName })
+			: m.toggleModDialog_enable_one({ name: modName })
+	);
+
+	let toggleAllLabel = $derived(
+		isDisabling
+			? m.toggleModDialog_disable_all({ count: (dependants.length + 1).toString() })
+			: m.toggleModDialog_enable_all({ count: (dependants.length + 1).toString() })
+	);
 </script>
 
-<Modal bind:open title={m.removeModDialog_title({ name: modName })} onclose={handleCancel}>
+<Modal bind:open {title} onclose={handleCancel}>
 	{#snippet children()}
-		<div class="z-rmd-body">
-			<div class="z-rmd-warning">
-				<Icon icon="mdi:alert-circle" class="z-rmd-warning-icon" />
-				<p>{m.removeModDialog_description({ name: modName })}</p>
+		<div class="z-tmd-body">
+			<div class="z-tmd-warning" class:enabling={!isDisabling}>
+				<Icon
+					icon={isDisabling ? 'mdi:alert-circle' : 'mdi:information'}
+					class="z-tmd-warning-icon"
+				/>
+				<p>{description}</p>
 			</div>
 
-			<ul class="z-rmd-list">
+			<ul class="z-tmd-list">
 				{#each dependants as dep (dep.uuid)}
-					<li class="z-rmd-item">
+					<li class="z-tmd-item">
 						<Icon icon="mdi:puzzle" />
 						<span>{dep.fullName}</span>
 					</li>
 				{/each}
 			</ul>
 
-			<p class="z-rmd-hint">{m.removeModDialog_hint()}</p>
+			<p class="z-tmd-hint">{hint}</p>
 		</div>
 	{/snippet}
 
 	{#snippet actions()}
 		<Button variant="ghost" onclick={handleCancel}>
-			{m.removeModDialog_cancel()}
+			{m.toggleModDialog_cancel()}
 		</Button>
-		<Tooltip text={m.removeModDialog_removeOne({ name: modName })} position="top">
-			<button class="z-rmd-action-btn secondary" onclick={handleRemoveOne}>
-				<span class="z-rmd-action-label">{m.removeModDialog_removeOne({ name: modName })}</span>
+		<Tooltip text={toggleOneLabel} position="top">
+			<button class="z-tmd-action-btn secondary" onclick={handleToggleOne}>
+				<span class="z-tmd-action-label">{toggleOneLabel}</span>
 			</button>
 		</Tooltip>
-		<Tooltip
-			text={m.removeModDialog_removeAll({ count: (dependants.length + 1).toString() })}
-			position="top"
-		>
-			<button class="z-rmd-action-btn danger" onclick={handleRemoveAll}>
-				<Icon icon="mdi:delete-sweep" />
-				<span class="z-rmd-action-label"
-					>{m.removeModDialog_removeAll({ count: (dependants.length + 1).toString() })}</span
-				>
+		<Tooltip text={toggleAllLabel} position="top">
+			<button
+				class="z-tmd-action-btn {isDisabling ? 'danger' : 'accent'}"
+				onclick={handleToggleAll}
+			>
+				<Icon icon={isDisabling ? 'mdi:eye-off' : 'mdi:eye'} />
+				<span class="z-tmd-action-label">{toggleAllLabel}</span>
 			</button>
 		</Tooltip>
 	{/snippet}
 </Modal>
 
 <style>
-	.z-rmd-body {
+	.z-tmd-body {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-md);
 	}
 
-	.z-rmd-warning {
+	.z-tmd-warning {
 		display: flex;
 		align-items: flex-start;
 		gap: var(--space-sm);
@@ -106,13 +138,19 @@
 		line-height: 1.5;
 	}
 
-	:global(.z-rmd-warning-icon) {
+	.z-tmd-warning.enabling {
+		background: rgba(26, 255, 250, 0.06);
+		border-color: rgba(26, 255, 250, 0.2);
+		color: var(--text-accent);
+	}
+
+	:global(.z-tmd-warning-icon) {
 		flex-shrink: 0;
 		font-size: 18px;
 		margin-top: 1px;
 	}
 
-	.z-rmd-list {
+	.z-tmd-list {
 		list-style: none;
 		padding: 0;
 		margin: 0;
@@ -123,7 +161,7 @@
 		overflow-y: auto;
 	}
 
-	.z-rmd-item {
+	.z-tmd-item {
 		display: flex;
 		align-items: center;
 		gap: var(--space-sm);
@@ -135,20 +173,20 @@
 		color: var(--text-secondary);
 	}
 
-	.z-rmd-item :global(svg) {
+	.z-tmd-item :global(svg) {
 		color: var(--text-muted);
 		font-size: 14px;
 		flex-shrink: 0;
 	}
 
-	.z-rmd-hint {
+	.z-tmd-hint {
 		font-size: 12px;
 		color: var(--text-muted);
 		line-height: 1.5;
 	}
 
 	/* Action buttons with truncation */
-	.z-rmd-action-btn {
+	.z-tmd-action-btn {
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
@@ -164,36 +202,46 @@
 		overflow: hidden;
 	}
 
-	.z-rmd-action-btn :global(svg) {
+	.z-tmd-action-btn :global(svg) {
 		flex-shrink: 0;
 		font-size: 1.1em;
 	}
 
-	.z-rmd-action-label {
+	.z-tmd-action-label {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
-	.z-rmd-action-btn.secondary {
+	.z-tmd-action-btn.secondary {
 		background: var(--bg-elevated);
 		color: var(--text-primary);
 		border-color: var(--border-default);
 	}
 
-	.z-rmd-action-btn.secondary:hover {
+	.z-tmd-action-btn.secondary:hover {
 		background: var(--bg-overlay);
 		border-color: var(--border-strong);
 	}
 
-	.z-rmd-action-btn.danger {
+	.z-tmd-action-btn.danger {
 		background: rgba(255, 92, 92, 0.1);
 		color: var(--error);
 		border-color: rgba(255, 92, 92, 0.2);
 	}
 
-	.z-rmd-action-btn.danger:hover {
+	.z-tmd-action-btn.danger:hover {
 		background: rgba(255, 92, 92, 0.2);
 		border-color: rgba(255, 92, 92, 0.4);
+	}
+
+	.z-tmd-action-btn.accent {
+		background: var(--accent-400);
+		color: var(--text-inverse);
+	}
+
+	.z-tmd-action-btn.accent:hover {
+		background: var(--accent-300);
+		box-shadow: var(--shadow-glow);
 	}
 </style>

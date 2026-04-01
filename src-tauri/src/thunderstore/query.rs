@@ -189,6 +189,10 @@ impl IntoFrontendMod for BorrowedMod<'_> {
             is_installed: profile
                 .map(|profile| profile.has_mod(pkg.uuid))
                 .unwrap_or(false),
+            enabled: profile
+                .and_then(|p| {
+                    p.mods.iter().find(|m| m.uuid() == pkg.uuid).map(|m| m.enabled)
+                }),
             last_updated: Some(pkg.versions[0].date_created.to_rfc3339()),
             versions: pkg
                 .versions

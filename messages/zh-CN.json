@@ -585,5 +585,22 @@
 	"removeModDialog_hint": "你可以仅卸载此模组（依赖它的模组会保留但可能崩溃），也可以一次性全部卸载。",
 	"removeModDialog_cancel": "取消",
 	"removeModDialog_removeOne": "仅卸载 {name}",
-	"removeModDialog_removeAll": "全部卸载（{count} 个模组）"
+	"removeModDialog_removeAll": "全部卸载（{count} 个模组）",
+
+	"toast_cannotEnable_title": "无法启用 {name}",
+	"toast_cannotEnable_message": "此模组依赖于：{dependants}。请先启用这些模组。",
+
+	"toggleModDialog_disable_title": "禁用 {name}？",
+	"toggleModDialog_disable_description": "以下模组依赖于 {name}，也将被禁用：",
+	"toggleModDialog_disable_hint": "你可以仅禁用此模组（依赖它的模组可能会出问题），也可以一次性全部禁用。",
+	"toggleModDialog_disable_one": "仅禁用 {name}",
+	"toggleModDialog_disable_all": "全部禁用（{count} 个模组）",
+
+	"toggleModDialog_enable_title": "启用 {name}？",
+	"toggleModDialog_enable_description": "{name} 依赖于以下已禁用的模组：",
+	"toggleModDialog_enable_hint": "你可以仅启用此模组（可能无法正常运行），也可以一次性启用所有依赖项。",
+	"toggleModDialog_enable_one": "仅启用 {name}",
+	"toggleModDialog_enable_all": "全部启用（{count} 个模组）",
+
+	"toggleModDialog_cancel": "取消"
 }
