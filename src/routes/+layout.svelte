@@ -24,6 +24,7 @@
 	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
 	import * as api from '$lib/api';
 	import { initErrorListener } from '$lib/invoke';
+	import { open } from '@tauri-apps/plugin-shell';
 
 	type Props = {
 		children?: Snippet;

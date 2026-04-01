@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 
@@ -211,11 +212,14 @@
 												</span>
 											{/if}
 										{:else if entry.value.type === 'enum'}
-											<select
-												class="z-entry-select"
-												value={entry.value.content.index}
-												onchange={(e) => {
-													const idx = parseInt(e.currentTarget.value);
+											<Dropdown
+												options={entry.value.content.options.map((opt, i) => ({
+													value: String(i),
+													label: opt
+												}))}
+												value={String(entry.value.content.index)}
+												onchange={(val) => {
+													const idx = parseInt(val);
 													const c = entry.value.content as { index: number; options: string[] };
 													const newVal = {
 														type: 'enum' as const,
@@ -224,11 +228,7 @@
 													entry.value = newVal;
 													setEntry(selectedFile!, section, entry, newVal);
 												}}
-											>
-												{#each entry.value.content.options as opt, i}
-													<option value={i}>{opt}</option>
-												{/each}
-											</select>
+											/>
 										{:else}
 											<span class="z-entry-raw">{configValueStr(entry.value)}</span>
 										{/if}
@@ -409,6 +409,10 @@
 		display: flex;
 		align-items: center;
 		gap: var(--space-sm);
+	}
+
+	.z-entry-value :global(.z-dropdown-wrapper) {
+		width: 200px;
 	}
 
 	.z-bool-toggle {
