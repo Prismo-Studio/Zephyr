@@ -4,6 +4,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import games from '$lib/state/game.svelte';
 	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	type Props = {
 		queryArgs: QueryModsArgsWithoutMax;
@@ -20,17 +21,17 @@
 	let showFilters = $state(false);
 	let sortOpen = $state(false);
 
-	const sortLabels: Record<SortBy, string> = {
-		newest: m.modListFilters_options_newest(),
-		name: m.modListFilters_options_name(),
-		author: m.modListFilters_options_author(),
-		lastUpdated: m.modListFilters_options_lastUpdated(),
-		downloads: m.modListFilters_options_downloads(),
-		rating: m.modListFilters_options_rating(),
-		installDate: m.modListFilters_options_installDate(),
-		custom: m.modListFilters_options_custom(),
-		diskSpace: m.modListFilters_options_diskSpace()
-	};
+	let sortLabels = $derived({
+		newest: i18nState.locale && m.modListFilters_options_newest(),
+		name: i18nState.locale && m.modListFilters_options_name(),
+		author: i18nState.locale && m.modListFilters_options_author(),
+		lastUpdated: i18nState.locale && m.modListFilters_options_lastUpdated(),
+		downloads: i18nState.locale && m.modListFilters_options_downloads(),
+		rating: i18nState.locale && m.modListFilters_options_rating(),
+		installDate: i18nState.locale && m.modListFilters_options_installDate(),
+		custom: i18nState.locale && m.modListFilters_options_custom(),
+		diskSpace: i18nState.locale && m.modListFilters_options_diskSpace()
+	} as Record<SortBy, string>);
 
 	function selectSort(option: SortBy) {
 		queryArgs.sortBy = option;
@@ -42,7 +43,7 @@
 	<div class="z-filters-row">
 		<Input
 			bind:value={queryArgs.searchTerm}
-			placeholder={m.modListFilters_searchBar_placeholder()}
+			placeholder={i18nState.locale && m.modListFilters_searchBar_placeholder()}
 			class="z-search-input"
 		>
 			{#snippet iconLeft()}
@@ -90,9 +91,10 @@
 				onclick={() => {
 					queryArgs.sortOrder = queryArgs.sortOrder === 'ascending' ? 'descending' : 'ascending';
 				}}
-				title={queryArgs.sortOrder === 'ascending'
-					? m.modListFilters_options_ascending()
-					: m.modListFilters_options_descending()}
+				title={i18nState.locale &&
+					(queryArgs.sortOrder === 'ascending'
+						? m.modListFilters_options_ascending()
+						: m.modListFilters_options_descending())}
 			>
 				<Icon
 					icon={queryArgs.sortOrder === 'ascending' ? 'mdi:sort-ascending' : 'mdi:sort-descending'}
@@ -105,11 +107,11 @@
 		<div class="z-filters-expanded">
 			<label class="z-filter-toggle">
 				<input type="checkbox" bind:checked={queryArgs.includeNsfw} />
-				<span>{m.modListFilters_options_NSFW()}</span>
+				<span>{i18nState.locale && m.modListFilters_options_NSFW()}</span>
 			</label>
 			<label class="z-filter-toggle">
 				<input type="checkbox" bind:checked={queryArgs.includeDeprecated} />
-				<span>{m.modListFilters_options_deprecated()}</span>
+				<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
 			</label>
 
 			{#if showCategories && games.categories.length > 0}

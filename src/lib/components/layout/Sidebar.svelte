@@ -7,6 +7,7 @@
 	import * as api from '$lib/api';
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	type NavItem = {
 		path: string;
@@ -109,7 +110,7 @@
 
 	<!-- Bottom section -->
 	<div class="z-sidebar-bottom">
-		<Tooltip text={m.toolBar_launchGame_button()} position="right" delay={300}>
+		<Tooltip text={i18nState.locale && m.toolBar_launchGame_button()} position="right" delay={300}>
 			<button class="z-launch-btn" onclick={launchGame}>
 				<Icon icon="mdi:rocket-launch" />
 			</button>

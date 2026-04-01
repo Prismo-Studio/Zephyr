@@ -8,7 +8,7 @@ import {
 } from './types';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import games from './state/game.svelte';
-import { isLatinAlphabet } from './i18n';
+import { isLatinAlphabet } from './i18nCore.svelte';
 import { m } from './paraglide/messages';
 import * as api from '$lib/api';
 import { marked } from 'marked';

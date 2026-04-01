@@ -488,7 +488,11 @@ impl ManagedGame {
     }
 
     pub fn update_window_title(&self, app: &AppHandle) -> Result<()> {
-        let title = format!("{} | {} - Zephyr", self.active_profile().name, self.game.name);
+        let title = format!(
+            "{} | {} - Zephyr",
+            self.active_profile().name,
+            self.game.name
+        );
         app.get_webview_window("main")
             .unwrap()
             .set_title(&title)

@@ -11,14 +11,19 @@
 	import ImportProfileDialog from '$lib/components/dialogs/ImportProfileDialog.svelte';
 
 	import { onMount, type Snippet } from 'svelte';
-	import { refreshColor, refreshFont } from '$lib/theme';
+	import { refreshColor, refreshFont } from '$lib/themeSystem';
 	import { initTheme } from '$lib/design-system/tokens';
 	import profiles from '$lib/state/profile.svelte';
+	import games from '$lib/state/game.svelte';
+	import auth from '$lib/state/auth.svelte';
 	import { updateBanner } from '$lib/state/misc.svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
-	import { open } from '@tauri-apps/plugin-shell';
+	import { PersistedState } from 'runed';
 	import type { ProfileInfo, ManagedGameInfo } from '$lib/types';
-	import { refreshLanguage } from '$lib/i18n';
+	import { updateAppLanguage, i18nState } from '$lib/i18nCore.svelte';
+	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
+	import * as api from '$lib/api';
+	import { initErrorListener } from '$lib/invoke';
 
 	type Props = {
 		children?: Snippet;
@@ -30,11 +35,38 @@
 	let unlistenGames: UnlistenFn | null;
 
 	onMount(() => {
+		initErrorListener();
+		// Kick off data loading now that Tauri IPC is ready
+		profiles.refresh().catch(() => {});
+		games.refresh().catch(() => {});
+		auth.refresh().catch(() => {});
 		initTheme();
 		refreshFont();
 		refreshColor('accent');
 		refreshColor('primary');
-		refreshLanguage();
+		// Initialize language
+		(async () => {
+			let prefs = await api.prefs.get();
+			let lang: string;
+
+			if (await api.state.isFirstRun()) {
+				const { locale } = await import('@tauri-apps/plugin-os');
+				let systemLocale = await locale();
+				if (systemLocale && locales.includes(systemLocale as Locale)) {
+					lang = systemLocale;
+					prefs.language = lang;
+					await api.prefs.set(prefs);
+				} else {
+					lang = prefs.language;
+				}
+			} else {
+				lang = prefs.language;
+			}
+
+			if (lang !== getLocale()) {
+				updateAppLanguage(lang);
+			}
+		})();
 
 		$effect(() => {
 			profiles.active;

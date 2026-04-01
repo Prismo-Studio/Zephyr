@@ -1,4 +1,3 @@
-import { platform } from '@tauri-apps/plugin-os';
 import { PersistedState } from 'runed';
 import getPalette from 'tailwindcss-palette-generator';
 
@@ -304,7 +303,9 @@ export type Color =
 			hex: string;
 	  };
 
-const root = document.querySelector(':root') as HTMLElement;
+const getRoot = () =>
+	typeof document !== 'undefined' ? (document.querySelector(':root') as HTMLElement) : null;
+
 const fallbacks: Record<ColorCategory, Color> = {
 	accent: { type: 'custom', hex: '#2D8CF0' },
 	primary: { type: 'custom', hex: '#0B1628' }
@@ -324,8 +325,11 @@ export function setColor(category: ColorCategory, color: Color) {
 		shades = palette['main'];
 	}
 
-	for (const [shade, value] of Object.entries(shades)) {
-		root.style.setProperty(`--color-${category}-${shade}`, value);
+	const root = getRoot();
+	if (root) {
+		for (const [shade, value] of Object.entries(shades)) {
+			root.style.setProperty(`--color-${category}-${shade}`, value);
+		}
 	}
 
 	localStorage.setItem(category + 'Color', JSON.stringify(color));
@@ -352,8 +356,29 @@ export function refreshColor(category: ColorCategory) {
 
 const defaultFont = 'Inter';
 
+// Fonts bundled in app.css or system fonts that don't need a network request
+const bundledFonts = new Set(['Inter', 'Outfit', 'DM Sans', 'JetBrains Mono', 'Wingdings']);
+
+function loadGoogleFont(fontFamily: string) {
+	if (typeof document === 'undefined') return;
+	if (bundledFonts.has(fontFamily)) return;
+	const id = `gfont-${fontFamily.replace(/\s+/g, '-')}`;
+	if (document.getElementById(id)) return;
+	const link = document.createElement('link');
+	link.id = id;
+	link.rel = 'stylesheet';
+	link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontFamily)}:wght@400;500;600;700&display=swap`;
+	document.head.appendChild(link);
+}
+
 export function setFont(fontFamily: string) {
-	root.style.fontFamily = `'${fontFamily}', '${defaultFont}', sans-serif`;
+	const root = getRoot();
+	if (root) {
+		// Update the CSS variable that all components reference
+		root.style.setProperty('--font-body', `'${fontFamily}', '${defaultFont}', sans-serif`);
+		root.style.setProperty('--font-display', `'${fontFamily}', '${defaultFont}', sans-serif`);
+	}
+	loadGoogleFont(fontFamily);
 	localStorage.setItem('font', fontFamily);
 }
 
@@ -365,7 +390,6 @@ export function refreshFont() {
 	setFont(getFont());
 }
 
-export const useNativeMenu = new PersistedState(
-	'useNativeMenu',
-	platform() === 'windows' ? false : true
-);
+// Note: useNativeMenu initial state logic is now handled in onMount in a safe way
+// to avoid top-level Tauri plugin imports.
+export const useNativeMenu = new PersistedState('useNativeMenu', true);

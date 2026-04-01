@@ -5,9 +5,10 @@
 	import Input from '$lib/components/ui/Input.svelte';
 
 	import * as api from '$lib/api';
-	import { m } from '$lib/paraglide/messages';
 	import type { ConfigFile, ConfigEntry, ConfigSection, ConfigValue } from '$lib/types';
 	import { onMount } from 'svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let configFiles: ConfigFile[] = $state([]);
 	let selectedFile: ConfigFile | null = $state(null);
@@ -76,12 +77,12 @@
 </script>
 
 <div class="z-config-page">
-	<Header title={m.dashboard_quickActions_config()}>
+	<Header title={i18nState.locale && m.dashboard_quickActions_config()}>
 		{#snippet actions()}
 			{#if selectedFile}
 				<Button variant="ghost" size="sm" onclick={() => openFile(selectedFile!)}>
 					{#snippet icon()}<Icon icon="mdi:open-in-new" />{/snippet}
-					{m.config_openFile()}
+					{i18nState.locale && m.config_openFile()}
 				</Button>
 			{/if}
 		{/snippet}
@@ -91,7 +92,10 @@
 		<!-- File list -->
 		<div class="z-config-sidebar">
 			<div class="z-config-search">
-				<Input bind:value={searchTerm} placeholder={m.config_searchPlaceholder()}>
+				<Input
+					bind:value={searchTerm}
+					placeholder={i18nState.locale && m.config_searchPlaceholder()}
+				>
 					{#snippet iconLeft()}<Icon icon="mdi:magnify" />{/snippet}
 				</Input>
 			</div>
@@ -118,7 +122,7 @@
 				{#if filteredFiles.length === 0}
 					<div class="z-config-empty">
 						<Icon icon="mdi:file-search" />
-						<span>{m.configFileList_noFiles()}</span>
+						<span>{i18nState.locale && m.configFileList_noFiles()}</span>
 					</div>
 				{/if}
 			</div>
@@ -139,7 +143,7 @@
 											<button
 												class="z-entry-reset"
 												onclick={() => resetEntry(selectedFile!, section, entry)}
-												title={m.config_resetDefault()}
+												title={i18nState.locale && m.config_resetDefault()}
 											>
 												<Icon icon="mdi:undo" />
 											</button>
@@ -236,18 +240,18 @@
 				{:else if selectedFile.type === 'err'}
 					<div class="z-config-error">
 						<Icon icon="mdi:alert-circle" />
-						<span>Error reading file: {selectedFile.error}</span>
+						<span>{i18nState.locale && m.config_errorReading({ error: selectedFile.error })}</span>
 					</div>
 				{:else}
 					<div class="z-config-unsupported">
 						<Icon icon="mdi:file-question" />
-						<span>{m.config_unsupported()}</span>
+						<span>{i18nState.locale && m.config_unsupported()}</span>
 					</div>
 				{/if}
 			{:else}
 				<div class="z-config-placeholder">
 					<Icon icon="mdi:file-cog" />
-					<span>{m.config_selectFile()}</span>
+					<span>{i18nState.locale && m.config_selectFile()}</span>
 				</div>
 			{/if}
 		</div>

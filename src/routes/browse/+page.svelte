@@ -14,6 +14,7 @@
 	import profiles from '$lib/state/profile.svelte';
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	const sortOptions: SortBy[] = ['lastUpdated', 'newest', 'rating', 'downloads'];
 
@@ -113,7 +114,7 @@
 
 <div class="z-browse-page">
 	<div class="z-browse-main">
-		<Header title={m.navBar_label_browse()} subtitle="Thunderstore">
+		<Header title={i18nState.locale && m.navBar_label_browse()} subtitle="Thunderstore">
 			{#snippet actions()}
 				<button
 					class="z-refresh-btn"
@@ -136,7 +137,7 @@
 			{#if locked}
 				<div class="z-locked-banner">
 					<Icon icon="mdi:lock" />
-					<span>{m.browse_lockedBanner()}</span>
+					<span>{i18nState.locale && m.browse_lockedBanner()}</span>
 				</div>
 			{/if}
 
@@ -146,13 +147,13 @@
 						<div class="z-browse-empty-icon">
 							<Icon icon="mdi:package-variant-remove" />
 						</div>
-						<p class="z-browse-empty-title">{m.browse_noMods()}</p>
-						<p class="z-browse-empty-desc">{m.browse_noMods_desc()}</p>
+						<p class="z-browse-empty-title">{i18nState.locale && m.browse_noMods()}</p>
+						<p class="z-browse-empty-desc">{i18nState.locale && m.browse_noMods_desc()}</p>
 					</div>
 				{:else if mods.length === 0}
 					<div class="z-browse-loading">
 						<span class="z-browse-spinner"></span>
-						<span>{m.browse_loading()}</span>
+						<span>{i18nState.locale && m.browse_loading()}</span>
 					</div>
 				{:else}
 					{#each mods as mod (mod.uuid)}
@@ -160,13 +161,13 @@
 							{mod}
 							isSelected={selectedMod?.uuid === mod.uuid}
 							{locked}
-							onclick={(evt) => onModClicked(evt, mod)}
+							onclick={(evt: MouseEvent) => onModClicked(evt, mod)}
 							oninstall={() => installLatest(mod)}
 						/>
 					{/each}
 
 					<button class="z-load-more" onclick={() => (maxCount += 30)}>
-						{m.browse_loadMore()}
+						{i18nState.locale && m.browse_loadMore()}
 					</button>
 				{/if}
 			</div>

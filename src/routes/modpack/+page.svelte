@@ -2,12 +2,16 @@
 	import Header from '$lib/components/layout/Header.svelte';
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	/* Placeholder — modpack export/import page, minimal for now */
 </script>
 
 <div class="z-modpack-page">
-	<Header title={m.modpack_header_title()} subtitle={m.modpack_header_description()} />
+	<Header
+		title={i18nState.locale && m.modpack_header_title()}
+		subtitle={i18nState.locale && m.modpack_header_description()}
+	/>
 
 	<div class="z-modpack-content">
 		<div class="z-modpack-placeholder">

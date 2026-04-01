@@ -8,14 +8,20 @@
 
 	import * as api from '$lib/api';
 	import type { Prefs } from '$lib/types';
-	import { getTheme, setTheme, type ThemeId, getVisibleThemes } from '$lib/design-system/tokens';
-	import { setFont, getFont } from '$lib/theme';
-	import { setLanguage, languageTitle } from '$lib/i18n';
+	import { updateAppLanguage, languageTitle, i18nState } from '$lib/i18nCore.svelte';
+	import { refreshColor, refreshFont, setFont, getFont, useNativeMenu } from '$lib/themeSystem';
+	import {
+		getTheme,
+		setTheme,
+		getVisibleThemes,
+		type ThemeId,
+		isWingdingsUnlocked
+	} from '$lib/design-system/tokens';
+	import { m } from '$lib/paraglide/messages';
 	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
 	import { onMount } from 'svelte';
 	import { pushInfoToast } from '$lib/toast';
 	import { shortenFileSize } from '$lib/util';
-	import { m } from '$lib/paraglide/messages';
 
 	let prefs: Prefs | null = $state(null);
 	let currentTheme: ThemeId = $state(getTheme());
@@ -23,12 +29,14 @@
 	let currentFont = $state(getFont());
 	let currentLocale: Locale = $state(getLocale() as Locale);
 	let visibleThemes = $state(getVisibleThemes());
+	let wingdingsUnlocked = $state(isWingdingsUnlocked());
 
 	let fontOptions = $derived([
 		{ value: 'Inter', label: 'Inter (default)' },
 		{ value: 'Outfit', label: 'Outfit' },
 		{ value: 'DM Sans', label: 'DM Sans' },
-		...systemFonts.slice(0, 50).map((f) => ({ value: f, label: f }))
+		...systemFonts.slice(0, 50).map((f) => ({ value: f, label: f })),
+		...(wingdingsUnlocked ? [{ value: 'Wingdings', label: 'Wingdings' }] : [])
 	]);
 
 	let languageOptions = $derived(locales.map((l) => ({ value: l, label: languageTitle[l] })));
@@ -40,6 +48,11 @@
 		window.addEventListener('hotdog-unlocked', () => {
 			visibleThemes = getVisibleThemes();
 			currentTheme = 'hotdog';
+		});
+
+		// Wingdings easter egg — session only, silently adds to dropdown
+		window.addEventListener('wingdings-unlocked', () => {
+			wingdingsUnlocked = true;
 		});
 	});
 
@@ -63,10 +76,7 @@
 			prefs.language = locale;
 			await savePrefs();
 		}
-		// setLanguage doit être appelé APRÈS savePrefs
-		// car setLocale() trigger un reload de page,
-		// et refreshLanguage() au mount lira prefs.language
-		setLanguage(locale);
+		updateAppLanguage(locale);
 	}
 
 	async function clearCache(soft: boolean) {
@@ -85,14 +95,16 @@
 </script>
 
 <div class="z-settings-page">
-	<Header title={m.navBar_label_settings()} />
+	<div class="z-settings-header-wrapper">
+		<Header title={i18nState.locale && m.navBar_label_settings()} />
+	</div>
 
 	<div class="z-settings-content">
 		<!-- Theme -->
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:palette" />
-				{m.prefs_appearance_title()}
+				{i18nState.locale && m.prefs_appearance_title()}
 			</h3>
 			<div class="z-theme-grid">
 				{#each visibleThemes as theme}
@@ -118,7 +130,7 @@
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:format-font" />
-				{m.fontFamilyPref_title()}
+				{i18nState.locale && m.fontFamilyPref_title()}
 			</h3>
 			<Dropdown
 				options={fontOptions}
@@ -132,7 +144,7 @@
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:translate" />
-				{m.languagePref_title()}
+				{i18nState.locale && m.languagePref_title()}
 			</h3>
 			<Dropdown
 				options={languageOptions}
@@ -147,21 +159,25 @@
 			<section class="z-settings-section">
 				<h3 class="z-settings-heading">
 					<Icon icon="mdi:cog" />
-					{m.prefs_miscellaneous_title()}
+					{i18nState.locale && m.prefs_miscellaneous_title()}
 				</h3>
 
 				<div class="z-settings-row">
 					<div class="z-settings-label">
-						<span>{m.prefs_miscellaneous_fetchMods_title()}</span>
-						<span class="z-settings-desc">{m.prefs_miscellaneous_fetchMods_content_1()}</span>
+						<span>{i18nState.locale && m.prefs_miscellaneous_fetchMods_title()}</span>
+						<span class="z-settings-desc"
+							>{i18nState.locale && m.prefs_miscellaneous_fetchMods_content_1()}</span
+						>
 					</div>
 					<Toggle bind:checked={prefs.fetchModsAutomatically} onchange={savePrefs} />
 				</div>
 
 				<div class="z-settings-row">
 					<div class="z-settings-label">
-						<span>{m.prefs_miscellaneous_pullBeforeLaunch_title()}</span>
-						<span class="z-settings-desc">{m.prefs_miscellaneous_pullBeforeLaunch_content()}</span>
+						<span>{i18nState.locale && m.prefs_miscellaneous_pullBeforeLaunch_title()}</span>
+						<span class="z-settings-desc"
+							>{i18nState.locale && m.prefs_miscellaneous_pullBeforeLaunch_content()}</span
+						>
 					</div>
 					<Toggle bind:checked={prefs.pullBeforeLaunch} onchange={savePrefs} />
 				</div>
@@ -171,10 +187,12 @@
 			<section class="z-settings-section">
 				<h3 class="z-settings-heading">
 					<Icon icon="mdi:folder" />
-					{m.prefs_locations_title()}
+					{i18nState.locale && m.prefs_locations_title()}
 				</h3>
 				<div class="z-settings-path">
-					<span class="z-settings-path-label">{m.prefs_locations_dataFolder()}</span>
+					<span class="z-settings-path-label"
+						>{i18nState.locale && m.prefs_locations_dataFolder()}</span
+					>
 					<code>{prefs.dataDir}</code>
 				</div>
 				<div class="z-settings-path">
@@ -193,15 +211,15 @@
 			<div class="z-settings-actions">
 				<Button variant="secondary" size="sm" onclick={() => clearCache(true)}>
 					{#snippet icon()}<Icon icon="mdi:broom" />{/snippet}
-					{m.menuBar_file_item_6()}
+					{i18nState.locale && m.menuBar_file_item_6()}
 				</Button>
 				<Button variant="secondary" size="sm" onclick={() => clearCache(false)}>
 					{#snippet icon()}<Icon icon="mdi:delete-sweep" />{/snippet}
-					{m.menuBar_file_item_5()}
+					{i18nState.locale && m.menuBar_file_item_5()}
 				</Button>
 				<Button variant="ghost" size="sm" onclick={openLog}>
 					{#snippet icon()}<Icon icon="mdi:file-document" />{/snippet}
-					{m.menuBar_file_item_4()}
+					{i18nState.locale && m.menuBar_file_item_4()}
 				</Button>
 			</div>
 		</section>
@@ -227,23 +245,41 @@
 	.z-settings-content {
 		flex: 1;
 		overflow-y: auto;
-		padding: 0 var(--space-xl) var(--space-2xl);
-		max-width: 640px;
+		width: 100%;
+		padding-bottom: var(--space-3xl);
+	}
+
+	.z-settings-header-wrapper {
+		width: 100%;
+		max-width: 720px;
+		margin: 0 auto;
+		padding: var(--space-xl) var(--space-xl) 0;
+	}
+
+	.z-settings-content > * {
+		max-width: 720px;
+		margin: 0 auto;
+		width: 100%;
+		padding: 0 var(--space-xl);
 	}
 
 	.z-settings-section {
-		margin-bottom: var(--space-2xl);
+		margin-bottom: var(--space-3xl);
+	}
+
+	.z-settings-header-wrapper :global(.z-header-title) {
+		font-size: 28px; /* High-DPI bump from 20px */
 	}
 
 	.z-settings-heading {
 		font-family: var(--font-display);
-		font-size: 14px;
+		font-size: 16px; /* High-DPI bump */
 		font-weight: 700;
 		color: var(--text-primary);
 		display: flex;
 		align-items: center;
-		gap: var(--space-sm);
-		margin-bottom: var(--space-lg);
+		gap: var(--space-md);
+		margin-bottom: var(--space-xl);
 		padding-bottom: var(--space-sm);
 		border-bottom: 1px solid var(--border-subtle);
 	}
@@ -306,24 +342,24 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: var(--space-md) 0;
+		padding: var(--space-lg) 0;
 		border-bottom: 1px solid var(--border-subtle);
 	}
 
 	.z-settings-label {
 		display: flex;
 		flex-direction: column;
-		gap: 2px;
+		gap: 4px;
 	}
 
 	.z-settings-label > span:first-child {
-		font-size: 13px;
+		font-size: 15px; /* High-DPI bump */
 		font-weight: 500;
 		color: var(--text-primary);
 	}
 
 	.z-settings-desc {
-		font-size: 11px;
+		font-size: 12px; /* High-DPI bump */
 		color: var(--text-muted);
 	}
 

@@ -8,12 +8,17 @@ type Error = {
 	message: string;
 };
 
-listen<Error>('error', (evt) =>
-	pushToast({
-		type: 'error',
-		...evt.payload
-	})
-);
+let errorListenerInit = false;
+export function initErrorListener() {
+	if (errorListenerInit) return;
+	errorListenerInit = true;
+	listen<Error>('error', (evt) =>
+		pushToast({
+			type: 'error',
+			...evt.payload
+		})
+	).catch(() => {});
+}
 
 export async function invoke<T = void>(cmd: string, args?: any): Promise<T> {
 	try {
