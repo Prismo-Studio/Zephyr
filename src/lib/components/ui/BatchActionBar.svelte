@@ -23,7 +23,10 @@
 					<Icon icon="mdi:close" />
 				</button>
 				<span class="z-batch-count">
-					{i18nState.locale && (total ? m.batch_totalSelected({ count: count.toString(), total: total.toString() }) : m.batch_selected({ count: count.toString() }))}
+					{i18nState.locale &&
+						(total
+							? m.batch_totalSelected({ count: count.toString(), total: total.toString() })
+							: m.batch_selected({ count: count.toString() }))}
 				</span>
 				{#if onselectAll && total && count < total}
 					<button class="z-batch-select-all" onclick={onselectAll}>
@@ -31,7 +34,7 @@
 					</button>
 				{/if}
 			</div>
-			
+
 			<div class="z-batch-actions">
 				{@render actions()}
 			</div>
@@ -61,7 +64,9 @@
 		align-items: center;
 		gap: var(--space-xl);
 		pointer-events: auto;
-		box-shadow: 0 8px 32px rgba(26, 255, 250, 0.15), 0 0 0 1px rgba(26, 255, 250, 0.2);
+		box-shadow:
+			0 8px 32px rgba(26, 255, 250, 0.15),
+			0 0 0 1px rgba(26, 255, 250, 0.2);
 	}
 
 	.z-batch-info {

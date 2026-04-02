@@ -77,15 +77,15 @@
 
 	<!-- Checkbox for multi-select -->
 	<label class="z-mod-checkbox-wrapper" onclick={(e) => e.stopPropagation()}>
-		<input 
-			type="checkbox" 
+		<input
+			type="checkbox"
 			class="z-mod-checkbox"
-			checked={isSelected} 
+			checked={isSelected}
 			onchange={(e) => {
 				if (!onclick) return;
 				const synthEvent = new MouseEvent('click', { ctrlKey: true });
 				onclick(synthEvent as any);
-			}} 
+			}}
 		/>
 	</label>
 
@@ -259,7 +259,7 @@
 	.z-mod-card.selected .z-mod-checkbox-wrapper {
 		opacity: 1;
 	}
-	
+
 	.z-mod-checkbox {
 		width: 16px;
 		height: 16px;

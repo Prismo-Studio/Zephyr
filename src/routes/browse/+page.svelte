@@ -28,13 +28,13 @@
 
 	let mods: Mod[] = $state([]);
 	let maxCount: number = $state(30);
-	
+
 	let selectedModIds: string[] = $state([]);
 	let lastClickedIndex = -1;
 	let selectedMod = $derived(
-		selectedModIds.length === 1 ? mods.find((m) => m.uuid === selectedModIds[0]) ?? null : null
+		selectedModIds.length === 1 ? (mods.find((m) => m.uuid === selectedModIds[0]) ?? null) : null
 	);
-	
+
 	let hasRefreshed = $state(false);
 
 	function handleModClick(evt: MouseEvent, mod: Mod, index: number) {
@@ -144,7 +144,7 @@
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
-			selectedModIds = selectedModIds.filter(id => id !== mod.uuid);
+			selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 			await refresh();
 		} else if (response.type === 'confirm') {
 			// Show cascade-delete dialog
@@ -154,7 +154,7 @@
 
 	async function doForceRemoveOne(mod: Mod) {
 		await api.profile.forceRemoveMods([mod.uuid]);
-		selectedModIds = selectedModIds.filter(id => id !== mod.uuid);
+		selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 		removeDialog = null;
 		await refresh();
 	}
@@ -162,7 +162,7 @@
 	async function doForceRemoveAll(mod: Mod, dependants: Dependant[]) {
 		const uuids = [mod.uuid, ...dependants.map((d) => d.uuid)];
 		await api.profile.forceRemoveMods(uuids);
-		selectedModIds = selectedModIds.filter(id => !uuids.includes(id));
+		selectedModIds = selectedModIds.filter((id) => !uuids.includes(id));
 		removeDialog = null;
 		await refresh();
 	}
@@ -170,7 +170,7 @@
 	async function doBatchInstall() {
 		if (locked) return;
 		for (const uuid of selectedModIds) {
-			const mod = mods.find(m => m.uuid === uuid);
+			const mod = mods.find((m) => m.uuid === uuid);
 			if (mod && !mod.isInstalled && mod.versions.length > 0) {
 				await api.profile.install.mod({
 					packageUuid: mod.uuid,
@@ -286,11 +286,11 @@
 			<div class="z-browse-filters">
 				<div class="z-browse-filters-row">
 					<label class="z-master-checkbox-wrapper">
-						<input 
-							type="checkbox" 
+						<input
+							type="checkbox"
 							class="z-mod-checkbox"
 							checked={isAllSelected}
-							onchange={toggleSelectAll} 
+							onchange={toggleSelectAll}
 						/>
 						<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
 					</label>

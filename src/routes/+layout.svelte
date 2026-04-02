@@ -37,11 +37,13 @@
 	let unlistenGames: UnlistenFn | null;
 
 	onMount(() => {
-		getCurrentWindow().isVisible().then((visible) => {
-			if (!visible) {
-				getCurrentWindow().show();
-			}
-		});
+		getCurrentWindow()
+			.isVisible()
+			.then((visible) => {
+				if (!visible) {
+					getCurrentWindow().show();
+				}
+			});
 		initErrorListener();
 		// Kick off data loading now that Tauri IPC is ready
 		profiles.refresh().catch(() => {});

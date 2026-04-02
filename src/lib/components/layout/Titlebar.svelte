@@ -5,7 +5,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { platform } from '@tauri-apps/plugin-os';
-	
+
 	const appWindow = getCurrentWindow();
 
 	let maximized = $state(false);

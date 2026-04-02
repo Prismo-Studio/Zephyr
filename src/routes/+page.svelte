@@ -146,11 +146,11 @@
 	let unknownMods: { fullName: string; uuid: string }[] = $state([]);
 	let totalModCount = $state(0);
 	let maxCount = $state(40);
-	
+
 	let selectedModIds: string[] = $state([]);
 	let lastClickedIndex = -1;
 	let selectedMod = $derived(
-		selectedModIds.length === 1 ? mods.find((m) => m.uuid === selectedModIds[0]) ?? null : null
+		selectedModIds.length === 1 ? (mods.find((m) => m.uuid === selectedModIds[0]) ?? null) : null
 	);
 
 	function handleModClick(evt: MouseEvent, mod: Mod, index: number) {
@@ -270,7 +270,7 @@
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
-			selectedModIds = selectedModIds.filter(id => id !== mod.uuid);
+			selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 			await refresh();
 		} else if (response.type === 'confirm') {
 			// Show cascade-delete dialog
@@ -280,7 +280,7 @@
 
 	async function doForceRemoveOne(mod: Mod) {
 		await api.profile.forceRemoveMods([mod.uuid]);
-		selectedModIds = selectedModIds.filter(id => id !== mod.uuid);
+		selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 		removeDialog = null;
 		await refresh();
 	}
@@ -288,7 +288,7 @@
 	async function doForceRemoveAll(mod: Mod, dependants: Dependant[]) {
 		const uuids = [mod.uuid, ...dependants.map((d) => d.uuid)];
 		await api.profile.forceRemoveMods(uuids);
-		selectedModIds = selectedModIds.filter(id => !uuids.includes(id));
+		selectedModIds = selectedModIds.filter((id) => !uuids.includes(id));
 		removeDialog = null;
 		await refresh();
 	}
@@ -418,7 +418,9 @@
 		selectedModIds = sortedMods.map((m) => m.uuid);
 	}
 
-	let isAllSelected = $derived(sortedMods.length > 0 && selectedModIds.length === sortedMods.length);
+	let isAllSelected = $derived(
+		sortedMods.length > 0 && selectedModIds.length === sortedMods.length
+	);
 	function toggleSelectAll() {
 		if (isAllSelected) {
 			selectedModIds = [];
@@ -454,11 +456,11 @@
 			<div class="z-mods-filters">
 				<div class="z-mods-filters-row">
 					<label class="z-master-checkbox-wrapper">
-						<input 
-							type="checkbox" 
+						<input
+							type="checkbox"
 							class="z-mod-checkbox"
 							checked={isAllSelected}
-							onchange={toggleSelectAll} 
+							onchange={toggleSelectAll}
 						/>
 						<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
 					</label>
