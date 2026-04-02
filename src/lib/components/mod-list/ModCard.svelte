@@ -75,6 +75,20 @@
 		{/if}
 	{/if}
 
+	<!-- Checkbox for multi-select -->
+	<label class="z-mod-checkbox-wrapper" onclick={(e) => e.stopPropagation()}>
+		<input 
+			type="checkbox" 
+			class="z-mod-checkbox"
+			checked={isSelected} 
+			onchange={(e) => {
+				if (!onclick) return;
+				const synthEvent = new MouseEvent('click', { ctrlKey: true });
+				onclick(synthEvent as any);
+			}} 
+		/>
+	</label>
+
 	<!-- Icon -->
 	<div class="z-mod-icon">
 		<img src={modIconSrc(mod)} alt={mod.name} />
@@ -228,6 +242,29 @@
 	.z-mod-drag-handle.pinned-lock:hover {
 		opacity: 0.7 !important;
 		color: var(--error);
+	}
+
+	/* Checkbox */
+	.z-mod-checkbox-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		flex-shrink: 0;
+		opacity: 0;
+		transition: opacity 120ms ease;
+	}
+
+	.z-mod-card:hover .z-mod-checkbox-wrapper,
+	.z-mod-card.selected .z-mod-checkbox-wrapper {
+		opacity: 1;
+	}
+	
+	.z-mod-checkbox {
+		width: 16px;
+		height: 16px;
+		cursor: pointer;
+		accent-color: var(--accent-500);
 	}
 
 	/* Icon */

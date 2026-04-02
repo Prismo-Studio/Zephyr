@@ -10,6 +10,7 @@
 	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
 	import RemoveModDialog from '$lib/components/mod-list/RemoveModDialog.svelte';
 	import ToggleModDialog from '$lib/components/mod-list/ToggleModDialog.svelte';
+	import BatchActionBar from '$lib/components/ui/BatchActionBar.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
@@ -145,7 +146,39 @@
 	let unknownMods: { fullName: string; uuid: string }[] = $state([]);
 	let totalModCount = $state(0);
 	let maxCount = $state(40);
-	let selectedMod: Mod | null = $state(null);
+	
+	let selectedModIds: string[] = $state([]);
+	let lastClickedIndex = -1;
+	let selectedMod = $derived(
+		selectedModIds.length === 1 ? mods.find((m) => m.uuid === selectedModIds[0]) ?? null : null
+	);
+
+	function handleModClick(evt: MouseEvent, mod: Mod, index: number) {
+		if (evt.ctrlKey || evt.metaKey) {
+			if (selectedModIds.includes(mod.uuid)) {
+				selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
+			} else {
+				selectedModIds = [...selectedModIds, mod.uuid];
+			}
+			lastClickedIndex = index;
+		} else if (evt.shiftKey && lastClickedIndex !== -1) {
+			// Find indices in sortedMods array
+			const start = Math.min(lastClickedIndex, index);
+			const end = Math.max(lastClickedIndex, index);
+			const newSelection = new Set(selectedModIds);
+			for (let j = start; j <= end; j++) {
+				if (sortedMods[j]) newSelection.add(sortedMods[j].uuid);
+			}
+			selectedModIds = Array.from(newSelection);
+		} else {
+			if (selectedModIds.length === 1 && selectedModIds[0] === mod.uuid) {
+				selectedModIds = [];
+			} else {
+				selectedModIds = [mod.uuid];
+			}
+			lastClickedIndex = index;
+		}
+	}
 
 	// Context menu state
 	let ctxMenu: { items: ContextMenuItem[]; x: number; y: number } | null = $state(null);
@@ -177,10 +210,6 @@
 			totalModCount = result.totalModCount;
 			updates = result.updates;
 			unknownMods = result.unknownMods;
-
-			if (selectedMod) {
-				selectedMod = mods.find((m) => m.uuid === selectedMod!.uuid) ?? null;
-			}
 		} catch {}
 
 		refreshing = false;
@@ -241,7 +270,7 @@
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
-			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
+			selectedModIds = selectedModIds.filter(id => id !== mod.uuid);
 			await refresh();
 		} else if (response.type === 'confirm') {
 			// Show cascade-delete dialog
@@ -251,7 +280,7 @@
 
 	async function doForceRemoveOne(mod: Mod) {
 		await api.profile.forceRemoveMods([mod.uuid]);
-		if (selectedMod?.uuid === mod.uuid) selectedMod = null;
+		selectedModIds = selectedModIds.filter(id => id !== mod.uuid);
 		removeDialog = null;
 		await refresh();
 	}
@@ -259,7 +288,7 @@
 	async function doForceRemoveAll(mod: Mod, dependants: Dependant[]) {
 		const uuids = [mod.uuid, ...dependants.map((d) => d.uuid)];
 		await api.profile.forceRemoveMods(uuids);
-		if (selectedMod && uuids.includes(selectedMod.uuid)) selectedMod = null;
+		selectedModIds = selectedModIds.filter(id => !uuids.includes(id));
 		removeDialog = null;
 		await refresh();
 	}
@@ -270,6 +299,18 @@
 			await api.profile.update.mods(uuids, true);
 			await refresh();
 		}
+	}
+
+	async function doBatchRemove() {
+		if (locked) return;
+		await api.profile.forceRemoveMods(selectedModIds);
+		selectedModIds = [];
+		await refresh();
+	}
+
+	async function doBatchToggle() {
+		await api.profile.forceToggleMods(selectedModIds);
+		await refresh();
 	}
 
 	function openModContextMenu(e: MouseEvent, mod: Mod) {
@@ -372,6 +413,19 @@
 			return 0;
 		});
 	});
+
+	function selectAll() {
+		selectedModIds = sortedMods.map((m) => m.uuid);
+	}
+
+	let isAllSelected = $derived(sortedMods.length > 0 && selectedModIds.length === sortedMods.length);
+	function toggleSelectAll() {
+		if (isAllSelected) {
+			selectedModIds = [];
+		} else {
+			selectAll();
+		}
+	}
 </script>
 
 <div class="z-mods-page">
@@ -398,7 +452,19 @@
 
 		<div class="z-mods-content">
 			<div class="z-mods-filters">
-				<ModListFilters queryArgs={profileQuery.current} {sortOptions} />
+				<div class="z-mods-filters-row">
+					<label class="z-master-checkbox-wrapper">
+						<input 
+							type="checkbox" 
+							class="z-mod-checkbox"
+							checked={isAllSelected}
+							onchange={toggleSelectAll} 
+						/>
+						<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
+					</label>
+					<div class="flex-1"></div>
+					<ModListFilters queryArgs={profileQuery.current} {sortOptions} />
+				</div>
 			</div>
 
 			{#if unknownMods.length > 0}
@@ -434,12 +500,12 @@
 						<div data-mod-index={i} class:z-dragging-card={draggedMod?.uuid === mod.uuid}>
 							<ModCard
 								{mod}
-								isSelected={selectedMod?.uuid === mod.uuid}
+								isSelected={selectedModIds.includes(mod.uuid)}
 								{locked}
 								showInstallBtn={false}
 								showDragHandle={canDrag}
-								onclick={() => {
-									if (!draggedMod) selectedMod = selectedMod?.uuid === mod.uuid ? null : mod;
+								onclick={(evt: MouseEvent) => {
+									if (!draggedMod) handleModClick(evt, mod, i);
 								}}
 								oncontextmenu={openModContextMenu}
 								onpointerdownHandle={handleDragHandleDown}
@@ -469,13 +535,31 @@
 		<ModDetails
 			mod={selectedMod}
 			{locked}
-			onclose={() => (selectedMod = null)}
+			onclose={() => (selectedModIds = [])}
 			ontoggle={() => toggleMod(selectedMod!)}
 			onremove={() => removeMod(selectedMod!)}
 		>
 			<InstallModButton mod={selectedMod} {install} {locked} />
 		</ModDetails>
 	{/if}
+
+	<BatchActionBar
+		count={selectedModIds.length}
+		total={sortedMods.length}
+		onclear={() => (selectedModIds = [])}
+		onselectAll={selectAll}
+	>
+		{#snippet actions()}
+			<Button variant="accent" size="sm" onclick={doBatchToggle} disabled={locked}>
+				{#snippet icon()}<Icon icon="mdi:toggle-switch" />{/snippet}
+				{i18nState.locale && m.batch_toggleSelected()}
+			</Button>
+			<Button variant="danger" size="sm" onclick={doBatchRemove} disabled={locked}>
+				{#snippet icon()}<Icon icon="mdi:delete" />{/snippet}
+				{i18nState.locale && m.batch_uninstallSelected()}
+			</Button>
+		{/snippet}
+	</BatchActionBar>
 </div>
 
 <!-- Context menu -->
@@ -536,6 +620,35 @@
 		z-index: 10;
 		padding-top: var(--space-sm);
 		background: var(--bg-base);
+	}
+
+	.z-mods-filters-row {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		padding-bottom: var(--space-xs);
+		border-bottom: 1px solid var(--border-subtle);
+		margin-bottom: var(--space-sm);
+	}
+
+	.z-master-checkbox-wrapper {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-xs) var(--space-sm);
+		cursor: pointer;
+		color: var(--text-muted);
+		font-size: 13px;
+		font-weight: 500;
+		transition: color var(--transition-fast);
+	}
+
+	.z-master-checkbox-wrapper:hover {
+		color: var(--text-primary);
+	}
+
+	.z-master-checkbox-label {
+		user-select: none;
 	}
 
 	.z-mods-list {
