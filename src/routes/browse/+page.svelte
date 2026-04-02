@@ -31,6 +31,7 @@
 
 	let mods: Mod[] = $state([]);
 	let maxCount: number = $state(30);
+	let totalLoadedForCurrentQuery: number = $state(0);
 
 	let selectedModIds: string[] = $state([]);
 	let lastClickedIndex = -1;
@@ -103,6 +104,7 @@
 
 		try {
 			mods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+			totalLoadedForCurrentQuery = mods.length;
 		} catch {}
 
 		refreshing = false;
@@ -356,7 +358,12 @@
 						/>
 					{/each}
 
-					<button class="z-load-more" onclick={() => (maxCount += 30)}>
+					<button 
+						class="z-load-more" 
+						onclick={() => (maxCount += 30)}
+						disabled={mods.length < maxCount}
+						title={mods.length < maxCount ? 'No more mods to load' : 'Load more mods'}
+					>
 						{i18nState.locale && m.browse_loadMore()}
 					</button>
 				{/if}
@@ -677,9 +684,15 @@
 		margin-top: var(--space-sm);
 	}
 
-	.z-load-more:hover {
+	.z-load-more:hover:not(:disabled) {
 		border-color: var(--border-accent);
 		color: var(--text-accent);
 		background: var(--bg-hover);
+	}
+
+	.z-load-more:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		border-style: dotted;
 	}
 </style>

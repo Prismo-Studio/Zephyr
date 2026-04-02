@@ -412,14 +412,15 @@
 						{#snippet icon()}<Icon icon="mdi:import" />{/snippet}
 						{i18nState.locale && m.share_importButton()}
 					</Button>
-					<Button
-						variant="ghost"
-						size="sm"
-						onclick={() => (shareDialog = { open: true, mode: 'export' })}
-					>
-						{#snippet icon()}<Icon icon="mdi:share-variant" />{/snippet}
-						{i18nState.locale && m.share_exportButton()}
-					</Button>
+					   <Button
+						   variant="accent"
+						   size="sm"
+						   onclick={() => (shareDialog = { open: true, mode: 'export' })}
+						   style="font-weight: 700; letter-spacing: -0.01em;"
+					   >
+						   {#snippet icon()}<Icon icon="mdi:share-variant" />{/snippet}
+						   {i18nState.locale && m.share_exportButton()}
+					   </Button>
 					{#if updates.length > 0}
 						<Button variant="accent" size="sm" onclick={updateAllMods}>
 							{#snippet icon()}<Icon icon="mdi:update" />{/snippet}
