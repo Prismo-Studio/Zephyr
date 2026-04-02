@@ -71,6 +71,7 @@ jobs:
         include:
           - platform: windows-latest
           - platform: ubuntu-24.04
+          - platform: macos-latest
 
     steps:
       - uses: actions/checkout@v4
