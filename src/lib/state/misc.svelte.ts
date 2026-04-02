@@ -2,6 +2,27 @@ import type { ConfigEntryId, QueryModsArgsWithoutMax } from '$lib/types';
 import { PersistedState } from 'runed';
 import profiles from './profile.svelte';
 
+/**
+ * Creates a PersistedState that merges saved values with defaults on load,
+ * so new keys added between versions are always present.
+ */
+function createMergedPersistedState<T extends Record<string, unknown>>(
+	key: string,
+	defaults: T
+): PersistedState<T> {
+	const raw = localStorage.getItem(key);
+	if (raw) {
+		try {
+			const saved = JSON.parse(raw) as Partial<T>;
+			const merged = { ...defaults, ...saved };
+			localStorage.setItem(key, JSON.stringify(merged));
+		} catch {
+			localStorage.setItem(key, JSON.stringify(defaults));
+		}
+	}
+	return new PersistedState<T>(key, defaults);
+}
+
 export const apiKeyDialog = $state({
 	open: false
 });
@@ -16,7 +37,7 @@ export const updateBanner = $state({
 	threshold: 0
 });
 
-export const modQuery = new PersistedState<QueryModsArgsWithoutMax>('modQuery', {
+export const modQuery = createMergedPersistedState<QueryModsArgsWithoutMax>('modQuery', {
 	searchTerm: '',
 	includeCategories: [],
 	excludeCategories: [],
@@ -67,7 +88,7 @@ export const installState = $state({
 	active: false
 });
 
-export const profileQuery = new PersistedState<QueryModsArgsWithoutMax>('profileQuery', {
+export const profileQuery = createMergedPersistedState<QueryModsArgsWithoutMax>('profileQuery', {
 	searchTerm: '',
 	includeCategories: [],
 	excludeCategories: [],
