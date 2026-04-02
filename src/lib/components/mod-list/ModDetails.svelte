@@ -18,6 +18,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { togglePin, isModPinned } from '$lib/state/misc.svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 
 	type Props = {
 		mod: Mod;
@@ -128,28 +129,39 @@
 		<!-- Action buttons -->
 		{#if mod.isInstalled}
 			<div class="z-details-actions">
-				<button class="z-action-btn" class:disabled={locked} disabled={locked} onclick={ontoggle}>
-					<Icon icon={mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off'} />
-					<span
-						>{i18nState.locale &&
-							(mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable())}</span
-					>
-				</button>
-
-				<button class="z-action-btn" onclick={() => api.profile.openModDir(mod.uuid)}>
-					<Icon icon="mdi:folder-open" />
-					<span>{i18nState.locale && m.modDetails_openFolder()}</span>
-				</button>
-
-				<button
-					class="z-action-btn danger"
-					class:disabled={locked}
-					disabled={locked}
-					onclick={onremove}
+				<Tooltip
+					text={i18nState.locale &&
+						(mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable())}
+					position="bottom"
+					delay={300}
 				>
-					<Icon icon="mdi:delete" />
-					<span>{i18nState.locale && m.modDetails_uninstall()}</span>
-				</button>
+					<button class="z-action-btn" class:disabled={locked} disabled={locked} onclick={ontoggle}>
+						<Icon icon={mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off'} />
+						<span class="z-action-label"
+							>{i18nState.locale &&
+								(mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable())}</span
+						>
+					</button>
+				</Tooltip>
+
+				<Tooltip text={i18nState.locale && m.modDetails_openFolder()} position="bottom" delay={300}>
+					<button class="z-action-btn" onclick={() => api.profile.openModDir(mod.uuid)}>
+						<Icon icon="mdi:folder-open" />
+						<span class="z-action-label">{i18nState.locale && m.modDetails_openFolder()}</span>
+					</button>
+				</Tooltip>
+
+				<Tooltip text={i18nState.locale && m.modDetails_uninstall()} position="bottom" delay={300}>
+					<button
+						class="z-action-btn danger"
+						class:disabled={locked}
+						disabled={locked}
+						onclick={onremove}
+					>
+						<Icon icon="mdi:delete" />
+						<span class="z-action-label">{i18nState.locale && m.modDetails_uninstall()}</span>
+					</button>
+				</Tooltip>
 			</div>
 		{/if}
 
@@ -191,8 +203,9 @@
 		border-left: 1px solid var(--border-subtle);
 		display: flex;
 		flex-direction: column;
-		overflow: hidden;
+		overflow: visible;
 		animation: slideIn var(--transition-normal) ease;
+		container-type: inline-size;
 	}
 
 	@keyframes slideIn {
@@ -213,6 +226,8 @@
 		flex-direction: column;
 		gap: var(--space-md);
 		position: relative;
+		overflow: visible;
+		z-index: 1;
 	}
 
 	.z-details-close {
@@ -341,6 +356,20 @@
 		font-weight: 500;
 		cursor: pointer;
 		transition: all var(--transition-fast);
+		white-space: nowrap;
+		overflow: hidden;
+		min-width: 36px;
+	}
+
+	.z-action-label {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	@container (max-width: 380px) {
+		.z-action-label {
+			display: none;
+		}
 	}
 
 	.z-action-btn:hover:not(:disabled) {

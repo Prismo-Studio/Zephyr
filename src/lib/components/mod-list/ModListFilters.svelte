@@ -2,6 +2,7 @@
 	import type { QueryModsArgsWithoutMax, SortBy, SortOrder } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import games from '$lib/state/game.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
@@ -10,15 +11,18 @@
 		queryArgs: QueryModsArgsWithoutMax;
 		sortOptions?: SortBy[];
 		showCategories?: boolean;
+		expanded?: boolean;
+		externalPanel?: boolean;
 	};
 
 	let {
 		queryArgs,
 		sortOptions = ['rating', 'downloads', 'lastUpdated', 'newest', 'name'],
-		showCategories = false
+		showCategories = false,
+		expanded = $bindable(false),
+		externalPanel = false
 	}: Props = $props();
 
-	let showFilters = $state(false);
 	let sortOpen = $state(false);
 
 	let sortLabels = $derived({
@@ -51,11 +55,7 @@
 			{/snippet}
 		</Input>
 
-		<button
-			class="z-filter-btn"
-			class:active={showFilters}
-			onclick={() => (showFilters = !showFilters)}
-		>
+		<button class="z-filter-btn" class:active={expanded} onclick={() => (expanded = !expanded)}>
 			<Icon icon="mdi:filter-variant" />
 		</button>
 
@@ -103,14 +103,14 @@
 		</div>
 	</div>
 
-	{#if showFilters}
+	{#if expanded && !externalPanel}
 		<div class="z-filters-expanded">
 			<label class="z-filter-toggle">
-				<input type="checkbox" bind:checked={queryArgs.includeNsfw} />
+				<Checkbox bind:checked={queryArgs.includeNsfw} />
 				<span>{i18nState.locale && m.modListFilters_options_NSFW()}</span>
 			</label>
 			<label class="z-filter-toggle">
-				<input type="checkbox" bind:checked={queryArgs.includeDeprecated} />
+				<Checkbox bind:checked={queryArgs.includeDeprecated} />
 				<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
 			</label>
 
@@ -318,10 +318,6 @@
 
 	.z-filter-toggle:hover {
 		background: var(--bg-hover);
-	}
-
-	.z-filter-toggle input {
-		accent-color: var(--accent-400);
 	}
 
 	.z-filter-categories {

@@ -51,5 +51,9 @@ export const setProfilePath = (profileId: number, newPath: string) =>
 export const forgetProfile = (profileId: number) => invoke('forget_profile', { profileId });
 export const setProfileIcon = (profileId: number, imagePath: string) =>
 	invoke<string>('set_profile_icon', { profileId, imagePath });
+export const setProfileIconUrl = (profileId: number, url: string) =>
+	invoke('set_profile_icon_url', { profileId, url });
+export const uploadProfileIcon = (profileId: number, imagePath: string) =>
+	invoke<string>('upload_profile_icon', { profileId, imagePath });
 export const removeProfileIcon = (profileId: number) =>
 	invoke('remove_profile_icon', { profileId });

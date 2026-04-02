@@ -32,6 +32,9 @@
 				},
 				{
 					"url": "https://raw.githubusercontent.com/prismo-studio/zephyr/main/*"
+				},
+				{
+					"url": "https://api.cloudinary.com/*"
 				}
 			],
 			"deny": []

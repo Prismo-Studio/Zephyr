@@ -6,6 +6,7 @@
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { installState } from '$lib/state/misc.svelte';
 
 	type Props = {
 		mod: Mod;
@@ -28,6 +29,13 @@
 	$effect(() => {
 		loading = false;
 		api.profile.install.getDownloadSize(modId).then((size) => (downloadSize = size));
+	});
+
+	// Reset loading when install cycle ends
+	$effect(() => {
+		if (!installState.active) {
+			loading = false;
+		}
 	});
 </script>
 
@@ -164,10 +172,10 @@
 
 	.z-version-list {
 		position: absolute;
-		bottom: calc(100% + 4px);
+		top: calc(100% + 4px);
 		right: 0;
 		min-width: 160px;
-		max-height: 300px;
+		max-height: 240px;
 		overflow-y: auto;
 		background: var(--bg-elevated);
 		border: 1px solid var(--border-default);

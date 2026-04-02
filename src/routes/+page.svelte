@@ -3,6 +3,7 @@
 	import type { Mod, ModId, SortBy, AvailableUpdate, ProfileQuery, Dependant } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import profiles from '$lib/state/profile.svelte';
+	import games from '$lib/state/game.svelte';
 
 	import ModCard from '$lib/components/mod-list/ModCard.svelte';
 	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
@@ -11,27 +12,32 @@
 	import RemoveModDialog from '$lib/components/mod-list/RemoveModDialog.svelte';
 	import ToggleModDialog from '$lib/components/mod-list/ToggleModDialog.svelte';
 	import BatchActionBar from '$lib/components/ui/BatchActionBar.svelte';
+	import BatchConfirmDialog from '$lib/components/dialogs/BatchConfirmDialog.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
 	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
+	import Loader from '$lib/components/ui/Loader.svelte';
+	import ShareProfileDialog from '$lib/components/dialogs/ShareProfileDialog.svelte';
 
-	import { onMount } from 'svelte';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { profileQuery, togglePin, isModPinned, pinnedMods } from '$lib/state/misc.svelte';
-	import { communityUrl, isOutdated } from '$lib/util';
+	import { isOutdated } from '$lib/util';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { pushToast } from '$lib/toast';
+	import { handleMultiSelect } from '$lib/utils/multiSelect';
+	import { createDragGhost, computeInsertPosition, type DragState } from '$lib/utils/dragDrop';
 
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
-	// Drag & drop state
+	// --- Drag & drop ---
 	let draggedMod: Mod | null = $state(null);
 	let dragFromIndex = -1;
-	let insertPos = -1; // target position in post-removal array
-	let placeholderIndex: number = $state(-1); // index in mods[] for template display
+	let insertPos = -1;
+	let placeholderIndex: number = $state(-1);
 	let ghostEl: HTMLDivElement | null = null;
 	let dragOffsetX = 0;
 	let dragOffsetY = 0;
@@ -56,23 +62,7 @@
 		dragOffsetX = e.clientX - rect.left;
 		dragOffsetY = e.clientY - rect.top;
 
-		ghostEl = card.cloneNode(true) as HTMLDivElement;
-		ghostEl.style.cssText = `
-			position: fixed;
-			left: ${rect.left}px;
-			top: ${rect.top}px;
-			width: ${rect.width}px;
-			pointer-events: none;
-			z-index: 9999;
-			opacity: 0.9;
-			border: 1px solid var(--accent-400);
-			box-shadow: 0 8px 32px rgba(26, 255, 250, 0.2), 0 0 0 1px rgba(26, 255, 250, 0.3);
-			background: var(--bg-elevated);
-			border-radius: var(--radius-lg);
-			transform: scale(1.02);
-			cursor: grabbing;
-		`;
-		document.body.appendChild(ghostEl);
+		ghostEl = createDragGhost(card, e);
 
 		window.addEventListener('pointermove', handlePointerMove);
 		window.addEventListener('pointerup', handlePointerUp);
@@ -84,32 +74,9 @@
 		ghostEl.style.left = e.clientX - dragOffsetX + 'px';
 		ghostEl.style.top = e.clientY - dragOffsetY + 'px';
 
-		// Count how many non-dragged cards have their center ABOVE the cursor
-		const wrappers = document.querySelectorAll('[data-mod-index]');
-		let aboveCount = 0;
-
-		wrappers.forEach((el) => {
-			const idx = parseInt(el.getAttribute('data-mod-index')!);
-			if (idx === dragFromIndex) return;
-
-			const rect = el.getBoundingClientRect();
-			const midY = rect.top + rect.height / 2;
-			if (midY < e.clientY) aboveCount++;
-		});
-
-		insertPos = aboveCount;
-
-		// Convert insertPos (post-removal position) to template index for placeholder
-		if (insertPos <= dragFromIndex) {
-			placeholderIndex = insertPos;
-		} else {
-			placeholderIndex = insertPos + 1;
-		}
-
-		// Don't show placeholder at current position (no-op)
-		if (insertPos === dragFromIndex) {
-			placeholderIndex = -1;
-		}
+		const result = computeInsertPosition(e, dragFromIndex, '[data-mod-index]');
+		insertPos = result.insertPos;
+		placeholderIndex = result.placeholderIndex;
 	}
 
 	async function handlePointerUp(_e: PointerEvent) {
@@ -122,7 +89,6 @@
 		}
 
 		if (draggedMod && insertPos >= 0 && insertPos !== dragFromIndex) {
-			// Sort order is descending by default, so visual order is reversed from array order
 			const isDescending = profileQuery.current.sortOrder === 'descending';
 			const delta = isDescending ? -(insertPos - dragFromIndex) : insertPos - dragFromIndex;
 			if (delta !== 0) {
@@ -141,12 +107,14 @@
 		dragFromIndex = -1;
 	}
 
+	// --- Mod list state ---
 	let mods: Mod[] = $state([]);
 	let updates: AvailableUpdate[] = $state([]);
 	let unknownMods: { fullName: string; uuid: string }[] = $state([]);
 	let totalModCount = $state(0);
 	let maxCount = $state(40);
 
+	// --- Selection ---
 	let selectedModIds: string[] = $state([]);
 	let lastClickedIndex = -1;
 	let selectedMod = $derived(
@@ -154,39 +122,23 @@
 	);
 
 	function handleModClick(evt: MouseEvent, mod: Mod, index: number) {
-		if (evt.ctrlKey || evt.metaKey) {
-			if (selectedModIds.includes(mod.uuid)) {
-				selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
-			} else {
-				selectedModIds = [...selectedModIds, mod.uuid];
-			}
-			lastClickedIndex = index;
-		} else if (evt.shiftKey && lastClickedIndex !== -1) {
-			// Find indices in sortedMods array
-			const start = Math.min(lastClickedIndex, index);
-			const end = Math.max(lastClickedIndex, index);
-			const newSelection = new Set(selectedModIds);
-			for (let j = start; j <= end; j++) {
-				if (sortedMods[j]) newSelection.add(sortedMods[j].uuid);
-			}
-			selectedModIds = Array.from(newSelection);
-		} else {
-			if (selectedModIds.length === 1 && selectedModIds[0] === mod.uuid) {
-				selectedModIds = [];
-			} else {
-				selectedModIds = [mod.uuid];
-			}
-			lastClickedIndex = index;
-		}
+		const result = handleMultiSelect(
+			evt,
+			mod.uuid,
+			index,
+			selectedModIds,
+			sortedMods.map((m) => m.uuid),
+			lastClickedIndex
+		);
+		selectedModIds = result.selection;
+		lastClickedIndex = result.lastIndex;
 	}
 
-	// Context menu state
+	// --- Context menu ---
 	let ctxMenu: { items: ContextMenuItem[]; x: number; y: number } | null = $state(null);
 
-	// Remove-mod dialog state
+	// --- Dialog state ---
 	let removeDialog: { open: boolean; mod: Mod; dependants: Dependant[] } | null = $state(null);
-
-	// Toggle-mod dialog state
 	let toggleDialog: {
 		open: boolean;
 		mod: Mod;
@@ -195,33 +147,30 @@
 	} | null = $state(null);
 
 	let refreshing = false;
+	let pendingRefresh = false;
 
 	async function refresh() {
-		if (refreshing) return;
+		if (refreshing) {
+			pendingRefresh = true;
+			return;
+		}
 		refreshing = true;
-
 		try {
 			const result: ProfileQuery = await api.profile.query({
 				...profileQuery.current,
 				maxCount
 			});
-
 			mods = result.mods;
 			totalModCount = result.totalModCount;
 			updates = result.updates;
 			unknownMods = result.unknownMods;
 		} catch {}
-
 		refreshing = false;
-	}
 
-	async function installLatest(mod: Mod) {
-		if (mod.versions.length === 0) return;
-		await api.profile.install.mod({
-			packageUuid: mod.uuid,
-			versionUuid: mod.versions[0].uuid
-		});
-		await refresh();
+		if (pendingRefresh) {
+			pendingRefresh = false;
+			refresh();
+		}
 	}
 
 	async function install(id: ModId) {
@@ -254,43 +203,14 @@
 		}
 	}
 
-	async function doForceToggleOne(mod: Mod) {
-		await api.profile.forceToggleMods([mod.uuid]);
-		toggleDialog = null;
-		await refresh();
-	}
-
-	async function doForceToggleAll(mod: Mod, dependants: Dependant[]) {
-		const uuids = [mod.uuid, ...dependants.map((d) => d.uuid)];
-		await api.profile.forceToggleMods(uuids);
-		toggleDialog = null;
-		await refresh();
-	}
-
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
 			selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 			await refresh();
 		} else if (response.type === 'confirm') {
-			// Show cascade-delete dialog
 			removeDialog = { open: true, mod, dependants: response.dependants };
 		}
-	}
-
-	async function doForceRemoveOne(mod: Mod) {
-		await api.profile.forceRemoveMods([mod.uuid]);
-		selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
-		removeDialog = null;
-		await refresh();
-	}
-
-	async function doForceRemoveAll(mod: Mod, dependants: Dependant[]) {
-		const uuids = [mod.uuid, ...dependants.map((d) => d.uuid)];
-		await api.profile.forceRemoveMods(uuids);
-		selectedModIds = selectedModIds.filter((id) => !uuids.includes(id));
-		removeDialog = null;
-		await refresh();
 	}
 
 	async function updateAllMods() {
@@ -301,23 +221,72 @@
 		}
 	}
 
+	// --- Batch actions ---
+	let batchRemoveDialog: { open: boolean; extraDependants: string[] } | null = $state(null);
+	let batchToggleDialog: { open: boolean; extraDependants: string[] } | null = $state(null);
+
+	// Extracts the mod name from a VersionIdent string ("Owner-Name-1.0.0" → "Name")
+	function modNameFromIdent(ident: string): string {
+		const lastDash = ident.lastIndexOf('-');
+		if (lastDash === -1) return ident;
+		const secondLastDash = ident.lastIndexOf('-', lastDash - 1);
+		if (secondLastDash === -1) return ident;
+		return ident.substring(secondLastDash + 1, lastDash);
+	}
+
+	async function collectExtraDeps(uuidFilter?: (uuid: string) => boolean) {
+		const ids = uuidFilter ? selectedModIds.filter(uuidFilter) : selectedModIds;
+		const selectedSet = new Set(selectedModIds);
+		const extraDeps = new Set<string>();
+
+		await Promise.all(
+			ids.map(async (uuid) => {
+				const deps = await api.profile.getDependants(uuid);
+				for (const dep of deps) {
+					const depName = modNameFromIdent(dep);
+					const depMod = mods.find((m) => m.name === depName);
+					if (depMod && !selectedSet.has(depMod.uuid)) {
+						extraDeps.add(dep);
+					} else if (!depMod) {
+						extraDeps.add(dep);
+					}
+				}
+			})
+		);
+
+		return [...extraDeps];
+	}
+
 	async function doBatchRemove() {
 		if (locked) return;
-		await api.profile.forceRemoveMods(selectedModIds);
-		selectedModIds = [];
-		await refresh();
+		const extraDeps = await collectExtraDeps();
+		if (extraDeps.length > 0) {
+			batchRemoveDialog = { open: true, extraDependants: extraDeps };
+		} else {
+			await api.profile.forceRemoveMods(selectedModIds);
+			selectedModIds = [];
+			await refresh();
+		}
 	}
 
 	async function doBatchToggle() {
-		await api.profile.forceToggleMods(selectedModIds);
-		await refresh();
+		if (locked) return;
+		const extraDeps = await collectExtraDeps((uuid) => {
+			const mod = mods.find((m) => m.uuid === uuid);
+			return mod ? mod.enabled !== false : false;
+		});
+		if (extraDeps.length > 0) {
+			batchToggleDialog = { open: true, extraDependants: extraDeps };
+		} else {
+			await api.profile.forceToggleMods(selectedModIds);
+			await refresh();
+		}
 	}
 
 	function openModContextMenu(e: MouseEvent, mod: Mod) {
 		const locked = profiles.activeLocked;
 		const items: ContextMenuItem[] = [];
 
-		// Toggle enable/disable
 		if (mod.isInstalled) {
 			items.push({
 				label: mod.enabled === false ? m.mods_contextMenu_enable() : m.mods_contextMenu_disable(),
@@ -327,7 +296,6 @@
 			});
 		}
 
-		// Pin/unpin
 		if (mod.isInstalled) {
 			const pinned = isModPinned(mod.uuid);
 			items.push({
@@ -337,7 +305,6 @@
 			});
 		}
 
-		// Open website
 		if (mod.websiteUrl) {
 			items.push({
 				label: m.mods_contextMenu_openThunderstore(),
@@ -346,7 +313,6 @@
 			});
 		}
 
-		// Donate
 		if (mod.donateUrl) {
 			items.push({
 				label: m.mods_contextMenu_donate(),
@@ -355,7 +321,6 @@
 			});
 		}
 
-		// Open mod folder
 		if (mod.isInstalled) {
 			items.push({
 				label: m.mods_contextMenu_openFolder(),
@@ -364,19 +329,16 @@
 			});
 		}
 
-		// Config file
 		if (mod.configFile) {
 			items.push({
 				label: m.mods_contextMenu_editConfig(),
 				icon: 'mdi:file-cog',
 				onclick: () => {
-					// Navigate to config page
 					window.location.href = '/config';
 				}
 			});
 		}
 
-		// Separator + destructive
 		if (mod.isInstalled) {
 			items.push({ label: '', separator: true });
 			items.push({
@@ -393,15 +355,15 @@
 
 	$effect(() => {
 		if (maxCount > 0) {
-			profileQuery.current;
+			JSON.stringify(profileQuery.current);
 			profiles.active;
 			refresh();
 		}
 	});
 
 	let locked = $derived(profiles.activeLocked);
+	let filtersExpanded = $state(false);
 
-	// Sort pinned mods to top
 	let sortedMods = $derived.by(() => {
 		const pinned = pinnedMods.current;
 		if (pinned.length === 0) return mods;
@@ -421,77 +383,173 @@
 	let isAllSelected = $derived(
 		sortedMods.length > 0 && selectedModIds.length === sortedMods.length
 	);
+
 	function toggleSelectAll() {
-		if (isAllSelected) {
-			selectedModIds = [];
-		} else {
-			selectAll();
-		}
+		selectedModIds = isAllSelected ? [] : sortedMods.map((m) => m.uuid);
 	}
+
+	let shareDialog: { open: boolean; mode: 'export' | 'import' } = $state({
+		open: false,
+		mode: 'export'
+	});
 </script>
 
-<div class="z-mods-page">
-	<div class="z-mods-main">
-		<Header
-			title={i18nState.locale && m.navBar_label_mods()}
-			subtitle={i18nState.locale && m.mods_installed({ count: totalModCount.toString() })}
-		>
-			{#snippet actions()}
-				{#if updates.length > 0}
-					<Button variant="accent" size="sm" onclick={updateAllMods}>
-						{#snippet icon()}<Icon icon="mdi:update" />{/snippet}
-						{m.mods_update({ count: updates.length.toString() })}
+{#if !profiles.ready}
+	<Loader />
+{:else}
+	<div class="z-mods-page">
+		<div class="z-mods-main">
+			<Header
+				title={i18nState.locale && m.navBar_label_mods()}
+				subtitle={i18nState.locale && m.mods_installed({ count: totalModCount.toString() })}
+			>
+				{#snippet actions()}
+					<Button
+						variant="ghost"
+						size="sm"
+						onclick={() => (shareDialog = { open: true, mode: 'import' })}
+					>
+						{#snippet icon()}<Icon icon="mdi:import" />{/snippet}
+						{i18nState.locale && m.share_importButton()}
 					</Button>
-				{/if}
-				{#if locked}
-					<Badge variant="warning">
-						<Icon icon="mdi:lock" class="text-xs" />
-						{m.mods_locked()}
-					</Badge>
-				{/if}
-			{/snippet}
-		</Header>
+					<Button
+						variant="ghost"
+						size="sm"
+						onclick={() => (shareDialog = { open: true, mode: 'export' })}
+					>
+						{#snippet icon()}<Icon icon="mdi:share-variant" />{/snippet}
+						{i18nState.locale && m.share_exportButton()}
+					</Button>
+					{#if updates.length > 0}
+						<Button variant="accent" size="sm" onclick={updateAllMods}>
+							{#snippet icon()}<Icon icon="mdi:update" />{/snippet}
+							{m.mods_update({ count: updates.length.toString() })}
+						</Button>
+					{/if}
+					{#if locked}
+						<Badge variant="warning">
+							<Icon icon="mdi:lock" class="text-xs" />
+							{m.mods_locked()}
+						</Badge>
+					{/if}
+				{/snippet}
+			</Header>
 
-		<div class="z-mods-content">
-			<div class="z-mods-filters">
-				<div class="z-mods-filters-row">
-					<label class="z-master-checkbox-wrapper">
-						<input
-							type="checkbox"
-							class="z-mod-checkbox"
-							checked={isAllSelected}
-							onchange={toggleSelectAll}
+			<div class="z-mods-content">
+				<div class="z-mods-filters">
+					<div class="z-mods-filters-row">
+						{#if !filtersExpanded}
+							<label class="z-master-checkbox-wrapper">
+								<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
+								<span class="z-master-checkbox-label"
+									>{i18nState.locale && m.batch_selectAll()}</span
+								>
+							</label>
+						{/if}
+						<div class="flex-1"></div>
+						<ModListFilters
+							queryArgs={profileQuery.current}
+							{sortOptions}
+							externalPanel
+							bind:expanded={filtersExpanded}
 						/>
-						<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
-					</label>
-					<div class="flex-1"></div>
-					<ModListFilters queryArgs={profileQuery.current} {sortOptions} />
-				</div>
-			</div>
-
-			{#if unknownMods.length > 0}
-				<div class="z-unknown-banner">
-					<Icon icon="mdi:help-circle" />
-					<span>{m.mods_unknownMods({ count: unknownMods.length.toString() })}</span>
-				</div>
-			{/if}
-
-			<div class="z-mods-list">
-				{#if sortedMods.length === 0}
-					<div class="z-mods-empty">
-						<div class="z-empty-icon">
-							<Icon icon="mdi:package-variant" />
-						</div>
-						<p class="z-empty-title">{i18nState.locale && m.mods_noMods()}</p>
-						<p class="z-empty-desc">{i18nState.locale && m.mods_noMods_desc()}</p>
-						<a href="/browse" class="z-empty-action">
-							<Icon icon="mdi:store-search" />
-							{i18nState.locale && m.mods_browseMods()}
-						</a>
 					</div>
-				{:else}
-					{#each sortedMods as mod, i (mod.uuid)}
-						{#if draggedMod && placeholderIndex === i}
+					{#if filtersExpanded}
+						<div class="z-mods-filter-panel">
+							<label class="z-filter-toggle">
+								<Checkbox bind:checked={profileQuery.current.includeNsfw} />
+								<span>{i18nState.locale && m.modListFilters_options_NSFW()}</span>
+							</label>
+							<label class="z-filter-toggle">
+								<Checkbox bind:checked={profileQuery.current.includeDeprecated} />
+								<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
+							</label>
+
+							{#if games.categories.length > 0}
+								<div class="z-filter-categories">
+									{#each games.categories.slice(0, 20) as cat}
+										<button
+											class="z-category-chip"
+											class:active={profileQuery.current.includeCategories.includes(cat.slug)}
+											onclick={() => {
+												const idx = profileQuery.current.includeCategories.indexOf(cat.slug);
+												if (idx >= 0) {
+													profileQuery.current.includeCategories =
+														profileQuery.current.includeCategories.filter((c) => c !== cat.slug);
+												} else {
+													profileQuery.current.includeCategories = [
+														...profileQuery.current.includeCategories,
+														cat.slug
+													];
+												}
+											}}
+										>
+											{cat.name}
+										</button>
+									{/each}
+								</div>
+							{/if}
+						</div>
+
+						<div class="z-mods-select-row">
+							<label class="z-master-checkbox-wrapper">
+								<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
+								<span class="z-master-checkbox-label"
+									>{i18nState.locale && m.batch_selectAll()}</span
+								>
+							</label>
+							<span class="z-mods-count">{sortedMods.length} mods</span>
+						</div>
+					{/if}
+				</div>
+
+				{#if unknownMods.length > 0}
+					<div class="z-unknown-banner">
+						<Icon icon="mdi:help-circle" />
+						<span>{m.mods_unknownMods({ count: unknownMods.length.toString() })}</span>
+					</div>
+				{/if}
+
+				<div class="z-mods-list">
+					{#if sortedMods.length === 0}
+						<div class="z-mods-empty">
+							<div class="z-empty-icon">
+								<Icon icon="mdi:package-variant" />
+							</div>
+							<p class="z-empty-title">{i18nState.locale && m.mods_noMods()}</p>
+							<p class="z-empty-desc">{i18nState.locale && m.mods_noMods_desc()}</p>
+							<a href="/browse" class="z-empty-action">
+								<Icon icon="mdi:store-search" />
+								{i18nState.locale && m.mods_browseMods()}
+							</a>
+						</div>
+					{:else}
+						{#each sortedMods as mod, i (mod.uuid)}
+							{#if draggedMod && placeholderIndex === i}
+								<div class="z-drop-placeholder">
+									<div class="z-drop-line"></div>
+									<Icon icon="mdi:plus-circle" class="z-drop-icon" />
+									<div class="z-drop-line"></div>
+								</div>
+							{/if}
+
+							<div data-mod-index={i} class:z-dragging-card={draggedMod?.uuid === mod.uuid}>
+								<ModCard
+									{mod}
+									isSelected={selectedModIds.includes(mod.uuid)}
+									{locked}
+									showInstallBtn={false}
+									showDragHandle={canDrag}
+									onclick={(evt: MouseEvent) => {
+										if (!draggedMod) handleModClick(evt, mod, i);
+									}}
+									oncontextmenu={openModContextMenu}
+									onpointerdownHandle={handleDragHandleDown}
+								/>
+							</div>
+						{/each}
+
+						{#if draggedMod && placeholderIndex === sortedMods.length}
 							<div class="z-drop-placeholder">
 								<div class="z-drop-line"></div>
 								<Icon icon="mdi:plus-circle" class="z-drop-icon" />
@@ -499,98 +557,150 @@
 							</div>
 						{/if}
 
-						<div data-mod-index={i} class:z-dragging-card={draggedMod?.uuid === mod.uuid}>
-							<ModCard
-								{mod}
-								isSelected={selectedModIds.includes(mod.uuid)}
-								{locked}
-								showInstallBtn={false}
-								showDragHandle={canDrag}
-								onclick={(evt: MouseEvent) => {
-									if (!draggedMod) handleModClick(evt, mod, i);
-								}}
-								oncontextmenu={openModContextMenu}
-								onpointerdownHandle={handleDragHandleDown}
-							/>
-						</div>
-					{/each}
-
-					{#if draggedMod && placeholderIndex === sortedMods.length}
-						<div class="z-drop-placeholder">
-							<div class="z-drop-line"></div>
-							<Icon icon="mdi:plus-circle" class="z-drop-icon" />
-							<div class="z-drop-line"></div>
-						</div>
+						{#if mods.length < totalModCount}
+							<button class="z-load-more" onclick={() => (maxCount += 40)}>
+								{m.mods_loadMore({ count: (totalModCount - mods.length).toString() })}
+							</button>
+						{/if}
 					{/if}
-
-					{#if mods.length < totalModCount}
-						<button class="z-load-more" onclick={() => (maxCount += 40)}>
-							{m.mods_loadMore({ count: (totalModCount - mods.length).toString() })}
-						</button>
-					{/if}
-				{/if}
+				</div>
 			</div>
 		</div>
+
+		{#if selectedMod}
+			<ModDetails
+				mod={selectedMod}
+				{locked}
+				onclose={() => (selectedModIds = [])}
+				ontoggle={() => toggleMod(selectedMod!)}
+				onremove={() => removeMod(selectedMod!)}
+			>
+				<InstallModButton mod={selectedMod} {install} {locked} />
+			</ModDetails>
+		{/if}
+
+		<BatchActionBar
+			count={selectedModIds.length}
+			total={sortedMods.length}
+			onclear={() => (selectedModIds = [])}
+			onselectAll={selectAll}
+		>
+			{#snippet actions()}
+				<Button variant="accent" size="sm" onclick={doBatchToggle} disabled={locked}>
+					{#snippet icon()}<Icon icon="mdi:toggle-switch" />{/snippet}
+					{i18nState.locale && m.batch_toggleSelected()}
+				</Button>
+				<Button variant="danger" size="sm" onclick={doBatchRemove} disabled={locked}>
+					{#snippet icon()}<Icon icon="mdi:delete" />{/snippet}
+					{i18nState.locale && m.batch_uninstallSelected()}
+				</Button>
+			{/snippet}
+		</BatchActionBar>
 	</div>
 
-	{#if selectedMod}
-		<ModDetails
-			mod={selectedMod}
-			{locked}
-			onclose={() => (selectedModIds = [])}
-			ontoggle={() => toggleMod(selectedMod!)}
-			onremove={() => removeMod(selectedMod!)}
-		>
-			<InstallModButton mod={selectedMod} {install} {locked} />
-		</ModDetails>
+	{#if ctxMenu}
+		<ContextMenu
+			items={ctxMenu.items}
+			x={ctxMenu.x}
+			y={ctxMenu.y}
+			onclose={() => (ctxMenu = null)}
+		/>
 	{/if}
 
-	<BatchActionBar
-		count={selectedModIds.length}
-		total={sortedMods.length}
-		onclear={() => (selectedModIds = [])}
-		onselectAll={selectAll}
-	>
-		{#snippet actions()}
-			<Button variant="accent" size="sm" onclick={doBatchToggle} disabled={locked}>
-				{#snippet icon()}<Icon icon="mdi:toggle-switch" />{/snippet}
-				{i18nState.locale && m.batch_toggleSelected()}
-			</Button>
-			<Button variant="danger" size="sm" onclick={doBatchRemove} disabled={locked}>
-				{#snippet icon()}<Icon icon="mdi:delete" />{/snippet}
-				{i18nState.locale && m.batch_uninstallSelected()}
-			</Button>
-		{/snippet}
-	</BatchActionBar>
-</div>
+	{#if removeDialog}
+		<RemoveModDialog
+			bind:open={removeDialog.open}
+			modName={removeDialog.mod.name}
+			dependants={removeDialog.dependants}
+			oncancel={() => (removeDialog = null)}
+			onremoveOne={async () => {
+				await api.profile.forceRemoveMods([removeDialog!.mod.uuid]);
+				selectedModIds = selectedModIds.filter((id) => id !== removeDialog!.mod.uuid);
+				removeDialog = null;
+				await refresh();
+			}}
+			onremoveAll={async () => {
+				const uuids = [removeDialog!.mod.uuid, ...removeDialog!.dependants.map((d) => d.uuid)];
+				await api.profile.forceRemoveMods(uuids);
+				selectedModIds = selectedModIds.filter((id) => !uuids.includes(id));
+				removeDialog = null;
+				await refresh();
+			}}
+		/>
+	{/if}
 
-<!-- Context menu -->
-{#if ctxMenu}
-	<ContextMenu items={ctxMenu.items} x={ctxMenu.x} y={ctxMenu.y} onclose={() => (ctxMenu = null)} />
-{/if}
+	{#if toggleDialog}
+		<ToggleModDialog
+			bind:open={toggleDialog.open}
+			modName={toggleDialog.mod.name}
+			isDisabling={toggleDialog.isDisabling}
+			dependants={toggleDialog.dependants}
+			oncancel={() => (toggleDialog = null)}
+			ontoggleOne={async () => {
+				await api.profile.forceToggleMods([toggleDialog!.mod.uuid]);
+				toggleDialog = null;
+				await refresh();
+			}}
+			ontoggleAll={async () => {
+				const uuids = [toggleDialog!.mod.uuid, ...toggleDialog!.dependants.map((d) => d.uuid)];
+				await api.profile.forceToggleMods(uuids);
+				toggleDialog = null;
+				await refresh();
+			}}
+		/>
+	{/if}
 
-<!-- Remove mod confirmation dialog -->
-{#if removeDialog}
-	<RemoveModDialog
-		bind:open={removeDialog.open}
-		modName={removeDialog.mod.name}
-		dependants={removeDialog.dependants}
-		oncancel={() => (removeDialog = null)}
-		onremoveOne={() => doForceRemoveOne(removeDialog!.mod)}
-		onremoveAll={() => doForceRemoveAll(removeDialog!.mod, removeDialog!.dependants)}
-	/>
-{/if}
+	{#if batchToggleDialog}
+		<BatchConfirmDialog
+			bind:open={batchToggleDialog.open}
+			title={i18nState.locale
+				? m.batchToggleDialog_title({ count: selectedModIds.length.toString() })
+				: ''}
+			description={i18nState.locale ? m.batchToggleDialog_description() : ''}
+			hint={i18nState.locale ? m.batchToggleDialog_hint() : ''}
+			extraDependants={batchToggleDialog.extraDependants}
+			confirmLabel={i18nState.locale ? m.batchToggleDialog_confirm() : ''}
+			cancelLabel={i18nState.locale ? m.batchToggleDialog_cancel() : ''}
+			confirmVariant="accent"
+			confirmIcon="mdi:toggle-switch"
+			onconfirm={async () => {
+				await api.profile.forceToggleMods(selectedModIds);
+				batchToggleDialog = null;
+				await refresh();
+			}}
+			oncancel={() => (batchToggleDialog = null)}
+		/>
+	{/if}
 
-<!-- Toggle mod confirmation dialog -->
-{#if toggleDialog}
-	<ToggleModDialog
-		bind:open={toggleDialog.open}
-		modName={toggleDialog.mod.name}
-		isDisabling={toggleDialog.isDisabling}
-		dependants={toggleDialog.dependants}
-		oncancel={() => (toggleDialog = null)}
-		ontoggleOne={() => doForceToggleOne(toggleDialog!.mod)}
-		ontoggleAll={() => doForceToggleAll(toggleDialog!.mod, toggleDialog!.dependants)}
+	{#if batchRemoveDialog}
+		<BatchConfirmDialog
+			bind:open={batchRemoveDialog.open}
+			title={i18nState.locale
+				? m.batchRemoveDialog_title({ count: selectedModIds.length.toString() })
+				: ''}
+			description={i18nState.locale ? m.batchRemoveDialog_description() : ''}
+			hint={i18nState.locale ? m.batchRemoveDialog_hint() : ''}
+			extraDependants={batchRemoveDialog.extraDependants}
+			confirmLabel={i18nState.locale
+				? m.batchRemoveDialog_confirm({ count: selectedModIds.length.toString() })
+				: ''}
+			cancelLabel={i18nState.locale ? m.batchRemoveDialog_cancel() : ''}
+			confirmVariant="danger"
+			confirmIcon="mdi:delete-sweep"
+			onconfirm={async () => {
+				await api.profile.forceRemoveMods(selectedModIds);
+				selectedModIds = [];
+				batchRemoveDialog = null;
+				await refresh();
+			}}
+			oncancel={() => (batchRemoveDialog = null)}
+		/>
+	{/if}
+
+	<ShareProfileDialog
+		bind:mode={shareDialog.mode}
+		bind:open={shareDialog.open}
+		onclose={() => (shareDialog.open = false)}
 	/>
 {/if}
 
@@ -621,16 +731,88 @@
 		top: 0;
 		z-index: 10;
 		padding-top: var(--space-sm);
+		padding-bottom: var(--space-xs);
 		background: var(--bg-base);
+		border-bottom: 1px solid var(--border-subtle);
+		margin-bottom: var(--space-sm);
 	}
 
 	.z-mods-filters-row {
 		display: flex;
 		align-items: center;
 		gap: var(--space-md);
-		padding-bottom: var(--space-xs);
-		border-bottom: 1px solid var(--border-subtle);
-		margin-bottom: var(--space-sm);
+	}
+
+	.z-mods-filter-panel {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		gap: var(--space-sm);
+		padding: var(--space-md);
+		border-radius: var(--radius-md);
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-subtle);
+		margin-top: var(--space-sm);
+	}
+
+	.z-filter-toggle {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 12px;
+		color: var(--text-secondary);
+		cursor: pointer;
+		padding: 4px 10px;
+		border-radius: var(--radius-sm);
+		transition: background var(--transition-fast);
+	}
+
+	.z-filter-toggle:hover {
+		background: var(--bg-hover);
+	}
+
+	.z-filter-categories {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		gap: 4px;
+		width: 100%;
+		padding-top: var(--space-sm);
+		border-top: 1px solid var(--border-subtle);
+	}
+
+	.z-category-chip {
+		padding: 3px 10px;
+		border-radius: var(--radius-full);
+		font-size: 11px;
+		border: 1px solid var(--border-subtle);
+		background: transparent;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.z-category-chip:hover {
+		border-color: var(--border-default);
+		color: var(--text-secondary);
+	}
+
+	.z-category-chip.active {
+		background: var(--bg-active);
+		border-color: var(--border-accent);
+		color: var(--text-accent);
+	}
+
+	.z-mods-select-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-top: var(--space-xs);
+	}
+
+	.z-mods-count {
+		font-size: 11px;
+		color: var(--text-muted);
 	}
 
 	.z-master-checkbox-wrapper {
@@ -673,7 +855,6 @@
 		margin-bottom: var(--space-sm);
 	}
 
-	/* Empty state */
 	.z-mods-empty {
 		display: flex;
 		flex-direction: column;
@@ -751,7 +932,6 @@
 		pointer-events: none;
 	}
 
-	/* Drop placeholder */
 	.z-drop-placeholder {
 		display: flex;
 		align-items: center;
