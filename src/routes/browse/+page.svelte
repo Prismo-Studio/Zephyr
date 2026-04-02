@@ -8,7 +8,9 @@
 	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
 	import RemoveModDialog from '$lib/components/mod-list/RemoveModDialog.svelte';
 	import ToggleModDialog from '$lib/components/mod-list/ToggleModDialog.svelte';
+	import BatchActionBar from '$lib/components/ui/BatchActionBar.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 
 	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
@@ -26,8 +28,40 @@
 
 	let mods: Mod[] = $state([]);
 	let maxCount: number = $state(30);
-	let selectedMod: Mod | null = $state(null);
+
+	let selectedModIds: string[] = $state([]);
+	let lastClickedIndex = -1;
+	let selectedMod = $derived(
+		selectedModIds.length === 1 ? (mods.find((m) => m.uuid === selectedModIds[0]) ?? null) : null
+	);
+
 	let hasRefreshed = $state(false);
+
+	function handleModClick(evt: MouseEvent, mod: Mod, index: number) {
+		if (evt.ctrlKey || evt.metaKey) {
+			if (selectedModIds.includes(mod.uuid)) {
+				selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
+			} else {
+				selectedModIds = [...selectedModIds, mod.uuid];
+			}
+			lastClickedIndex = index;
+		} else if (evt.shiftKey && lastClickedIndex !== -1) {
+			const start = Math.min(lastClickedIndex, index);
+			const end = Math.max(lastClickedIndex, index);
+			const newSelection = new Set(selectedModIds);
+			for (let j = start; j <= end; j++) {
+				if (mods[j]) newSelection.add(mods[j].uuid);
+			}
+			selectedModIds = Array.from(newSelection);
+		} else {
+			if (selectedModIds.length === 1 && selectedModIds[0] === mod.uuid) {
+				selectedModIds = [];
+			} else {
+				selectedModIds = [mod.uuid];
+			}
+			lastClickedIndex = index;
+		}
+	}
 
 	// Remove-mod dialog state
 	let removeDialog: { open: boolean; mod: Mod; dependants: Dependant[] } | null = $state(null);
@@ -63,9 +97,6 @@
 
 		try {
 			mods = await api.thunderstore.query({ ...modQuery.current, maxCount });
-			if (selectedMod) {
-				selectedMod = mods.find((mod) => mod.uuid === selectedMod!.uuid) ?? null;
-			}
 		} catch {}
 
 		refreshing = false;
@@ -96,12 +127,7 @@
 				isDisabling: mod.enabled !== false
 			};
 		}
-		// Force update selectedMod with fresh data
-		if (selectedMod) {
-			selectedMod = mods.find((m) => m.uuid === selectedMod!.uuid) ?? null;
-		}
 	}
-
 	async function doForceToggleOne(mod: Mod) {
 		await api.profile.forceToggleMods([mod.uuid]);
 		toggleDialog = null;
@@ -118,7 +144,7 @@
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
-			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
+			selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 			await refresh();
 		} else if (response.type === 'confirm') {
 			// Show cascade-delete dialog
@@ -128,7 +154,7 @@
 
 	async function doForceRemoveOne(mod: Mod) {
 		await api.profile.forceRemoveMods([mod.uuid]);
-		if (selectedMod?.uuid === mod.uuid) selectedMod = null;
+		selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 		removeDialog = null;
 		await refresh();
 	}
@@ -136,16 +162,36 @@
 	async function doForceRemoveAll(mod: Mod, dependants: Dependant[]) {
 		const uuids = [mod.uuid, ...dependants.map((d) => d.uuid)];
 		await api.profile.forceRemoveMods(uuids);
-		if (selectedMod && uuids.includes(selectedMod.uuid)) selectedMod = null;
+		selectedModIds = selectedModIds.filter((id) => !uuids.includes(id));
 		removeDialog = null;
 		await refresh();
 	}
 
-	function onModClicked(evt: MouseEvent, mod: Mod) {
-		if (evt.ctrlKey) {
-			installLatest(mod);
+	async function doBatchInstall() {
+		if (locked) return;
+		for (const uuid of selectedModIds) {
+			const mod = mods.find((m) => m.uuid === uuid);
+			if (mod && !mod.isInstalled && mod.versions.length > 0) {
+				await api.profile.install.mod({
+					packageUuid: mod.uuid,
+					versionUuid: mod.versions[0].uuid
+				});
+			}
+		}
+		selectedModIds = [];
+		await refresh();
+	}
+
+	function selectAll() {
+		selectedModIds = mods.map((m) => m.uuid);
+	}
+
+	let isAllSelected = $derived(mods.length > 0 && selectedModIds.length === mods.length);
+	function toggleSelectAll() {
+		if (isAllSelected) {
+			selectedModIds = [];
 		} else {
-			selectedMod = selectedMod?.uuid === mod.uuid ? null : mod;
+			selectAll();
 		}
 	}
 
@@ -238,7 +284,19 @@
 
 		<div class="z-browse-content">
 			<div class="z-browse-filters">
-				<ModListFilters queryArgs={modQuery.current} {sortOptions} showCategories />
+				<div class="z-browse-filters-row">
+					<label class="z-master-checkbox-wrapper">
+						<input
+							type="checkbox"
+							class="z-mod-checkbox"
+							checked={isAllSelected}
+							onchange={toggleSelectAll}
+						/>
+						<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
+					</label>
+					<div class="flex-1"></div>
+					<ModListFilters queryArgs={modQuery.current} {sortOptions} showCategories />
+				</div>
 			</div>
 
 			{#if locked}
@@ -263,12 +321,12 @@
 						<span>{i18nState.locale && m.browse_loading()}</span>
 					</div>
 				{:else}
-					{#each mods as mod (mod.uuid)}
+					{#each mods as mod, index (mod.uuid)}
 						<ModCard
 							{mod}
-							isSelected={selectedMod?.uuid === mod.uuid}
+							isSelected={selectedModIds.includes(mod.uuid)}
 							{locked}
-							onclick={(evt: MouseEvent) => onModClicked(evt, mod)}
+							onclick={(evt: MouseEvent) => handleModClick(evt, mod, index)}
 							oninstall={() => installLatest(mod)}
 							oncontextmenu={openModContextMenu}
 						/>
@@ -286,13 +344,27 @@
 		<ModDetails
 			mod={selectedMod}
 			{locked}
-			onclose={() => (selectedMod = null)}
+			onclose={() => (selectedModIds = [])}
 			ontoggle={() => toggleMod(selectedMod!)}
 			onremove={() => removeMod(selectedMod!)}
 		>
 			<InstallModButton mod={selectedMod} {install} {locked} />
 		</ModDetails>
 	{/if}
+
+	<BatchActionBar
+		count={selectedModIds.length}
+		total={mods.length}
+		onclear={() => (selectedModIds = [])}
+		onselectAll={selectAll}
+	>
+		{#snippet actions()}
+			<Button variant="accent" size="sm" onclick={doBatchInstall} disabled={locked}>
+				{#snippet icon()}<Icon icon="mdi:download" />{/snippet}
+				{i18nState.locale && m.batch_installSelected()}
+			</Button>
+		{/snippet}
+	</BatchActionBar>
 </div>
 
 <!-- Remove mod confirmation dialog -->
@@ -353,6 +425,35 @@
 		z-index: 10;
 		padding-top: var(--space-sm);
 		background: var(--bg-base);
+	}
+
+	.z-browse-filters-row {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		padding-bottom: var(--space-xs);
+		border-bottom: 1px solid var(--border-subtle);
+		margin-bottom: var(--space-sm);
+	}
+
+	.z-master-checkbox-wrapper {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-xs) var(--space-sm);
+		cursor: pointer;
+		color: var(--text-muted);
+		font-size: 13px;
+		font-weight: 500;
+		transition: color var(--transition-fast);
+	}
+
+	.z-master-checkbox-wrapper:hover {
+		color: var(--text-primary);
+	}
+
+	.z-master-checkbox-label {
+		user-select: none;
 	}
 
 	.z-refresh-btn {

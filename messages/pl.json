@@ -603,5 +603,12 @@
 	"toggleModDialog_enable_one": "Włącz tylko {name}",
 	"toggleModDialog_enable_all": "Włącz wszystkie ({count} modów)",
 
-	"toggleModDialog_cancel": "Anuluj"
+	"toggleModDialog_cancel": "Cancel",
+	"batch_selectAll": "Select All",
+	"batch_selected": "{count} selected",
+	"batch_totalSelected": "{count} / {total} selected",
+	"batch_installSelected": "Install Selected",
+	"batch_uninstallSelected": "Uninstall Selected",
+	"batch_toggleSelected": "Toggle Selected",
+	"prefs_copyPath_success": "Path copied to clipboard"
 }

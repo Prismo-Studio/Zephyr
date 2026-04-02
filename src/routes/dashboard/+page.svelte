@@ -173,7 +173,8 @@
 		flex-direction: column;
 		justify-content: space-between;
 		min-height: 180px;
-		background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1));
+		background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+		color: #ffffff;
 	}
 
 	.z-hero-title {
@@ -195,11 +196,11 @@
 		align-items: center;
 		gap: 4px;
 		font-size: 13px;
-		color: var(--text-secondary);
+		color: rgba(255, 255, 255, 0.8);
 	}
 
 	.z-hero-mods {
-		color: var(--text-muted);
+		color: rgba(255, 255, 255, 0.5);
 	}
 
 	.z-hero-actions {
@@ -215,7 +216,7 @@
 		padding: var(--space-sm) var(--space-lg);
 		border-radius: var(--radius-md);
 		background: rgba(255, 255, 255, 0.1);
-		color: var(--text-primary);
+		color: #ffffff;
 		text-decoration: none;
 		font-size: 13px;
 		font-weight: 600;

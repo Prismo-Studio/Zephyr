@@ -31,6 +31,9 @@ fn create_steam_command(game_dir: &Path, game: Game, prefs: &Prefs) -> Result<Co
         bail!("{} is not available on Steam", game.name)
     };
 
+    let mut command = create_base_steam_command()?;
+    command.arg("-applaunch").arg(steam.id.to_string());
+
     #[cfg(target_os = "linux")]
     if let Some(proxy_dll) = game.mod_loader.proxy_dll() {
         use super::linux;
@@ -41,15 +44,12 @@ fn create_steam_command(game_dir: &Path, game: Game, prefs: &Prefs) -> Result<Co
             false
         }) {
             linux::ensure_wine_override(steam.id as u64, proxy_dll, game_dir).unwrap_or_else(
-                |err| {
-                    warn!("failed to ensure wine dll override: {:#}", err);
-                },
+                |err| warn!("failed to ensure wine dll override: {:#}", err),
             );
+
+            command.env("WINEDLLOVERRIDES", format!("{proxy_dll}=native,builtin"));
         }
     }
-
-    let mut command = create_base_steam_command()?;
-    command.arg("-applaunch").arg(steam.id.to_string());
 
     Ok(command)
 }
