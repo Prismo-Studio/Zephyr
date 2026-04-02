@@ -14,8 +14,12 @@
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
 	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
+	import Loader from '$lib/components/ui/Loader.svelte';
+	import ShareProfileDialog from '$lib/components/dialogs/ShareProfileDialog.svelte';
 
 	import { onMount } from 'svelte';
 	import { open } from '@tauri-apps/plugin-shell';
@@ -301,16 +305,109 @@
 		}
 	}
 
+	let batchRemoveDialog: {
+		open: boolean;
+		extraDependants: string[];
+	} | null = $state(null);
+
 	async function doBatchRemove() {
 		if (locked) return;
+
+		// Read-only check: collect dependants not already in selection
+		const selectedSet = new Set(selectedModIds);
+		const extraDeps = new Set<string>();
+
+		await Promise.all(
+			selectedModIds.map(async (uuid) => {
+				const deps = await api.profile.getDependants(uuid);
+				for (const dep of deps) {
+					// getDependants returns VersionIdent strings;
+					// match them to mods by checking if their uuid is in selection
+					const depMod = mods.find((m) => dep.includes(m.name));
+					if (depMod && !selectedSet.has(depMod.uuid)) {
+						extraDeps.add(dep);
+					} else if (!depMod) {
+						extraDeps.add(dep);
+					}
+				}
+			})
+		);
+
+		if (extraDeps.size > 0) {
+			batchRemoveDialog = {
+				open: true,
+				extraDependants: [...extraDeps]
+			};
+		} else {
+			await api.profile.forceRemoveMods(selectedModIds);
+			selectedModIds = [];
+			await refresh();
+		}
+	}
+
+	async function doBatchForceRemoveAll() {
+		if (!batchRemoveDialog) return;
+		// Force remove all selected — backend handles cascade
 		await api.profile.forceRemoveMods(selectedModIds);
 		selectedModIds = [];
+		batchRemoveDialog = null;
 		await refresh();
 	}
 
+	async function doBatchForceRemoveCancel() {
+		batchRemoveDialog = null;
+	}
+
+	let batchToggleDialog: {
+		open: boolean;
+		extraDependants: string[];
+	} | null = $state(null);
+
 	async function doBatchToggle() {
+		if (locked) return;
+
+		const selectedSet = new Set(selectedModIds);
+		const extraDeps = new Set<string>();
+
+		// Only check dependants for mods being disabled (enabled mods)
+		const disablingIds = selectedModIds.filter((id) => {
+			const mod = mods.find((m) => m.uuid === id);
+			return mod && mod.enabled !== false;
+		});
+
+		await Promise.all(
+			disablingIds.map(async (uuid) => {
+				const deps = await api.profile.getDependants(uuid);
+				for (const dep of deps) {
+					const depMod = mods.find((m) => dep.includes(m.name));
+					if (depMod && !selectedSet.has(depMod.uuid)) {
+						extraDeps.add(dep);
+					} else if (!depMod) {
+						extraDeps.add(dep);
+					}
+				}
+			})
+		);
+
+		if (extraDeps.size > 0) {
+			batchToggleDialog = {
+				open: true,
+				extraDependants: [...extraDeps]
+			};
+		} else {
+			await api.profile.forceToggleMods(selectedModIds);
+			await refresh();
+		}
+	}
+
+	async function doBatchForceToggleAll() {
 		await api.profile.forceToggleMods(selectedModIds);
+		batchToggleDialog = null;
 		await refresh();
+	}
+
+	async function doBatchForceToggleCancel() {
+		batchToggleDialog = null;
 	}
 
 	function openModContextMenu(e: MouseEvent, mod: Mod) {
@@ -428,8 +525,13 @@
 			selectAll();
 		}
 	}
+
+	let shareDialog: { open: boolean; mode: 'export' | 'import' } = $state({ open: false, mode: 'export' });
 </script>
 
+{#if !profiles.ready}
+	<Loader />
+{:else}
 <div class="z-mods-page">
 	<div class="z-mods-main">
 		<Header
@@ -437,6 +539,14 @@
 			subtitle={i18nState.locale && m.mods_installed({ count: totalModCount.toString() })}
 		>
 			{#snippet actions()}
+				<Button variant="ghost" size="sm" onclick={() => { shareDialog = { open: true, mode: 'import' }; }}>
+					{#snippet icon()}<Icon icon="mdi:import" />{/snippet}
+					{i18nState.locale && m.share_importButton()}
+				</Button>
+				<Button variant="ghost" size="sm" onclick={() => { shareDialog = { open: true, mode: 'export' }; }}>
+					{#snippet icon()}<Icon icon="mdi:share-variant" />{/snippet}
+					{i18nState.locale && m.share_exportButton()}
+				</Button>
 				{#if updates.length > 0}
 					<Button variant="accent" size="sm" onclick={updateAllMods}>
 						{#snippet icon()}<Icon icon="mdi:update" />{/snippet}
@@ -456,12 +566,7 @@
 			<div class="z-mods-filters">
 				<div class="z-mods-filters-row">
 					<label class="z-master-checkbox-wrapper">
-						<input
-							type="checkbox"
-							class="z-mod-checkbox"
-							checked={isAllSelected}
-							onchange={toggleSelectAll}
-						/>
+						<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
 						<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
 					</label>
 					<div class="flex-1"></div>
@@ -592,6 +697,91 @@
 		ontoggleOne={() => doForceToggleOne(toggleDialog!.mod)}
 		ontoggleAll={() => doForceToggleAll(toggleDialog!.mod, toggleDialog!.dependants)}
 	/>
+{/if}
+
+<!-- Batch toggle confirmation dialog -->
+{#if batchToggleDialog}
+	<Modal
+		bind:open={batchToggleDialog.open}
+		title={i18nState.locale && m.batchToggleDialog_title({ count: selectedModIds.length.toString() })}
+		onclose={doBatchForceToggleCancel}
+	>
+		{#snippet children()}
+			<div class="z-rmd-body">
+				<div class="z-rmd-warning">
+					<Icon icon="mdi:alert-circle" class="z-rmd-warning-icon" />
+					<p>{i18nState.locale && m.batchToggleDialog_description()}</p>
+				</div>
+
+				<ul class="z-rmd-list">
+					{#each batchToggleDialog!.extraDependants as dep}
+						<li class="z-rmd-item">
+							<Icon icon="mdi:puzzle" />
+							<span>{dep}</span>
+						</li>
+					{/each}
+				</ul>
+
+				<p class="z-rmd-hint">{i18nState.locale && m.batchToggleDialog_hint()}</p>
+			</div>
+		{/snippet}
+
+		{#snippet actions()}
+			<Button variant="ghost" onclick={doBatchForceToggleCancel}>
+				{i18nState.locale && m.batchToggleDialog_cancel()}
+			</Button>
+			<Button variant="accent" onclick={doBatchForceToggleAll}>
+				{#snippet icon()}<Icon icon="mdi:toggle-switch" />{/snippet}
+				{i18nState.locale && m.batchToggleDialog_confirm()}
+			</Button>
+		{/snippet}
+	</Modal>
+{/if}
+
+<!-- Batch remove confirmation dialog -->
+{#if batchRemoveDialog}
+	<Modal
+		bind:open={batchRemoveDialog.open}
+		title={i18nState.locale && m.batchRemoveDialog_title({ count: selectedModIds.length.toString() })}
+		onclose={doBatchForceRemoveCancel}
+	>
+		{#snippet children()}
+			<div class="z-rmd-body">
+				<div class="z-rmd-warning">
+					<Icon icon="mdi:alert-circle" class="z-rmd-warning-icon" />
+					<p>{i18nState.locale && m.batchRemoveDialog_description()}</p>
+				</div>
+
+				<ul class="z-rmd-list">
+					{#each batchRemoveDialog!.extraDependants as dep}
+						<li class="z-rmd-item">
+							<Icon icon="mdi:puzzle" />
+							<span>{dep}</span>
+						</li>
+					{/each}
+				</ul>
+
+				<p class="z-rmd-hint">{i18nState.locale && m.batchRemoveDialog_hint()}</p>
+			</div>
+		{/snippet}
+
+		{#snippet actions()}
+			<Button variant="ghost" onclick={doBatchForceRemoveCancel}>
+				{i18nState.locale && m.batchRemoveDialog_cancel()}
+			</Button>
+			<Button variant="danger" onclick={doBatchForceRemoveAll}>
+				{#snippet icon()}<Icon icon="mdi:delete-sweep" />{/snippet}
+				{i18nState.locale && m.batchRemoveDialog_confirm({ count: selectedModIds.length.toString() })}
+			</Button>
+		{/snippet}
+	</Modal>
+{/if}
+
+<ShareProfileDialog
+	bind:mode={shareDialog.mode}
+	bind:open={shareDialog.open}
+	onclose={() => { shareDialog.open = false; }}
+/>
 {/if}
 
 <style>
@@ -782,5 +972,66 @@
 			opacity: 1;
 			padding: var(--space-sm) 0;
 		}
+	}
+
+	/* Batch remove dialog */
+	.z-rmd-body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.z-rmd-warning {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--space-sm);
+		padding: var(--space-md);
+		border-radius: var(--radius-md);
+		background: rgba(255, 179, 71, 0.08);
+		border: 1px solid rgba(255, 179, 71, 0.25);
+		color: var(--warning);
+		font-size: 13px;
+		line-height: 1.5;
+	}
+
+	:global(.z-rmd-warning-icon) {
+		flex-shrink: 0;
+		font-size: 18px;
+		margin-top: 1px;
+	}
+
+	.z-rmd-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		max-height: 220px;
+		overflow-y: auto;
+	}
+
+	.z-rmd-item {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-sm);
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-subtle);
+		font-size: 12px;
+		color: var(--text-secondary);
+	}
+
+	.z-rmd-item :global(svg) {
+		color: var(--text-muted);
+		font-size: 14px;
+		flex-shrink: 0;
+	}
+
+	.z-rmd-hint {
+		font-size: 12px;
+		color: var(--text-muted);
+		line-height: 1.5;
 	}
 </style>
