@@ -4,6 +4,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import games from '$lib/state/game.svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
@@ -55,9 +56,15 @@
 			{/snippet}
 		</Input>
 
-		<button class="z-filter-btn" class:active={expanded} onclick={() => (expanded = !expanded)}>
-			<Icon icon="mdi:filter-variant" />
-		</button>
+		<Tooltip
+			text={i18nState.locale && m.modListFilters_filterTooltip()}
+			position="bottom"
+			delay={200}
+		>
+			<button class="z-filter-btn disabled" disabled>
+				<Icon icon="mdi:filter-variant" />
+			</button>
+		</Tooltip>
 
 		<!-- Custom sort dropdown -->
 		<div class="z-sort-group">
@@ -179,6 +186,17 @@
 		color: var(--text-accent);
 		border-color: var(--border-accent);
 		background: var(--bg-active);
+	}
+
+	.z-filter-btn.disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
+	.z-filter-btn.disabled:hover {
+		color: var(--text-muted);
+		border-color: var(--border-default);
+		background: var(--bg-elevated);
 	}
 
 	/* Sort group */

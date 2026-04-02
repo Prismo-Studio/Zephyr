@@ -19,6 +19,7 @@
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { togglePin, isModPinned } from '$lib/state/misc.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 
 	type Props = {
 		mod: Mod;
@@ -34,6 +35,8 @@
 	let activeTab = $state('readme');
 	let markdown = $state('');
 	let loadingMarkdown = $state(false);
+	let copied = $state(false);
+	let copyTimeoutId: number | null = null;
 
 	let tabs = $derived([
 		{ id: 'readme', label: i18nState.locale && m.modpack_readme_title() },
@@ -50,6 +53,19 @@
 		}
 		loadingMarkdown = false;
 	}
+
+	const copyContent = async () => {
+		try {
+			await writeText(markdown);
+			copied = true;
+			if (copyTimeoutId !== null) clearTimeout(copyTimeoutId);
+			copyTimeoutId = window.setTimeout(() => {
+				copied = false;
+			}, 2000);
+		} catch (err) {
+			console.error('Failed to copy:', err);
+		}
+	};
 
 	$effect(() => {
 		if (mod) {
@@ -171,11 +187,19 @@
 
 	<!-- Tabs + Content -->
 	<div class="z-details-content">
-		<Tabs
-			{tabs}
-			bind:active={activeTab}
-			onchange={(id) => loadMarkdown(id as 'readme' | 'changelog')}
-		/>
+		<div class="z-details-tabs-row">
+			<Tabs
+				{tabs}
+				bind:active={activeTab}
+				onchange={(id) => loadMarkdown(id as 'readme' | 'changelog')}
+			/>
+			{#if markdown && !loadingMarkdown}
+				<button class="z-copy-btn" class:copied onclick={copyContent} title="Copy content">
+					<Icon icon={copied ? 'mdi:check' : 'mdi:content-copy'} />
+					<span class="z-copy-text">{copied ? 'Copied!' : 'Copy'}</span>
+				</button>
+			{/if}
+		</div>
 
 		<div class="z-details-body">
 			{#if loadingMarkdown}
@@ -396,6 +420,52 @@
 		overflow: hidden;
 		padding: var(--space-lg);
 		gap: var(--space-md);
+	}
+
+	.z-details-tabs-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-md);
+	}
+
+	.z-copy-btn {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 12px;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-elevated);
+		color: var(--text-secondary);
+		font-family: var(--font-body);
+		font-size: 12px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		white-space: nowrap;
+	}
+
+	.z-copy-btn:hover:not(.copied) {
+		background: var(--bg-hover);
+		border-color: var(--border-default);
+		color: var(--text-primary);
+	}
+
+	.z-copy-btn.copied {
+		background: rgba(0, 212, 170, 0.1);
+		border-color: rgba(0, 212, 170, 0.3);
+		color: var(--success);
+	}
+
+	.z-copy-text {
+		display: none;
+	}
+
+	@media (min-width: 420px) {
+		.z-copy-text {
+			display: inline;
+		}
 	}
 
 	.z-details-body {

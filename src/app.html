@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" style="font-family: 'Inter', 'Nunito Sans', sans-serif">
+<html lang="en" style="font-family: 'Inter', 'Nunito Sans', sans-serif; background: #080e1a">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
@@ -11,7 +11,64 @@
 		%sveltekit.head%
 	</head>
 
-	<body data-sveltekit-preload-data="hover">
+	<body data-sveltekit-preload-data="hover" style="background: #080e1a; margin: 0">
 		<div style="display: contents">%sveltekit.body%</div>
+
+		<script>
+			// Prevent copy/paste globally, but allow in markdown and inputs
+			function isAllowedElement(target) {
+				// Allow in inputs, textareas, contenteditable
+				if (
+					target.tagName === 'INPUT' ||
+					target.tagName === 'TEXTAREA' ||
+					target.contentEditable === 'true'
+				) {
+					return true;
+				}
+				// Allow in .markdown elements and their children
+				if (target.closest('.markdown')) {
+					return true;
+				}
+				// Check if parent is .markdown
+				let current = target;
+				while (current && current !== document.body) {
+					if (current.classList && current.classList.contains('markdown')) {
+						return true;
+					}
+					current = current.parentElement;
+				}
+				return false;
+			}
+
+			document.addEventListener(
+				'copy',
+				function (e) {
+					if (!isAllowedElement(e.target)) {
+						e.preventDefault();
+					}
+				},
+				true
+			);
+
+			document.addEventListener(
+				'cut',
+				function (e) {
+					if (!isAllowedElement(e.target)) {
+						e.preventDefault();
+					}
+				},
+				true
+			);
+
+			document.addEventListener(
+				'paste',
+				function (e) {
+					if (!isAllowedElement(e.target)) {
+						e.preventDefault();
+					}
+				},
+				true
+			);
+		</script>
 	</body>
 </html>

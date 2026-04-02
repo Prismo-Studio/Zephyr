@@ -65,9 +65,7 @@
 		gap: var(--space-xl);
 		pointer-events: auto;
 		margin-bottom: var(--space-md);
-		box-shadow:
-			0 8px 32px rgba(26, 255, 250, 0.15),
-			0 0 0 1px rgba(26, 255, 250, 0.2);
+		box-shadow: 0 0 0 1px rgba(26, 255, 250, 0.2);
 	}
 
 	.z-batch-info {

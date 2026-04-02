@@ -50,6 +50,33 @@
 	}
 
 	let gameMenuOpen = $state(false);
+	let gameSearchTerm = $state('');
+	let gameDropdownEl: HTMLDivElement | null = null;
+	let gameSearchInput: HTMLInputElement | null = null;
+
+	$effect(() => {
+		if (gameMenuOpen && gameSearchInput) {
+			gameSearchInput.focus();
+		}
+	});
+
+	function handleGameDropdownClickOutside(e: MouseEvent) {
+		if (gameMenuOpen && gameDropdownEl && !gameDropdownEl.contains(e.target as Node)) {
+			gameMenuOpen = false;
+			gameSearchTerm = '';
+		}
+	}
+
+	$effect(() => {
+		if (gameMenuOpen) {
+			document.addEventListener('mousedown', handleGameDropdownClickOutside, true);
+		} else {
+			document.removeEventListener('mousedown', handleGameDropdownClickOutside, true);
+		}
+		return () => {
+			document.removeEventListener('mousedown', handleGameDropdownClickOutside, true);
+		};
+	});
 	let profileMenuOpen = $state(false);
 
 	let launching = $state(false);
@@ -102,33 +129,62 @@
 	<!-- Game selector dropdown -->
 	{#if gameMenuOpen && games.list.length > 0}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div class="z-game-dropdown" onmouseleave={() => (gameMenuOpen = false)}>
-			{#each games.list as game}
-				<button
-					class="z-game-dropdown-item"
-					class:active={game.slug === games.active?.slug}
-					onclick={async () => {
-						await games.setActive(game.slug);
-						gameMenuOpen = false;
+		<div class="z-game-dropdown" bind:this={gameDropdownEl}>
+			<div class="z-game-dropdown-search">
+				<Icon icon="mdi:magnify" />
+				<input
+					type="text"
+					placeholder={i18nState.locale && m.sidebar_searchGames()}
+					bind:value={gameSearchTerm}
+					bind:this={gameSearchInput}
+					class="z-game-search-input"
+					onkeydown={(e) => {
+						if (e.key === 'Escape') {
+							gameMenuOpen = false;
+							gameSearchTerm = '';
+						}
 					}}
-				>
-					<img src={gameIconSrc(game)} alt={game.name} class="z-game-dropdown-icon" />
-					<span class="z-game-dropdown-name">{game.name}</span>
-					{#if game.favorite}
-						<Icon icon="mdi:star" class="text-xs text-amber-400" />
-					{/if}
-				</button>
-			{/each}
+				/>
+			</div>
+			<div class="z-game-dropdown-list">
+				{#each games.list.filter((g) => g.name
+						.toLowerCase()
+						.includes(gameSearchTerm.toLowerCase())) as game}
+					<button
+						class="z-game-dropdown-item"
+						class:active={game.slug === games.active?.slug}
+						onclick={async () => {
+							await games.setActive(game.slug);
+							gameMenuOpen = false;
+							gameSearchTerm = '';
+						}}
+					>
+						<img src={gameIconSrc(game)} alt={game.name} class="z-game-dropdown-icon" />
+						<span class="z-game-dropdown-name">{game.name}</span>
+						{#if game.favorite}
+							<Icon icon="mdi:star" class="text-xs text-amber-400" />
+						{/if}
+					</button>
+				{/each}
+				{#if games.list.filter((g) => g.name
+						.toLowerCase()
+						.includes(gameSearchTerm.toLowerCase())).length === 0}
+					<div class="z-game-dropdown-empty">
+						<Icon icon="mdi:magnify" />
+						<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
+					</div>
+				{/if}
+			</div>
 		</div>
 	{/if}
 
 	<!-- Navigation -->
 	<nav class="z-sidebar-nav">
 		{#each navItems as item}
-			<Tooltip text={item.label()} position="right" delay={300}>
+			<Tooltip text={i18nState.locale && item.label()} position="right" delay={300}>
 				<a href={item.path} class="z-nav-item" class:active={isActive(item.path)}>
 					<Icon icon={item.icon} class="z-nav-icon" />
-					<span class="z-nav-label">{item.label()}</span>
+					<span class="z-nav-label">{i18nState.locale && item.label()}</span>
 					{#if isActive(item.path)}
 						<span class="z-nav-indicator"></span>
 					{/if}
@@ -154,7 +210,7 @@
 						class="z-sidebar-profile"
 						class:open={profileMenuOpen}
 						onclick={() => (profileMenuOpen = !profileMenuOpen)}
-						aria-label="Switch profile"
+						aria-label={i18nState.locale && m.sidebar_switchProfile()}
 						aria-expanded={profileMenuOpen}
 					>
 						{#if profiles.active.icon}
@@ -279,13 +335,60 @@
 		background: var(--bg-elevated);
 		border: 1px solid var(--border-default);
 		border-radius: var(--radius-lg);
-		padding: var(--space-xs);
-		min-width: 220px;
-		max-height: 400px;
-		overflow-y: auto;
+		padding: 0;
+		min-width: 240px;
+		max-height: 500px;
+		overflow: hidden;
 		z-index: var(--z-dropdown);
 		box-shadow: var(--shadow-lg);
 		animation: scaleIn var(--transition-fast) ease;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.z-game-dropdown-search {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-md);
+		border-bottom: 1px solid var(--border-subtle);
+		background: var(--bg-surface);
+		color: var(--text-muted);
+		font-size: 16px;
+		flex-shrink: 0;
+	}
+
+	.z-game-search-input {
+		flex: 1;
+		background: transparent;
+		border: none;
+		color: var(--text-primary);
+		font-size: 13px;
+		font-family: var(--font-body);
+		outline: none;
+		padding: 0;
+	}
+
+	.z-game-search-input::placeholder {
+		color: var(--text-muted);
+	}
+
+	.z-game-dropdown-list {
+		overflow-y: auto;
+		max-height: 420px;
+		padding: var(--space-xs);
+	}
+
+	.z-game-dropdown-empty {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-sm);
+		padding: var(--space-lg);
+		color: var(--text-muted);
+		font-size: 13px;
+		text-align: center;
 	}
 
 	.z-game-dropdown-item {

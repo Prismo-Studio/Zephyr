@@ -31,6 +31,7 @@
 
 	let mods: Mod[] = $state([]);
 	let maxCount: number = $state(30);
+	let totalLoadedForCurrentQuery: number = $state(0);
 
 	let selectedModIds: string[] = $state([]);
 	let lastClickedIndex = -1;
@@ -83,15 +84,27 @@
 	let refreshing = false;
 	let pendingRefresh = false;
 
+	let lastGameSlug: string | null = null;
+
 	async function refresh() {
 		if (refreshing) {
 			pendingRefresh = true;
 			return;
 		}
+
+		// Clear stale results when switching games
+		const currentSlug = games.active?.slug ?? null;
+		if (currentSlug !== lastGameSlug) {
+			mods = [];
+			hasRefreshed = false;
+			lastGameSlug = currentSlug;
+		}
+
 		refreshing = true;
 
 		try {
 			mods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+			totalLoadedForCurrentQuery = mods.length;
 		} catch {}
 
 		refreshing = false;
@@ -173,6 +186,7 @@
 			// Deep-track all query properties so filters trigger a refresh
 			JSON.stringify(modQuery.current);
 			profiles.active;
+			games.active;
 			refresh();
 		}
 	});
@@ -188,7 +202,7 @@
 		// Install
 		if (!mod.isInstalled && !locked) {
 			items.push({
-				label: 'Installer',
+				label: m.mods_contextMenu_install(),
 				icon: 'mdi:download',
 				onclick: () => installLatest(mod)
 			});
@@ -344,7 +358,12 @@
 						/>
 					{/each}
 
-					<button class="z-load-more" onclick={() => (maxCount += 30)}>
+					<button
+						class="z-load-more"
+						onclick={() => (maxCount += 30)}
+						disabled={mods.length < maxCount}
+						title={mods.length < maxCount ? 'No more mods to load' : 'Load more mods'}
+					>
 						{i18nState.locale && m.browse_loadMore()}
 					</button>
 				{/if}
@@ -665,9 +684,15 @@
 		margin-top: var(--space-sm);
 	}
 
-	.z-load-more:hover {
+	.z-load-more:hover:not(:disabled) {
 		border-color: var(--border-accent);
 		color: var(--text-accent);
 		background: var(--bg-hover);
+	}
+
+	.z-load-more:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		border-style: dotted;
 	}
 </style>

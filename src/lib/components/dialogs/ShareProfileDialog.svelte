@@ -7,6 +7,7 @@
 	import * as api from '$lib/api';
 	import type { LegacyImportData } from '$lib/types';
 	import profiles from '$lib/state/profile.svelte';
+	import games from '$lib/state/game.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { pushToast } from '$lib/toast';
@@ -32,6 +33,13 @@
 	let importError: string | null = $state(null);
 	let showNameInput = $state(false);
 	let newProfileName = $state('');
+	let importGameMismatch: string | null = $state(null);
+
+	let nameConflict = $derived(
+		showNameInput &&
+			newProfileName.trim().length > 0 &&
+			profiles.list.some((p) => p.name.toLowerCase() === newProfileName.trim().toLowerCase())
+	);
 
 	$effect(() => {
 		if (open && mode === 'export' && !exportCode && !exportLoading) {
@@ -48,6 +56,7 @@
 			importLoading = false;
 			importData = null;
 			importError = null;
+			importGameMismatch = null;
 			showNameInput = false;
 			newProfileName = '';
 		}
@@ -85,8 +94,26 @@
 		if (!code) return;
 		importLoading = true;
 		importError = null;
+		importGameMismatch = null;
 		try {
+			// Pre-read to detect game mismatch before resolving mods
 			importData = await api.profile.import.readCode(code);
+
+			const profileCommunity = importData.manifest.community;
+			if (profileCommunity && profileCommunity !== games.active?.slug) {
+				const targetGame = games.list.find((g) => g.slug === profileCommunity);
+				importGameMismatch = targetGame?.name ?? profileCommunity;
+
+				// Switch to target game now so mods resolve correctly and the
+				// overwrite button shows the right profile name
+				await games.setActive(profileCommunity);
+				await profiles.refresh();
+				try {
+					await api.thunderstore.triggerModFetch();
+				} catch {}
+				// Re-read with the correct game's packages
+				importData = await api.profile.import.readCode(code);
+			}
 		} catch (e) {
 			importError = String(e);
 		} finally {
@@ -126,6 +153,9 @@
 		if (!importData) return;
 		importLoading = true;
 		try {
+			if (profiles.active) {
+				importData.manifest.profileName = profiles.active.name;
+			}
 			await api.profile.import.profile(importData, false);
 			await profiles.refresh();
 			pushToast({
@@ -217,6 +247,17 @@
 									m.share_importFrom({ name: importData.manifest.profileName })}</span
 							>
 						</div>
+						{#if importGameMismatch}
+							<div class="z-share-game-warning">
+								<Icon icon="mdi:swap-horizontal" />
+								<span>
+									{i18nState.locale && m.share_importGameSwitch
+										? m.share_importGameSwitch({ game: importGameMismatch })
+										: `This profile is for ${importGameMismatch}. The game will be switched automatically.`}
+								</span>
+							</div>
+						{/if}
+
 						<div class="z-share-preview-stats">
 							<span class="z-share-stat">
 								<Icon icon="mdi:package-variant" />
@@ -249,10 +290,21 @@
 							<label class="z-share-name-label">{i18nState.locale && m.share_profileName()}</label>
 							<input
 								class="z-share-input"
+								class:z-share-input-error={nameConflict}
 								type="text"
 								bind:value={newProfileName}
-								onkeydown={(e) => e.key === 'Enter' && doImportCreate()}
+								onkeydown={(e) => e.key === 'Enter' && !nameConflict && doImportCreate()}
 							/>
+							{#if nameConflict}
+								<div class="z-share-name-conflict">
+									<Icon icon="mdi:alert-circle" />
+									<span>
+										{i18nState.locale && m.share_importNameConflict
+											? m.share_importNameConflict({ name: newProfileName.trim() })
+											: `A profile named "${newProfileName.trim()}" already exists.`}
+									</span>
+								</div>
+							{/if}
 						</div>
 					{/if}
 				{/if}
@@ -285,7 +337,7 @@
 			<Button
 				variant="primary"
 				onclick={doImportCreate}
-				disabled={!newProfileName.trim() || importLoading}
+				disabled={!newProfileName.trim() || importLoading || nameConflict}
 			>
 				{#snippet icon()}<Icon icon="mdi:plus" />{/snippet}
 				{i18nState.locale && m.share_importCreate()}
@@ -295,7 +347,9 @@
 			>
 			<Button variant="secondary" onclick={doImportOverwrite} disabled={importLoading}>
 				{#snippet icon()}<Icon icon="mdi:swap-horizontal" />{/snippet}
-				{i18nState.locale && m.share_importOverwrite()}
+				{i18nState.locale && m.share_importOverwriteProfile
+					? m.share_importOverwriteProfile({ name: profiles.active?.name ?? 'Default' })
+					: `Overwrite "${profiles.active?.name ?? 'Default'}"`}
 			</Button>
 			<Button variant="primary" onclick={startImportCreate} disabled={importLoading}>
 				{#snippet icon()}<Icon icon="mdi:plus" />{/snippet}
@@ -407,6 +461,33 @@
 		gap: var(--space-sm);
 		font-size: 12px;
 		color: var(--danger);
+	}
+
+	.z-share-input-error {
+		border-color: var(--danger) !important;
+		box-shadow: 0 0 0 1px var(--danger);
+	}
+
+	.z-share-name-conflict {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+		font-size: 12px;
+		color: var(--danger);
+		margin-top: var(--space-xs);
+	}
+
+	.z-share-game-warning {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-md);
+		background: rgba(59, 130, 246, 0.08);
+		border: 1px solid rgba(59, 130, 246, 0.25);
+		color: var(--accent-400);
+		font-size: 12px;
+		line-height: 1.4;
 	}
 
 	.z-share-preview {

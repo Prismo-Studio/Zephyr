@@ -245,6 +245,51 @@ body {
 	color: var(--text-primary);
 	overflow: hidden;
 	user-select: none;
+	-webkit-user-drag: none;
+}
+
+body,
+* {
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable],
+.z-search-input,
+.z-entry-input,
+.markdown {
+	user-select: text !important;
+	-webkit-user-select: text !important;
+	-webkit-user-drag: auto !important;
+	cursor: auto !important;
+}
+
+.markdown {
+	-webkit-user-drag: auto !important;
+	user-select: text !important;
+	-webkit-user-select: text !important;
+	cursor: auto !important;
+}
+
+/* Allow text selection in interactive elements */
+input,
+textarea,
+select,
+[contenteditable],
+.z-search-input,
+.z-entry-input {
+	user-select: text;
+	cursor: text;
+}
+
+button,
+a,
+[role='button'] {
+	cursor: pointer;
 }
 
 h1,

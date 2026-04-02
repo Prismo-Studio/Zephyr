@@ -5,6 +5,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { platform } from '@tauri-apps/plugin-os';
+	import { useNativeTitlebar } from '$lib/themeSystem';
 
 	const appWindow = getCurrentWindow();
 
@@ -27,6 +28,10 @@
 		await appWindow.close();
 	}
 
+	$effect(() => {
+		appWindow.setDecorations(useNativeTitlebar.current).catch(() => {});
+	});
+
 	onMount(() => {
 		// Forcefully remove native window decorations at runtime.
 		// This is the most reliable approach because it runs after the window is
@@ -48,40 +53,42 @@
 	});
 </script>
 
-<div class="z-titlebar" data-tauri-drag-region>
-	<div class="z-titlebar-left" data-tauri-drag-region>
-		<span class="z-titlebar-brand" data-tauri-drag-region>
-			<img src="/logo.png" alt="Zephyr" class="z-titlebar-logo" />
-			<span class="z-titlebar-name">Zephyr</span>
-		</span>
-	</div>
+{#if !useNativeTitlebar.current}
+	<div class="z-titlebar" data-tauri-drag-region>
+		<div class="z-titlebar-left" data-tauri-drag-region>
+			<span class="z-titlebar-brand" data-tauri-drag-region>
+				<img src="/logo.png" alt="Zephyr" class="z-titlebar-logo" />
+				<span class="z-titlebar-name">Zephyr</span>
+			</span>
+		</div>
 
-	<div class="z-titlebar-center" data-tauri-drag-region></div>
+		<div class="z-titlebar-center" data-tauri-drag-region></div>
 
-	<div class="z-titlebar-controls">
-		<button
-			class="z-titlebar-btn"
-			onclick={minimize}
-			title={i18nState.locale && m.titlebar_minimize()}
-		>
-			<Icon icon="mdi:minus" />
-		</button>
-		<button
-			class="z-titlebar-btn"
-			onclick={toggleMaximize}
-			title={i18nState.locale && (maximized ? m.titlebar_restore() : m.titlebar_maximize())}
-		>
-			<Icon icon={maximized ? 'mdi:window-restore' : 'mdi:window-maximize'} />
-		</button>
-		<button
-			class="z-titlebar-btn z-titlebar-close"
-			onclick={close}
-			title={i18nState.locale && m.titlebar_close()}
-		>
-			<Icon icon="mdi:close" />
-		</button>
+		<div class="z-titlebar-controls">
+			<button
+				class="z-titlebar-btn"
+				onclick={minimize}
+				title={i18nState.locale && m.titlebar_minimize()}
+			>
+				<Icon icon="mdi:minus" />
+			</button>
+			<button
+				class="z-titlebar-btn"
+				onclick={toggleMaximize}
+				title={i18nState.locale && (maximized ? m.titlebar_restore() : m.titlebar_maximize())}
+			>
+				<Icon icon={maximized ? 'mdi:window-restore' : 'mdi:window-maximize'} />
+			</button>
+			<button
+				class="z-titlebar-btn z-titlebar-close"
+				onclick={close}
+				title={i18nState.locale && m.titlebar_close()}
+			>
+				<Icon icon="mdi:close" />
+			</button>
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	.z-titlebar {
