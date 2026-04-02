@@ -25,18 +25,20 @@
 
 {#if visible}
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="z-launch-overlay" onclick={() => { visible = false; onclose(); }}>
+	<div
+		class="z-launch-overlay"
+		onclick={() => {
+			visible = false;
+			onclose();
+		}}
+	>
 		<div class="z-launch-content">
 			<div class="z-launch-icon-wrapper">
 				<div class="z-launch-ring z-ring-1"></div>
 				<div class="z-launch-ring z-ring-2"></div>
 				<div class="z-launch-ring z-ring-3"></div>
 				{#if games.active}
-					<img
-						src={gameIconSrc(games.active)}
-						alt={games.active.name}
-						class="z-launch-game-icon"
-					/>
+					<img src={gameIconSrc(games.active)} alt={games.active.name} class="z-launch-game-icon" />
 				{:else}
 					<div class="z-launch-game-icon z-launch-placeholder">
 						<Icon icon="mdi:gamepad-variant" />
@@ -69,8 +71,12 @@
 	}
 
 	@keyframes overlayIn {
-		from { opacity: 0; }
-		to { opacity: 1; }
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
 	.z-launch-content {
@@ -82,8 +88,14 @@
 	}
 
 	@keyframes contentIn {
-		from { opacity: 0; transform: scale(0.9) translateY(20px); }
-		to { opacity: 1; transform: scale(1) translateY(0); }
+		from {
+			opacity: 0;
+			transform: scale(0.9) translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
 	}
 
 	.z-launch-icon-wrapper {
@@ -123,7 +135,9 @@
 	}
 
 	@keyframes ringRotate {
-		to { transform: rotate(360deg); }
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.z-launch-game-icon {
@@ -176,7 +190,11 @@
 	}
 
 	@keyframes barFill {
-		from { width: 0%; }
-		to { width: 100%; }
+		from {
+			width: 0%;
+		}
+		to {
+			width: 100%;
+		}
 	}
 </style>

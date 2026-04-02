@@ -11,7 +11,6 @@
 		<div class="z-ring z-ring-1"></div>
 		<div class="z-ring z-ring-2"></div>
 		<div class="z-ring z-ring-3"></div>
-		<div class="z-loader-logo">Z</div>
 	</div>
 	{#if message}
 		<p class="z-loader-text">{message}</p>
@@ -61,14 +60,6 @@
 		inset: 8px;
 		border-bottom-color: var(--accent-500);
 		animation: spin 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-	}
-
-	.z-loader-logo {
-		font-size: 18px;
-		font-weight: 800;
-		color: var(--accent-400);
-		text-shadow: 0 0 12px rgba(26, 255, 250, 0.4);
-		animation: pulse 2s ease-in-out infinite;
 	}
 
 	.z-loader-text {

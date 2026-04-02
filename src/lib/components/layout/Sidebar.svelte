@@ -75,7 +75,7 @@
 	function profileIconSrc(icon: string | null): string | null {
 		if (!icon) return null;
 		if (icon.startsWith('http')) return icon;
-		return convertFileSrc(icon) + '?t=' + Date.now();
+		return convertFileSrc(icon);
 	}
 
 	function handleProfileKeydown(e: KeyboardEvent) {
@@ -158,7 +158,11 @@
 						aria-expanded={profileMenuOpen}
 					>
 						{#if profiles.active.icon}
-							<img src={profileIconSrc(profiles.active.icon)} alt={profiles.active.name} class="z-profile-img" />
+							<img
+								src={profileIconSrc(profiles.active.icon)}
+								alt={profiles.active.name}
+								class="z-profile-img"
+							/>
 						{:else}
 							<Icon icon="mdi:account-circle" class="z-profile-avatar-icon" />
 						{/if}
@@ -182,7 +186,11 @@
 								>
 									<div class="z-profile-item-icon">
 										{#if profile.icon}
-											<img src={profileIconSrc(profile.icon)} alt={profile.name} class="z-profile-item-img" />
+											<img
+												src={profileIconSrc(profile.icon)}
+												alt={profile.name}
+												class="z-profile-item-img"
+											/>
 										{:else}
 											<Icon icon="mdi:account-circle" />
 										{/if}
@@ -206,7 +214,12 @@
 	</div>
 </aside>
 
-<LaunchOverlay bind:visible={launching} onclose={() => { launching = false; }} />
+<LaunchOverlay
+	bind:visible={launching}
+	onclose={() => {
+		launching = false;
+	}}
+/>
 
 <style>
 	.z-sidebar {

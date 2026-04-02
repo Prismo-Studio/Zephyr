@@ -141,7 +141,7 @@
 	.z-dashboard-content {
 		flex: 1;
 		overflow-y: auto;
-		padding: 0 var(--space-xl) var(--space-xl);
+		padding: var(--space-md) var(--space-xl) var(--space-xl);
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xl);

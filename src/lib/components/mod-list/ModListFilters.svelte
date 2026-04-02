@@ -11,15 +11,18 @@
 		queryArgs: QueryModsArgsWithoutMax;
 		sortOptions?: SortBy[];
 		showCategories?: boolean;
+		expanded?: boolean;
+		externalPanel?: boolean;
 	};
 
 	let {
 		queryArgs,
 		sortOptions = ['rating', 'downloads', 'lastUpdated', 'newest', 'name'],
-		showCategories = false
+		showCategories = false,
+		expanded = $bindable(false),
+		externalPanel = false
 	}: Props = $props();
 
-	let showFilters = $state(false);
 	let sortOpen = $state(false);
 
 	let sortLabels = $derived({
@@ -52,11 +55,7 @@
 			{/snippet}
 		</Input>
 
-		<button
-			class="z-filter-btn"
-			class:active={showFilters}
-			onclick={() => (showFilters = !showFilters)}
-		>
+		<button class="z-filter-btn" class:active={expanded} onclick={() => (expanded = !expanded)}>
 			<Icon icon="mdi:filter-variant" />
 		</button>
 
@@ -104,7 +103,7 @@
 		</div>
 	</div>
 
-	{#if showFilters}
+	{#if expanded && !externalPanel}
 		<div class="z-filters-expanded">
 			<label class="z-filter-toggle">
 				<Checkbox bind:checked={queryArgs.includeNsfw} />

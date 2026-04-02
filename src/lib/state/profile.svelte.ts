@@ -35,8 +35,12 @@ class ProfilesState {
 	};
 
 	refresh = async () => {
-		const info = await api.profile.getInfo();
-		profiles.update(info);
+		try {
+			const info = await api.profile.getInfo();
+			profiles.update(info);
+		} finally {
+			this.ready = true;
+		}
 	};
 
 	setActive = async (index: number) => {

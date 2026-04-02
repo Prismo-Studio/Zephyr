@@ -69,7 +69,7 @@
 		if (!exportCode) return;
 		await writeText(exportCode);
 		copied = true;
-		pushToast({ type: 'info', message: i18nState.locale && m.share_exportCopied() || 'Copied!' });
+		pushToast({ type: 'info', message: (i18nState.locale && m.share_exportCopied()) || 'Copied!' });
 		setTimeout(() => (copied = false), 2000);
 	}
 
@@ -109,7 +109,11 @@
 		try {
 			await api.profile.import.profile(importData, true);
 			await profiles.refresh();
-			pushToast({ type: 'info', message: `Profile "${name}" imported!` });
+			pushToast({
+				type: 'info',
+				message:
+					(i18nState.locale && m.share_importSuccess({ name })) || `Profile "${name}" imported!`
+			});
 			onclose();
 		} catch (e) {
 			pushToast({ type: 'error', message: String(e) });
@@ -124,7 +128,12 @@
 		try {
 			await api.profile.import.profile(importData, false);
 			await profiles.refresh();
-			pushToast({ type: 'info', message: 'Mods imported into current profile!' });
+			pushToast({
+				type: 'info',
+				message:
+					(i18nState.locale && m.share_importOverwriteSuccess()) ||
+					'Mods imported into current profile!'
+			});
 			onclose();
 		} catch (e) {
 			pushToast({ type: 'error', message: String(e) });
@@ -137,9 +146,9 @@
 <Modal
 	bind:open
 	title={mode === 'export'
-		? (i18nState.locale && m.share_exportTitle())
-		: (i18nState.locale && m.share_importTitle())}
-	onclose={onclose}
+		? i18nState.locale && m.share_exportTitle()
+		: i18nState.locale && m.share_importTitle()}
+	{onclose}
 >
 	{#snippet children()}
 		{#if mode === 'export'}
@@ -157,9 +166,11 @@
 						<code class="z-share-code">{exportCode}</code>
 						<button class="z-share-copy-btn" class:copied onclick={copyCode}>
 							<Icon icon={copied ? 'mdi:check' : 'mdi:content-copy'} />
-							<span>{copied
-								? (i18nState.locale && m.share_exportCopied())
-								: (i18nState.locale && m.share_exportCopy())}</span>
+							<span
+								>{copied
+									? i18nState.locale && m.share_exportCopied()
+									: i18nState.locale && m.share_exportCopy()}</span
+							>
 						</button>
 					</div>
 				{/if}
@@ -201,17 +212,22 @@
 					<div class="z-share-preview">
 						<div class="z-share-preview-header">
 							<Icon icon="mdi:account-circle" />
-							<span>{i18nState.locale && m.share_importFrom({ name: importData.manifest.profileName })}</span>
+							<span
+								>{i18nState.locale &&
+									m.share_importFrom({ name: importData.manifest.profileName })}</span
+							>
 						</div>
 						<div class="z-share-preview-stats">
 							<span class="z-share-stat">
 								<Icon icon="mdi:package-variant" />
-								{i18nState.locale && m.share_importMods({ count: importData.manifest.mods.length.toString() })}
+								{i18nState.locale &&
+									m.share_importMods({ count: importData.manifest.mods.length.toString() })}
 							</span>
 							{#if importData.missingMods.length > 0}
 								<span class="z-share-stat z-share-stat-warn">
 									<Icon icon="mdi:alert" />
-									{i18nState.locale && m.share_importMissing({ count: importData.missingMods.length.toString() })}
+									{i18nState.locale &&
+										m.share_importMissing({ count: importData.missingMods.length.toString() })}
 								</span>
 							{/if}
 						</div>
@@ -220,7 +236,9 @@
 								<div class="z-share-mod-item">
 									<Icon icon="mdi:puzzle" />
 									<span>{mod.name}</span>
-									<span class="z-share-mod-ver">{mod.version.major}.{mod.version.minor}.{mod.version.patch}</span>
+									<span class="z-share-mod-ver"
+										>{mod.version.major}.{mod.version.minor}.{mod.version.patch}</span
+									>
 								</div>
 							{/each}
 						</div>
@@ -244,21 +262,37 @@
 
 	{#snippet actions()}
 		{#if mode === 'export'}
-			<Button variant="ghost" onclick={onclose}>{i18nState.locale && m.share_importCancel()}</Button>
+			<Button variant="ghost" onclick={onclose}>{i18nState.locale && m.share_importCancel()}</Button
+			>
 		{:else if !importData}
-			<Button variant="ghost" onclick={onclose}>{i18nState.locale && m.share_importCancel()}</Button>
-			<Button variant="primary" onclick={doLoadImport} disabled={!importCode.trim() || importLoading}>
+			<Button variant="ghost" onclick={onclose}>{i18nState.locale && m.share_importCancel()}</Button
+			>
+			<Button
+				variant="primary"
+				onclick={doLoadImport}
+				disabled={!importCode.trim() || importLoading}
+			>
 				{#snippet icon()}<Icon icon="mdi:magnify" />{/snippet}
 				{i18nState.locale && m.share_importButton()}
 			</Button>
 		{:else if showNameInput}
-			<Button variant="ghost" onclick={() => { showNameInput = false; }}>{i18nState.locale && m.share_importCancel()}</Button>
-			<Button variant="primary" onclick={doImportCreate} disabled={!newProfileName.trim() || importLoading}>
+			<Button
+				variant="ghost"
+				onclick={() => {
+					showNameInput = false;
+				}}>{i18nState.locale && m.share_importCancel()}</Button
+			>
+			<Button
+				variant="primary"
+				onclick={doImportCreate}
+				disabled={!newProfileName.trim() || importLoading}
+			>
 				{#snippet icon()}<Icon icon="mdi:plus" />{/snippet}
 				{i18nState.locale && m.share_importCreate()}
 			</Button>
 		{:else}
-			<Button variant="ghost" onclick={onclose}>{i18nState.locale && m.share_importCancel()}</Button>
+			<Button variant="ghost" onclick={onclose}>{i18nState.locale && m.share_importCancel()}</Button
+			>
 			<Button variant="secondary" onclick={doImportOverwrite} disabled={importLoading}>
 				{#snippet icon()}<Icon icon="mdi:swap-horizontal" />{/snippet}
 				{i18nState.locale && m.share_importOverwrite()}

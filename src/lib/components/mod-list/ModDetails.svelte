@@ -129,13 +129,13 @@
 		<!-- Action buttons -->
 		{#if mod.isInstalled}
 			<div class="z-details-actions">
-				<Tooltip text={i18nState.locale && (mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable())} position="bottom" delay={300}>
-					<button
-						class="z-action-btn"
-						class:disabled={locked}
-						disabled={locked}
-						onclick={ontoggle}
-					>
+				<Tooltip
+					text={i18nState.locale &&
+						(mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable())}
+					position="bottom"
+					delay={300}
+				>
+					<button class="z-action-btn" class:disabled={locked} disabled={locked} onclick={ontoggle}>
 						<Icon icon={mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off'} />
 						<span class="z-action-label"
 							>{i18nState.locale &&
@@ -145,10 +145,7 @@
 				</Tooltip>
 
 				<Tooltip text={i18nState.locale && m.modDetails_openFolder()} position="bottom" delay={300}>
-					<button
-						class="z-action-btn"
-						onclick={() => api.profile.openModDir(mod.uuid)}
-					>
+					<button class="z-action-btn" onclick={() => api.profile.openModDir(mod.uuid)}>
 						<Icon icon="mdi:folder-open" />
 						<span class="z-action-label">{i18nState.locale && m.modDetails_openFolder()}</span>
 					</button>

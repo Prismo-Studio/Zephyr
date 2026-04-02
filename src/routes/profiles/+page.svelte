@@ -117,11 +117,17 @@
 		});
 
 		if (file) {
-			pushToast({ type: 'info', message: i18nState.locale && m.profiles_uploadingIcon() || 'Uploading...' });
+			pushToast({
+				type: 'info',
+				message: (i18nState.locale && m.profiles_uploadingIcon()) || 'Uploading...'
+			});
 			try {
 				await api.profile.uploadProfileIcon(profileId, file);
 				await profiles.refresh();
-				pushToast({ type: 'info', message: i18nState.locale && m.profiles_iconUploaded() || 'Done!' });
+				pushToast({
+					type: 'info',
+					message: (i18nState.locale && m.profiles_iconUploaded()) || 'Done!'
+				});
 			} catch (e) {
 				pushToast({ type: 'error', message: String(e) });
 			}
@@ -131,7 +137,7 @@
 	function profileIconSrc(icon: string | null): string | null {
 		if (!icon) return null;
 		if (icon.startsWith('http')) return icon;
-		return convertFileSrc(icon) + '?t=' + Date.now();
+		return convertFileSrc(icon);
 	}
 </script>
 

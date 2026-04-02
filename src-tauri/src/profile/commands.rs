@@ -19,6 +19,26 @@ use crate::{
     util::cmd::Result,
 };
 
+/// Safely removes a local profile icon, validating that the path is under the profile directory.
+fn remove_local_icon(icon: &str, profile_path: &std::path::Path) {
+    if icon.starts_with("http") {
+        return;
+    }
+    let path = PathBuf::from(icon);
+    if let Ok(canonical) = path.canonicalize() {
+        if let Ok(profile_canonical) = profile_path.canonicalize() {
+            if canonical.starts_with(&profile_canonical) && canonical.exists() {
+                std::fs::remove_file(&canonical).ok();
+            } else {
+                warn!(
+                    "refused to delete icon outside profile dir: {}",
+                    canonical.display()
+                );
+            }
+        }
+    }
+}
+
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FrontendGame {
@@ -524,14 +544,8 @@ pub fn set_profile_icon_url(profile_id: i64, url: String, app: AppHandle) -> Res
     let mut manager = app.lock_manager();
     let (_, profile) = manager.profile_by_id_mut(profile_id)?;
 
-    // Remove old local icon if exists
     if let Some(ref icon) = profile.icon {
-        if !icon.starts_with("http") {
-            let path = PathBuf::from(icon);
-            if path.exists() {
-                std::fs::remove_file(&path).ok();
-            }
-        }
+        remove_local_icon(icon, &profile.path);
     }
 
     profile.icon = Some(url);
@@ -596,14 +610,8 @@ pub async fn upload_profile_icon(
         let mut manager = app.lock_manager();
         let (_, profile) = manager.profile_by_id_mut(profile_id)?;
 
-        // Clean up old local icon
         if let Some(ref icon) = profile.icon {
-            if !icon.starts_with("http") {
-                let path = PathBuf::from(icon);
-                if path.exists() {
-                    std::fs::remove_file(&path).ok();
-                }
-            }
+            remove_local_icon(icon, &profile.path);
         }
 
         profile.icon = Some(url.clone());
@@ -619,10 +627,7 @@ pub fn remove_profile_icon(profile_id: i64, app: AppHandle) -> Result<()> {
     let (_, profile) = manager.profile_by_id_mut(profile_id)?;
 
     if let Some(ref icon) = profile.icon {
-        let path = PathBuf::from(icon);
-        if path.exists() {
-            std::fs::remove_file(&path).ok();
-        }
+        remove_local_icon(icon, &profile.path);
     }
 
     profile.icon = None;

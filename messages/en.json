@@ -659,6 +659,8 @@
 	"share_importMods": "{count} mods",
 	"share_importMissing": "{count} mod(s) not found",
 	"share_importFrom": "Profile: {name}",
+	"share_importSuccess": "Profile \"{name}\" imported!",
+	"share_importOverwriteSuccess": "Mods imported into current profile!",
 	"share_profileName": "Profile name",
 	"prefs_syncComingSoon": "Sync is not yet available. Coming soon!",
 	"profiles_uploadingIcon": "Uploading profile picture...",

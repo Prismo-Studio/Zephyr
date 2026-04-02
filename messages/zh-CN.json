@@ -641,6 +641,8 @@
 	"share_importMods": "{count} 个模组",
 	"share_importMissing": "{count} 个模组未找到",
 	"share_importFrom": "配置：{name}",
+	"share_importSuccess": "配置 \"{name}\" 已导入！",
+	"share_importOverwriteSuccess": "Mods 已导入到当前配置！",
 	"share_profileName": "配置名称",
 	"prefs_syncComingSoon": "同步功能尚未推出，敬请期待！",
 	"profiles_uploadingIcon": "正在上传头像...",

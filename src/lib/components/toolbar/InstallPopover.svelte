@@ -66,7 +66,6 @@
 	});
 
 	let modsPercent = $derived(totalMods > 0 ? (progressMods / totalMods) * 100 : 0);
-	let remaining = $derived(totalMods - progressMods);
 
 	async function cancelAll() {
 		await api.profile.install.cancelAll();
