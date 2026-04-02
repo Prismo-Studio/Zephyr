@@ -117,13 +117,20 @@
 		});
 
 		if (file) {
-			await api.profile.setProfileIcon(profileId, file);
-			await profiles.refresh();
+			pushToast({ type: 'info', message: i18nState.locale && m.profiles_uploadingIcon() || 'Uploading...' });
+			try {
+				await api.profile.uploadProfileIcon(profileId, file);
+				await profiles.refresh();
+				pushToast({ type: 'info', message: i18nState.locale && m.profiles_iconUploaded() || 'Done!' });
+			} catch (e) {
+				pushToast({ type: 'error', message: String(e) });
+			}
 		}
 	}
 
 	function profileIconSrc(icon: string | null): string | null {
 		if (!icon) return null;
+		if (icon.startsWith('http')) return icon;
 		return convertFileSrc(icon) + '?t=' + Date.now();
 	}
 </script>
@@ -298,7 +305,7 @@
 	.z-profiles-content {
 		flex: 1;
 		overflow-y: auto;
-		padding: 0 var(--space-xl) var(--space-xl);
+		padding: var(--space-xl);
 	}
 
 	.z-profiles-grid {
