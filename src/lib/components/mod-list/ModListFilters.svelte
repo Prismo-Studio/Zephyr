@@ -2,6 +2,7 @@
 	import type { QueryModsArgsWithoutMax, SortBy, SortOrder } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import games from '$lib/state/game.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
@@ -106,11 +107,11 @@
 	{#if showFilters}
 		<div class="z-filters-expanded">
 			<label class="z-filter-toggle">
-				<input type="checkbox" bind:checked={queryArgs.includeNsfw} />
+				<Checkbox bind:checked={queryArgs.includeNsfw} />
 				<span>{i18nState.locale && m.modListFilters_options_NSFW()}</span>
 			</label>
 			<label class="z-filter-toggle">
-				<input type="checkbox" bind:checked={queryArgs.includeDeprecated} />
+				<Checkbox bind:checked={queryArgs.includeDeprecated} />
 				<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
 			</label>
 
@@ -318,10 +319,6 @@
 
 	.z-filter-toggle:hover {
 		background: var(--bg-hover);
-	}
-
-	.z-filter-toggle input {
-		accent-color: var(--accent-400);
 	}
 
 	.z-filter-categories {

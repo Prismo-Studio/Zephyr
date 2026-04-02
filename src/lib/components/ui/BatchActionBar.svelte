@@ -15,7 +15,7 @@
 	let { count, total, onclear, onselectAll, actions }: Props = $props();
 </script>
 
-{#if count > 0}
+{#if count >= 2}
 	<div class="z-batch-bar-container">
 		<div class="z-batch-bar shadow-xl">
 			<div class="z-batch-info">
@@ -64,6 +64,7 @@
 		align-items: center;
 		gap: var(--space-xl);
 		pointer-events: auto;
+		margin-bottom: var(--space-md);
 		box-shadow:
 			0 8px 32px rgba(26, 255, 250, 0.15),
 			0 0 0 1px rgba(26, 255, 250, 0.2);
@@ -121,6 +122,10 @@
 		display: flex;
 		align-items: center;
 		gap: var(--space-sm);
+	}
+
+	.z-batch-actions :global(.z-btn) {
+		border-radius: var(--radius-full);
 	}
 
 	@keyframes slideUp {

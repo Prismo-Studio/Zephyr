@@ -6,8 +6,10 @@
 	import Progress from '$lib/components/ui/Progress.svelte';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import * as api from '$lib/api';
+	import Button from '$lib/components/ui/Button.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { installState } from '$lib/state/misc.svelte';
 
 	let visible = $state(false);
 	let totalMods = $state(0);
@@ -19,23 +21,33 @@
 
 	let unlisten: UnlistenFn | undefined;
 
+	function reset() {
+		totalMods = 0;
+		totalBytes = 0;
+		progressMods = 0;
+		progressBytes = 0;
+		currentTask = '';
+		currentMod = '';
+	}
+
 	onMount(() => {
 		listen<InstallEvent>('install_event', (evt) => {
 			const e = evt.payload;
 			switch (e.type) {
 				case 'show':
+					// addCount arrives before show due to async queue,
+					// so don't reset here — counters are already set
 					visible = true;
-					totalMods = 0;
-					totalBytes = 0;
-					progressMods = 0;
-					progressBytes = 0;
-					currentTask = '';
-					currentMod = '';
+					installState.active = true;
 					break;
 				case 'hide':
 					visible = false;
+					installState.active = false;
+					reset();
 					break;
 				case 'addCount':
+					// If this is the first addCount after a hide, counters
+					// are already at 0 from the reset in hide
 					totalMods += e.mods;
 					totalBytes += e.bytes;
 					break;
@@ -54,6 +66,7 @@
 	});
 
 	let modsPercent = $derived(totalMods > 0 ? (progressMods / totalMods) * 100 : 0);
+	let remaining = $derived(totalMods - progressMods);
 
 	async function cancelAll() {
 		await api.profile.install.cancelAll();
@@ -80,13 +93,6 @@
 				<Spinner size={14} />
 				<span>{i18nState.locale && m.installPopover_content()}</span>
 			</div>
-			<button
-				class="z-install-cancel"
-				onclick={cancelAll}
-				title={i18nState.locale && m.dialog_cancel()}
-			>
-				<Icon icon="mdi:close" />
-			</button>
 		</div>
 
 		<Progress value={modsPercent} />
@@ -97,10 +103,14 @@
 				<span class="z-install-task-label">{currentTask}</span>
 			</div>
 			<span class="z-install-mod">{currentMod}</span>
+			<span class="z-install-stats">{progressMods} / {totalMods} mods</span>
 		</div>
 
-		<div class="z-install-stats">
-			<span>{progressMods} / {totalMods} mods</span>
+		<div class="z-install-footer">
+			<Button variant="danger" size="sm" onclick={cancelAll}>
+				{#snippet icon()}<Icon icon="mdi:cancel" />{/snippet}
+				{i18nState.locale && m.installPopover_cancelAll()}
+			</Button>
 		</div>
 	</div>
 {/if}
@@ -138,25 +148,6 @@
 		color: var(--text-primary);
 	}
 
-	.z-install-cancel {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 24px;
-		height: 24px;
-		border-radius: var(--radius-sm);
-		border: none;
-		background: transparent;
-		color: var(--text-muted);
-		cursor: pointer;
-		transition: all var(--transition-fast);
-	}
-
-	.z-install-cancel:hover {
-		background: rgba(255, 92, 92, 0.1);
-		color: var(--error);
-	}
-
 	.z-install-info {
 		display: flex;
 		align-items: center;
@@ -184,8 +175,14 @@
 	}
 
 	.z-install-stats {
+		margin-left: auto;
 		font-size: 11px;
 		color: var(--text-muted);
-		text-align: right;
+		white-space: nowrap;
+	}
+
+	.z-install-footer {
+		display: flex;
+		justify-content: flex-end;
 	}
 </style>

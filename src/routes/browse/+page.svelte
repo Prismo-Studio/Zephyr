@@ -11,6 +11,7 @@
 	import BatchActionBar from '$lib/components/ui/BatchActionBar.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 
 	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
@@ -286,12 +287,7 @@
 			<div class="z-browse-filters">
 				<div class="z-browse-filters-row">
 					<label class="z-master-checkbox-wrapper">
-						<input
-							type="checkbox"
-							class="z-mod-checkbox"
-							checked={isAllSelected}
-							onchange={toggleSelectAll}
-						/>
+						<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
 						<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
 					</label>
 					<div class="flex-1"></div>

@@ -7,7 +7,8 @@
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import { isModPinned } from '$lib/state/misc.svelte';
+	import { isModPinned, installState } from '$lib/state/misc.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 
 	type Props = {
 		mod: Mod;
@@ -38,6 +39,13 @@
 	}: Props = $props();
 
 	let installing = $state(false);
+
+	// Reset installing state when install cycle ends or mod becomes installed
+	$effect(() => {
+		if (!installState.active || mod.isInstalled) {
+			installing = false;
+		}
+	});
 
 	function handleContextMenu(e: MouseEvent) {
 		e.preventDefault();
@@ -76,18 +84,16 @@
 	{/if}
 
 	<!-- Checkbox for multi-select -->
-	<label class="z-mod-checkbox-wrapper" onclick={(e) => e.stopPropagation()}>
-		<input
-			type="checkbox"
-			class="z-mod-checkbox"
+	<div class="z-mod-checkbox-wrapper">
+		<Checkbox
 			checked={isSelected}
-			onchange={(e) => {
+			onchange={() => {
 				if (!onclick) return;
 				const synthEvent = new MouseEvent('click', { ctrlKey: true });
 				onclick(synthEvent as any);
 			}}
 		/>
-	</label>
+	</div>
 
 	<!-- Icon -->
 	<div class="z-mod-icon">
@@ -258,13 +264,6 @@
 	.z-mod-card:hover .z-mod-checkbox-wrapper,
 	.z-mod-card.selected .z-mod-checkbox-wrapper {
 		opacity: 1;
-	}
-
-	.z-mod-checkbox {
-		width: 16px;
-		height: 16px;
-		cursor: pointer;
-		accent-color: var(--accent-500);
 	}
 
 	/* Icon */
