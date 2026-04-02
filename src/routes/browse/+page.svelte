@@ -83,11 +83,22 @@
 	let refreshing = false;
 	let pendingRefresh = false;
 
+	let lastGameSlug: string | null = null;
+
 	async function refresh() {
 		if (refreshing) {
 			pendingRefresh = true;
 			return;
 		}
+
+		// Clear stale results when switching games
+		const currentSlug = games.active?.slug ?? null;
+		if (currentSlug !== lastGameSlug) {
+			mods = [];
+			hasRefreshed = false;
+			lastGameSlug = currentSlug;
+		}
+
 		refreshing = true;
 
 		try {
@@ -173,6 +184,7 @@
 			// Deep-track all query properties so filters trigger a refresh
 			JSON.stringify(modQuery.current);
 			profiles.active;
+			games.active;
 			refresh();
 		}
 	});
