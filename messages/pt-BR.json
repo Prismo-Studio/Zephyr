@@ -539,6 +539,12 @@
 	"toggleModDialog_enable_hint": "Você pode ativar apenas este mod (pode não funcionar) ou ativar todas as dependências de uma vez.",
 	"toggleModDialog_enable_one": "Ativar apenas {name}",
 	"toggleModDialog_enable_all": "Ativar todos ({count} mods)",
-
-	"toggleModDialog_cancel": "Cancelar"
+	"toggleModDialog_cancel": "Cancelar",
+	"batch_selectAll": "Selecionar tudo",
+	"batch_selected": "{count} selecionado",
+	"batch_totalSelected": "{count} / {total} selecionado",
+	"batch_installSelected": "Instalar selecionados",
+	"batch_uninstallSelected": "Desinstalar selecionados",
+	"batch_toggleSelected": "Alternar selecionados",
+	"prefs_copyPath_success": "Caminho copiado para a área de transferência"
 }

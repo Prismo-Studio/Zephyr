@@ -621,5 +621,11 @@
 	"toggleModDialog_enable_one": "Enable {name} only",
 	"toggleModDialog_enable_all": "Enable all ({count} mods)",
 
-	"toggleModDialog_cancel": "Cancel"
+	"toggleModDialog_cancel": "Cancel",
+	"batch_selectAll": "Select All",
+	"batch_selected": "{count} selected",
+	"batch_totalSelected": "{count} / {total} selected",
+	"batch_installSelected": "Install Selected",
+	"batch_uninstallSelected": "Uninstall Selected",
+	"batch_toggleSelected": "Toggle Selected"
 }

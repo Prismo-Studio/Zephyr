@@ -602,5 +602,12 @@
 	"toggleModDialog_enable_one": "仅启用 {name}",
 	"toggleModDialog_enable_all": "全部启用（{count} 个模组）",
 
-	"toggleModDialog_cancel": "取消"
+	"toggleModDialog_cancel": "取消",
+	"batch_selectAll": "全选",
+	"batch_selected": "已选择 {count} 个",
+	"batch_totalSelected": "已选择 {count} / {total} 个",
+	"batch_installSelected": "安装已选",
+	"batch_uninstallSelected": "卸载已选",
+	"batch_toggleSelected": "切换已选",
+	"prefs_copyPath_success": "路径已复制到剪贴板"
 }

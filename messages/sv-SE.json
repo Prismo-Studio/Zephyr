@@ -540,5 +540,12 @@
 	"toggleModDialog_enable_one": "Aktivera bara {name}",
 	"toggleModDialog_enable_all": "Aktivera alla ({count} moddar)",
 
-	"toggleModDialog_cancel": "Avbryt"
+	"toggleModDialog_cancel": "Avbryt",
+	"batch_selectAll": "Markera alla",
+	"batch_selected": "{count} markerade",
+	"batch_totalSelected": "{count} / {total} markerade",
+	"batch_installSelected": "Installera markerade",
+	"batch_uninstallSelected": "Avinstallera markerade",
+	"batch_toggleSelected": "Växla markerade",
+	"prefs_copyPath_success": "Sökväg kopierad till urklipp"
 }
