@@ -5,6 +5,7 @@
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Icon from '@iconify/svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 
 	import * as api from '$lib/api';
 	import type { Prefs } from '$lib/types';
@@ -141,7 +142,7 @@
 	<div class="z-settings-content">
 		<!-- Theme -->
 		<section class="z-settings-section">
-			<h3 class="z-settings-heading">
+			<h3 class="z-settings-heading appearance_margin">
 				<Icon icon="mdi:palette" />
 				{i18nState.locale && m.prefs_appearance_title()}
 			</h3>
@@ -211,14 +212,16 @@
 					<Toggle bind:checked={prefs.fetchModsAutomatically} onchange={savePrefs} />
 				</div>
 
-				<div class="z-settings-row">
+				<div class="z-settings-row z-settings-disabled">
 					<div class="z-settings-label">
 						<span>{i18nState.locale && m.prefs_miscellaneous_pullBeforeLaunch_title()}</span>
 						<span class="z-settings-desc"
 							>{i18nState.locale && m.prefs_miscellaneous_pullBeforeLaunch_content()}</span
 						>
 					</div>
-					<Toggle bind:checked={prefs.pullBeforeLaunch} onchange={savePrefs} />
+					<Tooltip text={i18nState.locale && m.prefs_syncComingSoon()} position="left" delay={200}>
+						<Toggle checked={false} disabled />
+					</Tooltip>
 				</div>
 			</section>
 
@@ -319,6 +322,10 @@
 		max-width: 720px;
 		margin: 0 auto;
 		padding: var(--space-xl) var(--space-xl) 0;
+	}
+
+	.appearance_margin{
+		margin-top: var(--space-xl);
 	}
 
 	.z-settings-content > * {
@@ -520,5 +527,10 @@
 		font-size: 13px;
 		color: var(--text-muted);
 		margin-top: var(--space-sm);
+	}
+
+	.z-settings-disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
 	}
 </style>
