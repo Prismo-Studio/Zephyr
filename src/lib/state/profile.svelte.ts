@@ -5,6 +5,7 @@ import auth from './auth.svelte';
 class ProfilesState {
 	list: ProfileInfo[] = $state([]);
 	activeId: number | null = $state(null);
+	ready: boolean = $state(false);
 
 	active: ProfileInfo | null = $derived(
 		this.list.find((profile) => profile.id === this.activeId) ?? null
@@ -21,6 +22,7 @@ class ProfilesState {
 	update = async (info: ManagedGameInfo) => {
 		this.list = info.profiles;
 		this.activeId = info.activeId;
+		this.ready = true;
 	};
 
 	updateOne = async (info: ProfileInfo) => {
