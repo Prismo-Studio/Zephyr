@@ -1,6 +1,6 @@
 {
 	"name": "zephyr",
-	"version": "0.2.0",
+	"version": "0.5.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -11,7 +11,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check .",
 		"format": "prettier --write .",
-		"lint:fix": "prettier --write .",
+		"lint:fix": "prettier --write --list-different .",
 		"tauri": "tauri",
 		"machine-translate": "inlang machine translate --project project.inlang"
 	},
@@ -24,6 +24,7 @@
 		"@sveltejs/vite-plugin-svelte": "^4.0.4",
 		"@tailwindcss/vite": "^4.1.18",
 		"@tauri-apps/cli": "^2.10.1",
+		"@types/node": "^25.5.0",
 		"prettier": "^3.8.1",
 		"prettier-plugin-svelte": "^3.4.1",
 		"prettier-plugin-tailwindcss": "^0.7.2",
@@ -46,6 +47,7 @@
 		"@tauri-apps/plugin-process": "^2.3.1",
 		"@tauri-apps/plugin-shell": "^2.3.4",
 		"@tauri-apps/plugin-updater": "^2.9.0",
+		"@tauri-apps/plugin-window-state": "^2.4.1",
 		"bits-ui": "^2.15.4",
 		"clsx": "^2.1.1",
 		"highlight.js": "^11.11.1",

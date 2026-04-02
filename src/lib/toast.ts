@@ -1,8 +1,9 @@
 import { writable, type Writable } from 'svelte/store';
-
-const errorDuration = 8000;
-const infoDuration = 3000;
-const maxCount = 5;
+import {
+	TOAST_ERROR_DURATION_MS,
+	TOAST_INFO_DURATION_MS,
+	TOAST_MAX_COUNT
+} from './constants/ui.constants';
 
 export type Toast = {
 	type: 'error' | 'info';
@@ -27,7 +28,7 @@ export function pushToast(toast: Toast) {
 
 	toasts.update((toasts) => {
 		toasts.push({ ...toast, id });
-		if (toasts.length > maxCount) {
+		if (toasts.length > TOAST_MAX_COUNT) {
 			toasts.shift();
 		}
 		return toasts;
@@ -43,7 +44,7 @@ export function pushToast(toast: Toast) {
 				return toasts;
 			});
 		},
-		toast.type === 'error' ? errorDuration : infoDuration
+		toast.type === 'error' ? TOAST_ERROR_DURATION_MS : TOAST_INFO_DURATION_MS
 	);
 }
 

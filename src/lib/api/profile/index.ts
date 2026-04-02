@@ -33,6 +33,7 @@ export const removeMod = (uuid: string) => invoke<ModActionResponse>('remove_mod
 export const toggleMod = (uuid: string) => invoke<ModActionResponse>('toggle_mod', { uuid });
 export const forceRemoveMods = (uuids: string[]) => invoke('force_remove_mods', { uuids });
 export const forceToggleMods = (uuids: string[]) => invoke('force_toggle_mods', { uuids });
+export const reorderMod = (uuid: string, delta: number) => invoke('reorder_mod', { uuid, delta });
 export const setAllModsState = (enable: boolean) =>
 	invoke<number>('set_all_mods_state', { enable });
 export const removeDisabledMods = () => invoke<number>('remove_disabled_mods');
@@ -48,3 +49,11 @@ export const setCustomArgs = (customArgs: string[], enabled: boolean) =>
 export const setProfilePath = (profileId: number, newPath: string) =>
 	invoke('set_profile_path', { profileId, newPath });
 export const forgetProfile = (profileId: number) => invoke('forget_profile', { profileId });
+export const setProfileIcon = (profileId: number, imagePath: string) =>
+	invoke<string>('set_profile_icon', { profileId, imagePath });
+export const setProfileIconUrl = (profileId: number, url: string) =>
+	invoke('set_profile_icon_url', { profileId, url });
+export const uploadProfileIcon = (profileId: number, imagePath: string) =>
+	invoke<string>('upload_profile_icon', { profileId, imagePath });
+export const removeProfileIcon = (profileId: number) =>
+	invoke('remove_profile_icon', { profileId });

@@ -1,70 +1,176 @@
 <script lang="ts">
 	import * as api from '$lib/api';
-	import type { Mod, ModId, SortBy } from '$lib/types';
+	import type { Mod, ModId, SortBy, AvailableUpdate, ProfileQuery, Dependant } from '$lib/types';
+	import Icon from '@iconify/svelte';
+	import profiles from '$lib/state/profile.svelte';
+	import games from '$lib/state/game.svelte';
 
 	import ModCard from '$lib/components/mod-list/ModCard.svelte';
 	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
 	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
 	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
+	import RemoveModDialog from '$lib/components/mod-list/RemoveModDialog.svelte';
+	import ToggleModDialog from '$lib/components/mod-list/ToggleModDialog.svelte';
+	import BatchActionBar from '$lib/components/ui/BatchActionBar.svelte';
+	import BatchConfirmDialog from '$lib/components/dialogs/BatchConfirmDialog.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
 	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
+	import Loader from '$lib/components/ui/Loader.svelte';
+	import ShareProfileDialog from '$lib/components/dialogs/ShareProfileDialog.svelte';
 
-	import { onMount } from 'svelte';
-	import { emit, listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import { open } from '@tauri-apps/plugin-shell';
-	import { profileQuery } from '$lib/state/misc.svelte';
-	import profiles from '$lib/state/profile.svelte';
-	import Icon from '@iconify/svelte';
-	import type { AvailableUpdate, ProfileQuery } from '$lib/types';
-	import { communityUrl, isOutdated } from '$lib/util';
+	import { profileQuery, togglePin, isModPinned, pinnedMods } from '$lib/state/misc.svelte';
+	import { isOutdated } from '$lib/util';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
+	import { pushToast } from '$lib/toast';
+	import { handleMultiSelect } from '$lib/utils/multiSelect';
+	import { createDragGhost, computeInsertPosition, type DragState } from '$lib/utils/dragDrop';
 
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
+	// --- Drag & drop ---
+	let draggedMod: Mod | null = $state(null);
+	let dragFromIndex = -1;
+	let insertPos = -1;
+	let placeholderIndex: number = $state(-1);
+	let ghostEl: HTMLDivElement | null = null;
+	let dragOffsetX = 0;
+	let dragOffsetY = 0;
+
+	let isCustomSort = $derived(profileQuery.current.sortBy === 'custom');
+	let canDrag = $derived(isCustomSort && !profiles.activeLocked);
+
+	function handleDragHandleDown(e: PointerEvent, mod: Mod) {
+		if (!canDrag || isModPinned(mod.uuid)) return;
+		e.preventDefault();
+		e.stopPropagation();
+
+		dragFromIndex = sortedMods.findIndex((m) => m.uuid === mod.uuid);
+		draggedMod = mod;
+		insertPos = -1;
+		placeholderIndex = -1;
+
+		const card = (e.target as HTMLElement).closest('.z-mod-card') as HTMLElement;
+		if (!card) return;
+
+		const rect = card.getBoundingClientRect();
+		dragOffsetX = e.clientX - rect.left;
+		dragOffsetY = e.clientY - rect.top;
+
+		ghostEl = createDragGhost(card, e);
+
+		window.addEventListener('pointermove', handlePointerMove);
+		window.addEventListener('pointerup', handlePointerUp);
+	}
+
+	function handlePointerMove(e: PointerEvent) {
+		if (!draggedMod || !ghostEl) return;
+
+		ghostEl.style.left = e.clientX - dragOffsetX + 'px';
+		ghostEl.style.top = e.clientY - dragOffsetY + 'px';
+
+		const result = computeInsertPosition(e, dragFromIndex, '[data-mod-index]');
+		insertPos = result.insertPos;
+		placeholderIndex = result.placeholderIndex;
+	}
+
+	async function handlePointerUp(_e: PointerEvent) {
+		window.removeEventListener('pointermove', handlePointerMove);
+		window.removeEventListener('pointerup', handlePointerUp);
+
+		if (ghostEl) {
+			ghostEl.remove();
+			ghostEl = null;
+		}
+
+		if (draggedMod && insertPos >= 0 && insertPos !== dragFromIndex) {
+			const isDescending = profileQuery.current.sortOrder === 'descending';
+			const delta = isDescending ? -(insertPos - dragFromIndex) : insertPos - dragFromIndex;
+			if (delta !== 0) {
+				try {
+					await api.profile.reorderMod(draggedMod.uuid, delta);
+					await refresh();
+				} catch (err) {
+					console.error('Failed to reorder mod:', err);
+				}
+			}
+		}
+
+		draggedMod = null;
+		insertPos = -1;
+		placeholderIndex = -1;
+		dragFromIndex = -1;
+	}
+
+	// --- Mod list state ---
 	let mods: Mod[] = $state([]);
 	let updates: AvailableUpdate[] = $state([]);
 	let unknownMods: { fullName: string; uuid: string }[] = $state([]);
 	let totalModCount = $state(0);
 	let maxCount = $state(40);
-	let selectedMod: Mod | null = $state(null);
 
-	// Context menu state
+	// --- Selection ---
+	let selectedModIds: string[] = $state([]);
+	let lastClickedIndex = -1;
+	let selectedMod = $derived(
+		selectedModIds.length === 1 ? (mods.find((m) => m.uuid === selectedModIds[0]) ?? null) : null
+	);
+
+	function handleModClick(evt: MouseEvent, mod: Mod, index: number) {
+		const result = handleMultiSelect(
+			evt,
+			mod.uuid,
+			index,
+			selectedModIds,
+			sortedMods.map((m) => m.uuid),
+			lastClickedIndex
+		);
+		selectedModIds = result.selection;
+		lastClickedIndex = result.lastIndex;
+	}
+
+	// --- Context menu ---
 	let ctxMenu: { items: ContextMenuItem[]; x: number; y: number } | null = $state(null);
 
+	// --- Dialog state ---
+	let removeDialog: { open: boolean; mod: Mod; dependants: Dependant[] } | null = $state(null);
+	let toggleDialog: {
+		open: boolean;
+		mod: Mod;
+		dependants: Dependant[];
+		isDisabling: boolean;
+	} | null = $state(null);
+
 	let refreshing = false;
+	let pendingRefresh = false;
 
 	async function refresh() {
-		if (refreshing) return;
+		if (refreshing) {
+			pendingRefresh = true;
+			return;
+		}
 		refreshing = true;
-
 		try {
 			const result: ProfileQuery = await api.profile.query({
 				...profileQuery.current,
 				maxCount
 			});
-
 			mods = result.mods;
 			totalModCount = result.totalModCount;
 			updates = result.updates;
 			unknownMods = result.unknownMods;
-
-			if (selectedMod) {
-				selectedMod = mods.find((m) => m.uuid === selectedMod!.uuid) ?? null;
-			}
 		} catch {}
-
 		refreshing = false;
-	}
 
-	async function installLatest(mod: Mod) {
-		if (mod.versions.length === 0) return;
-		await api.profile.install.mod({
-			packageUuid: mod.uuid,
-			versionUuid: mod.versions[0].uuid
-		});
-		await refresh();
+		if (pendingRefresh) {
+			pendingRefresh = false;
+			refresh();
+		}
 	}
 
 	async function install(id: ModId) {
@@ -73,24 +179,37 @@
 	}
 
 	async function toggleMod(mod: Mod) {
-		const response = await api.profile.toggleMod(mod.uuid);
-		if (response.type === 'done') {
-			await refresh();
-		} else if (response.type === 'hasDependants') {
-			await api.profile.forceToggleMods([mod.uuid, ...response.dependants.map((d) => d.uuid)]);
-			await refresh();
+		try {
+			const response = await api.profile.toggleMod(mod.uuid);
+			if (response.type === 'done') {
+				await refresh();
+			} else if (response.type === 'confirm') {
+				toggleDialog = {
+					open: true,
+					mod,
+					dependants: response.dependants,
+					isDisabling: mod.enabled !== false
+				};
+			}
+		} catch (err: any) {
+			pushToast({
+				type: 'error',
+				name:
+					mod.enabled === false
+						? m.toast_cannotEnable_title({ name: mod.name })
+						: m.toast_cannotDisable_title({ name: mod.name }),
+				message: String(err?.message ?? err)
+			});
 		}
 	}
 
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
-			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
+			selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 			await refresh();
-		} else if (response.type === 'hasDependants') {
-			await api.profile.forceRemoveMods([mod.uuid, ...response.dependants.map((d) => d.uuid)]);
-			if (selectedMod?.uuid === mod.uuid) selectedMod = null;
-			await refresh();
+		} else if (response.type === 'confirm') {
+			removeDialog = { open: true, mod, dependants: response.dependants };
 		}
 	}
 
@@ -102,64 +221,128 @@
 		}
 	}
 
+	// --- Batch actions ---
+	let batchRemoveDialog: { open: boolean; extraDependants: string[] } | null = $state(null);
+	let batchToggleDialog: { open: boolean; extraDependants: string[] } | null = $state(null);
+
+	// Extracts the mod name from a VersionIdent string ("Owner-Name-1.0.0" → "Name")
+	function modNameFromIdent(ident: string): string {
+		const lastDash = ident.lastIndexOf('-');
+		if (lastDash === -1) return ident;
+		const secondLastDash = ident.lastIndexOf('-', lastDash - 1);
+		if (secondLastDash === -1) return ident;
+		return ident.substring(secondLastDash + 1, lastDash);
+	}
+
+	async function collectExtraDeps(uuidFilter?: (uuid: string) => boolean) {
+		const ids = uuidFilter ? selectedModIds.filter(uuidFilter) : selectedModIds;
+		const selectedSet = new Set(selectedModIds);
+		const extraDeps = new Set<string>();
+
+		await Promise.all(
+			ids.map(async (uuid) => {
+				const deps = await api.profile.getDependants(uuid);
+				for (const dep of deps) {
+					const depName = modNameFromIdent(dep);
+					const depMod = mods.find((m) => m.name === depName);
+					if (depMod && !selectedSet.has(depMod.uuid)) {
+						extraDeps.add(dep);
+					} else if (!depMod) {
+						extraDeps.add(dep);
+					}
+				}
+			})
+		);
+
+		return [...extraDeps];
+	}
+
+	async function doBatchRemove() {
+		if (locked) return;
+		const extraDeps = await collectExtraDeps();
+		if (extraDeps.length > 0) {
+			batchRemoveDialog = { open: true, extraDependants: extraDeps };
+		} else {
+			await api.profile.forceRemoveMods(selectedModIds);
+			selectedModIds = [];
+			await refresh();
+		}
+	}
+
+	async function doBatchToggle() {
+		if (locked) return;
+		const extraDeps = await collectExtraDeps((uuid) => {
+			const mod = mods.find((m) => m.uuid === uuid);
+			return mod ? mod.enabled !== false : false;
+		});
+		if (extraDeps.length > 0) {
+			batchToggleDialog = { open: true, extraDependants: extraDeps };
+		} else {
+			await api.profile.forceToggleMods(selectedModIds);
+			await refresh();
+		}
+	}
+
 	function openModContextMenu(e: MouseEvent, mod: Mod) {
 		const locked = profiles.activeLocked;
 		const items: ContextMenuItem[] = [];
 
-		// Toggle enable/disable
 		if (mod.isInstalled) {
 			items.push({
-				label: mod.enabled === false ? 'Enable' : 'Disable',
+				label: mod.enabled === false ? m.mods_contextMenu_enable() : m.mods_contextMenu_disable(),
 				icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
 				disabled: locked,
 				onclick: () => toggleMod(mod)
 			});
 		}
 
-		// Open website
+		if (mod.isInstalled) {
+			const pinned = isModPinned(mod.uuid);
+			items.push({
+				label: pinned ? 'Désépingler' : 'Épingler en haut',
+				icon: pinned ? 'mdi:pin-off' : 'mdi:pin',
+				onclick: () => togglePin(mod.uuid)
+			});
+		}
+
 		if (mod.websiteUrl) {
 			items.push({
-				label: 'Open on Thunderstore',
+				label: m.mods_contextMenu_openThunderstore(),
 				icon: 'mdi:open-in-new',
 				onclick: () => open(mod.websiteUrl!)
 			});
 		}
 
-		// Donate
 		if (mod.donateUrl) {
 			items.push({
-				label: 'Donate',
+				label: m.mods_contextMenu_donate(),
 				icon: 'mdi:heart',
 				onclick: () => open(mod.donateUrl!)
 			});
 		}
 
-		// Open mod folder
 		if (mod.isInstalled) {
 			items.push({
-				label: 'Open folder',
+				label: m.mods_contextMenu_openFolder(),
 				icon: 'mdi:folder-open',
 				onclick: () => api.profile.openModDir(mod.uuid)
 			});
 		}
 
-		// Config file
 		if (mod.configFile) {
 			items.push({
-				label: 'Edit config',
+				label: m.mods_contextMenu_editConfig(),
 				icon: 'mdi:file-cog',
 				onclick: () => {
-					// Navigate to config page
 					window.location.href = '/config';
 				}
 			});
 		}
 
-		// Separator + destructive
 		if (mod.isInstalled) {
 			items.push({ label: '', separator: true });
 			items.push({
-				label: 'Uninstall',
+				label: m.mods_contextMenu_uninstall(),
 				icon: 'mdi:delete',
 				danger: true,
 				disabled: locked,
@@ -172,97 +355,353 @@
 
 	$effect(() => {
 		if (maxCount > 0) {
-			profileQuery.current;
+			JSON.stringify(profileQuery.current);
 			profiles.active;
 			refresh();
 		}
 	});
 
 	let locked = $derived(profiles.activeLocked);
+	let filtersExpanded = $state(false);
+
+	let sortedMods = $derived.by(() => {
+		const pinned = pinnedMods.current;
+		if (pinned.length === 0) return mods;
+		return [...mods].sort((a, b) => {
+			const aPinned = pinned.includes(a.uuid);
+			const bPinned = pinned.includes(b.uuid);
+			if (aPinned && !bPinned) return -1;
+			if (!aPinned && bPinned) return 1;
+			return 0;
+		});
+	});
+
+	function selectAll() {
+		selectedModIds = sortedMods.map((m) => m.uuid);
+	}
+
+	let isAllSelected = $derived(
+		sortedMods.length > 0 && selectedModIds.length === sortedMods.length
+	);
+
+	function toggleSelectAll() {
+		selectedModIds = isAllSelected ? [] : sortedMods.map((m) => m.uuid);
+	}
+
+	let shareDialog: { open: boolean; mode: 'export' | 'import' } = $state({
+		open: false,
+		mode: 'export'
+	});
 </script>
 
-<div class="z-mods-page">
-	<div class="z-mods-main">
-		<Header title="Mods" subtitle="{totalModCount} installed">
-			{#snippet actions()}
-				{#if updates.length > 0}
-					<Button variant="accent" size="sm" onclick={updateAllMods}>
-						{#snippet icon()}<Icon icon="mdi:update" />{/snippet}
-						Update {updates.length}
-					</Button>
-				{/if}
-				{#if locked}
-					<Badge variant="warning">
-						<Icon icon="mdi:lock" class="text-xs" /> Locked
-					</Badge>
-				{/if}
-			{/snippet}
-		</Header>
-
-		<div class="z-mods-content">
-			<div class="z-mods-filters">
-				<ModListFilters queryArgs={profileQuery.current} {sortOptions} />
-			</div>
-
-			{#if unknownMods.length > 0}
-				<div class="z-unknown-banner">
-					<Icon icon="mdi:help-circle" />
-					<span>{unknownMods.length} unknown mod{unknownMods.length > 1 ? 's' : ''} in profile</span
+{#if !profiles.ready}
+	<Loader />
+{:else}
+	<div class="z-mods-page">
+		<div class="z-mods-main">
+			<Header
+				title={i18nState.locale && m.navBar_label_mods()}
+				subtitle={i18nState.locale && m.mods_installed({ count: totalModCount.toString() })}
+			>
+				{#snippet actions()}
+					<Button
+						variant="ghost"
+						size="sm"
+						onclick={() => (shareDialog = { open: true, mode: 'import' })}
 					>
-				</div>
-			{/if}
-
-			<div class="z-mods-list">
-				{#if mods.length === 0}
-					<div class="z-mods-empty">
-						<div class="z-empty-icon">
-							<Icon icon="mdi:package-variant" />
-						</div>
-						<p class="z-empty-title">No mods installed</p>
-						<p class="z-empty-desc">Browse the store to find mods for your game</p>
-						<a href="/browse" class="z-empty-action">
-							<Icon icon="mdi:store-search" />
-							Browse mods
-						</a>
-					</div>
-				{:else}
-					{#each mods as mod (mod.uuid)}
-						<ModCard
-							{mod}
-							isSelected={selectedMod?.uuid === mod.uuid}
-							{locked}
-							showInstallBtn={false}
-							onclick={() => (selectedMod = selectedMod?.uuid === mod.uuid ? null : mod)}
-							oncontextmenu={openModContextMenu}
-						/>
-					{/each}
-
-					{#if mods.length < totalModCount}
-						<button class="z-load-more" onclick={() => (maxCount += 40)}>
-							Load more ({totalModCount - mods.length} remaining)
-						</button>
+						{#snippet icon()}<Icon icon="mdi:import" />{/snippet}
+						{i18nState.locale && m.share_importButton()}
+					</Button>
+					<Button
+						variant="ghost"
+						size="sm"
+						onclick={() => (shareDialog = { open: true, mode: 'export' })}
+					>
+						{#snippet icon()}<Icon icon="mdi:share-variant" />{/snippet}
+						{i18nState.locale && m.share_exportButton()}
+					</Button>
+					{#if updates.length > 0}
+						<Button variant="accent" size="sm" onclick={updateAllMods}>
+							{#snippet icon()}<Icon icon="mdi:update" />{/snippet}
+							{m.mods_update({ count: updates.length.toString() })}
+						</Button>
 					{/if}
+					{#if locked}
+						<Badge variant="warning">
+							<Icon icon="mdi:lock" class="text-xs" />
+							{m.mods_locked()}
+						</Badge>
+					{/if}
+				{/snippet}
+			</Header>
+
+			<div class="z-mods-content">
+				<div class="z-mods-filters">
+					<div class="z-mods-filters-row">
+						{#if !filtersExpanded}
+							<label class="z-master-checkbox-wrapper">
+								<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
+								<span class="z-master-checkbox-label"
+									>{i18nState.locale && m.batch_selectAll()}</span
+								>
+							</label>
+						{/if}
+						<div class="flex-1"></div>
+						<ModListFilters
+							queryArgs={profileQuery.current}
+							{sortOptions}
+							externalPanel
+							bind:expanded={filtersExpanded}
+						/>
+					</div>
+					{#if filtersExpanded}
+						<div class="z-mods-filter-panel">
+							<label class="z-filter-toggle">
+								<Checkbox bind:checked={profileQuery.current.includeNsfw} />
+								<span>{i18nState.locale && m.modListFilters_options_NSFW()}</span>
+							</label>
+							<label class="z-filter-toggle">
+								<Checkbox bind:checked={profileQuery.current.includeDeprecated} />
+								<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
+							</label>
+
+							{#if games.categories.length > 0}
+								<div class="z-filter-categories">
+									{#each games.categories.slice(0, 20) as cat}
+										<button
+											class="z-category-chip"
+											class:active={profileQuery.current.includeCategories.includes(cat.slug)}
+											onclick={() => {
+												const idx = profileQuery.current.includeCategories.indexOf(cat.slug);
+												if (idx >= 0) {
+													profileQuery.current.includeCategories =
+														profileQuery.current.includeCategories.filter((c) => c !== cat.slug);
+												} else {
+													profileQuery.current.includeCategories = [
+														...profileQuery.current.includeCategories,
+														cat.slug
+													];
+												}
+											}}
+										>
+											{cat.name}
+										</button>
+									{/each}
+								</div>
+							{/if}
+						</div>
+
+						<div class="z-mods-select-row">
+							<label class="z-master-checkbox-wrapper">
+								<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
+								<span class="z-master-checkbox-label"
+									>{i18nState.locale && m.batch_selectAll()}</span
+								>
+							</label>
+							<span class="z-mods-count">{sortedMods.length} mods</span>
+						</div>
+					{/if}
+				</div>
+
+				{#if unknownMods.length > 0}
+					<div class="z-unknown-banner">
+						<Icon icon="mdi:help-circle" />
+						<span>{m.mods_unknownMods({ count: unknownMods.length.toString() })}</span>
+					</div>
 				{/if}
+
+				<div class="z-mods-list">
+					{#if sortedMods.length === 0}
+						<div class="z-mods-empty">
+							<div class="z-empty-icon">
+								<Icon icon="mdi:package-variant" />
+							</div>
+							<p class="z-empty-title">{i18nState.locale && m.mods_noMods()}</p>
+							<p class="z-empty-desc">{i18nState.locale && m.mods_noMods_desc()}</p>
+							<a href="/browse" class="z-empty-action">
+								<Icon icon="mdi:store-search" />
+								{i18nState.locale && m.mods_browseMods()}
+							</a>
+						</div>
+					{:else}
+						{#each sortedMods as mod, i (mod.uuid)}
+							{#if draggedMod && placeholderIndex === i}
+								<div class="z-drop-placeholder">
+									<div class="z-drop-line"></div>
+									<Icon icon="mdi:plus-circle" class="z-drop-icon" />
+									<div class="z-drop-line"></div>
+								</div>
+							{/if}
+
+							<div data-mod-index={i} class:z-dragging-card={draggedMod?.uuid === mod.uuid}>
+								<ModCard
+									{mod}
+									isSelected={selectedModIds.includes(mod.uuid)}
+									{locked}
+									showInstallBtn={false}
+									showDragHandle={canDrag}
+									onclick={(evt: MouseEvent) => {
+										if (!draggedMod) handleModClick(evt, mod, i);
+									}}
+									oncontextmenu={openModContextMenu}
+									onpointerdownHandle={handleDragHandleDown}
+								/>
+							</div>
+						{/each}
+
+						{#if draggedMod && placeholderIndex === sortedMods.length}
+							<div class="z-drop-placeholder">
+								<div class="z-drop-line"></div>
+								<Icon icon="mdi:plus-circle" class="z-drop-icon" />
+								<div class="z-drop-line"></div>
+							</div>
+						{/if}
+
+						{#if mods.length < totalModCount}
+							<button class="z-load-more" onclick={() => (maxCount += 40)}>
+								{m.mods_loadMore({ count: (totalModCount - mods.length).toString() })}
+							</button>
+						{/if}
+					{/if}
+				</div>
 			</div>
 		</div>
+
+		{#if selectedMod}
+			<ModDetails
+				mod={selectedMod}
+				{locked}
+				onclose={() => (selectedModIds = [])}
+				ontoggle={() => toggleMod(selectedMod!)}
+				onremove={() => removeMod(selectedMod!)}
+			>
+				<InstallModButton mod={selectedMod} {install} {locked} />
+			</ModDetails>
+		{/if}
+
+		<BatchActionBar
+			count={selectedModIds.length}
+			total={sortedMods.length}
+			onclear={() => (selectedModIds = [])}
+			onselectAll={selectAll}
+		>
+			{#snippet actions()}
+				<Button variant="accent" size="sm" onclick={doBatchToggle} disabled={locked}>
+					{#snippet icon()}<Icon icon="mdi:toggle-switch" />{/snippet}
+					{i18nState.locale && m.batch_toggleSelected()}
+				</Button>
+				<Button variant="danger" size="sm" onclick={doBatchRemove} disabled={locked}>
+					{#snippet icon()}<Icon icon="mdi:delete" />{/snippet}
+					{i18nState.locale && m.batch_uninstallSelected()}
+				</Button>
+			{/snippet}
+		</BatchActionBar>
 	</div>
 
-	{#if selectedMod}
-		<ModDetails
-			mod={selectedMod}
-			{locked}
-			onclose={() => (selectedMod = null)}
-			ontoggle={() => toggleMod(selectedMod!)}
-			onremove={() => removeMod(selectedMod!)}
-		>
-			<InstallModButton mod={selectedMod} {install} {locked} />
-		</ModDetails>
+	{#if ctxMenu}
+		<ContextMenu
+			items={ctxMenu.items}
+			x={ctxMenu.x}
+			y={ctxMenu.y}
+			onclose={() => (ctxMenu = null)}
+		/>
 	{/if}
-</div>
 
-<!-- Context menu -->
-{#if ctxMenu}
-	<ContextMenu items={ctxMenu.items} x={ctxMenu.x} y={ctxMenu.y} onclose={() => (ctxMenu = null)} />
+	{#if removeDialog}
+		<RemoveModDialog
+			bind:open={removeDialog.open}
+			modName={removeDialog.mod.name}
+			dependants={removeDialog.dependants}
+			oncancel={() => (removeDialog = null)}
+			onremoveOne={async () => {
+				await api.profile.forceRemoveMods([removeDialog!.mod.uuid]);
+				selectedModIds = selectedModIds.filter((id) => id !== removeDialog!.mod.uuid);
+				removeDialog = null;
+				await refresh();
+			}}
+			onremoveAll={async () => {
+				const uuids = [removeDialog!.mod.uuid, ...removeDialog!.dependants.map((d) => d.uuid)];
+				await api.profile.forceRemoveMods(uuids);
+				selectedModIds = selectedModIds.filter((id) => !uuids.includes(id));
+				removeDialog = null;
+				await refresh();
+			}}
+		/>
+	{/if}
+
+	{#if toggleDialog}
+		<ToggleModDialog
+			bind:open={toggleDialog.open}
+			modName={toggleDialog.mod.name}
+			isDisabling={toggleDialog.isDisabling}
+			dependants={toggleDialog.dependants}
+			oncancel={() => (toggleDialog = null)}
+			ontoggleOne={async () => {
+				await api.profile.forceToggleMods([toggleDialog!.mod.uuid]);
+				toggleDialog = null;
+				await refresh();
+			}}
+			ontoggleAll={async () => {
+				const uuids = [toggleDialog!.mod.uuid, ...toggleDialog!.dependants.map((d) => d.uuid)];
+				await api.profile.forceToggleMods(uuids);
+				toggleDialog = null;
+				await refresh();
+			}}
+		/>
+	{/if}
+
+	{#if batchToggleDialog}
+		<BatchConfirmDialog
+			bind:open={batchToggleDialog.open}
+			title={i18nState.locale
+				? m.batchToggleDialog_title({ count: selectedModIds.length.toString() })
+				: ''}
+			description={i18nState.locale ? m.batchToggleDialog_description() : ''}
+			hint={i18nState.locale ? m.batchToggleDialog_hint() : ''}
+			extraDependants={batchToggleDialog.extraDependants}
+			confirmLabel={i18nState.locale ? m.batchToggleDialog_confirm() : ''}
+			cancelLabel={i18nState.locale ? m.batchToggleDialog_cancel() : ''}
+			confirmVariant="accent"
+			confirmIcon="mdi:toggle-switch"
+			onconfirm={async () => {
+				await api.profile.forceToggleMods(selectedModIds);
+				batchToggleDialog = null;
+				await refresh();
+			}}
+			oncancel={() => (batchToggleDialog = null)}
+		/>
+	{/if}
+
+	{#if batchRemoveDialog}
+		<BatchConfirmDialog
+			bind:open={batchRemoveDialog.open}
+			title={i18nState.locale
+				? m.batchRemoveDialog_title({ count: selectedModIds.length.toString() })
+				: ''}
+			description={i18nState.locale ? m.batchRemoveDialog_description() : ''}
+			hint={i18nState.locale ? m.batchRemoveDialog_hint() : ''}
+			extraDependants={batchRemoveDialog.extraDependants}
+			confirmLabel={i18nState.locale
+				? m.batchRemoveDialog_confirm({ count: selectedModIds.length.toString() })
+				: ''}
+			cancelLabel={i18nState.locale ? m.batchRemoveDialog_cancel() : ''}
+			confirmVariant="danger"
+			confirmIcon="mdi:delete-sweep"
+			onconfirm={async () => {
+				await api.profile.forceRemoveMods(selectedModIds);
+				selectedModIds = [];
+				batchRemoveDialog = null;
+				await refresh();
+			}}
+			oncancel={() => (batchRemoveDialog = null)}
+		/>
+	{/if}
+
+	<ShareProfileDialog
+		bind:mode={shareDialog.mode}
+		bind:open={shareDialog.open}
+		onclose={() => (shareDialog.open = false)}
+	/>
 {/if}
 
 <style>
@@ -292,13 +731,115 @@
 		top: 0;
 		z-index: 10;
 		padding-top: var(--space-sm);
+		padding-bottom: var(--space-xs);
 		background: var(--bg-base);
+		border-bottom: 1px solid var(--border-subtle);
+		margin-bottom: var(--space-sm);
+	}
+
+	.z-mods-filters-row {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+	}
+
+	.z-mods-filter-panel {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		gap: var(--space-sm);
+		padding: var(--space-md);
+		border-radius: var(--radius-md);
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-subtle);
+		margin-top: var(--space-sm);
+	}
+
+	.z-filter-toggle {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 12px;
+		color: var(--text-secondary);
+		cursor: pointer;
+		padding: 4px 10px;
+		border-radius: var(--radius-sm);
+		transition: background var(--transition-fast);
+	}
+
+	.z-filter-toggle:hover {
+		background: var(--bg-hover);
+	}
+
+	.z-filter-categories {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		gap: 4px;
+		width: 100%;
+		padding-top: var(--space-sm);
+		border-top: 1px solid var(--border-subtle);
+	}
+
+	.z-category-chip {
+		padding: 3px 10px;
+		border-radius: var(--radius-full);
+		font-size: 11px;
+		border: 1px solid var(--border-subtle);
+		background: transparent;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.z-category-chip:hover {
+		border-color: var(--border-default);
+		color: var(--text-secondary);
+	}
+
+	.z-category-chip.active {
+		background: var(--bg-active);
+		border-color: var(--border-accent);
+		color: var(--text-accent);
+	}
+
+	.z-mods-select-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-top: var(--space-xs);
+	}
+
+	.z-mods-count {
+		font-size: 11px;
+		color: var(--text-muted);
+	}
+
+	.z-master-checkbox-wrapper {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-xs) var(--space-sm);
+		cursor: pointer;
+		color: var(--text-muted);
+		font-size: 13px;
+		font-weight: 500;
+		transition: color var(--transition-fast);
+	}
+
+	.z-master-checkbox-wrapper:hover {
+		color: var(--text-primary);
+	}
+
+	.z-master-checkbox-label {
+		user-select: none;
 	}
 
 	.z-mods-list {
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
+		user-select: none;
 	}
 
 	.z-unknown-banner {
@@ -314,7 +855,6 @@
 		margin-bottom: var(--space-sm);
 	}
 
-	/* Empty state */
 	.z-mods-empty {
 		display: flex;
 		flex-direction: column;
@@ -385,5 +925,42 @@
 		border-color: var(--border-accent);
 		color: var(--text-accent);
 		background: var(--bg-hover);
+	}
+
+	.z-dragging-card {
+		opacity: 0.25;
+		pointer-events: none;
+	}
+
+	.z-drop-placeholder {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm) 0;
+		animation: placeholderIn 150ms ease;
+	}
+
+	.z-drop-line {
+		flex: 1;
+		height: 2px;
+		border-top: 2px dashed var(--accent-400);
+		opacity: 0.6;
+	}
+
+	:global(.z-drop-icon) {
+		font-size: 18px;
+		color: var(--accent-400);
+		flex-shrink: 0;
+	}
+
+	@keyframes placeholderIn {
+		from {
+			opacity: 0;
+			padding: 0;
+		}
+		to {
+			opacity: 1;
+			padding: var(--space-sm) 0;
+		}
 	}
 </style>

@@ -1,6 +1,6 @@
 //! Adapter that wraps the existing Thunderstore module to implement the ModSource trait.
 //!
-//! This bridges the gap between Gale's original Thunderstore-specific code and
+//! This bridges the gap between the original Thunderstore-specific code and
 //! Zephyr's multi-source abstraction. The existing query/fetch/cache infrastructure
 //! continues to work unchanged — this adapter just provides a unified interface.
 
@@ -78,9 +78,10 @@ impl ModSource for ThunderstoreSource {
 
                 // Category filter
                 if !filters.categories.is_empty() {
-                    let has_match = filters.categories.iter().any(|cat| {
-                        pkg.categories.iter().any(|c| c.as_str() == cat.as_str())
-                    });
+                    let has_match = filters
+                        .categories
+                        .iter()
+                        .any(|cat| pkg.categories.iter().any(|c| c.as_str() == cat.as_str()));
                     if !has_match {
                         return false;
                     }
@@ -142,9 +143,9 @@ impl ModSource for ThunderstoreSource {
 
         // Sort
         match filters.sort_by {
-            SortField::Downloads => results.sort_by(|a, b| {
-                b.downloads.unwrap_or(0).cmp(&a.downloads.unwrap_or(0))
-            }),
+            SortField::Downloads => {
+                results.sort_by(|a, b| b.downloads.unwrap_or(0).cmp(&a.downloads.unwrap_or(0)))
+            }
             SortField::Rating => {
                 results.sort_by(|a, b| b.rating.unwrap_or(0).cmp(&a.rating.unwrap_or(0)))
             }

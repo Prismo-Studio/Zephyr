@@ -3,17 +3,25 @@
 	import Icon from '@iconify/svelte';
 	import { formatModName, modIconSrc, shortenNum, timeSince } from '$lib/util';
 	import Badge from '$lib/components/ui/Badge.svelte';
+	import { m } from '$lib/paraglide/messages';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
+	import { i18nState } from '$lib/i18nCore.svelte';
+	import { isModPinned, installState } from '$lib/state/misc.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 
 	type Props = {
 		mod: Mod;
 		isSelected?: boolean;
 		locked?: boolean;
 		showInstallBtn?: boolean;
-		onclick?: MouseEventHandler<HTMLButtonElement>;
+		showDragHandle?: boolean;
+		dropIndicator?: 'above' | 'below' | null;
+		isDragging?: boolean;
+		onclick?: MouseEventHandler<HTMLDivElement>;
 		oninstall?: () => void;
 		oncontextmenu?: (e: MouseEvent, mod: Mod) => void;
+		onpointerdownHandle?: (e: PointerEvent, mod: Mod) => void;
 	};
 
 	let {
@@ -21,12 +29,23 @@
 		isSelected = false,
 		locked = false,
 		showInstallBtn = true,
+		showDragHandle = false,
+		dropIndicator = null,
+		isDragging = false,
 		onclick,
 		oninstall,
-		oncontextmenu
+		oncontextmenu,
+		onpointerdownHandle
 	}: Props = $props();
 
 	let installing = $state(false);
+
+	// Reset installing state when install cycle ends or mod becomes installed
+	$effect(() => {
+		if (!installState.active || mod.isInstalled) {
+			installing = false;
+		}
+	});
 
 	function handleContextMenu(e: MouseEvent) {
 		e.preventDefault();
@@ -35,13 +54,47 @@
 	}
 </script>
 
-<button
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<div
 	class="z-mod-card"
 	class:selected={isSelected}
 	class:disabled-mod={mod.enabled === false}
+	class:dragging={isDragging}
+	class:drop-above={dropIndicator === 'above'}
+	class:drop-below={dropIndicator === 'below'}
+	data-mod-uuid={mod.uuid}
 	{onclick}
 	oncontextmenu={handleContextMenu}
+	role="button"
+	tabindex="0"
 >
+	<!-- Drag handle -->
+	{#if showDragHandle}
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		{#if isModPinned(mod.uuid)}
+			<div class="z-mod-drag-handle pinned-lock">
+				<Icon icon="mdi:cancel" />
+			</div>
+		{:else}
+			<div class="z-mod-drag-handle" onpointerdown={(e) => onpointerdownHandle?.(e, mod)}>
+				<Icon icon="mdi:drag-vertical" />
+			</div>
+		{/if}
+	{/if}
+
+	<!-- Checkbox for multi-select -->
+	<div class="z-mod-checkbox-wrapper">
+		<Checkbox
+			checked={isSelected}
+			onchange={() => {
+				if (!onclick) return;
+				const synthEvent = new MouseEvent('click', { ctrlKey: true });
+				onclick(synthEvent as any);
+			}}
+		/>
+	</div>
+
 	<!-- Icon -->
 	<div class="z-mod-icon">
 		<img src={modIconSrc(mod)} alt={mod.name} />
@@ -56,14 +109,14 @@
 	<div class="z-mod-info">
 		<div class="z-mod-name-row">
 			<span class="z-mod-name">{formatModName(mod.name)}</span>
-			{#if mod.isPinned}
+			{#if isModPinned(mod.uuid)}
 				<Icon icon="mdi:pin" class="z-mod-badge-icon pinned" />
 			{/if}
 			{#if mod.isDeprecated}
 				<Icon icon="mdi:alert" class="z-mod-badge-icon deprecated" />
 			{/if}
 			{#if mod.enabled === false}
-				<Badge variant="warning">Disabled</Badge>
+				<Badge variant="warning">{i18nState.locale && m.modCard_disabled()}</Badge>
 			{/if}
 		</div>
 
@@ -111,7 +164,7 @@
 			{/if}
 		</button>
 	{/if}
-</button>
+</div>
 
 <style>
 	.z-mod-card {
@@ -124,7 +177,7 @@
 		border: 1px solid transparent;
 		background: transparent;
 		cursor: pointer;
-		transition: all var(--transition-fast);
+		transition: all 120ms ease;
 		text-align: left;
 		position: relative;
 		font-family: var(--font-body);
@@ -143,6 +196,74 @@
 
 	.z-mod-card.disabled-mod {
 		opacity: 0.5;
+	}
+
+	/* Drag states */
+	.z-mod-card.dragging {
+		opacity: 0.25;
+		transform: scale(0.98);
+	}
+
+	/* Drag handle */
+	.z-mod-drag-handle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		flex-shrink: 0;
+		color: var(--text-muted);
+		cursor: grab;
+		opacity: 0;
+		transition:
+			opacity 120ms ease,
+			color 120ms ease;
+		font-size: 24px;
+		touch-action: none;
+		user-select: none;
+	}
+
+	.z-mod-drag-handle:active {
+		cursor: grabbing;
+	}
+
+	.z-mod-card:hover .z-mod-drag-handle {
+		opacity: 0.5;
+	}
+
+	.z-mod-drag-handle:hover {
+		opacity: 1 !important;
+		color: var(--text-accent);
+	}
+
+	.z-mod-drag-handle.pinned-lock {
+		cursor: not-allowed;
+		opacity: 0;
+		color: var(--error);
+	}
+
+	.z-mod-card:hover .z-mod-drag-handle.pinned-lock {
+		opacity: 0.4;
+	}
+
+	.z-mod-drag-handle.pinned-lock:hover {
+		opacity: 0.7 !important;
+		color: var(--error);
+	}
+
+	/* Checkbox */
+	.z-mod-checkbox-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		flex-shrink: 0;
+		opacity: 0;
+		transition: opacity 120ms ease;
+	}
+
+	.z-mod-card:hover .z-mod-checkbox-wrapper,
+	.z-mod-card.selected .z-mod-checkbox-wrapper {
+		opacity: 1;
 	}
 
 	/* Icon */

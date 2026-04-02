@@ -54,3 +54,9 @@ pub fn get_system_fonts() -> Result<Vec<String>> {
 
     Ok(fonts)
 }
+
+#[command]
+pub fn open_dir(path: std::path::PathBuf) -> Result<()> {
+	open::that(path).map_err(|err| anyhow!(err))?;
+	Ok(())
+}

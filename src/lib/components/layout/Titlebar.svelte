@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import Icon from '@iconify/svelte';
+	import { onMount } from 'svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
+	import { platform } from '@tauri-apps/plugin-os';
 
 	const appWindow = getCurrentWindow();
 
@@ -23,14 +27,31 @@
 		await appWindow.close();
 	}
 
-	// Check on mount
-	checkMaximized();
+	onMount(() => {
+		// Forcefully remove native window decorations at runtime.
+		// This is the most reliable approach because it runs after the window is
+		// fully realized - the point where GTK/WM decorations can sneak back in
+		// despite decorations: false being set in tauri.conf.json (known Tauri v2 bug).
+		if (platform() === 'linux') {
+			appWindow
+				.setDecorations(false)
+				.then(async () => {
+					// On Linux, removing decorations causes GTK to adjust the window geometry,
+					// which can make the WebView miscalculate its content bounds (sidebar disappears).
+					// Re-setting the size to the current value forces a WebView relayout.
+					const size = await appWindow.innerSize();
+					await appWindow.setSize(size);
+				})
+				.catch(() => {});
+		}
+		checkMaximized();
+	});
 </script>
 
 <div class="z-titlebar" data-tauri-drag-region>
 	<div class="z-titlebar-left" data-tauri-drag-region>
 		<span class="z-titlebar-brand" data-tauri-drag-region>
-			<span class="z-titlebar-logo">Z</span>
+			<img src="/logo.png" alt="Zephyr" class="z-titlebar-logo" />
 			<span class="z-titlebar-name">Zephyr</span>
 		</span>
 	</div>
@@ -38,17 +59,25 @@
 	<div class="z-titlebar-center" data-tauri-drag-region></div>
 
 	<div class="z-titlebar-controls">
-		<button class="z-titlebar-btn" onclick={minimize} title="Minimize">
+		<button
+			class="z-titlebar-btn"
+			onclick={minimize}
+			title={i18nState.locale && m.titlebar_minimize()}
+		>
 			<Icon icon="mdi:minus" />
 		</button>
 		<button
 			class="z-titlebar-btn"
 			onclick={toggleMaximize}
-			title={maximized ? 'Restore' : 'Maximize'}
+			title={i18nState.locale && (maximized ? m.titlebar_restore() : m.titlebar_maximize())}
 		>
 			<Icon icon={maximized ? 'mdi:window-restore' : 'mdi:window-maximize'} />
 		</button>
-		<button class="z-titlebar-btn z-titlebar-close" onclick={close} title="Close">
+		<button
+			class="z-titlebar-btn z-titlebar-close"
+			onclick={close}
+			title={i18nState.locale && m.titlebar_close()}
+		>
 			<Icon icon="mdi:close" />
 		</button>
 	</div>
@@ -82,18 +111,10 @@
 	}
 
 	.z-titlebar-logo {
-		font-family: var(--font-display);
-		font-size: 14px;
-		font-weight: 900;
-		width: 20px;
-		height: 20px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 5px;
-		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
-		color: var(--text-inverse);
-		line-height: 1;
+		width: 18px;
+		height: 18px;
+		object-fit: contain;
+		border-radius: 4px;
 	}
 
 	.z-titlebar-name {

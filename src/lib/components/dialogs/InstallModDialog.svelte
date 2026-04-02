@@ -7,6 +7,7 @@
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import type { Mod } from '$lib/types';
 	import * as api from '$lib/api';
+	import { m } from '$lib/paraglide/messages';
 
 	let open = $state(false);
 	let mod: Mod | null = $state(null);
@@ -31,19 +32,19 @@
 	}
 </script>
 
-<Modal bind:open title="Install Mod">
+<Modal bind:open title={m.installDialog_title()}>
 	{#if mod}
 		<div class="z-install-dialog">
 			<ModCard {mod} showInstallBtn={false} />
-			<p class="z-install-confirm">Do you want to install this mod?</p>
+			<p class="z-install-confirm">{m.installDialog_confirm()}</p>
 		</div>
 	{/if}
 
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (open = false)}>Cancel</Button>
+		<Button variant="ghost" onclick={() => (open = false)}>{m.dialog_cancel()}</Button>
 		<Button variant="primary" onclick={install}>
 			{#snippet icon()}<Icon icon="mdi:download" />{/snippet}
-			Install
+			{m.dialog_install()}
 		</Button>
 	{/snippet}
 </Modal>

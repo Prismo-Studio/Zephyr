@@ -5,14 +5,26 @@
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Icon from '@iconify/svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 
 	import * as api from '$lib/api';
 	import type { Prefs } from '$lib/types';
-	import { getTheme, setTheme, type ThemeId, getVisibleThemes } from '$lib/design-system/tokens';
-	import { setFont, getFont } from '$lib/theme';
-	import { setLanguage, languageTitle } from '$lib/i18n';
+	import { updateAppLanguage, languageTitle, i18nState } from '$lib/i18nCore.svelte';
+	import { refreshColor, refreshFont, setFont, getFont, useNativeMenu } from '$lib/themeSystem';
+	import {
+		getTheme,
+		setTheme,
+		getVisibleThemes,
+		type ThemeId,
+		isWingdingsUnlocked
+	} from '$lib/design-system/tokens';
+	import { m } from '$lib/paraglide/messages';
 	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
 	import { onMount } from 'svelte';
+	import { open as selectDirectory } from '@tauri-apps/plugin-dialog';
+	import { pushInfoToast } from '$lib/toast';
+	import { shortenFileSize } from '$lib/util';
+	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 
 	let prefs: Prefs | null = $state(null);
 	let currentTheme: ThemeId = $state(getTheme());
@@ -20,12 +32,14 @@
 	let currentFont = $state(getFont());
 	let currentLocale: Locale = $state(getLocale() as Locale);
 	let visibleThemes = $state(getVisibleThemes());
+	let wingdingsUnlocked = $state(isWingdingsUnlocked());
 
 	let fontOptions = $derived([
 		{ value: 'Inter', label: 'Inter (default)' },
 		{ value: 'Outfit', label: 'Outfit' },
 		{ value: 'DM Sans', label: 'DM Sans' },
-		...systemFonts.slice(0, 50).map((f) => ({ value: f, label: f }))
+		...systemFonts.slice(0, 50).map((f) => ({ value: f, label: f })),
+		...(wingdingsUnlocked ? [{ value: 'Wingdings', label: 'Wingdings' }] : [])
 	]);
 
 	let languageOptions = $derived(locales.map((l) => ({ value: l, label: languageTitle[l] })));
@@ -37,6 +51,11 @@
 		window.addEventListener('hotdog-unlocked', () => {
 			visibleThemes = getVisibleThemes();
 			currentTheme = 'hotdog';
+		});
+
+		// Wingdings easter egg — session only, silently adds to dropdown
+		window.addEventListener('wingdings-unlocked', () => {
+			wingdingsUnlocked = true;
 		});
 	});
 
@@ -60,27 +79,72 @@
 			prefs.language = locale;
 			await savePrefs();
 		}
-		setLanguage(locale);
+		updateAppLanguage(locale);
 	}
 
 	async function clearCache(soft: boolean) {
 		const freed = await api.profile.install.clearDownloadCache(soft);
+		const messageText = soft
+			? m.menuBar_clearModCache_message_unsed
+			: m.menuBar_clearModCache_message;
+		pushInfoToast({
+			message: messageText({ size: shortenFileSize(freed) })
+		});
 	}
 
 	async function openLog() {
 		await api.logger.openZephyrLog();
 	}
+
+	async function copyPath(path: string) {
+		await writeText(path);
+		pushInfoToast({ message: m.prefs_copyPath_success() });
+	}
+
+	async function openPath(path: string) {
+		await api.prefs.openDir(path);
+	}
+
+	async function changeDataDir() {
+		if (!prefs) return;
+		const selected = await selectDirectory({
+			directory: true,
+			multiple: false,
+			defaultPath: prefs.dataDir
+		});
+
+		if (selected && typeof selected === 'string') {
+			prefs.dataDir = selected;
+			await savePrefs();
+		}
+	}
+
+	async function changeCacheDir() {
+		if (!prefs) return;
+		const selected = await selectDirectory({
+			directory: true,
+			multiple: false,
+			defaultPath: prefs.cacheDir
+		});
+
+		if (selected && typeof selected === 'string') {
+			prefs.cacheDir = selected;
+			await savePrefs();
+		}
+	}
 </script>
 
 <div class="z-settings-page">
-	<Header title="Settings" />
+	<div class="z-settings-header-wrapper">
+		<Header title={i18nState.locale && m.navBar_label_settings()} />
+	</div>
 
 	<div class="z-settings-content">
 		<!-- Theme -->
 		<section class="z-settings-section">
-			<h3 class="z-settings-heading">
+			<h3 class="z-settings-heading appearance_margin">
 				<Icon icon="mdi:palette" />
-				Theme
+				{i18nState.locale && m.prefs_appearance_title()}
 			</h3>
 			<div class="z-theme-grid">
 				{#each visibleThemes as theme}
@@ -106,13 +170,13 @@
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:format-font" />
-				Font
+				{i18nState.locale && m.fontFamilyPref_title()}
 			</h3>
 			<Dropdown
 				options={fontOptions}
 				value={currentFont}
 				onchange={changeFont}
-				placeholder="Select font"
+				placeholder={m.fontFamilyPref_placeholder()}
 			/>
 		</section>
 
@@ -120,13 +184,13 @@
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:translate" />
-				Language
+				{i18nState.locale && m.languagePref_title()}
 			</h3>
 			<Dropdown
 				options={languageOptions}
 				value={currentLocale}
 				onchange={changeLanguage}
-				placeholder="Select language"
+				placeholder={m.languagePref_title()}
 			/>
 		</section>
 
@@ -135,23 +199,29 @@
 			<section class="z-settings-section">
 				<h3 class="z-settings-heading">
 					<Icon icon="mdi:cog" />
-					Behavior
+					{i18nState.locale && m.prefs_miscellaneous_title()}
 				</h3>
 
 				<div class="z-settings-row">
 					<div class="z-settings-label">
-						<span>Fetch mods automatically</span>
-						<span class="z-settings-desc">Auto-refresh mod list when opening browse</span>
+						<span>{i18nState.locale && m.prefs_miscellaneous_fetchMods_title()}</span>
+						<span class="z-settings-desc"
+							>{i18nState.locale && m.prefs_miscellaneous_fetchMods_content_1()}</span
+						>
 					</div>
 					<Toggle bind:checked={prefs.fetchModsAutomatically} onchange={savePrefs} />
 				</div>
 
-				<div class="z-settings-row">
+				<div class="z-settings-row z-settings-disabled">
 					<div class="z-settings-label">
-						<span>Pull before launch</span>
-						<span class="z-settings-desc">Sync profile before launching game</span>
+						<span>{i18nState.locale && m.prefs_miscellaneous_pullBeforeLaunch_title()}</span>
+						<span class="z-settings-desc"
+							>{i18nState.locale && m.prefs_miscellaneous_pullBeforeLaunch_content()}</span
+						>
 					</div>
-					<Toggle bind:checked={prefs.pullBeforeLaunch} onchange={savePrefs} />
+					<Tooltip text={i18nState.locale && m.prefs_syncComingSoon()} position="left" delay={200}>
+						<Toggle checked={false} disabled />
+					</Tooltip>
 				</div>
 			</section>
 
@@ -159,14 +229,42 @@
 			<section class="z-settings-section">
 				<h3 class="z-settings-heading">
 					<Icon icon="mdi:folder" />
-					Paths
+					{i18nState.locale && m.prefs_locations_title()}
 				</h3>
 				<div class="z-settings-path">
-					<span class="z-settings-path-label">Data directory</span>
+					<div class="z-settings-path-header">
+						<span class="z-settings-path-label"
+							>{i18nState.locale && m.prefs_locations_dataFolder()}</span
+						>
+						<div class="z-settings-path-actions">
+							<button class="z-path-action" onclick={() => copyPath(prefs!.dataDir)} title="Copy">
+								<Icon icon="mdi:content-copy" />
+							</button>
+							<button class="z-path-action" onclick={() => openPath(prefs!.dataDir)} title="Open">
+								<Icon icon="mdi:folder-open" />
+							</button>
+							<button class="z-path-action" onclick={changeDataDir} title="Change">
+								<Icon icon="mdi:folder-edit" />
+							</button>
+						</div>
+					</div>
 					<code>{prefs.dataDir}</code>
 				</div>
 				<div class="z-settings-path">
-					<span class="z-settings-path-label">Cache directory</span>
+					<div class="z-settings-path-header">
+						<span class="z-settings-path-label">{m.prefs_locations_cacheFolder()}</span>
+						<div class="z-settings-path-actions">
+							<button class="z-path-action" onclick={() => copyPath(prefs!.cacheDir)} title="Copy">
+								<Icon icon="mdi:content-copy" />
+							</button>
+							<button class="z-path-action" onclick={() => openPath(prefs!.cacheDir)} title="Open">
+								<Icon icon="mdi:folder-open" />
+							</button>
+							<button class="z-path-action" onclick={changeCacheDir} title="Change">
+								<Icon icon="mdi:folder-edit" />
+							</button>
+						</div>
+					</div>
 					<code>{prefs.cacheDir}</code>
 				</div>
 			</section>
@@ -176,20 +274,20 @@
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
 				<Icon icon="mdi:wrench" />
-				Actions
+				{m.dashboard_quickActions_title()}
 			</h3>
 			<div class="z-settings-actions">
 				<Button variant="secondary" size="sm" onclick={() => clearCache(true)}>
 					{#snippet icon()}<Icon icon="mdi:broom" />{/snippet}
-					Clear old cache
+					{i18nState.locale && m.menuBar_file_item_6()}
 				</Button>
 				<Button variant="secondary" size="sm" onclick={() => clearCache(false)}>
 					{#snippet icon()}<Icon icon="mdi:delete-sweep" />{/snippet}
-					Clear all cache
+					{i18nState.locale && m.menuBar_file_item_5()}
 				</Button>
 				<Button variant="ghost" size="sm" onclick={openLog}>
 					{#snippet icon()}<Icon icon="mdi:file-document" />{/snippet}
-					Open log file
+					{i18nState.locale && m.menuBar_file_item_4()}
 				</Button>
 			</div>
 		</section>
@@ -200,7 +298,7 @@
 				<span class="z-about-name text-gradient">Zephyr</span>
 				<span class="z-about-version">v0.2.0</span>
 			</div>
-			<p class="z-about-desc">A fast, modern mod manager for all your games</p>
+			<p class="z-about-desc">{m.prefs_aboutDesc()}</p>
 		</section>
 	</div>
 </div>
@@ -215,23 +313,45 @@
 	.z-settings-content {
 		flex: 1;
 		overflow-y: auto;
-		padding: 0 var(--space-xl) var(--space-2xl);
-		max-width: 640px;
+		width: 100%;
+		padding-bottom: var(--space-3xl);
+	}
+
+	.z-settings-header-wrapper {
+		width: 100%;
+		max-width: 720px;
+		margin: 0 auto;
+		padding: var(--space-xl) var(--space-xl) 0;
+	}
+
+	.appearance_margin {
+		margin-top: var(--space-xl);
+	}
+
+	.z-settings-content > * {
+		max-width: 720px;
+		margin: 0 auto;
+		width: 100%;
+		padding: 0 var(--space-xl);
 	}
 
 	.z-settings-section {
-		margin-bottom: var(--space-2xl);
+		margin-bottom: var(--space-3xl);
+	}
+
+	.z-settings-header-wrapper :global(.z-header-title) {
+		font-size: 28px; /* High-DPI bump from 20px */
 	}
 
 	.z-settings-heading {
 		font-family: var(--font-display);
-		font-size: 14px;
+		font-size: 16px; /* High-DPI bump */
 		font-weight: 700;
 		color: var(--text-primary);
 		display: flex;
 		align-items: center;
-		gap: var(--space-sm);
-		margin-bottom: var(--space-lg);
+		gap: var(--space-md);
+		margin-bottom: var(--space-xl);
 		padding-bottom: var(--space-sm);
 		border-bottom: 1px solid var(--border-subtle);
 	}
@@ -294,24 +414,24 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: var(--space-md) 0;
+		padding: var(--space-lg) 0;
 		border-bottom: 1px solid var(--border-subtle);
 	}
 
 	.z-settings-label {
 		display: flex;
 		flex-direction: column;
-		gap: 2px;
+		gap: 4px;
 	}
 
 	.z-settings-label > span:first-child {
-		font-size: 13px;
+		font-size: 15px; /* High-DPI bump */
 		font-weight: 500;
 		color: var(--text-primary);
 	}
 
 	.z-settings-desc {
-		font-size: 11px;
+		font-size: 12px; /* High-DPI bump */
 		color: var(--text-muted);
 	}
 
@@ -337,6 +457,38 @@
 		border-radius: var(--radius-sm);
 		border: 1px solid var(--border-subtle);
 		word-break: break-all;
+	}
+
+	.z-settings-path-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 4px;
+	}
+
+	.z-settings-path-actions {
+		display: flex;
+		gap: var(--space-xs);
+	}
+
+	.z-path-action {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		border-radius: var(--radius-sm);
+		background: transparent;
+		color: var(--text-muted);
+		border: none;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-size: 14px;
+	}
+
+	.z-path-action:hover {
+		background: var(--bg-hover);
+		color: var(--text-accent);
 	}
 
 	/* Actions */
@@ -375,5 +527,10 @@
 		font-size: 13px;
 		color: var(--text-muted);
 		margin-top: var(--space-sm);
+	}
+
+	.z-settings-disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
 	}
 </style>

@@ -15,6 +15,10 @@
 	import Spinner from '$lib/components/ui/Spinner.svelte';
 	import * as api from '$lib/api';
 	import type { Snippet } from 'svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
+	import { togglePin, isModPinned } from '$lib/state/misc.svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 
 	type Props = {
 		mod: Mod;
@@ -31,10 +35,10 @@
 	let markdown = $state('');
 	let loadingMarkdown = $state(false);
 
-	const tabs = [
-		{ id: 'readme', label: 'Readme' },
-		{ id: 'changelog', label: 'Changelog' }
-	];
+	let tabs = $derived([
+		{ id: 'readme', label: i18nState.locale && m.modpack_readme_title() },
+		{ id: 'changelog', label: i18nState.locale && m.modpack_changeLog_title() }
+	]);
 
 	async function loadMarkdown(type: 'readme' | 'changelog') {
 		loadingMarkdown = true;
@@ -64,9 +68,21 @@
 		<div class="z-details-hero">
 			<img src={modIconSrc(mod)} alt={mod.name} class="z-details-icon" />
 			<div class="z-details-title">
-				<h2>{formatModName(mod.name)}</h2>
+				<div class="z-details-name-row">
+					<h2>{formatModName(mod.name)}</h2>
+					{#if mod.isInstalled}
+						<button
+							class="z-pin-toggle"
+							class:pinned={isModPinned(mod.uuid)}
+							onclick={() => togglePin(mod.uuid)}
+							title={isModPinned(mod.uuid) ? 'Désépingler' : 'Épingler'}
+						>
+							<Icon icon={isModPinned(mod.uuid) ? 'mdi:pin' : 'mdi:pin-outline'} />
+						</button>
+					{/if}
+				</div>
 				{#if mod.author}
-					<span class="z-details-author">by {mod.author}</span>
+					<span class="z-details-author">{i18nState.locale && m.modDetails_by()} {mod.author}</span>
 				{/if}
 			</div>
 		</div>
@@ -77,13 +93,10 @@
 				<Badge variant="accent">{mod.version}</Badge>
 			{/if}
 			{#if mod.isInstalled}
-				<Badge variant="success">Installed</Badge>
+				<Badge variant="success">{i18nState.locale && m.modDetails_installed()}</Badge>
 			{/if}
 			{#if mod.isDeprecated}
-				<Badge variant="error">Deprecated</Badge>
-			{/if}
-			{#if mod.isPinned}
-				<Badge>Pinned</Badge>
+				<Badge variant="error">{i18nState.locale && m.modDetails_deprecated()}</Badge>
 			{/if}
 		</div>
 
@@ -116,25 +129,39 @@
 		<!-- Action buttons -->
 		{#if mod.isInstalled}
 			<div class="z-details-actions">
-				<button class="z-action-btn" class:disabled={locked} disabled={locked} onclick={ontoggle}>
-					<Icon icon={mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off'} />
-					<span>{mod.enabled === false ? 'Enable' : 'Disable'}</span>
-				</button>
-
-				<button class="z-action-btn" onclick={() => api.profile.openModDir(mod.uuid)}>
-					<Icon icon="mdi:folder-open" />
-					<span>Open folder</span>
-				</button>
-
-				<button
-					class="z-action-btn danger"
-					class:disabled={locked}
-					disabled={locked}
-					onclick={onremove}
+				<Tooltip
+					text={i18nState.locale &&
+						(mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable())}
+					position="bottom"
+					delay={300}
 				>
-					<Icon icon="mdi:delete" />
-					<span>Uninstall</span>
-				</button>
+					<button class="z-action-btn" class:disabled={locked} disabled={locked} onclick={ontoggle}>
+						<Icon icon={mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off'} />
+						<span class="z-action-label"
+							>{i18nState.locale &&
+								(mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable())}</span
+						>
+					</button>
+				</Tooltip>
+
+				<Tooltip text={i18nState.locale && m.modDetails_openFolder()} position="bottom" delay={300}>
+					<button class="z-action-btn" onclick={() => api.profile.openModDir(mod.uuid)}>
+						<Icon icon="mdi:folder-open" />
+						<span class="z-action-label">{i18nState.locale && m.modDetails_openFolder()}</span>
+					</button>
+				</Tooltip>
+
+				<Tooltip text={i18nState.locale && m.modDetails_uninstall()} position="bottom" delay={300}>
+					<button
+						class="z-action-btn danger"
+						class:disabled={locked}
+						disabled={locked}
+						onclick={onremove}
+					>
+						<Icon icon="mdi:delete" />
+						<span class="z-action-label">{i18nState.locale && m.modDetails_uninstall()}</span>
+					</button>
+				</Tooltip>
 			</div>
 		{/if}
 
@@ -160,7 +187,7 @@
 					{@html markdown}
 				</div>
 			{:else}
-				<p class="z-details-empty">No content available.</p>
+				<p class="z-details-empty">{i18nState.locale && m.modDetails_noContent()}</p>
 			{/if}
 		</div>
 	</div>
@@ -176,8 +203,9 @@
 		border-left: 1px solid var(--border-subtle);
 		display: flex;
 		flex-direction: column;
-		overflow: hidden;
+		overflow: visible;
 		animation: slideIn var(--transition-normal) ease;
+		container-type: inline-size;
 	}
 
 	@keyframes slideIn {
@@ -198,6 +226,8 @@
 		flex-direction: column;
 		gap: var(--space-md);
 		position: relative;
+		overflow: visible;
+		z-index: 1;
 	}
 
 	.z-details-close {
@@ -237,12 +267,48 @@
 		border: 1px solid var(--border-subtle);
 	}
 
+	.z-details-name-row {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+
 	.z-details-title h2 {
 		font-family: var(--font-display);
 		font-size: 18px;
 		font-weight: 800;
 		color: var(--text-primary);
 		letter-spacing: -0.02em;
+	}
+
+	.z-pin-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		border-radius: var(--radius-sm);
+		border: none;
+		background: transparent;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		flex-shrink: 0;
+		font-size: 16px;
+	}
+
+	.z-pin-toggle:hover {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+	}
+
+	.z-pin-toggle.pinned {
+		color: var(--text-accent);
+	}
+
+	.z-pin-toggle.pinned:hover {
+		color: var(--error);
+		background: rgba(255, 92, 92, 0.1);
 	}
 
 	.z-details-author {
@@ -290,6 +356,20 @@
 		font-weight: 500;
 		cursor: pointer;
 		transition: all var(--transition-fast);
+		white-space: nowrap;
+		overflow: hidden;
+		min-width: 36px;
+	}
+
+	.z-action-label {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	@container (max-width: 380px) {
+		.z-action-label {
+			display: none;
+		}
 	}
 
 	.z-action-btn:hover:not(:disabled) {

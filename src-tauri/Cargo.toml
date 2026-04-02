@@ -1,6 +1,6 @@
 [package]
 name = "zephyr"
-version = "0.2.0"
+version = "0.5.0"
 description = "A fast, modern mod manager for all your games"
 authors = ["Prismo Studio"]
 license = "GPL-3.0"
@@ -45,7 +45,7 @@ open = "5"
 itertools = "0.13"
 zip = { version = "2", features = ["deflate"] }
 uuid = { version = "1", features = ["v4", "serde"] }
-reqwest = { version = "0.13.1", features = ["json", "stream", "gzip"] }
+reqwest = { version = "0.13.1", features = ["json", "stream", "gzip", "multipart"] }
 walkdir = "2"
 image = "0.25"
 semver = { version = "1", features = ["serde"] }
@@ -84,6 +84,7 @@ winreg = "0.52"
 
 [target.'cfg(target_os="linux")'.dependencies]
 webkit2gtk = "2.0.1"
+gtk = "0.18"
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]

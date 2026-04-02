@@ -2,34 +2,40 @@
 	import type { QueryModsArgsWithoutMax, SortBy, SortOrder } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import games from '$lib/state/game.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	type Props = {
 		queryArgs: QueryModsArgsWithoutMax;
 		sortOptions?: SortBy[];
 		showCategories?: boolean;
+		expanded?: boolean;
+		externalPanel?: boolean;
 	};
 
 	let {
 		queryArgs,
 		sortOptions = ['rating', 'downloads', 'lastUpdated', 'newest', 'name'],
-		showCategories = false
+		showCategories = false,
+		expanded = $bindable(false),
+		externalPanel = false
 	}: Props = $props();
 
-	let showFilters = $state(false);
 	let sortOpen = $state(false);
 
-	const sortLabels: Record<SortBy, string> = {
-		newest: 'Newest',
-		name: 'Name',
-		author: 'Author',
-		lastUpdated: 'Updated',
-		downloads: 'Downloads',
-		rating: 'Rating',
-		installDate: 'Install date',
-		custom: 'Custom',
-		diskSpace: 'Size'
-	};
+	let sortLabels = $derived({
+		newest: i18nState.locale && m.modListFilters_options_newest(),
+		name: i18nState.locale && m.modListFilters_options_name(),
+		author: i18nState.locale && m.modListFilters_options_author(),
+		lastUpdated: i18nState.locale && m.modListFilters_options_lastUpdated(),
+		downloads: i18nState.locale && m.modListFilters_options_downloads(),
+		rating: i18nState.locale && m.modListFilters_options_rating(),
+		installDate: i18nState.locale && m.modListFilters_options_installDate(),
+		custom: i18nState.locale && m.modListFilters_options_custom(),
+		diskSpace: i18nState.locale && m.modListFilters_options_diskSpace()
+	} as Record<SortBy, string>);
 
 	function selectSort(option: SortBy) {
 		queryArgs.sortBy = option;
@@ -39,17 +45,17 @@
 
 <div class="z-filters">
 	<div class="z-filters-row">
-		<Input bind:value={queryArgs.searchTerm} placeholder="Search mods..." class="z-search-input">
+		<Input
+			bind:value={queryArgs.searchTerm}
+			placeholder={i18nState.locale && m.modListFilters_searchBar_placeholder()}
+			class="z-search-input"
+		>
 			{#snippet iconLeft()}
 				<Icon icon="mdi:magnify" />
 			{/snippet}
 		</Input>
 
-		<button
-			class="z-filter-btn"
-			class:active={showFilters}
-			onclick={() => (showFilters = !showFilters)}
-		>
+		<button class="z-filter-btn" class:active={expanded} onclick={() => (expanded = !expanded)}>
 			<Icon icon="mdi:filter-variant" />
 		</button>
 
@@ -85,7 +91,10 @@
 				onclick={() => {
 					queryArgs.sortOrder = queryArgs.sortOrder === 'ascending' ? 'descending' : 'ascending';
 				}}
-				title={queryArgs.sortOrder === 'ascending' ? 'Ascending' : 'Descending'}
+				title={i18nState.locale &&
+					(queryArgs.sortOrder === 'ascending'
+						? m.modListFilters_options_ascending()
+						: m.modListFilters_options_descending())}
 			>
 				<Icon
 					icon={queryArgs.sortOrder === 'ascending' ? 'mdi:sort-ascending' : 'mdi:sort-descending'}
@@ -94,15 +103,15 @@
 		</div>
 	</div>
 
-	{#if showFilters}
+	{#if expanded && !externalPanel}
 		<div class="z-filters-expanded">
 			<label class="z-filter-toggle">
-				<input type="checkbox" bind:checked={queryArgs.includeNsfw} />
-				<span>NSFW</span>
+				<Checkbox bind:checked={queryArgs.includeNsfw} />
+				<span>{i18nState.locale && m.modListFilters_options_NSFW()}</span>
 			</label>
 			<label class="z-filter-toggle">
-				<input type="checkbox" bind:checked={queryArgs.includeDeprecated} />
-				<span>Deprecated</span>
+				<Checkbox bind:checked={queryArgs.includeDeprecated} />
+				<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
 			</label>
 
 			{#if showCategories && games.categories.length > 0}
@@ -309,10 +318,6 @@
 
 	.z-filter-toggle:hover {
 		background: var(--bg-hover);
-	}
-
-	.z-filter-toggle input {
-		accent-color: var(--accent-400);
 	}
 
 	.z-filter-categories {

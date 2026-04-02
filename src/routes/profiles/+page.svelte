@@ -5,10 +5,18 @@
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Icon from '@iconify/svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 
 	import profiles from '$lib/state/profile.svelte';
 	import auth from '$lib/state/auth.svelte';
 	import * as api from '$lib/api';
+	import { m } from '$lib/paraglide/messages';
+	import { open as openDialog } from '@tauri-apps/plugin-dialog';
+	import { convertFileSrc } from '@tauri-apps/api/core';
+	import { i18nState } from '$lib/i18nCore.svelte';
+	import { pushToast } from '$lib/toast';
+
+	const MAX_PROFILES = 20;
 
 	let createOpen = $state(false);
 	let newName = $state('');
@@ -19,8 +27,21 @@
 		return profiles.list.findIndex((p) => p.id === id);
 	}
 
+	function checkProfileLimit(): boolean {
+		if (profiles.list.length >= MAX_PROFILES) {
+			pushToast({
+				type: 'error',
+				name: 'Limite atteinte',
+				message: `Vous ne pouvez pas avoir plus de ${MAX_PROFILES} profils.`
+			});
+			return false;
+		}
+		return true;
+	}
+
 	async function createProfile() {
 		if (!newName.trim()) return;
+		if (!checkProfileLimit()) return;
 		await api.profile.create(newName.trim(), null);
 		await profiles.refresh();
 		newName = '';
@@ -32,13 +53,26 @@
 		await profiles.refresh();
 	}
 
+	function getUniqueCopyName(baseName: string): string {
+		const existingNames = new Set(profiles.list.map((p) => p.name));
+		const copyName = `${baseName} (copy)`;
+		if (!existingNames.has(copyName)) return copyName;
+
+		let i = 2;
+		while (existingNames.has(`${baseName} (copy ${i})`)) {
+			i++;
+		}
+		return `${baseName} (copy ${i})`;
+	}
+
 	async function duplicateProfile(id: number, name: string) {
+		if (!checkProfileLimit()) return;
 		const index = getProfileIndex(id);
 		if (index === -1) return;
 		if (id !== profiles.activeId) {
 			await api.profile.setActive(index);
 		}
-		await api.profile.duplicate(name + ' (copy)');
+		await api.profile.duplicate(getUniqueCopyName(name));
 		await profiles.refresh();
 	}
 
@@ -74,16 +108,48 @@
 
 	async function exportCode() {
 		const code = await api.profile.export.code();
-		// Copy to clipboard would be done via Tauri plugin
+	}
+
+	async function pickIcon(profileId: number) {
+		const file = await openDialog({
+			filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp'] }],
+			multiple: false
+		});
+
+		if (file) {
+			pushToast({
+				type: 'info',
+				message: (i18nState.locale && m.profiles_uploadingIcon()) || 'Uploading...'
+			});
+			try {
+				await api.profile.uploadProfileIcon(profileId, file);
+				await profiles.refresh();
+				pushToast({
+					type: 'info',
+					message: (i18nState.locale && m.profiles_iconUploaded()) || 'Done!'
+				});
+			} catch (e) {
+				pushToast({ type: 'error', message: String(e) });
+			}
+		}
+	}
+
+	function profileIconSrc(icon: string | null): string | null {
+		if (!icon) return null;
+		if (icon.startsWith('http')) return icon;
+		return convertFileSrc(icon);
 	}
 </script>
 
 <div class="z-profiles-page">
-	<Header title="Profiles" subtitle="{profiles.list.length} total">
+	<Header
+		title={i18nState.locale && m.menuBar_profile_title()}
+		subtitle={i18nState.locale && m.profiles_total({ count: profiles.list.length.toString() })}
+	>
 		{#snippet actions()}
 			<Button variant="primary" size="sm" onclick={() => (createOpen = true)}>
 				{#snippet icon()}<Icon icon="mdi:plus" />{/snippet}
-				New Profile
+				{i18nState.locale && m.profiles_newProfile()}
 			</Button>
 		{/snippet}
 	</Header>
@@ -94,51 +160,92 @@
 				<div class="z-profile-card" class:active={profile.id === profiles.activeId}>
 					<button class="z-profile-select" onclick={() => selectProfile(profile.id)}>
 						<div class="z-profile-header">
-							<div class="z-profile-icon">
-								<Icon icon="mdi:account-circle" />
+							<!-- svelte-ignore a11y_no_static_element_interactions -->
+							<div
+								class="z-profile-icon"
+								role="button"
+								tabindex="-1"
+								onclick={(e) => {
+									e.stopPropagation();
+									pickIcon(profile.id);
+								}}
+								onkeydown={() => {}}
+							>
+								{#if profile.icon}
+									<img
+										src={profileIconSrc(profile.icon)}
+										alt={profile.name}
+										class="z-profile-avatar"
+									/>
+								{:else}
+									<Icon icon="mdi:account-circle" />
+								{/if}
+								<span class="z-profile-icon-overlay">
+									<Icon icon="mdi:camera" />
+								</span>
 							</div>
 							<div class="z-profile-info">
-								<span class="z-profile-name">{profile.name}</span>
-								<span class="z-profile-mods">{profile.modCount} mods</span>
+								<div class="z-profile-name-row">
+									<span class="z-profile-name">{profile.name}</span>
+									{#if profile.id === profiles.activeId}
+										<span class="z-profile-active-dot"></span>
+									{/if}
+									{#if profile.sync}
+										<Icon icon="mdi:cloud" class="z-profile-sync-icon" />
+									{/if}
+								</div>
+								<span class="z-profile-mods"
+									>{i18nState.locale &&
+										m.profiles_mods({ count: profile.modCount.toString() })}</span
+								>
 							</div>
 						</div>
-
-						{#if profile.id === profiles.activeId}
-							<Badge variant="accent">Active</Badge>
-						{/if}
-
-						{#if profile.sync}
-							<div class="z-profile-sync">
-								<Icon icon="mdi:cloud" class="text-xs" />
-								<span>Synced</span>
-							</div>
-						{/if}
 					</button>
 
-					<div class="z-profile-actions">
-						<button
-							class="z-profile-action"
-							onclick={() => startRename(profile.id, profile.name)}
-							title="Rename"
-						>
-							<Icon icon="mdi:pencil" />
-						</button>
-						<button
-							class="z-profile-action"
-							onclick={() => duplicateProfile(profile.id, profile.name)}
-							title="Duplicate"
-						>
-							<Icon icon="mdi:content-copy" />
-						</button>
-						{#if profiles.list.length > 1}
-							<button
-								class="z-profile-action danger"
-								onclick={() => deleteProfile(profile.id)}
-								title="Delete"
+					<div class="z-profile-footer">
+						<div class="z-profile-badges">
+							{#if profile.id === profiles.activeId}
+								<span class="z-profile-badge accent">{i18nState.locale && m.profiles_active()}</span
+								>
+							{/if}
+							{#if profile.sync}
+								<span class="z-profile-badge info">{i18nState.locale && m.profiles_synced()}</span>
+							{/if}
+						</div>
+
+						<div class="z-profile-actions">
+							<Tooltip text={i18nState.locale && m.profiles_rename()} position="bottom" delay={200}>
+								<button
+									class="z-profile-action"
+									onclick={() => startRename(profile.id, profile.name)}
+								>
+									<Icon icon="mdi:pencil" />
+								</button>
+							</Tooltip>
+							<Tooltip
+								text={i18nState.locale && m.profiles_duplicate()}
+								position="bottom"
+								delay={200}
 							>
-								<Icon icon="mdi:delete" />
-							</button>
-						{/if}
+								<button
+									class="z-profile-action"
+									onclick={() => duplicateProfile(profile.id, profile.name)}
+								>
+									<Icon icon="mdi:content-copy" />
+								</button>
+							</Tooltip>
+							{#if profiles.list.length > 1}
+								<Tooltip
+									text={i18nState.locale && m.profiles_delete()}
+									position="bottom"
+									delay={200}
+								>
+									<button class="z-profile-action danger" onclick={() => deleteProfile(profile.id)}>
+										<Icon icon="mdi:delete" />
+									</button>
+								</Tooltip>
+							{/if}
+						</div>
 					</div>
 				</div>
 			{/each}
@@ -147,11 +254,11 @@
 </div>
 
 <!-- Create modal -->
-<Modal bind:open={createOpen} title="New Profile">
+<Modal bind:open={createOpen} title={i18nState.locale && m.profiles_newProfile()}>
 	<div class="z-modal-form">
 		<Input
 			bind:value={newName}
-			placeholder="Profile name"
+			placeholder={i18nState.locale && m.profiles_profileName()}
 			onkeydown={(e) => {
 				if (e.key === 'Enter') createProfile();
 			}}
@@ -159,17 +266,25 @@
 	</div>
 
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (createOpen = false)}>Cancel</Button>
-		<Button variant="primary" onclick={createProfile} disabled={!newName.trim()}>Create</Button>
+		<Button variant="ghost" onclick={() => (createOpen = false)}
+			>{i18nState.locale && m.dialog_cancel()}</Button
+		>
+		<Button variant="primary" onclick={createProfile} disabled={!newName.trim()}
+			>{i18nState.locale && m.profiles_create()}</Button
+		>
 	{/snippet}
 </Modal>
 
 <!-- Rename modal -->
-<Modal open={renameId !== null} onclose={() => (renameId = null)} title="Rename Profile">
+<Modal
+	open={renameId !== null}
+	onclose={() => (renameId = null)}
+	title={i18nState.locale && m.profiles_renameProfile()}
+>
 	<div class="z-modal-form">
 		<Input
 			bind:value={renameName}
-			placeholder="New name"
+			placeholder={i18nState.locale && m.profiles_newName()}
 			onkeydown={(e) => {
 				if (e.key === 'Enter') confirmRename();
 			}}
@@ -177,8 +292,12 @@
 	</div>
 
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (renameId = null)}>Cancel</Button>
-		<Button variant="primary" onclick={confirmRename} disabled={!renameName.trim()}>Rename</Button>
+		<Button variant="ghost" onclick={() => (renameId = null)}
+			>{i18nState.locale && m.dialog_cancel()}</Button
+		>
+		<Button variant="primary" onclick={confirmRename} disabled={!renameName.trim()}
+			>{i18nState.locale && m.profiles_rename()}</Button
+		>
 	{/snippet}
 </Modal>
 
@@ -192,7 +311,7 @@
 	.z-profiles-content {
 		flex: 1;
 		overflow-y: auto;
-		padding: 0 var(--space-xl) var(--space-xl);
+		padding: var(--space-xl);
 	}
 
 	.z-profiles-grid {
@@ -205,7 +324,7 @@
 		border-radius: var(--radius-lg);
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
-		overflow: hidden;
+		overflow: visible;
 		transition: all var(--transition-fast);
 	}
 
@@ -224,6 +343,7 @@
 		gap: var(--space-sm);
 		width: 100%;
 		padding: var(--space-lg);
+		padding-bottom: var(--space-sm);
 		background: transparent;
 		border: none;
 		cursor: pointer;
@@ -238,16 +358,47 @@
 	}
 
 	.z-profile-icon {
-		width: 40px;
-		height: 40px;
-		border-radius: var(--radius-md);
+		width: 44px;
+		height: 44px;
+		border-radius: var(--radius-lg);
 		background: var(--bg-overlay);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 20px;
+		font-size: 22px;
 		color: var(--text-muted);
 		flex-shrink: 0;
+		transition: all var(--transition-fast);
+		position: relative;
+		overflow: hidden;
+		cursor: pointer;
+		border: none;
+	}
+
+	.z-profile-icon:hover .z-profile-icon-overlay {
+		opacity: 1;
+	}
+
+	.z-profile-icon-overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(0, 0, 0, 0.55);
+		color: white;
+		font-size: 16px;
+		opacity: 0;
+		transition: opacity var(--transition-fast);
+		border-radius: var(--radius-lg);
+	}
+
+	.z-profile-avatar {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		border-radius: var(--radius-lg);
+		padding: 4px;
 	}
 
 	.z-profile-card.active .z-profile-icon {
@@ -259,6 +410,13 @@
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
+		flex: 1;
+	}
+
+	.z-profile-name-row {
+		display: flex;
+		align-items: center;
+		gap: 6px;
 	}
 
 	.z-profile-name {
@@ -270,38 +428,76 @@
 		white-space: nowrap;
 	}
 
+	.z-profile-active-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: var(--accent-400);
+		box-shadow: 0 0 6px rgba(26, 255, 250, 0.5);
+		flex-shrink: 0;
+	}
+
+	:global(.z-profile-sync-icon) {
+		font-size: 12px;
+		color: var(--info);
+		flex-shrink: 0;
+	}
+
 	.z-profile-mods {
 		font-size: 12px;
 		color: var(--text-muted);
+		margin-top: 1px;
 	}
 
-	.z-profile-sync {
+	.z-profile-footer {
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
+		padding: var(--space-xs) var(--space-md) var(--space-md);
+	}
+
+	.z-profile-badges {
+		display: flex;
 		gap: 4px;
-		font-size: 11px;
+	}
+
+	.z-profile-badge {
+		font-size: 10px;
+		font-weight: 600;
+		padding: 2px 8px;
+		border-radius: var(--radius-full);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.z-profile-badge.accent {
+		background: rgba(26, 255, 250, 0.1);
+		color: var(--accent-400);
+	}
+
+	.z-profile-badge.info {
+		background: rgba(59, 130, 246, 0.1);
 		color: var(--info);
 	}
 
 	.z-profile-actions {
 		display: flex;
 		gap: 2px;
-		padding: 0 var(--space-md) var(--space-md);
 	}
 
 	.z-profile-action {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 32px;
-		height: 32px;
+		width: 28px;
+		height: 28px;
 		border-radius: var(--radius-sm);
 		border: none;
 		background: transparent;
 		color: var(--text-muted);
 		cursor: pointer;
 		transition: all var(--transition-fast);
-		font-size: 16px;
+		font-size: 14px;
 	}
 
 	.z-profile-action:hover {

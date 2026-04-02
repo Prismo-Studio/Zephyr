@@ -4,6 +4,9 @@
 	import { shortenFileSize } from '$lib/util';
 	import Icon from '@iconify/svelte';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
+	import { installState } from '$lib/state/misc.svelte';
 
 	type Props = {
 		mod: Mod;
@@ -27,6 +30,13 @@
 		loading = false;
 		api.profile.install.getDownloadSize(modId).then((size) => (downloadSize = size));
 	});
+
+	// Reset loading when install cycle ends
+	$effect(() => {
+		if (!installState.active) {
+			loading = false;
+		}
+	});
 </script>
 
 <div class="z-install-btn-group">
@@ -42,16 +52,16 @@
 	>
 		{#if locked}
 			<Icon icon="mdi:lock" class="text-base" />
-			<span>Locked</span>
+			<span>{i18nState.locale && m.installButton_locked()}</span>
 		{:else if mod.isInstalled}
 			<Icon icon="mdi:check-circle" class="text-base" style="color: var(--success)" />
-			<span>Installed</span>
+			<span>{i18nState.locale && m.installButton_installed()}</span>
 		{:else if loading}
 			<Spinner size={16} />
-			<span>Installing...</span>
+			<span>{i18nState.locale && m.installButton_installing()}</span>
 		{:else}
 			<Icon icon="mdi:download" class="text-lg" />
-			<span>Install</span>
+			<span>{i18nState.locale && m.installButton_install()}</span>
 			{#if downloadSize}
 				<span class="z-install-size">({shortenFileSize(downloadSize)})</span>
 			{/if}
@@ -162,10 +172,10 @@
 
 	.z-version-list {
 		position: absolute;
-		bottom: calc(100% + 4px);
+		top: calc(100% + 4px);
 		right: 0;
 		min-width: 160px;
-		max-height: 300px;
+		max-height: 240px;
 		overflow-y: auto;
 		background: var(--bg-elevated);
 		border: 1px solid var(--border-default);

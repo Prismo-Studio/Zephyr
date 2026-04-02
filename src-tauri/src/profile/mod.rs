@@ -77,6 +77,7 @@ pub struct Profile {
     pub custom_args: Vec<String>,
     pub custom_args_enabled: bool,
     pub missing: bool,
+    pub icon: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -259,6 +260,14 @@ impl Profile {
         self.get_mod(uuid).is_ok()
     }
 
+    pub fn reorder_mod(&mut self, uuid: Uuid, delta: i32) -> Result<()> {
+        let index = self.index_of(uuid)?;
+        let target = (index as i32 + delta).clamp(0, self.mods.len() as i32 - 1) as usize;
+        let profile_mod = self.mods.remove(index);
+        self.mods.insert(target, profile_mod);
+        Ok(())
+    }
+
     fn thunderstore_mods(&self) -> impl Iterator<Item = (&ThunderstoreMod, bool)> {
         self.mods.iter().filter_map(ProfileMod::as_thunderstore)
     }
@@ -318,6 +327,7 @@ impl Profile {
             custom_args: self.custom_args.clone(),
             custom_args_enabled: self.custom_args_enabled,
             missing: self.missing,
+            icon: self.icon.clone(),
         }
     }
 
@@ -352,6 +362,7 @@ pub struct FrontendProfile {
     custom_args: Vec<String>,
     custom_args_enabled: bool,
     missing: bool,
+    icon: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
@@ -485,7 +496,11 @@ impl ManagedGame {
     }
 
     pub fn update_window_title(&self, app: &AppHandle) -> Result<()> {
-        let title = format!("{} | {} - Zephyr", self.active_profile().name, self.game.name);
+        let title = format!(
+            "{} | {} - Zephyr",
+            self.active_profile().name,
+            self.game.name
+        );
         app.get_webview_window("main")
             .unwrap()
             .set_title(&title)
@@ -572,6 +587,7 @@ impl ModManager {
                 custom_args: saved_profile.custom_args.unwrap_or_default(),
                 custom_args_enabled: saved_profile.custom_args_enabled.unwrap_or(false),
                 missing,
+                icon: saved_profile.icon,
             };
 
             manager

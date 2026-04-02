@@ -9,6 +9,8 @@ use tracing::{error, info, warn};
 
 #[cfg(target_os = "linux")]
 extern crate webkit2gtk;
+#[cfg(target_os = "linux")]
+use gtk::prelude::GtkWindowExt;
 
 mod cli;
 mod config;
@@ -29,6 +31,19 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         env!("CARGO_PKG_VERSION"),
         std::env::consts::OS,
     );
+
+    // On Linux (Wayland + X11), GTK can ignore the `decorations: false` config and
+    // draw its own title bar. Calling set_decorated(false) on the underlying GtkWindow
+    // directly is the reliable fix.
+    #[cfg(target_os = "linux")]
+    {
+        use tauri::Manager;
+        if let Some(window) = app.get_webview_window("main") {
+            if let Ok(gtk_window) = window.gtk_window() {
+                gtk_window.set_decorated(false);
+            }
+        }
+    }
 
     if let Err(err) = state::setup(app.handle()) {
         error!("setup error: {:?}", err);
@@ -107,6 +122,18 @@ pub fn run() {
         if env::var("WEBKIT_DISABLE_COMPOSITING_MODE").is_err() {
             env::set_var("WEBKIT_DISABLE_COMPOSITING_MODE", "1");
         }
+        // Disable GTK client-side decorations (CSD) so the native title bar
+        // doesn't appear on Wayland/X11 when decorations: false is set in tauri.conf.json.
+        // Without this, GTK falls back to drawing its own CSD title bar.
+        if env::var("GTK_CSD").is_err() {
+            env::set_var("GTK_CSD", "0");
+        }
+        // Force GDK to use the X11 backend on Wayland (via XWayland).
+        // WebKitGTK's native Wayland backend has known issues rendering images/logos,
+        // causing blank/missing visuals. XWayland provides a more stable rendering path.
+        if env::var("GDK_BACKEND").is_err() {
+            env::set_var("GDK_BACKEND", "x11");
+        }
     }
 
     logger::setup().unwrap_or_else(|err| {
@@ -130,6 +157,7 @@ pub fn run() {
             prefs::commands::set_prefs,
             prefs::commands::zoom_window,
             prefs::commands::get_system_fonts,
+            prefs::commands::open_dir,
             profile::commands::get_game_info,
             profile::commands::favorite_game,
             profile::commands::set_active_game,
@@ -146,6 +174,7 @@ pub fn run() {
             profile::commands::force_remove_mods,
             profile::commands::toggle_mod,
             profile::commands::force_toggle_mods,
+            profile::commands::reorder_mod,
             profile::commands::set_all_mods_state,
             profile::commands::remove_disabled_mods,
             profile::commands::open_profile_dir,
@@ -156,6 +185,10 @@ pub fn run() {
             profile::commands::set_custom_args,
             profile::commands::set_profile_path,
             profile::commands::forget_profile,
+            profile::commands::set_profile_icon,
+            profile::commands::set_profile_icon_url,
+            profile::commands::upload_profile_icon,
+            profile::commands::remove_profile_icon,
             profile::launch::commands::launch_game,
             profile::launch::commands::get_launch_args,
             profile::launch::commands::open_game_dir,

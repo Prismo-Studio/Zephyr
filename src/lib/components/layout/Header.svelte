@@ -41,6 +41,7 @@
 		min-height: 56px;
 		gap: var(--space-lg);
 		flex-shrink: 0;
+		border-bottom: 1px solid var(--border-subtle);
 	}
 
 	.z-header-left {

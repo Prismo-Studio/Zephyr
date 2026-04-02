@@ -25,11 +25,14 @@ pub fn create_launch_command(
     }
 }
 
-#[allow(unused_variables)] // allow unused game_dir on windows
+#[allow(unused_variables)] // allow unused game_dir on windows/macos
 fn create_steam_command(game_dir: &Path, game: Game, prefs: &Prefs) -> Result<Command> {
     let Some(steam) = &game.platforms.steam else {
         bail!("{} is not available on Steam", game.name)
     };
+
+    let mut command = create_base_steam_command()?;
+    command.arg("-applaunch").arg(steam.id.to_string());
 
     #[cfg(target_os = "linux")]
     if let Some(proxy_dll) = game.mod_loader.proxy_dll() {
@@ -41,15 +44,12 @@ fn create_steam_command(game_dir: &Path, game: Game, prefs: &Prefs) -> Result<Co
             false
         }) {
             linux::ensure_wine_override(steam.id as u64, proxy_dll, game_dir).unwrap_or_else(
-                |err| {
-                    warn!("failed to ensure wine dll override: {:#}", err);
-                },
+                |err| warn!("failed to ensure wine dll override: {:#}", err),
             );
+
+            command.env("WINEDLLOVERRIDES", format!("{proxy_dll}=native,builtin"));
         }
     }
-
-    let mut command = create_base_steam_command()?;
-    command.arg("-applaunch").arg(steam.id.to_string());
 
     Ok(command)
 }
@@ -132,6 +132,33 @@ fn read_steam_registry() -> Result<PathBuf> {
     let path: String = key.get_value("InstallPath")?;
 
     Ok(PathBuf::from(path))
+}
+
+#[cfg(target_os = "macos")]
+fn create_base_steam_command() -> Result<Command> {
+    let app_path = PathBuf::from("/Applications/Steam.app/Contents/MacOS/steam_osx");
+
+    if app_path.exists() {
+        info!("found Steam at {}", app_path.display());
+        return Ok(Command::new(app_path));
+    }
+
+    // Try via PATH
+    if let Ok(path) = which::which("steam") {
+        info!("found Steam via which: {}", path.display());
+        return Ok(Command::new(path));
+    }
+
+    // Try open command with Steam app bundle
+    let steam_app = PathBuf::from("/Applications/Steam.app");
+    if steam_app.exists() {
+        info!("launching Steam via open command");
+        let mut cmd = Command::new("open");
+        cmd.arg("-a").arg("Steam").arg("--args");
+        return Ok(cmd);
+    }
+
+    bail!("failed to find Steam installation, is it not installed?")
 }
 
 fn create_epic_command(game: Game) -> Result<Command> {

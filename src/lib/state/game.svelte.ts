@@ -2,6 +2,7 @@ import type { FiltersResponse, Game, GameInfo, PackageCategory } from '$lib/type
 import * as api from '$lib/api';
 import { pushToast } from '$lib/toast';
 import { fetch } from '@tauri-apps/plugin-http';
+import { THUNDERSTORE_CATEGORY_URL } from '$lib/constants/api.constants';
 
 class GamesState {
 	active: Game | null = $state(null);
@@ -28,7 +29,7 @@ class GamesState {
 		if (!slug) return;
 
 		try {
-			const url = `https://thunderstore.io/api/experimental/community/${slug}/category/`;
+			const url = THUNDERSTORE_CATEGORY_URL(slug);
 			const response = await fetch(url);
 
 			if (!response.ok) {
@@ -53,7 +54,5 @@ class GamesState {
 }
 
 const games = new GamesState();
-
-games.refresh();
 
 export default games;

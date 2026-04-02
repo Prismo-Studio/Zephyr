@@ -1,0 +1,6 @@
+export const TOAST_ERROR_DURATION_MS = 8000;
+export const TOAST_INFO_DURATION_MS = 3000;
+export const TOAST_MAX_COUNT = 5;
+
+export const TRANSITION_DROP_IN_DURATION_MS = 75;
+export const TRANSITION_DROP_OUT_DURATION_MS = 50;

@@ -208,19 +208,6 @@ impl Profile {
         self.game.mod_loader.installer_for(&profile_mod.full_name())
     }
 
-    fn reorder_mod(&mut self, uuid: Uuid, delta: i32) -> Result<()> {
-        let index = self
-            .mods
-            .iter()
-            .position(|m| m.uuid() == uuid)
-            .ok_or_eyre("mod not found in profile")?;
-
-        let target = (index as i32 + delta).clamp(0, self.mods.len() as i32 - 1) as usize;
-        let profile_mod = self.mods.remove(index);
-        self.mods.insert(target, profile_mod);
-
-        Ok(())
-    }
 }
 
 fn handle_reorder_event(event: tauri::Event, app: &AppHandle) -> Result<()> {
@@ -321,6 +308,7 @@ impl ManagedGame {
             custom_args: Vec::new(),
             custom_args_enabled: false,
             missing: false,
+            icon: None,
         };
 
         let index = self.target_profile_index(&profile.name);
@@ -441,12 +429,16 @@ impl ManagedGame {
             dirs_next::desktop_dir().ok_or_eyre("could not find desktop directory")?;
 
         #[cfg(target_os = "windows")]
-        let shortcut_path =
-            desktop_path.join(format!("Zephyr - {} - {}.lnk", self.game.name, profile.name));
+        let shortcut_path = desktop_path.join(format!(
+            "Zephyr - {} - {}.lnk",
+            self.game.name, profile.name
+        ));
 
         #[cfg(target_os = "linux")]
-        let shortcut_path =
-            desktop_path.join(format!("zephyr-{}-{}.desktop", self.game.name, profile.name));
+        let shortcut_path = desktop_path.join(format!(
+            "zephyr-{}-{}.desktop",
+            self.game.name, profile.name
+        ));
 
         if shortcut_path.exists() {
             bail!("shortcut already exists");
@@ -510,6 +502,55 @@ impl ManagedGame {
                 std::os::unix::fs::PermissionsExt::from_mode(0o755),
             )
             .context("Failed to set permissions on desktop file")?;
+        }
+
+        #[cfg(target_os = "macos")]
+        {
+            let shortcut_path = desktop_path.join(format!(
+                "Zephyr - {} - {}.app",
+                self.game.name, profile.name
+            ));
+
+            if shortcut_path.exists() {
+                bail!("shortcut already exists");
+            }
+
+            let script_name = "Zephyr";
+            let macos_dir = shortcut_path.join("Contents/MacOS");
+            std::fs::create_dir_all(&macos_dir)
+                .context("failed to create .app bundle directories")?;
+
+            let info_content = format!(
+                "<?xml version='1.0' encoding='UTF-8'?>\n\
+                 <!DOCTYPE plist PUBLIC '-//Apple Computer//DTD PLIST 1.0//EN' \
+                 'http://www.apple.com/DTDs/PropertyList-1.0.dtd'>\n\
+                 <plist version='1.0'>\n\
+                 <dict>\n\
+                 <key>CFBundleExecutable</key>\n\
+                 <string>{}</string>\n\
+                 </dict>\n\
+                 </plist>",
+                script_name
+            );
+
+            std::fs::write(shortcut_path.join("Contents/Info.plist"), info_content)
+                .context("failed to write Info.plist")?;
+
+            let script_content = format!(
+                "#!/bin/sh\n\
+                 '{}' --game {} --profile '{}' --launch --no-gui",
+                exe_path.to_string_lossy(),
+                self.game.slug,
+                profile.name
+            );
+
+            let script_path = macos_dir.join(script_name);
+            std::fs::write(&script_path, script_content)
+                .context("failed to write launcher script")?;
+
+            use std::os::unix::fs::PermissionsExt;
+            std::fs::set_permissions(&script_path, std::fs::Permissions::from_mode(0o755))
+                .context("failed to set permissions on launcher script")?;
         }
 
         Ok(())

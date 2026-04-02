@@ -59,7 +59,11 @@ pub trait ModSource: Send + Sync {
     async fn get_categories(&self) -> Result<Vec<SourceCategory>>;
 
     /// Get trending/popular mods.
-    async fn get_trending(&self, period: TrendingPeriod, max_count: usize) -> Result<Vec<UnifiedMod>>;
+    async fn get_trending(
+        &self,
+        period: TrendingPeriod,
+        max_count: usize,
+    ) -> Result<Vec<UnifiedMod>>;
 
     /// Download a mod to a temporary location.
     async fn download(&self, external_id: &str, version: &str) -> Result<DownloadResult>;
@@ -106,10 +110,7 @@ impl SourceRegistry {
 
     /// Get info about all registered sources.
     pub fn list_sources(&self) -> Vec<SourceInfo> {
-        self.sources
-            .values()
-            .map(|s| s.info())
-            .collect()
+        self.sources.values().map(|s| s.info()).collect()
     }
 
     /// Search across multiple sources, merging results.

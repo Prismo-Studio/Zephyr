@@ -25,11 +25,10 @@ pub mod platform;
 
 pub const CACHE_FILE_NAME: &str = "games.json";
 
-// TODO: migrate games.json to prismo-studio/zephyr repo once forked games list is ready
 const GITHUB_API_URL: &str =
-    "https://api.github.com/repos/Kesomannen/gale/commits?path=src-tauri/games.json&per_page=1";
+    "https://api.github.com/repos/Prismo-Studio/Zephyr/commits?path=src-tauri/games.json&per_page=1";
 const GAMES_JSON_URL: &str =
-    "https://raw.githubusercontent.com/Kesomannen/gale/refs/heads/master/src-tauri/games.json";
+    "https://raw.githubusercontent.com/Prismo-Studio/Zephyr/refs/heads/dev/src-tauri/games.json";
 
 const BUNDLED_GAMES_JSON: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/games.json"));
 
@@ -96,10 +95,7 @@ pub async fn update_list_task(app: &AppHandle) -> Result<()> {
         Utc::now()
     });
 
-    let cache = GamesCache {
-        date,
-        games,
-    };
+    let cache = GamesCache { date, games };
 
     let path = util::path::default_app_data_dir().join(CACHE_FILE_NAME);
     util::fs::write_json(path, &cache, JsonStyle::Pretty)?;
@@ -133,7 +129,8 @@ async fn get_last_commit_date(app: &AppHandle) -> Result<DateTime<Utc>> {
         .error_for_status()?
         .json()
         .await?;
-    let date = response.first()
+    let date = response
+        .first()
         .ok_or_eyre("github api response contained no entries")?
         .commit
         .author

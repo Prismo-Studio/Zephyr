@@ -14,6 +14,7 @@
 		"core:window:allow-start-dragging",
 		"core:window:allow-toggle-maximize",
 		"core:window:allow-set-decorations",
+		"core:window:allow-inner-size",
 		"clipboard-manager:allow-write-text",
 		"clipboard-manager:allow-read-text",
 		"deep-link:default",
@@ -31,10 +32,14 @@
 				},
 				{
 					"url": "https://raw.githubusercontent.com/prismo-studio/zephyr/main/*"
+				},
+				{
+					"url": "https://api.cloudinary.com/*"
 				}
 			],
 			"deny": []
 		},
-		"os:allow-locale"
+		"os:allow-locale",
+		"window-state:default"
 	]
 }

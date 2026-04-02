@@ -1,12 +1,15 @@
 <script lang="ts">
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 
 	import * as api from '$lib/api';
 	import type { ConfigFile, ConfigEntry, ConfigSection, ConfigValue } from '$lib/types';
 	import { onMount } from 'svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let configFiles: ConfigFile[] = $state([]);
 	let selectedFile: ConfigFile | null = $state(null);
@@ -75,12 +78,12 @@
 </script>
 
 <div class="z-config-page">
-	<Header title="Config Editor">
+	<Header title={i18nState.locale && m.dashboard_quickActions_config()}>
 		{#snippet actions()}
 			{#if selectedFile}
 				<Button variant="ghost" size="sm" onclick={() => openFile(selectedFile!)}>
 					{#snippet icon()}<Icon icon="mdi:open-in-new" />{/snippet}
-					Open file
+					{i18nState.locale && m.config_openFile()}
 				</Button>
 			{/if}
 		{/snippet}
@@ -90,7 +93,10 @@
 		<!-- File list -->
 		<div class="z-config-sidebar">
 			<div class="z-config-search">
-				<Input bind:value={searchTerm} placeholder="Search config files...">
+				<Input
+					bind:value={searchTerm}
+					placeholder={i18nState.locale && m.config_searchPlaceholder()}
+				>
 					{#snippet iconLeft()}<Icon icon="mdi:magnify" />{/snippet}
 				</Input>
 			</div>
@@ -117,7 +123,7 @@
 				{#if filteredFiles.length === 0}
 					<div class="z-config-empty">
 						<Icon icon="mdi:file-search" />
-						<span>No config files found</span>
+						<span>{i18nState.locale && m.configFileList_noFiles()}</span>
 					</div>
 				{/if}
 			</div>
@@ -138,7 +144,7 @@
 											<button
 												class="z-entry-reset"
 												onclick={() => resetEntry(selectedFile!, section, entry)}
-												title="Reset to default"
+												title={i18nState.locale && m.config_resetDefault()}
 											>
 												<Icon icon="mdi:undo" />
 											</button>
@@ -206,11 +212,14 @@
 												</span>
 											{/if}
 										{:else if entry.value.type === 'enum'}
-											<select
-												class="z-entry-select"
-												value={entry.value.content.index}
-												onchange={(e) => {
-													const idx = parseInt(e.currentTarget.value);
+											<Dropdown
+												options={entry.value.content.options.map((opt, i) => ({
+													value: String(i),
+													label: opt
+												}))}
+												value={String(entry.value.content.index)}
+												onchange={(val) => {
+													const idx = parseInt(val);
 													const c = entry.value.content as { index: number; options: string[] };
 													const newVal = {
 														type: 'enum' as const,
@@ -219,11 +228,7 @@
 													entry.value = newVal;
 													setEntry(selectedFile!, section, entry, newVal);
 												}}
-											>
-												{#each entry.value.content.options as opt, i}
-													<option value={i}>{opt}</option>
-												{/each}
-											</select>
+											/>
 										{:else}
 											<span class="z-entry-raw">{configValueStr(entry.value)}</span>
 										{/if}
@@ -235,18 +240,18 @@
 				{:else if selectedFile.type === 'err'}
 					<div class="z-config-error">
 						<Icon icon="mdi:alert-circle" />
-						<span>Error reading file: {selectedFile.error}</span>
+						<span>{i18nState.locale && m.config_errorReading({ error: selectedFile.error })}</span>
 					</div>
 				{:else}
 					<div class="z-config-unsupported">
 						<Icon icon="mdi:file-question" />
-						<span>Unsupported config format</span>
+						<span>{i18nState.locale && m.config_unsupported()}</span>
 					</div>
 				{/if}
 			{:else}
 				<div class="z-config-placeholder">
 					<Icon icon="mdi:file-cog" />
-					<span>Select a config file</span>
+					<span>{i18nState.locale && m.config_selectFile()}</span>
 				</div>
 			{/if}
 		</div>
@@ -344,7 +349,7 @@
 		font-family: var(--font-display);
 		font-size: 14px;
 		font-weight: 700;
-		color: var(--text-accent);
+		color: var(--text-primary);
 		margin-bottom: var(--space-md);
 		padding-bottom: var(--space-sm);
 		border-bottom: 1px solid var(--border-subtle);
@@ -404,6 +409,10 @@
 		display: flex;
 		align-items: center;
 		gap: var(--space-sm);
+	}
+
+	.z-entry-value :global(.z-dropdown-wrapper) {
+		width: 200px;
 	}
 
 	.z-bool-toggle {

@@ -9,6 +9,8 @@
 	import profiles from '$lib/state/profile.svelte';
 	import { gameIconSrc } from '$lib/util';
 	import * as api from '$lib/api';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let favorites = $derived(games.list.filter((g) => g.favorite));
 	let recentGames = $derived(games.list.slice(0, 8));
@@ -23,12 +25,12 @@
 </script>
 
 <div class="z-dashboard">
-	<Header title="Dashboard">
+	<Header title={i18nState.locale && m.dashboard_title()}>
 		{#snippet actions()}
 			{#if games.active}
 				<Button variant="primary" onclick={launch}>
 					{#snippet icon()}<Icon icon="mdi:rocket-launch" />{/snippet}
-					Launch {games.active.name}
+					{i18nState.locale && m.dashboard_launch({ name: games.active.name })}
 				</Button>
 			{/if}
 		{/snippet}
@@ -56,11 +58,11 @@
 					<div class="z-hero-actions">
 						<a href="/" class="z-hero-action">
 							<Icon icon="mdi:package-variant" />
-							<span>View mods</span>
+							<span>{i18nState.locale && m.dashboard_viewMods()}</span>
 						</a>
 						<a href="/browse" class="z-hero-action">
 							<Icon icon="mdi:store-search" />
-							<span>Browse</span>
+							<span>{i18nState.locale && m.navBar_label_browse()}</span>
 						</a>
 					</div>
 				</div>
@@ -73,21 +75,21 @@
 				<div class="z-stat-icon"><Icon icon="mdi:gamepad-variant" /></div>
 				<div class="z-stat-info">
 					<span class="z-stat-value">{games.list.length}</span>
-					<span class="z-stat-label">Games</span>
+					<span class="z-stat-label">{i18nState.locale && m.dashboard_games()}</span>
 				</div>
 			</div>
 			<div class="z-stat-card">
 				<div class="z-stat-icon"><Icon icon="mdi:account-group" /></div>
 				<div class="z-stat-info">
 					<span class="z-stat-value">{profiles.list.length}</span>
-					<span class="z-stat-label">Profiles</span>
+					<span class="z-stat-label">{i18nState.locale && m.dashboard_stats_profiles()}</span>
 				</div>
 			</div>
 			<div class="z-stat-card">
 				<div class="z-stat-icon"><Icon icon="mdi:puzzle" /></div>
 				<div class="z-stat-info">
 					<span class="z-stat-value">{profiles.active?.modCount ?? 0}</span>
-					<span class="z-stat-label">Mods installed</span>
+					<span class="z-stat-label">{i18nState.locale && m.dashboard_stats_modsInstalled()}</span>
 				</div>
 			</div>
 		</div>
@@ -95,9 +97,12 @@
 		<!-- Games grid -->
 		<section class="z-section">
 			<div class="z-section-header">
-				<h3>Your Games</h3>
+				<h3>{i18nState.locale && m.dashboard_yourGames()}</h3>
 				{#if favorites.length > 0}
-					<Badge variant="accent">{favorites.length} favorites</Badge>
+					<Badge variant="accent"
+						>{i18nState.locale &&
+							m.dashboard_favorites({ count: favorites.length.toString() })}</Badge
+					>
 				{/if}
 			</div>
 
@@ -136,7 +141,7 @@
 	.z-dashboard-content {
 		flex: 1;
 		overflow-y: auto;
-		padding: 0 var(--space-xl) var(--space-xl);
+		padding: var(--space-md) var(--space-xl) var(--space-xl);
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xl);
@@ -168,7 +173,8 @@
 		flex-direction: column;
 		justify-content: space-between;
 		min-height: 180px;
-		background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1));
+		background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+		color: #ffffff;
 	}
 
 	.z-hero-title {
@@ -190,11 +196,11 @@
 		align-items: center;
 		gap: 4px;
 		font-size: 13px;
-		color: var(--text-secondary);
+		color: rgba(255, 255, 255, 0.8);
 	}
 
 	.z-hero-mods {
-		color: var(--text-muted);
+		color: rgba(255, 255, 255, 0.5);
 	}
 
 	.z-hero-actions {
@@ -210,7 +216,7 @@
 		padding: var(--space-sm) var(--space-lg);
 		border-radius: var(--radius-md);
 		background: rgba(255, 255, 255, 0.1);
-		color: var(--text-primary);
+		color: #ffffff;
 		text-decoration: none;
 		font-size: 13px;
 		font-weight: 600;

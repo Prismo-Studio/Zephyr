@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
+	import { getVersion } from '@tauri-apps/api/app';
 
 	let status: string | null = $state(null);
+	let appVersion: string = $state('');
 	let unlisten: UnlistenFn | undefined;
 
 	onMount(() => {
+		getVersion().then((v) => (appVersion = v));
+
 		listen<string | null>('status_update', (evt) => {
 			status = evt.payload;
 		}).then((cb) => (unlisten = cb));
@@ -21,7 +25,7 @@
 		{/if}
 	</div>
 	<div class="z-statusbar-right">
-		<span class="z-version">v0.2.0</span>
+		<span class="z-version">v{appVersion}</span>
 	</div>
 </footer>
 
