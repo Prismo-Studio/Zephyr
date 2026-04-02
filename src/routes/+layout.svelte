@@ -23,6 +23,7 @@
 	import { updateAppLanguage, i18nState } from '$lib/i18nCore.svelte';
 	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
 	import * as api from '$lib/api';
+	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import { initErrorListener } from '$lib/invoke';
 	import { open } from '@tauri-apps/plugin-shell';
 
@@ -36,6 +37,11 @@
 	let unlistenGames: UnlistenFn | null;
 
 	onMount(() => {
+		getCurrentWindow().isVisible().then((visible) => {
+			if (!visible) {
+				getCurrentWindow().show();
+			}
+		});
 		initErrorListener();
 		// Kick off data loading now that Tauri IPC is ready
 		profiles.refresh().catch(() => {});
