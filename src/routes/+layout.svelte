@@ -97,6 +97,25 @@
 	});
 </script>
 
+<svelte:window
+	onkeydown={(evt) => {
+		const k = evt.key.toLowerCase();
+		// Block F12 (devtools)
+		if (k === 'f12') { evt.preventDefault(); return; }
+		// Block F5 (refresh via F5)
+		if (k === 'f5') { evt.preventDefault(); return; }
+		// Block Ctrl+shortcuts except Ctrl+R (reload), Ctrl+C/V/X/A/Z (standard editing)
+		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey) {
+			const allowed = ['r', 'c', 'v', 'x', 'a', 'z'];
+			if (!allowed.includes(k)) { evt.preventDefault(); return; }
+		}
+		// Block Ctrl+Shift+I/J/C (devtools variants)
+		if (evt.ctrlKey && evt.shiftKey) {
+			if (['i', 'j', 'c'].includes(k)) { evt.preventDefault(); return; }
+		}
+	}}
+/>
+
 <svelte:body
 	oncontextmenu={(evt) => {
 		evt.preventDefault();
