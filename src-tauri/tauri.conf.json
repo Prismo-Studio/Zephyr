@@ -1,6 +1,6 @@
 {
 	"productName": "Zephyr",
-	"version": "0.2.0",
+	"version": "0.5.0",
 	"identifier": "com.prismo-studio.zephyr",
 	"build": {
 		"beforeBuildCommand": "pnpm run build",
@@ -33,6 +33,13 @@
 			"deb": {
 				"depends": []
 			}
+		},
+		"macOS": {
+			"dmg": {
+				"appPosition": { "x": 180, "y": 170 },
+				"applicationFolderPosition": { "x": 480, "y": 170 }
+			},
+			"minimumSystemVersion": "10.15"
 		},
 		"resources": [],
 		"fileAssociations": [

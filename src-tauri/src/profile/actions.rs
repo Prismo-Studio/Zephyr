@@ -504,6 +504,55 @@ impl ManagedGame {
             .context("Failed to set permissions on desktop file")?;
         }
 
+        #[cfg(target_os = "macos")]
+        {
+            let shortcut_path = desktop_path.join(format!(
+                "Zephyr - {} - {}.app",
+                self.game.name, profile.name
+            ));
+
+            if shortcut_path.exists() {
+                bail!("shortcut already exists");
+            }
+
+            let script_name = "Zephyr";
+            let macos_dir = shortcut_path.join("Contents/MacOS");
+            std::fs::create_dir_all(&macos_dir)
+                .context("failed to create .app bundle directories")?;
+
+            let info_content = format!(
+                "<?xml version='1.0' encoding='UTF-8'?>\n\
+                 <!DOCTYPE plist PUBLIC '-//Apple Computer//DTD PLIST 1.0//EN' \
+                 'http://www.apple.com/DTDs/PropertyList-1.0.dtd'>\n\
+                 <plist version='1.0'>\n\
+                 <dict>\n\
+                 <key>CFBundleExecutable</key>\n\
+                 <string>{}</string>\n\
+                 </dict>\n\
+                 </plist>",
+                script_name
+            );
+
+            std::fs::write(shortcut_path.join("Contents/Info.plist"), info_content)
+                .context("failed to write Info.plist")?;
+
+            let script_content = format!(
+                "#!/bin/sh\n\
+                 '{}' --game {} --profile '{}' --launch --no-gui",
+                exe_path.to_string_lossy(),
+                self.game.slug,
+                profile.name
+            );
+
+            let script_path = macos_dir.join(script_name);
+            std::fs::write(&script_path, script_content)
+                .context("failed to write launcher script")?;
+
+            use std::os::unix::fs::PermissionsExt;
+            std::fs::set_permissions(&script_path, std::fs::Permissions::from_mode(0o755))
+                .context("failed to set permissions on launcher script")?;
+        }
+
         Ok(())
     }
 }

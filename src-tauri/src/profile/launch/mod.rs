@@ -26,6 +26,8 @@ use crate::{
 
 #[cfg(target_os = "linux")]
 mod linux;
+#[cfg(target_os = "macos")]
+mod macos;
 mod mod_loader;
 mod platform;
 
@@ -95,6 +97,10 @@ impl ManagedGame {
         let profile = self.active_profile();
 
         mod_loader::add_args(&mut command, &profile.path, &self.game.mod_loader)?;
+
+        // On macOS, set DYLD env vars for Doorstop injection
+        #[cfg(target_os = "macos")]
+        macos::prepare_doorstop_env(&mut command, &profile.path)?;
 
         if let Some(custom_args) = game_custom_args {
             command.args(custom_args);
@@ -227,11 +233,30 @@ const IGNORED_EXES: &[&str] = &[
 ];
 
 fn find_executable(game_dir: &Path) -> Result<PathBuf> {
+    // On macOS, look for .app bundles first
+    #[cfg(target_os = "macos")]
+    {
+        if let Some(app) = WalkDir::new(game_dir)
+            .max_depth(2)
+            .into_iter()
+            .filter_map(Result::ok)
+            .filter(|entry| entry.file_type().is_dir())
+            .find(|entry| {
+                entry
+                    .path()
+                    .extension()
+                    .is_some_and(|ext| ext == "app")
+            })
+        {
+            return Ok(app.into_path());
+        }
+    }
+
     WalkDir::new(game_dir)
         .into_iter()
         .filter_map(Result::ok)
         .filter(|entry| entry.file_type().is_file())
-        .sorted_by(|a, b| a.depth().cmp(&b.depth())) // prefer shallower entries
+        .sorted_by(|a, b| a.depth().cmp(&b.depth()))
         .find(|entry| {
             let file_name = PathBuf::from(entry.file_name());
             let file_name_str = file_name.to_string_lossy();
