@@ -35,6 +35,9 @@ importers:
       '@tauri-apps/plugin-updater':
         specifier: ^2.9.0
         version: 2.9.0
+      '@tauri-apps/plugin-window-state':
+        specifier: ^2.4.1
+        version: 2.4.1
       bits-ui:
         specifier: ^2.15.4
         version: 2.15.4(@internationalized/date@3.8.2)(@sveltejs/kit@2.50.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.48.5)(vite@5.4.21(@types/node@25.5.0)(lightningcss@1.30.2)))(svelte@5.48.5)(typescript@5.9.3)(vite@5.4.21(@types/node@25.5.0)(lightningcss@1.30.2)))(svelte@5.48.5)
@@ -715,6 +718,9 @@ packages:
 
   '@tauri-apps/plugin-updater@2.9.0':
     resolution: {integrity: sha512-j++sgY8XpeDvzImTrzWA08OqqGqgkNyxczLD7FjNJJx/uXxMZFz5nDcfkyoI/rCjYuj2101Tci/r/HFmOmoxCg==}
+
+  '@tauri-apps/plugin-window-state@2.4.1':
+    resolution: {integrity: sha512-OuvdrzyY8Q5Dbzpj+GcrnV1iCeoZbcFdzMjanZMMcAEUNy/6PH5pxZPXpaZLOR7whlzXiuzx0L9EKZbH7zpdRw==}
 
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -1957,6 +1963,10 @@ snapshots:
       '@tauri-apps/api': 2.9.1
 
   '@tauri-apps/plugin-updater@2.9.0':
+    dependencies:
+      '@tauri-apps/api': 2.9.1
+
+  '@tauri-apps/plugin-window-state@2.4.1':
     dependencies:
       '@tauri-apps/api': 2.9.1
 

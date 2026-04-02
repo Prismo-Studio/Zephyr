@@ -14,7 +14,7 @@
 
 	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
-	import { modQuery, togglePin, isModPinned } from '$lib/state/misc.svelte';
+	import { modQuery } from '$lib/state/misc.svelte';
 	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
 	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
@@ -201,16 +201,6 @@
 				icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
 				disabled: locked,
 				onclick: () => toggleMod(mod)
-			});
-		}
-
-		// Pin/unpin
-		if (mod.isInstalled) {
-			const pinned = isModPinned(mod.uuid);
-			items.push({
-				label: pinned ? 'Désépingler' : 'Épingler en haut',
-				icon: pinned ? 'mdi:pin-off' : 'mdi:pin',
-				onclick: () => togglePin(mod.uuid)
 			});
 		}
 
