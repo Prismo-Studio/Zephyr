@@ -239,7 +239,6 @@ html {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-
 body {
 	font-family: var(--font-body);
 	background: var(--bg-base);
@@ -249,13 +248,20 @@ body {
 	-webkit-user-drag: none;
 }
 
-body, * {
+body,
+* {
 	-webkit-user-drag: none;
 	-webkit-user-select: none;
 	user-select: none;
 }
 
-input, textarea, select, [contenteditable], .z-search-input, .z-entry-input, .markdown {
+input,
+textarea,
+select,
+[contenteditable],
+.z-search-input,
+.z-entry-input,
+.markdown {
 	user-select: text !important;
 	-webkit-user-select: text !important;
 	-webkit-user-drag: auto !important;

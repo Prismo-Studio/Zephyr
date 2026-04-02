@@ -209,13 +209,15 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 24px;
+		width: 0;
+		overflow: hidden;
 		flex-shrink: 0;
 		color: var(--text-muted);
 		cursor: grab;
 		opacity: 0;
 		transition:
-			opacity 120ms ease,
+			width 150ms ease,
+			opacity 150ms ease,
 			color 120ms ease;
 		font-size: 24px;
 		touch-action: none;
@@ -227,6 +229,7 @@
 	}
 
 	.z-mod-card:hover .z-mod-drag-handle {
+		width: 24px;
 		opacity: 0.5;
 	}
 
@@ -242,6 +245,7 @@
 	}
 
 	.z-mod-card:hover .z-mod-drag-handle.pinned-lock {
+		width: 24px;
 		opacity: 0.4;
 	}
 

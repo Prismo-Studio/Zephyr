@@ -10,7 +10,14 @@
 	import * as api from '$lib/api';
 	import type { Prefs } from '$lib/types';
 	import { updateAppLanguage, languageTitle, i18nState } from '$lib/i18nCore.svelte';
-	import { refreshColor, refreshFont, setFont, getFont, useNativeMenu } from '$lib/themeSystem';
+	import {
+		refreshColor,
+		refreshFont,
+		setFont,
+		getFont,
+		useNativeMenu,
+		useNativeTitlebar
+	} from '$lib/themeSystem';
 	import {
 		getTheme,
 		setTheme,
@@ -192,6 +199,24 @@
 				onchange={changeLanguage}
 				placeholder={m.languagePref_title()}
 			/>
+		</section>
+
+		<!-- Window -->
+		<section class="z-settings-section">
+			<h3 class="z-settings-heading">
+				<Icon icon="mdi:application" />
+				{i18nState.locale && m.prefs_window_title()}
+			</h3>
+
+			<div class="z-settings-row">
+				<div class="z-settings-label">
+					<span>{i18nState.locale && m.prefs_window_nativeTitlebar()}</span>
+					<span class="z-settings-desc"
+						>{i18nState.locale && m.prefs_window_nativeTitlebar_desc()}</span
+					>
+				</div>
+				<Toggle bind:checked={useNativeTitlebar.current} />
+			</div>
 		</section>
 
 		{#if prefs}

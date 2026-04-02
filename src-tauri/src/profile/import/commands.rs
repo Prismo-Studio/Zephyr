@@ -50,6 +50,8 @@ impl FrontendImportData {
 
 #[command]
 pub async fn import_profile(data: ImportData, import_all: bool, app: AppHandle) -> Result<()> {
+    thunderstore::wait_for_fetch(&app).await;
+
     super::import_profile(
         data,
         ImportOptions::default().import_all(import_all),

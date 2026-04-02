@@ -202,7 +202,7 @@
 		// Install
 		if (!mod.isInstalled && !locked) {
 			items.push({
-				label: 'Installer',
+				label: m.mods_contextMenu_install(),
 				icon: 'mdi:download',
 				onclick: () => installLatest(mod)
 			});
@@ -358,8 +358,8 @@
 						/>
 					{/each}
 
-					<button 
-						class="z-load-more" 
+					<button
+						class="z-load-more"
 						onclick={() => (maxCount += 30)}
 						disabled={mods.length < maxCount}
 						title={mods.length < maxCount ? 'No more mods to load' : 'Load more mods'}

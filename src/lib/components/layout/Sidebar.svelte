@@ -52,6 +52,13 @@
 	let gameMenuOpen = $state(false);
 	let gameSearchTerm = $state('');
 	let gameDropdownEl: HTMLDivElement | null = null;
+	let gameSearchInput: HTMLInputElement | null = null;
+
+	$effect(() => {
+		if (gameMenuOpen && gameSearchInput) {
+			gameSearchInput.focus();
+		}
+	});
 
 	function handleGameDropdownClickOutside(e: MouseEvent) {
 		if (gameMenuOpen && gameDropdownEl && !gameDropdownEl.contains(e.target as Node)) {
@@ -122,16 +129,14 @@
 	<!-- Game selector dropdown -->
 	{#if gameMenuOpen && games.list.length > 0}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div 
-			class="z-game-dropdown" 
-			bind:this={gameDropdownEl}
-		>
+		<div class="z-game-dropdown" bind:this={gameDropdownEl}>
 			<div class="z-game-dropdown-search">
 				<Icon icon="mdi:magnify" />
-				<input 
+				<input
 					type="text"
-					placeholder="Search games..."
+					placeholder={i18nState.locale && m.sidebar_searchGames()}
 					bind:value={gameSearchTerm}
+					bind:this={gameSearchInput}
 					class="z-game-search-input"
 					onkeydown={(e) => {
 						if (e.key === 'Escape') {
@@ -142,7 +147,9 @@
 				/>
 			</div>
 			<div class="z-game-dropdown-list">
-				{#each games.list.filter(g => g.name.toLowerCase().includes(gameSearchTerm.toLowerCase())) as game}
+				{#each games.list.filter((g) => g.name
+						.toLowerCase()
+						.includes(gameSearchTerm.toLowerCase())) as game}
 					<button
 						class="z-game-dropdown-item"
 						class:active={game.slug === games.active?.slug}
@@ -159,10 +166,12 @@
 						{/if}
 					</button>
 				{/each}
-				{#if games.list.filter(g => g.name.toLowerCase().includes(gameSearchTerm.toLowerCase())).length === 0}
+				{#if games.list.filter((g) => g.name
+						.toLowerCase()
+						.includes(gameSearchTerm.toLowerCase())).length === 0}
 					<div class="z-game-dropdown-empty">
 						<Icon icon="mdi:magnify" />
-						<span>No games found</span>
+						<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
 					</div>
 				{/if}
 			</div>
@@ -172,10 +181,10 @@
 	<!-- Navigation -->
 	<nav class="z-sidebar-nav">
 		{#each navItems as item}
-			<Tooltip text={item.label()} position="right" delay={300}>
+			<Tooltip text={i18nState.locale && item.label()} position="right" delay={300}>
 				<a href={item.path} class="z-nav-item" class:active={isActive(item.path)}>
 					<Icon icon={item.icon} class="z-nav-icon" />
-					<span class="z-nav-label">{item.label()}</span>
+					<span class="z-nav-label">{i18nState.locale && item.label()}</span>
 					{#if isActive(item.path)}
 						<span class="z-nav-indicator"></span>
 					{/if}
@@ -201,7 +210,7 @@
 						class="z-sidebar-profile"
 						class:open={profileMenuOpen}
 						onclick={() => (profileMenuOpen = !profileMenuOpen)}
-						aria-label="Switch profile"
+						aria-label={i18nState.locale && m.sidebar_switchProfile()}
 						aria-expanded={profileMenuOpen}
 					>
 						{#if profiles.active.icon}

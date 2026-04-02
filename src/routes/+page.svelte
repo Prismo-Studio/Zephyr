@@ -299,7 +299,7 @@
 		if (mod.isInstalled) {
 			const pinned = isModPinned(mod.uuid);
 			items.push({
-				label: pinned ? 'Désépingler' : 'Épingler en haut',
+				label: pinned ? m.mods_contextMenu_unpin() : m.mods_contextMenu_pin(),
 				icon: pinned ? 'mdi:pin-off' : 'mdi:pin',
 				onclick: () => togglePin(mod.uuid)
 			});
@@ -392,7 +392,25 @@
 		open: false,
 		mode: 'export'
 	});
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (locked) return;
+		// Ignore if user is typing in an input
+		const tag = (e.target as HTMLElement).tagName;
+		if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+		if (e.key === 'Delete') {
+			if (selectedModIds.length === 1) {
+				const mod = mods.find((m) => m.uuid === selectedModIds[0]);
+				if (mod) removeMod(mod);
+			} else if (selectedModIds.length > 1) {
+				doBatchRemove();
+			}
+		}
+	}
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
 
 {#if !profiles.ready}
 	<Loader />
@@ -412,15 +430,15 @@
 						{#snippet icon()}<Icon icon="mdi:import" />{/snippet}
 						{i18nState.locale && m.share_importButton()}
 					</Button>
-					   <Button
-						   variant="accent"
-						   size="sm"
-						   onclick={() => (shareDialog = { open: true, mode: 'export' })}
-						   style="font-weight: 700; letter-spacing: -0.01em;"
-					   >
-						   {#snippet icon()}<Icon icon="mdi:share-variant" />{/snippet}
-						   {i18nState.locale && m.share_exportButton()}
-					   </Button>
+					<Button
+						variant="accent"
+						size="sm"
+						onclick={() => (shareDialog = { open: true, mode: 'export' })}
+						style="font-weight: 700; letter-spacing: -0.01em;"
+					>
+						{#snippet icon()}<Icon icon="mdi:share-variant" />{/snippet}
+						{i18nState.locale && m.share_exportButton()}
+					</Button>
 					{#if updates.length > 0}
 						<Button variant="accent" size="sm" onclick={updateAllMods}>
 							{#snippet icon()}<Icon icon="mdi:update" />{/snippet}
@@ -558,7 +576,7 @@
 							</div>
 						{/if}
 
-						{#if mods.length < totalModCount}
+						{#if mods.length >= maxCount}
 							<button class="z-load-more" onclick={() => (maxCount += 40)}>
 								{m.mods_loadMore({ count: (totalModCount - mods.length).toString() })}
 							</button>
