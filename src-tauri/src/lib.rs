@@ -157,6 +157,7 @@ pub fn run() {
             prefs::commands::set_prefs,
             prefs::commands::zoom_window,
             prefs::commands::get_system_fonts,
+            prefs::commands::open_dir,
             profile::commands::get_game_info,
             profile::commands::favorite_game,
             profile::commands::set_active_game,

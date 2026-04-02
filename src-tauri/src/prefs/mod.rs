@@ -182,6 +182,7 @@ impl From<PathBuf> for DirPref {
 #[serde(default, rename_all = "camelCase")]
 pub struct Prefs {
     pub data_dir: DirPref,
+    pub cache_dir: DirPref,
 
     pub fetch_mods_automatically: bool,
     pub zoom_factor: f32,
@@ -211,6 +212,8 @@ impl Default for Prefs {
                 .keep(db::WAL_FILE_NAME)
                 .keep(game::CACHE_FILE_NAME),
 
+            cache_dir: DirPref::new(util::path::default_app_data_dir().join("cache")),
+
             fetch_mods_automatically: true,
             pull_before_launch: true,
 
@@ -231,6 +234,10 @@ impl Prefs {
             db::WAL_FILE_NAME,
             game::CACHE_FILE_NAME,
         ]);
+
+        if !self.cache_dir.exists() {
+            fs::create_dir_all(&*self.cache_dir).context("failed to create cache directory")?;
+        }
 
         let window = app.get_webview_window("main").unwrap();
         window.zoom(self.zoom_factor as f64).ok();
@@ -272,6 +279,7 @@ impl Prefs {
         }
 
         self.data_dir.set(value.data_dir.value)?;
+        self.cache_dir.set(value.cache_dir.value)?;
 
         if self.zoom_factor != value.zoom_factor {
             let window = app.get_webview_window("main").unwrap();
@@ -326,6 +334,6 @@ impl Prefs {
     }
 
     pub fn cache_dir(&self) -> PathBuf {
-        self.data_dir.join("cache")
+        self.cache_dir.to_path_buf()
     }
 }

@@ -20,8 +20,10 @@
 	import { m } from '$lib/paraglide/messages';
 	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
 	import { onMount } from 'svelte';
+	import { open as selectDirectory } from '@tauri-apps/plugin-dialog';
 	import { pushInfoToast } from '$lib/toast';
 	import { shortenFileSize } from '$lib/util';
+	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 
 	let prefs: Prefs | null = $state(null);
 	let currentTheme: ThemeId = $state(getTheme());
@@ -91,6 +93,43 @@
 
 	async function openLog() {
 		await api.logger.openZephyrLog();
+	}
+
+	async function copyPath(path: string) {
+		await writeText(path);
+		pushInfoToast({ message: m.prefs_copyPath_success() });
+	}
+
+	async function openPath(path: string) {
+		await api.prefs.openDir(path);
+	}
+
+	async function changeDataDir() {
+		if (!prefs) return;
+		const selected = await selectDirectory({
+			directory: true,
+			multiple: false,
+			defaultPath: prefs.dataDir
+		});
+
+		if (selected && typeof selected === 'string') {
+			prefs.dataDir = selected;
+			await savePrefs();
+		}
+	}
+
+	async function changeCacheDir() {
+		if (!prefs) return;
+		const selected = await selectDirectory({
+			directory: true,
+			multiple: false,
+			defaultPath: prefs.cacheDir
+		});
+
+		if (selected && typeof selected === 'string') {
+			prefs.cacheDir = selected;
+			await savePrefs();
+		}
 	}
 </script>
 
@@ -190,13 +229,39 @@
 					{i18nState.locale && m.prefs_locations_title()}
 				</h3>
 				<div class="z-settings-path">
-					<span class="z-settings-path-label"
-						>{i18nState.locale && m.prefs_locations_dataFolder()}</span
-					>
+					<div class="z-settings-path-header">
+						<span class="z-settings-path-label"
+							>{i18nState.locale && m.prefs_locations_dataFolder()}</span
+						>
+						<div class="z-settings-path-actions">
+							<button class="z-path-action" onclick={() => copyPath(prefs!.dataDir)} title="Copy">
+								<Icon icon="mdi:content-copy" />
+							</button>
+							<button class="z-path-action" onclick={() => openPath(prefs!.dataDir)} title="Open">
+								<Icon icon="mdi:folder-open" />
+							</button>
+							<button class="z-path-action" onclick={changeDataDir} title="Change">
+								<Icon icon="mdi:folder-edit" />
+							</button>
+						</div>
+					</div>
 					<code>{prefs.dataDir}</code>
 				</div>
 				<div class="z-settings-path">
-					<span class="z-settings-path-label">{m.prefs_locations_cacheFolder()}</span>
+					<div class="z-settings-path-header">
+						<span class="z-settings-path-label">{m.prefs_locations_cacheFolder()}</span>
+						<div class="z-settings-path-actions">
+							<button class="z-path-action" onclick={() => copyPath(prefs!.cacheDir)} title="Copy">
+								<Icon icon="mdi:content-copy" />
+							</button>
+							<button class="z-path-action" onclick={() => openPath(prefs!.cacheDir)} title="Open">
+								<Icon icon="mdi:folder-open" />
+							</button>
+							<button class="z-path-action" onclick={changeCacheDir} title="Change">
+								<Icon icon="mdi:folder-edit" />
+							</button>
+						</div>
+					</div>
 					<code>{prefs.cacheDir}</code>
 				</div>
 			</section>
@@ -385,6 +450,38 @@
 		border-radius: var(--radius-sm);
 		border: 1px solid var(--border-subtle);
 		word-break: break-all;
+	}
+
+	.z-settings-path-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 4px;
+	}
+
+	.z-settings-path-actions {
+		display: flex;
+		gap: var(--space-xs);
+	}
+
+	.z-path-action {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		border-radius: var(--radius-sm);
+		background: transparent;
+		color: var(--text-muted);
+		border: none;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-size: 14px;
+	}
+
+	.z-path-action:hover {
+		background: var(--bg-hover);
+		color: var(--text-accent);
 	}
 
 	/* Actions */
