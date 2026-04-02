@@ -4,6 +4,8 @@
 	import games from '$lib/state/game.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import { gameIconSrc } from '$lib/util';
+	import { convertFileSrc } from '@tauri-apps/api/core';
+	import LaunchOverlay from '$lib/components/dialogs/LaunchOverlay.svelte';
 	import * as api from '$lib/api';
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
@@ -50,8 +52,15 @@
 	let gameMenuOpen = $state(false);
 	let profileMenuOpen = $state(false);
 
+	let launching = $state(false);
+
 	async function launchGame() {
-		await api.profile.launch.launchGame();
+		launching = true;
+		try {
+			await api.profile.launch.launchGame();
+		} catch {
+			launching = false;
+		}
 	}
 
 	async function switchProfile(id: number) {
@@ -61,6 +70,12 @@
 		await profiles.setActive(index);
 		await profiles.refresh();
 		profileMenuOpen = false;
+	}
+
+	function profileIconSrc(icon: string | null): string | null {
+		if (!icon) return null;
+		if (icon.startsWith('http')) return icon;
+		return convertFileSrc(icon) + '?t=' + Date.now();
 	}
 
 	function handleProfileKeydown(e: KeyboardEvent) {
@@ -126,7 +141,7 @@
 	<div class="z-sidebar-bottom">
 		<Tooltip text={i18nState.locale && m.toolBar_launchGame_button()} position="right" delay={300}>
 			<button class="z-launch-btn" onclick={launchGame}>
-				<Icon icon="mdi:rocket-launch" />
+				<Icon icon="mdi:rocket" />
 			</button>
 		</Tooltip>
 
@@ -134,26 +149,28 @@
 			<!-- Profile switcher -->
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<div class="z-profile-wrapper" onkeydown={handleProfileKeydown}>
-				<button
-					class="z-sidebar-profile"
-					class:open={profileMenuOpen}
-					onclick={() => (profileMenuOpen = !profileMenuOpen)}
-					aria-label="Switch profile"
-					aria-expanded={profileMenuOpen}
-				>
-					<div class="z-profile-avatar">
-						<Icon icon="mdi:account-circle" class="z-profile-icon" />
-					</div>
-					<span class="z-profile-name">{profiles.active.name}</span>
-					<Icon icon="mdi:chevron-up" class="z-profile-chevron" />
-				</button>
+				<Tooltip text={profiles.active.name} position="right" delay={300}>
+					<button
+						class="z-sidebar-profile"
+						class:open={profileMenuOpen}
+						onclick={() => (profileMenuOpen = !profileMenuOpen)}
+						aria-label="Switch profile"
+						aria-expanded={profileMenuOpen}
+					>
+						{#if profiles.active.icon}
+							<img src={profileIconSrc(profiles.active.icon)} alt={profiles.active.name} class="z-profile-img" />
+						{:else}
+							<Icon icon="mdi:account-circle" class="z-profile-avatar-icon" />
+						{/if}
+					</button>
+				</Tooltip>
 
 				{#if profileMenuOpen}
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div class="z-profile-dropdown" role="menu">
 						<div class="z-profile-dropdown-header">
 							<Icon icon="mdi:account-switch" />
-							<span>Switch Profile</span>
+							<span>{m.sidebar_switchProfile()}</span>
 						</div>
 						<div class="z-profile-list">
 							{#each profiles.list as profile}
@@ -164,15 +181,16 @@
 									role="menuitem"
 								>
 									<div class="z-profile-item-icon">
-										{#if profile.id === profiles.activeId}
-											<Icon icon="mdi:check-circle" class="z-profile-check" />
+										{#if profile.icon}
+											<img src={profileIconSrc(profile.icon)} alt={profile.name} class="z-profile-item-img" />
 										{:else}
-											<Icon icon="mdi:account-circle-outline" />
+											<Icon icon="mdi:account-circle" />
 										{/if}
 									</div>
 									<span class="z-profile-item-name">{profile.name}</span>
 									{#if profile.id === profiles.activeId}
-										<span class="z-profile-active-badge">Active</span>
+										<Icon icon="mdi:check-circle" class="z-profile-check" />
+										<span class="z-profile-active-badge">{m.sidebar_activeProfile()}</span>
 									{/if}
 								</button>
 							{/each}
@@ -187,6 +205,8 @@
 		{/if}
 	</div>
 </aside>
+
+<LaunchOverlay bind:visible={launching} onclose={() => { launching = false; }} />
 
 <style>
 	.z-sidebar {
@@ -371,21 +391,21 @@
 		width: 44px;
 		height: 44px;
 		border-radius: var(--radius-lg);
-		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
-		border: none;
-		color: var(--text-inverse);
-		font-size: 20px;
+		background: transparent;
+		border: 2px solid var(--accent-400);
+		color: var(--accent-400);
+		font-size: 22px;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		transition: all var(--transition-normal);
-		box-shadow: 0 0 12px rgba(26, 255, 250, 0.2);
 	}
 
 	.z-launch-btn:hover {
-		box-shadow: 0 0 28px rgba(26, 255, 250, 0.4);
-		transform: scale(1.05);
+		background: rgba(26, 255, 250, 0.1);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 16px rgba(26, 255, 250, 0.15);
 	}
 
 	.z-launch-btn:active {
@@ -395,67 +415,48 @@
 	/* Profile switcher */
 	.z-profile-wrapper {
 		position: relative;
+		display: flex;
+		justify-content: center;
 		width: 100%;
 	}
 
 	.z-sidebar-profile {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 2px;
-		width: 100%;
-		padding: var(--space-xs) 2px;
-		border: 1px solid transparent;
-		border-radius: var(--radius-md);
-		background: transparent;
-		color: var(--text-muted);
+		width: 40px;
+		height: 40px;
+		border-radius: var(--radius-lg);
+		border: 2px solid var(--border-default);
+		background: var(--bg-elevated);
 		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		transition: all var(--transition-fast);
-		font-family: var(--font-body);
+		color: var(--text-muted);
+		padding: 0;
+		overflow: hidden;
 	}
 
-	.z-sidebar-profile:hover,
-	.z-sidebar-profile.open {
-		background: var(--bg-hover);
-		border-color: var(--border-default);
+	.z-sidebar-profile:hover {
+		border-color: var(--accent-400);
+		box-shadow: var(--shadow-glow);
 		color: var(--text-secondary);
 	}
 
 	.z-sidebar-profile.open {
 		border-color: var(--accent-400);
+		box-shadow: var(--shadow-glow);
 		color: var(--accent-400);
 	}
 
-	.z-profile-avatar {
-		width: 24px;
-		height: 24px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	:global(.z-profile-avatar-icon) {
+		font-size: 28px;
 	}
 
-	:global(.z-profile-icon) {
-		font-size: 18px;
-	}
-
-	.z-profile-name {
-		font-size: 9px;
-		font-weight: 600;
-		letter-spacing: 0.03em;
-		text-transform: uppercase;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		max-width: 56px;
-	}
-
-	:global(.z-profile-chevron) {
-		font-size: 12px;
-		transition: transform var(--transition-fast);
-	}
-
-	.z-sidebar-profile.open :global(.z-profile-chevron) {
-		transform: rotate(180deg);
+	.z-profile-img {
+		width: 32px;
+		height: 32px;
+		object-fit: cover;
+		border-radius: calc(var(--radius-lg) - 2px);
 	}
 
 	/* Profile dropdown */
@@ -467,7 +468,7 @@
 
 	.z-profile-dropdown {
 		position: absolute;
-		bottom: calc(100% + 8px);
+		bottom: 0;
 		left: 72px;
 		background: var(--bg-elevated);
 		border: 1px solid var(--border-default);
@@ -545,10 +546,27 @@
 	}
 
 	.z-profile-item-icon {
-		font-size: 16px;
+		width: 24px;
+		height: 24px;
+		font-size: 24px;
 		flex-shrink: 0;
 		display: flex;
 		align-items: center;
+		justify-content: center;
+		color: var(--text-muted);
+		overflow: hidden;
+		border-radius: var(--radius-full);
+	}
+
+	.z-profile-item.active .z-profile-item-icon {
+		color: var(--accent-400);
+	}
+
+	.z-profile-item-img {
+		width: 24px;
+		height: 24px;
+		border-radius: var(--radius-full);
+		object-fit: cover;
 	}
 
 	:global(.z-profile-check) {
