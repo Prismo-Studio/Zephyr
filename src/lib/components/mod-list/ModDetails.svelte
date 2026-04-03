@@ -29,13 +29,22 @@
 	type Props = {
 		mod: Mod;
 		locked?: boolean;
+		showVersionSelector?: boolean;
 		onclose?: () => void;
 		ontoggle?: () => void;
 		onremove?: () => void;
 		children?: Snippet;
 	};
 
-	let { mod, locked = false, onclose, ontoggle, onremove, children }: Props = $props();
+	let {
+		mod,
+		locked = false,
+		showVersionSelector = true,
+		onclose,
+		ontoggle,
+		onremove,
+		children
+	}: Props = $props();
 
 	let activeTab = $state('readme');
 	let versionDropdownOpen = $state(false);
@@ -69,8 +78,9 @@
 		changingVersion = true;
 		confirmVersionChange = { open: false, targetVersion: null };
 		try {
-			// Remove current version first, then reinstall with the new one
-			await api.profile.forceRemoveMods([mod.uuid]);
+			if (mod.isInstalled && !isExternalMod(mod)) {
+				await api.profile.forceRemoveMods([mod.uuid]);
+			}
 			await api.profile.install.mod({
 				packageUuid: mod.uuid,
 				versionUuid: version.uuid
@@ -177,7 +187,7 @@
 
 		<!-- Badges -->
 		<div class="z-details-badges">
-			{#if mod.version && mod.versions.length > 1 && mod.isInstalled && !isExternalMod(mod)}
+			{#if mod.version && mod.versions.length > 1 && mod.isInstalled && showVersionSelector && !isExternalMod(mod)}
 				<div class="z-version-selector">
 					<button
 						class="z-version-btn"

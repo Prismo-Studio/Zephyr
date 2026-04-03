@@ -252,27 +252,7 @@
 			</button>
 		</Tooltip>
 
-		<Tooltip
-			text={activeSourceState.current === 'thunderstore' ? 'Thunderstore' : 'NexusMods'}
-			position="right"
-			delay={300}
-		>
-			<button
-				class="z-source-toggle"
-				onclick={() => {
-					activeSourceState.current =
-						activeSourceState.current === 'thunderstore' ? 'nexusmods' : 'thunderstore';
-				}}
-			>
-				<img
-					src={activeSourceState.current === 'thunderstore'
-						? '/logos/thunderstore.jpg'
-						: '/logos/nexusmods.png'}
-					alt={activeSourceState.current === 'thunderstore' ? 'Thunderstore' : 'NexusMods'}
-					class="z-source-toggle-img"
-				/>
-			</button>
-		</Tooltip>
+		<!-- Source toggle — disabled for v1 -->
 
 		{#if profiles.active}
 			<!-- Profile switcher -->

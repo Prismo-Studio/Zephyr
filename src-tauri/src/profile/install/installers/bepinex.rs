@@ -74,7 +74,7 @@ impl PackageInstaller for BepinexInstaller {
         Ok(())
     }
 
-    fn mod_dir(&self, package_name: &str, profile: &Profile) -> Option<PathBuf> {
+    fn mod_dir(&self, _package_name: &str, profile: &Profile) -> Option<PathBuf> {
         Some(profile.path.join("BepInEx"))
     }
 }

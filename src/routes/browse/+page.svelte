@@ -440,6 +440,7 @@
 		<ModDetails
 			mod={selectedMod}
 			{locked}
+			showVersionSelector={false}
 			onclose={() => (selectedModIds = [])}
 			ontoggle={activeSource === 'thunderstore' ? () => toggleMod(selectedMod!) : undefined}
 			onremove={activeSource === 'thunderstore' ? () => removeMod(selectedMod!) : undefined}

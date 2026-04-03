@@ -84,6 +84,7 @@ pub async fn get_nexusmods_games(app: AppHandle) -> Result<Vec<SourceGame>> {
         #[serde(default)]
         mods: u64,
         #[serde(default)]
+        #[allow(dead_code)]
         downloads: u64,
     }
 

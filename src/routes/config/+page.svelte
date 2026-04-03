@@ -155,8 +155,13 @@
 
 				{#if filteredFiles.length === 0}
 					<div class="z-config-empty">
-						<Icon icon="mdi:file-search" />
-						<span>{i18nState.locale && m.configFileList_noFiles()}</span>
+						<div class="z-config-empty-icon">
+							<Icon icon="mdi:file-search" />
+						</div>
+						<span class="z-config-empty-title"
+							>{i18nState.locale && m.configFileList_noFiles()}</span
+						>
+						<span class="z-config-empty-hint">{i18nState.locale && m.config_launchHint()}</span>
 					</div>
 				{/if}
 			</div>
@@ -283,8 +288,11 @@
 				{/if}
 			{:else}
 				<div class="z-config-placeholder">
-					<Icon icon="mdi:file-cog" />
-					<span>{i18nState.locale && m.config_selectFile()}</span>
+					<div class="z-config-placeholder-icon">
+						<Icon icon="mdi:file-cog" />
+					</div>
+					<span class="z-config-placeholder-title">{i18nState.locale && m.config_selectFile()}</span
+					>
 				</div>
 			{/if}
 		</div>
@@ -390,9 +398,33 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--space-sm);
-		padding: var(--space-2xl);
+		padding: var(--space-2xl) var(--space-lg);
+		text-align: center;
+	}
+
+	.z-config-empty-icon {
+		width: 48px;
+		height: 48px;
+		border-radius: var(--radius-xl);
+		background: var(--bg-elevated);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 22px;
 		color: var(--text-muted);
-		font-size: 12px;
+		margin-bottom: var(--space-xs);
+	}
+
+	.z-config-empty-title {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-secondary);
+	}
+
+	.z-config-empty-hint {
+		font-size: 11px;
+		color: var(--text-muted);
+		line-height: 1.4;
 	}
 
 	/* Editor */
@@ -537,10 +569,28 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		justify-content: center;
 		gap: var(--space-md);
 		padding: var(--space-3xl);
+		height: 100%;
+	}
+
+	.z-config-placeholder-icon {
+		width: 64px;
+		height: 64px;
+		border-radius: var(--radius-xl);
+		background: var(--bg-elevated);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 28px;
 		color: var(--text-muted);
+	}
+
+	.z-config-placeholder-title {
 		font-size: 14px;
+		font-weight: 500;
+		color: var(--text-muted);
 	}
 
 	.z-config-error {

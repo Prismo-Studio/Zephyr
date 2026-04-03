@@ -1,4 +1,4 @@
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
 use eyre::{eyre, Context, Result};
 use serde::Deserialize;
 use tracing::{debug, warn};
