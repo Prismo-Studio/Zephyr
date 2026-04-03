@@ -7,6 +7,9 @@
  * To fix: re-encode the string from Latin-1 bytes back to proper UTF-8.
  */
 const fs = require('fs');
+const path = require('path');
+
+const messagesDir = path.join(__dirname, '..', 'messages');
 
 /**
  * Attempt to decode a mojibake string.
@@ -46,7 +49,12 @@ function looksLikeMojibake(str) {
 }
 
 function fixJsonFile(filepath) {
-	const raw = fs.readFileSync(filepath, 'utf8');
+	const fullPath = path.join(messagesDir, filepath);
+	if (!fs.existsSync(fullPath)) {
+		console.log(`Skipped (not found): ${filepath}`);
+		return;
+	}
+	const raw = fs.readFileSync(fullPath, 'utf8');
 	const obj = JSON.parse(raw);
 	let fixedCount = 0;
 
@@ -62,21 +70,14 @@ function fixJsonFile(filepath) {
 	}
 
 	if (fixedCount > 0) {
-		fs.writeFileSync(filepath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
+		fs.writeFileSync(fullPath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
 		console.log(`Fixed ${fixedCount} strings in: ${filepath}`);
 	} else {
 		console.log(`No mojibake found in: ${filepath}`);
 	}
 }
 
-const files = [
-	'messages/fr.json',
-	'messages/es-ES.json',
-	'messages/pt-BR.json',
-	'messages/sv-SE.json',
-	'messages/pl.json',
-	'messages/zh-CN.json'
-];
+const files = ['fr.json', 'es-ES.json', 'pt-BR.json', 'zh-CN.json'];
 
 for (const f of files) {
 	try {
@@ -90,7 +91,12 @@ for (const f of files) {
 console.log('\n=== Verification ===');
 for (const f of files) {
 	try {
-		const obj = JSON.parse(fs.readFileSync(f, 'utf8'));
+		const fullPath = path.join(messagesDir, f);
+		if (!fs.existsSync(fullPath)) {
+			console.log(f, '-> (file not found)');
+			continue;
+		}
+		const obj = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
 		console.log(f, '-> language_name:', obj.language_name);
 	} catch (e) {
 		console.log(f, '-> PARSE ERROR:', e.message);

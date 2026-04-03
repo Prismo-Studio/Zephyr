@@ -524,16 +524,13 @@
 	"installPopover_cancelAll": "Cancelar tudo",
 	"modpackPage_title": "Modpack",
 	"modpackPage_subtitle": "Exportar e importar",
-
 	"toast_cannotEnable_title": "Não é possível ativar {name}",
 	"toast_cannotEnable_message": "Este mod depende de: {dependants}. Ative esses mods primeiro.",
-
 	"toggleModDialog_disable_title": "Desativar {name}?",
 	"toggleModDialog_disable_description": "Os seguintes mods dependem de {name} e também serão desativados:",
 	"toggleModDialog_disable_hint": "Você pode desativar apenas este mod (os dependentes podem parar de funcionar) ou desativar todos de uma vez.",
 	"toggleModDialog_disable_one": "Desativar apenas {name}",
 	"toggleModDialog_disable_all": "Desativar todos ({count} mods)",
-
 	"toggleModDialog_enable_title": "Ativar {name}?",
 	"toggleModDialog_enable_description": "{name} depende dos seguintes mods desativados:",
 	"toggleModDialog_enable_hint": "Você pode ativar apenas este mod (pode não funcionar) ou ativar todas as dependências de uma vez.",
@@ -547,13 +544,11 @@
 	"batch_uninstallSelected": "Desinstalar selecionados",
 	"batch_toggleSelected": "Ativar/Desativar",
 	"prefs_copyPath_success": "Caminho copiado",
-
 	"batchRemoveDialog_title": "Desinstalar {count} mods?",
 	"batchRemoveDialog_description": "Os seguintes mods dependem da sua seleção e provavelmente deixarão de funcionar:",
 	"batchRemoveDialog_hint": "Você pode remover apenas os mods selecionados (os dependentes ficarão instalados mas quebrados), ou cancelar.",
 	"batchRemoveDialog_cancel": "Cancelar",
 	"batchRemoveDialog_confirm": "Remover selecionados ({count} mods)",
-
 	"batchToggleDialog_title": "Alternar {count} mods?",
 	"batchToggleDialog_description": "Os seguintes mods dependem de mods que serão desativados e podem parar de funcionar:",
 	"batchToggleDialog_hint": "Você pode continuar (os dependentes podem parar de funcionar), ou cancelar.",

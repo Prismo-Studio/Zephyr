@@ -14,6 +14,9 @@
  * Then the whole thing was treated as Latin-1 bytes and stored in UTF-8.
  */
 const fs = require('fs');
+const path = require('path');
+
+const messagesDir = path.join(__dirname, '..', 'messages');
 
 // Map Windows-1252 special chars that were converted to Unicode
 const win1252Map = {
@@ -58,7 +61,8 @@ function fixMojibake(str) {
 }
 
 function processFile(filepath, checkFn) {
-	const raw = fs.readFileSync(filepath, 'utf8');
+	const fullPath = path.join(messagesDir, filepath);
+	const raw = fs.readFileSync(fullPath, 'utf8');
 	const obj = JSON.parse(raw);
 	let fixed = 0;
 
@@ -76,21 +80,21 @@ function processFile(filepath, checkFn) {
 	}
 
 	if (fixed > 0) {
-		fs.writeFileSync(filepath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
+		fs.writeFileSync(fullPath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
 	}
 	console.log(filepath + ': fixed ' + fixed + ' strings');
 	return fixed;
 }
 
 // For zh-CN: fix strings that have no CJK but aren't English
-const en = JSON.parse(fs.readFileSync('messages/en.json', 'utf8'));
-processFile('messages/zh-CN.json', (val) => {
+const en = JSON.parse(fs.readFileSync(path.join(messagesDir, 'en.json'), 'utf8'));
+processFile('zh-CN.json', (val) => {
 	if (hasCJK(val)) return false;
 	return true; // Try to fix any non-CJK string
 });
 
 // Verify
-const v = JSON.parse(fs.readFileSync('messages/zh-CN.json', 'utf8'));
+const v = JSON.parse(fs.readFileSync(path.join(messagesDir, 'zh-CN.json'), 'utf8'));
 console.log('\nVerification:');
 console.log('prefs_global_title:', v.prefs_global_title);
 console.log('menuBar_file_title:', v.menuBar_file_title);

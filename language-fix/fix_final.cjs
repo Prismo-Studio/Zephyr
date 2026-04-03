@@ -4,6 +4,9 @@
  * When these were stored in a UTF-8 file as Latin-1, they appear as their Unicode equivalents.
  */
 const fs = require('fs');
+const path = require('path');
+
+const messagesDir = path.join(__dirname, '..', 'messages');
 
 // Complete Windows-1252 special char map (0x80-0x9F range)
 const win1252ToBytes = {
@@ -59,7 +62,8 @@ function decodeMojibake(str) {
 }
 
 function fixFile(filepath) {
-	const raw = fs.readFileSync(filepath, 'utf8');
+	const fullPath = path.join(messagesDir, filepath);
+	const raw = fs.readFileSync(fullPath, 'utf8');
 	const obj = JSON.parse(raw);
 	let fixed = 0;
 	let failed = 0;
@@ -105,17 +109,17 @@ function fixFile(filepath) {
 		}
 	}
 
-	fs.writeFileSync(filepath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
+	fs.writeFileSync(fullPath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
 	console.log(filepath + ': fixed=' + fixed + ' failed=' + failed);
 	return { fixed, failed };
 }
 
 // Fix zh-CN
-fixFile('messages/zh-CN.json');
+fixFile('zh-CN.json');
 
 // Verify
-const v = JSON.parse(fs.readFileSync('messages/zh-CN.json', 'utf8'));
-const en = JSON.parse(fs.readFileSync('messages/en.json', 'utf8'));
+const v = JSON.parse(fs.readFileSync(path.join(messagesDir, 'zh-CN.json'), 'utf8'));
+const en = JSON.parse(fs.readFileSync(path.join(messagesDir, 'en.json'), 'utf8'));
 
 function hasCJKCheck(str) {
 	return /[\u4E00-\u9FFF]/.test(str);
