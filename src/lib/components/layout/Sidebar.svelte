@@ -8,6 +8,23 @@
 	import LaunchOverlay from '$lib/components/dialogs/LaunchOverlay.svelte';
 	import * as api from '$lib/api';
 	import { open } from '@tauri-apps/plugin-shell';
+	import { activeSourceState } from '$lib/state/source.svelte';
+	import type { SourceGame } from '$lib/api/sources';
+
+	let nexusGames: SourceGame[] = $state([]);
+	let nexusGamesLoaded = $state(false);
+
+	$effect(() => {
+		if (activeSourceState.current === 'nexusmods' && !nexusGamesLoaded) {
+			api.sources
+				.getNexusmodsGames()
+				.then((g) => {
+					nexusGames = g;
+					nexusGamesLoaded = true;
+				})
+				.catch(() => {});
+		}
+	});
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
@@ -148,32 +165,65 @@
 				/>
 			</div>
 			<div class="z-game-dropdown-list">
-				{#each games.list.filter((g) => g.name
-						.toLowerCase()
-						.includes(gameSearchTerm.toLowerCase())) as game}
-					<button
-						class="z-game-dropdown-item"
-						class:active={game.slug === games.active?.slug}
-						onclick={async () => {
-							await games.setActive(game.slug);
-							gameMenuOpen = false;
-							gameSearchTerm = '';
-						}}
-					>
-						<img src={gameIconSrc(game)} alt={game.name} class="z-game-dropdown-icon" />
-						<span class="z-game-dropdown-name">{game.name}</span>
-						{#if game.favorite}
-							<Icon icon="mdi:star" class="text-xs text-amber-400" />
-						{/if}
-					</button>
-				{/each}
-				{#if games.list.filter((g) => g.name
-						.toLowerCase()
-						.includes(gameSearchTerm.toLowerCase())).length === 0}
-					<div class="z-game-dropdown-empty">
-						<Icon icon="mdi:magnify" />
-						<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
-					</div>
+				{#if activeSourceState.current === 'nexusmods'}
+					{#each nexusGames.filter((g) => g.name
+							.toLowerCase()
+							.includes(gameSearchTerm.toLowerCase())) as nxGame}
+						<button
+							class="z-game-dropdown-item"
+							class:active={games.active?.slug === nxGame.slug}
+							onclick={async () => {
+								const match = games.list.find((g) => g.slug === nxGame.slug);
+								if (match) {
+									await games.setActive(match.slug);
+								}
+								gameMenuOpen = false;
+								gameSearchTerm = '';
+							}}
+						>
+							<div class="z-game-dropdown-icon z-nx-game-icon">
+								<Icon icon="mdi:gamepad-variant" />
+							</div>
+							<span class="z-game-dropdown-name">{nxGame.name}</span>
+							<span class="z-game-dropdown-count">{nxGame.modCount}</span>
+						</button>
+					{/each}
+					{#if nexusGames.filter((g) => g.name
+							.toLowerCase()
+							.includes(gameSearchTerm.toLowerCase())).length === 0}
+						<div class="z-game-dropdown-empty">
+							<Icon icon="mdi:magnify" />
+							<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
+						</div>
+					{/if}
+				{:else}
+					{#each games.list.filter((g) => g.name
+							.toLowerCase()
+							.includes(gameSearchTerm.toLowerCase())) as game}
+						<button
+							class="z-game-dropdown-item"
+							class:active={game.slug === games.active?.slug}
+							onclick={async () => {
+								await games.setActive(game.slug);
+								gameMenuOpen = false;
+								gameSearchTerm = '';
+							}}
+						>
+							<img src={gameIconSrc(game)} alt={game.name} class="z-game-dropdown-icon" />
+							<span class="z-game-dropdown-name">{game.name}</span>
+							{#if game.favorite}
+								<Icon icon="mdi:star" class="text-xs text-amber-400" />
+							{/if}
+						</button>
+					{/each}
+					{#if games.list.filter((g) => g.name
+							.toLowerCase()
+							.includes(gameSearchTerm.toLowerCase())).length === 0}
+						<div class="z-game-dropdown-empty">
+							<Icon icon="mdi:magnify" />
+							<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
+						</div>
+					{/if}
 				{/if}
 			</div>
 		</div>
@@ -199,6 +249,28 @@
 		<Tooltip text={i18nState.locale && m.toolBar_launchGame_button()} position="right" delay={300}>
 			<button class="z-launch-btn" onclick={launchGame}>
 				<Icon icon="mdi:rocket" />
+			</button>
+		</Tooltip>
+
+		<Tooltip
+			text={activeSourceState.current === 'thunderstore' ? 'Thunderstore' : 'NexusMods'}
+			position="right"
+			delay={300}
+		>
+			<button
+				class="z-source-toggle"
+				onclick={() => {
+					activeSourceState.current =
+						activeSourceState.current === 'thunderstore' ? 'nexusmods' : 'thunderstore';
+				}}
+			>
+				<img
+					src={activeSourceState.current === 'thunderstore'
+						? '/logos/thunderstore.jpg'
+						: '/logos/nexusmods.png'}
+					alt={activeSourceState.current === 'thunderstore' ? 'Thunderstore' : 'NexusMods'}
+					class="z-source-toggle-img"
+				/>
 			</button>
 		</Tooltip>
 
@@ -294,6 +366,33 @@
 	}
 
 	/* Game selector */
+	.z-source-toggle {
+		width: 40px;
+		height: 40px;
+		border-radius: var(--radius-lg);
+		border: 2px solid var(--border-default);
+		background: var(--bg-elevated);
+		cursor: pointer;
+		padding: 0;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all var(--transition-fast);
+	}
+
+	.z-source-toggle:hover {
+		border-color: var(--accent-400);
+		box-shadow: var(--shadow-glow);
+	}
+
+	.z-source-toggle-img {
+		width: 32px;
+		height: 32px;
+		object-fit: cover;
+		border-radius: calc(var(--radius-lg) - 2px);
+	}
+
 	.z-sidebar-game {
 		display: flex;
 		justify-content: center;
@@ -423,6 +522,26 @@
 		height: 28px;
 		border-radius: var(--radius-sm);
 		object-fit: cover;
+		flex-shrink: 0;
+	}
+
+	.z-nx-game-icon {
+		width: 28px;
+		height: 28px;
+		border-radius: var(--radius-sm);
+		background: var(--bg-active);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--text-muted);
+		font-size: 14px;
+		flex-shrink: 0;
+	}
+
+	.z-game-dropdown-count {
+		font-size: 10px;
+		color: var(--text-muted);
+		margin-left: auto;
 		flex-shrink: 0;
 	}
 

@@ -53,14 +53,22 @@ pub fn setup(app: &AppHandle) -> Result<()> {
     let manager = profile::setup(data, &prefs, &db, app).context("failed to init profiles")?;
     let thunderstore = Thunderstore::new();
 
-    // Initialize the multi-source registry
     let mut source_registry = SourceRegistry::new();
 
-    // Register Thunderstore as the first (and currently only active) source.
-    // Additional sources (NexusMods, CurseForge, GitHub) will be registered
-    // here once their adapters are implemented.
     let ts_source = crate::source::thunderstore_adapter::ThunderstoreSource::new(app.to_owned());
     source_registry.register(Arc::new(ts_source));
+
+    let cf_source = crate::source::curseforge::CurseForgeSource::new(
+        "$2a$10$OY0apZlG0KEHe3CTgumu6u2uodPke309xuW4W/SmhhXe2KsVI4KKu".to_string(),
+        http.clone(),
+    );
+    source_registry.register(Arc::new(cf_source));
+
+    let nx_source = crate::source::nexusmods::NexusModsSource::new(
+        "NpZIiZhZZ2++vggbQP7B/YV0wxHEtuaK3AI54ToNPixXCWo=--ooji3W0wNmBn2dew--1FPMTUaqOZStJWkqJPvaJg==".to_string(),
+        http.clone(),
+    );
+    source_registry.register(Arc::new(nx_source));
 
     let state = AppState {
         db,

@@ -104,8 +104,9 @@ pub struct SearchFilters {
     pub include_nsfw: bool,
     pub include_deprecated: bool,
     pub max_count: usize,
-    /// Which sources to search (empty = all enabled)
     pub sources: Vec<SourceId>,
+    #[serde(default)]
+    pub game_slug: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

@@ -7972,7 +7972,7 @@ dependencies = [
 
 [[package]]
 name = "zephyr"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "async-trait",
  "base64 0.22.1",
@@ -8025,6 +8025,7 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "trash",
+ "urlencoding",
  "uuid",
  "walkdir",
  "webkit2gtk",
