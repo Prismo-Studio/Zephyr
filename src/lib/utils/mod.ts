@@ -14,6 +14,9 @@ export function isOutdated(mod: Mod): boolean {
 }
 
 export function modIconSrc(mod: Mod) {
+	if (mod.icon && (mod.icon.startsWith('http://') || mod.icon.startsWith('https://'))) {
+		return mod.icon;
+	}
 	if (mod.type === 'remote') {
 		const fullName = `${mod.author}-${mod.name}-${mod.version}`;
 		return THUNDERSTORE_ICON_URL(fullName);

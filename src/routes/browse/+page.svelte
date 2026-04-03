@@ -1,7 +1,9 @@
 <script lang="ts">
 	import * as api from '$lib/api';
 	import type { SortBy, Mod, ModId, Dependant } from '$lib/types';
+	import type { SourceId, UnifiedMod } from '$lib/api/sources';
 
+	import Loader from '$lib/components/ui/Loader.svelte';
 	import ModCard from '$lib/components/mod-list/ModCard.svelte';
 	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
 	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
@@ -28,6 +30,9 @@
 	import { handleMultiSelect } from '$lib/utils/multiSelect';
 
 	const sortOptions: SortBy[] = ['lastUpdated', 'newest', 'rating', 'downloads'];
+
+	import { activeSourceState } from '$lib/state/source.svelte';
+	let activeSource = $derived(activeSourceState.current);
 
 	let mods: Mod[] = $state([]);
 	let maxCount: number = $state(30);
@@ -92,7 +97,6 @@
 			return;
 		}
 
-		// Clear stale results when switching games
 		const currentSlug = games.active?.slug ?? null;
 		if (currentSlug !== lastGameSlug) {
 			mods = [];
@@ -103,7 +107,31 @@
 		refreshing = true;
 
 		try {
-			mods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+			if (activeSource === 'thunderstore') {
+				mods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+			} else {
+				const sortMap: Record<string, 'downloads' | 'rating' | 'newest' | 'updated' | 'name'> = {
+					lastUpdated: 'updated',
+					newest: 'newest',
+					rating: 'rating',
+					downloads: 'downloads',
+					name: 'name'
+				};
+
+				const results = await api.sources.searchSources({
+					searchTerm: modQuery.current.searchTerm,
+					categories: modQuery.current.includeCategories,
+					sortBy: sortMap[modQuery.current.sortBy] ?? 'downloads',
+					sortOrder: modQuery.current.sortOrder === 'ascending' ? 'ascending' : 'descending',
+					includeNsfw: modQuery.current.includeNsfw,
+					includeDeprecated: modQuery.current.includeDeprecated,
+					maxCount,
+					sources: [activeSource],
+					gameSlug: games.active?.slug
+				});
+
+				mods = results.flatMap((r) => r.mods.map((u) => unifiedToMod(u)));
+			}
 			totalLoadedForCurrentQuery = mods.length;
 		} catch {}
 
@@ -114,6 +142,43 @@
 			pendingRefresh = false;
 			refresh();
 		}
+	}
+
+	function cleanDescription(desc: string | null): string | null {
+		if (!desc) return null;
+		return desc
+			.replace(/<br\s*\/?>/gi, ' ')
+			.replace(/<[^>]*>/g, '')
+			.replace(/\[.*?\]/g, '')
+			.trim();
+	}
+
+	function unifiedToMod(u: UnifiedMod): Mod {
+		return {
+			name: u.name,
+			description: cleanDescription(u.description),
+			categories: u.categories,
+			version: u.version,
+			author: u.author,
+			rating: u.rating ? Number(u.rating) : null,
+			downloads: u.downloads ? Number(u.downloads) : null,
+			fileSize: u.fileSize,
+			websiteUrl: u.websiteUrl,
+			donateUrl: null,
+			dependencies: u.dependencies,
+			isPinned: false,
+			isDeprecated: u.isDeprecated,
+			isInstalled: undefined,
+			containsNsfw: u.isNsfw,
+			uuid: u.externalId,
+			versionUuid: u.versions[0]?.externalId ?? u.externalId,
+			lastUpdated: u.dateUpdated,
+			versions: u.versions.map((v) => ({ name: v.version, uuid: v.externalId })),
+			type: 'remote' as any,
+			enabled: null,
+			icon: u.iconUrl,
+			configFile: null
+		};
 	}
 
 	async function installLatest(mod: Mod) {
@@ -183,10 +248,10 @@
 
 	$effect(() => {
 		if (maxCount > 0) {
-			// Deep-track all query properties so filters trigger a refresh
 			JSON.stringify(modQuery.current);
 			profiles.active;
 			games.active;
+			activeSource;
 			refresh();
 		}
 	});
@@ -245,12 +310,15 @@
 
 <div class="z-browse-page">
 	<div class="z-browse-main">
-		<Header title={i18nState.locale && m.navBar_label_browse()} subtitle="Thunderstore">
+		<Header
+			title={i18nState.locale && m.navBar_label_browse()}
+			subtitle={activeSource === 'nexusmods' ? 'NexusMods' : 'Thunderstore'}
+		>
 			{#snippet actions()}
 				<button
 					class="z-refresh-btn"
 					onclick={() => {
-						api.thunderstore.triggerModFetch();
+						if (activeSource === 'thunderstore') api.thunderstore.triggerModFetch();
 						refresh();
 					}}
 					title="Refresh"
@@ -342,10 +410,7 @@
 						<p class="z-browse-empty-desc">{i18nState.locale && m.browse_noMods_desc()}</p>
 					</div>
 				{:else if mods.length === 0}
-					<div class="z-browse-loading">
-						<span class="z-browse-spinner"></span>
-						<span>{i18nState.locale && m.browse_loading()}</span>
-					</div>
+					<Loader />
 				{:else}
 					{#each mods as mod, index (mod.uuid)}
 						<ModCard
@@ -376,10 +441,12 @@
 			mod={selectedMod}
 			{locked}
 			onclose={() => (selectedModIds = [])}
-			ontoggle={() => toggleMod(selectedMod!)}
-			onremove={() => removeMod(selectedMod!)}
+			ontoggle={activeSource === 'thunderstore' ? () => toggleMod(selectedMod!) : undefined}
+			onremove={activeSource === 'thunderstore' ? () => removeMod(selectedMod!) : undefined}
 		>
-			<InstallModButton mod={selectedMod} {install} {locked} />
+			{#if activeSource === 'thunderstore'}
+				<InstallModButton mod={selectedMod} {install} {locked} />
+			{/if}
 		</ModDetails>
 	{/if}
 

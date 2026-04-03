@@ -533,6 +533,8 @@
 	"sidebar_play": "开始",
 	"sidebar_launchModded": "模组",
 	"sidebar_launchVanilla": "原版",
+	"prefs_sources_title": "来源",
+	"prefs_sources_curseforge_desc": "浏览模组时包含 CurseForge 的结果。",
 	"config_launchHint": "部分模组配置需要启动一次游戏后才会出现。",
 	"config_noConfigForMod": "未找到 {mod} 的配置文件。",
 	"error_modAlreadyInstalled": "此模组已安装。",

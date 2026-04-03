@@ -23,6 +23,7 @@
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+	import { open } from '@tauri-apps/plugin-shell';
 	import { PersistedState } from 'runed';
 
 	type Props = {
@@ -106,11 +107,19 @@
 		{ id: 'changelog', label: i18nState.locale && m.modpack_changeLog_title() }
 	]);
 
+	function isExternalMod(m: Mod): boolean {
+		return m.uuid.includes(':');
+	}
+
 	async function loadMarkdown(type: 'readme' | 'changelog') {
 		loadingMarkdown = true;
 		try {
-			const result = await getMarkdown(mod, type);
-			markdown = result ?? '';
+			if (isExternalMod(mod)) {
+				markdown = type === 'readme' ? (mod.description ?? '') : '';
+			} else {
+				const result = await getMarkdown(mod, type);
+				markdown = result ?? '';
+			}
 		} catch {
 			markdown = '';
 		}
@@ -149,7 +158,7 @@
 			<div class="z-details-title">
 				<div class="z-details-name-row">
 					<h2>{formatModName(mod.name)}</h2>
-					{#if mod.isInstalled}
+					{#if mod.isInstalled && !isExternalMod(mod)}
 						<button
 							class="z-pin-toggle"
 							class:pinned={isModPinned(mod.uuid)}
@@ -168,7 +177,7 @@
 
 		<!-- Badges -->
 		<div class="z-details-badges">
-			{#if mod.version && mod.versions.length > 1 && mod.isInstalled}
+			{#if mod.version && mod.versions.length > 1 && mod.isInstalled && !isExternalMod(mod)}
 				<div class="z-version-selector">
 					<button
 						class="z-version-btn"
@@ -242,7 +251,7 @@
 		</div>
 
 		<!-- Action buttons -->
-		{#if mod.isInstalled}
+		{#if mod.isInstalled && !isExternalMod(mod)}
 			<div class="z-details-actions">
 				<Tooltip
 					text={i18nState.locale &&
@@ -282,6 +291,22 @@
 
 		<!-- Install button slot -->
 		{#if children}{@render children()}{/if}
+
+		{#if isExternalMod(mod) && mod.websiteUrl}
+			<a
+				href={mod.websiteUrl}
+				target="_blank"
+				rel="noopener"
+				class="z-external-link-btn"
+				onclick={(e) => {
+					e.preventDefault();
+					open(mod.websiteUrl!);
+				}}
+			>
+				<Icon icon="mdi:open-in-new" />
+				<span>{i18nState.locale && m.mods_contextMenu_openThunderstore()}</span>
+			</a>
+		{/if}
 	</div>
 
 	<!-- Tabs + Content -->
@@ -623,6 +648,27 @@
 		color: var(--text-muted);
 		font-size: 13px;
 		padding: var(--space-2xl);
+	}
+
+	.z-external-link-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-lg);
+		border-radius: var(--radius-md);
+		background: var(--bg-active);
+		color: var(--text-accent);
+		font-size: 13px;
+		font-weight: 600;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		border: 1px solid var(--border-accent);
+	}
+
+	.z-external-link-btn:hover {
+		background: rgba(26, 255, 250, 0.12);
 	}
 
 	/* Version selector */

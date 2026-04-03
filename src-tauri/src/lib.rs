@@ -145,6 +145,8 @@ pub fn run() {
             logger::open_zephyr_log,
             logger::log_err,
             source::commands::get_sources,
+            source::commands::search_sources,
+            source::commands::get_nexusmods_games,
             state::is_first_run,
             thunderstore::commands::query_thunderstore,
             thunderstore::commands::stop_querying_thunderstore,

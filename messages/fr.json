@@ -533,6 +533,8 @@
 	"sidebar_play": "JOUER",
 	"sidebar_launchModded": "Moddé",
 	"sidebar_launchVanilla": "Vanilla",
+	"prefs_sources_title": "Sources",
+	"prefs_sources_curseforge_desc": "Inclure les résultats CurseForge lors de la recherche de mods.",
 	"config_launchHint": "Certaines configs de mods n'apparaissent qu'après avoir lancé le jeu une fois.",
 	"config_noConfigForMod": "Aucun fichier de config trouvé pour {mod}.",
 	"error_modAlreadyInstalled": "Ce mod est déjà installé.",
