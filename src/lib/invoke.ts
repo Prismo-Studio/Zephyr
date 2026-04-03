@@ -2,6 +2,15 @@ import { invoke as tauriInvoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { pushToast } from './toast';
 import { toSentenceCase } from 'js-convert-case';
+import { m } from './paraglide/messages';
+import { i18nState } from './i18nCore.svelte';
+
+const ERROR_TRANSLATIONS: Record<string, () => string> = {
+	'mod is already installed.': () =>
+		(i18nState.locale && m.error_modAlreadyInstalled?.()) || 'Mod is already installed.',
+	'game directory not found': () =>
+		(i18nState.locale && m.error_gameDirNotFound?.()) || 'Game directory not found.'
+};
 
 type Error = {
 	name: string;
@@ -30,6 +39,15 @@ export async function invoke<T = void>(cmd: string, args?: any): Promise<T> {
 
 		if (!['.', '?', '!'].includes(message[message.length - 1])) {
 			message += '.';
+		}
+
+		// Translate known backend error messages
+		const lowerMsg = message.toLowerCase();
+		for (const [key, translate] of Object.entries(ERROR_TRANSLATIONS)) {
+			if (lowerMsg.includes(key)) {
+				message = translate();
+				break;
+			}
 		}
 
 		pushError({ name, message });

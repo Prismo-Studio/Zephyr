@@ -5,6 +5,7 @@
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import * as api from '$lib/api';
 	import type { ConfigFile, ConfigEntry, ConfigSection, ConfigValue } from '$lib/types';
 	import { onMount } from 'svelte';
@@ -14,9 +15,36 @@
 	let configFiles: ConfigFile[] = $state([]);
 	let selectedFile: ConfigFile | null = $state(null);
 	let searchTerm = $state('');
+	let noConfigForMod: string | null = $state(null);
 
 	onMount(async () => {
 		await refresh();
+
+		const params = new URLSearchParams(window.location.search);
+
+		// Match by exact file path (e.g. /config?file=BepInEx/config/MyMod.cfg)
+		const targetFile = params.get('file');
+		if (targetFile) {
+			const match = configFiles.find(
+				(f) => f.relativePath === targetFile || displayName(f) === targetFile
+			);
+			if (match) selectedFile = match;
+		}
+
+		// Match by mod name — finds the config file whose name contains the mod name
+		const targetMod = params.get('mod');
+		if (targetMod) {
+			const lowerMod = targetMod.toLowerCase().replace(/_/g, ' ');
+			const match = configFiles.find((f) => {
+				const name = displayName(f).toLowerCase().replace(/_/g, ' ');
+				return name.includes(lowerMod) || lowerMod.includes(name);
+			});
+			if (match) {
+				selectedFile = match;
+			} else {
+				noConfigForMod = targetMod.replace(/_/g, ' ');
+			}
+		}
 	});
 
 	async function refresh() {
@@ -80,6 +108,11 @@
 <div class="z-config-page">
 	<Header title={i18nState.locale && m.dashboard_quickActions_config()}>
 		{#snippet actions()}
+			<Tooltip text={i18nState.locale && m.config_launchHint()} position="left" delay={200}>
+				<span class="z-config-hint">
+					<Icon icon="mdi:information-outline" />
+				</span>
+			</Tooltip>
 			{#if selectedFile}
 				<Button variant="ghost" size="sm" onclick={() => openFile(selectedFile!)}>
 					{#snippet icon()}<Icon icon="mdi:open-in-new" />{/snippet}
@@ -322,6 +355,34 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	.z-config-hint {
+		display: flex;
+		align-items: center;
+		color: var(--text-muted);
+		font-size: 16px;
+		cursor: help;
+		opacity: 0.6;
+		transition: opacity var(--transition-fast);
+	}
+
+	.z-config-hint:hover {
+		opacity: 1;
+		color: var(--warning);
+	}
+
+	.z-config-no-mod-banner {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-md);
+		margin: 0 var(--space-xl);
+		border-radius: var(--radius-md);
+		background: rgba(255, 179, 71, 0.08);
+		border: 1px solid rgba(255, 179, 71, 0.2);
+		color: var(--warning);
+		font-size: 12px;
 	}
 
 	.z-config-empty {

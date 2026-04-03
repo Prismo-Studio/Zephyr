@@ -112,6 +112,10 @@
 						class="z-game-card"
 						class:active={game.slug === games.active?.slug}
 						onclick={() => selectGame(game.slug)}
+						ondblclick={async () => {
+							await selectGame(game.slug);
+							window.location.href = '/';
+						}}
 					>
 						<img src={gameIconSrc(game)} alt={game.name} class="z-game-card-img" />
 						<div class="z-game-card-info">

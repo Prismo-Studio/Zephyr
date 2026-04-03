@@ -18,8 +18,12 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { togglePin, isModPinned } from '$lib/state/misc.svelte';
+	import { pushToast } from '$lib/toast';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+	import { PersistedState } from 'runed';
 
 	type Props = {
 		mod: Mod;
@@ -33,6 +37,65 @@
 	let { mod, locked = false, onclose, ontoggle, onremove, children }: Props = $props();
 
 	let activeTab = $state('readme');
+	let versionDropdownOpen = $state(false);
+	let changingVersion = $state(false);
+	let confirmVersionChange: {
+		open: boolean;
+		targetVersion: { name: string; uuid: string } | null;
+	} = $state({ open: false, targetVersion: null });
+	let dontAskAgain = $state(false);
+	const skipVersionConfirm = new PersistedState('skipVersionConfirm', false);
+
+	async function selectVersion(version: { name: string; uuid: string }) {
+		if (changingVersion) return;
+		if (version.uuid === mod.versionUuid) {
+			versionDropdownOpen = false;
+			return;
+		}
+
+		versionDropdownOpen = false;
+
+		if (skipVersionConfirm.current) {
+			await doChangeVersion(version);
+		} else {
+			confirmVersionChange = { open: true, targetVersion: version };
+			dontAskAgain = false;
+		}
+	}
+
+	async function doChangeVersion(version: { name: string; uuid: string }) {
+		if (changingVersion) return;
+		changingVersion = true;
+		confirmVersionChange = { open: false, targetVersion: null };
+		try {
+			// Remove current version first, then reinstall with the new one
+			await api.profile.forceRemoveMods([mod.uuid]);
+			await api.profile.install.mod({
+				packageUuid: mod.uuid,
+				versionUuid: version.uuid
+			});
+			pushToast({
+				type: 'info',
+				message:
+					(i18nState.locale &&
+						m.modDetails_versionChange_success({
+							mod: formatModName(mod.name),
+							version: version.name
+						})) ||
+					`${formatModName(mod.name)} changed to ${version.name}`
+			});
+		} catch {
+			// Error toast shown by invoke wrapper
+		} finally {
+			changingVersion = false;
+		}
+	}
+
+	function confirmAndChange() {
+		if (!confirmVersionChange.targetVersion || changingVersion) return;
+		if (dontAskAgain) skipVersionConfirm.current = true;
+		doChangeVersion(confirmVersionChange.targetVersion);
+	}
 	let markdown = $state('');
 	let loadingMarkdown = $state(false);
 	let copied = $state(false);
@@ -105,7 +168,43 @@
 
 		<!-- Badges -->
 		<div class="z-details-badges">
-			{#if mod.version}
+			{#if mod.version && mod.versions.length > 1 && mod.isInstalled}
+				<div class="z-version-selector">
+					<button
+						class="z-version-btn"
+						disabled={changingVersion}
+						onclick={() => (versionDropdownOpen = !versionDropdownOpen)}
+					>
+						<Icon icon="mdi:tag" />
+						<span>{mod.version}</span>
+						<Icon
+							icon="mdi:chevron-down"
+							class="z-version-chevron {versionDropdownOpen ? 'open' : ''}"
+						/>
+					</button>
+
+					{#if versionDropdownOpen}
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<div class="z-version-dropdown" onmouseleave={() => (versionDropdownOpen = false)}>
+							{#each mod.versions as version}
+								<button
+									class="z-version-option"
+									class:active={version.name === mod.version}
+									onclick={() => selectVersion(version)}
+								>
+									{#if version.name === mod.version}
+										<Icon icon="mdi:check" />
+									{/if}
+									<span>{version.name}</span>
+									{#if version.name === mod.versions[0].name}
+										<Badge variant="accent">{i18nState.locale && m.modDetails_latest()}</Badge>
+									{/if}
+								</button>
+							{/each}
+						</div>
+					{/if}
+				</div>
+			{:else if mod.version}
 				<Badge variant="accent">{mod.version}</Badge>
 			{/if}
 			{#if mod.isInstalled}
@@ -216,6 +315,44 @@
 		</div>
 	</div>
 </div>
+
+{#if confirmVersionChange.open && confirmVersionChange.targetVersion}
+	<Modal
+		bind:open={confirmVersionChange.open}
+		title={i18nState.locale && m.modDetails_versionChange_title()}
+		onclose={() => (confirmVersionChange = { open: false, targetVersion: null })}
+	>
+		{#snippet children()}
+			<div class="z-version-confirm-body">
+				<p>
+					{i18nState.locale &&
+						m.modDetails_versionChange_desc({
+							mod: formatModName(mod.name),
+							from: mod.version ?? '',
+							to: confirmVersionChange.targetVersion?.name ?? ''
+						})}
+				</p>
+				<label class="z-version-dont-ask">
+					<Checkbox bind:checked={dontAskAgain} />
+					<span>{i18nState.locale && m.modDetails_versionChange_dontAsk()}</span>
+				</label>
+			</div>
+		{/snippet}
+
+		{#snippet actions()}
+			<Button
+				variant="ghost"
+				onclick={() => (confirmVersionChange = { open: false, targetVersion: null })}
+			>
+				{i18nState.locale && m.modDetails_versionChange_cancel()}
+			</Button>
+			<Button variant="primary" onclick={confirmAndChange}>
+				{#snippet icon()}<Icon icon="mdi:swap-vertical" />{/snippet}
+				{i18nState.locale && m.modDetails_versionChange_confirm()}
+			</Button>
+		{/snippet}
+	</Modal>
+{/if}
 
 <style>
 	.z-mod-details {
@@ -486,5 +623,98 @@
 		color: var(--text-muted);
 		font-size: 13px;
 		padding: var(--space-2xl);
+	}
+
+	/* Version selector */
+	.z-version-selector {
+		position: relative;
+	}
+
+	.z-version-btn {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		padding: 3px 8px;
+		border-radius: var(--radius-full);
+		border: 1px solid var(--accent-400);
+		background: rgba(26, 255, 250, 0.08);
+		color: var(--accent-400);
+		font-size: 11px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.z-version-btn:hover {
+		background: rgba(26, 255, 250, 0.15);
+	}
+
+	:global(.z-version-chevron) {
+		font-size: 14px;
+		transition: transform 150ms ease;
+	}
+
+	:global(.z-version-chevron.open) {
+		transform: rotate(180deg);
+	}
+
+	.z-version-dropdown {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		margin-top: 4px;
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-default);
+		border-radius: var(--radius-md);
+		padding: var(--space-xs);
+		min-width: 160px;
+		max-height: 240px;
+		overflow-y: auto;
+		z-index: var(--z-dropdown);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.z-version-option {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		width: 100%;
+		padding: var(--space-xs) var(--space-sm);
+		border-radius: var(--radius-sm);
+		border: none;
+		background: transparent;
+		color: var(--text-secondary);
+		font-size: 12px;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-family: var(--font-body);
+	}
+
+	.z-version-option:hover {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+	}
+
+	.z-version-option.active {
+		color: var(--text-accent);
+	}
+
+	/* Version change confirm */
+	.z-version-confirm-body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+		font-size: 13px;
+		color: var(--text-secondary);
+		line-height: 1.5;
+	}
+
+	.z-version-dont-ask {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		font-size: 12px;
+		color: var(--text-muted);
+		cursor: pointer;
 	}
 </style>

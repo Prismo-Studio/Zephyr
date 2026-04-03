@@ -7,6 +7,7 @@
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import LaunchOverlay from '$lib/components/dialogs/LaunchOverlay.svelte';
 	import * as api from '$lib/api';
+	import { open } from '@tauri-apps/plugin-shell';
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';

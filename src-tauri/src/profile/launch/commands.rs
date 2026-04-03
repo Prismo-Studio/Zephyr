@@ -33,6 +33,23 @@ pub fn get_launch_args(app: AppHandle) -> Result<String> {
     Ok(text)
 }
 
+/// Launch the game without any mod loader arguments (vanilla).
+#[command]
+pub fn launch_vanilla(app: AppHandle) -> Result<()> {
+    let prefs = app.lock_prefs();
+    let manager = app.lock_manager();
+
+    let game_dir = super::locate_game_dir(manager.active_game, &prefs)?;
+    let exe = super::find_executable(&game_dir)?;
+
+    std::process::Command::new(exe)
+        .current_dir(&game_dir)
+        .spawn()
+        .context("failed to launch game")?;
+
+    Ok(())
+}
+
 #[command]
 pub fn open_game_dir(app: AppHandle) -> Result<()> {
     let prefs = app.lock_prefs();

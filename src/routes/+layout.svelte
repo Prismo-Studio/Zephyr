@@ -117,9 +117,16 @@
 			evt.preventDefault();
 			return;
 		}
-		// Block Ctrl+shortcuts except Ctrl+R (reload), Ctrl+C/V/X/A/Z (standard editing)
+		// Ctrl+R: soft refresh (reload data without full page reload)
+		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey && k === 'r') {
+			evt.preventDefault();
+			profiles.refresh().catch(() => {});
+			games.refresh().catch(() => {});
+			return;
+		}
+		// Block Ctrl+shortcuts except Ctrl+C/V/X/A/Z (standard editing)
 		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey) {
-			const allowed = ['r', 'c', 'v', 'x', 'a', 'z'];
+			const allowed = ['c', 'v', 'x', 'a', 'z'];
 			if (!allowed.includes(k)) {
 				evt.preventDefault();
 				return;
