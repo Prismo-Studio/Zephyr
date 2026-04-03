@@ -13,7 +13,12 @@
 		"format": "prettier --write .",
 		"lint:fix": "prettier --write --list-different .",
 		"tauri": "tauri",
-		"machine-translate": "inlang machine translate --project project.inlang"
+		"machine-translate": "inlang machine translate --project project.inlang",
+		"tauri:build": "tauri build",
+		"tauri:build:appimage": "tauri build && ./appimage-build/post_build_fix.sh",
+		"tauri:build:complete": "./appimage-build/build_and_fix.sh",
+		"tauri:appimage:generate": "./appimage-build/generate_appimage.sh",
+		"tauri:appimage:fix": "./appimage-build/post_build_fix.sh"
 	},
 	"devDependencies": {
 		"@iconify/svelte": "^5.2.1",

@@ -10,6 +10,9 @@
  * If the result contains Chinese (CJK) chars and the original doesn't, use decoded.
  */
 const fs = require('fs');
+const path = require('path');
+
+const messagesDir = path.join(__dirname, '..', 'messages');
 
 function fixMojibake(str) {
 	try {
@@ -37,7 +40,8 @@ function looksLikeMojibakeZh(str) {
 }
 
 function fixJsonFile(filepath, forceDecodeAll) {
-	const raw = fs.readFileSync(filepath, 'utf8');
+	const fullPath = path.join(messagesDir, filepath);
+	const raw = fs.readFileSync(fullPath, 'utf8');
 	const obj = JSON.parse(raw);
 	let fixedCount = 0;
 
@@ -65,7 +69,7 @@ function fixJsonFile(filepath, forceDecodeAll) {
 	}
 
 	if (fixedCount > 0) {
-		fs.writeFileSync(filepath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
+		fs.writeFileSync(fullPath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
 		console.log(`Fixed ${fixedCount} strings in: ${filepath}`);
 	} else {
 		console.log(`No mojibake found in: ${filepath}`);
@@ -73,10 +77,10 @@ function fixJsonFile(filepath, forceDecodeAll) {
 }
 
 // zh-CN needs the CJK-aware check
-fixJsonFile('messages/zh-CN.json', true);
+fixJsonFile('zh-CN.json', true);
 
 // Verify
-const o = JSON.parse(fs.readFileSync('messages/zh-CN.json', 'utf8'));
+const o = JSON.parse(fs.readFileSync(path.join(messagesDir, 'zh-CN.json'), 'utf8'));
 console.log('\nVerification:');
 console.log('zh prefs_global_title:', o.prefs_global_title);
 console.log('zh language_name:', o.language_name);
