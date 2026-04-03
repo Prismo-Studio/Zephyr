@@ -603,19 +603,15 @@
 	"installPopover_cancelAll": "Tout annuler",
 	"modpackPage_title": "Modpack",
 	"modpackPage_subtitle": "Exporter et importer",
-
 	"toast_cannotDisable_title": "Impossible de désactiver {name}",
 	"toast_cannotDisable_message": "Ce mod est requis par : {dependants}. Désactivez ces mods d'abord.",
-
 	"toast_cannotEnable_title": "Impossible d'activer {name}",
 	"toast_cannotEnable_message": "Ce mod dépend de : {dependants}. Activez ces mods d'abord.",
-
 	"toggleModDialog_disable_title": "Désactiver {name} ?",
 	"toggleModDialog_disable_description": "Les mods suivants dépendent de {name} et seront aussi désactivés :",
 	"toggleModDialog_disable_hint": "Vous pouvez désactiver uniquement ce mod (les dépendants risquent de ne plus fonctionner), ou tout désactiver d'un coup.",
 	"toggleModDialog_disable_one": "Désactiver {name} uniquement",
 	"toggleModDialog_disable_all": "Tout désactiver ({count} mods)",
-
 	"toggleModDialog_enable_title": "Activer {name} ?",
 	"toggleModDialog_enable_description": "{name} dépend des mods désactivés suivants :",
 	"toggleModDialog_enable_hint": "Vous pouvez activer uniquement ce mod (il risque de ne pas fonctionner), ou activer toutes les dépendances d'un coup.",
@@ -629,13 +625,11 @@
 	"batch_uninstallSelected": "Désinstaller la sélection",
 	"batch_toggleSelected": "Activer/Désactiver",
 	"prefs_copyPath_success": "Chemin copié",
-
 	"batchRemoveDialog_title": "Désinstaller {count} mods ?",
 	"batchRemoveDialog_description": "Les mods suivants dépendent de votre sélection et risquent de ne plus fonctionner :",
 	"batchRemoveDialog_hint": "Vous pouvez supprimer uniquement les mods sélectionnés (les dépendants resteront installés mais cassés), ou annuler.",
 	"batchRemoveDialog_cancel": "Annuler",
 	"batchRemoveDialog_confirm": "Supprimer la sélection ({count} mods)",
-
 	"batchToggleDialog_title": "Désactiver {count} mods ?",
 	"batchToggleDialog_description": "Les mods suivants dépendent de mods qui seront désactivés et risquent de ne plus fonctionner :",
 	"batchToggleDialog_hint": "Vous pouvez continuer (les dépendants pourraient cesser de fonctionner), ou annuler.",

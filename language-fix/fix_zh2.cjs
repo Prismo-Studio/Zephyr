@@ -5,9 +5,12 @@
  * attempt latin1->utf8 re-decode. Accept if result has CJK or is otherwise valid.
  */
 const fs = require('fs');
+const path = require('path');
 
-const o = JSON.parse(fs.readFileSync('messages/zh-CN.json', 'utf8'));
-const en = JSON.parse(fs.readFileSync('messages/en.json', 'utf8'));
+const messagesDir = path.join(__dirname, '..', 'messages');
+
+const o = JSON.parse(fs.readFileSync(path.join(messagesDir, 'zh-CN.json'), 'utf8'));
+const en = JSON.parse(fs.readFileSync(path.join(messagesDir, 'en.json'), 'utf8'));
 
 function hasCJK(str) {
 	return /[\u4E00-\u9FFF\u3400-\u4DBF\u3000-\u303F\uFF00-\uFFEF]/.test(str);
@@ -87,10 +90,11 @@ for (const [key, val] of Object.entries(o)) {
 }
 
 console.log('Fixed:', fixed, '| Skipped:', skipped, '| Failed:', failed);
-fs.writeFileSync('messages/zh-CN.json', JSON.stringify(o, null, '\t') + '\n', 'utf8');
+const fullPath = path.join(messagesDir, 'zh-CN.json');
+fs.writeFileSync(fullPath, JSON.stringify(o, null, '\t') + '\n', 'utf8');
 
 // Verify key strings
-const v = JSON.parse(fs.readFileSync('messages/zh-CN.json', 'utf8'));
+const v = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
 console.log('\nVerification:');
 console.log('prefs_global_title:', v.prefs_global_title);
 console.log('language_name:', v.language_name);

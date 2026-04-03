@@ -2,6 +2,9 @@
  * Apply mojibake fix to all locale files using the Windows-1252 map.
  */
 const fs = require('fs');
+const path = require('path');
+
+const messagesDir = path.join(__dirname, '..', 'messages');
 
 const win1252ToBytes = {
 	0x20ac: 0x80,
@@ -49,13 +52,15 @@ function decodeMojibake(str) {
 function hasCJK(str) {
 	return /[\u4E00-\u9FFF\u3400-\u4DBF]/.test(str);
 }
+
 function looksLikeMojibake(str) {
 	// Ã followed by accented char = clear mojibake signal
 	return /Ã[^\s]/.test(str) || /â[^\s]/.test(str);
 }
 
 function fixFile(filepath, forceAll) {
-	const raw = fs.readFileSync(filepath, 'utf8');
+	const fullPath = path.join(messagesDir, filepath);
+	const raw = fs.readFileSync(fullPath, 'utf8');
 	const obj = JSON.parse(raw);
 	let fixed = 0;
 
@@ -77,23 +82,22 @@ function fixFile(filepath, forceAll) {
 		}
 	}
 
-	fs.writeFileSync(filepath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
+	fs.writeFileSync(fullPath, JSON.stringify(obj, null, '\t') + '\n', 'utf8');
 	console.log(filepath + ': fixed ' + fixed);
 	return fixed;
 }
 
 // Latin-based languages: fix strings that obviously have Ã-mojibake
-fixFile('messages/fr.json', false);
-fixFile('messages/es-ES.json', false);
-fixFile('messages/pt-BR.json', false);
-fixFile('messages/sv-SE.json', false);
-fixFile('messages/pl.json', false);
+fixFile('fr.json', false);
+fixFile('es-ES.json', false);
+fixFile('pt-BR.json', false);
 // zh-CN already fixed by fix_final.cjs (uses forceAll=true for CJK detection)
 
 // Final verification
-const files = ['fr', 'es-ES', 'pt-BR', 'sv-SE', 'pl', 'zh-CN'];
+const files = ['fr', 'es-ES', 'pt-BR', 'zh-CN'];
 console.log('\nVerification:');
 for (const f of files) {
-	const o = JSON.parse(fs.readFileSync('messages/' + f + '.json', 'utf8'));
+	const fullPath = path.join(messagesDir, f + '.json');
+	const o = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
 	console.log(f + ': ' + o.language_name + ' | prefs_global= ' + o.prefs_global_title);
 }
