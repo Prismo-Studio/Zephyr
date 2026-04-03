@@ -4,7 +4,7 @@ use std::{
     process::Command,
 };
 
-use eyre::{Context, Result};
+use eyre::Result;
 use tracing::{debug, info, warn};
 
 use crate::util::error::IoResultExt;

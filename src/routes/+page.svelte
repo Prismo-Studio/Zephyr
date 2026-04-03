@@ -329,12 +329,12 @@
 			});
 		}
 
-		if (mod.configFile) {
+		if (mod.isInstalled) {
 			items.push({
 				label: m.mods_contextMenu_editConfig(),
 				icon: 'mdi:file-cog',
 				onclick: () => {
-					window.location.href = '/config';
+					window.location.href = `/config?mod=${encodeURIComponent(mod.name)}`;
 				}
 			});
 		}
@@ -434,7 +434,6 @@
 						variant="accent"
 						size="sm"
 						onclick={() => (shareDialog = { open: true, mode: 'export' })}
-						style="font-weight: 700; letter-spacing: -0.01em;"
 					>
 						{#snippet icon()}<Icon icon="mdi:share-variant" />{/snippet}
 						{i18nState.locale && m.share_exportButton()}

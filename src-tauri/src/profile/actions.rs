@@ -440,6 +440,7 @@ impl ManagedGame {
             self.game.name, profile.name
         ));
 
+        #[cfg(not(target_os = "macos"))]
         if shortcut_path.exists() {
             bail!("shortcut already exists");
         }
