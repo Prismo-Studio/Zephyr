@@ -43,6 +43,7 @@ pub fn prepare_doorstop_env(command: &mut Command, profile_dir: &Path) -> Result
 /// Generates a wrapper shell script that sources start_game_bepinex.sh
 /// with the correct DYLD environment variables set.
 /// Returns the path to the wrapper script.
+#[allow(dead_code)]
 pub fn create_bepinex_wrapper(profile_dir: &Path) -> Result<Option<PathBuf>> {
     let bepinex_script = profile_dir.join("start_game_bepinex.sh");
     if !bepinex_script.exists() {

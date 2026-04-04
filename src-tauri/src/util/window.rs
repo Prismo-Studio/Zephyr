@@ -3,6 +3,7 @@ pub trait WindowExt {
 }
 
 impl WindowExt for tauri::WebviewWindow {
+    #[allow(unused_variables)]
     fn zoom(&self, scale_factor: f64) -> tauri::Result<()> {
         self.with_webview(move |webview| {
             #[cfg(target_os = "linux")]

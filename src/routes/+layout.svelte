@@ -7,7 +7,6 @@
 	import Toasts from '$lib/components/ui/Toasts.svelte';
 	import InstallPopover from '$lib/components/toolbar/InstallPopover.svelte';
 	import InstallModDialog from '$lib/components/dialogs/InstallModDialog.svelte';
-	import WelcomeDialog from '$lib/components/dialogs/WelcomeDialog.svelte';
 	import ImportProfileDialog from '$lib/components/dialogs/ImportProfileDialog.svelte';
 
 	import { onMount, type Snippet } from 'svelte';
@@ -178,7 +177,7 @@
 	<Toasts />
 	<InstallPopover />
 	<InstallModDialog />
-	<WelcomeDialog />
+	<!-- WelcomeDialog removed -->
 	<ImportProfileDialog />
 </main>
 
