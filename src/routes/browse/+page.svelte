@@ -480,7 +480,7 @@
 					class="z-multi-nav-btn"
 					disabled={multiViewIndex <= 0}
 					onclick={() => multiViewIndex--}
-					>
+				>
 					<Icon icon="mdi:chevron-left" />
 				</button>
 				<span class="z-multi-nav-label">{multiViewIndex + 1} / {selectedMods.length}</span>

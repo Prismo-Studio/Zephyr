@@ -59,7 +59,17 @@
 		stroke="none"
 	/>
 	<!-- Stem -->
-	<path d="M12 14.5 Q12 18 10.5 20 Q9 22 7.5 21.5" stroke="currentColor" fill="none" stroke-width="1.5" />
+	<path
+		d="M12 14.5 Q12 18 10.5 20 Q9 22 7.5 21.5"
+		stroke="currentColor"
+		fill="none"
+		stroke-width="1.5"
+	/>
 	<!-- Leaf -->
-	<path d="M11 18 Q9 16.5 7.5 17.5 Q9.5 17 11 18Z" fill="currentColor" stroke="none" opacity="0.7" />
+	<path
+		d="M11 18 Q9 16.5 7.5 17.5 Q9.5 17 11 18Z"
+		fill="currentColor"
+		stroke="none"
+		opacity="0.7"
+	/>
 </svg>

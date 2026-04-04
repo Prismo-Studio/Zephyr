@@ -36,11 +36,7 @@
 
 		<div class="z-launch-center">
 			{#if games.active}
-				<img
-					src={gameIconSrc(games.active)}
-					alt={games.active.name}
-					class="z-launch-icon"
-				/>
+				<img src={gameIconSrc(games.active)} alt={games.active.name} class="z-launch-icon" />
 			{:else}
 				<div class="z-launch-icon z-launch-placeholder">
 					<Icon icon="mdi:gamepad-variant" />
@@ -83,13 +79,24 @@
 	}
 
 	@keyframes fadeIn {
-		from { opacity: 0; }
-		to { opacity: 1; }
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
 	@keyframes glowPulse {
-		0%, 100% { transform: scale(1); opacity: 0.5; }
-		50% { transform: scale(1.15); opacity: 1; }
+		0%,
+		100% {
+			transform: scale(1);
+			opacity: 0.5;
+		}
+		50% {
+			transform: scale(1.15);
+			opacity: 1;
+		}
 	}
 
 	.z-launch-center {
@@ -119,7 +126,9 @@
 		border-radius: 24px;
 		object-fit: cover;
 		border: 2px solid rgba(26, 255, 250, 0.2);
-		box-shadow: 0 0 40px rgba(26, 255, 250, 0.2), 0 12px 40px rgba(0, 0, 0, 0.4);
+		box-shadow:
+			0 0 40px rgba(26, 255, 250, 0.2),
+			0 12px 40px rgba(0, 0, 0, 0.4);
 		animation: iconPulse 2.5s ease-in-out infinite;
 	}
 
@@ -133,8 +142,17 @@
 	}
 
 	@keyframes iconPulse {
-		0%, 100% { box-shadow: 0 0 40px rgba(26, 255, 250, 0.2), 0 12px 40px rgba(0, 0, 0, 0.4); }
-		50% { box-shadow: 0 0 60px rgba(26, 255, 250, 0.35), 0 12px 40px rgba(0, 0, 0, 0.4); }
+		0%,
+		100% {
+			box-shadow:
+				0 0 40px rgba(26, 255, 250, 0.2),
+				0 12px 40px rgba(0, 0, 0, 0.4);
+		}
+		50% {
+			box-shadow:
+				0 0 60px rgba(26, 255, 250, 0.35),
+				0 12px 40px rgba(0, 0, 0, 0.4);
+		}
 	}
 
 	.z-launch-name {
@@ -163,19 +181,35 @@
 	.z-launch-bar-fill {
 		height: 100%;
 		border-radius: 99px;
-		background: linear-gradient(90deg, var(--accent-500), var(--accent-400), var(--accent-300), var(--accent-400));
+		background: linear-gradient(
+			90deg,
+			var(--accent-500),
+			var(--accent-400),
+			var(--accent-300),
+			var(--accent-400)
+		);
 		background-size: 300% 100%;
 		box-shadow: 0 0 12px rgba(26, 255, 250, 0.5);
-		animation: barFill 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards, barShine 1.5s linear infinite;
+		animation:
+			barFill 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+			barShine 1.5s linear infinite;
 	}
 
 	@keyframes barFill {
-		from { width: 0%; }
-		to { width: 100%; }
+		from {
+			width: 0%;
+		}
+		to {
+			width: 100%;
+		}
 	}
 
 	@keyframes barShine {
-		from { background-position: 0% 50%; }
-		to { background-position: 300% 50%; }
+		from {
+			background-position: 0% 50%;
+		}
+		to {
+			background-position: 300% 50%;
+		}
 	}
 </style>
