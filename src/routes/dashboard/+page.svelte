@@ -1,10 +1,9 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import Icon from '@iconify/svelte';
-
 	import games from '$lib/state/game.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import { gameIconSrc } from '$lib/util';
@@ -27,12 +26,10 @@
 <div class="z-dashboard">
 	<Header title={i18nState.locale && m.dashboard_title()}>
 		{#snippet actions()}
-			{#if games.active}
-				<Button variant="primary" onclick={launch}>
-					{#snippet icon()}<Icon icon="mdi:rocket-launch" />{/snippet}
-					{i18nState.locale && m.dashboard_launch({ name: games.active.name })}
-				</Button>
-			{/if}
+			<Button variant="accent" onclick={launch} disabled={!games.active}>
+				{#snippet icon()}<Icon icon="mdi:rocket-launch" />{/snippet}
+				{i18nState.locale && m.dashboard_launch({ name: games.active?.name ?? 'Game' })}
+			</Button>
 		{/snippet}
 	</Header>
 

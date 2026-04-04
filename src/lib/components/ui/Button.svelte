@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
 
-	type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'accent';
+	type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'accent' | 'vanilla';
 	type Size = 'sm' | 'md' | 'lg';
 
 	type Props = {
@@ -137,6 +137,22 @@
 	.z-btn-danger:hover:not(:disabled) {
 		background: rgba(255, 92, 92, 0.2);
 		border-color: rgba(255, 92, 92, 0.4);
+	}
+
+	/* Vanilla */
+	.z-btn-vanilla {
+		background: linear-gradient(135deg, #f5d67b, #e6b84d);
+		color: #1a1a2e;
+		border-color: #f5d67b;
+		font-weight: 700;
+		box-shadow: 0 0 12px rgba(245, 214, 123, 0.15);
+	}
+	.z-btn-vanilla:hover:not(:disabled) {
+		box-shadow: 0 0 24px rgba(245, 214, 123, 0.3);
+		transform: translateY(-1px);
+	}
+	.z-btn-vanilla:active:not(:disabled) {
+		transform: translateY(0);
 	}
 
 	/* Spinner */

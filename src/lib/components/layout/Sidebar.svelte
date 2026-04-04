@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import VanillaFlowerIcon from '$lib/components/ui/VanillaFlowerIcon.svelte';
 	import games from '$lib/state/game.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import { gameIconSrc } from '$lib/util';
@@ -103,6 +104,15 @@
 		launching = true;
 		try {
 			await api.profile.launch.launchGame();
+		} catch {
+			launching = false;
+		}
+	}
+
+	async function launchVanilla() {
+		launching = true;
+		try {
+			await api.profile.launch.launchVanilla();
 		} catch {
 			launching = false;
 		}
@@ -250,6 +260,12 @@
 		<Tooltip text={i18nState.locale && m.toolBar_launchGame_button()} position="right" delay={300}>
 			<button class="z-launch-btn" onclick={launchGame}>
 				<Icon icon="mdi:rocket" />
+			</button>
+		</Tooltip>
+
+		<Tooltip text={i18nState.locale && m.sidebar_launchVanilla()} position="right" delay={300}>
+			<button class="z-launch-vanilla-btn" onclick={launchVanilla}>
+				<VanillaFlowerIcon />
 			</button>
 		</Tooltip>
 
@@ -626,6 +642,32 @@
 	}
 
 	.z-launch-btn:active {
+		transform: scale(0.97);
+	}
+
+	.z-launch-vanilla-btn {
+		width: 38px;
+		height: 38px;
+		border-radius: var(--radius-lg);
+		background: transparent;
+		border: 1.5px solid #f5d67b;
+		color: #f5d67b;
+		font-size: 20px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all var(--transition-normal);
+	}
+
+	.z-launch-vanilla-btn:hover {
+		background: rgba(245, 214, 123, 0.1);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 16px rgba(245, 214, 123, 0.15);
+		color: #ffe4a0;
+	}
+
+	.z-launch-vanilla-btn:active {
 		transform: scale(0.97);
 	}
 

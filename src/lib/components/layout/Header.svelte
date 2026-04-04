@@ -1,8 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import Icon from '@iconify/svelte';
-	import profiles from '$lib/state/profile.svelte';
-	import games from '$lib/state/game.svelte';
 
 	type Props = {
 		title?: string;
