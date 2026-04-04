@@ -33,6 +33,7 @@
 	import { pushInfoToast } from '$lib/toast';
 	import { shortenFileSize } from '$lib/util';
 	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+	import { getVersion } from '@tauri-apps/api/app';
 
 	let prefs: Prefs | null = $state(null);
 	let currentTheme: ThemeId = $state(getTheme());
@@ -51,10 +52,12 @@
 	]);
 
 	let languageOptions = $derived(locales.map((l) => ({ value: l, label: languageTitle[l] })));
+	let appVersion: string = $state('');
 
 	onMount(async () => {
 		prefs = await api.prefs.get();
 		systemFonts = await api.prefs.getSystemFonts();
+		getVersion().then((v) => (appVersion = v));
 
 		window.addEventListener('hotdog-unlocked', () => {
 			visibleThemes = getVisibleThemes();
@@ -340,7 +343,7 @@
 		<section class="z-settings-section z-about">
 			<div class="z-about-brand">
 				<span class="z-about-name text-gradient">Zephyr</span>
-				<span class="z-about-version">v0.2.0</span>
+				<span class="z-about-version">v{appVersion}</span>
 			</div>
 			<p class="z-about-desc">{m.prefs_aboutDesc()}</p>
 		</section>
