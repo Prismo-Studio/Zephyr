@@ -230,14 +230,16 @@
 				{i18nState.locale && m.prefs_sources_title()}
 			</h3>
 
-			<div class="z-settings-row">
+			<div class="z-settings-row z-settings-disabled">
 				<div class="z-settings-label">
 					<span>CurseForge</span>
 					<span class="z-settings-desc"
 						>{i18nState.locale && m.prefs_sources_curseforge_desc()}</span
 					>
 				</div>
-				<Toggle bind:checked={curseForgeEnabled.current} />
+				<Tooltip text="Coming soon" position="left" delay={200}>
+					<Toggle checked={false} disabled />
+				</Tooltip>
 			</div>
 		</section>
 
