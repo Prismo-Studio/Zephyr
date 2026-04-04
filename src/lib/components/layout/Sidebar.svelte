@@ -8,23 +8,23 @@
 	import LaunchOverlay from '$lib/components/dialogs/LaunchOverlay.svelte';
 	import * as api from '$lib/api';
 	import { open } from '@tauri-apps/plugin-shell';
-	import { activeSourceState } from '$lib/state/source.svelte';
-	import type { SourceGame } from '$lib/api/sources';
+	// import { activeSourceState } from '$lib/state/source.svelte';
+	// import type { SourceGame } from '$lib/api/sources';
 
-	let nexusGames: SourceGame[] = $state([]);
-	let nexusGamesLoaded = $state(false);
+	// let nexusGames: SourceGame[] = $state([]);
+	// let nexusGamesLoaded = $state(false);
 
-	$effect(() => {
-		if (activeSourceState.current === 'nexusmods' && !nexusGamesLoaded) {
-			api.sources
-				.getNexusmodsGames()
-				.then((g) => {
-					nexusGames = g;
-					nexusGamesLoaded = true;
-				})
-				.catch(() => {});
-		}
-	});
+	// $effect(() => {
+	// 	if (activeSourceState.current === 'nexusmods' && !nexusGamesLoaded) {
+	// 		api.sources
+	// 			.getNexusmodsGames()
+	// 			.then((g) => {
+	// 				nexusGames = g;
+	// 				nexusGamesLoaded = true;
+	// 			})
+	// 			.catch(() => {});
+	// 	}
+	// });
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
@@ -165,6 +165,7 @@
 				/>
 			</div>
 			<div class="z-game-dropdown-list">
+				<!-- NexusMods game list commented out
 				{#if activeSourceState.current === 'nexusmods'}
 					{#each nexusGames.filter((g) => g.name
 							.toLowerCase()
@@ -196,7 +197,7 @@
 							<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
 						</div>
 					{/if}
-				{:else}
+				{:else} -->
 					{#each games.list.filter((g) => g.name
 							.toLowerCase()
 							.includes(gameSearchTerm.toLowerCase())) as game}
@@ -224,7 +225,7 @@
 							<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
 						</div>
 					{/if}
-				{/if}
+				<!-- {/if} NexusMods conditional end -->
 			</div>
 		</div>
 	{/if}

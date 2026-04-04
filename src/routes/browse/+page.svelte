@@ -44,6 +44,21 @@
 		selectedModIds.length === 1 ? (mods.find((m) => m.uuid === selectedModIds[0]) ?? null) : null
 	);
 
+	// Multi-select detail navigation
+	let multiViewIndex = $state(0);
+	let selectedMods = $derived(
+		selectedModIds.length > 1
+			? selectedModIds.map((id) => mods.find((m) => m.uuid === id)).filter(Boolean) as Mod[]
+			: []
+	);
+	let multiViewMod = $derived(selectedMods.length > 0 ? selectedMods[multiViewIndex] ?? selectedMods[0] : null);
+
+	// Reset index when selection changes
+	$effect(() => {
+		selectedModIds;
+		multiViewIndex = 0;
+	});
+
 	let hasRefreshed = $state(false);
 	let filtersExpanded = $state(false);
 
@@ -312,7 +327,7 @@
 	<div class="z-browse-main">
 		<Header
 			title={i18nState.locale && m.navBar_label_browse()}
-			subtitle={activeSource === 'nexusmods' ? 'NexusMods' : 'Thunderstore'}
+			subtitle={'Thunderstore' /* activeSource === 'nexusmods' ? 'NexusMods' : 'Thunderstore' */}
 		>
 			{#snippet actions()}
 				<button
@@ -448,6 +463,38 @@
 			{#if activeSource === 'thunderstore'}
 				<InstallModButton mod={selectedMod} {install} {locked} />
 			{/if}
+		</ModDetails>
+	{:else if multiViewMod}
+		<ModDetails
+			mod={multiViewMod}
+			{locked}
+			showVersionSelector={false}
+			onclose={() => (selectedModIds = [])}
+			ontoggle={activeSource === 'thunderstore' ? () => toggleMod(multiViewMod!) : undefined}
+			onremove={activeSource === 'thunderstore' ? () => removeMod(multiViewMod!) : undefined}
+		>
+			{#if activeSource === 'thunderstore'}
+				<InstallModButton mod={multiViewMod} {install} {locked} />
+			{/if}
+			<div class="z-multi-nav">
+				<button
+					class="z-multi-nav-btn"
+					disabled={multiViewIndex <= 0}
+					onclick={() => multiViewIndex--}
+					title="Previous mod"
+				>
+					<Icon icon="mdi:chevron-left" />
+				</button>
+				<span class="z-multi-nav-label">{multiViewIndex + 1} / {selectedMods.length}</span>
+				<button
+					class="z-multi-nav-btn"
+					disabled={multiViewIndex >= selectedMods.length - 1}
+					onclick={() => multiViewIndex++}
+					title="Next mod"
+				>
+					<Icon icon="mdi:chevron-right" />
+				</button>
+			</div>
 		</ModDetails>
 	{/if}
 
@@ -762,5 +809,48 @@
 		opacity: 0.5;
 		cursor: not-allowed;
 		border-style: dotted;
+	}
+
+	.z-multi-nav {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-sm);
+		padding: 8px 0;
+	}
+
+	.z-multi-nav-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-default);
+		background: var(--bg-elevated);
+		color: var(--text-secondary);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-size: 18px;
+	}
+
+	.z-multi-nav-btn:hover:not(:disabled) {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+		border-color: var(--border-strong);
+	}
+
+	.z-multi-nav-btn:disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
+	}
+
+	.z-multi-nav-label {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-secondary);
+		min-width: 50px;
+		text-align: center;
+		font-family: var(--font-body);
 	}
 </style>

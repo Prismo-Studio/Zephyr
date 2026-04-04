@@ -70,4 +70,4 @@ export const getSources = () => invoke<SourceInfo[]>('get_sources');
 export const searchSources = (filters: SearchFilters) =>
 	invoke<SearchResult[]>('search_sources', { filters });
 
-export const getNexusmodsGames = () => invoke<SourceGame[]>('get_nexusmods_games');
+// export const getNexusmodsGames = () => invoke<SourceGame[]>('get_nexusmods_games');
