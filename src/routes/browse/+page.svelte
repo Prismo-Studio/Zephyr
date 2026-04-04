@@ -376,16 +376,16 @@
 								{#each games.categories.slice(0, 20) as cat}
 									<button
 										class="z-category-chip"
-										class:active={modQuery.current.includeCategories.includes(cat.slug)}
-										onclick={() => {
-											const idx = modQuery.current.includeCategories.indexOf(cat.slug);
-											if (idx >= 0) {
-												modQuery.current.includeCategories =
-													modQuery.current.includeCategories.filter((c) => c !== cat.slug);
-											} else {
-												modQuery.current.includeCategories = [
-													...modQuery.current.includeCategories,
-													cat.slug
+									class:active={modQuery.current.includeCategories.includes(cat.name)}
+									onclick={() => {
+										const idx = modQuery.current.includeCategories.indexOf(cat.name);
+										if (idx >= 0) {
+											modQuery.current.includeCategories =
+												modQuery.current.includeCategories.filter((c) => c !== cat.name);
+										} else {
+											modQuery.current.includeCategories = [
+												...modQuery.current.includeCategories,
+												cat.name
 												];
 											}
 										}}

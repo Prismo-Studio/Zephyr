@@ -15,6 +15,9 @@ function createMergedPersistedState<T extends Record<string, unknown>>(
 		try {
 			const saved = JSON.parse(raw) as Partial<T>;
 			const merged = { ...defaults, ...saved };
+			// Always reset category filters to avoid stale values across sessions
+			if ('includeCategories' in defaults) (merged as any).includeCategories = [];
+			if ('excludeCategories' in defaults) (merged as any).excludeCategories = [];
 			localStorage.setItem(key, JSON.stringify(merged));
 		} catch {
 			localStorage.setItem(key, JSON.stringify(defaults));

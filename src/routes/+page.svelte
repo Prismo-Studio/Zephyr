@@ -504,16 +504,16 @@
 									{#each games.categories.slice(0, 20) as cat}
 										<button
 											class="z-category-chip"
-											class:active={profileQuery.current.includeCategories.includes(cat.slug)}
+											class:active={profileQuery.current.includeCategories.includes(cat.name)}
 											onclick={() => {
-												const idx = profileQuery.current.includeCategories.indexOf(cat.slug);
+												const idx = profileQuery.current.includeCategories.indexOf(cat.name);
 												if (idx >= 0) {
 													profileQuery.current.includeCategories =
-														profileQuery.current.includeCategories.filter((c) => c !== cat.slug);
+														profileQuery.current.includeCategories.filter((c) => c !== cat.name);
 												} else {
 													profileQuery.current.includeCategories = [
 														...profileQuery.current.includeCategories,
-														cat.slug
+														cat.name
 													];
 												}
 											}}

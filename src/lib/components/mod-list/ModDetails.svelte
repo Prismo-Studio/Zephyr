@@ -260,6 +260,18 @@
 			{/if}
 		</div>
 
+		<!-- Categories -->
+		{#if mod.categories && mod.categories.length > 0}
+			<div class="z-details-categories">
+				{#each mod.categories as category}
+					<span class="z-category-tag">
+						<Icon icon="mdi:tag" class="text-[10px]" />
+						{category}
+					</span>
+				{/each}
+			</div>
+		{/if}
+
 		<!-- Action buttons -->
 		{#if mod.isInstalled && !isExternalMod(mod)}
 			<div class="z-details-actions">
@@ -529,6 +541,26 @@
 		display: flex;
 		align-items: center;
 		gap: 4px;
+	}
+
+	.z-details-categories {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.z-category-tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 2px 10px;
+		border-radius: var(--radius-full);
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		background: var(--bg-overlay);
+		color: var(--text-secondary);
+		border: 1px solid var(--border-subtle);
 	}
 
 	.z-details-actions {

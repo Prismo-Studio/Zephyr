@@ -644,7 +644,7 @@
 	"sidebar_activeProfile": "Active",
 	"sidebar_searchGames": "Search games...",
 	"sidebar_noGamesFound": "No games found",
-	"modListFilters_filterTooltip": "Filters (coming soon)",
+	"modListFilters_filterTooltip": "Filters",
 	"prefs_window_title": "Window",
 	"prefs_window_nativeTitlebar": "Native title bar",
 	"prefs_window_nativeTitlebar_desc": "Use the system title bar instead of Zephyr's custom one. Requires restart.",

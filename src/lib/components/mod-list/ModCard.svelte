@@ -144,6 +144,13 @@
 				</span>
 			{/if}
 		</div>
+		{#if mod.categories && mod.categories.length > 0}
+			<div class="z-mod-categories">
+				{#each mod.categories.slice(0, 3) as category}
+					<span class="z-mod-category-tag">{category}</span>
+				{/each}
+			</div>
+		{/if}
 	</div>
 
 	<!-- Install button -->
@@ -406,5 +413,25 @@
 
 	.z-mod-card:hover .z-mod-install-btn {
 		display: flex;
+	}
+
+	/* Category tags */
+	.z-mod-categories {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+		margin-top: 3px;
+	}
+
+	.z-mod-category-tag {
+		display: inline-flex;
+		align-items: center;
+		padding: 1px 6px;
+		border-radius: var(--radius-full);
+		font-size: 10px;
+		font-weight: 500;
+		background: var(--bg-overlay);
+		color: var(--text-muted);
+		border: 1px solid var(--border-subtle);
 	}
 </style>

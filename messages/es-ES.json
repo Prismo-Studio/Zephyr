@@ -621,7 +621,7 @@
 	"sidebar_activeProfile": "Activo",
 	"sidebar_searchGames": "Buscar juegos...",
 	"sidebar_noGamesFound": "No se encontraron juegos",
-	"modListFilters_filterTooltip": "Filtros (próximamente)",
+	"modListFilters_filterTooltip": "Filtros",
 	"modDetails_latest": "Última",
 	"modDetails_versionChange_title": "Cambiar versión",
 	"modDetails_versionChange_desc": "¿Reinstalar {mod} de la versión {from} a {to}?",

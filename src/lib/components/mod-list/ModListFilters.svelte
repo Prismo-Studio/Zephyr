@@ -61,7 +61,11 @@
 			position="bottom"
 			delay={200}
 		>
-			<button class="z-filter-btn disabled" disabled>
+			<button
+				class="z-filter-btn"
+				class:active={expanded}
+				onclick={() => (expanded = !expanded)}
+			>
 				<Icon icon="mdi:filter-variant" />
 			</button>
 		</Tooltip>
@@ -126,15 +130,15 @@
 					{#each games.categories.slice(0, 20) as cat}
 						<button
 							class="z-category-chip"
-							class:active={queryArgs.includeCategories.includes(cat.slug)}
+							class:active={queryArgs.includeCategories.includes(cat.name)}
 							onclick={() => {
-								const idx = queryArgs.includeCategories.indexOf(cat.slug);
+								const idx = queryArgs.includeCategories.indexOf(cat.name);
 								if (idx >= 0) {
 									queryArgs.includeCategories = queryArgs.includeCategories.filter(
-										(c) => c !== cat.slug
+										(c) => c !== cat.name
 									);
 								} else {
-									queryArgs.includeCategories = [...queryArgs.includeCategories, cat.slug];
+									queryArgs.includeCategories = [...queryArgs.includeCategories, cat.name];
 								}
 							}}
 						>

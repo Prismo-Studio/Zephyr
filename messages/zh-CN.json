@@ -635,7 +635,7 @@
 	"sidebar_activeProfile": "当前",
 	"sidebar_searchGames": "搜索游戏...",
 	"sidebar_noGamesFound": "未找到游戏",
-	"modListFilters_filterTooltip": "筛选（即将推出）",
+	"modListFilters_filterTooltip": "筛选",
 	"prefs_window_title": "窗口",
 	"prefs_window_nativeTitlebar": "原生标题栏",
 	"prefs_window_nativeTitlebar_desc": "使用系统标题栏替代 Zephyr 自定义标题栏。需要重启。",

@@ -639,7 +639,7 @@
 	"sidebar_activeProfile": "Actif",
 	"sidebar_searchGames": "Rechercher un jeu...",
 	"sidebar_noGamesFound": "Aucun jeu trouvé",
-	"modListFilters_filterTooltip": "Filtres (bientôt disponible)",
+	"modListFilters_filterTooltip": "Filtres",
 	"prefs_window_title": "Fenêtre",
 	"prefs_window_nativeTitlebar": "Barre de titre native",
 	"prefs_window_nativeTitlebar_desc": "Utiliser la barre de titre du système au lieu de celle de Zephyr. Nécessite un redémarrage.",
