@@ -1,6 +1,6 @@
 {
 	"productName": "Zephyr",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"identifier": "com.prismo-studio.zephyr",
 	"build": {
 		"beforeBuildCommand": "pnpm run build",
@@ -12,7 +12,7 @@
 		"active": true,
 		"category": "Game",
 		"copyright": "",
-		"targets": "all",
+		"targets": ["nsis", "appimage", "deb", "dmg"],
 		"externalBin": [],
 		"createUpdaterArtifacts": true,
 		"shortDescription": "A fast, modern mod manager for all your games",
@@ -27,7 +27,13 @@
 		"windows": {
 			"certificateThumbprint": null,
 			"digestAlgorithm": "sha256",
-			"timestampUrl": ""
+			"timestampUrl": "",
+			"nsis": {
+				"installMode": "currentUser",
+				"installerIcon": "icons/icon.ico",
+				"sidebarImage": "icons/sidebar.bmp",
+				"headerImage": "icons/header.bmp"
+			}
 		},
 		"linux": {
 			"deb": {
@@ -36,15 +42,23 @@
 		},
 		"macOS": {
 			"dmg": {
-				"appPosition": { "x": 180, "y": 170 },
-				"applicationFolderPosition": { "x": 480, "y": 170 }
+				"appPosition": {
+					"x": 180,
+					"y": 170
+				},
+				"applicationFolderPosition": {
+					"x": 480,
+					"y": 170
+				}
 			},
 			"minimumSystemVersion": "10.15"
 		},
 		"resources": [],
 		"fileAssociations": [
 			{
-				"ext": ["r2z"],
+				"ext": [
+					"r2z"
+				],
 				"mimeType": "application/zip"
 			}
 		]
@@ -58,7 +72,10 @@
 		},
 		"deep-link": {
 			"desktop": {
-				"schemes": ["ror2mm", "zephyr"]
+				"schemes": [
+					"ror2mm",
+					"zephyr"
+				]
 			}
 		}
 	},
@@ -82,7 +99,9 @@
 			"csp": "default-src * ipc: http://ipc.localhost; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' https://storage.ko-fi.com; font-src https://fonts.gstatic.com",
 			"assetProtocol": {
 				"enable": true,
-				"scope": ["**"]
+				"scope": [
+					"**"
+				]
 			}
 		}
 	}

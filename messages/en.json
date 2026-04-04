@@ -478,7 +478,6 @@
 	"modpack_includeFiles_placeholder": "Filter files...",
 	"toolBar_dialog_games_lastUpdated": "Last updated {time} ago",
 	"installPopover_taskText_done": "Finishing up...",
-
 	"dashboard_title": "Dashboard",
 	"dashboard_subtitle": "Welcome back — manage your mods from here.",
 	"dashboard_activeGame": "Active game",
@@ -504,10 +503,8 @@
 	"dashboard_profiles_modCount": "{count} mods",
 	"dashboard_profiles_active": "Active",
 	"dashboard_footer": "Zephyr v0.1.0 by",
-
 	"modpack_header_title": "Export Modpack",
 	"modpack_header_description": "Package and share your mod profile with the community.",
-
 	"prefs_locations_cacheFolder": "Cache folder",
 	"browse_loading": "Loading mods...",
 	"browse_loadMore": "Load more",
@@ -535,7 +532,7 @@
 	"modDetails_versionChange_success": "{mod} changed to version {version}",
 	"sidebar_play": "PLAY",
 	"sidebar_launchModded": "Modded",
-	"sidebar_launchVanilla": "Vanilla",
+	"sidebar_launchVanilla": "Launch Vanilla",
 	"prefs_sources_title": "Sources",
 	"prefs_sources_curseforge_desc": "Include CurseForge results when browsing mods.",
 	"config_launchHint": "Some mod configs only appear after launching the game once.",
@@ -591,7 +588,6 @@
 	"installButton_installing": "Installing...",
 	"installButton_install": "Install",
 	"prefs_aboutDesc": "A fast, modern mod manager for all your games",
-
 	"configPage_title": "Config Editor",
 	"configPage_openFile": "Open file",
 	"configPage_searchPlaceholder": "Search config files...",
@@ -600,43 +596,33 @@
 	"configPage_error": "Error reading file: ",
 	"configPage_unsupported": "Unsupported config format",
 	"configPage_resetToDefault": "Reset to default",
-
 	"profilePage_rename": "Rename",
 	"profilePage_duplicate": "Duplicate",
 	"profilePage_delete": "Delete",
-
 	"browsePage_refresh": "Refresh",
-
 	"installPopover_cancelAll": "Cancel all",
-
 	"modpackPage_title": "Modpack",
 	"modpackPage_subtitle": "Export & Import",
-
 	"toast_cannotDisable_title": "Cannot disable {name}",
 	"toast_cannotDisable_message": "This mod is required by: {dependants}. Disable those mods first.",
-
 	"toast_cannotEnable_title": "Cannot enable {name}",
 	"toast_cannotEnable_message": "This mod depends on: {dependants}. Enable those mods first.",
-
 	"removeModDialog_title": "Uninstall {name}?",
 	"removeModDialog_description": "The following mods depend on {name} and will likely break if it is removed:",
 	"removeModDialog_hint": "You can remove just this mod (leaving dependants installed but broken), or remove all of them at once.",
 	"removeModDialog_cancel": "Cancel",
 	"removeModDialog_removeOne": "Remove {name} only",
 	"removeModDialog_removeAll": "Remove all ({count} mods)",
-
 	"toggleModDialog_disable_title": "Disable {name}?",
 	"toggleModDialog_disable_description": "The following mods depend on {name} and will also be disabled:",
 	"toggleModDialog_disable_hint": "You can disable just this mod (dependants may break), or disable all of them at once.",
 	"toggleModDialog_disable_one": "Disable {name} only",
 	"toggleModDialog_disable_all": "Disable all ({count} mods)",
-
 	"toggleModDialog_enable_title": "Enable {name}?",
 	"toggleModDialog_enable_description": "{name} depends on the following disabled mods:",
 	"toggleModDialog_enable_hint": "You can enable just this mod (it may not work), or enable all dependencies at once.",
 	"toggleModDialog_enable_one": "Enable {name} only",
 	"toggleModDialog_enable_all": "Enable all ({count} mods)",
-
 	"toggleModDialog_cancel": "Cancel",
 	"batch_selectAll": "Select All",
 	"batch_selected": "{count} selected",
@@ -644,13 +630,11 @@
 	"batch_installSelected": "Install Selected",
 	"batch_uninstallSelected": "Uninstall Selected",
 	"batch_toggleSelected": "Toggle Selected",
-
 	"batchRemoveDialog_title": "Uninstall {count} mods?",
 	"batchRemoveDialog_description": "The following mods depend on your selection and will likely break:",
 	"batchRemoveDialog_hint": "You can remove only the selected mods (leaving dependants installed but broken), or cancel.",
 	"batchRemoveDialog_cancel": "Cancel",
 	"batchRemoveDialog_confirm": "Remove selected ({count} mods)",
-
 	"batchToggleDialog_title": "Toggle {count} mods?",
 	"batchToggleDialog_description": "The following mods depend on mods being disabled and may break:",
 	"batchToggleDialog_hint": "You can proceed anyway (dependants may stop working), or cancel.",

@@ -625,7 +625,6 @@
 						class="z-multi-nav-btn"
 						disabled={multiViewIndex <= 0}
 						onclick={() => multiViewIndex--}
-						title="Previous mod"
 					>
 						<Icon icon="mdi:chevron-left" />
 					</button>
@@ -634,7 +633,6 @@
 						class="z-multi-nav-btn"
 						disabled={multiViewIndex >= selectedMods.length - 1}
 						onclick={() => multiViewIndex++}
-						title="Next mod"
 					>
 						<Icon icon="mdi:chevron-right" />
 					</button>

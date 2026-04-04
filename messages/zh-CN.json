@@ -532,7 +532,7 @@
 	"modDetails_versionChange_success": "{mod} 已更改为版本 {version}",
 	"sidebar_play": "开始",
 	"sidebar_launchModded": "模组",
-	"sidebar_launchVanilla": "原版",
+	"sidebar_launchVanilla": "启动原版",
 	"prefs_sources_title": "来源",
 	"prefs_sources_curseforge_desc": "浏览模组时包含 CurseForge 的结果。",
 	"config_launchHint": "部分模组配置需要启动一次游戏后才会出现。",
@@ -595,29 +595,24 @@
 	"installPopover_cancelAll": "全部取消",
 	"modpackPage_title": "模组包",
 	"modpackPage_subtitle": "导出与导入",
-
 	"removeModDialog_title": "卸载 {name}？",
 	"removeModDialog_description": "以下模组依赖于 {name}，如果卸载该模组，它们可能会无法运行：",
 	"removeModDialog_hint": "你可以仅卸载此模组（依赖它的模组会保留但可能崩溃），也可以一次性全部卸载。",
 	"removeModDialog_cancel": "取消",
 	"removeModDialog_removeOne": "仅卸载 {name}",
 	"removeModDialog_removeAll": "全部卸载（{count} 个模组）",
-
 	"toast_cannotEnable_title": "无法启用 {name}",
 	"toast_cannotEnable_message": "此模组依赖于：{dependants}。请先启用这些模组。",
-
 	"toggleModDialog_disable_title": "禁用 {name}？",
 	"toggleModDialog_disable_description": "以下模组依赖于 {name}，也将被禁用：",
 	"toggleModDialog_disable_hint": "你可以仅禁用此模组（依赖它的模组可能会出问题），也可以一次性全部禁用。",
 	"toggleModDialog_disable_one": "仅禁用 {name}",
 	"toggleModDialog_disable_all": "全部禁用（{count} 个模组）",
-
 	"toggleModDialog_enable_title": "启用 {name}？",
 	"toggleModDialog_enable_description": "{name} 依赖于以下已禁用的模组：",
 	"toggleModDialog_enable_hint": "你可以仅启用此模组（可能无法正常运行），也可以一次性启用所有依赖项。",
 	"toggleModDialog_enable_one": "仅启用 {name}",
 	"toggleModDialog_enable_all": "全部启用（{count} 个模组）",
-
 	"toggleModDialog_cancel": "取消",
 	"batch_selectAll": "全选",
 	"batch_selected": "已选择 {count} 个",
@@ -626,13 +621,11 @@
 	"batch_uninstallSelected": "卸载已选",
 	"batch_toggleSelected": "启用/禁用",
 	"prefs_copyPath_success": "路径已复制",
-
 	"batchRemoveDialog_title": "卸载 {count} 个模组？",
 	"batchRemoveDialog_description": "以下模组依赖于您的选择，卸载后可能无法正常工作：",
 	"batchRemoveDialog_hint": "您可以仅删除已选模组（依赖它们的模组将保留但可能损坏），或取消操作。",
 	"batchRemoveDialog_cancel": "取消",
 	"batchRemoveDialog_confirm": "删除已选（{count} 个模组）",
-
 	"batchToggleDialog_title": "切换 {count} 个模组？",
 	"batchToggleDialog_description": "以下模组依赖于即将被禁用的模组，可能会停止工作：",
 	"batchToggleDialog_hint": "您可以继续（依赖的模组可能停止工作），或取消。",

@@ -631,7 +631,7 @@
 	"modDetails_versionChange_success": "{mod} cambiado a la versión {version}",
 	"sidebar_play": "JUGAR",
 	"sidebar_launchModded": "Modded",
-	"sidebar_launchVanilla": "Vanilla",
+	"sidebar_launchVanilla": "Iniciar Vanilla",
 	"prefs_sources_title": "Fuentes",
 	"prefs_sources_curseforge_desc": "Incluir resultados de CurseForge al buscar mods.",
 	"config_launchHint": "Algunas configuraciones de mods solo aparecen después de iniciar el juego una vez.",

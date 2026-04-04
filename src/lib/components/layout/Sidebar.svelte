@@ -259,7 +259,7 @@
 	<div class="z-sidebar-bottom">
 		<Tooltip text={i18nState.locale && m.toolBar_launchGame_button()} position="right" delay={300}>
 			<button class="z-launch-btn" onclick={launchGame}>
-				<Icon icon="mdi:rocket" />
+				<img src="/launch-icon.png" alt="Launch Game" class="z-custom-launch-icon" />
 			</button>
 		</Tooltip>
 
@@ -669,6 +669,13 @@
 
 	.z-launch-vanilla-btn:active {
 		transform: scale(0.97);
+	}
+
+	.z-custom-launch-icon {
+		width: 28px;
+		height: 28px;
+		object-fit: cover;
+		border-radius: var(--radius-sm);
 	}
 
 	/* Profile switcher */
