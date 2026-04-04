@@ -198,33 +198,33 @@
 						</div>
 					{/if}
 				{:else} -->
-					{#each games.list.filter((g) => g.name
-							.toLowerCase()
-							.includes(gameSearchTerm.toLowerCase())) as game}
-						<button
-							class="z-game-dropdown-item"
-							class:active={game.slug === games.active?.slug}
-							onclick={async () => {
-								await games.setActive(game.slug);
-								gameMenuOpen = false;
-								gameSearchTerm = '';
-							}}
-						>
-							<img src={gameIconSrc(game)} alt={game.name} class="z-game-dropdown-icon" />
-							<span class="z-game-dropdown-name">{game.name}</span>
-							{#if game.favorite}
-								<Icon icon="mdi:star" class="text-xs text-amber-400" />
-							{/if}
-						</button>
-					{/each}
-					{#if games.list.filter((g) => g.name
-							.toLowerCase()
-							.includes(gameSearchTerm.toLowerCase())).length === 0}
-						<div class="z-game-dropdown-empty">
-							<Icon icon="mdi:magnify" />
-							<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
-						</div>
-					{/if}
+				{#each games.list.filter((g) => g.name
+						.toLowerCase()
+						.includes(gameSearchTerm.toLowerCase())) as game}
+					<button
+						class="z-game-dropdown-item"
+						class:active={game.slug === games.active?.slug}
+						onclick={async () => {
+							await games.setActive(game.slug);
+							gameMenuOpen = false;
+							gameSearchTerm = '';
+						}}
+					>
+						<img src={gameIconSrc(game)} alt={game.name} class="z-game-dropdown-icon" />
+						<span class="z-game-dropdown-name">{game.name}</span>
+						{#if game.favorite}
+							<Icon icon="mdi:star" class="text-xs text-amber-400" />
+						{/if}
+					</button>
+				{/each}
+				{#if games.list.filter((g) => g.name
+						.toLowerCase()
+						.includes(gameSearchTerm.toLowerCase())).length === 0}
+					<div class="z-game-dropdown-empty">
+						<Icon icon="mdi:magnify" />
+						<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
+					</div>
+				{/if}
 				<!-- {/if} NexusMods conditional end -->
 			</div>
 		</div>

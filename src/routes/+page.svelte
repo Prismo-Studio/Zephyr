@@ -125,10 +125,12 @@
 	let multiViewIndex = $state(0);
 	let selectedMods = $derived(
 		selectedModIds.length > 1
-			? selectedModIds.map((id) => mods.find((m) => m.uuid === id)).filter(Boolean) as Mod[]
+			? (selectedModIds.map((id) => mods.find((m) => m.uuid === id)).filter(Boolean) as Mod[])
 			: []
 	);
-	let multiViewMod = $derived(selectedMods.length > 0 ? selectedMods[multiViewIndex] ?? selectedMods[0] : null);
+	let multiViewMod = $derived(
+		selectedMods.length > 0 ? (selectedMods[multiViewIndex] ?? selectedMods[0]) : null
+	);
 
 	$effect(() => {
 		selectedModIds;

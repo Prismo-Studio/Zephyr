@@ -48,10 +48,12 @@
 	let multiViewIndex = $state(0);
 	let selectedMods = $derived(
 		selectedModIds.length > 1
-			? selectedModIds.map((id) => mods.find((m) => m.uuid === id)).filter(Boolean) as Mod[]
+			? (selectedModIds.map((id) => mods.find((m) => m.uuid === id)).filter(Boolean) as Mod[])
 			: []
 	);
-	let multiViewMod = $derived(selectedMods.length > 0 ? selectedMods[multiViewIndex] ?? selectedMods[0] : null);
+	let multiViewMod = $derived(
+		selectedMods.length > 0 ? (selectedMods[multiViewIndex] ?? selectedMods[0]) : null
+	);
 
 	// Reset index when selection changes
 	$effect(() => {
@@ -325,10 +327,7 @@
 
 <div class="z-browse-page">
 	<div class="z-browse-main">
-		<Header
-			title={i18nState.locale && m.navBar_label_browse()}
-			subtitle={'Thunderstore' /* activeSource === 'nexusmods' ? 'NexusMods' : 'Thunderstore' */}
-		>
+		<Header title={i18nState.locale && m.navBar_label_browse()} subtitle={'Thunderstore'}>
 			{#snippet actions()}
 				<button
 					class="z-refresh-btn"
