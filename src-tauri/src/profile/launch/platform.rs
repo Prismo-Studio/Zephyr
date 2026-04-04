@@ -9,6 +9,7 @@ use tracing::info;
 use crate::{
     game::{platform::Platform, Game},
     prefs::Prefs,
+    util::fs::PathExt,
 };
 
 pub fn create_launch_command(
