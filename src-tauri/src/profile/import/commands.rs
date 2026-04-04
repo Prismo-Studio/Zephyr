@@ -67,6 +67,8 @@ pub async fn import_profile(data: ImportData, import_all: bool, app: AppHandle) 
 pub async fn read_profile_code(key: &str, app: AppHandle) -> Result<FrontendImportData> {
     let key = Uuid::parse_str(key).map_err(|_| anyhow!("invalid code format"))?;
 
+    thunderstore::wait_for_fetch(&app).await;
+
     let data = super::read_code(key, &app).await?;
 
     Ok(FrontendImportData::new(data, &app))
