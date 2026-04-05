@@ -655,7 +655,7 @@
 							<Checkbox bind:checked={modQuery.current.includeDeprecated} />
 							<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
 						</label>
-						{#if curseForgeEnabled.current || zephyrServerState.current.enabled}
+						{#if (curseForgeEnabled.current && cfMods.length > 0) || (zephyrServerState.current.enabled && serverMods.length > 0)}
 							<label class="z-filter-toggle">
 								<Checkbox bind:checked={showCurseForgeOnly} />
 								<span>CurseForge</span>
