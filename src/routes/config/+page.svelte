@@ -240,8 +240,14 @@
 												max={range?.end}
 												step={entry.value.type === 'float' ? 0.1 : 1}
 												onchange={(numVal) => {
-													const c = entry.value.content as { value: number; range: { start: number; end: number } | null };
-													const newVal = { type: entry.value.type as 'int' | 'float', content: { value: numVal, range: c.range } };
+													const c = entry.value.content as {
+														value: number;
+														range: { start: number; end: number } | null;
+													};
+													const newVal = {
+														type: entry.value.type as 'int' | 'float',
+														content: { value: numVal, range: c.range }
+													};
 													entry.value = newVal;
 													setEntry(selectedFile!, section, entry, newVal);
 												}}

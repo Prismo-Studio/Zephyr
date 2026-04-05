@@ -22,7 +22,7 @@
 		oninstall?: () => void;
 		oncontextmenu?: (e: MouseEvent, mod: Mod) => void;
 		onpointerdownHandle?: (e: PointerEvent, mod: Mod) => void;
-		oncategoryclick?: (category: string) => void;
+		oncategoryclick?: (category: string, multi?: boolean) => void;
 		activeCategories?: string[];
 	};
 
@@ -163,7 +163,7 @@
 						class:active={activeCategories.includes(category)}
 						onclick={(e) => {
 							e.stopPropagation();
-							oncategoryclick?.(category);
+							oncategoryclick?.(category, e.ctrlKey || e.metaKey);
 						}}
 					>
 						{category}

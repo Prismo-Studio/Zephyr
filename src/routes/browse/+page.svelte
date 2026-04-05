@@ -80,12 +80,20 @@
 	let hasRefreshed = $state(false);
 	let filtersExpanded = $state(false);
 
-	function toggleCategoryFilter(category: string) {
+	function toggleCategoryFilter(category: string, multi = false) {
 		const cats = modQuery.current.includeCategories;
-		if (cats.includes(category)) {
-			modQuery.current.includeCategories = [];
+		if (multi) {
+			if (cats.includes(category)) {
+				modQuery.current.includeCategories = cats.filter((c) => c !== category);
+			} else {
+				modQuery.current.includeCategories = [...cats, category];
+			}
 		} else {
-			modQuery.current.includeCategories = [category];
+			if (cats.includes(category) && cats.length === 1) {
+				modQuery.current.includeCategories = [];
+			} else {
+				modQuery.current.includeCategories = [category];
+			}
 		}
 		filtersExpanded = true;
 	}
@@ -116,7 +124,11 @@
 
 	function syncThunderstoreBrowseMods() {
 		if (activeSource !== 'thunderstore') return;
-		mods = [...thunderstoreMods, ...(shouldUseZephyrServer() ? serverMods : cfMods), ...communityMods];
+		mods = [
+			...thunderstoreMods,
+			...(shouldUseZephyrServer() ? serverMods : cfMods),
+			...communityMods
+		];
 	}
 
 	function externalHasMore(): boolean {

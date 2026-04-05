@@ -412,12 +412,20 @@
 	let locked = $derived(profiles.activeLocked);
 	let filtersExpanded = $state(false);
 
-	function toggleCategoryFilter(category: string) {
+	function toggleCategoryFilter(category: string, multi = false) {
 		const cats = profileQuery.current.includeCategories;
-		if (cats.includes(category)) {
-			profileQuery.current.includeCategories = [];
+		if (multi) {
+			if (cats.includes(category)) {
+				profileQuery.current.includeCategories = cats.filter((c) => c !== category);
+			} else {
+				profileQuery.current.includeCategories = [...cats, category];
+			}
 		} else {
-			profileQuery.current.includeCategories = [category];
+			if (cats.includes(category) && cats.length === 1) {
+				profileQuery.current.includeCategories = [];
+			} else {
+				profileQuery.current.includeCategories = [category];
+			}
 		}
 		filtersExpanded = true;
 	}

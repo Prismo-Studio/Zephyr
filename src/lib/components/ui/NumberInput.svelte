@@ -32,15 +32,7 @@
 
 <div class="z-number-control">
 	<button class="z-number-btn" onclick={decrement}>−</button>
-	<input
-		class="z-number-value"
-		type="number"
-		{value}
-		{min}
-		{max}
-		{step}
-		onchange={handleInput}
-	/>
+	<input class="z-number-value" type="number" {value} {min} {max} {step} onchange={handleInput} />
 	<button class="z-number-btn" onclick={increment}>+</button>
 </div>
 

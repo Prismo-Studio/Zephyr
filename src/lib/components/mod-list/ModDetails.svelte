@@ -33,7 +33,7 @@
 		onclose?: () => void;
 		ontoggle?: () => void;
 		onremove?: () => void;
-		oncategoryclick?: (category: string) => void;
+		oncategoryclick?: (category: string, multi?: boolean) => void;
 		activeCategories?: string[];
 		children?: Snippet;
 	};
@@ -292,7 +292,7 @@
 					<button
 						class="z-category-tag"
 						class:active={activeCategories.includes(category)}
-						onclick={() => oncategoryclick?.(category)}
+						onclick={(e) => oncategoryclick?.(category, e.ctrlKey || e.metaKey)}
 					>
 						<Icon icon="mdi:tag" class="text-[10px]" />
 						{category}
