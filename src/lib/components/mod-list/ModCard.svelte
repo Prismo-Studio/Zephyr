@@ -22,6 +22,8 @@
 		oninstall?: () => void;
 		oncontextmenu?: (e: MouseEvent, mod: Mod) => void;
 		onpointerdownHandle?: (e: PointerEvent, mod: Mod) => void;
+		oncategoryclick?: (category: string) => void;
+		activeCategories?: string[];
 	};
 
 	let {
@@ -35,7 +37,9 @@
 		onclick,
 		oninstall,
 		oncontextmenu,
-		onpointerdownHandle
+		onpointerdownHandle,
+		oncategoryclick,
+		activeCategories = []
 	}: Props = $props();
 
 	let installing = $state(false);
@@ -152,7 +156,16 @@
 		{#if mod.categories && mod.categories.length > 0}
 			<div class="z-mod-categories">
 				{#each mod.categories.slice(0, 3) as category}
-					<span class="z-mod-category-tag">{category}</span>
+					<button
+						class="z-mod-category-tag"
+						class:active={activeCategories.includes(category)}
+						onclick={(e) => {
+							e.stopPropagation();
+							oncategoryclick?.(category);
+						}}
+					>
+						{category}
+					</button>
 				{/each}
 			</div>
 		{/if}
@@ -446,5 +459,17 @@
 		background: var(--bg-overlay);
 		color: var(--text-muted);
 		border: 1px solid var(--border-subtle);
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.z-mod-category-tag:hover {
+		color: #2dd4bf;
+		border-color: #0d9488;
+	}
+
+	.z-mod-category-tag.active {
+		color: #2dd4bf;
+		border-color: #0d9488;
 	}
 </style>

@@ -79,6 +79,16 @@
 
 	let hasRefreshed = $state(false);
 	let filtersExpanded = $state(false);
+
+	function toggleCategoryFilter(category: string) {
+		const cats = modQuery.current.includeCategories;
+		if (cats.includes(category)) {
+			modQuery.current.includeCategories = [];
+		} else {
+			modQuery.current.includeCategories = [category];
+		}
+		filtersExpanded = true;
+	}
 	let showCurseForgeOnly = $state(false);
 	let thunderstoreMods: Mod[] = $state([]);
 	let cfOffset = $state(0);
@@ -722,6 +732,8 @@
 							onclick={(evt: MouseEvent) => handleModClick(evt, mod, index)}
 							oninstall={() => installLatest(mod)}
 							oncontextmenu={openModContextMenu}
+							oncategoryclick={toggleCategoryFilter}
+							activeCategories={modQuery.current.includeCategories}
 						/>
 					{/each}
 
@@ -766,6 +778,8 @@
 			onclose={() => (selectedModIds = [])}
 			ontoggle={!selectedMod.uuid.includes(':') ? () => toggleMod(selectedMod!) : undefined}
 			onremove={!selectedMod.uuid.includes(':') ? () => removeMod(selectedMod!) : undefined}
+			oncategoryclick={toggleCategoryFilter}
+			activeCategories={modQuery.current.includeCategories}
 		>
 			   {#if isServerMod(selectedMod)}
 				<InstallModButton mod={selectedMod} {locked} onInstall={installFromServer} />
@@ -781,6 +795,8 @@
 			onclose={() => (selectedModIds = [])}
 			ontoggle={!multiViewMod.uuid.includes(':') ? () => toggleMod(multiViewMod!) : undefined}
 			onremove={!multiViewMod.uuid.includes(':') ? () => removeMod(multiViewMod!) : undefined}
+			oncategoryclick={toggleCategoryFilter}
+			activeCategories={modQuery.current.includeCategories}
 		>
 			   {#if isServerMod(multiViewMod)}
 				<InstallModButton mod={multiViewMod} {locked} onInstall={installFromServer} />
