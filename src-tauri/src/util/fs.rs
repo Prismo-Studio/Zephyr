@@ -5,7 +5,9 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use eyre::{Context, Result};
+use eyre::Result;
+#[cfg(target_os = "linux")]
+use eyre::Context;
 
 use serde::{de::DeserializeOwned, Serialize};
 use tracing::warn;
@@ -227,7 +229,7 @@ pub fn open_path(path: impl AsRef<Path>) -> Result<()> {
     }
     #[cfg(not(target_os = "linux"))]
     {
-        open::that(path).map_err(|err| eyre::eyre!(err))?;
+        open::that(path.as_ref()).map_err(|err| eyre::eyre!(err))?;
     }
     Ok(())
 }
