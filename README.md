@@ -106,4 +106,4 @@ Material icons are licensed under [Apache 2.0](https://www.apache.org/licenses/L
 
 ## Credits
 
-Built and maintained by [Prismo Studio](https://prismo-studios.dev).
+Built and maintained by [Prismo Studios](https://prismo-studios.dev).
