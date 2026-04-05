@@ -33,6 +33,8 @@
 		onclose?: () => void;
 		ontoggle?: () => void;
 		onremove?: () => void;
+		oncategoryclick?: (category: string) => void;
+		activeCategories?: string[];
 		children?: Snippet;
 	};
 
@@ -43,6 +45,8 @@
 		onclose,
 		ontoggle,
 		onremove,
+		oncategoryclick,
+		activeCategories = [],
 		children
 	}: Props = $props();
 
@@ -276,10 +280,14 @@
 		{#if mod.categories && mod.categories.length > 0}
 			<div class="z-details-categories">
 				{#each mod.categories as category}
-					<span class="z-category-tag">
+					<button
+						class="z-category-tag"
+						class:active={activeCategories.includes(category)}
+						onclick={() => oncategoryclick?.(category)}
+					>
 						<Icon icon="mdi:tag" class="text-[10px]" />
 						{category}
-					</span>
+					</button>
 				{/each}
 			</div>
 		{/if}
@@ -573,6 +581,18 @@
 		background: var(--bg-overlay);
 		color: var(--text-secondary);
 		border: 1px solid var(--border-subtle);
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.z-category-tag:hover {
+		color: #2dd4bf;
+		border-color: #0d9488;
+	}
+
+	.z-category-tag.active {
+		color: #2dd4bf;
+		border-color: #0d9488;
 	}
 
 	.z-details-actions {

@@ -20,6 +20,7 @@
 		useNativeTitlebar,
 		curseForgeEnabled
 	} from '$lib/themeSystem';
+
 	import {
 		getTheme,
 		setTheme,
@@ -53,6 +54,7 @@
 	function cancelCurseForge() {
 		showCurseForgeModal = false;
 	}
+
 	let currentTheme: ThemeId = $state(getTheme());
 	let systemFonts: string[] = $state([]);
 	let currentFont = $state(getFont());
@@ -249,7 +251,7 @@
 
 			<div class="z-settings-row">
 				<div class="z-settings-label">
-					<span>CurseForge</span>
+					<span>CurseForge <span class="z-beta-badge">Beta</span></span>
 					<span class="z-settings-desc"
 						>{i18nState.locale && m.prefs_sources_curseforge_desc()}</span
 					>
@@ -265,6 +267,8 @@
 					}}
 				/>
 			</div>
+
+
 		</section>
 
 		{#if prefs}
@@ -673,5 +677,40 @@
 		border-radius: var(--radius-md);
 		background: rgba(255, 179, 71, 0.06);
 		border: 1px solid rgba(255, 179, 71, 0.15);
+	}
+
+	.z-settings-input {
+		background: var(--bg-secondary, #1a1a2e);
+		border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+		border-radius: var(--radius-md, 6px);
+		color: var(--text-primary, #fff);
+		padding: 6px 10px;
+		font-size: 13px;
+		min-width: 220px;
+		outline: none;
+		transition: border-color 0.15s;
+	}
+
+	.z-settings-input:focus {
+		border-color: var(--accent-400, #2d8cf0);
+	}
+
+	.z-settings-input::placeholder {
+		color: var(--text-muted, rgba(255, 255, 255, 0.35));
+	}
+
+	.z-beta-badge {
+		display: inline-block;
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		padding: 1px 6px;
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--accent-400) 20%, transparent);
+		color: var(--accent-400);
+		border: 1px solid color-mix(in srgb, var(--accent-400) 40%, transparent);
+		vertical-align: middle;
+		margin-left: 4px;
 	}
 </style>

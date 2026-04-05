@@ -4,7 +4,7 @@
 
 <h1 align="center">Zephyr</h1>
 <p align="center"><strong>A fast, modern mod manager for all your games</strong></p>
-<p align="center">by <a href="https://prismo-studio.com">Prismo Studio</a></p>
+<p align="center">by <a href="https://prismo-studios.dev">Prismo Studio</a></p>
 
 <p align="center">
   <a href="https://github.com/prismo-studio/zephyr/releases"><img src="https://img.shields.io/badge/version-0.2.0-blue?style=flat" alt="Version 0.2.0" /></a>
@@ -33,7 +33,7 @@
 
 ### Download
 
-Head to the [Releases](https://github.com/prismo-studio/zephyr/releases) page and grab the latest installer for your platform:
+Head to the [Releases](https://github/prismo-studio/zephyr/releases) page and grab the latest installer for your platform:
 
 - **Windows** -- `.msi` installer
 - **Linux** -- AppImage, `.deb`, or `.rpm`
@@ -51,7 +51,7 @@ Head to the [Releases](https://github.com/prismo-studio/zephyr/releases) page an
 #### Commands
 
 ```bash
-git clone https://github.com/prismo-studio/zephyr.git
+git clone https://github/prismo-studio/zephyr.git
 cd zephyr
 pnpm install
 pnpm tauri dev
@@ -74,7 +74,7 @@ pnpm tauri build
 
 ## Fork Info
 
-Zephyr is forked from [Gale](https://github.com/Kesomannen/gale) by [Kesomannen](https://github.com/Kesomannen).
+Zephyr is forked from [Gale](https://github/Kesomannen/gale) by [Kesomannen](https://github/Kesomannen).
 
 ## License
 
@@ -84,4 +84,4 @@ Material icons are licensed under [Apache 2.0](https://www.apache.org/licenses/L
 
 ## Credits
 
-Built and maintained by [Prismo Studio](https://prismo-studio.com).
+Built and maintained by [Prismo Studio](https://prismo-studio).

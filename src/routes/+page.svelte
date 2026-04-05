@@ -412,6 +412,16 @@
 	let locked = $derived(profiles.activeLocked);
 	let filtersExpanded = $state(false);
 
+	function toggleCategoryFilter(category: string) {
+		const cats = profileQuery.current.includeCategories;
+		if (cats.includes(category)) {
+			profileQuery.current.includeCategories = [];
+		} else {
+			profileQuery.current.includeCategories = [category];
+		}
+		filtersExpanded = true;
+	}
+
 	let sortedMods = $derived.by(() => {
 		const pinned = pinnedMods.current;
 		if (pinned.length === 0) return mods;
@@ -611,6 +621,8 @@
 									}}
 									oncontextmenu={openModContextMenu}
 									onpointerdownHandle={handleDragHandleDown}
+									oncategoryclick={toggleCategoryFilter}
+									activeCategories={profileQuery.current.includeCategories}
 								/>
 							</div>
 						{/each}
@@ -640,6 +652,8 @@
 				onclose={() => (selectedModIds = [])}
 				ontoggle={() => toggleMod(selectedMod!)}
 				onremove={() => removeMod(selectedMod!)}
+				oncategoryclick={toggleCategoryFilter}
+				activeCategories={profileQuery.current.includeCategories}
 			>
 				<InstallModButton mod={selectedMod} {install} {locked} />
 			</ModDetails>
@@ -650,6 +664,8 @@
 				onclose={() => (selectedModIds = [])}
 				ontoggle={() => toggleMod(multiViewMod!)}
 				onremove={() => removeMod(multiViewMod!)}
+				oncategoryclick={toggleCategoryFilter}
+				activeCategories={profileQuery.current.includeCategories}
 			>
 				<InstallModButton mod={multiViewMod} {install} {locked} />
 				<div class="z-multi-nav">

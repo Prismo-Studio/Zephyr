@@ -11,15 +11,16 @@
 	type Props = {
 		mod: Mod;
 		locked: boolean;
-		install: (mod: ModId) => void;
+		install?: (mod: ModId) => void | Promise<void>;
+		onInstall?: (mod: Mod, versionUuid?: string) => void | Promise<void>;
 	};
 
-	let { mod, locked, install }: Props = $props();
+	let { mod, locked, install = undefined, onInstall = undefined }: Props = $props();
 
 	let loading = $state(false);
 	let downloadSize: number | null = $state(null);
 
-	let disabled = $derived(mod.isInstalled || locked || loading);
+	let disabled = $derived(mod.isInstalled || locked || loading || (!install && !onInstall));
 
 	let modId = $derived({
 		packageUuid: mod.uuid,
@@ -28,26 +29,65 @@
 
 	$effect(() => {
 		loading = false;
-		api.profile.install.getDownloadSize(modId).then((size) => (downloadSize = size));
+		if (onInstall) {
+			downloadSize = null;
+			return;
+		}
+
+		api.profile.install
+			.getDownloadSize(modId)
+			.then((size) => (downloadSize = size))
+			.catch(() => {
+				downloadSize = null;
+			});
 	});
 
 	// Reset loading when install cycle ends
 	$effect(() => {
-		if (!installState.active) {
+		if (!onInstall && !installState.active) {
 			loading = false;
 		}
 	});
+
+	function triggerInstall(versionUuid = mod.versionUuid) {
+		if (disabled) return;
+
+		loading = true;
+
+		if (onInstall) {
+			Promise.resolve()
+				.then(() => onInstall(mod, versionUuid))
+				.finally(() => {
+					loading = false;
+				});
+			return;
+		}
+
+		if (!install) {
+			loading = false;
+			return;
+		}
+
+		Promise.resolve()
+			.then(() =>
+				install({
+					packageUuid: mod.uuid,
+					versionUuid
+				})
+			)
+			.catch(() => {
+				loading = false;
+			});
+	}
 </script>
 
 <div class="z-install-btn-group">
 	<button
 		class="z-install-main"
+		class:has-dropdown={mod.versions.length > 1 && !locked}
 		class:installed={mod.isInstalled}
 		class:is-locked={locked}
-		onclick={() => {
-			install(modId);
-			loading = true;
-		}}
+		onclick={() => triggerInstall()}
 		{disabled}
 	>
 		{#if locked}
@@ -78,7 +118,7 @@
 				{#each mod.versions as version}
 					<button
 						class="z-version-item"
-						onclick={() => install({ packageUuid: mod.uuid, versionUuid: version.uuid })}
+						onclick={() => triggerInstall(version.uuid)}
 					>
 						{version.name}
 					</button>
@@ -103,7 +143,7 @@
 		justify-content: center;
 		gap: var(--space-sm);
 		padding: var(--space-md) var(--space-lg);
-		border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+		border-radius: var(--radius-lg);
 		border: none;
 		font-weight: 700;
 		font-family: var(--font-body);
@@ -112,6 +152,10 @@
 		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
 		color: var(--text-inverse);
 		box-shadow: 0 0 12px rgba(26, 255, 250, 0.15);
+	}
+
+	.z-install-main.has-dropdown {
+		border-radius: var(--radius-lg) 0 0 var(--radius-lg);
 	}
 
 	.z-install-main:hover:not(:disabled) {

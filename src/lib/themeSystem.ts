@@ -107,4 +107,4 @@ export function refreshFont() {
 
 export const useNativeMenu = new PersistedState('useNativeMenu', true);
 export const useNativeTitlebar = new PersistedState('useNativeTitlebar', false);
-export const curseForgeEnabled = new PersistedState('curseForgeEnabled', true);
+export const curseForgeEnabled = new PersistedState('curseForgeEnabled', false);

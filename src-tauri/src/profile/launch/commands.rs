@@ -60,3 +60,12 @@ pub fn open_game_dir(app: AppHandle) -> Result<()> {
 
     Ok(())
 }
+
+#[command]
+pub fn get_game_dir(app: AppHandle) -> Result<String> {
+    let prefs = app.lock_prefs();
+    let manager = app.lock_manager();
+
+    let path = super::locate_game_dir(manager.active_game, &prefs)?;
+    Ok(path.to_string_lossy().into_owned())
+}
