@@ -102,9 +102,7 @@
 	let zephyrServerReachable: boolean | null = $state(null);
 
 	let displayedMods = $derived(
-		showCurseForgeOnly
-			? mods.filter((m) => isCurseForgeMod(m) || isServerMod(m))
-			: mods
+		showCurseForgeOnly ? mods.filter((m) => isCurseForgeMod(m) || isServerMod(m)) : mods
 	);
 
 	function shouldUseZephyrServer(): boolean {
@@ -320,8 +318,11 @@
 		cfLoading = true;
 		try {
 			const sortMap: Record<string, 'downloads' | 'rating' | 'newest' | 'updated' | 'name'> = {
-				lastUpdated: 'updated', newest: 'newest', rating: 'rating',
-				downloads: 'downloads', name: 'name'
+				lastUpdated: 'updated',
+				newest: 'newest',
+				rating: 'rating',
+				downloads: 'downloads',
+				name: 'name'
 			};
 			const cfResults = await api.sources.searchSources({
 				searchTerm: modQuery.current.searchTerm,
@@ -366,9 +367,10 @@
 			fileSize: cfMod.latestFiles[0]?.fileLength ?? 0,
 			websiteUrl: cfMod.links.websiteUrl,
 			donateUrl: null,
-			dependencies: cfMod.latestFiles[0]?.dependencies
-				?.filter((d) => d.relationType === 3)
-				.map((d) => String(d.modId)) ?? [],
+			dependencies:
+				cfMod.latestFiles[0]?.dependencies
+					?.filter((d) => d.relationType === 3)
+					.map((d) => String(d.modId)) ?? [],
 			isPinned: false,
 			isDeprecated: false,
 			isInstalled: undefined,
@@ -404,7 +406,7 @@
 			const newMods = result.data.map(curseForgeModToMod);
 			serverMods = [...serverMods, ...newMods];
 			serverOffset += SERVER_PAGE_SIZE;
-			serverHasMore = (serverOffset < result.pagination.totalCount);
+			serverHasMore = serverOffset < result.pagination.totalCount;
 			syncThunderstoreBrowseMods();
 		} catch (err) {
 			zephyrServerReachable = false;
@@ -539,7 +541,9 @@
 		selectedModIds = displayedMods.map((m) => m.uuid);
 	}
 
-	let isAllSelected = $derived(displayedMods.length > 0 && selectedModIds.length === displayedMods.length);
+	let isAllSelected = $derived(
+		displayedMods.length > 0 && selectedModIds.length === displayedMods.length
+	);
 	function toggleSelectAll() {
 		if (isAllSelected) {
 			selectedModIds = [];
@@ -655,7 +659,7 @@
 							<Checkbox bind:checked={modQuery.current.includeDeprecated} />
 							<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
 						</label>
-						{#if curseForgeEnabled.current || zephyrServerState.current.enabled}
+						{#if (curseForgeEnabled.current && cfMods.length > 0) || (zephyrServerState.current.enabled && serverMods.length > 0)}
 							<label class="z-filter-toggle">
 								<Checkbox bind:checked={showCurseForgeOnly} />
 								<span>CurseForge</span>
@@ -719,7 +723,7 @@
 						<p class="z-browse-empty-desc">
 							{showCurseForgeOnly
 								? 'No CurseForge mods available for this game.'
-								: (i18nState.locale && m.browse_noMods_desc())}
+								: i18nState.locale && m.browse_noMods_desc()}
 						</p>
 					</div>
 				{:else}
@@ -739,11 +743,12 @@
 
 					{#if showCurseForgeOnly}
 						{#if externalHasMore()}
-							<button class="z-load-more"
+							<button
+								class="z-load-more"
 								onclick={loadMoreExternalMods}
 								disabled={externalLoading()}
 							>
-								{externalLoading() ? 'Loading...' : (i18nState.locale && m.browse_loadMore())}
+								{externalLoading() ? 'Loading...' : i18nState.locale && m.browse_loadMore()}
 							</button>
 						{/if}
 					{:else}
@@ -781,11 +786,11 @@
 			oncategoryclick={toggleCategoryFilter}
 			activeCategories={modQuery.current.includeCategories}
 		>
-			   {#if isServerMod(selectedMod)}
+			{#if isServerMod(selectedMod)}
 				<InstallModButton mod={selectedMod} {locked} onInstall={installFromServer} />
-			   {:else if !selectedMod.uuid.includes(':')}
+			{:else if !selectedMod.uuid.includes(':')}
 				<InstallModButton mod={selectedMod} {install} {locked} />
-			   {/if}
+			{/if}
 		</ModDetails>
 	{:else if multiViewMod}
 		<ModDetails
@@ -798,11 +803,11 @@
 			oncategoryclick={toggleCategoryFilter}
 			activeCategories={modQuery.current.includeCategories}
 		>
-			   {#if isServerMod(multiViewMod)}
+			{#if isServerMod(multiViewMod)}
 				<InstallModButton mod={multiViewMod} {locked} onInstall={installFromServer} />
-			   {:else if !multiViewMod.uuid.includes(':')}
+			{:else if !multiViewMod.uuid.includes(':')}
 				<InstallModButton mod={multiViewMod} {install} {locked} />
-			   {/if}
+			{/if}
 			<div class="z-multi-nav">
 				<button
 					class="z-multi-nav-btn"

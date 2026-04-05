@@ -116,10 +116,7 @@
 			</summary>
 			<div class="z-version-list">
 				{#each mod.versions as version}
-					<button
-						class="z-version-item"
-						onclick={() => triggerInstall(version.uuid)}
-					>
+					<button class="z-version-item" onclick={() => triggerInstall(version.uuid)}>
 						{version.name}
 					</button>
 				{/each}
