@@ -44,7 +44,7 @@ pub fn export_file(dir: PathBuf, app: AppHandle) -> Result<()> {
     let writer = BufWriter::new(file);
     super::export_zip(manager.active_profile(), writer, game)?;
 
-    open::that(path.parent().unwrap()).ok();
+    crate::util::fs::open_path(path.parent().unwrap()).ok();
 
     Ok(())
 }
@@ -94,7 +94,7 @@ pub fn export_pack(dir: PathBuf, args: ModpackArgs, app: AppHandle) -> Result<()
         warn!("failed to take profile snapshot: {}", err);
     }
 
-    open::that(path).ok();
+    crate::util::fs::open_path(path).ok();
 
     Ok(())
 }

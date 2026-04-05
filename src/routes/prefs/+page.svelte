@@ -8,6 +8,7 @@
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 
+	import updates from '$lib/state/update.svelte';
 	import * as api from '$lib/api';
 	import type { Prefs } from '$lib/types';
 	import { updateAppLanguage, languageTitle, i18nState } from '$lib/i18nCore.svelte';
@@ -160,6 +161,15 @@
 		if (selected && typeof selected === 'string') {
 			prefs.cacheDir = selected;
 			await savePrefs();
+		}
+	}
+
+	// ── Update checker ───────────────────────────────────────────────────────
+
+	async function checkForUpdates() {
+		await updates.refresh(true);
+		if (!updates.next?.available) {
+			pushInfoToast({ message: m.aboutDialog_latestVersion() });
 		}
 	}
 </script>
@@ -366,14 +376,28 @@
 				</Button>
 			</div>
 		</section>
-
-		<!-- About -->
 		<section class="z-settings-section z-about">
 			<div class="z-about-brand">
 				<span class="z-about-name text-gradient">Zephyr</span>
 				<span class="z-about-version">v{appVersion}</span>
 			</div>
 			<p class="z-about-desc">{m.prefs_aboutDesc()}</p>
+			<div class="z-about-actions">
+				<Button
+					variant="secondary"
+					size="sm"
+					onclick={checkForUpdates}
+					disabled={updates.isChecking}
+				>
+					{#snippet icon()}
+						<Icon
+							icon={updates.isChecking ? 'mdi:loading' : 'mdi:update'}
+							class={updates.isChecking ? 'z-spin' : ''}
+						/>
+					{/snippet}
+					{i18nState.locale && m.aboutDialog_checkUpdate()}
+				</Button>
+			</div>
 		</section>
 	</div>
 </div>
@@ -706,5 +730,89 @@
 		border: 1px solid color-mix(in srgb, var(--accent-400) 40%, transparent);
 		vertical-align: middle;
 		margin-left: 4px;
+	}
+
+	/* About actions */
+	.z-about-actions {
+		display: flex;
+		justify-content: center;
+		margin-top: var(--space-lg);
+	}
+
+	/* Game settings */
+	.z-settings-subheading {
+		font-size: 12px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--text-muted);
+		margin-bottom: var(--space-sm);
+		margin-top: var(--space-xl);
+	}
+
+	.z-settings-subheading:first-of-type {
+		margin-top: 0;
+	}
+
+	.z-path-value {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--text-secondary);
+		padding: var(--space-sm) var(--space-md);
+		background: var(--bg-elevated);
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-subtle);
+		word-break: break-all;
+	}
+
+	/* Number inputs for launch mode */
+	.z-settings-number-input {
+		width: 72px;
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-sm);
+		color: var(--text-primary);
+		padding: 4px 8px;
+		font-size: 13px;
+		text-align: center;
+		outline: none;
+		transition: border-color var(--transition-fast);
+	}
+
+	.z-settings-number-input:focus {
+		border-color: var(--accent-400);
+	}
+
+	/* Update modal */
+	.z-update-modal {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.z-update-version {
+		font-size: 14px;
+		color: var(--text-primary);
+		font-weight: 500;
+	}
+
+	.z-update-desc {
+		font-size: 13px;
+		color: var(--text-muted);
+		line-height: 1.6;
+	}
+
+	/* Spin animation for loading icons */
+	:global(.z-spin) {
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
 	}
 </style>

@@ -11,6 +11,7 @@
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import games from '$lib/state/game.svelte';
 
 	let configFiles: ConfigFile[] = $state([]);
 	let selectedFile: ConfigFile | null = $state(null);
@@ -45,6 +46,17 @@
 				noConfigForMod = targetMod.replace(/_/g, ' ');
 			}
 		}
+	});
+
+	// Re-fetch configs when the active game changes
+	let lastGameSlug: string | null = null;
+	$effect(() => {
+		const slug = games.active?.slug ?? null;
+		if (slug !== lastGameSlug && lastGameSlug !== null) {
+			selectedFile = null;
+			refresh();
+		}
+		lastGameSlug = slug;
 	});
 
 	async function refresh() {

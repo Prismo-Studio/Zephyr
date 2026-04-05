@@ -1,6 +1,6 @@
 {
 	"productName": "Zephyr",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"identifier": "com.prismo-studio.zephyr",
 	"build": {
 		"beforeBuildCommand": "pnpm run build",
@@ -64,9 +64,7 @@
 	"plugins": {
 		"updater": {
 			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDREQzgyMkI5MzU1OEVDNTQKUldSVTdGZzF1U0xJVFhMSDdmWVNLWUR0emNWN2hyZDJkak91dUppK3NUc0RVNEw3eS8zU0s5dDEK",
-			"endpoints": [
-				"https://raw.githubusercontent.com/Prismo-Studio/Zephyr/refs/heads/dev/latest.json"
-			]
+			"endpoints": ["https://github.com/Prismo-Studio/Zephyr/releases/latest/download/latest.json"]
 		},
 		"deep-link": {
 			"desktop": {

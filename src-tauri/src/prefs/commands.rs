@@ -6,7 +6,7 @@ use tauri::{command, AppHandle, Manager, Window};
 use super::Prefs;
 use crate::{
     state::ManagerExt,
-    util::{cmd::Result, window::WindowExt},
+    util::{cmd::Result, fs::open_path, window::WindowExt},
 };
 
 #[command]
@@ -57,6 +57,6 @@ pub fn get_system_fonts() -> Result<Vec<String>> {
 
 #[command]
 pub fn open_dir(path: std::path::PathBuf) -> Result<()> {
-	open::that(path).map_err(|err| anyhow!(err))?;
+	open_path(path)?;
 	Ok(())
 }

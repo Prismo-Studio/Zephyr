@@ -197,7 +197,7 @@ impl Profile {
             .installer_for(profile_mod)
             .mod_dir(&profile_mod.full_name(), self)
         {
-            open::that(path)?;
+            crate::util::fs::open_path(path)?;
             Ok(())
         } else {
             Err(anyhow!("unsupported"))
