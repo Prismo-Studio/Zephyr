@@ -7,17 +7,38 @@
 <p align="center">by <a href="https://prismo-studios.dev">Prismo Studio</a></p>
 
 <p align="center">
-  <a href="https://github.com/prismo-studio/zephyr/releases"><img src="https://img.shields.io/badge/version-0.2.0-blue?style=flat" alt="Version 0.2.0" /></a>
+  <a href="https://github.com/Prismo-Studio/Zephyr/releases/latest"><img src="https://img.shields.io/github/v/release/Prismo-Studio/Zephyr?style=flat&color=blue" alt="Latest Release" /></a>
   <a href="https://github.com/prismo-studio/zephyr/blob/main/LICENSE.md"><img src="https://img.shields.io/badge/license-GPL--3.0-green?style=flat" alt="License GPL-3.0" /></a>
-  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey?style=flat" alt="Platform Windows | Linux" />
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?style=flat" alt="Platform Windows | Linux | macOS" />
 </p>
 
 ---
 
 ## Screenshots
 
-<!-- Add screenshots here -->
-<!-- ![Zephyr main view](docs/screenshots/main.png) -->
+### Dashboard
+
+Pick your game, see your profiles and stats at a glance.
+
+![Dashboard](screenshots/dashboard.png)
+
+### Browse
+
+Search and install mods from Thunderstore and CurseForge in one place. Each mod shows a source badge so you always know where it comes from.
+
+![Browse](screenshots/browse.png)
+
+### Mods
+
+Manage your installed mods with drag-and-drop reordering, batch actions, and detailed mod info with readme and changelogs.
+
+![Mods](screenshots/mods.png)
+
+### Config Editor
+
+Edit BepInEx plugin configs directly from the app without digging through files.
+
+![Config Editor](screenshots/config.png)
 
 ## Features
 
@@ -35,8 +56,9 @@
 
 Head to the [Releases](https://github/prismo-studio/zephyr/releases) page and grab the latest installer for your platform:
 
-- **Windows** -- `.msi` installer
-- **Linux** -- AppImage, `.deb`, or `.rpm`
+- **Windows** -- `.exe` (NSIS installer)
+- **Linux** -- AppImage, `.deb`
+- **macOS** -- `.dmg`
 
 > **Note:** On Windows, you may see a SmartScreen prompt. Click "More Info" then "Run Anyway" to proceed.
 

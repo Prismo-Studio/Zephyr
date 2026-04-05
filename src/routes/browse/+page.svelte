@@ -224,6 +224,7 @@
 			hasRefreshed = false;
 			lastGameSlug = currentSlug;
 			maxCount = 30;
+			showCurseForgeOnly = false;
 			selectedModIds = [];
 			cachedSelectedMods.clear();
 			multiViewIndex = 0;
