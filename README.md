@@ -4,7 +4,7 @@
 
 <h1 align="center">Zephyr</h1>
 <p align="center"><strong>A fast, modern mod manager for all your games</strong></p>
-<p align="center">by <a href="https://prismo-studios.dev">Prismo Studio</a></p>
+<p align="center">by <a href="https://prismo-studios.dev">Prismo Studios</a></p>
 
 <p align="center">
   <a href="https://github.com/Prismo-Studio/Zephyr/releases/latest"><img src="https://img.shields.io/github/v/release/Prismo-Studio/Zephyr?style=flat&color=blue" alt="Latest Release" /></a>
