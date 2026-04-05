@@ -2,6 +2,7 @@
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
+	import NumberInput from '$lib/components/ui/NumberInput.svelte';
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 
@@ -232,18 +233,13 @@
 												}}
 											/>
 										{:else if entry.value.type === 'int' || entry.value.type === 'float'}
-											<input
-												class="z-entry-input"
-												type="number"
+											{@const range = entry.value.content.range}
+											<NumberInput
 												value={entry.value.content.value}
-												min={entry.value.content.range?.start}
-												max={entry.value.content.range?.end}
+												min={range?.start}
+												max={range?.end}
 												step={entry.value.type === 'float' ? 0.1 : 1}
-												onchange={(e) => {
-													const numVal =
-														entry.value.type === 'float'
-															? parseFloat(e.currentTarget.value)
-															: parseInt(e.currentTarget.value);
+												onchange={(numVal) => {
 													const c = entry.value.content as {
 														value: number;
 														range: { start: number; end: number } | null;
@@ -256,9 +252,9 @@
 													setEntry(selectedFile!, section, entry, newVal);
 												}}
 											/>
-											{#if entry.value.content.range}
+											{#if range}
 												<span class="z-entry-range">
-													{entry.value.content.range.start} — {entry.value.content.range.end}
+													{range.start} — {range.end}
 												</span>
 											{/if}
 										{:else if entry.value.type === 'enum'}

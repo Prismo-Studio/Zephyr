@@ -22,7 +22,7 @@
 		oninstall?: () => void;
 		oncontextmenu?: (e: MouseEvent, mod: Mod) => void;
 		onpointerdownHandle?: (e: PointerEvent, mod: Mod) => void;
-		oncategoryclick?: (category: string) => void;
+		oncategoryclick?: (category: string, multi?: boolean) => void;
 		activeCategories?: string[];
 	};
 
@@ -120,6 +120,8 @@
 				<img src="/logos/curseforge.png" alt="CF" class="z-mod-source-icon" />
 			{:else if mod.uuid.startsWith('nexusmods:')}
 				<img src="/logos/nexusmods.png" alt="NX" class="z-mod-source-icon" />
+			{:else if mod.uuid.startsWith('zephyr:')}
+				<img src="/logo.png" alt="Z" class="z-mod-source-icon" />
 			{/if}
 			{#if mod.isDeprecated}
 				<Icon icon="mdi:alert" class="z-mod-badge-icon deprecated" />
@@ -161,7 +163,7 @@
 						class:active={activeCategories.includes(category)}
 						onclick={(e) => {
 							e.stopPropagation();
-							oncategoryclick?.(category);
+							oncategoryclick?.(category, e.ctrlKey || e.metaKey);
 						}}
 					>
 						{category}

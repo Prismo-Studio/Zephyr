@@ -80,12 +80,20 @@
 	let hasRefreshed = $state(false);
 	let filtersExpanded = $state(false);
 
-	function toggleCategoryFilter(category: string) {
+	function toggleCategoryFilter(category: string, multi = false) {
 		const cats = modQuery.current.includeCategories;
-		if (cats.includes(category)) {
-			modQuery.current.includeCategories = [];
+		if (multi) {
+			if (cats.includes(category)) {
+				modQuery.current.includeCategories = cats.filter((c) => c !== category);
+			} else {
+				modQuery.current.includeCategories = [...cats, category];
+			}
 		} else {
-			modQuery.current.includeCategories = [category];
+			if (cats.includes(category) && cats.length === 1) {
+				modQuery.current.includeCategories = [];
+			} else {
+				modQuery.current.includeCategories = [category];
+			}
 		}
 		filtersExpanded = true;
 	}
@@ -100,6 +108,7 @@
 	let serverHasMore = $state(true);
 	let serverLoading = $state(false);
 	let zephyrServerReachable: boolean | null = $state(null);
+	let communityMods: Mod[] = $state([]);
 
 	let displayedMods = $derived(
 		showCurseForgeOnly ? mods.filter((m) => isCurseForgeMod(m) || isServerMod(m)) : mods
@@ -115,7 +124,11 @@
 
 	function syncThunderstoreBrowseMods() {
 		if (activeSource !== 'thunderstore') return;
-		mods = [...thunderstoreMods, ...(shouldUseZephyrServer() ? serverMods : cfMods)];
+		mods = [
+			...thunderstoreMods,
+			...(shouldUseZephyrServer() ? serverMods : cfMods),
+			...communityMods
+		];
 	}
 
 	function externalHasMore(): boolean {
@@ -221,6 +234,7 @@
 			serverMods = [];
 			serverOffset = 0;
 			serverHasMore = true;
+			communityMods = [];
 			hasRefreshed = false;
 			lastGameSlug = currentSlug;
 			maxCount = 30;
@@ -275,6 +289,26 @@
 					cfMods = [];
 					serverMods = [];
 				}
+
+				// Community mods — disabled for now
+				// try {
+				// 	const communityResults = await api.sources.searchSources({
+				// 		searchTerm: modQuery.current.searchTerm,
+				// 		categories: [],
+				// 		sortBy: 'downloads',
+				// 		sortOrder: 'descending',
+				// 		includeNsfw: modQuery.current.includeNsfw,
+				// 		includeDeprecated: modQuery.current.includeDeprecated,
+				// 		maxCount: 50,
+				// 		sources: ['github'],
+				// 		gameSlug: games.active?.slug
+				// 	});
+				// 	communityMods = communityResults.flatMap((r) =>
+				// 		r.mods.map((u) => unifiedToMod(u, 'zephyr'))
+				// 	);
+				// } catch {
+				// 	communityMods = [];
+				// }
 
 				syncThunderstoreBrowseMods();
 			} else {
