@@ -50,6 +50,7 @@ export type SearchFilters = {
 	maxCount: number;
 	sources: SourceId[];
 	gameSlug?: string;
+	offset?: number;
 };
 
 export type SearchResult = {
@@ -70,4 +71,12 @@ export const getSources = () => invoke<SourceInfo[]>('get_sources');
 export const searchSources = (filters: SearchFilters) =>
 	invoke<SearchResult[]>('search_sources', { filters });
 
+export const getSourceModDescription = (source: SourceId, externalId: string) =>
+	invoke<string | null>('get_source_mod_description', { source, externalId });
+
+export const getSourceModChangelog = (source: SourceId, externalId: string, fileId: string) =>
+	invoke<string | null>('get_source_mod_changelog', { source, externalId, fileId });
+
 // export const getNexusmodsGames = () => invoke<SourceGame[]>('get_nexusmods_games');
+
+export const getCurseforgeGames = () => invoke<SourceGame[]>('get_curseforge_games');

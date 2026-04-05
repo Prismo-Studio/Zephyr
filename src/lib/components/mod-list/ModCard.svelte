@@ -112,6 +112,11 @@
 			{#if isModPinned(mod.uuid)}
 				<Icon icon="mdi:pin" class="z-mod-badge-icon pinned" />
 			{/if}
+			{#if mod.uuid.startsWith('curseforge:')}
+				<img src="/logos/curseforge.png" alt="CF" class="z-mod-source-icon" />
+			{:else if mod.uuid.startsWith('nexusmods:')}
+				<img src="/logos/nexusmods.png" alt="NX" class="z-mod-source-icon" />
+			{/if}
 			{#if mod.isDeprecated}
 				<Icon icon="mdi:alert" class="z-mod-badge-icon deprecated" />
 			{/if}
@@ -421,6 +426,14 @@
 		flex-wrap: wrap;
 		gap: 4px;
 		margin-top: 3px;
+	}
+
+	.z-mod-source-icon {
+		width: 14px;
+		height: 14px;
+		border-radius: 3px;
+		object-fit: contain;
+		flex-shrink: 0;
 	}
 
 	.z-mod-category-tag {

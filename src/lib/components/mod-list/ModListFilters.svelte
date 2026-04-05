@@ -61,11 +61,7 @@
 			position="bottom"
 			delay={200}
 		>
-			<button
-				class="z-filter-btn"
-				class:active={expanded}
-				onclick={() => (expanded = !expanded)}
-			>
+			<button class="z-filter-btn" class:active={expanded} onclick={() => (expanded = !expanded)}>
 				<Icon icon="mdi:filter-variant" />
 			</button>
 		</Tooltip>

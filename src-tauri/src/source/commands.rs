@@ -51,6 +51,37 @@ pub async fn search_sources(
 }
 
 #[command]
+pub async fn get_source_mod_description(
+    source: SourceId,
+    external_id: String,
+    app: AppHandle,
+) -> Result<Option<String>> {
+    let registry = app.source_registry();
+    if let Some(src) = registry.get(&source) {
+        let desc = src.get_readme(&external_id, "").await?;
+        Ok(desc)
+    } else {
+        Ok(None)
+    }
+}
+
+#[command]
+pub async fn get_source_mod_changelog(
+    source: SourceId,
+    external_id: String,
+    file_id: String,
+    app: AppHandle,
+) -> Result<Option<String>> {
+    let registry = app.source_registry();
+    if let Some(src) = registry.get(&source) {
+        let cl = src.get_changelog(&external_id, &file_id).await?;
+        Ok(cl)
+    } else {
+        Ok(None)
+    }
+}
+
+#[command]
 pub async fn get_nexusmods_games(app: AppHandle) -> Result<Vec<SourceGame>> {
     let http = app.http().clone();
     let registry = app.source_registry();
@@ -102,6 +133,53 @@ pub async fn get_nexusmods_games(app: AppHandle) -> Result<Vec<SourceGame>> {
         .collect();
 
     result.sort_by(|a, b| b.mod_count.cmp(&a.mod_count));
+
+    Ok(result)
+}
+
+#[command]
+pub async fn get_curseforge_games(app: AppHandle) -> Result<Vec<SourceGame>> {
+    let http = app.http().clone();
+
+    let response = http
+        .get("https://api.curseforge.com/v1/games?pageSize=500")
+        .header(
+            "x-api-key",
+            "$2a$10$OY0apZlG0KEHe3CTgumu6u2uodPke309xuW4W/SmhhXe2KsVI4KKu",
+        )
+        .header("Accept", "application/json")
+        .send()
+        .await?;
+
+    if !response.status().is_success() {
+        return Ok(Vec::new());
+    }
+
+    #[derive(serde::Deserialize)]
+    #[allow(dead_code)]
+    struct CfGameEntry {
+        id: u32,
+        name: String,
+        slug: String,
+    }
+
+    #[derive(serde::Deserialize)]
+    struct CfGamesResponse {
+        data: Vec<CfGameEntry>,
+    }
+
+    let resp: CfGamesResponse = response.json().await?;
+
+    let result: Vec<SourceGame> = resp
+        .data
+        .into_iter()
+        .map(|g| SourceGame {
+            name: g.name,
+            slug: g.slug,
+            icon_url: None,
+            mod_count: 0,
+        })
+        .collect();
 
     Ok(result)
 }

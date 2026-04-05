@@ -2,6 +2,9 @@
 	import * as api from '$lib/api';
 	import type { SortBy, Mod, ModId, Dependant } from '$lib/types';
 	import type { SourceId, UnifiedMod } from '$lib/api/sources';
+	import { curseForgeEnabled } from '$lib/themeSystem';
+	import * as zephyrServer from '$lib/api/zephyrServer';
+	import { zephyrServerState } from '$lib/state/zephyrServer.svelte';
 
 	import Loader from '$lib/components/ui/Loader.svelte';
 	import ModCard from '$lib/components/mod-list/ModCard.svelte';
@@ -40,17 +43,30 @@
 
 	let selectedModIds: string[] = $state([]);
 	let lastClickedIndex = -1;
+	let cachedSelectedMods: Map<string, Mod> = new Map();
+
+	function getSelectedMod(uuid: string): Mod | null {
+		return mods.find((m) => m.uuid === uuid) ?? cachedSelectedMods.get(uuid) ?? null;
+	}
+
 	let selectedMod = $derived(
-		selectedModIds.length === 1 ? (mods.find((m) => m.uuid === selectedModIds[0]) ?? null) : null
+		selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null
 	);
 
 	// Multi-select detail navigation
 	let multiViewIndex = $state(0);
 	let selectedMods = $derived(
 		selectedModIds.length > 1
-			? (selectedModIds.map((id) => mods.find((m) => m.uuid === id)).filter(Boolean) as Mod[])
+			? (selectedModIds.map((id) => getSelectedMod(id)).filter(Boolean) as Mod[])
 			: []
 	);
+
+	$effect(() => {
+		if (multiViewIndex >= selectedMods.length && selectedMods.length > 0) {
+			multiViewIndex = selectedMods.length - 1;
+		}
+	});
+
 	let multiViewMod = $derived(
 		selectedMods.length > 0 ? (selectedMods[multiViewIndex] ?? selectedMods[0]) : null
 	);
@@ -63,8 +79,78 @@
 
 	let hasRefreshed = $state(false);
 	let filtersExpanded = $state(false);
+	let showCurseForgeOnly = $state(false);
+	let thunderstoreMods: Mod[] = $state([]);
+	let cfOffset = $state(0);
+	let cfMods: Mod[] = $state([]);
+	let cfHasMore = $state(true);
+	let cfLoading = $state(false);
+	let serverMods: Mod[] = $state([]);
+	let serverOffset = $state(0);
+	let serverHasMore = $state(true);
+	let serverLoading = $state(false);
+	let zephyrServerReachable: boolean | null = $state(null);
+
+	let displayedMods = $derived(
+		showCurseForgeOnly
+			? mods.filter((m) => isCurseForgeMod(m) || isServerMod(m))
+			: mods
+	);
+
+	function shouldUseZephyrServer(): boolean {
+		return zephyrServerState.current.enabled && zephyrServerReachable !== false;
+	}
+
+	function canInstallDirectly(mod: Mod): boolean {
+		return isServerMod(mod) || !mod.uuid.includes(':');
+	}
+
+	function syncThunderstoreBrowseMods() {
+		if (activeSource !== 'thunderstore') return;
+		mods = [...thunderstoreMods, ...(shouldUseZephyrServer() ? serverMods : cfMods)];
+	}
+
+	function externalHasMore(): boolean {
+		return shouldUseZephyrServer() ? serverHasMore : cfHasMore;
+	}
+
+	function externalLoading(): boolean {
+		return shouldUseZephyrServer() ? serverLoading : cfLoading;
+	}
+
+	async function loadMoreExternalMods() {
+		if (shouldUseZephyrServer()) {
+			await loadMoreFromServer();
+			return;
+		}
+
+		await loadMoreCF();
+	}
+
+	async function ensureZephyrServerAvailable(force = false): Promise<boolean> {
+		if (!zephyrServerState.current.enabled) {
+			zephyrServerReachable = null;
+			return false;
+		}
+
+		if (!force && zephyrServerReachable !== null) {
+			return zephyrServerReachable;
+		}
+
+		const ok = await zephyrServer.healthCheck();
+		zephyrServerReachable = ok;
+		return ok;
+	}
+
+	$effect(() => {
+		zephyrServerState.current.enabled;
+		zephyrServerState.current.baseUrl;
+		zephyrServerState.current.apiKey;
+		zephyrServerReachable = null;
+	});
 
 	function handleModClick(evt: MouseEvent, mod: Mod, index: number) {
+		cachedSelectedMods.set(mod.uuid, mod);
 		const result = handleMultiSelect(
 			evt,
 			mod.uuid,
@@ -92,7 +178,9 @@
 
 	onMount(() => {
 		listen<Mod[]>('mod_query_result', (evt) => {
-			mods = evt.payload;
+			if (activeSource !== 'thunderstore') return;
+			thunderstoreMods = evt.payload;
+			syncThunderstoreBrowseMods();
 		}).then((unlisten) => {
 			unlistenFromQuery = unlisten;
 		});
@@ -107,6 +195,7 @@
 	let pendingRefresh = false;
 
 	let lastGameSlug: string | null = null;
+	let lastQueryHash: string = '';
 
 	async function refresh() {
 		if (refreshing) {
@@ -117,15 +206,68 @@
 		const currentSlug = games.active?.slug ?? null;
 		if (currentSlug !== lastGameSlug) {
 			mods = [];
+			thunderstoreMods = [];
+			cfMods = [];
+			cfOffset = 0;
+			cfHasMore = true;
+			serverMods = [];
+			serverOffset = 0;
+			serverHasMore = true;
 			hasRefreshed = false;
 			lastGameSlug = currentSlug;
+			maxCount = 30;
+			selectedModIds = [];
+			cachedSelectedMods.clear();
+			multiViewIndex = 0;
+		}
+
+		// Detect query changes to reset pagination
+		const queryHash = JSON.stringify(modQuery.current);
+		if (queryHash !== lastQueryHash) {
+			lastQueryHash = queryHash;
+			thunderstoreMods = [];
+			cfMods = [];
+			cfOffset = 0;
+			cfHasMore = true;
+			serverMods = [];
+			serverOffset = 0;
+			serverHasMore = true;
 		}
 
 		refreshing = true;
 
 		try {
 			if (activeSource === 'thunderstore') {
-				mods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+				thunderstoreMods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+
+				// CurseForge mods: use Zephyr Server if enabled, otherwise Tauri backend
+				if (zephyrServerState.current.enabled) {
+					const serverAvailable = await ensureZephyrServerAvailable();
+					if (serverAvailable) {
+						cfMods = [];
+						if (serverMods.length === 0) {
+							serverOffset = 0;
+							await loadMoreFromServer();
+						}
+					} else {
+						serverMods = [];
+						if (cfMods.length === 0) {
+							cfOffset = 0;
+							await loadMoreCF();
+						}
+					}
+				} else if (curseForgeEnabled.current) {
+					serverMods = [];
+					if (cfMods.length === 0) {
+						cfOffset = 0;
+						await loadMoreCF();
+					}
+				} else {
+					cfMods = [];
+					serverMods = [];
+				}
+
+				syncThunderstoreBrowseMods();
 			} else {
 				const sortMap: Record<string, 'downloads' | 'rating' | 'newest' | 'updated' | 'name'> = {
 					lastUpdated: 'updated',
@@ -147,6 +289,7 @@
 					gameSlug: games.active?.slug
 				});
 
+				thunderstoreMods = [];
 				mods = results.flatMap((r) => r.mods.map((u) => unifiedToMod(u)));
 			}
 			totalLoadedForCurrentQuery = mods.length;
@@ -161,6 +304,129 @@
 		}
 	}
 
+	const CF_PAGE_SIZE = 25;
+
+	async function loadMoreCF() {
+		cfLoading = true;
+		try {
+			const sortMap: Record<string, 'downloads' | 'rating' | 'newest' | 'updated' | 'name'> = {
+				lastUpdated: 'updated', newest: 'newest', rating: 'rating',
+				downloads: 'downloads', name: 'name'
+			};
+			const cfResults = await api.sources.searchSources({
+				searchTerm: modQuery.current.searchTerm,
+				categories: [],
+				sortBy: sortMap[modQuery.current.sortBy] ?? 'downloads',
+				sortOrder: modQuery.current.sortOrder === 'ascending' ? 'ascending' : 'descending',
+				includeNsfw: modQuery.current.includeNsfw,
+				includeDeprecated: modQuery.current.includeDeprecated,
+				maxCount: CF_PAGE_SIZE,
+				sources: ['curseforge'],
+				gameSlug: games.active?.slug,
+				offset: cfOffset
+			});
+			const newMods = cfResults.flatMap((r) => r.mods.map((u) => unifiedToMod(u, 'curseforge')));
+			cfMods = [...cfMods, ...newMods];
+			cfOffset += CF_PAGE_SIZE;
+			cfHasMore = newMods.length >= CF_PAGE_SIZE;
+			syncThunderstoreBrowseMods();
+		} catch {}
+		cfLoading = false;
+	}
+
+	function isCurseForgeMod(mod: Mod): boolean {
+		return mod.uuid.startsWith('curseforge:');
+	}
+
+	function isServerMod(mod: Mod): boolean {
+		return mod.uuid.startsWith('zephyr-server:');
+	}
+
+	const SERVER_PAGE_SIZE = 50;
+
+	function curseForgeModToMod(cfMod: zephyrServer.CurseForgeMod): Mod {
+		return {
+			name: cfMod.name,
+			description: cleanDescription(cfMod.summary),
+			categories: cfMod.categories.map((c) => c.name),
+			version: cfMod.latestFiles[0]?.displayName ?? null,
+			author: cfMod.authors[0]?.name ?? null,
+			rating: cfMod.thumbsUpCount > 0 ? cfMod.thumbsUpCount : null,
+			downloads: cfMod.downloadCount,
+			fileSize: cfMod.latestFiles[0]?.fileLength ?? 0,
+			websiteUrl: cfMod.links.websiteUrl,
+			donateUrl: null,
+			dependencies: cfMod.latestFiles[0]?.dependencies
+				?.filter((d) => d.relationType === 3)
+				.map((d) => String(d.modId)) ?? [],
+			isPinned: false,
+			isDeprecated: false,
+			isInstalled: undefined,
+			containsNsfw: false,
+			uuid: `zephyr-server:${cfMod.id}`,
+			versionUuid: String(cfMod.latestFiles[0]?.id ?? cfMod.id),
+			lastUpdated: cfMod.dateModified,
+			versions: cfMod.latestFiles.map((f) => ({
+				name: f.displayName,
+				uuid: String(f.id)
+			})),
+			type: 'remote' as any,
+			enabled: null,
+			icon: cfMod.logo?.thumbnailUrl ?? null,
+			configFile: null
+		};
+	}
+
+	async function loadMoreFromServer() {
+		if (!zephyrServerState.current.enabled) return;
+		serverLoading = true;
+		try {
+			const searchTerm = modQuery.current.searchTerm || '';
+			const cfGameId = zephyrServer.getCurseForgeGameId(games.active?.slug);
+			if (cfGameId === null) {
+				// Game not supported on CurseForge
+				serverHasMore = false;
+				serverLoading = false;
+				return;
+			}
+			const page = Math.floor(serverOffset / SERVER_PAGE_SIZE);
+			const result = await zephyrServer.searchMods(searchTerm, cfGameId, page, SERVER_PAGE_SIZE);
+			const newMods = result.data.map(curseForgeModToMod);
+			serverMods = [...serverMods, ...newMods];
+			serverOffset += SERVER_PAGE_SIZE;
+			serverHasMore = (serverOffset < result.pagination.totalCount);
+			syncThunderstoreBrowseMods();
+		} catch (err) {
+			zephyrServerReachable = false;
+			console.warn('[ZephyrServer] Failed to load mods:', err);
+		}
+		serverLoading = false;
+	}
+
+	async function installFromServer(mod: Mod, versionUuid?: string) {
+		if (!mod.uuid.startsWith('zephyr-server:')) return;
+		const modId = parseInt(mod.uuid.replace('zephyr-server:', ''), 10);
+		const fileId = parseInt(versionUuid ?? mod.versionUuid ?? mod.versions[0]?.uuid ?? '0', 10);
+		if (!modId || !fileId) return;
+
+		try {
+			let gameDir: string | undefined;
+			try {
+				gameDir = await api.profile.launch.getGameDir();
+			} catch {
+				// Could not resolve game dir — let server use its default
+			}
+			await zephyrServer.installMod(modId, fileId, gameDir);
+			pushToast({ type: 'info', name: mod.name, message: 'Mod installed via Zephyr Server' });
+		} catch (err) {
+			pushToast({
+				type: 'error',
+				name: 'Install failed',
+				message: err instanceof Error ? err.message : 'Unknown error'
+			});
+		}
+	}
+
 	function cleanDescription(desc: string | null): string | null {
 		if (!desc) return null;
 		return desc
@@ -170,7 +436,8 @@
 			.trim();
 	}
 
-	function unifiedToMod(u: UnifiedMod): Mod {
+	function unifiedToMod(u: UnifiedMod, source?: string): Mod {
+		const sourceId = source ?? u.sourceId ?? 'thunderstore';
 		return {
 			name: u.name,
 			description: cleanDescription(u.description),
@@ -187,7 +454,7 @@
 			isDeprecated: u.isDeprecated,
 			isInstalled: undefined,
 			containsNsfw: u.isNsfw,
-			uuid: u.externalId,
+			uuid: `${sourceId}:${u.externalId}`,
 			versionUuid: u.versions[0]?.externalId ?? u.externalId,
 			lastUpdated: u.dateUpdated,
 			versions: u.versions.map((v) => ({ name: v.version, uuid: v.externalId })),
@@ -199,6 +466,10 @@
 	}
 
 	async function installLatest(mod: Mod) {
+		if (isServerMod(mod)) {
+			await installFromServer(mod);
+			return;
+		}
 		await install({
 			packageUuid: mod.uuid,
 			versionUuid: mod.versions[0].uuid
@@ -240,10 +511,14 @@
 		for (const uuid of selectedModIds) {
 			const mod = mods.find((m) => m.uuid === uuid);
 			if (mod && !mod.isInstalled && mod.versions.length > 0) {
-				await api.profile.install.mod({
-					packageUuid: mod.uuid,
-					versionUuid: mod.versions[0].uuid
-				});
+				if (isServerMod(mod)) {
+					await installFromServer(mod);
+				} else {
+					await api.profile.install.mod({
+						packageUuid: mod.uuid,
+						versionUuid: mod.versions[0].uuid
+					});
+				}
 			}
 		}
 		selectedModIds = [];
@@ -251,10 +526,10 @@
 	}
 
 	function selectAll() {
-		selectedModIds = mods.map((m) => m.uuid);
+		selectedModIds = displayedMods.map((m) => m.uuid);
 	}
 
-	let isAllSelected = $derived(mods.length > 0 && selectedModIds.length === mods.length);
+	let isAllSelected = $derived(displayedMods.length > 0 && selectedModIds.length === displayedMods.length);
 	function toggleSelectAll() {
 		if (isAllSelected) {
 			selectedModIds = [];
@@ -370,22 +645,28 @@
 							<Checkbox bind:checked={modQuery.current.includeDeprecated} />
 							<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
 						</label>
+						{#if curseForgeEnabled.current || zephyrServerState.current.enabled}
+							<label class="z-filter-toggle">
+								<Checkbox bind:checked={showCurseForgeOnly} />
+								<span>CurseForge</span>
+							</label>
+						{/if}
 
 						{#if games.categories.length > 0}
 							<div class="z-filter-categories">
 								{#each games.categories.slice(0, 20) as cat}
 									<button
 										class="z-category-chip"
-									class:active={modQuery.current.includeCategories.includes(cat.name)}
-									onclick={() => {
-										const idx = modQuery.current.includeCategories.indexOf(cat.name);
-										if (idx >= 0) {
-											modQuery.current.includeCategories =
-												modQuery.current.includeCategories.filter((c) => c !== cat.name);
-										} else {
-											modQuery.current.includeCategories = [
-												...modQuery.current.includeCategories,
-												cat.name
+										class:active={modQuery.current.includeCategories.includes(cat.name)}
+										onclick={() => {
+											const idx = modQuery.current.includeCategories.indexOf(cat.name);
+											if (idx >= 0) {
+												modQuery.current.includeCategories =
+													modQuery.current.includeCategories.filter((c) => c !== cat.name);
+											} else {
+												modQuery.current.includeCategories = [
+													...modQuery.current.includeCategories,
+													cat.name
 												];
 											}
 										}}
@@ -402,7 +683,7 @@
 							<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
 							<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
 						</label>
-						<span class="z-browse-count">{mods.length} mods</span>
+						<span class="z-browse-count">{displayedMods.length} mods</span>
 					</div>
 				{/if}
 			</div>
@@ -415,36 +696,63 @@
 			{/if}
 
 			<div class="z-browse-list">
-				{#if mods.length === 0 && hasRefreshed}
+				{#if mods.length === 0 && !hasRefreshed}
+					<Loader />
+				{:else if cfLoading && showCurseForgeOnly && cfMods.length === 0}
+					<Loader />
+				{:else if displayedMods.length === 0 && hasRefreshed}
 					<div class="z-browse-empty">
 						<div class="z-browse-empty-icon">
 							<Icon icon="mdi:package-variant-remove" />
 						</div>
 						<p class="z-browse-empty-title">{i18nState.locale && m.browse_noMods()}</p>
-						<p class="z-browse-empty-desc">{i18nState.locale && m.browse_noMods_desc()}</p>
+						<p class="z-browse-empty-desc">
+							{showCurseForgeOnly
+								? 'No CurseForge mods available for this game.'
+								: (i18nState.locale && m.browse_noMods_desc())}
+						</p>
 					</div>
-				{:else if mods.length === 0}
-					<Loader />
 				{:else}
-					{#each mods as mod, index (mod.uuid)}
+					{#each displayedMods as mod, index (mod.uuid)}
 						<ModCard
 							{mod}
 							isSelected={selectedModIds.includes(mod.uuid)}
 							{locked}
+							showInstallBtn={canInstallDirectly(mod)}
 							onclick={(evt: MouseEvent) => handleModClick(evt, mod, index)}
 							oninstall={() => installLatest(mod)}
 							oncontextmenu={openModContextMenu}
 						/>
 					{/each}
 
-					<button
-						class="z-load-more"
-						onclick={() => (maxCount += 30)}
-						disabled={mods.length < maxCount}
-						title={mods.length < maxCount ? 'No more mods to load' : 'Load more mods'}
-					>
-						{i18nState.locale && m.browse_loadMore()}
-					</button>
+					{#if showCurseForgeOnly}
+						{#if externalHasMore()}
+							<button class="z-load-more"
+								onclick={loadMoreExternalMods}
+								disabled={externalLoading()}
+							>
+								{externalLoading() ? 'Loading...' : (i18nState.locale && m.browse_loadMore())}
+							</button>
+						{/if}
+					{:else}
+						<button
+							class="z-load-more"
+							onclick={() => {
+								maxCount += 30;
+								if (shouldUseZephyrServer() && serverHasMore) {
+									loadMoreFromServer();
+								} else if (curseForgeEnabled.current && cfHasMore) {
+									loadMoreCF();
+								} else if (zephyrServerState.current.enabled && cfHasMore) {
+									loadMoreCF();
+								}
+							}}
+							disabled={displayedMods.length < maxCount &&
+								(shouldUseZephyrServer() ? !serverHasMore : !cfHasMore)}
+						>
+							{i18nState.locale && m.browse_loadMore()}
+						</button>
+					{/if}
 				{/if}
 			</div>
 		</div>
@@ -456,12 +764,14 @@
 			{locked}
 			showVersionSelector={false}
 			onclose={() => (selectedModIds = [])}
-			ontoggle={activeSource === 'thunderstore' ? () => toggleMod(selectedMod!) : undefined}
-			onremove={activeSource === 'thunderstore' ? () => removeMod(selectedMod!) : undefined}
+			ontoggle={!selectedMod.uuid.includes(':') ? () => toggleMod(selectedMod!) : undefined}
+			onremove={!selectedMod.uuid.includes(':') ? () => removeMod(selectedMod!) : undefined}
 		>
-			{#if activeSource === 'thunderstore'}
+			   {#if isServerMod(selectedMod)}
+				<InstallModButton mod={selectedMod} {locked} onInstall={installFromServer} />
+			   {:else if !selectedMod.uuid.includes(':')}
 				<InstallModButton mod={selectedMod} {install} {locked} />
-			{/if}
+			   {/if}
 		</ModDetails>
 	{:else if multiViewMod}
 		<ModDetails
@@ -469,12 +779,14 @@
 			{locked}
 			showVersionSelector={false}
 			onclose={() => (selectedModIds = [])}
-			ontoggle={activeSource === 'thunderstore' ? () => toggleMod(multiViewMod!) : undefined}
-			onremove={activeSource === 'thunderstore' ? () => removeMod(multiViewMod!) : undefined}
+			ontoggle={!multiViewMod.uuid.includes(':') ? () => toggleMod(multiViewMod!) : undefined}
+			onremove={!multiViewMod.uuid.includes(':') ? () => removeMod(multiViewMod!) : undefined}
 		>
-			{#if activeSource === 'thunderstore'}
+			   {#if isServerMod(multiViewMod)}
+				<InstallModButton mod={multiViewMod} {locked} onInstall={installFromServer} />
+			   {:else if !multiViewMod.uuid.includes(':')}
 				<InstallModButton mod={multiViewMod} {install} {locked} />
-			{/if}
+			   {/if}
 			<div class="z-multi-nav">
 				<button
 					class="z-multi-nav-btn"
@@ -497,7 +809,7 @@
 
 	<BatchActionBar
 		count={selectedModIds.length}
-		total={mods.length}
+		total={displayedMods.length}
 		onclear={() => (selectedModIds = [])}
 		onselectAll={selectAll}
 	>

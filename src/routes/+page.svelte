@@ -117,17 +117,39 @@
 	// --- Selection ---
 	let selectedModIds: string[] = $state([]);
 	let lastClickedIndex = -1;
+	// Cache selected mods so they persist even when filtered out of the list
+	let cachedSelectedMods: Map<string, Mod> = new Map();
+
+	function cacheSelectedMods() {
+		for (const mod of mods) {
+			if (selectedModIds.includes(mod.uuid)) {
+				cachedSelectedMods.set(mod.uuid, mod);
+			}
+		}
+	}
+
+	function getSelectedMod(uuid: string): Mod | null {
+		return mods.find((m) => m.uuid === uuid) ?? cachedSelectedMods.get(uuid) ?? null;
+	}
+
 	let selectedMod = $derived(
-		selectedModIds.length === 1 ? (mods.find((m) => m.uuid === selectedModIds[0]) ?? null) : null
+		selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null
 	);
 
 	// Multi-select detail navigation
 	let multiViewIndex = $state(0);
 	let selectedMods = $derived(
 		selectedModIds.length > 1
-			? (selectedModIds.map((id) => mods.find((m) => m.uuid === id)).filter(Boolean) as Mod[])
+			? (selectedModIds.map((id) => getSelectedMod(id)).filter(Boolean) as Mod[])
 			: []
 	);
+	// Clamp index when selection changes
+	$effect(() => {
+		if (multiViewIndex >= selectedMods.length && selectedMods.length > 0) {
+			multiViewIndex = selectedMods.length - 1;
+		}
+	});
+
 	let multiViewMod = $derived(
 		selectedMods.length > 0 ? (selectedMods[multiViewIndex] ?? selectedMods[0]) : null
 	);
@@ -138,6 +160,8 @@
 	});
 
 	function handleModClick(evt: MouseEvent, mod: Mod, index: number) {
+		// Cache the mod being clicked so it persists through filters
+		cachedSelectedMods.set(mod.uuid, mod);
 		const result = handleMultiSelect(
 			evt,
 			mod.uuid,
@@ -375,6 +399,14 @@
 			profiles.active;
 			refresh();
 		}
+	});
+
+	// Clear selection when game/profile changes
+	$effect(() => {
+		profiles.active;
+		selectedModIds = [];
+		cachedSelectedMods.clear();
+		multiViewIndex = 0;
 	});
 
 	let locked = $derived(profiles.activeLocked);

@@ -124,7 +124,19 @@
 	async function loadMarkdown(type: 'readme' | 'changelog') {
 		loadingMarkdown = true;
 		try {
-			if (isExternalMod(mod)) {
+			if (mod.uuid.startsWith('curseforge:')) {
+				const cfId = mod.uuid.replace('curseforge:', '');
+				if (type === 'readme') {
+					const desc = await api.sources.getSourceModDescription('curseforge', cfId);
+					markdown = desc ?? (mod.description ?? '');
+				} else if (type === 'changelog' && mod.versions.length > 0) {
+					const fileId = mod.versions[0].uuid;
+					const cl = await api.sources.getSourceModChangelog('curseforge', cfId, fileId);
+					markdown = cl ?? '';
+				} else {
+					markdown = '';
+				}
+			} else if (isExternalMod(mod)) {
 				markdown = type === 'readme' ? (mod.description ?? '') : '';
 			} else {
 				const result = await getMarkdown(mod, type);

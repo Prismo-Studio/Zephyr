@@ -6,6 +6,7 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import Icon from '@iconify/svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
 
 	import * as api from '$lib/api';
 	import type { Prefs } from '$lib/types';
@@ -19,6 +20,7 @@
 		useNativeTitlebar,
 		curseForgeEnabled
 	} from '$lib/themeSystem';
+
 	import {
 		getTheme,
 		setTheme,
@@ -36,6 +38,23 @@
 	import { getVersion } from '@tauri-apps/api/app';
 
 	let prefs: Prefs | null = $state(null);
+	let showCurseForgeModal = $state(false);
+
+	function handleCurseForgeToggle() {
+		if (!curseForgeEnabled.current) {
+			showCurseForgeModal = true;
+		}
+	}
+
+	function confirmCurseForge() {
+		curseForgeEnabled.current = true;
+		showCurseForgeModal = false;
+	}
+
+	function cancelCurseForge() {
+		showCurseForgeModal = false;
+	}
+
 	let currentTheme: ThemeId = $state(getTheme());
 	let systemFonts: string[] = $state([]);
 	let currentFont = $state(getFont());
@@ -230,17 +249,26 @@
 				{i18nState.locale && m.prefs_sources_title()}
 			</h3>
 
-			<div class="z-settings-row z-settings-disabled">
+			<div class="z-settings-row">
 				<div class="z-settings-label">
-					<span>CurseForge</span>
+					<span>CurseForge <span class="z-beta-badge">Beta</span></span>
 					<span class="z-settings-desc"
 						>{i18nState.locale && m.prefs_sources_curseforge_desc()}</span
 					>
 				</div>
-				<Tooltip text="Coming soon" position="left" delay={200}>
-					<Toggle checked={false} disabled />
-				</Tooltip>
+				<Toggle
+					checked={curseForgeEnabled.current}
+					onchange={() => {
+						if (curseForgeEnabled.current) {
+							curseForgeEnabled.current = false;
+						} else {
+							showCurseForgeModal = true;
+						}
+					}}
+				/>
 			</div>
+
+
 		</section>
 
 		{#if prefs}
@@ -351,6 +379,33 @@
 		</section>
 	</div>
 </div>
+
+{#if showCurseForgeModal}
+	<Modal
+		bind:open={showCurseForgeModal}
+		title="CurseForge"
+		onclose={confirmCurseForge}
+	>
+		{#snippet children()}
+			<div class="z-cf-modal">
+				<div class="z-cf-modal-header">
+					<img src="/logos/curseforge.png" alt="CurseForge" class="z-cf-modal-logo" />
+					<div>
+						<p class="z-cf-modal-title">{i18nState.locale && m.prefs_curseforge_modal_title()}</p>
+						<p class="z-cf-modal-sub">{i18nState.locale && m.prefs_curseforge_modal_desc()}</p>
+					</div>
+				</div>
+				<p class="z-cf-modal-warning">{i18nState.locale && m.prefs_curseforge_modal_warning()}</p>
+			</div>
+		{/snippet}
+		{#snippet actions()}
+			<Button variant="primary" onclick={confirmCurseForge}>
+				{#snippet icon()}<Icon icon="mdi:check" />{/snippet}
+				{i18nState.locale && m.prefs_curseforge_modal_confirm()}
+			</Button>
+		{/snippet}
+	</Modal>
+{/if}
 
 <style>
 	.z-settings-page {
@@ -581,5 +636,81 @@
 	.z-settings-disabled {
 		opacity: 0.4;
 		cursor: not-allowed;
+	}
+
+	.z-cf-modal {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.z-cf-modal-header {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+	}
+
+	.z-cf-modal-logo {
+		width: 40px;
+		height: 40px;
+		border-radius: var(--radius-md);
+		flex-shrink: 0;
+	}
+
+	.z-cf-modal-title {
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+
+	.z-cf-modal-sub {
+		font-size: 12px;
+		color: var(--text-muted);
+		margin-top: 2px;
+	}
+
+	.z-cf-modal-warning {
+		font-size: 13px;
+		color: var(--text-secondary);
+		line-height: 1.6;
+		padding: var(--space-md);
+		border-radius: var(--radius-md);
+		background: rgba(255, 179, 71, 0.06);
+		border: 1px solid rgba(255, 179, 71, 0.15);
+	}
+
+	.z-settings-input {
+		background: var(--bg-secondary, #1a1a2e);
+		border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+		border-radius: var(--radius-md, 6px);
+		color: var(--text-primary, #fff);
+		padding: 6px 10px;
+		font-size: 13px;
+		min-width: 220px;
+		outline: none;
+		transition: border-color 0.15s;
+	}
+
+	.z-settings-input:focus {
+		border-color: var(--accent-400, #2d8cf0);
+	}
+
+	.z-settings-input::placeholder {
+		color: var(--text-muted, rgba(255, 255, 255, 0.35));
+	}
+
+	.z-beta-badge {
+		display: inline-block;
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		padding: 1px 6px;
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--accent-400) 20%, transparent);
+		color: var(--accent-400);
+		border: 1px solid color-mix(in srgb, var(--accent-400) 40%, transparent);
+		vertical-align: middle;
+		margin-left: 4px;
 	}
 </style>

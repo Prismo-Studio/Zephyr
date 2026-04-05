@@ -107,6 +107,8 @@ pub struct SearchFilters {
     pub sources: Vec<SourceId>,
     #[serde(default)]
     pub game_slug: Option<String>,
+    #[serde(default)]
+    pub offset: usize,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

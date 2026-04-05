@@ -5,3 +5,4 @@ export * as profile from './profile';
 export * as sources from './sources';
 export * as state from './state';
 export * as thunderstore from './thunderstore';
+export * as zephyrServer from './zephyrServer';
