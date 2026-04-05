@@ -54,7 +54,7 @@ Edit BepInEx plugin configs directly from the app without digging through files.
 
 ### Download
 
-Head to the [Releases](https://github/prismo-studio/zephyr/releases) page and grab the latest installer for your platform:
+Head to the [Releases](https://github.com/prismo-studio/zephyr/releases) page and grab the latest installer for your platform:
 
 - **Windows** -- `.exe` (NSIS installer)
 - **Linux** -- AppImage, `.deb`
@@ -73,7 +73,7 @@ Head to the [Releases](https://github/prismo-studio/zephyr/releases) page and gr
 #### Commands
 
 ```bash
-git clone https://github/prismo-studio/zephyr.git
+git clone https://github.com/prismo-studio/zephyr.git
 cd zephyr
 pnpm install
 pnpm tauri dev
@@ -96,7 +96,7 @@ pnpm tauri build
 
 ## Fork Info
 
-Zephyr is forked from [Gale](https://github/Kesomannen/gale) by [Kesomannen](https://github/Kesomannen).
+Zephyr is forked from [Gale](https://github.com/Kesomannen/gale) by [Kesomannen](https://github.com/Kesomannen).
 
 ## License
 
@@ -106,4 +106,4 @@ Material icons are licensed under [Apache 2.0](https://www.apache.org/licenses/L
 
 ## Credits
 
-Built and maintained by [Prismo Studio](https://prismo-studio).
+Built and maintained by [Prismo Studio](https://prismo-studios.dev).
