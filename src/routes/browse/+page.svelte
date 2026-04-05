@@ -2,6 +2,7 @@
 	import * as api from '$lib/api';
 	import type { SortBy, Mod, ModId, Dependant } from '$lib/types';
 	import type { SourceId, UnifiedMod } from '$lib/api/sources';
+	import { curseForgeEnabled } from '$lib/themeSystem';
 
 	import Loader from '$lib/components/ui/Loader.svelte';
 	import ModCard from '$lib/components/mod-list/ModCard.svelte';
@@ -40,17 +41,30 @@
 
 	let selectedModIds: string[] = $state([]);
 	let lastClickedIndex = -1;
+	let cachedSelectedMods: Map<string, Mod> = new Map();
+
+	function getSelectedMod(uuid: string): Mod | null {
+		return mods.find((m) => m.uuid === uuid) ?? cachedSelectedMods.get(uuid) ?? null;
+	}
+
 	let selectedMod = $derived(
-		selectedModIds.length === 1 ? (mods.find((m) => m.uuid === selectedModIds[0]) ?? null) : null
+		selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null
 	);
 
 	// Multi-select detail navigation
 	let multiViewIndex = $state(0);
 	let selectedMods = $derived(
 		selectedModIds.length > 1
-			? (selectedModIds.map((id) => mods.find((m) => m.uuid === id)).filter(Boolean) as Mod[])
+			? (selectedModIds.map((id) => getSelectedMod(id)).filter(Boolean) as Mod[])
 			: []
 	);
+
+	$effect(() => {
+		if (multiViewIndex >= selectedMods.length && selectedMods.length > 0) {
+			multiViewIndex = selectedMods.length - 1;
+		}
+	});
+
 	let multiViewMod = $derived(
 		selectedMods.length > 0 ? (selectedMods[multiViewIndex] ?? selectedMods[0]) : null
 	);
@@ -63,8 +77,18 @@
 
 	let hasRefreshed = $state(false);
 	let filtersExpanded = $state(false);
+	let showCurseForgeOnly = $state(false);
+	let cfOffset = $state(0);
+	let cfMods: Mod[] = $state([]);
+	let cfHasMore = $state(true);
+	let cfLoading = $state(false);
+
+	let displayedMods = $derived(
+		showCurseForgeOnly ? mods.filter((m) => isCurseForgeMod(m)) : mods
+	);
 
 	function handleModClick(evt: MouseEvent, mod: Mod, index: number) {
+		cachedSelectedMods.set(mod.uuid, mod);
 		const result = handleMultiSelect(
 			evt,
 			mod.uuid,
@@ -107,6 +131,7 @@
 	let pendingRefresh = false;
 
 	let lastGameSlug: string | null = null;
+	let lastQueryHash: string = '';
 
 	async function refresh() {
 		if (refreshing) {
@@ -117,15 +142,41 @@
 		const currentSlug = games.active?.slug ?? null;
 		if (currentSlug !== lastGameSlug) {
 			mods = [];
+			cfMods = [];
+			cfOffset = 0;
+			cfHasMore = true;
 			hasRefreshed = false;
 			lastGameSlug = currentSlug;
+			maxCount = 30;
+			selectedModIds = [];
+			cachedSelectedMods.clear();
+			multiViewIndex = 0;
+		}
+
+		// Detect query changes to reset CF pagination
+		const queryHash = JSON.stringify(modQuery.current);
+		if (queryHash !== lastQueryHash) {
+			lastQueryHash = queryHash;
+			cfMods = [];
+			cfOffset = 0;
+			cfHasMore = true;
 		}
 
 		refreshing = true;
 
 		try {
 			if (activeSource === 'thunderstore') {
-				mods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+				let tsMods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+
+				// Fetch CF on first load or after query reset
+				if (curseForgeEnabled.current && cfMods.length === 0) {
+					cfOffset = 0;
+					await loadMoreCF();
+				} else if (!curseForgeEnabled.current) {
+					cfMods = [];
+				}
+
+				mods = [...tsMods, ...cfMods];
 			} else {
 				const sortMap: Record<string, 'downloads' | 'rating' | 'newest' | 'updated' | 'name'> = {
 					lastUpdated: 'updated',
@@ -161,6 +212,42 @@
 		}
 	}
 
+	const CF_PAGE_SIZE = 25;
+
+	async function loadMoreCF() {
+		cfLoading = true;
+		try {
+			const sortMap: Record<string, 'downloads' | 'rating' | 'newest' | 'updated' | 'name'> = {
+				lastUpdated: 'updated', newest: 'newest', rating: 'rating',
+				downloads: 'downloads', name: 'name'
+			};
+			const cfResults = await api.sources.searchSources({
+				searchTerm: modQuery.current.searchTerm,
+				categories: [],
+				sortBy: sortMap[modQuery.current.sortBy] ?? 'downloads',
+				sortOrder: modQuery.current.sortOrder === 'ascending' ? 'ascending' : 'descending',
+				includeNsfw: modQuery.current.includeNsfw,
+				includeDeprecated: modQuery.current.includeDeprecated,
+				maxCount: CF_PAGE_SIZE,
+				sources: ['curseforge'],
+				gameSlug: games.active?.slug,
+				offset: cfOffset
+			});
+			const newMods = cfResults.flatMap((r) => r.mods.map((u) => unifiedToMod(u, 'curseforge')));
+			cfMods = [...cfMods, ...newMods];
+			cfOffset += CF_PAGE_SIZE;
+			cfHasMore = newMods.length >= CF_PAGE_SIZE;
+			// Update main list
+			const tsMods = mods.filter((m) => !m.uuid.startsWith('curseforge:'));
+			mods = [...tsMods, ...cfMods];
+		} catch {}
+		cfLoading = false;
+	}
+
+	function isCurseForgeMod(mod: Mod): boolean {
+		return mod.uuid.startsWith('curseforge:');
+	}
+
 	function cleanDescription(desc: string | null): string | null {
 		if (!desc) return null;
 		return desc
@@ -170,7 +257,8 @@
 			.trim();
 	}
 
-	function unifiedToMod(u: UnifiedMod): Mod {
+	function unifiedToMod(u: UnifiedMod, source?: string): Mod {
+		const sourceId = source ?? u.sourceId ?? 'thunderstore';
 		return {
 			name: u.name,
 			description: cleanDescription(u.description),
@@ -187,7 +275,7 @@
 			isDeprecated: u.isDeprecated,
 			isInstalled: undefined,
 			containsNsfw: u.isNsfw,
-			uuid: u.externalId,
+			uuid: `${sourceId}:${u.externalId}`,
 			versionUuid: u.versions[0]?.externalId ?? u.externalId,
 			lastUpdated: u.dateUpdated,
 			versions: u.versions.map((v) => ({ name: v.version, uuid: v.externalId })),
@@ -251,10 +339,10 @@
 	}
 
 	function selectAll() {
-		selectedModIds = mods.map((m) => m.uuid);
+		selectedModIds = displayedMods.map((m) => m.uuid);
 	}
 
-	let isAllSelected = $derived(mods.length > 0 && selectedModIds.length === mods.length);
+	let isAllSelected = $derived(displayedMods.length > 0 && selectedModIds.length === displayedMods.length);
 	function toggleSelectAll() {
 		if (isAllSelected) {
 			selectedModIds = [];
@@ -370,22 +458,28 @@
 							<Checkbox bind:checked={modQuery.current.includeDeprecated} />
 							<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
 						</label>
+						{#if curseForgeEnabled.current && cfMods.length > 0}
+							<label class="z-filter-toggle">
+								<Checkbox bind:checked={showCurseForgeOnly} />
+								<span>CurseForge</span>
+							</label>
+						{/if}
 
 						{#if games.categories.length > 0}
 							<div class="z-filter-categories">
 								{#each games.categories.slice(0, 20) as cat}
 									<button
 										class="z-category-chip"
-									class:active={modQuery.current.includeCategories.includes(cat.name)}
-									onclick={() => {
-										const idx = modQuery.current.includeCategories.indexOf(cat.name);
-										if (idx >= 0) {
-											modQuery.current.includeCategories =
-												modQuery.current.includeCategories.filter((c) => c !== cat.name);
-										} else {
-											modQuery.current.includeCategories = [
-												...modQuery.current.includeCategories,
-												cat.name
+										class:active={modQuery.current.includeCategories.includes(cat.name)}
+										onclick={() => {
+											const idx = modQuery.current.includeCategories.indexOf(cat.name);
+											if (idx >= 0) {
+												modQuery.current.includeCategories =
+													modQuery.current.includeCategories.filter((c) => c !== cat.name);
+											} else {
+												modQuery.current.includeCategories = [
+													...modQuery.current.includeCategories,
+													cat.name
 												];
 											}
 										}}
@@ -402,7 +496,7 @@
 							<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
 							<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
 						</label>
-						<span class="z-browse-count">{mods.length} mods</span>
+						<span class="z-browse-count">{displayedMods.length} mods</span>
 					</div>
 				{/if}
 			</div>
@@ -415,18 +509,24 @@
 			{/if}
 
 			<div class="z-browse-list">
-				{#if mods.length === 0 && hasRefreshed}
+				{#if mods.length === 0 && !hasRefreshed}
+					<Loader />
+				{:else if cfLoading && showCurseForgeOnly && cfMods.length === 0}
+					<Loader />
+				{:else if displayedMods.length === 0 && hasRefreshed}
 					<div class="z-browse-empty">
 						<div class="z-browse-empty-icon">
 							<Icon icon="mdi:package-variant-remove" />
 						</div>
 						<p class="z-browse-empty-title">{i18nState.locale && m.browse_noMods()}</p>
-						<p class="z-browse-empty-desc">{i18nState.locale && m.browse_noMods_desc()}</p>
+						<p class="z-browse-empty-desc">
+							{showCurseForgeOnly
+								? 'No CurseForge mods available for this game.'
+								: (i18nState.locale && m.browse_noMods_desc())}
+						</p>
 					</div>
-				{:else if mods.length === 0}
-					<Loader />
 				{:else}
-					{#each mods as mod, index (mod.uuid)}
+					{#each displayedMods as mod, index (mod.uuid)}
 						<ModCard
 							{mod}
 							isSelected={selectedModIds.includes(mod.uuid)}
@@ -437,14 +537,24 @@
 						/>
 					{/each}
 
-					<button
-						class="z-load-more"
-						onclick={() => (maxCount += 30)}
-						disabled={mods.length < maxCount}
-						title={mods.length < maxCount ? 'No more mods to load' : 'Load more mods'}
-					>
-						{i18nState.locale && m.browse_loadMore()}
-					</button>
+					{#if showCurseForgeOnly}
+						{#if cfHasMore}
+							<button class="z-load-more" onclick={loadMoreCF}>
+								{i18nState.locale && m.browse_loadMore()}
+							</button>
+						{/if}
+					{:else}
+						<button
+							class="z-load-more"
+							onclick={() => {
+								maxCount += 30;
+								if (curseForgeEnabled.current && cfHasMore) loadMoreCF();
+							}}
+							disabled={displayedMods.length < maxCount && !cfHasMore}
+						>
+							{i18nState.locale && m.browse_loadMore()}
+						</button>
+					{/if}
 				{/if}
 			</div>
 		</div>
@@ -456,10 +566,10 @@
 			{locked}
 			showVersionSelector={false}
 			onclose={() => (selectedModIds = [])}
-			ontoggle={activeSource === 'thunderstore' ? () => toggleMod(selectedMod!) : undefined}
-			onremove={activeSource === 'thunderstore' ? () => removeMod(selectedMod!) : undefined}
+			ontoggle={!selectedMod.uuid.includes(':') ? () => toggleMod(selectedMod!) : undefined}
+			onremove={!selectedMod.uuid.includes(':') ? () => removeMod(selectedMod!) : undefined}
 		>
-			{#if activeSource === 'thunderstore'}
+			{#if !selectedMod.uuid.includes(':')}
 				<InstallModButton mod={selectedMod} {install} {locked} />
 			{/if}
 		</ModDetails>
@@ -469,10 +579,10 @@
 			{locked}
 			showVersionSelector={false}
 			onclose={() => (selectedModIds = [])}
-			ontoggle={activeSource === 'thunderstore' ? () => toggleMod(multiViewMod!) : undefined}
-			onremove={activeSource === 'thunderstore' ? () => removeMod(multiViewMod!) : undefined}
+			ontoggle={!multiViewMod.uuid.includes(':') ? () => toggleMod(multiViewMod!) : undefined}
+			onremove={!multiViewMod.uuid.includes(':') ? () => removeMod(multiViewMod!) : undefined}
 		>
-			{#if activeSource === 'thunderstore'}
+			{#if !multiViewMod.uuid.includes(':')}
 				<InstallModButton mod={multiViewMod} {install} {locked} />
 			{/if}
 			<div class="z-multi-nav">
@@ -497,7 +607,7 @@
 
 	<BatchActionBar
 		count={selectedModIds.length}
-		total={mods.length}
+		total={displayedMods.length}
 		onclear={() => (selectedModIds = [])}
 		onselectAll={selectAll}
 	>

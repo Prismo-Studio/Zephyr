@@ -8,6 +8,31 @@ use super::types::*;
 
 const BASE_URL: &str = "https://api.curseforge.com";
 
+// classId 6 = Mods, 12 = Resource Packs, 17 = Modpacks
+const CLASS_ID_MODS: u32 = 6;
+
+fn game_id_from_slug(slug: &str) -> Option<u32> {
+    match slug {
+        "minecraft" => Some(432),
+        "minecraft-bedrock" => Some(78022),
+        "minecraft-dungeons" => Some(69271),
+        "worldofwarcraft" | "wow" => Some(1),
+        "stardewvalley" | "stardew-valley" => Some(669),
+        "terraria" => Some(431),
+        "palworld" => Some(85196),
+        "helldivers-2" | "helldivers2" => Some(85440),
+        "among-us" | "amongus" => Some(69761),
+        "the-elder-scrolls-online" | "teso" => Some(455),
+        "starcraft-ii" | "sc2" => Some(65),
+        "civilization-vi" | "civ6" => Some(727),
+        "kerbal-space-program" | "kerbal" => Some(4401),
+        "darkest-dungeon" | "darkestdungeon" => Some(608),
+        "surviving-mars" => Some(61489),
+        "sims4" | "the-sims-4" => Some(78062),
+        _ => None,
+    }
+}
+
 pub struct CurseForgeSource {
     http: reqwest::Client,
     api_key: String,
@@ -23,11 +48,11 @@ impl CurseForgeSource {
         }
     }
 
-    async fn request<T: for<'de> Deserialize<'de>>(&self, path: &str) -> Result<T> {
+    async fn get<T: for<'de> Deserialize<'de>>(&self, path: &str) -> Result<T> {
         let url = format!("{}{}", BASE_URL, path);
-        debug!("CurseForge request: {}", url);
+        debug!("CurseForge GET: {}", url);
 
-        let response = self
+        let resp = self
             .http
             .get(&url)
             .header("x-api-key", &self.api_key)
@@ -36,18 +61,50 @@ impl CurseForgeSource {
             .await
             .context("CurseForge request failed")?;
 
-        if !response.status().is_success() {
-            let status = response.status();
-            let body = response.text().await.unwrap_or_default();
-            return Err(eyre!("CurseForge API error {}: {}", status, body));
+        if !resp.status().is_success() {
+            let status = resp.status();
+            let body = resp.text().await.unwrap_or_default();
+            return Err(eyre!("CurseForge API {} — {}", status, body));
         }
 
-        response
-            .json::<T>()
+        resp.json::<T>()
             .await
-            .context("failed to parse CurseForge response")
+            .context("failed to parse CurseForge JSON")
+    }
+
+    // POST method ready for batch endpoints (fingerprints, batch fetch)
+    #[allow(dead_code)]
+    async fn post<T: for<'de> Deserialize<'de>, B: serde::Serialize>(
+        &self,
+        path: &str,
+        body: &B,
+    ) -> Result<T> {
+        let url = format!("{}{}", BASE_URL, path);
+        debug!("CurseForge POST: {}", url);
+
+        let resp = self
+            .http
+            .post(&url)
+            .header("x-api-key", &self.api_key)
+            .header("Accept", "application/json")
+            .json(body)
+            .send()
+            .await
+            .context("CurseForge POST failed")?;
+
+        if !resp.status().is_success() {
+            let status = resp.status();
+            let body = resp.text().await.unwrap_or_default();
+            return Err(eyre!("CurseForge API {} — {}", status, body));
+        }
+
+        resp.json::<T>()
+            .await
+            .context("failed to parse CurseForge JSON")
     }
 }
+
+// ── API response types ──
 
 #[derive(Deserialize)]
 struct CfResponse<T> {
@@ -55,15 +112,15 @@ struct CfResponse<T> {
 }
 
 #[derive(Deserialize)]
-struct CfPagination {
-    #[serde(rename = "totalCount")]
-    total_count: u64,
-}
-
-#[derive(Deserialize)]
 struct CfSearchResponse {
     data: Vec<CfMod>,
     pagination: CfPagination,
+}
+
+#[derive(Deserialize)]
+struct CfPagination {
+    #[serde(rename = "totalCount")]
+    total_count: u64,
 }
 
 #[derive(Deserialize)]
@@ -81,6 +138,9 @@ struct CfMod {
     categories: Vec<CfCategory>,
     latest_files: Vec<CfFile>,
     links: CfLinks,
+    #[serde(default)]
+    #[allow(dead_code)]
+    screenshots: Vec<CfScreenshot>,
 }
 
 #[derive(Deserialize)]
@@ -103,9 +163,30 @@ struct CfCategory {
 struct CfFile {
     id: u32,
     display_name: String,
+    file_name: String,
     file_length: u64,
     file_date: String,
     download_count: u64,
+    download_url: Option<String>,
+    #[serde(default)]
+    #[allow(dead_code)]
+    hashes: Vec<CfHash>,
+    #[serde(default)]
+    #[allow(dead_code)]
+    game_versions: Vec<String>,
+}
+
+#[derive(Deserialize)]
+#[allow(dead_code)]
+struct CfHash {
+    value: String,
+    algo: u32,
+}
+
+#[derive(Deserialize)]
+#[allow(dead_code)]
+struct CfScreenshot {
+    url: String,
 }
 
 #[derive(Deserialize)]
@@ -169,6 +250,8 @@ impl CfMod {
     }
 }
 
+// ── ModSource implementation ──
+
 #[async_trait::async_trait]
 impl ModSource for CurseForgeSource {
     fn id(&self) -> SourceId {
@@ -207,6 +290,21 @@ impl ModSource for CurseForgeSource {
             });
         }
 
+        let cf_game_id = match filters
+            .game_slug
+            .as_deref()
+            .and_then(game_id_from_slug)
+        {
+            Some(id) => id,
+            None => {
+                return Ok(SearchResult {
+                    mods: Vec::new(),
+                    source: SourceId::CurseForge,
+                    total_count: Some(0),
+                });
+            }
+        };
+
         let sort_field = match filters.sort_by {
             SortField::Downloads => 6,
             SortField::Rating => 3,
@@ -223,12 +321,19 @@ impl ModSource for CurseForgeSource {
         let page_size = if filters.max_count > 0 && filters.max_count <= 50 {
             filters.max_count
         } else {
-            50
+            25
+        };
+
+        // classId 6 = Mods only works for Minecraft; skip for other games
+        let class_param = if cf_game_id == 432 {
+            format!("&classId={}", CLASS_ID_MODS)
+        } else {
+            String::new()
         };
 
         let mut url = format!(
-            "/v1/mods/search?sortField={}&sortOrder={}&pageSize={}",
-            sort_field, sort_order, page_size
+            "/v1/mods/search?gameId={}{}&sortField={}&sortOrder={}&pageSize={}&index={}",
+            cf_game_id, class_param, sort_field, sort_order, page_size, filters.offset
         );
 
         if !filters.search_term.is_empty() {
@@ -238,7 +343,7 @@ impl ModSource for CurseForgeSource {
             ));
         }
 
-        let response: CfSearchResponse = self.request(&url).await?;
+        let response: CfSearchResponse = self.get(&url).await?;
 
         let mods = response.data.iter().map(|m| m.to_unified()).collect();
 
@@ -251,20 +356,20 @@ impl ModSource for CurseForgeSource {
 
     async fn get_mod(&self, external_id: &str) -> Result<UnifiedMod> {
         let response: CfResponse<CfMod> =
-            self.request(&format!("/v1/mods/{}", external_id)).await?;
+            self.get(&format!("/v1/mods/{}", external_id)).await?;
         Ok(response.data.to_unified())
     }
 
     async fn get_readme(&self, external_id: &str, _version: &str) -> Result<Option<String>> {
         let response: CfResponse<String> = self
-            .request(&format!("/v1/mods/{}/description", external_id))
+            .get(&format!("/v1/mods/{}/description", external_id))
             .await?;
         Ok(Some(response.data))
     }
 
     async fn get_changelog(&self, external_id: &str, version: &str) -> Result<Option<String>> {
         let response: CfResponse<String> = self
-            .request(&format!(
+            .get(&format!(
                 "/v1/mods/{}/files/{}/changelog",
                 external_id, version
             ))
@@ -287,7 +392,36 @@ impl ModSource for CurseForgeSource {
         Ok(result.mods)
     }
 
-    async fn download(&self, _external_id: &str, _version: &str) -> Result<DownloadResult> {
-        Err(eyre!("CurseForge download not yet implemented"))
+    async fn download(&self, external_id: &str, version: &str) -> Result<DownloadResult> {
+        // Get the file info to find the download URL
+        let file: CfResponse<CfFile> = self
+            .get(&format!("/v1/mods/{}/files/{}", external_id, version))
+            .await?;
+
+        match file.data.download_url {
+            Some(url) => {
+                let tmp_dir = std::env::temp_dir().join("zephyr-cf-downloads");
+                std::fs::create_dir_all(&tmp_dir)?;
+                let file_path = tmp_dir.join(&file.data.file_name);
+
+                let resp = self
+                    .http
+                    .get(&url)
+                    .send()
+                    .await
+                    .context("failed to download CF mod")?;
+
+                let bytes = resp.bytes().await?;
+                std::fs::write(&file_path, &bytes)?;
+
+                Ok(DownloadResult {
+                    path: file_path,
+                    file_name: file.data.file_name,
+                })
+            }
+            None => Err(eyre!(
+                "This mod has blocked direct downloads. Visit CurseForge to download manually."
+            )),
+        }
     }
 }
