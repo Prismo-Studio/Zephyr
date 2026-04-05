@@ -267,8 +267,6 @@
 					}}
 				/>
 			</div>
-
-
 		</section>
 
 		{#if prefs}
@@ -381,11 +379,7 @@
 </div>
 
 {#if showCurseForgeModal}
-	<Modal
-		bind:open={showCurseForgeModal}
-		title="CurseForge"
-		onclose={confirmCurseForge}
-	>
+	<Modal bind:open={showCurseForgeModal} title="CurseForge" onclose={confirmCurseForge}>
 		{#snippet children()}
 			<div class="z-cf-modal">
 				<div class="z-cf-modal-header">

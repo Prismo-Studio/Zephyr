@@ -132,7 +132,7 @@
 				const cfId = mod.uuid.replace('curseforge:', '');
 				if (type === 'readme') {
 					const desc = await api.sources.getSourceModDescription('curseforge', cfId);
-					markdown = desc ?? (mod.description ?? '');
+					markdown = desc ?? mod.description ?? '';
 				} else if (type === 'changelog' && mod.versions.length > 0) {
 					const fileId = mod.versions[0].uuid;
 					const cl = await api.sources.getSourceModChangelog('curseforge', cfId, fileId);
