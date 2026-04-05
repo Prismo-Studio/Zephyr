@@ -1,4 +1,5 @@
 pub mod commands;
+pub mod community;
 pub mod curseforge;
 pub mod nexusmods;
 pub mod registry;

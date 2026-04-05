@@ -70,6 +70,9 @@ pub fn setup(app: &AppHandle) -> Result<()> {
     );
     source_registry.register(Arc::new(nx_source));
 
+    let community_source = crate::source::community::CommunitySource::new(http.clone());
+    source_registry.register(Arc::new(community_source));
+
     let state = AppState {
         db,
         http,

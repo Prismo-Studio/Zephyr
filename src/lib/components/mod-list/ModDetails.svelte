@@ -140,6 +140,15 @@
 				} else {
 					markdown = '';
 				}
+			} else if (mod.uuid.startsWith('zephyr:')) {
+				const slug = mod.uuid.replace('zephyr:', '');
+				if (type === 'readme') {
+					const desc = await api.sources.getSourceModDescription('github', slug);
+					markdown = desc ?? mod.description ?? '';
+				} else {
+					const cl = await api.sources.getSourceModChangelog('github', slug, '');
+					markdown = cl ?? '';
+				}
 			} else if (isExternalMod(mod)) {
 				markdown = type === 'readme' ? (mod.description ?? '') : '';
 			} else {
@@ -334,7 +343,36 @@
 		<!-- Install button slot -->
 		{#if children}{@render children()}{/if}
 
-		{#if isExternalMod(mod) && mod.websiteUrl}
+		{#if mod.uuid.startsWith('zephyr:') && mod.websiteUrl}
+			<div class="z-external-buttons">
+				<a
+					href={mod.websiteUrl}
+					target="_blank"
+					rel="noopener"
+					class="z-external-link-btn"
+					onclick={(e) => {
+						e.preventDefault();
+						open(mod.websiteUrl!);
+					}}
+				>
+					<Icon icon="mdi:download" />
+					<span>Download</span>
+				</a>
+				<a
+					href={mod.websiteUrl.replace(/\/releases\/download\/.*$/, '')}
+					target="_blank"
+					rel="noopener"
+					class="z-external-link-btn z-external-link-secondary"
+					onclick={(e) => {
+						e.preventDefault();
+						open(mod.websiteUrl!.replace(/\/releases\/download\/.*$/, ''));
+					}}
+				>
+					<Icon icon="mdi:open-in-new" />
+					<span>GitHub</span>
+				</a>
+			</div>
+		{:else if isExternalMod(mod) && mod.websiteUrl}
 			<a
 				href={mod.websiteUrl}
 				target="_blank"
@@ -743,6 +781,26 @@
 
 	.z-external-link-btn:hover {
 		background: rgba(26, 255, 250, 0.12);
+	}
+
+	.z-external-buttons {
+		display: flex;
+		gap: 6px;
+	}
+
+	.z-external-buttons .z-external-link-btn {
+		flex: 1;
+	}
+
+	.z-external-link-secondary {
+		background: var(--bg-overlay);
+		color: var(--text-secondary);
+		border-color: var(--border-subtle);
+	}
+
+	.z-external-link-secondary:hover {
+		background: var(--bg-active);
+		color: var(--text-primary);
 	}
 
 	/* Version selector */
