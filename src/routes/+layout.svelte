@@ -16,6 +16,7 @@
 	import games from '$lib/state/game.svelte';
 	import auth from '$lib/state/auth.svelte';
 	import { updateBanner } from '$lib/state/misc.svelte';
+	import updates from '$lib/state/update.svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import { PersistedState } from 'runed';
 	import type { ProfileInfo, ManagedGameInfo } from '$lib/types';
@@ -25,12 +26,39 @@
 	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import { initErrorListener } from '$lib/invoke';
 	import { open } from '@tauri-apps/plugin-shell';
+	import { relaunch } from '@tauri-apps/plugin-process';
+	import { getVersion } from '@tauri-apps/api/app';
+	import { pushToast, pushInfoToast } from '$lib/toast';
+	import Modal from '$lib/components/ui/Modal.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import Icon from '@iconify/svelte';
+	import { m } from '$lib/paraglide/messages';
 
 	type Props = {
 		children?: Snippet;
 	};
 
 	let { children }: Props = $props();
+
+	let updateInstalling = $state(false);
+	let appVersion = $state('');
+
+	async function installUpdate() {
+		if (!updates.next || updateInstalling) return;
+		updateInstalling = true;
+		try {
+			await updates.next.downloadAndInstall();
+			pushInfoToast({ message: m.updater_update_message() });
+			await relaunch();
+		} catch (err) {
+			pushToast({
+				type: 'error',
+				name: m.updater_installUpdate_message_name(),
+				message: String(err)
+			});
+			updateInstalling = false;
+		}
+	}
 
 	let unlistenProfiles: UnlistenFn | null;
 	let unlistenGames: UnlistenFn | null;
@@ -48,6 +76,8 @@
 		profiles.refresh().catch(() => {});
 		games.refresh().catch(() => {});
 		auth.refresh().catch(() => {});
+		updates.refresh().catch(() => {});
+		getVersion().then((v) => (appVersion = v));
 		initTheme();
 		refreshFont();
 		refreshColor('accent');
@@ -179,6 +209,39 @@
 	<InstallModDialog />
 	<!-- WelcomeDialog removed -->
 	<ImportProfileDialog />
+
+	{#if updates.next?.available}
+		<Modal
+			open={true}
+			onclose={() => (updates.next = null)}
+			title={i18nState.locale && m.updater_confirmDialog_title()}
+		>
+			{#snippet children()}
+				<div class="z-update-modal">
+					<p>
+						{updates.next!.version
+							? m.updater_confirmDialog_content_next({
+									next: updates.next!.version,
+									current: appVersion
+								})
+							: m.updater_confirmDialog_content_available()}
+					</p>
+					<p>{m.updater_confirmDialog_content()}</p>
+				</div>
+			{/snippet}
+			{#snippet actions()}
+				<Button variant="primary" onclick={installUpdate} disabled={updateInstalling}>
+					{#snippet icon()}
+						<Icon
+							icon={updateInstalling ? 'mdi:loading' : 'mdi:download'}
+							class={updateInstalling ? 'z-spin' : ''}
+						/>
+					{/snippet}
+					{i18nState.locale && m.updater_confirmDialog_button()}
+				</Button>
+			{/snippet}
+		</Modal>
+	{/if}
 </main>
 
 <style>

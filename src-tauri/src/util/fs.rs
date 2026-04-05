@@ -5,6 +5,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use eyre::{Context, Result};
+
 use serde::{de::DeserializeOwned, Serialize};
 use tracing::warn;
 use walkdir::WalkDir;
@@ -211,4 +213,21 @@ pub fn checksum(path: &Path) -> io::Result<blake3::Hash> {
     }
 
     Ok(hasher.finalize())
+}
+
+/// Opens a file or directory in the system's default handler.
+/// On Linux, spawns `xdg-open` detached to avoid blocking issues with the `open` crate.
+pub fn open_path(path: impl AsRef<Path>) -> Result<()> {
+    #[cfg(target_os = "linux")]
+    {
+        std::process::Command::new("xdg-open")
+            .arg(path.as_ref())
+            .spawn()
+            .context("failed to open path with xdg-open")?;
+    }
+    #[cfg(not(target_os = "linux"))]
+    {
+        open::that(path).map_err(|err| eyre::eyre!(err))?;
+    }
+    Ok(())
 }
