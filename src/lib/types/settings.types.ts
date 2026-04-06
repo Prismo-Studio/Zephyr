@@ -6,7 +6,9 @@ export type Prefs = {
 	fetchModsAutomatically: boolean;
 	pullBeforeLaunch: boolean;
 	zoomFactor: number;
+	dpiScale: number;
 	language: string;
+	gamepadEnabled: boolean;
 	gamePrefs: Map<string, GamePrefs>;
 };
 

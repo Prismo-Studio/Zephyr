@@ -19,7 +19,7 @@
 
 	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
-	import { modQuery } from '$lib/state/misc.svelte';
+	import { modQuery, installState, viewMode } from '$lib/state/misc.svelte';
 	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
 	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
@@ -31,7 +31,7 @@
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { pushToast } from '$lib/toast';
 	import { handleMultiSelect } from '$lib/utils/multiSelect';
-	import { installState, viewMode } from '$lib/state/misc.svelte';
+	import { gamepadState } from '$lib/gamepad.svelte';
 
 	const sortOptions: SortBy[] = ['lastUpdated', 'newest', 'rating', 'downloads'];
 
@@ -977,6 +977,7 @@
 		total={displayedMods.length}
 		onclear={() => (selectedModIds = [])}
 		onselectAll={selectAll}
+		legendActive={!!(gamepadState.enabled && gamepadState.connected)}
 	>
 		{#snippet actions()}
 			<Button variant="accent" size="sm" onclick={doBatchInstall} disabled={locked}>

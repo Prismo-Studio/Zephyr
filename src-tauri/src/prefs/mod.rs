@@ -186,8 +186,10 @@ pub struct Prefs {
 
     pub fetch_mods_automatically: bool,
     pub zoom_factor: f32,
+    pub dpi_scale: f32,
     pub pull_before_launch: bool,
     pub language: String,
+    pub gamepad_enabled: bool,
 
     pub game_prefs: HashMap<String, GamePrefs>,
 }
@@ -218,7 +220,9 @@ impl Default for Prefs {
             pull_before_launch: true,
 
             zoom_factor: 1.0,
+            dpi_scale: 1.0,
             language: "en".to_string(),
+            gamepad_enabled: false,
 
             game_prefs: HashMap::new(),
         }
@@ -288,10 +292,12 @@ impl Prefs {
                 .context("failed to set zoom level")?;
         }
         self.zoom_factor = value.zoom_factor;
+        self.dpi_scale = value.dpi_scale.clamp(0.5, 2.0);
         self.language = value.language;
 
         self.fetch_mods_automatically = value.fetch_mods_automatically;
         self.pull_before_launch = value.pull_before_launch;
+        self.gamepad_enabled = value.gamepad_enabled;
 
         self.save(app.db()).context("failed save prefs")
     }

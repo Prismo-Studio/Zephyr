@@ -10,13 +10,14 @@
 		onclear: () => void;
 		onselectAll?: () => void;
 		actions: Snippet;
+		legendActive?: boolean;
 	};
 
-	let { count, total, onclear, onselectAll, actions }: Props = $props();
+	let { count, total, onclear, onselectAll, actions, legendActive = false }: Props = $props();
 </script>
 
 {#if count >= 2}
-	<div class="z-batch-bar-container">
+	<div class="z-batch-bar-container{legendActive ? ' z-batch-bar--with-legend' : ''}">
 		<div class="z-batch-bar shadow-xl">
 			<div class="z-batch-info">
 				<button class="z-batch-clear" onclick={onclear} aria-label="Clear selection">
@@ -44,15 +45,20 @@
 
 <style>
 	.z-batch-bar-container {
-		position: absolute;
-		bottom: var(--space-xl);
+		position: fixed;
 		left: 0;
 		right: 0;
 		display: flex;
 		justify-content: center;
-		z-index: 100;
+		z-index: calc(var(--z-sticky, 100) + 1);
 		pointer-events: none;
 		animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		margin-bottom: 0;
+		bottom: var(--space-xl);
+	}
+	.z-batch-bar--with-legend {
+		/* Height of legend bar + minimal gap (adjust as needed) */
+		bottom: calc(48px + var(--space-md));
 	}
 
 	.z-batch-bar {

@@ -12,6 +12,7 @@
 	import { onMount, type Snippet } from 'svelte';
 	import { refreshColor, refreshFont } from '$lib/themeSystem';
 	import { initTheme } from '$lib/design-system/tokens';
+	import { initGamepad, setGamepadEnabled, gamepadState } from '$lib/gamepad.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import games from '$lib/state/game.svelte';
 	import auth from '$lib/state/auth.svelte';
@@ -86,6 +87,17 @@
 		(async () => {
 			let prefs = await api.prefs.get();
 			let lang: string;
+
+			// Apply DPI scale
+			if (prefs.dpiScale && prefs.dpiScale !== 1.0) {
+				document.documentElement.style.setProperty('--app-dpi-scale', String(prefs.dpiScale));
+			}
+
+			// Initialize gamepad
+			initGamepad();
+			if (prefs.gamepadEnabled) {
+				setGamepadEnabled(true);
+			}
 
 			if (await api.state.isFirstRun()) {
 				const { locale } = await import('@tauri-apps/plugin-os');
@@ -194,7 +206,7 @@
 	<Titlebar />
 
 	<div class="z-app-body">
-		<Sidebar />
+		<Sidebar legendActive={!!(gamepadState.enabled && gamepadState.connected)} />
 
 		<div class="z-main">
 			<div class="z-content">
@@ -203,6 +215,40 @@
 			<Statusbar />
 		</div>
 	</div>
+
+	{#if gamepadState.enabled && gamepadState.connected}
+		{@const type = gamepadState.controllerType}
+		<div class="z-gamepad-legend">
+			<div class="z-gamepad-legend-item">
+				<kbd class="z-gp-btn">{type === 'playstation' ? '✕' : 'A'}</kbd>
+				<span>{m.gamepad_legend_select()}</span>
+			</div>
+			<div class="z-gamepad-legend-item">
+				<kbd class="z-gp-btn">{type === 'playstation' ? '△' : 'Y'}</kbd>
+				<span>{m.gamepad_legend_multiselect()}</span>
+			</div>
+			<!-- Back button removed as per request -->
+			<div class="z-gamepad-legend-item">
+				<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'L3' : 'LS'}</kbd>
+				<span>{m.gamepad_legend_navigate()}</span>
+			</div>
+			<div class="z-gamepad-legend-item">
+				<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'R3' : 'RS'}</kbd>
+				<span>{m.gamepad_legend_scroll()}</span>
+			</div>
+			<div class="z-gamepad-legend-item">
+				<kbd class="z-gp-btn">{type === 'playstation' ? 'L1' : 'LB'}</kbd>
+				<kbd class="z-gp-btn">{type === 'playstation' ? 'R1' : 'RB'}</kbd>
+				<span>{m.gamepad_legend_tabs()}</span>
+			</div>
+			<div class="z-gamepad-legend-item">
+				<kbd class="z-gp-btn"
+					>{type === 'playstation' ? 'Options' : type === 'xbox' ? 'Menu' : 'Start'}</kbd
+				>
+				<span>{m.dashboard_quickActions_title()}</span>
+			</div>
+		</div>
+	{/if}
 
 	<Toasts />
 	<InstallPopover />
@@ -274,5 +320,69 @@
 		flex: 1;
 		overflow-y: auto;
 		overflow-x: hidden;
+	}
+
+	/* DPI scaling — applied to full app */
+	.z-app {
+		zoom: var(--app-dpi-scale, 1);
+	}
+
+	/* Gamepad button legend bar */
+	.z-gamepad-legend {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-xl);
+		padding: var(--space-sm) var(--space-lg);
+		background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
+		backdrop-filter: blur(8px);
+		border-top: 1px solid var(--border-subtle);
+		z-index: var(--z-sticky);
+		font-size: 12px;
+		color: var(--text-muted);
+		animation: slideUp 0.2s ease;
+	}
+
+	@keyframes slideUp {
+		from {
+			transform: translateY(100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+
+	.z-gamepad-legend-item {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	.z-gp-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 24px;
+		height: 22px;
+		padding: 0 6px;
+		border-radius: var(--radius-sm);
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-default);
+		color: var(--text-primary);
+		font-family: var(--font-body);
+		font-size: 11px;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.z-gp-dpad {
+		font-size: 10px;
+		letter-spacing: -0.02em;
 	}
 </style>

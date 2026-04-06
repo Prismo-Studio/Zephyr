@@ -37,37 +37,41 @@
 	import { shortenFileSize } from '$lib/util';
 	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 	import { getVersion } from '@tauri-apps/api/app';
+	import {
+		setGamepadEnabled,
+		getConnectedGamepad,
+		getGamepadDisplayName
+	} from '$lib/gamepad.svelte';
 
 	let prefs: Prefs | null = $state(null);
 	let showCurseForgeModal = $state(false);
+	let gamepadName = $state<string | null>(null);
 
-	function handleCurseForgeToggle() {
-		if (!curseForgeEnabled.current) {
-			showCurseForgeModal = true;
-		}
-	}
+	const dpiScaleOptions = [
+		{ value: '0.75', label: '75%' },
+		{ value: '0.85', label: '85%' },
+		{ value: '0.9', label: '90%' },
+		{ value: '1', label: '100% (default)' },
+		{ value: '1.1', label: '110%' },
+		{ value: '1.15', label: '115%' },
+		{ value: '1.25', label: '125%' },
+		{ value: '1.5', label: '150%' },
+		{ value: '1.75', label: '175%' },
+		{ value: '2', label: '200%' }
+	];
 
-	function confirmCurseForge() {
-		curseForgeEnabled.current = true;
-		showCurseForgeModal = false;
-	}
-
-	function cancelCurseForge() {
-		showCurseForgeModal = false;
-	}
-
-	let currentTheme: ThemeId = $state(getTheme());
 	let systemFonts: string[] = $state([]);
+	let wingdingsUnlocked = $state(isWingdingsUnlocked());
+	let visibleThemes = $state(getVisibleThemes());
+	let currentTheme: ThemeId = $state(getTheme());
 	let currentFont = $state(getFont());
 	let currentLocale: Locale = $state(getLocale() as Locale);
-	let visibleThemes = $state(getVisibleThemes());
-	let wingdingsUnlocked = $state(isWingdingsUnlocked());
 
 	let fontOptions = $derived([
 		{ value: 'Inter', label: 'Inter (default)' },
 		{ value: 'Outfit', label: 'Outfit' },
 		{ value: 'DM Sans', label: 'DM Sans' },
-		...systemFonts.slice(0, 50).map((f) => ({ value: f, label: f })),
+		...systemFonts.slice(0, 50).map((f: string) => ({ value: f, label: f })),
 		...(wingdingsUnlocked ? [{ value: 'Wingdings', label: 'Wingdings' }] : [])
 	]);
 
@@ -79,19 +83,55 @@
 		systemFonts = await api.prefs.getSystemFonts();
 		getVersion().then((v) => (appVersion = v));
 
+		// Check if a gamepad is connected
+		const gp = getConnectedGamepad();
+		if (gp) gamepadName = getGamepadDisplayName(gp);
+
+		// Listen for gamepad connections while on this page
+		const onGpConnect = (e: GamepadEvent) => {
+			gamepadName = getGamepadDisplayName(e.gamepad.id);
+		};
+		const onGpDisconnect = () => {
+			gamepadName = null;
+		};
+		window.addEventListener('gamepadconnected', onGpConnect);
+		window.addEventListener('gamepaddisconnected', onGpDisconnect);
+
 		window.addEventListener('hotdog-unlocked', () => {
 			visibleThemes = getVisibleThemes();
 			currentTheme = 'hotdog';
 		});
 
-		// Wingdings easter egg — session only, silently adds to dropdown
+		// Wingdings easter egg - session only, silently adds to dropdown
 		window.addEventListener('wingdings-unlocked', () => {
 			wingdingsUnlocked = true;
 		});
 	});
 
+	$effect(() => {
+		return () => {
+			// Cleanup gamepad listeners handled by $effect teardown
+		};
+	});
+
 	async function savePrefs() {
 		if (prefs) await api.prefs.set(prefs);
+	}
+
+	function changeDpiScale(value: string) {
+		if (!prefs) return;
+		const scale = parseFloat(value);
+		if (isNaN(scale)) return;
+		prefs.dpiScale = scale;
+		document.documentElement.style.setProperty('--app-dpi-scale', String(scale));
+		savePrefs();
+	}
+
+	function toggleGamepad() {
+		if (!prefs) return;
+		prefs.gamepadEnabled = !prefs.gamepadEnabled;
+		setGamepadEnabled(prefs.gamepadEnabled);
+		savePrefs();
 	}
 
 	function switchTheme(id: ThemeId) {
@@ -252,6 +292,63 @@
 			</div>
 		</section>
 
+		<!-- Display / DPI Scaling -->
+		<section class="z-settings-section">
+			<h3 class="z-settings-heading">
+				<Icon icon="mdi:monitor" />
+				{i18nState.locale && m.prefs_display_title()}
+			</h3>
+
+			<div class="z-settings-row">
+				<div class="z-settings-label">
+					<span>{i18nState.locale && m.prefs_display_dpiScale_title()}</span>
+					<span class="z-settings-desc">{i18nState.locale && m.prefs_display_dpiScale_desc()}</span>
+				</div>
+				{#if prefs}
+					<Dropdown
+						options={dpiScaleOptions}
+						value={String(prefs.dpiScale)}
+						onchange={changeDpiScale}
+						placeholder="100%"
+					/>
+				{/if}
+			</div>
+		</section>
+
+		<!-- Gamepad -->
+		<section class="z-settings-section">
+			<h3 class="z-settings-heading">
+				<Icon icon="mdi:controller" />
+				{i18nState.locale && m.prefs_gamepad_title()}
+			</h3>
+
+			<div class="z-settings-row">
+				<div class="z-settings-label">
+					<span>{i18nState.locale && m.prefs_gamepad_enabled_title()}</span>
+					<span class="z-settings-desc">{i18nState.locale && m.prefs_gamepad_enabled_desc()}</span>
+				</div>
+				{#if prefs}
+					<Toggle checked={prefs.gamepadEnabled} onchange={toggleGamepad} />
+				{/if}
+			</div>
+
+			<div class="z-settings-row z-gamepad-status">
+				<div class="z-settings-label">
+					{#if gamepadName}
+						<span class="z-gamepad-connected">
+							<Icon icon="mdi:controller" />
+							{i18nState.locale && m.prefs_gamepad_connected({ name: gamepadName })}
+						</span>
+					{:else}
+						<span class="z-gamepad-none">
+							<Icon icon="mdi:controller-off" />
+							{i18nState.locale && m.prefs_gamepad_none()}
+						</span>
+					{/if}
+				</div>
+			</div>
+		</section>
+
 		<!-- Sources -->
 		<section class="z-settings-section">
 			<h3 class="z-settings-heading">
@@ -403,7 +500,13 @@
 </div>
 
 {#if showCurseForgeModal}
-	<Modal bind:open={showCurseForgeModal} title="CurseForge" onclose={confirmCurseForge}>
+	<Modal
+		bind:open={showCurseForgeModal}
+		title="CurseForge"
+		onclose={() => {
+			showCurseForgeModal = false;
+		}}
+	>
 		{#snippet children()}
 			<div class="z-cf-modal">
 				<div class="z-cf-modal-header">
@@ -417,7 +520,13 @@
 			</div>
 		{/snippet}
 		{#snippet actions()}
-			<Button variant="primary" onclick={confirmCurseForge}>
+			<Button
+				variant="primary"
+				onclick={() => {
+					curseForgeEnabled.current = true;
+					showCurseForgeModal = false;
+				}}
+			>
 				{#snippet icon()}<Icon icon="mdi:check" />{/snippet}
 				{i18nState.locale && m.prefs_curseforge_modal_confirm()}
 			</Button>
@@ -814,5 +923,26 @@
 		to {
 			transform: rotate(360deg);
 		}
+	}
+
+	/* Gamepad status */
+	.z-gamepad-status {
+		border-bottom: none;
+	}
+
+	.z-gamepad-connected {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		font-size: 13px;
+		color: var(--text-accent);
+	}
+
+	.z-gamepad-none {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		font-size: 13px;
+		color: var(--text-muted);
 	}
 </style>

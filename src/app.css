@@ -346,6 +346,18 @@ pre,
 	outline-offset: 2px;
 }
 
+/* Gamepad-driven focus — always show focus ring when gamepad is active */
+.gamepad-active :focus {
+	outline: 2px solid var(--accent-400);
+	outline-offset: 2px;
+}
+
+/* Dropdowns use border-color instead of outline for cleaner look */
+.gamepad-active .z-dropdown-trigger:focus {
+	outline: none;
+	border-color: var(--accent-400);
+}
+
 /* ============================================================
    Utility Classes
    ============================================================ */

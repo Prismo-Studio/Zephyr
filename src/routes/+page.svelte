@@ -12,6 +12,7 @@
 	import RemoveModDialog from '$lib/components/mod-list/RemoveModDialog.svelte';
 	import ToggleModDialog from '$lib/components/mod-list/ToggleModDialog.svelte';
 	import BatchActionBar from '$lib/components/ui/BatchActionBar.svelte';
+	import { gamepadState } from '$lib/gamepad.svelte';
 	import BatchConfirmDialog from '$lib/components/dialogs/BatchConfirmDialog.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -822,6 +823,7 @@
 			total={sortedMods.length}
 			onclear={() => (selectedModIds = [])}
 			onselectAll={selectAll}
+			legendActive={!!(gamepadState.enabled && gamepadState.connected)}
 		>
 			{#snippet actions()}
 				<Button variant="accent" size="sm" onclick={doBatchToggle} disabled={locked}>

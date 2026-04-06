@@ -1,4 +1,5 @@
 <script lang="ts">
+	const { legendActive = false } = $props<{ legendActive?: boolean }>();
 	import Icon from '@iconify/svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import VanillaFlowerIcon from '$lib/components/ui/VanillaFlowerIcon.svelte';
@@ -306,7 +307,7 @@
 	</nav>
 
 	<!-- Bottom section -->
-	<div class="z-sidebar-bottom">
+	<div class="z-sidebar-bottom" class:legend-active={legendActive}>
 		<Tooltip text={i18nState.locale && m.toolBar_launchGame_button()} position="right" delay={300}>
 			<button class="z-launch-btn" onclick={launchGame}>
 				<img src="/launch-icon.png" alt="Launch Game" class="z-custom-launch-icon" />
@@ -668,6 +669,14 @@
 		gap: var(--space-sm);
 		padding: 0 var(--space-sm);
 		margin-top: auto;
+	}
+
+	/* Only add extra margin if gamepad legend is visible */
+	.z-sidebar-bottom.legend-active {
+		margin-bottom: 64px; /* 56px legend bar + 8px gap */
+	}
+	.z-sidebar-bottom {
+		margin-bottom: 0;
 	}
 
 	.z-launch-btn {
