@@ -279,7 +279,7 @@ impl ModSource for CommunitySource {
         }
 
         let bytes = resp.bytes().await?;
-        let file_name = m.download.split('/').last().unwrap_or("mod.dll").to_string();
+        let file_name = m.download.split('/').next_back().unwrap_or("mod.dll").to_string();
 
         let temp_dir = std::env::temp_dir().join("zephyr-downloads");
         std::fs::create_dir_all(&temp_dir)?;

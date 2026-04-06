@@ -249,7 +249,7 @@
 	"updater_content_available": "Update available",
 	"updater_content_downloading": "Downloading update...",
 	"updater_confirmDialog_title": "App update available!",
-	"updater_confirmDialog_content_next": "Version {next} of Zephyr is available - you have {current}.",
+	"updater_confirmDialog_content_next": "Version {next} of Zephyr is available. You have {current}.",
 	"updater_confirmDialog_content_available": "There is an update available for Zephyr.",
 	"updater_confirmDialog_content": "The update will be downloaded in the background, then the app will restart to apply it.",
 	"updater_confirmDialog_button": "Install",

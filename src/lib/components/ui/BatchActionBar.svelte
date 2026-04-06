@@ -57,7 +57,7 @@
 		bottom: var(--space-xl);
 	}
 	.z-batch-bar--with-legend {
-		bottom: calc(64px + var(--space-xl));
+		bottom: calc(36px + var(--space-md));
 	}
 
 	.z-batch-bar {
