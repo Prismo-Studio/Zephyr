@@ -81,26 +81,35 @@
 		if (changingVersion) return;
 		changingVersion = true;
 		confirmVersionChange = { open: false, targetVersion: null };
+		const packageUuid = mod.uuid;
+		const modName = formatModName(mod.name);
 		try {
+			// Remove first, then reinstall with new version
 			if (mod.isInstalled && !isExternalMod(mod)) {
-				await api.profile.forceRemoveMods([mod.uuid]);
+				await api.profile.forceRemoveMods([packageUuid]);
 			}
 			await api.profile.install.mod({
-				packageUuid: mod.uuid,
+				packageUuid,
 				versionUuid: version.uuid
 			});
+			// Dispatch event to re-select this mod after profile refresh
+			window.dispatchEvent(new CustomEvent('zephyr-reselect-mod', { detail: packageUuid }));
 			pushToast({
 				type: 'info',
 				message:
 					(i18nState.locale &&
 						m.modDetails_versionChange_success({
-							mod: formatModName(mod.name),
+							mod: modName,
 							version: version.name
 						})) ||
-					`${formatModName(mod.name)} changed to ${version.name}`
+					`${modName} changed to ${version.name}`
 			});
-		} catch {
-			// Error toast shown by invoke wrapper
+		} catch (err) {
+			pushToast({
+				type: 'error',
+				name: 'Version change failed',
+				message: err instanceof Error ? err.message : 'Unknown error'
+			});
 		} finally {
 			changingVersion = false;
 		}

@@ -240,6 +240,41 @@ impl Prefs {
         }
 
         let window = app.get_webview_window("main").unwrap();
+
+        // Auto-detect DPI and adjust zoom for small/high-DPI screens (e.g. Steam Deck)
+        if let Ok(monitor) = window.current_monitor() {
+            if let Some(monitor) = monitor {
+                let size = monitor.size();
+                let scale = monitor.scale_factor();
+                let physical_width = size.width as f64;
+                let logical_width = physical_width / scale;
+
+                info!(
+                    "Monitor: {}x{} scale={:.2} logical_width={:.0}",
+                    size.width, size.height, scale, logical_width
+                );
+
+                // Auto-scale for small screens (Steam Deck is 1280x800)
+                // Only adjust if user hasn't manually changed zoom
+                if (self.zoom_factor - 1.0).abs() < 0.01 {
+                    let auto_zoom = if logical_width <= 800.0 {
+                        0.7
+                    } else if logical_width <= 1024.0 {
+                        0.8
+                    } else if logical_width <= 1280.0 {
+                        0.9
+                    } else {
+                        1.0
+                    };
+
+                    if (auto_zoom - 1.0_f64).abs() > 0.01 {
+                        info!("Auto DPI scaling: zoom set to {:.1}", auto_zoom);
+                        self.zoom_factor = auto_zoom as f32;
+                    }
+                }
+            }
+        }
+
         window.zoom(self.zoom_factor as f64).ok();
 
         self.save(db)?;
