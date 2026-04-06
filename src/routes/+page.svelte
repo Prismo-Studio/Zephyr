@@ -23,6 +23,7 @@
 	import ShareProfileDialog from '$lib/components/dialogs/ShareProfileDialog.svelte';
 
 	import { open } from '@tauri-apps/plugin-shell';
+	import { installState, viewMode } from '$lib/state/misc.svelte';
 	import { profileQuery, togglePin, isModPinned, pinnedMods } from '$lib/state/misc.svelte';
 	import { isOutdated } from '$lib/util';
 	import { m } from '$lib/paraglide/messages';
@@ -129,7 +130,12 @@
 	}
 
 	function getSelectedMod(uuid: string): Mod | null {
-		return mods.find((m) => m.uuid === uuid) ?? cachedSelectedMods.get(uuid) ?? null;
+		const fresh = mods.find((m) => m.uuid === uuid);
+		if (fresh) {
+			cachedSelectedMods.set(uuid, fresh);
+			return fresh;
+		}
+		return cachedSelectedMods.get(uuid) ?? null;
 	}
 
 	let selectedMod = $derived(
@@ -246,7 +252,6 @@
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
-			selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 			await refresh();
 		} else if (response.type === 'confirm') {
 			removeDialog = { open: true, mod, dependants: response.dependants };
@@ -326,68 +331,94 @@
 	function openModContextMenu(e: MouseEvent, mod: Mod) {
 		const locked = profiles.activeLocked;
 		const items: ContextMenuItem[] = [];
+		const isMulti = selectedModIds.length > 1 && selectedModIds.includes(mod.uuid);
 
-		if (mod.isInstalled) {
+		if (isMulti) {
+			const selectedMods = selectedModIds
+				.map((id) => mods.find((m) => m.uuid === id))
+				.filter(Boolean) as Mod[];
+
 			items.push({
-				label: mod.enabled === false ? m.mods_contextMenu_enable() : m.mods_contextMenu_disable(),
-				icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
+				label: `${m.mods_contextMenu_enable()} / ${m.mods_contextMenu_disable()} (${selectedMods.length})`,
+				icon: 'mdi:toggle-switch',
 				disabled: locked,
-				onclick: () => toggleMod(mod)
+				onclick: () => doBatchToggle()
 			});
-		}
 
-		if (mod.isInstalled) {
-			const pinned = isModPinned(mod.uuid);
-			items.push({
-				label: pinned ? m.mods_contextMenu_unpin() : m.mods_contextMenu_pin(),
-				icon: pinned ? 'mdi:pin-off' : 'mdi:pin',
-				onclick: () => togglePin(mod.uuid)
-			});
-		}
-
-		if (mod.websiteUrl) {
-			items.push({
-				label: m.mods_contextMenu_openThunderstore(),
-				icon: 'mdi:open-in-new',
-				onclick: () => open(mod.websiteUrl!)
-			});
-		}
-
-		if (mod.donateUrl) {
-			items.push({
-				label: m.mods_contextMenu_donate(),
-				icon: 'mdi:heart',
-				onclick: () => open(mod.donateUrl!)
-			});
-		}
-
-		if (mod.isInstalled) {
-			items.push({
-				label: m.mods_contextMenu_openFolder(),
-				icon: 'mdi:folder-open',
-				onclick: () => api.profile.openModDir(mod.uuid)
-			});
-		}
-
-		if (mod.isInstalled) {
-			items.push({
-				label: m.mods_contextMenu_editConfig(),
-				icon: 'mdi:file-cog',
-				onclick: () => {
-					window.location.href = `/config?mod=${encodeURIComponent(mod.name)}`;
-				}
-			});
-		}
-
-		if (mod.isInstalled) {
 			items.push({ label: '', separator: true });
 			items.push({
-				label: m.mods_contextMenu_uninstall(),
+				label: `${m.mods_contextMenu_uninstall()} (${selectedMods.length})`,
 				icon: 'mdi:delete',
 				danger: true,
 				disabled: locked,
-				onclick: () => removeMod(mod)
+				onclick: () => doBatchRemove()
 			});
+		} else {
+			if (mod.isInstalled) {
+				items.push({
+					label:
+						mod.enabled === false
+							? m.mods_contextMenu_enable()
+							: m.mods_contextMenu_disable(),
+					icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
+					disabled: locked,
+					onclick: () => toggleMod(mod)
+				});
+			}
+
+			if (mod.isInstalled) {
+				const pinned = isModPinned(mod.uuid);
+				items.push({
+					label: pinned ? m.mods_contextMenu_unpin() : m.mods_contextMenu_pin(),
+					icon: pinned ? 'mdi:pin-off' : 'mdi:pin',
+					onclick: () => togglePin(mod.uuid)
+				});
+			}
+
+			if (mod.websiteUrl) {
+				items.push({
+					label: m.mods_contextMenu_openThunderstore(),
+					icon: 'mdi:open-in-new',
+					onclick: () => open(mod.websiteUrl!)
+				});
+			}
+
+			if (mod.donateUrl) {
+				items.push({
+					label: m.mods_contextMenu_donate(),
+					icon: 'mdi:heart',
+					onclick: () => open(mod.donateUrl!)
+				});
+			}
+
+			if (mod.isInstalled) {
+				items.push({
+					label: m.mods_contextMenu_openFolder(),
+					icon: 'mdi:folder-open',
+					onclick: () => api.profile.openModDir(mod.uuid)
+				});
+			}
+
+			if (mod.isInstalled) {
+				items.push({
+					label: m.mods_contextMenu_editConfig(),
+					icon: 'mdi:file-cog',
+					onclick: () => {
+						window.location.href = `/config?mod=${encodeURIComponent(mod.name)}`;
+					}
+				});
+			}
+
+			if (mod.isInstalled) {
+				items.push({ label: '', separator: true });
+				items.push({
+					label: m.mods_contextMenu_uninstall(),
+					icon: 'mdi:delete',
+					danger: true,
+					disabled: locked,
+					onclick: () => removeMod(mod)
+				});
+			}
 		}
 
 		ctxMenu = { items, x: e.clientX, y: e.clientY };
@@ -407,6 +438,42 @@
 		selectedModIds = [];
 		cachedSelectedMods.clear();
 		multiViewIndex = 0;
+	});
+
+	let prevInstallActive = false;
+	$effect(() => {
+		if (prevInstallActive && !installState.active) {
+			const cachedIds = [...cachedSelectedMods.entries()].filter(
+				([uuid]) => !mods.find((m) => m.uuid === uuid)
+			);
+			if (cachedIds.length > 0) {
+				Promise.all(
+					cachedIds.map(([uuid, cached]) =>
+						api.thunderstore
+							.query({
+								searchTerm: cached.name,
+								includeCategories: [],
+								excludeCategories: [],
+								includeNsfw: true,
+								includeDeprecated: true,
+								includeDisabled: true,
+								includeEnabled: true,
+								sortBy: 'downloads',
+								sortOrder: 'descending',
+								maxCount: 5
+							})
+							.then((results) => {
+								const updated = results.find((m) => m.uuid === uuid);
+								if (updated) cachedSelectedMods.set(uuid, updated);
+							})
+					)
+				).then(() => {
+					selectedModIds = [...selectedModIds];
+				});
+			}
+			refresh();
+		}
+		prevInstallActive = installState.active;
 	});
 
 	let locked = $derived(profiles.activeLocked);
@@ -472,6 +539,44 @@
 		open: false,
 		mode: 'export'
 	});
+
+	async function handleDepClick(author: string, name: string): Promise<boolean> {
+		let found = mods.find(
+			(m) =>
+				m.name.toLowerCase() === name.toLowerCase() &&
+				m.author?.toLowerCase() === author.toLowerCase()
+		);
+		if (!found) {
+			found = mods.find((m) => m.name.toLowerCase() === name.toLowerCase());
+		}
+		if (!found) {
+			try {
+				const results = await api.thunderstore.query({
+					searchTerm: name,
+					includeCategories: [],
+					excludeCategories: [],
+					includeNsfw: true,
+					includeDeprecated: true,
+					includeDisabled: true,
+					includeEnabled: true,
+					sortBy: 'downloads',
+					sortOrder: 'descending',
+					maxCount: 10
+				});
+				found = results.find(
+					(m) =>
+						m.name.toLowerCase() === name.toLowerCase() &&
+						m.author?.toLowerCase() === author.toLowerCase()
+				) ?? results.find((m) => m.name.toLowerCase() === name.toLowerCase());
+			} catch {}
+		}
+		if (found) {
+			cachedSelectedMods.set(found.uuid, found);
+			selectedModIds = [found.uuid];
+			return true;
+		}
+		return false;
+	}
 
 	function handleKeydown(e: KeyboardEvent) {
 		if (locked) return;
@@ -550,6 +655,7 @@
 							{sortOptions}
 							externalPanel
 							bind:expanded={filtersExpanded}
+							bind:viewMode={viewMode.current}
 						/>
 					</div>
 					{#if filtersExpanded}
@@ -608,7 +714,7 @@
 					</div>
 				{/if}
 
-				<div class="z-mods-list">
+				<div class="z-mods-list" class:z-grid-layout={viewMode.current === 'grid'}>
 					{#if sortedMods.length === 0}
 						<div class="z-mods-empty">
 							<div class="z-empty-icon">
@@ -637,7 +743,8 @@
 									isSelected={selectedModIds.includes(mod.uuid)}
 									{locked}
 									showInstallBtn={false}
-									showDragHandle={canDrag}
+									showDragHandle={canDrag && viewMode.current === 'list'}
+									viewMode={viewMode.current}
 									onclick={(evt: MouseEvent) => {
 										if (!draggedMod) handleModClick(evt, mod, i);
 									}}
@@ -675,6 +782,7 @@
 				ontoggle={() => toggleMod(selectedMod!)}
 				onremove={() => removeMod(selectedMod!)}
 				oncategoryclick={toggleCategoryFilter}
+				ondepclick={handleDepClick}
 				activeCategories={profileQuery.current.includeCategories}
 			>
 				<InstallModButton mod={selectedMod} {install} {locked} />
@@ -687,6 +795,7 @@
 				ontoggle={() => toggleMod(multiViewMod!)}
 				onremove={() => removeMod(multiViewMod!)}
 				oncategoryclick={toggleCategoryFilter}
+				ondepclick={handleDepClick}
 				activeCategories={profileQuery.current.includeCategories}
 			>
 				<InstallModButton mod={multiViewMod} {install} {locked} />
@@ -746,14 +855,12 @@
 			oncancel={() => (removeDialog = null)}
 			onremoveOne={async () => {
 				await api.profile.forceRemoveMods([removeDialog!.mod.uuid]);
-				selectedModIds = selectedModIds.filter((id) => id !== removeDialog!.mod.uuid);
 				removeDialog = null;
 				await refresh();
 			}}
 			onremoveAll={async () => {
 				const uuids = [removeDialog!.mod.uuid, ...removeDialog!.dependants.map((d) => d.uuid)];
 				await api.profile.forceRemoveMods(uuids);
-				selectedModIds = selectedModIds.filter((id) => !uuids.includes(id));
 				removeDialog = null;
 				await refresh();
 			}}
@@ -972,6 +1079,18 @@
 		gap: 2px;
 		user-select: none;
 	}
+
+	.z-mods-list.z-grid-layout {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: var(--space-md);
+	}
+
+	.z-mods-list.z-grid-layout .z-mods-empty,
+	.z-mods-list.z-grid-layout .z-drop-placeholder {
+		grid-column: 1 / -1;
+	}
+
 
 	.z-unknown-banner {
 		display: flex;
