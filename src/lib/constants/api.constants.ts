@@ -17,3 +17,24 @@ export const ZEPHYR_GAME_ICON_URL = (slug: string) =>
 
 export const DISCORD_AVATAR_URL = (discordId: string, avatar: string) =>
 	`https://cdn.discordapp.com/avatars/${discordId}/${avatar}.png`;
+
+export const ZEPHYR_SERVER_DEFAULT_URL = 'http://localhost:3000';
+
+export const CURSEFORGE_GAME_IDS: Record<string, number> = {
+	minecraft: 432,
+	'minecraft-bedrock': 78022,
+	'minecraft-dungeons': 69271,
+	worldofwarcraft: 1,
+	stardewvalley: 669,
+	terraria: 431,
+	palworld: 85196,
+	'helldivers-2': 85440,
+	'among-us': 69761,
+	'the-elder-scrolls-online': 455,
+	'starcraft-ii': 65,
+	'civilization-vi': 727,
+	'kerbal-space-program': 4401,
+	'darkest-dungeon': 608,
+	'surviving-mars': 61489,
+	sims4: 78062
+};

@@ -3,7 +3,9 @@
  * All CurseForge mod operations go through this module.
  */
 
-let _baseUrl = 'http://localhost:3000';
+import { ZEPHYR_SERVER_DEFAULT_URL } from '$lib/constants/api.constants';
+
+let _baseUrl = ZEPHYR_SERVER_DEFAULT_URL;
 let _apiKey = '';
 
 export function configure(baseUrl: string, apiKey: string): void {

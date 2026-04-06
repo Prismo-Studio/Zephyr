@@ -1,5 +1,6 @@
 import { PersistedState } from 'runed';
 import { configure } from '$lib/api/zephyrServer';
+import { ZEPHYR_SERVER_DEFAULT_URL } from '$lib/constants/api.constants';
 
 interface ZephyrServerConfig {
 	baseUrl: string;
@@ -8,7 +9,7 @@ interface ZephyrServerConfig {
 }
 
 export const zephyrServerState = new PersistedState<ZephyrServerConfig>('zephyrServer', {
-	baseUrl: 'http://localhost:3000',
+	baseUrl: ZEPHYR_SERVER_DEFAULT_URL,
 	apiKey: '',
 	enabled: false
 });
