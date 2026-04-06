@@ -1,8 +1,11 @@
 <script lang="ts">
+	import Tooltip from './Tooltip.svelte';
+
 	type Tab = {
 		id: string;
 		label: string;
 		icon?: string;
+		title?: string;
 	};
 
 	type Props = {
@@ -19,18 +22,35 @@
 
 <div class="z-tabs {className}" role="tablist">
 	{#each tabs as tab}
-		<button
-			class="z-tab"
-			class:active={active === tab.id}
-			role="tab"
-			aria-selected={active === tab.id}
-			onclick={() => {
-				active = tab.id;
-				onchange?.(tab.id);
-			}}
-		>
-			{tab.label}
-		</button>
+		{#if tab.title}
+			<Tooltip text={tab.title} position="bottom" delay={200}>
+				<button
+					class="z-tab"
+					class:active={active === tab.id}
+					role="tab"
+					aria-selected={active === tab.id}
+					onclick={() => {
+						active = tab.id;
+						onchange?.(tab.id);
+					}}
+				>
+					{tab.label}
+				</button>
+			</Tooltip>
+		{:else}
+			<button
+				class="z-tab"
+				class:active={active === tab.id}
+				role="tab"
+				aria-selected={active === tab.id}
+				onclick={() => {
+					active = tab.id;
+					onchange?.(tab.id);
+				}}
+			>
+				{tab.label}
+			</button>
+		{/if}
 	{/each}
 </div>
 
@@ -56,6 +76,7 @@
 		cursor: pointer;
 		transition: all var(--transition-fast);
 		font-family: var(--font-body);
+		white-space: nowrap;
 	}
 
 	.z-tab:hover {

@@ -25,6 +25,7 @@
 	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { PersistedState } from 'runed';
+	import { THUNDERSTORE_ICON_URL } from '$lib/constants/api.constants';
 
 	type Props = {
 		mod: Mod;
@@ -34,6 +35,7 @@
 		ontoggle?: () => void;
 		onremove?: () => void;
 		oncategoryclick?: (category: string, multi?: boolean) => void;
+		ondepclick?: (author: string, name: string) => Promise<boolean> | boolean;
 		activeCategories?: string[];
 		children?: Snippet;
 	};
@@ -46,6 +48,7 @@
 		ontoggle,
 		onremove,
 		oncategoryclick,
+		ondepclick,
 		activeCategories = [],
 		children
 	}: Props = $props();
@@ -127,7 +130,12 @@
 
 	let tabs = $derived([
 		{ id: 'readme', label: i18nState.locale && m.modpack_readme_title() },
-		{ id: 'changelog', label: i18nState.locale && m.modpack_changeLog_title() }
+		{ id: 'changelog', label: i18nState.locale && m.modpack_changeLog_title() },
+		{
+			id: 'dependencies',
+			label: i18nState.locale && m.modDetails_dependencies(),
+			title: `${mod.dependencies?.length ?? 0} ${i18nState.locale && m.modDetails_dependencies()}`
+		}
 	]);
 
 	function isExternalMod(m: Mod): boolean {
@@ -170,9 +178,14 @@
 		loadingMarkdown = false;
 	}
 
+	function stripHtml(html: string): string {
+		const doc = new DOMParser().parseFromString(html, 'text/html');
+		return doc.body.textContent ?? '';
+	}
+
 	const copyContent = async () => {
 		try {
-			await writeText(markdown);
+			await writeText(stripHtml(markdown));
 			copied = true;
 			if (copyTimeoutId !== null) clearTimeout(copyTimeoutId);
 			copyTimeoutId = window.setTimeout(() => {
@@ -183,9 +196,21 @@
 		}
 	};
 
+	function parseDependencyString(dep: string): { author: string; name: string; version: string } {
+		const parts = dep.split('-');
+		if (parts.length >= 3) {
+			return { author: parts[0], name: parts[1], version: parts.slice(2).join('-') };
+		} else if (parts.length === 2) {
+			return { author: parts[0], name: parts[1], version: '' };
+		}
+		return { author: '', name: dep, version: '' };
+	}
+
 	$effect(() => {
 		if (mod) {
-			loadMarkdown(activeTab as 'readme' | 'changelog');
+			if (activeTab !== 'dependencies') {
+				loadMarkdown(activeTab as 'readme' | 'changelog');
+			}
 		}
 	});
 </script>
@@ -404,9 +429,11 @@
 			<Tabs
 				{tabs}
 				bind:active={activeTab}
-				onchange={(id) => loadMarkdown(id as 'readme' | 'changelog')}
+				onchange={(id) => {
+					if (id !== 'dependencies') loadMarkdown(id as 'readme' | 'changelog');
+				}}
 			/>
-			{#if markdown && !loadingMarkdown}
+			{#if markdown && !loadingMarkdown && activeTab !== 'dependencies'}
 				<button class="z-copy-btn" class:copied onclick={copyContent} title="Copy content">
 					<Icon icon={copied ? 'mdi:check' : 'mdi:content-copy'} />
 					<span class="z-copy-text">{copied ? 'Copied!' : 'Copy'}</span>
@@ -415,7 +442,47 @@
 		</div>
 
 		<div class="z-details-body">
-			{#if loadingMarkdown}
+			{#if activeTab === 'dependencies'}
+				{#if mod.dependencies && mod.dependencies.length > 0}
+					<div class="z-deps-list">
+						{#each mod.dependencies as dep}
+							{@const parsed = parseDependencyString(dep)}
+							<!-- svelte-ignore a11y_click_events_have_key_events -->
+							<!-- svelte-ignore a11y_no_static_element_interactions -->
+							<div
+								class="z-dep-item"
+								onclick={async () => {
+									const found = await ondepclick?.(parsed.author, parsed.name);
+									if (found) activeTab = 'readme';
+								}}
+							>
+								<img
+									src={THUNDERSTORE_ICON_URL(dep)}
+									alt={parsed.name}
+									class="z-dep-icon-img"
+									onerror={(e) => {
+										const target = e.currentTarget as HTMLImageElement;
+										target.style.display = 'none';
+										target.nextElementSibling?.classList.add('visible');
+									}}
+								/>
+								<div class="z-dep-icon-fallback">
+									<Icon icon="mdi:puzzle" />
+								</div>
+								<span class="z-dep-name">{formatModName(parsed.name)}</span>
+								{#if parsed.author}
+									<span class="z-dep-author">{parsed.author}</span>
+								{/if}
+								{#if parsed.version}
+									<span class="z-dep-version">{parsed.version}</span>
+								{/if}
+							</div>
+						{/each}
+					</div>
+				{:else}
+					<p class="z-details-empty">{i18nState.locale && m.modDetails_noContent()}</p>
+				{/if}
+			{:else if loadingMarkdown}
 				<div class="z-details-loading">
 					<Spinner size={20} />
 				</div>
@@ -903,5 +970,82 @@
 		font-size: 12px;
 		color: var(--text-muted);
 		cursor: pointer;
+	}
+
+	/* Dependencies list */
+	.z-deps-list {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.z-dep-item {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-md);
+		transition: background var(--transition-fast);
+		cursor: pointer;
+	}
+
+	.z-dep-item:hover {
+		background: var(--bg-hover);
+	}
+
+	.z-dep-icon-img {
+		width: 32px;
+		height: 32px;
+		border-radius: var(--radius-md);
+		object-fit: cover;
+		flex-shrink: 0;
+		background: var(--bg-overlay);
+		border: 1px solid var(--border-subtle);
+	}
+
+	.z-dep-icon-fallback {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border-radius: var(--radius-md);
+		background: var(--bg-overlay);
+		border: 1px solid var(--border-subtle);
+		color: var(--text-muted);
+		font-size: 16px;
+		flex-shrink: 0;
+	}
+
+	.z-dep-icon-fallback.visible {
+		display: flex;
+	}
+
+	.z-dep-name {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-primary);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.z-dep-author {
+		font-size: 11px;
+		color: var(--text-muted);
+		margin-left: -6px;
+	}
+
+	.z-dep-version {
+		font-size: 11px;
+		font-weight: 600;
+		color: var(--text-accent);
+		background: rgba(26, 255, 250, 0.08);
+		padding: 2px 8px;
+		border-radius: var(--radius-full);
+		border: 1px solid rgba(26, 255, 250, 0.15);
+		white-space: nowrap;
+		flex-shrink: 0;
+		margin-left: auto;
 	}
 </style>
