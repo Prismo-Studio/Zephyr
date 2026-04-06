@@ -91,8 +91,7 @@ pub async fn get_nexusmods_games(app: AppHandle) -> Result<Vec<SourceGame>> {
             if !src.is_authenticated() {
                 return Ok(Vec::new());
             }
-            // Get the API key from the source info
-            "NpZIiZhZZ2++vggbQP7B/YV0wxHEtuaK3AI54ToNPixXCWo=--ooji3W0wNmBn2dew--1FPMTUaqOZStJWkqJPvaJg==".to_string()
+            crate::util::keys::nexusmods_key()
         }
         None => return Ok(Vec::new()),
     };
@@ -145,7 +144,7 @@ pub async fn get_curseforge_games(app: AppHandle) -> Result<Vec<SourceGame>> {
         .get("https://api.curseforge.com/v1/games?pageSize=500")
         .header(
             "x-api-key",
-            "$2a$10$OY0apZlG0KEHe3CTgumu6u2uodPke309xuW4W/SmhhXe2KsVI4KKu",
+            &crate::util::keys::curseforge_key(),
         )
         .header("Accept", "application/json")
         .send()

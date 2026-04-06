@@ -7,6 +7,7 @@ pub mod error;
 pub mod fs;
 pub mod path;
 pub mod window;
+pub mod keys;
 pub mod zip;
 
 pub fn cmp_ignore_case(a: impl AsRef<str>, b: impl AsRef<str>) -> Ordering {
