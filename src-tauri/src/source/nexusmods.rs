@@ -366,3 +366,36 @@ impl ModSource for NexusModsSource {
         Err(eyre!("NexusMods download requires premium account"))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn known_slugs_map_correctly() {
+        assert_eq!(game_domain_from_slug("riskofrain2"), Some("riskofrain2"));
+        assert_eq!(game_domain_from_slug("valheim"), Some("valheim"));
+        assert_eq!(game_domain_from_slug("lethalcompany"), Some("lethalcompany"));
+        assert_eq!(game_domain_from_slug("titanfall2"), Some("titanfall2"));
+    }
+
+    #[test]
+    fn h3vr_remaps_to_hotdogs() {
+        assert_eq!(game_domain_from_slug("h3vr"), Some("hotdogs"));
+    }
+
+    #[test]
+    fn content_warning_strips_dash() {
+        assert_eq!(game_domain_from_slug("content-warning"), Some("contentwarning"));
+    }
+
+    #[test]
+    fn unknown_slug_returns_none() {
+        assert_eq!(game_domain_from_slug("nonexistent"), None);
+    }
+
+    #[test]
+    fn empty_slug_returns_none() {
+        assert_eq!(game_domain_from_slug(""), None);
+    }
+}

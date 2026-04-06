@@ -172,3 +172,69 @@ pub struct DownloadResult {
     pub path: PathBuf,
     pub file_name: String,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn source_id_display_names() {
+        assert_eq!(SourceId::Thunderstore.display_name(), "Thunderstore");
+        assert_eq!(SourceId::NexusMods.display_name(), "NexusMods");
+        assert_eq!(SourceId::CurseForge.display_name(), "CurseForge");
+        assert_eq!(SourceId::GitHub.display_name(), "GitHub Releases");
+        assert_eq!(SourceId::Local.display_name(), "Local");
+    }
+
+    #[test]
+    fn source_id_as_str() {
+        assert_eq!(SourceId::Thunderstore.as_str(), "thunderstore");
+        assert_eq!(SourceId::NexusMods.as_str(), "nexusmods");
+        assert_eq!(SourceId::CurseForge.as_str(), "curseforge");
+        assert_eq!(SourceId::GitHub.as_str(), "github");
+        assert_eq!(SourceId::Local.as_str(), "local");
+    }
+
+    #[test]
+    fn sort_field_default_is_downloads() {
+        assert!(matches!(SortField::default(), SortField::Downloads));
+    }
+
+    #[test]
+    fn sort_direction_default_is_descending() {
+        assert!(matches!(SortDirection::default(), SortDirection::Descending));
+    }
+
+    #[test]
+    fn search_filters_default() {
+        let f = SearchFilters::default();
+        assert!(f.search_term.is_empty());
+        assert!(f.categories.is_empty());
+        assert!(f.sources.is_empty());
+        assert!(!f.include_nsfw);
+        assert!(!f.include_deprecated);
+        assert_eq!(f.offset, 0);
+    }
+
+    #[test]
+    fn source_id_serde_roundtrip() {
+        let ids = vec![
+            SourceId::Thunderstore,
+            SourceId::NexusMods,
+            SourceId::CurseForge,
+            SourceId::GitHub,
+            SourceId::Local,
+        ];
+        for id in ids {
+            let json = serde_json::to_string(&id).unwrap();
+            let back: SourceId = serde_json::from_str(&json).unwrap();
+            assert_eq!(back, id);
+        }
+    }
+
+    #[test]
+    fn source_id_serde_lowercase() {
+        let json = serde_json::to_string(&SourceId::NexusMods).unwrap();
+        assert_eq!(json, "\"nexusmods\"");
+    }
+}

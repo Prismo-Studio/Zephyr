@@ -38,6 +38,9 @@ jobs:
       - name: Lint (Prettier)
         run: pnpm lint
 
+      - name: Run frontend tests
+        run: pnpm test
+
   build-tauri:
     needs: lint-and-check
     runs-on: ${{ matrix.platform }}
@@ -89,6 +92,10 @@ jobs:
       - name: Cargo check
         working-directory: src-tauri
         run: cargo check
+
+      - name: Cargo test
+        working-directory: src-tauri
+        run: cargo test
 
   build-frontend:
     needs: lint-and-check

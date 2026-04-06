@@ -18,7 +18,9 @@
 		"tauri:build:appimage": "tauri build && ./appimage-build/post_build_fix.sh",
 		"tauri:build:complete": "./appimage-build/build_and_fix.sh",
 		"tauri:appimage:generate": "./appimage-build/generate_appimage.sh",
-		"tauri:appimage:fix": "./appimage-build/post_build_fix.sh"
+		"tauri:appimage:fix": "./appimage-build/post_build_fix.sh",
+		"test": "vitest run",
+		"test:watch": "vitest"
 	},
 	"devDependencies": {
 		"@iconify/svelte": "^5.2.1",
@@ -39,7 +41,8 @@
 		"tailwindcss-palette-generator": "^0.10.0",
 		"tslib": "^2.8.1",
 		"typescript": "^5.9.3",
-		"vite": "^5.4.21"
+		"vite": "^5.4.21",
+		"vitest": "^2.1.0"
 	},
 	"type": "module",
 	"dependencies": {

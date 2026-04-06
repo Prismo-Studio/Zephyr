@@ -425,3 +425,36 @@ impl ModSource for CurseForgeSource {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn known_slugs_map_correctly() {
+        assert_eq!(game_id_from_slug("minecraft"), Some(432));
+        assert_eq!(game_id_from_slug("terraria"), Some(431));
+        assert_eq!(game_id_from_slug("palworld"), Some(85196));
+        assert_eq!(game_id_from_slug("kerbal-space-program"), Some(4401));
+    }
+
+    #[test]
+    fn alternate_slugs_resolve() {
+        assert_eq!(game_id_from_slug("wow"), Some(1));
+        assert_eq!(game_id_from_slug("worldofwarcraft"), Some(1));
+        assert_eq!(game_id_from_slug("stardew-valley"), Some(669));
+        assert_eq!(game_id_from_slug("stardewvalley"), Some(669));
+        assert_eq!(game_id_from_slug("helldivers-2"), Some(85440));
+        assert_eq!(game_id_from_slug("helldivers2"), Some(85440));
+    }
+
+    #[test]
+    fn unknown_slug_returns_none() {
+        assert_eq!(game_id_from_slug("nonexistent-game"), None);
+    }
+
+    #[test]
+    fn empty_slug_returns_none() {
+        assert_eq!(game_id_from_slug(""), None);
+    }
+}

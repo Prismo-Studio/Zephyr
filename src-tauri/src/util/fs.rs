@@ -233,3 +233,154 @@ pub fn open_path(path: impl AsRef<Path>) -> Result<()> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // ── is_enclosed ──
+
+    #[test]
+    fn is_enclosed_accepts_relative() {
+        assert!(is_enclosed("foo/bar"));
+        assert!(is_enclosed("foo"));
+    }
+
+    #[test]
+    fn is_enclosed_accepts_curdir() {
+        assert!(is_enclosed("./foo"));
+    }
+
+    #[test]
+    fn is_enclosed_rejects_absolute() {
+        assert!(!is_enclosed("/etc/passwd"));
+    }
+
+    #[test]
+    fn is_enclosed_rejects_parent_traversal() {
+        assert!(!is_enclosed("../escape"));
+        assert!(!is_enclosed("foo/../../escape"));
+    }
+
+    #[test]
+    fn is_enclosed_rejects_null_bytes() {
+        assert!(!is_enclosed("foo\0bar"));
+    }
+
+    // ── file_name_owned ──
+
+    #[test]
+    fn file_name_owned_extracts_name() {
+        assert_eq!(file_name_owned("a/b/c.txt"), "c.txt");
+        assert_eq!(file_name_owned("file.rs"), "file.rs");
+    }
+
+    // ── PathExt ──
+
+    #[test]
+    fn add_ext_to_path_without_extension() {
+        let mut p = PathBuf::from("file");
+        p.add_ext("bak");
+        assert_eq!(p, PathBuf::from("file.bak"));
+    }
+
+    #[test]
+    fn add_ext_to_path_with_extension() {
+        let mut p = PathBuf::from("file.txt");
+        p.add_ext("bak");
+        assert_eq!(p, PathBuf::from("file.txt.bak"));
+    }
+
+    #[test]
+    fn exists_or_none_returns_none_for_missing() {
+        let p = PathBuf::from("/this/does/not/exist/ever");
+        assert!(p.exists_or_none().is_none());
+    }
+
+    // ── copy_dir + get_directory_size ──
+
+    #[test]
+    fn copy_dir_and_get_size() {
+        let src = tempfile::tempdir().unwrap();
+        let dest = tempfile::tempdir().unwrap();
+
+        fs::write(src.path().join("a.txt"), "hello").unwrap();
+        fs::create_dir(src.path().join("sub")).unwrap();
+        fs::write(src.path().join("sub/b.txt"), "world").unwrap();
+
+        copy_dir(src.path(), dest.path().join("out"), Overwrite::Yes, UseLinks::No).unwrap();
+
+        assert!(dest.path().join("out/a.txt").exists());
+        assert!(dest.path().join("out/sub/b.txt").exists());
+        assert_eq!(
+            fs::read_to_string(dest.path().join("out/a.txt")).unwrap(),
+            "hello"
+        );
+
+        let size = get_directory_size(dest.path().join("out"));
+        assert_eq!(size, 10); // "hello" (5) + "world" (5)
+    }
+
+    #[test]
+    fn copy_contents_no_overwrite_preserves_existing() {
+        let src = tempfile::tempdir().unwrap();
+        let dest = tempfile::tempdir().unwrap();
+
+        fs::write(src.path().join("f.txt"), "new").unwrap();
+        fs::write(dest.path().join("f.txt"), "original").unwrap();
+
+        copy_contents(src.path(), dest.path(), Overwrite::No, UseLinks::No).unwrap();
+
+        assert_eq!(
+            fs::read_to_string(dest.path().join("f.txt")).unwrap(),
+            "original"
+        );
+    }
+
+    #[test]
+    fn copy_contents_overwrite_replaces() {
+        let src = tempfile::tempdir().unwrap();
+        let dest = tempfile::tempdir().unwrap();
+
+        fs::write(src.path().join("f.txt"), "new").unwrap();
+        fs::write(dest.path().join("f.txt"), "original").unwrap();
+
+        copy_contents(src.path(), dest.path(), Overwrite::Yes, UseLinks::No).unwrap();
+
+        assert_eq!(
+            fs::read_to_string(dest.path().join("f.txt")).unwrap(),
+            "new"
+        );
+    }
+
+    #[test]
+    fn get_directory_size_empty() {
+        let dir = tempfile::tempdir().unwrap();
+        assert_eq!(get_directory_size(dir.path()), 0);
+    }
+
+    // ── JSON roundtrip ──
+
+    #[test]
+    fn json_roundtrip() {
+        use serde::{Deserialize, Serialize};
+
+        #[derive(Debug, PartialEq, Serialize, Deserialize)]
+        struct TestData {
+            name: String,
+            value: u32,
+        }
+
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("test.json");
+
+        let data = TestData {
+            name: "hello".into(),
+            value: 42,
+        };
+
+        write_json(&path, &data, JsonStyle::Pretty).unwrap();
+        let back: TestData = read_json(&path).unwrap();
+        assert_eq!(back, data);
+    }
+}
