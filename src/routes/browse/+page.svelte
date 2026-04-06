@@ -249,11 +249,12 @@
 					sortOrder: 'descending',
 					maxCount: 10
 				});
-				found = results.find(
-					(m) =>
-						m.name.toLowerCase() === name.toLowerCase() &&
-						m.author?.toLowerCase() === author.toLowerCase()
-				) ?? results.find((m) => m.name.toLowerCase() === name.toLowerCase());
+				found =
+					results.find(
+						(m) =>
+							m.name.toLowerCase() === name.toLowerCase() &&
+							m.author?.toLowerCase() === author.toLowerCase()
+					) ?? results.find((m) => m.name.toLowerCase() === name.toLowerCase());
 			} catch {}
 		}
 		if (found) {
@@ -724,10 +725,7 @@
 
 			if (mod.isInstalled) {
 				items.push({
-					label:
-						mod.enabled === false
-							? m.mods_contextMenu_enable()
-							: m.mods_contextMenu_disable(),
+					label: mod.enabled === false ? m.mods_contextMenu_enable() : m.mods_contextMenu_disable(),
 					icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
 					disabled: locked,
 					onclick: () => toggleMod(mod)
@@ -1216,8 +1214,6 @@
 	.z-browse-list.z-grid-layout .z-browse-empty {
 		grid-column: 1 / -1;
 	}
-
-
 
 	.z-browse-empty,
 	.z-browse-loading {

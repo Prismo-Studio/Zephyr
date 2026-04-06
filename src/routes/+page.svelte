@@ -356,10 +356,7 @@
 		} else {
 			if (mod.isInstalled) {
 				items.push({
-					label:
-						mod.enabled === false
-							? m.mods_contextMenu_enable()
-							: m.mods_contextMenu_disable(),
+					label: mod.enabled === false ? m.mods_contextMenu_enable() : m.mods_contextMenu_disable(),
 					icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
 					disabled: locked,
 					onclick: () => toggleMod(mod)
@@ -563,11 +560,12 @@
 					sortOrder: 'descending',
 					maxCount: 10
 				});
-				found = results.find(
-					(m) =>
-						m.name.toLowerCase() === name.toLowerCase() &&
-						m.author?.toLowerCase() === author.toLowerCase()
-				) ?? results.find((m) => m.name.toLowerCase() === name.toLowerCase());
+				found =
+					results.find(
+						(m) =>
+							m.name.toLowerCase() === name.toLowerCase() &&
+							m.author?.toLowerCase() === author.toLowerCase()
+					) ?? results.find((m) => m.name.toLowerCase() === name.toLowerCase());
 			} catch {}
 		}
 		if (found) {
@@ -1090,7 +1088,6 @@
 	.z-mods-list.z-grid-layout .z-drop-placeholder {
 		grid-column: 1 / -1;
 	}
-
 
 	.z-unknown-banner {
 		display: flex;
