@@ -19,7 +19,14 @@ export function createModSelection() {
 
 	function handleModClick(evt: MouseEvent, mod: Mod, index: number, sortedIds: string[]) {
 		cachedSelectedMods.set(mod.uuid, mod);
-		const result = handleMultiSelect(evt, mod.uuid, index, selectedModIds, sortedIds, lastClickedIndex);
+		const result = handleMultiSelect(
+			evt,
+			mod.uuid,
+			index,
+			selectedModIds,
+			sortedIds,
+			lastClickedIndex
+		);
 		selectedModIds = result.selection;
 		lastClickedIndex = result.lastIndex;
 	}
@@ -102,11 +109,21 @@ export function createModSelection() {
 	}
 
 	return {
-		get selectedModIds() { return selectedModIds; },
-		set selectedModIds(v: string[]) { selectedModIds = v; },
-		get multiViewIndex() { return multiViewIndex; },
-		set multiViewIndex(v: number) { multiViewIndex = v; },
-		get cachedSelectedMods() { return cachedSelectedMods; },
+		get selectedModIds() {
+			return selectedModIds;
+		},
+		set selectedModIds(v: string[]) {
+			selectedModIds = v;
+		},
+		get multiViewIndex() {
+			return multiViewIndex;
+		},
+		set multiViewIndex(v: number) {
+			multiViewIndex = v;
+		},
+		get cachedSelectedMods() {
+			return cachedSelectedMods;
+		},
 		getSelectedMod,
 		handleModClick,
 		handleDepClick,

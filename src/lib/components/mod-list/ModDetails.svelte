@@ -934,5 +934,4 @@
 		color: var(--text-muted);
 		cursor: pointer;
 	}
-
 </style>

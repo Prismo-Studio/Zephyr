@@ -41,10 +41,18 @@
 			typeKey(key);
 		} else {
 			switch (key) {
-				case 'shift': shifted = !shifted; break;
-				case 'space': value += ' '; break;
-				case 'backspace': value = value.slice(0, -1); break;
-				case 'confirm': onsubmit(value); break;
+				case 'shift':
+					shifted = !shifted;
+					break;
+				case 'space':
+					value += ' ';
+					break;
+				case 'backspace':
+					value = value.slice(0, -1);
+					break;
+				case 'confirm':
+					onsubmit(value);
+					break;
 			}
 		}
 	}
@@ -72,7 +80,10 @@
 	function handleGamepadEvent(e: Event) {
 		const btn = (e as CustomEvent).detail.button as number;
 		const dirMap: Record<number, 'up' | 'down' | 'left' | 'right'> = {
-			12: 'up', 13: 'down', 14: 'left', 15: 'right'
+			12: 'up',
+			13: 'down',
+			14: 'left',
+			15: 'right'
 		};
 		if (btn in dirMap) move(dirMap[btn]);
 		else if (btn === 0) pressCurrentKey();
@@ -118,7 +129,11 @@
 							<button
 								class="z-kb-key"
 								class:focused={cursorRow === ri && cursorCol === ci}
-								onclick={() => { cursorRow = ri; cursorCol = ci; typeKey(key); }}
+								onclick={() => {
+									cursorRow = ri;
+									cursorCol = ci;
+									typeKey(key);
+								}}
 							>
 								{shifted ? key.toUpperCase() : key}
 							</button>
@@ -131,28 +146,44 @@
 						class="z-kb-key z-kb-special"
 						class:active={shifted}
 						class:focused={cursorRow === rows.length && cursorCol === 0}
-						onclick={() => { cursorRow = rows.length; cursorCol = 0; shifted = !shifted; }}
+						onclick={() => {
+							cursorRow = rows.length;
+							cursorCol = 0;
+							shifted = !shifted;
+						}}
 					>
 						<Icon icon="mdi:arrow-up-bold" />
 					</button>
 					<button
 						class="z-kb-key z-kb-space"
 						class:focused={cursorRow === rows.length && cursorCol === 1}
-						onclick={() => { cursorRow = rows.length; cursorCol = 1; value += ' '; }}
+						onclick={() => {
+							cursorRow = rows.length;
+							cursorCol = 1;
+							value += ' ';
+						}}
 					>
 						Space
 					</button>
 					<button
 						class="z-kb-key z-kb-special"
 						class:focused={cursorRow === rows.length && cursorCol === 2}
-						onclick={() => { cursorRow = rows.length; cursorCol = 2; value = value.slice(0, -1); }}
+						onclick={() => {
+							cursorRow = rows.length;
+							cursorCol = 2;
+							value = value.slice(0, -1);
+						}}
 					>
 						<Icon icon="mdi:backspace" />
 					</button>
 					<button
 						class="z-kb-key z-kb-confirm"
 						class:focused={cursorRow === rows.length && cursorCol === 3}
-						onclick={() => { cursorRow = rows.length; cursorCol = 3; onsubmit(value); }}
+						onclick={() => {
+							cursorRow = rows.length;
+							cursorCol = 3;
+							onsubmit(value);
+						}}
 					>
 						<Icon icon="mdi:check" />
 					</button>
@@ -210,7 +241,9 @@
 	}
 
 	@keyframes blink {
-		50% { opacity: 0; }
+		50% {
+			opacity: 0;
+		}
 	}
 
 	.z-kb-hints {
@@ -316,12 +349,22 @@
 	}
 
 	@keyframes fadeIn {
-		from { opacity: 0; }
-		to { opacity: 1; }
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
 	@keyframes slideUp {
-		from { transform: translateY(20px); opacity: 0; }
-		to { transform: translateY(0); opacity: 1; }
+		from {
+			transform: translateY(20px);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
 	}
 </style>

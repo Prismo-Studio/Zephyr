@@ -12,7 +12,12 @@
 	import { onMount, type Snippet } from 'svelte';
 	import { refreshColor, refreshFont } from '$lib/themeSystem';
 	import { initTheme } from '$lib/design-system/tokens';
-	import { initGamepad, setGamepadEnabled, gamepadState, gamepadKeyboard } from '$lib/gamepad.svelte';
+	import {
+		initGamepad,
+		setGamepadEnabled,
+		gamepadState,
+		gamepadKeyboard
+	} from '$lib/gamepad.svelte';
 	import GamepadKeyboard from '$lib/components/ui/GamepadKeyboard.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import games from '$lib/state/game.svelte';

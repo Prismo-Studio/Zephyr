@@ -574,7 +574,9 @@
 	.z-mod-grid-card.selected {
 		border-color: var(--accent-400);
 		border-width: 2px;
-		box-shadow: 0 0 20px rgba(26, 255, 250, 0.15), inset 0 0 0 1px rgba(26, 255, 250, 0.1);
+		box-shadow:
+			0 0 20px rgba(26, 255, 250, 0.15),
+			inset 0 0 0 1px rgba(26, 255, 250, 0.1);
 	}
 
 	.z-mod-grid-card.disabled-mod {

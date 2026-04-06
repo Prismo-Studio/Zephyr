@@ -246,10 +246,18 @@ function navigate(direction: Direction) {
 		const colCount = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
 		let nextIdx = cardIdx;
 		switch (direction) {
-			case 'left': nextIdx = Math.max(0, cardIdx - 1); break;
-			case 'right': nextIdx = Math.min(cards.length - 1, cardIdx + 1); break;
-			case 'up': nextIdx = cardIdx - colCount; break;
-			case 'down': nextIdx = Math.min(cards.length - 1, cardIdx + colCount); break;
+			case 'left':
+				nextIdx = Math.max(0, cardIdx - 1);
+				break;
+			case 'right':
+				nextIdx = Math.min(cards.length - 1, cardIdx + 1);
+				break;
+			case 'up':
+				nextIdx = cardIdx - colCount;
+				break;
+			case 'down':
+				nextIdx = Math.min(cards.length - 1, cardIdx + colCount);
+				break;
 		}
 		if (nextIdx >= 0) {
 			focusElement(cards[nextIdx]);
@@ -265,22 +273,36 @@ function navigate(direction: Direction) {
 		parentList
 	) {
 		const isGrid = parentList.classList.contains('z-grid-layout');
-		const cards = Array.from(parentList.querySelectorAll<HTMLElement>('.z-mod-card, .z-mod-grid-card'));
+		const cards = Array.from(
+			parentList.querySelectorAll<HTMLElement>('.z-mod-card, .z-mod-grid-card')
+		);
 		const cardIdx = cards.indexOf(current);
 		let nextIdx = cardIdx;
 
 		if (isGrid) {
 			const colCount = getComputedStyle(parentList).gridTemplateColumns.split(' ').length;
 			switch (direction) {
-				case 'left': nextIdx = Math.max(0, cardIdx - 1); break;
-				case 'right': nextIdx = cardIdx + 1; break;
-				case 'up': nextIdx = cardIdx - colCount; break;
-				case 'down': nextIdx = cardIdx + colCount; break;
+				case 'left':
+					nextIdx = Math.max(0, cardIdx - 1);
+					break;
+				case 'right':
+					nextIdx = cardIdx + 1;
+					break;
+				case 'up':
+					nextIdx = cardIdx - colCount;
+					break;
+				case 'down':
+					nextIdx = cardIdx + colCount;
+					break;
 			}
 		} else {
 			switch (direction) {
-				case 'up': nextIdx = cardIdx - 1; break;
-				case 'down': nextIdx = cardIdx + 1; break;
+				case 'up':
+					nextIdx = cardIdx - 1;
+					break;
+				case 'down':
+					nextIdx = cardIdx + 1;
+					break;
 				case 'left':
 				case 'right':
 					return;
@@ -374,10 +396,14 @@ function pressButton(button: number) {
 				if (active.closest('a.z-nav-item')) {
 					saveFocusForCurrentRoute();
 				}
-				if (active.classList.contains('z-mod-card') || active.classList.contains('z-mod-grid-card')) {
+				if (
+					active.classList.contains('z-mod-card') ||
+					active.classList.contains('z-mod-grid-card')
+				) {
 					active.click();
 				} else {
-					const clickTarget = active.querySelector<HTMLElement>('button, a, [role="button"]') ?? active;
+					const clickTarget =
+						active.querySelector<HTMLElement>('button, a, [role="button"]') ?? active;
 					clickTarget.click();
 				}
 			} else {
@@ -412,7 +438,9 @@ function pressButton(button: number) {
 
 		case BTN.B: {
 			// Close any open dropdown/menu by simulating a click outside
-			const openMenu = document.querySelector('.z-sort-dropdown, .z-version-dropdown, .z-game-dropdown');
+			const openMenu = document.querySelector(
+				'.z-sort-dropdown, .z-version-dropdown, .z-game-dropdown'
+			);
 			if (openMenu) {
 				document.body.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
 				break;
@@ -597,7 +625,7 @@ function pollGamepads(timestamp: number) {
 		const ly = gp.axes[1] ?? 0;
 		let dir: number | null = null;
 		if (Math.abs(lx) > 0.4 || Math.abs(ly) > 0.4) {
-			dir = Math.abs(lx) > Math.abs(ly) ? (lx > 0 ? 15 : 14) : (ly > 0 ? 13 : 12);
+			dir = Math.abs(lx) > Math.abs(ly) ? (lx > 0 ? 15 : 14) : ly > 0 ? 13 : 12;
 		}
 		if (dir !== null) {
 			handleRepeat(`kbstick`, timestamp, () =>
@@ -702,7 +730,10 @@ function pollGamepads(timestamp: number) {
 	let ry = 0;
 	for (const idx of [3, 5, 4]) {
 		const val = gp.axes[idx] ?? 0;
-		if (Math.abs(val) > SCROLL_DEADZONE) { ry = val; break; }
+		if (Math.abs(val) > SCROLL_DEADZONE) {
+			ry = val;
+			break;
+		}
 	}
 	const scrollContainer = getScrollContainer();
 
