@@ -1,5 +1,3 @@
-# Zephyr v1.1.0
-
 ## New Features
 
 ### Gamepad / Controller Support
