@@ -786,7 +786,7 @@
 								{externalLoading() ? 'Loading...' : i18nState.locale && m.browse_loadMore()}
 							</button>
 						{/if}
-					{:else if displayedMods.length >= maxCount || (shouldUseZephyrServer() ? serverHasMore : (curseForgeEnabled.current && cfHasMore))}
+					{:else if displayedMods.length >= maxCount || (shouldUseZephyrServer() ? serverHasMore : curseForgeEnabled.current && cfHasMore)}
 						<button
 							class="z-load-more"
 							onclick={() => {
