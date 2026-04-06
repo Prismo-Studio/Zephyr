@@ -9,8 +9,9 @@ use tracing::info;
 use crate::{
     game::{platform::Platform, Game},
     prefs::Prefs,
-    util::fs::PathExt,
 };
+#[cfg(not(target_os = "macos"))]
+use crate::util::fs::PathExt;
 
 pub fn create_launch_command(
     game_dir: &Path,

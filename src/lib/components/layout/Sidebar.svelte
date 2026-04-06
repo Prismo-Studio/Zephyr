@@ -417,7 +417,7 @@
 		padding: var(--space-md) 0;
 		gap: var(--space-sm);
 		position: relative;
-		z-index: var(--z-sticky);
+		z-index: var(--z-tooltip);
 	}
 
 	/* Game selector */
@@ -615,6 +615,8 @@
 		gap: 2px;
 		padding: 0;
 		flex: 1;
+		overflow-y: auto;
+		min-height: 0;
 	}
 
 	.z-nav-item {
@@ -680,10 +682,7 @@
 
 	/* Only add extra margin if gamepad legend is visible */
 	.z-sidebar-bottom.legend-active {
-		margin-bottom: 64px; /* 56px legend bar + 8px gap */
-	}
-	.z-sidebar-bottom {
-		margin-bottom: 0;
+		margin-bottom: 32px;
 	}
 
 	.z-launch-btn {

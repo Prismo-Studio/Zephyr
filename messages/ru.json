@@ -249,7 +249,7 @@
 	"updater_content_available": "Доступно обновление",
 	"updater_content_downloading": "Загрузка обновления...",
 	"updater_confirmDialog_title": "Доступно обновление приложения!",
-	"updater_confirmDialog_content_next": "Доступна версия {next} Zephyr — у тебя {current}.",
+	"updater_confirmDialog_content_next": "Доступна версия {next} Zephyr. У тебя {current}.",
 	"updater_confirmDialog_content_available": "Доступно обновление для Zephyr.",
 	"updater_confirmDialog_content": "Обновление загрузится в фоне, затем приложение перезапустится для его применения.",
 	"updater_confirmDialog_button": "Установить",

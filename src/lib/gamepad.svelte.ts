@@ -705,6 +705,14 @@ function pollGamepads(timestamp: number) {
 	}
 	prevStickDir = stickDir;
 
+	// RT as axis fallback (Linux: some controllers map triggers to axes)
+	const rtAxis = gp.axes[5] ?? -1;
+	const rtPressed = rtAxis > 0.5;
+	const rtBtnPressed = gp.buttons[BTN.RT] ? isButtonPressed(gp.buttons[BTN.RT]) : false;
+	if ((rtPressed || rtBtnPressed) && !prevButtons[BTN.RT]) {
+		pressButton(BTN.RT);
+	}
+
 	// Set initial focus to content when gamepad first activates
 	if (!_initialFocusSet) {
 		_initialFocusSet = true;
