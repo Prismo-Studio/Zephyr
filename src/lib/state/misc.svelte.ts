@@ -87,6 +87,8 @@ export function isModPinned(uuid: string): boolean {
 	return pinnedMods.current.includes(uuid);
 }
 
+export const viewMode = new PersistedState<'list' | 'grid'>('modViewMode', 'list');
+
 // Global install state — lets components react to install start/end
 export const installState = $state({
 	active: false

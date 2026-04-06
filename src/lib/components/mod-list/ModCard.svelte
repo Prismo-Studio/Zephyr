@@ -16,6 +16,7 @@
 		locked?: boolean;
 		showInstallBtn?: boolean;
 		showDragHandle?: boolean;
+		viewMode?: 'list' | 'grid';
 		dropIndicator?: 'above' | 'below' | null;
 		isDragging?: boolean;
 		onclick?: MouseEventHandler<HTMLDivElement>;
@@ -32,6 +33,7 @@
 		locked = false,
 		showInstallBtn = true,
 		showDragHandle = false,
+		viewMode = 'list',
 		dropIndicator = null,
 		isDragging = false,
 		onclick,
@@ -60,138 +62,213 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<div
-	class="z-mod-card"
-	class:selected={isSelected}
-	class:disabled-mod={mod.enabled === false}
-	class:dragging={isDragging}
-	class:drop-above={dropIndicator === 'above'}
-	class:drop-below={dropIndicator === 'below'}
-	data-mod-uuid={mod.uuid}
-	{onclick}
-	oncontextmenu={handleContextMenu}
-	role="button"
-	tabindex="0"
->
-	<!-- Drag handle -->
-	{#if showDragHandle}
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		{#if isModPinned(mod.uuid)}
-			<div class="z-mod-drag-handle pinned-lock">
-				<Icon icon="mdi:cancel" />
-			</div>
-		{:else}
-			<div class="z-mod-drag-handle" onpointerdown={(e) => onpointerdownHandle?.(e, mod)}>
-				<Icon icon="mdi:drag-vertical" />
-			</div>
-		{/if}
-	{/if}
-
-	<!-- Checkbox for multi-select -->
-	<div class="z-mod-checkbox-wrapper">
-		<Checkbox
-			checked={isSelected}
-			onchange={() => {
-				if (!onclick) return;
-				const synthEvent = new MouseEvent('click', { ctrlKey: true });
-				onclick(synthEvent as any);
-			}}
-		/>
-	</div>
-
-	<!-- Icon -->
-	<div class="z-mod-icon">
-		<img src={modIconSrc(mod)} alt={mod.name} />
-		{#if mod.isInstalled}
-			<span class="z-mod-installed-badge">
-				<Icon icon="mdi:check" class="text-[9px]" />
-			</span>
-		{/if}
-	</div>
-
-	<!-- Info -->
-	<div class="z-mod-info">
-		<div class="z-mod-name-row">
-			<span class="z-mod-name">{formatModName(mod.name)}</span>
-			{#if isModPinned(mod.uuid)}
-				<Icon icon="mdi:pin" class="z-mod-badge-icon pinned" />
+{#if viewMode === 'grid'}
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<div
+		class="z-mod-grid-card"
+		class:selected={isSelected}
+		class:disabled-mod={mod.enabled === false}
+		data-mod-uuid={mod.uuid}
+		{onclick}
+		oncontextmenu={handleContextMenu}
+		role="button"
+		tabindex="0"
+	>
+		<div class="z-grid-icon">
+			<img src={modIconSrc(mod)} alt={mod.name} />
+			{#if mod.isInstalled}
+				<span class="z-grid-installed">
+					<Icon icon="mdi:check-circle" class="text-[12px]" />
+				</span>
 			{/if}
 			{#if mod.uuid.startsWith('curseforge:')}
-				<img src="/logos/curseforge.png" alt="CF" class="z-mod-source-icon" />
+				<img src="/logos/curseforge.png" alt="CF" class="z-grid-source" />
 			{:else if mod.uuid.startsWith('nexusmods:')}
-				<img src="/logos/nexusmods.png" alt="NX" class="z-mod-source-icon" />
+				<img src="/logos/nexusmods.png" alt="NX" class="z-grid-source" />
 			{:else if mod.uuid.startsWith('zephyr:')}
-				<img src="/logo.png" alt="Z" class="z-mod-source-icon" />
-			{/if}
-			{#if mod.isDeprecated}
-				<Icon icon="mdi:alert" class="z-mod-badge-icon deprecated" />
-			{/if}
-			{#if mod.enabled === false}
-				<Badge variant="warning">{i18nState.locale && m.modCard_disabled()}</Badge>
+				<img src="/logo.png" alt="Z" class="z-grid-source" />
 			{/if}
 		</div>
 
-		{#if mod.description}
-			<p class="z-mod-desc">{mod.description}</p>
-		{/if}
-
-		<div class="z-mod-meta">
+		<div class="z-grid-body">
+			<span class="z-grid-name">{formatModName(mod.name)}</span>
 			{#if mod.author}
-				<span class="z-mod-author">{mod.author}</span>
+				<span class="z-grid-author">{mod.author}</span>
 			{/if}
-			{#if mod.version}
-				<span class="z-mod-version">{mod.version}</span>
-			{/if}
-			{#if mod.downloads != null}
-				<span class="z-mod-stat">
-					<Icon icon="mdi:download" class="text-[10px]" />
-					{shortenNum(mod.downloads)}
-				</span>
-			{/if}
-			{#if mod.rating != null}
-				<span class="z-mod-stat">
-					<Icon icon="mdi:thumb-up" class="text-[10px]" />
-					{shortenNum(mod.rating)}
-				</span>
-			{/if}
-		</div>
-		{#if mod.categories && mod.categories.length > 0}
-			<div class="z-mod-categories">
-				{#each mod.categories.slice(0, 3) as category}
-					<button
-						class="z-mod-category-tag"
-						class:active={activeCategories.includes(category)}
-						onclick={(e) => {
-							e.stopPropagation();
-							oncategoryclick?.(category, e.ctrlKey || e.metaKey);
-						}}
-					>
-						{category}
-					</button>
-				{/each}
+			<div class="z-grid-stats">
+				{#if mod.version}
+					<span class="z-grid-version">{mod.version}</span>
+				{/if}
+				{#if mod.downloads != null}
+					<span class="z-grid-stat">
+						<Icon icon="mdi:download" class="text-[10px]" />
+						{shortenNum(mod.downloads)}
+					</span>
+				{/if}
+				{#if mod.rating != null}
+					<span class="z-grid-stat">
+						<Icon icon="mdi:thumb-up" class="text-[10px]" />
+						{shortenNum(mod.rating)}
+					</span>
+				{/if}
 			</div>
+		</div>
+
+		{#if showInstallBtn && !mod.isInstalled && !locked}
+			<button
+				class="z-grid-install"
+				disabled={installing}
+				onclick={(evt) => {
+					evt.stopPropagation();
+					installing = true;
+					oninstall?.();
+				}}
+			>
+				{#if installing}
+					<Spinner size={12} />
+				{:else}
+					<Icon icon="mdi:download" class="text-[12px]" />
+				{/if}
+			</button>
 		{/if}
 	</div>
-
-	<!-- Install button -->
-	{#if showInstallBtn && !mod.isInstalled && !locked}
-		<button
-			class="z-mod-install-btn"
-			disabled={installing}
-			onclick={(evt) => {
-				evt.stopPropagation();
-				installing = true;
-				oninstall?.();
-			}}
-		>
-			{#if installing}
-				<Spinner size={14} />
+{:else}
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<div
+		class="z-mod-card"
+		class:selected={isSelected}
+		class:disabled-mod={mod.enabled === false}
+		class:dragging={isDragging}
+		class:drop-above={dropIndicator === 'above'}
+		class:drop-below={dropIndicator === 'below'}
+		data-mod-uuid={mod.uuid}
+		{onclick}
+		oncontextmenu={handleContextMenu}
+		role="button"
+		tabindex="0"
+	>
+		<!-- Drag handle -->
+		{#if showDragHandle}
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
+			{#if isModPinned(mod.uuid)}
+				<div class="z-mod-drag-handle pinned-lock">
+					<Icon icon="mdi:cancel" />
+				</div>
 			{:else}
-				<Icon icon="mdi:download" class="text-base" />
+				<div class="z-mod-drag-handle" onpointerdown={(e) => onpointerdownHandle?.(e, mod)}>
+					<Icon icon="mdi:drag-vertical" />
+				</div>
 			{/if}
-		</button>
-	{/if}
-</div>
+		{/if}
+
+		<!-- Checkbox for multi-select -->
+		<div class="z-mod-checkbox-wrapper">
+			<Checkbox
+				checked={isSelected}
+				onchange={() => {
+					if (!onclick) return;
+					const synthEvent = new MouseEvent('click', { ctrlKey: true });
+					onclick(synthEvent as any);
+				}}
+			/>
+		</div>
+
+		<!-- Icon -->
+		<div class="z-mod-icon">
+			<img src={modIconSrc(mod)} alt={mod.name} />
+			{#if mod.isInstalled}
+				<span class="z-mod-installed-badge">
+					<Icon icon="mdi:check" class="text-[9px]" />
+				</span>
+			{/if}
+		</div>
+
+		<!-- Info -->
+		<div class="z-mod-info">
+			<div class="z-mod-name-row">
+				<span class="z-mod-name">{formatModName(mod.name)}</span>
+				{#if isModPinned(mod.uuid)}
+					<Icon icon="mdi:pin" class="z-mod-badge-icon pinned" />
+				{/if}
+				{#if mod.uuid.startsWith('curseforge:')}
+					<img src="/logos/curseforge.png" alt="CF" class="z-mod-source-icon" />
+				{:else if mod.uuid.startsWith('nexusmods:')}
+					<img src="/logos/nexusmods.png" alt="NX" class="z-mod-source-icon" />
+				{:else if mod.uuid.startsWith('zephyr:')}
+					<img src="/logo.png" alt="Z" class="z-mod-source-icon" />
+				{/if}
+				{#if mod.isDeprecated}
+					<Icon icon="mdi:alert" class="z-mod-badge-icon deprecated" />
+				{/if}
+				{#if mod.enabled === false}
+					<Badge variant="warning">{i18nState.locale && m.modCard_disabled()}</Badge>
+				{/if}
+			</div>
+
+			{#if mod.description}
+				<p class="z-mod-desc">{mod.description}</p>
+			{/if}
+
+			<div class="z-mod-meta">
+				{#if mod.author}
+					<span class="z-mod-author">{mod.author}</span>
+				{/if}
+				{#if mod.version}
+					<span class="z-mod-version">{mod.version}</span>
+				{/if}
+				{#if mod.downloads != null}
+					<span class="z-mod-stat">
+						<Icon icon="mdi:download" class="text-[10px]" />
+						{shortenNum(mod.downloads)}
+					</span>
+				{/if}
+				{#if mod.rating != null}
+					<span class="z-mod-stat">
+						<Icon icon="mdi:thumb-up" class="text-[10px]" />
+						{shortenNum(mod.rating)}
+					</span>
+				{/if}
+			</div>
+			{#if mod.categories && mod.categories.length > 0}
+				<div class="z-mod-categories">
+					{#each mod.categories.slice(0, 3) as category}
+						<button
+							class="z-mod-category-tag"
+							class:active={activeCategories.includes(category)}
+							onclick={(e) => {
+								e.stopPropagation();
+								oncategoryclick?.(category, e.ctrlKey || e.metaKey);
+							}}
+						>
+							{category}
+						</button>
+					{/each}
+				</div>
+			{/if}
+		</div>
+
+		<!-- Install button -->
+		{#if showInstallBtn && !mod.isInstalled && !locked}
+			<button
+				class="z-mod-install-btn"
+				disabled={installing}
+				onclick={(evt) => {
+					evt.stopPropagation();
+					installing = true;
+					oninstall?.();
+				}}
+			>
+				{#if installing}
+					<Spinner size={14} />
+				{:else}
+					<Icon icon="mdi:download" class="text-base" />
+				{/if}
+			</button>
+		{/if}
+	</div>
+{/if}
 
 <style>
 	.z-mod-card {
@@ -473,5 +550,157 @@
 	.z-mod-category-tag.active {
 		color: #2dd4bf;
 		border-color: #0d9488;
+	}
+
+	/* ── Grid Card ── */
+	.z-mod-grid-card {
+		display: flex;
+		flex-direction: column;
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-elevated);
+		cursor: pointer;
+		transition: all 150ms ease;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.z-mod-grid-card:hover {
+		border-color: var(--border-default);
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+	}
+
+	.z-mod-grid-card.selected {
+		border-color: var(--border-accent);
+		box-shadow: 0 0 20px rgba(26, 255, 250, 0.1);
+	}
+
+	.z-mod-grid-card.disabled-mod {
+		opacity: 0.5;
+	}
+
+	.z-grid-icon {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 1;
+		background: var(--bg-overlay);
+		overflow: hidden;
+	}
+
+	.z-grid-icon > img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.z-grid-installed {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		background: var(--success);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	.z-grid-source {
+		position: absolute;
+		top: 8px;
+		left: 8px;
+		width: 20px;
+		height: 20px;
+		border-radius: 4px;
+		object-fit: contain;
+		background: rgba(0, 0, 0, 0.5);
+		padding: 2px;
+	}
+
+	.z-grid-body {
+		padding: 10px 12px;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-height: 0;
+	}
+
+	.z-grid-name {
+		font-weight: 700;
+		font-size: 13px;
+		color: var(--text-primary);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		line-height: 1.3;
+	}
+
+	.z-grid-author {
+		font-size: 11px;
+		color: var(--text-muted);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.z-grid-stats {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-top: 4px;
+		font-size: 11px;
+		color: var(--text-muted);
+	}
+
+	.z-grid-version {
+		font-family: var(--font-mono);
+		font-size: 10px;
+		color: var(--text-accent);
+		background: rgba(26, 255, 250, 0.08);
+		padding: 1px 6px;
+		border-radius: var(--radius-full);
+	}
+
+	.z-grid-stat {
+		display: flex;
+		align-items: center;
+		gap: 2px;
+	}
+
+	.z-grid-install {
+		position: absolute;
+		bottom: 8px;
+		right: 8px;
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		background: var(--accent-400);
+		color: var(--text-inverse);
+		border: none;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transition: all 150ms ease;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	.z-mod-grid-card:hover .z-grid-install {
+		opacity: 1;
+	}
+
+	.z-grid-install:hover {
+		background: var(--accent-300);
+		transform: scale(1.1);
+	}
+
+	.z-grid-install:disabled {
+		background: var(--bg-overlay);
+		color: var(--text-muted);
 	}
 </style>

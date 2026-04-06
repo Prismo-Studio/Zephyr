@@ -14,6 +14,7 @@
 		showCategories?: boolean;
 		expanded?: boolean;
 		externalPanel?: boolean;
+		viewMode?: 'list' | 'grid';
 	};
 
 	let {
@@ -21,7 +22,8 @@
 		sortOptions = ['rating', 'downloads', 'lastUpdated', 'newest', 'name'],
 		showCategories = false,
 		expanded = $bindable(false),
-		externalPanel = false
+		externalPanel = false,
+		viewMode = $bindable('list' as 'list' | 'grid')
 	}: Props = $props();
 
 	let sortOpen = $state(false);
@@ -106,6 +108,25 @@
 				<Icon
 					icon={queryArgs.sortOrder === 'ascending' ? 'mdi:sort-ascending' : 'mdi:sort-descending'}
 				/>
+			</button>
+		</div>
+
+		<div class="z-view-toggle">
+			<button
+				class="z-view-btn"
+				class:active={viewMode === 'list'}
+				onclick={() => (viewMode = 'list')}
+				title="List"
+			>
+				<Icon icon="mdi:view-list" />
+			</button>
+			<button
+				class="z-view-btn"
+				class:active={viewMode === 'grid'}
+				onclick={() => (viewMode = 'grid')}
+				title="Grid"
+			>
+				<Icon icon="mdi:view-module" />
 			</button>
 		</div>
 	</div>
@@ -367,5 +388,39 @@
 		background: var(--bg-active);
 		border-color: var(--border-accent);
 		color: var(--text-accent);
+	}
+
+	/* View toggle */
+	.z-view-toggle {
+		display: flex;
+		gap: 1px;
+		background: var(--bg-elevated);
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border-subtle);
+		overflow: hidden;
+	}
+
+	.z-view-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 34px;
+		height: 34px;
+		background: transparent;
+		border: none;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-size: 18px;
+	}
+
+	.z-view-btn:hover {
+		color: var(--text-secondary);
+		background: var(--bg-hover);
+	}
+
+	.z-view-btn.active {
+		color: var(--text-accent);
+		background: var(--bg-active);
 	}
 </style>
