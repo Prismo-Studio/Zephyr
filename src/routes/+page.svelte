@@ -454,6 +454,20 @@
 		selectedModIds = isAllSelected ? [] : sortedMods.map((m) => m.uuid);
 	}
 
+	// Re-select mod after version change (mod gets removed then reinstalled)
+	$effect(() => {
+		const handler = (e: Event) => {
+			const uuid = (e as CustomEvent).detail;
+			if (uuid) {
+				setTimeout(() => {
+					selectedModIds = [uuid];
+				}, 500);
+			}
+		};
+		window.addEventListener('zephyr-reselect-mod', handler);
+		return () => window.removeEventListener('zephyr-reselect-mod', handler);
+	});
+
 	let shareDialog: { open: boolean; mode: 'export' | 'import' } = $state({
 		open: false,
 		mode: 'export'

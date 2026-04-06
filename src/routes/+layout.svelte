@@ -8,6 +8,7 @@
 	import InstallPopover from '$lib/components/toolbar/InstallPopover.svelte';
 	import InstallModDialog from '$lib/components/dialogs/InstallModDialog.svelte';
 	import ImportProfileDialog from '$lib/components/dialogs/ImportProfileDialog.svelte';
+	import GamepadManager from '$lib/components/GamepadManager.svelte';
 
 	import { onMount, type Snippet } from 'svelte';
 	import { refreshColor, refreshFont } from '$lib/themeSystem';
@@ -206,6 +207,7 @@
 
 	<Toasts />
 	<InstallPopover />
+	<GamepadManager />
 	<InstallModDialog />
 	<!-- WelcomeDialog removed -->
 	<ImportProfileDialog />
