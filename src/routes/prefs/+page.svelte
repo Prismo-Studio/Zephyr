@@ -123,7 +123,6 @@
 		const scale = parseFloat(value);
 		if (isNaN(scale)) return;
 		prefs.dpiScale = scale;
-		document.documentElement.style.setProperty('--app-dpi-scale', String(scale));
 		savePrefs();
 	}
 

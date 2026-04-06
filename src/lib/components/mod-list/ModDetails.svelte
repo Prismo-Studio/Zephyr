@@ -87,7 +87,6 @@
 		const packageUuid = mod.uuid;
 		const modName = formatModName(mod.name);
 		try {
-			// Remove first, then reinstall with new version
 			if (mod.isInstalled && !isExternalMod(mod)) {
 				await api.profile.forceRemoveMods([packageUuid]);
 			}
@@ -95,8 +94,6 @@
 				packageUuid,
 				versionUuid: version.uuid
 			});
-			// Dispatch event to re-select this mod after profile refresh
-			window.dispatchEvent(new CustomEvent('zephyr-reselect-mod', { detail: packageUuid }));
 			pushToast({
 				type: 'info',
 				message:
@@ -127,6 +124,11 @@
 	let loadingMarkdown = $state(false);
 	let copied = $state(false);
 	let copyTimeoutId: number | null = null;
+	let bodyEl: HTMLDivElement;
+
+	function scrollBodyToTop() {
+		if (bodyEl) bodyEl.scrollTop = 0;
+	}
 
 	let tabs = $derived([
 		{ id: 'readme', label: i18nState.locale && m.modpack_readme_title() },
@@ -208,6 +210,7 @@
 
 	$effect(() => {
 		if (mod) {
+			scrollBodyToTop();
 			if (activeTab !== 'dependencies') {
 				loadMarkdown(activeTab as 'readme' | 'changelog');
 			}
@@ -430,6 +433,7 @@
 				{tabs}
 				bind:active={activeTab}
 				onchange={(id) => {
+					scrollBodyToTop();
 					if (id !== 'dependencies') loadMarkdown(id as 'readme' | 'changelog');
 				}}
 			/>
@@ -441,7 +445,7 @@
 			{/if}
 		</div>
 
-		<div class="z-details-body">
+		<div class="z-details-body" bind:this={bodyEl}>
 			{#if activeTab === 'dependencies'}
 				{#if mod.dependencies && mod.dependencies.length > 0}
 					<div class="z-deps-list">
@@ -451,6 +455,8 @@
 							<!-- svelte-ignore a11y_no_static_element_interactions -->
 							<div
 								class="z-dep-item"
+								role="button"
+								tabindex="0"
 								onclick={async () => {
 									const found = await ondepclick?.(parsed.author, parsed.name);
 									if (found) activeTab = 'readme';
@@ -476,6 +482,9 @@
 								{#if parsed.version}
 									<span class="z-dep-version">{parsed.version}</span>
 								{/if}
+								<span class="z-dep-arrow">
+									<Icon icon="mdi:chevron-right" />
+								</span>
 							</div>
 						{/each}
 					</div>
@@ -1047,5 +1056,19 @@
 		white-space: nowrap;
 		flex-shrink: 0;
 		margin-left: auto;
+	}
+
+	.z-dep-arrow {
+		color: var(--text-muted);
+		font-size: 18px;
+		flex-shrink: 0;
+		opacity: 0;
+		transition: all 150ms ease;
+	}
+
+	.z-dep-item:hover .z-dep-arrow {
+		opacity: 1;
+		color: var(--text-accent);
+		transform: translateX(2px);
 	}
 </style>

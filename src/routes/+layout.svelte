@@ -12,7 +12,8 @@
 	import { onMount, type Snippet } from 'svelte';
 	import { refreshColor, refreshFont } from '$lib/themeSystem';
 	import { initTheme } from '$lib/design-system/tokens';
-	import { initGamepad, setGamepadEnabled, gamepadState } from '$lib/gamepad.svelte';
+	import { initGamepad, setGamepadEnabled, gamepadState, gamepadKeyboard } from '$lib/gamepad.svelte';
+	import GamepadKeyboard from '$lib/components/ui/GamepadKeyboard.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import games from '$lib/state/game.svelte';
 	import auth from '$lib/state/auth.svelte';
@@ -88,10 +89,7 @@
 			let prefs = await api.prefs.get();
 			let lang: string;
 
-			// Apply DPI scale
-			if (prefs.dpiScale && prefs.dpiScale !== 1.0) {
-				document.documentElement.style.setProperty('--app-dpi-scale', String(prefs.dpiScale));
-			}
+			// DPI scale is now applied via WebView zoom in the backend
 
 			// Initialize gamepad
 			initGamepad();
@@ -242,8 +240,12 @@
 				<span>{m.gamepad_legend_tabs()}</span>
 			</div>
 			<div class="z-gamepad-legend-item">
+				<kbd class="z-gp-btn">{type === 'playstation' ? 'R2' : 'RT'}</kbd>
+				<span>Filtres</span>
+			</div>
+			<div class="z-gamepad-legend-item">
 				<kbd class="z-gp-btn"
-					>{type === 'playstation' ? 'Options' : type === 'xbox' ? 'Menu' : 'Start'}</kbd
+					>{type === 'playstation' ? 'Share' : type === 'xbox' ? 'View' : 'Select'}</kbd
 				>
 				<span>{m.dashboard_quickActions_title()}</span>
 			</div>
@@ -253,8 +255,16 @@
 	<Toasts />
 	<InstallPopover />
 	<InstallModDialog />
-	<!-- WelcomeDialog removed -->
 	<ImportProfileDialog />
+
+	{#if gamepadKeyboard.open}
+		<GamepadKeyboard
+			open={gamepadKeyboard.open}
+			value={gamepadKeyboard.value}
+			onsubmit={(val) => gamepadKeyboard.submit(val)}
+			oncancel={() => gamepadKeyboard.cancel()}
+		/>
+	{/if}
 
 	{#if updates.next?.available}
 		<Modal
@@ -322,10 +332,7 @@
 		overflow-x: hidden;
 	}
 
-	/* DPI scaling — applied to full app */
-	.z-app {
-		zoom: var(--app-dpi-scale, 1);
-	}
+	/* DPI scaling is handled via WebView zoom in the backend */
 
 	/* Gamepad button legend bar */
 	.z-gamepad-legend {

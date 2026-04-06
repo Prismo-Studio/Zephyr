@@ -57,8 +57,7 @@
 		bottom: var(--space-xl);
 	}
 	.z-batch-bar--with-legend {
-		/* Height of legend bar + minimal gap (adjust as needed) */
-		bottom: calc(48px + var(--space-md));
+		bottom: calc(64px + var(--space-xl));
 	}
 
 	.z-batch-bar {

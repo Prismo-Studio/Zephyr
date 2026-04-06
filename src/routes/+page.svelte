@@ -139,9 +139,10 @@
 		return cachedSelectedMods.get(uuid) ?? null;
 	}
 
-	let selectedMod = $derived(
-		selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null
-	);
+	let selectedMod = $derived.by(() => {
+		mods; // track mods changes to recalculate
+		return selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null;
+	});
 
 	// Multi-select detail navigation
 	let multiViewIndex = $state(0);
@@ -431,11 +432,15 @@
 	});
 
 	// Clear selection when game/profile changes
+	let prevProfileId: number | null = null;
 	$effect(() => {
-		profiles.active;
-		selectedModIds = [];
-		cachedSelectedMods.clear();
-		multiViewIndex = 0;
+		const id = profiles.activeId;
+		if (prevProfileId !== null && id !== prevProfileId) {
+			selectedModIds = [];
+			cachedSelectedMods.clear();
+			multiViewIndex = 0;
+		}
+		prevProfileId = id;
 	});
 
 	let prevInstallActive = false;

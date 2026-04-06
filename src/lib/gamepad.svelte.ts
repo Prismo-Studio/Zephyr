@@ -48,6 +48,8 @@ let _gamepadRef: Gamepad | null = null; // Direct reference from event
 // Reactive state for Svelte templates
 let enabled = $state(false);
 let connectedGamepad = $state<string | null>(null);
+let keyboardOpen = $state(false);
+let keyboardTarget: HTMLInputElement | null = null;
 
 function syncReactive() {
 	enabled = _enabled;
@@ -74,7 +76,7 @@ let lastRoute = '';
 
 // Elements to skip during gamepad navigation
 const GAMEPAD_SKIP_SELECTOR =
-	'.z-mod-category-tag, .z-category-chip, .z-mod-checkbox-wrapper *, .z-mod-install-btn, .z-titlebar-btn, .z-gamepad-legend *, .z-gamepad-debug *';
+	'.z-mod-category-tag, .z-mod-checkbox-wrapper *, .z-mod-install-btn, .z-titlebar-btn, .z-gamepad-legend *, .z-gamepad-debug *';
 
 const FOCUSABLE_SELECTOR = [
 	'button:not([disabled]):not([aria-hidden="true"])',
@@ -93,7 +95,7 @@ function getFocusableElements(): HTMLElement[] {
 		// Skip tags, chips, titlebar buttons, and inline mod-card sub-buttons
 		if (el.matches(GAMEPAD_SKIP_SELECTOR)) return false;
 		// Skip elements inside a mod card that aren't the card itself
-		const parentCard = el.closest('.z-mod-card');
+		const parentCard = el.closest('.z-mod-card, .z-mod-grid-card');
 		if (parentCard && el !== parentCard) return false;
 		// Skip titlebar area entirely
 		if (el.closest('.z-titlebar')) return false;
@@ -170,10 +172,10 @@ function isScrollableContainer(el: HTMLElement | null): el is HTMLElement {
 
 function getScrollContainer(): HTMLElement | null {
 	const active = document.activeElement as HTMLElement | null;
-	let current = active;
-	while (current) {
-		if (isScrollableContainer(current)) return current;
-		current = current.parentElement;
+	let el = active;
+	while (el) {
+		if (isScrollableContainer(el)) return el;
+		el = (el as HTMLElement).parentElement;
 	}
 
 	// Fallback to known page containers
@@ -229,52 +231,58 @@ function navigate(direction: Direction) {
 		current.parentElement?.classList.contains('z-games-grid')
 	) {
 		const grid = current.parentElement;
-		const cards = Array.from(grid.querySelectorAll('.z-game-card'));
-		const colCount = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
-		let nextIdx = currentIdx;
-		switch (direction) {
-			case 'left':
-				nextIdx = Math.max(0, currentIdx - 1);
-				break;
-			case 'right':
-				nextIdx = Math.min(cards.length - 1, currentIdx + 1);
-				break;
-			case 'up':
-				nextIdx = Math.max(0, currentIdx - colCount);
-				break;
-			case 'down':
-				nextIdx = Math.min(cards.length - 1, currentIdx + colCount);
-				break;
-		}
-		focusElement(cards[nextIdx]);
-		if (multiSelectHeld) chainSelect(cards[nextIdx]);
-		return;
-	}
-
-	// List navigation for .z-mod-card in .z-browse-list
-	if (
-		current.classList.contains('z-mod-card') &&
-		current.parentElement?.classList.contains('z-browse-list')
-	) {
-		const list = current.parentElement;
-		const cards = Array.from(list.querySelectorAll('.z-mod-card'));
+		const cards = Array.from(grid.querySelectorAll<HTMLElement>('.z-game-card'));
 		const cardIdx = cards.indexOf(current);
+		if (cardIdx === -1) return;
+		const colCount = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
 		let nextIdx = cardIdx;
 		switch (direction) {
-			case 'up':
-				nextIdx = Math.max(0, cardIdx - 1);
-				break;
-			case 'down':
-				nextIdx = Math.min(cards.length - 1, cardIdx + 1);
-				break;
-			case 'left':
-			case 'right':
-				// Optionally: jump to sidebar/filter, or do nothing
-				return;
+			case 'left': nextIdx = Math.max(0, cardIdx - 1); break;
+			case 'right': nextIdx = Math.min(cards.length - 1, cardIdx + 1); break;
+			case 'up': nextIdx = cardIdx - colCount; break;
+			case 'down': nextIdx = Math.min(cards.length - 1, cardIdx + colCount); break;
 		}
-		focusElement(cards[nextIdx]);
-		if (multiSelectHeld) chainSelect(cards[nextIdx]);
-		return;
+		if (nextIdx >= 0) {
+			focusElement(cards[nextIdx]);
+			if (multiSelectHeld) chainSelect(cards[nextIdx]);
+			return;
+		}
+	}
+
+	// List navigation for .z-mod-card in .z-browse-list or .z-mods-list
+	const parentList = current.closest('.z-browse-list, .z-mods-list');
+	if (
+		(current.classList.contains('z-mod-card') || current.classList.contains('z-mod-grid-card')) &&
+		parentList
+	) {
+		const isGrid = parentList.classList.contains('z-grid-layout');
+		const cards = Array.from(parentList.querySelectorAll<HTMLElement>('.z-mod-card, .z-mod-grid-card'));
+		const cardIdx = cards.indexOf(current);
+		let nextIdx = cardIdx;
+
+		if (isGrid) {
+			const colCount = getComputedStyle(parentList).gridTemplateColumns.split(' ').length;
+			switch (direction) {
+				case 'left': nextIdx = Math.max(0, cardIdx - 1); break;
+				case 'right': nextIdx = Math.min(cards.length - 1, cardIdx + 1); break;
+				case 'up': nextIdx = cardIdx - colCount; break;
+				case 'down': nextIdx = Math.min(cards.length - 1, cardIdx + colCount); break;
+			}
+		} else {
+			switch (direction) {
+				case 'up': nextIdx = cardIdx - 1; break;
+				case 'down': nextIdx = Math.min(cards.length - 1, cardIdx + 1); break;
+				case 'left':
+				case 'right':
+					return;
+			}
+		}
+		if (nextIdx >= 0) {
+			focusElement(cards[nextIdx]);
+			if (multiSelectHeld) chainSelect(cards[nextIdx] as HTMLElement);
+			return;
+		}
+		// nextIdx < 0 means we're at the top — fall through to spatial navigation
 	}
 
 	// Fallback: spatial navigation
@@ -349,11 +357,16 @@ function pressButton(button: number) {
 	switch (button) {
 		case BTN.A:
 			if (active && active !== document.body) {
-				// Save focus before potential navigation
+				if (active.tagName === 'INPUT' && (active as HTMLInputElement).type === 'text') {
+					keyboardTarget = active as HTMLInputElement;
+					keyboardOpen = true;
+					return;
+				}
 				if (active.closest('a.z-nav-item')) {
 					saveFocusForCurrentRoute();
 				}
-				active.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+				const clickTarget = active.querySelector<HTMLElement>('button, a, [role="button"]') ?? active;
+				clickTarget.click();
 			} else {
 				navigate('down');
 			}
@@ -375,11 +388,28 @@ function pressButton(button: number) {
 			break;
 		}
 
-		case BTN.START:
+		case BTN.SELECT:
 			focusBatchActionBar();
 			break;
 
+		case BTN.START: {
+			const launchBtn = document.querySelector<HTMLElement>('.z-launch-btn');
+			if (launchBtn) focusElement(launchBtn);
+			break;
+		}
+
 		case BTN.B: {
+			// Close any open dropdown/menu by simulating a click outside
+			const openMenu = document.querySelector('.z-sort-dropdown, .z-version-dropdown, .z-game-dropdown');
+			if (openMenu) {
+				document.body.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+				break;
+			}
+			const openDetails = document.querySelector('details[open]');
+			if (openDetails) {
+				(openDetails as HTMLDetailsElement).open = false;
+				break;
+			}
 			const target = active && active !== document.body ? active : document.body;
 			target.dispatchEvent(
 				new KeyboardEvent('keydown', {
@@ -407,6 +437,15 @@ function pressButton(button: number) {
 		case BTN.DPAD_RIGHT:
 			navigate('right');
 			break;
+
+		case BTN.RT: {
+			const filterTarget =
+				document.querySelector<HTMLElement>('.z-search-input input') ??
+				document.querySelector<HTMLElement>('.z-filter-btn') ??
+				document.querySelector<HTMLElement>('.z-sort-trigger');
+			if (filterTarget) focusElement(filterTarget);
+			break;
+		}
 
 		case BTN.LB:
 		case BTN.RB: {
@@ -522,6 +561,40 @@ function pollGamepads(timestamp: number) {
 	// Only process inputs when enabled
 	if (!_enabled) {
 		prevButtons = [];
+		animFrameId = requestAnimationFrame(pollGamepads);
+		return;
+	}
+
+	// Virtual keyboard mode — handle inputs directly
+	if (keyboardOpen) {
+		for (let i = 0; i < gp.buttons.length; i++) {
+			const pressed = isButtonPressed(gp.buttons[i]);
+			const was = prevButtons[i] ?? false;
+			if (pressed && !was) {
+				window.dispatchEvent(new CustomEvent('gamepad-kb', { detail: { button: i } }));
+			}
+			if (pressed && was && [12, 13, 14, 15].includes(i)) {
+				handleRepeat(`kb${i}`, timestamp, () =>
+					window.dispatchEvent(new CustomEvent('gamepad-kb', { detail: { button: i } }))
+				);
+			}
+			if (!pressed && was) repeatTimers.delete(`kb${i}`);
+		}
+		// Left stick
+		const lx = gp.axes[0] ?? 0;
+		const ly = gp.axes[1] ?? 0;
+		let dir: number | null = null;
+		if (Math.abs(lx) > 0.4 || Math.abs(ly) > 0.4) {
+			dir = Math.abs(lx) > Math.abs(ly) ? (lx > 0 ? 15 : 14) : (ly > 0 ? 13 : 12);
+		}
+		if (dir !== null) {
+			handleRepeat(`kbstick`, timestamp, () =>
+				window.dispatchEvent(new CustomEvent('gamepad-kb', { detail: { button: dir } }))
+			);
+		} else {
+			repeatTimers.delete('kbstick');
+		}
+		prevButtons = gp.buttons.map((b) => isButtonPressed(b));
 		animFrameId = requestAnimationFrame(pollGamepads);
 		return;
 	}
@@ -722,6 +795,27 @@ export function getGamepadEnabled(): boolean {
 export function getConnectedGamepad(): string | null {
 	return _connectedGamepad;
 }
+
+export const gamepadKeyboard = {
+	get open() {
+		return keyboardOpen;
+	},
+	get value() {
+		return keyboardTarget?.value ?? '';
+	},
+	submit(val: string) {
+		if (keyboardTarget) {
+			keyboardTarget.value = val;
+			keyboardTarget.dispatchEvent(new Event('input', { bubbles: true }));
+		}
+		keyboardOpen = false;
+		keyboardTarget = null;
+	},
+	cancel() {
+		keyboardOpen = false;
+		keyboardTarget = null;
+	}
+};
 
 /** Reactive state for use in Svelte components */
 export const gamepadState = {

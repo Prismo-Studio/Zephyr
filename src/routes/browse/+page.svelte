@@ -91,9 +91,10 @@
 		return cachedSelectedMods.get(uuid) ?? null;
 	}
 
-	let selectedMod = $derived(
-		selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null
-	);
+	let selectedMod = $derived.by(() => {
+		mods;
+		return selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null;
+	});
 
 	// Multi-select detail navigation
 	let multiViewIndex = $state(0);

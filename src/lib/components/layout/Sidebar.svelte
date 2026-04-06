@@ -155,8 +155,15 @@
 						return;
 					} catch {}
 				}
+				launching = false;
+				return;
 			}
-			launching = false;
+			// Not a BepInEx error — show the toast via normal launch path
+			try {
+				await api.profile.launch.launchGame();
+			} catch {
+				launching = false;
+			}
 		}
 	}
 
