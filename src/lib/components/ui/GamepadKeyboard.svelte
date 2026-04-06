@@ -78,6 +78,7 @@
 		else if (btn === 0) pressCurrentKey();
 		else if (btn === 1) oncancel();
 		else if (btn === 2) value = value.slice(0, -1);
+		else if (btn === 9) onsubmit(value);
 		else if (btn === 10) shifted = !shifted;
 	}
 

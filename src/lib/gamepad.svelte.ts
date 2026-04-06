@@ -89,16 +89,25 @@ const FOCUSABLE_SELECTOR = [
 	'[role="menuitem"]:not([disabled])'
 ].join(', ');
 
+function getModalRoot(): HTMLElement | null {
+	const modals = document.querySelectorAll<HTMLElement>('.z-modal-backdrop, .z-kb-overlay');
+	for (let i = modals.length - 1; i >= 0; i--) {
+		if (modals[i].offsetParent !== null || getComputedStyle(modals[i]).position === 'fixed') {
+			return modals[i];
+		}
+	}
+	return null;
+}
+
 function getFocusableElements(): HTMLElement[] {
-	const els = Array.from(document.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+	const modalRoot = getModalRoot();
+	const root = modalRoot ?? document;
+	const els = Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
 	return els.filter((el) => {
-		// Skip tags, chips, titlebar buttons, and inline mod-card sub-buttons
 		if (el.matches(GAMEPAD_SKIP_SELECTOR)) return false;
-		// Skip elements inside a mod card that aren't the card itself
 		const parentCard = el.closest('.z-mod-card, .z-mod-grid-card');
 		if (parentCard && el !== parentCard) return false;
-		// Skip titlebar area entirely
-		if (el.closest('.z-titlebar')) return false;
+		if (!modalRoot && el.closest('.z-titlebar')) return false;
 		if (el.offsetParent === null && getComputedStyle(el).position !== 'fixed') return false;
 		const rect = el.getBoundingClientRect();
 		return rect.width > 0 && rect.height > 0;
@@ -264,20 +273,20 @@ function navigate(direction: Direction) {
 			const colCount = getComputedStyle(parentList).gridTemplateColumns.split(' ').length;
 			switch (direction) {
 				case 'left': nextIdx = Math.max(0, cardIdx - 1); break;
-				case 'right': nextIdx = Math.min(cards.length - 1, cardIdx + 1); break;
+				case 'right': nextIdx = cardIdx + 1; break;
 				case 'up': nextIdx = cardIdx - colCount; break;
-				case 'down': nextIdx = Math.min(cards.length - 1, cardIdx + colCount); break;
+				case 'down': nextIdx = cardIdx + colCount; break;
 			}
 		} else {
 			switch (direction) {
 				case 'up': nextIdx = cardIdx - 1; break;
-				case 'down': nextIdx = Math.min(cards.length - 1, cardIdx + 1); break;
+				case 'down': nextIdx = cardIdx + 1; break;
 				case 'left':
 				case 'right':
 					return;
 			}
 		}
-		if (nextIdx >= 0) {
+		if (nextIdx >= 0 && nextIdx < cards.length) {
 			focusElement(cards[nextIdx]);
 			if (multiSelectHeld) chainSelect(cards[nextIdx] as HTMLElement);
 			return;
@@ -365,17 +374,20 @@ function pressButton(button: number) {
 				if (active.closest('a.z-nav-item')) {
 					saveFocusForCurrentRoute();
 				}
-				const clickTarget = active.querySelector<HTMLElement>('button, a, [role="button"]') ?? active;
-				clickTarget.click();
+				if (active.classList.contains('z-mod-card') || active.classList.contains('z-mod-grid-card')) {
+					active.click();
+				} else {
+					const clickTarget = active.querySelector<HTMLElement>('button, a, [role="button"]') ?? active;
+					clickTarget.click();
+				}
 			} else {
 				navigate('down');
 			}
 			break;
 
 		case BTN.Y: {
-			// Multi-select toggle (Ctrl+click) — works on mod cards
 			if (active && active !== document.body) {
-				const card = active.closest('.z-mod-card') as HTMLElement | null;
+				const card = active.closest('.z-mod-card, .z-mod-grid-card') as HTMLElement | null;
 				const target = card ?? active;
 				target.dispatchEvent(
 					new MouseEvent('click', {
@@ -686,12 +698,15 @@ function pollGamepads(timestamp: number) {
 	}
 	lastRoute = currentRoute;
 
-	// Process right stick (axes 2/3) as vertical scroll
-	const ry = gp.axes[3] ?? 0;
+	// Right stick scroll (axes 3 on most, 5 on some Linux controllers)
+	let ry = 0;
+	for (const idx of [3, 5, 4]) {
+		const val = gp.axes[idx] ?? 0;
+		if (Math.abs(val) > SCROLL_DEADZONE) { ry = val; break; }
+	}
 	const scrollContainer = getScrollContainer();
 
 	if (scrollContainer && Math.abs(ry) > SCROLL_DEADZONE) {
-		// Smooth scroll — scales with stick tilt
 		const scrollSpeed = Math.sign(ry) * Math.pow(Math.abs(ry), 1.5) * 14;
 		scrollContainer.scrollTop += scrollSpeed;
 	}
@@ -780,6 +795,20 @@ export function destroyGamepad() {
 
 export function setGamepadEnabled(value: boolean) {
 	_enabled = value;
+	if (value) {
+		_initialFocusSet = false;
+		prevButtons = [];
+		const gamepads = navigator.getGamepads();
+		for (let i = 0; i < gamepads.length; i++) {
+			const gp = gamepads[i];
+			if (gp && gp.connected) {
+				_connectedGamepad = gp.id;
+				_gamepadIndex = gp.index;
+				_gamepadRef = gp;
+				break;
+			}
+		}
+	}
 	syncReactive();
 	if (value) {
 		startPolling();
