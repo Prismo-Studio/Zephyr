@@ -14,7 +14,7 @@
 		"copyright": "",
 		"targets": ["nsis", "appimage", "deb", "dmg"],
 		"externalBin": [],
-		"createUpdaterArtifacts": true,
+		"createUpdaterArtifacts": false,
 		"shortDescription": "A fast, modern mod manager for all your games",
 		"longDescription": "",
 		"icon": [
