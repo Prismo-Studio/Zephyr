@@ -168,6 +168,7 @@ pub fn run() {
             profile::commands::set_active_game,
             profile::commands::get_profile_info,
             profile::commands::set_active_profile,
+            profile::commands::reorder_profile,
             profile::commands::is_mod_installed,
             profile::commands::query_profile,
             profile::commands::get_dependants,

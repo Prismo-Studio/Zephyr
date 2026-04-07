@@ -150,6 +150,22 @@ pub async fn set_active_profile(index: usize, app: AppHandle) -> Result<()> {
     Ok(())
 }
 
+#[command]
+pub async fn reorder_profile(from: usize, to: usize, app: AppHandle) -> Result<()> {
+    let mut manager = app.lock_manager();
+    let game = manager.active_game_mut();
+
+    if from >= game.profiles.len() || to >= game.profiles.len() || from == to {
+        return Ok(());
+    }
+
+    let profile = game.profiles.remove(from);
+    game.profiles.insert(to, profile);
+
+    game.save(&app)?;
+    Ok(())
+}
+
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FrontendAvailableUpdate {

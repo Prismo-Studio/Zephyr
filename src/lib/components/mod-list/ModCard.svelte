@@ -69,7 +69,14 @@
 		class="z-mod-grid-card"
 		class:selected={isSelected}
 		class:disabled-mod={mod.enabled === false}
+		class:dragging={isDragging}
+		class:draggable={showDragHandle && !isModPinned(mod.uuid)}
 		data-mod-uuid={mod.uuid}
+		onpointerdown={(e) => {
+			if (showDragHandle && !isModPinned(mod.uuid)) {
+				onpointerdownHandle?.(e, mod);
+			}
+		}}
 		{onclick}
 		oncontextmenu={handleContextMenu}
 		role="button"
@@ -705,5 +712,21 @@
 	.z-grid-install:disabled {
 		background: var(--bg-overlay);
 		color: var(--text-muted);
+	}
+
+	/* Grid card draggable state */
+	.z-mod-grid-card.draggable {
+		cursor: grab;
+		touch-action: none;
+		user-select: none;
+	}
+
+	.z-mod-grid-card.draggable:active {
+		cursor: grabbing;
+	}
+
+	.z-mod-grid-card.dragging {
+		opacity: 0.25;
+		transform: scale(0.95);
 	}
 </style>
