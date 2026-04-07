@@ -139,6 +139,132 @@
 		if (icon.startsWith('http')) return icon;
 		return convertFileSrc(icon);
 	}
+
+	let draggingId: number | null = $state(null);
+	let dragOverIdx: number = $state(-1);
+	let ghostEl: HTMLDivElement | null = null;
+	let dragOffsetX = 0;
+	let dragOffsetY = 0;
+	let dragFromIdx = -1;
+	let dragStarted = false;
+	let pointerStartX = 0;
+	let pointerStartY = 0;
+	let pendingCard: HTMLElement | null = null;
+	let pendingProfileId: number | null = null;
+	const DRAG_THRESHOLD = 5;
+
+	function onPointerDown(e: PointerEvent, profile: { id: number }, idx: number) {
+		const target = e.target as HTMLElement;
+		if (target.closest('.z-profile-action, .z-profile-icon, input')) return;
+
+		const card = target.closest('.z-profile-card') as HTMLElement;
+		if (!card) return;
+
+		dragFromIdx = idx;
+		pendingProfileId = profile.id;
+		pendingCard = card;
+		pointerStartX = e.clientX;
+		pointerStartY = e.clientY;
+		dragStarted = false;
+
+		const rect = card.getBoundingClientRect();
+		dragOffsetX = e.clientX - rect.left;
+		dragOffsetY = e.clientY - rect.top;
+
+		window.addEventListener('pointermove', onPointerMove);
+		window.addEventListener('pointerup', onPointerUp);
+	}
+
+	function startDrag(e: PointerEvent) {
+		if (!pendingCard) return;
+		dragStarted = true;
+		draggingId = pendingProfileId;
+		const rect = pendingCard.getBoundingClientRect();
+		ghostEl = pendingCard.cloneNode(true) as HTMLDivElement;
+		ghostEl.style.cssText = `
+			position: fixed;
+			left: ${rect.left}px;
+			top: ${rect.top}px;
+			width: ${rect.width}px;
+			height: ${rect.height}px;
+			pointer-events: none;
+			z-index: 9999;
+			opacity: 0.95;
+			border: 2px solid var(--accent-400);
+			box-shadow: 0 12px 40px rgba(26, 255, 250, 0.25);
+			transform: scale(1.03);
+			cursor: grabbing;
+		`;
+		document.body.appendChild(ghostEl);
+		document.body.classList.add('dragging-active');
+		onPointerMove(e);
+	}
+
+	function onPointerMove(e: PointerEvent) {
+		if (!dragStarted) {
+			const dx = e.clientX - pointerStartX;
+			const dy = e.clientY - pointerStartY;
+			if (dx * dx + dy * dy < DRAG_THRESHOLD * DRAG_THRESHOLD) return;
+			startDrag(e);
+			return;
+		}
+		if (!ghostEl) return;
+		ghostEl.style.left = e.clientX - dragOffsetX + 'px';
+		ghostEl.style.top = e.clientY - dragOffsetY + 'px';
+
+		const cards = document.querySelectorAll<HTMLElement>('.z-profile-card[data-profile-idx]');
+		let bestIdx = -1;
+		let bestDist = Infinity;
+		cards.forEach((el) => {
+			const idx = parseInt(el.dataset.profileIdx!);
+			if (idx === dragFromIdx) return;
+			const r = el.getBoundingClientRect();
+			const cx = r.left + r.width / 2;
+			const cy = r.top + r.height / 2;
+			const d = (e.clientX - cx) ** 2 + (e.clientY - cy) ** 2;
+			if (d < bestDist) {
+				bestDist = d;
+				bestIdx = idx;
+			}
+		});
+		dragOverIdx = bestIdx;
+	}
+
+	async function onPointerUp() {
+		window.removeEventListener('pointermove', onPointerMove);
+		window.removeEventListener('pointerup', onPointerUp);
+
+		if (!dragStarted) {
+			pendingCard = null;
+			pendingProfileId = null;
+			dragFromIdx = -1;
+			return;
+		}
+
+		document.body.classList.remove('dragging-active');
+
+		if (ghostEl) {
+			ghostEl.remove();
+			ghostEl = null;
+		}
+
+		const from = dragFromIdx;
+		const to = dragOverIdx;
+		draggingId = null;
+		dragOverIdx = -1;
+		dragFromIdx = -1;
+		dragStarted = false;
+		pendingCard = null;
+		pendingProfileId = null;
+
+		if (from === -1 || to === -1 || from === to) return;
+		try {
+			await api.profile.reorderProfile(from, to);
+			await profiles.refresh();
+		} catch (err) {
+			console.error('Failed to reorder profile:', err);
+		}
+	}
 </script>
 
 <div class="z-profiles-page">
@@ -156,8 +282,15 @@
 
 	<div class="z-profiles-content">
 		<div class="z-profiles-grid">
-			{#each profiles.list as profile (profile.id)}
-				<div class="z-profile-card" class:active={profile.id === profiles.activeId}>
+			{#each profiles.list as profile, i (profile.id)}
+				<div
+					class="z-profile-card"
+					class:active={profile.id === profiles.activeId}
+					class:dragging={draggingId === profile.id}
+					class:drag-over={dragOverIdx === i && draggingId !== null && draggingId !== profile.id}
+					data-profile-idx={i}
+					onpointerdown={(e) => onPointerDown(e, profile, i)}
+				>
 					<button class="z-profile-select" onclick={() => selectProfile(profile.id)}>
 						<div class="z-profile-header">
 							<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -325,7 +458,23 @@
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
 		overflow: visible;
-		transition: all var(--transition-fast);
+		transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+		cursor: grab;
+		touch-action: none;
+		user-select: none;
+	}
+
+	.z-profile-card:active {
+		cursor: grabbing;
+	}
+
+	.z-profile-card.dragging {
+		opacity: 0.3;
+	}
+
+	.z-profile-card.drag-over {
+		border-color: var(--accent-400);
+		box-shadow: 0 0 0 2px rgba(26, 255, 250, 0.3);
 	}
 
 	.z-profile-card:hover {
