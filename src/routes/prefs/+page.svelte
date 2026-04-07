@@ -452,26 +452,28 @@
 		{/if}
 
 		<!-- Actions -->
-		<section class="z-settings-section">
-			<h3 class="z-settings-heading">
-				<Icon icon="mdi:wrench" />
-				{m.dashboard_quickActions_title()}
-			</h3>
-			<div class="z-settings-actions">
-				<Button variant="secondary" size="sm" onclick={() => clearCache(true)}>
-					{#snippet icon()}<Icon icon="mdi:broom" />{/snippet}
-					{i18nState.locale && m.menuBar_file_item_6()}
-				</Button>
-				<Button variant="secondary" size="sm" onclick={() => clearCache(false)}>
-					{#snippet icon()}<Icon icon="mdi:delete-sweep" />{/snippet}
-					{i18nState.locale && m.menuBar_file_item_5()}
-				</Button>
-				<Button variant="ghost" size="sm" onclick={openLog}>
-					{#snippet icon()}<Icon icon="mdi:file-document" />{/snippet}
-					{i18nState.locale && m.menuBar_file_item_4()}
-				</Button>
-			</div>
-		</section>
+		{#key i18nState.locale}
+			<section class="z-settings-section">
+				<h3 class="z-settings-heading">
+					<Icon icon="mdi:wrench" />
+					{m.dashboard_quickActions_title()}
+				</h3>
+				<div class="z-settings-actions">
+					<Button variant="secondary" size="sm" onclick={() => clearCache(true)}>
+						{#snippet icon()}<Icon icon="mdi:broom" />{/snippet}
+						{#snippet children()}{m.menuBar_file_item_6()}{/snippet}
+					</Button>
+					<Button variant="secondary" size="sm" onclick={() => clearCache(false)}>
+						{#snippet icon()}<Icon icon="mdi:delete-sweep" />{/snippet}
+						{#snippet children()}{m.menuBar_file_item_5()}{/snippet}
+					</Button>
+					<Button variant="ghost" size="sm" onclick={openLog}>
+						{#snippet icon()}<Icon icon="mdi:file-document" />{/snippet}
+						{#snippet children()}{m.menuBar_file_item_4()}{/snippet}
+					</Button>
+				</div>
+			</section>
+		{/key}
 		<section class="z-settings-section z-about">
 			<div class="z-about-brand">
 				<span class="z-about-name text-gradient">Zephyr</span>

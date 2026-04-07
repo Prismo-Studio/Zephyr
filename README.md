@@ -10,6 +10,7 @@
   <a href="https://github.com/Prismo-Studio/Zephyr/releases/latest"><img src="https://img.shields.io/github/v/release/Prismo-Studio/Zephyr?style=flat&color=blue" alt="Latest Release" /></a>
   <a href="https://github.com/prismo-studio/zephyr/blob/main/LICENSE.md"><img src="https://img.shields.io/badge/license-GPL--3.0-green?style=flat" alt="License GPL-3.0" /></a>
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?style=flat" alt="Platform Windows | Linux | macOS" />
+  <a href="https://ko-fi.com/zephyrmods"><img src="https://img.shields.io/badge/Ko--fi-Support-FF5E5B?style=flat&logo=ko-fi&logoColor=white" alt="Support on Ko-fi" /></a>
 </p>
 
 ---
