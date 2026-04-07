@@ -48,39 +48,82 @@ export function createDragGhost(card: HTMLElement, e: PointerEvent): HTMLDivElem
 }
 
 /**
- * Computes the insertion position by counting how many non-dragged items
- * have their vertical center above the cursor.
+ * Computes the insertion position.
+ * For list view: counts items with vertical center above the cursor.
+ * For grid view: finds the item closest to the cursor position based on center point.
  */
 export function computeInsertPosition(
 	e: PointerEvent,
 	dragFromIndex: number,
-	itemSelector: string
+	itemSelector: string,
+	isGridView: boolean = false
 ): { insertPos: number; placeholderIndex: number } {
 	const wrappers = document.querySelectorAll(itemSelector);
 	let aboveCount = 0;
 
-	wrappers.forEach((el) => {
-		const idx = parseInt(el.getAttribute('data-mod-index')!);
-		if (idx === dragFromIndex) return;
+	if (!isGridView) {
+		// List view: vertical positioning
+		wrappers.forEach((el) => {
+			const idx = parseInt(el.getAttribute('data-mod-index')!);
+			if (idx === dragFromIndex) return;
 
-		const rect = el.getBoundingClientRect();
-		const midY = rect.top + rect.height / 2;
-		if (midY < e.clientY) aboveCount++;
-	});
+			const rect = el.getBoundingClientRect();
+			const midY = rect.top + rect.height / 2;
+			if (midY < e.clientY) aboveCount++;
+		});
 
-	const insertPos = aboveCount;
-	let placeholderIndex: number;
+		const insertPos = aboveCount;
+		let placeholderIndex: number;
 
-	if (insertPos <= dragFromIndex) {
-		placeholderIndex = insertPos;
+		if (insertPos <= dragFromIndex) {
+			placeholderIndex = insertPos;
+		} else {
+			placeholderIndex = insertPos + 1;
+		}
+
+		if (insertPos === dragFromIndex) {
+			placeholderIndex = -1;
+		}
+
+		return { insertPos, placeholderIndex };
 	} else {
-		placeholderIndex = insertPos + 1;
-	}
+		// Grid view: find closest item based on center point
+		let closestIndex = -1;
+		let closestDistance = Infinity;
 
-	// No-op position
-	if (insertPos === dragFromIndex) {
-		placeholderIndex = -1;
-	}
+		wrappers.forEach((el) => {
+			const idx = parseInt(el.getAttribute('data-mod-index')!);
+			if (idx === dragFromIndex) return;
 
-	return { insertPos, placeholderIndex };
+			const rect = el.getBoundingClientRect();
+			const midX = rect.left + rect.width / 2;
+			const midY = rect.top + rect.height / 2;
+
+			// Calculate distance from cursor to center of item
+			const distX = e.clientX - midX;
+			const distY = e.clientY - midY;
+			const distance = Math.sqrt(distX * distX + distY * distY);
+
+			if (distance < closestDistance) {
+				closestDistance = distance;
+				closestIndex = idx;
+			}
+		});
+
+		let insertPos = closestIndex;
+		if (insertPos < 0) insertPos = 0;
+
+		let placeholderIndex: number;
+		if (insertPos <= dragFromIndex) {
+			placeholderIndex = insertPos;
+		} else {
+			placeholderIndex = insertPos + 1;
+		}
+
+		if (insertPos === dragFromIndex) {
+			placeholderIndex = -1;
+		}
+
+		return { insertPos, placeholderIndex };
+	}
 }

@@ -43,31 +43,108 @@
 	let ghostEl: HTMLDivElement | null = null;
 	let dragOffsetX = 0;
 	let dragOffsetY = 0;
+	let dragPendingEvent: PointerEvent | null = null;
+	let dragRafId: number | null = null;
+	let dragStartX = 0;
+	let dragStartY = 0;
+	let isDragging = false;
+	const DRAG_THRESHOLD = 8;
+	let dragStartMod: Mod | null = null;
 
 	let isCustomSort = $derived(profileQuery.current.sortBy === 'custom');
 	let canDrag = $derived(isCustomSort && !profiles.activeLocked);
 
 	function handleDragHandleDown(e: PointerEvent, mod: Mod) {
 		if (!canDrag || isModPinned(mod.uuid)) return;
-		e.preventDefault();
-		e.stopPropagation();
 
 		dragFromIndex = sortedMods.findIndex((m) => m.uuid === mod.uuid);
-		draggedMod = mod;
+		dragStartX = e.clientX;
+		dragStartY = e.clientY;
+		isDragging = false;
+		draggedMod = null;
+		dragStartMod = mod;
+
+		window.addEventListener('pointermove', handleWindowPointermove);
+		window.addEventListener('pointerup', handleWindowPointerup);
+	}
+
+	function handleWindowPointermove(e: PointerEvent) {
+		if (isDragging || !dragStartMod) return;
+
+		const deltaX = e.clientX - dragStartX;
+		const deltaY = e.clientY - dragStartY;
+		const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+		if (distance > DRAG_THRESHOLD) {
+			// Start actual drag
+			isDragging = true;
+			draggedMod = dragStartMod;
+			insertPos = -1;
+			placeholderIndex = -1;
+
+			const card = document.querySelector(`[data-mod-uuid="${dragStartMod.uuid}"]`) as HTMLElement;
+			if (!card) return;
+
+			const rect = card.getBoundingClientRect();
+			dragOffsetX = e.clientX - rect.left;
+			dragOffsetY = e.clientY - rect.top;
+
+			ghostEl = createDragGhost(card, e);
+
+			window.removeEventListener('pointermove', handleWindowPointermove);
+			window.addEventListener('pointermove', handlePointerMoveThrottled);
+		}
+	}
+
+	function handleWindowPointerup(e: PointerEvent) {
+		window.removeEventListener('pointermove', handleWindowPointermove);
+		window.removeEventListener('pointermove', handlePointerMoveThrottled);
+		window.removeEventListener('pointerup', handleWindowPointerup);
+
+		if (dragRafId !== null) {
+			cancelAnimationFrame(dragRafId);
+			dragRafId = null;
+		}
+
+		if (ghostEl) {
+			ghostEl.remove();
+			ghostEl = null;
+		}
+
+		// Only reorder if drag actually occurred
+		if (isDragging && draggedMod && insertPos >= 0 && insertPos !== dragFromIndex) {
+			const isDescending = profileQuery.current.sortOrder === 'descending';
+			const delta = isDescending ? -(insertPos - dragFromIndex) : insertPos - dragFromIndex;
+			if (delta !== 0) {
+				(async () => {
+					try {
+						await api.profile.reorderMod(draggedMod!.uuid, delta);
+						await refresh();
+					} catch (err) {
+						console.error('Failed to reorder mod:', err);
+					}
+				})();
+			}
+		}
+
+		draggedMod = null;
+		dragStartMod = null;
 		insertPos = -1;
 		placeholderIndex = -1;
+		dragFromIndex = -1;
+		isDragging = false;
+	}
 
-		const card = (e.target as HTMLElement).closest('.z-mod-card') as HTMLElement;
-		if (!card) return;
-
-		const rect = card.getBoundingClientRect();
-		dragOffsetX = e.clientX - rect.left;
-		dragOffsetY = e.clientY - rect.top;
-
-		ghostEl = createDragGhost(card, e);
-
-		window.addEventListener('pointermove', handlePointerMove);
-		window.addEventListener('pointerup', handlePointerUp);
+	function handlePointerMoveThrottled(e: PointerEvent) {
+		dragPendingEvent = e;
+		if (dragRafId === null) {
+			dragRafId = requestAnimationFrame(() => {
+				if (dragPendingEvent) {
+					handlePointerMove(dragPendingEvent);
+				}
+				dragRafId = null;
+			});
+		}
 	}
 
 	function handlePointerMove(e: PointerEvent) {
@@ -76,37 +153,14 @@
 		ghostEl.style.left = e.clientX - dragOffsetX + 'px';
 		ghostEl.style.top = e.clientY - dragOffsetY + 'px';
 
-		const result = computeInsertPosition(e, dragFromIndex, '[data-mod-index]');
+		const result = computeInsertPosition(
+			e,
+			dragFromIndex,
+			'[data-mod-index]',
+			viewMode.current === 'grid'
+		);
 		insertPos = result.insertPos;
 		placeholderIndex = result.placeholderIndex;
-	}
-
-	async function handlePointerUp(_e: PointerEvent) {
-		window.removeEventListener('pointermove', handlePointerMove);
-		window.removeEventListener('pointerup', handlePointerUp);
-
-		if (ghostEl) {
-			ghostEl.remove();
-			ghostEl = null;
-		}
-
-		if (draggedMod && insertPos >= 0 && insertPos !== dragFromIndex) {
-			const isDescending = profileQuery.current.sortOrder === 'descending';
-			const delta = isDescending ? -(insertPos - dragFromIndex) : insertPos - dragFromIndex;
-			if (delta !== 0) {
-				try {
-					await api.profile.reorderMod(draggedMod.uuid, delta);
-					await refresh();
-				} catch (err) {
-					console.error('Failed to reorder mod:', err);
-				}
-			}
-		}
-
-		draggedMod = null;
-		insertPos = -1;
-		placeholderIndex = -1;
-		dragFromIndex = -1;
 	}
 
 	// --- Mod list state ---
@@ -734,11 +788,15 @@
 					{:else}
 						{#each sortedMods as mod, i (mod.uuid)}
 							{#if draggedMod && placeholderIndex === i}
-								<div class="z-drop-placeholder">
-									<div class="z-drop-line"></div>
-									<Icon icon="mdi:plus-circle" class="z-drop-icon" />
-									<div class="z-drop-line"></div>
-								</div>
+								{#if viewMode.current === 'grid'}
+									<div class="z-drop-placeholder-grid"></div>
+								{:else}
+									<div class="z-drop-placeholder">
+										<div class="z-drop-line"></div>
+										<Icon icon="mdi:plus-circle" class="z-drop-icon" />
+										<div class="z-drop-line"></div>
+									</div>
+								{/if}
 							{/if}
 
 							<div data-mod-index={i} class:z-dragging-card={draggedMod?.uuid === mod.uuid}>
@@ -747,7 +805,8 @@
 									isSelected={selectedModIds.includes(mod.uuid)}
 									{locked}
 									showInstallBtn={false}
-									showDragHandle={canDrag && viewMode.current === 'list'}
+									showDragHandle={canDrag}
+									isDragging={draggedMod?.uuid === mod.uuid}
 									viewMode={viewMode.current}
 									onclick={(evt: MouseEvent) => {
 										if (!draggedMod) handleModClick(evt, mod, i);
@@ -761,11 +820,15 @@
 						{/each}
 
 						{#if draggedMod && placeholderIndex === sortedMods.length}
-							<div class="z-drop-placeholder">
-								<div class="z-drop-line"></div>
-								<Icon icon="mdi:plus-circle" class="z-drop-icon" />
-								<div class="z-drop-line"></div>
-							</div>
+							{#if viewMode.current === 'grid'}
+								<div class="z-drop-placeholder-grid"></div>
+							{:else}
+								<div class="z-drop-placeholder">
+									<div class="z-drop-line"></div>
+									<Icon icon="mdi:plus-circle" class="z-drop-icon" />
+									<div class="z-drop-line"></div>
+								</div>
+							{/if}
 						{/if}
 
 						{#if mods.length >= maxCount}
@@ -1096,6 +1159,10 @@
 		grid-column: 1 / -1;
 	}
 
+	.z-mods-list.z-grid-layout .z-drop-placeholder-grid {
+		/* Takes up one grid cell, not spanning */
+	}
+
 	.z-unknown-banner {
 		display: flex;
 		align-items: center;
@@ -1184,6 +1251,30 @@
 	.z-dragging-card {
 		opacity: 0.25;
 		pointer-events: none;
+	}
+
+	.z-drop-placeholder-grid {
+		width: 100%;
+		border: 2px dashed var(--accent-400);
+		border-radius: var(--radius-lg);
+		background: rgba(26, 255, 250, 0.08);
+		animation: placeholderIn 150ms ease;
+		overflow: hidden;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		aspect-ratio: 0.7;
+		min-height: 220px;
+	}
+
+	.z-drop-placeholder-grid::after {
+		content: '';
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		border: 2px solid var(--accent-400);
+		opacity: 0.3;
 	}
 
 	.z-drop-placeholder {
