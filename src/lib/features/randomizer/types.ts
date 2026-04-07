@@ -1,0 +1,158 @@
+// Mirror of src-tauri/src/randomizer/types.rs
+
+export type Value = boolean | number | string | Value[];
+
+export type Choice = {
+	value: string;
+	label: string;
+	description?: string;
+};
+
+export type OptionType =
+	| { kind: 'toggle'; default: boolean }
+	| { kind: 'range'; min: number; max: number; step: number; default: number }
+	| { kind: 'select'; choices: Choice[]; default: string }
+	| { kind: 'multi_select'; choices: Choice[]; defaults: string[] }
+	| { kind: 'text'; default: string; placeholder?: string };
+
+export type Condition =
+	| { op: 'equals'; value: Value }
+	| { op: 'not_equals'; value: Value }
+	| { op: 'in'; values: Value[] };
+
+export type Dependency = {
+	option_id: string;
+	condition: Condition;
+};
+
+export type OptionDef = {
+	id: string;
+	label: string;
+	description: string;
+	category: string;
+	type: OptionType;
+	dependencies?: Dependency[];
+	advanced: boolean;
+};
+
+export type Preset = {
+	id: string;
+	name: string;
+	description: string;
+	values: Record<string, Value>;
+};
+
+export type GameMeta = {
+	rom_required: boolean;
+	supported_versions: string[];
+	wiki_url?: string;
+	icon?: string;
+};
+
+export type GameSchema = {
+	id: string;
+	name: string;
+	version: string;
+	description: string;
+	options: OptionDef[];
+	presets: Preset[];
+	meta: GameMeta;
+};
+
+export type GameSummary = {
+	id: string;
+	name: string;
+	version: string;
+	description: string;
+	option_count: number;
+	preset_count: number;
+	icon: string | null;
+};
+
+export type RandomizerConfig = {
+	game_id: string;
+	seed?: string;
+	values: Record<string, Value>;
+	preset_id?: string;
+	player_name?: string;
+};
+
+export type ValidationError = {
+	option_id: string;
+	message: string;
+};
+
+export type LintIssue = {
+	level: 'error' | 'warning' | 'info';
+	message: string;
+};
+
+export type PythonStatus = {
+	available: boolean;
+	executable: string | null;
+	version: string | null;
+	ap_dir: string;
+	ap_present: boolean;
+};
+
+export type PlayerFile = {
+	name: string;
+	path: string;
+	size: number;
+};
+
+export type SeedFile = {
+	name: string;
+	path: string;
+	size: number;
+	modified: number;
+};
+
+export type GenerateOutcome = {
+	success: boolean;
+	zip_path: string | null;
+	stdout: string;
+	stderr: string;
+};
+
+export type ServerStatus = {
+	running: boolean;
+	port: number | null;
+	password: string | null;
+	multidata: string | null;
+	pid: number | null;
+	recent_log: string[];
+	local_ip: string | null;
+	public_ip: string | null;
+	port_reachable: boolean;
+};
+
+export const CATEGORY_ORDER = [
+	'general',
+	'goals',
+	'items',
+	'entrances',
+	'logic',
+	'cosmetic',
+	'advanced'
+] as const;
+
+export const CATEGORY_LABELS: Record<string, string> = {
+	general: 'General',
+	goals: 'Goals',
+	items: 'Items',
+	entrances: 'Entrances',
+	logic: 'Logic',
+	cosmetic: 'Cosmetic',
+	advanced: 'Advanced'
+};
+
+export const CATEGORY_ICONS: Record<string, string> = {
+	general: 'mdi:cog',
+	goals: 'mdi:flag-checkered',
+	items: 'mdi:treasure-chest',
+	entrances: 'mdi:door',
+	logic: 'mdi:brain',
+	cosmetic: 'mdi:palette',
+	advanced: 'mdi:tune-variant'
+};
