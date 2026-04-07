@@ -112,9 +112,14 @@
 		flex-direction: column;
 		gap: var(--space-lg);
 		padding: var(--space-xl);
+		padding-bottom: var(--space-3xl);
 		max-width: 1400px;
 		margin: 0 auto;
 		width: 100%;
+		flex: 1 1 0;
+		min-height: 0;
+		overflow-y: auto;
+		overflow-x: hidden;
 	}
 
 	.rdz-catalog-header {
