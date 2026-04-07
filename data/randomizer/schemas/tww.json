@@ -1,0 +1,885 @@
+{
+  "id": "tww",
+  "name": "The Wind Waker",
+  "version": "0.5.1",
+  "description": "Legend has it that whenever evil has appeared, a hero named Link has arisen to defeat it.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_dungeons",
+      "label": "Progression Dungeons",
+      "description": "This controls whether dungeon locations are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_tingle_chests",
+      "label": "Progression Tingle Chests",
+      "description": "Tingle Chests are hidden in dungeons and must be bombed to make them appear.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_dungeon_secrets",
+      "label": "Progression Dungeon Secrets",
+      "description": "DRC, FW, TotG, ET, and WT each contain 2-3 secret items (11 in total).",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_puzzle_secret_caves",
+      "label": "Progression Puzzle Secret Caves",
+      "description": "This controls whether the rewards from puzzle-focused secret caves are randomized locations.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_combat_secret_caves",
+      "label": "Progression Combat Secret Caves",
+      "description": "This controls whether the rewards from combat-focused secret caves (besides Savage Labyrinth) are randomized locations.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_savage_labyrinth",
+      "label": "Progression Savage Labyrinth",
+      "description": "This controls whether the two locations in Savage Labyrinth are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_great_fairies",
+      "label": "Progression Great Fairies",
+      "description": "This controls whether the items given by Great Fairies are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_short_sidequests",
+      "label": "Progression Short Sidequests",
+      "description": "This controls whether sidequests that can be completed quickly are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_long_sidequests",
+      "label": "Progression Long Sidequests",
+      "description": "This controls whether long sidequests (e.g., Lenzo's assistant, withered trees, goron trading) are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_spoils_trading",
+      "label": "Progression Spoils Trading",
+      "description": "This controls whether the items you get by trading in spoils to NPCs are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_minigames",
+      "label": "Progression Minigames",
+      "description": "This controls whether most minigames are randomized (auctions, mail sorting, barrel shooting, bird-man contest).",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_battlesquid",
+      "label": "Progression Battlesquid",
+      "description": "This controls whether the Windfall battleship minigame is randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_free_gifts",
+      "label": "Progression Free Gifts",
+      "description": "This controls whether gifts freely given by NPCs are randomized (Tott, Salvage Corp, imprisoned Tingle).",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_mail",
+      "label": "Progression Mail",
+      "description": "This controls whether items received from the mail are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_platforms_rafts",
+      "label": "Progression Platforms Rafts",
+      "description": "This controls whether lookout platforms and rafts are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_submarines",
+      "label": "Progression Submarines",
+      "description": "This controls whether submarines are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_eye_reef_chests",
+      "label": "Progression Eye Reef Chests",
+      "description": "This controls whether the chests that appear after clearing out the eye reefs are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_big_octos_gunboats",
+      "label": "Progression Big Octos Gunboats",
+      "description": "This controls whether the items dropped by Big Octos and Gunboats are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_triforce_charts",
+      "label": "Progression Triforce Charts",
+      "description": "This controls whether the sunken treasure chests marked on Triforce Charts are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_treasure_charts",
+      "label": "Progression Treasure Charts",
+      "description": "This controls whether the sunken treasure chests marked on Treasure Charts are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_expensive_purchases",
+      "label": "Progression Expensive Purchases",
+      "description": "This controls whether items that cost many Rupees are randomized (Rock Spire shop, auctions, Tingle's letter, trading quest).",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_island_puzzles",
+      "label": "Progression Island Puzzles",
+      "description": "This controls whether various island puzzles are randomized (e.g., chests hidden in unusual places).",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_misc",
+      "label": "Progression Misc",
+      "description": "Miscellaneous locations that don't fit into any of the above categories (outdoors chests, wind shrine, Cyclos, etc).",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_mapcompass",
+      "label": "Randomize Mapcompass",
+      "description": "Controls how dungeon maps and compasses are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "dungeon",
+        "choices": [
+          {
+            "value": "startwith",
+            "label": "Startwith"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "dungeon",
+            "label": "Dungeon"
+          },
+          {
+            "value": "any_dungeon",
+            "label": "Any Dungeon"
+          },
+          {
+            "value": "local",
+            "label": "Local"
+          },
+          {
+            "value": "keylunacy",
+            "label": "Keylunacy"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_smallkeys",
+      "label": "Randomize Smallkeys",
+      "description": "Controls how small keys are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "dungeon",
+        "choices": [
+          {
+            "value": "startwith",
+            "label": "Startwith"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "dungeon",
+            "label": "Dungeon"
+          },
+          {
+            "value": "any_dungeon",
+            "label": "Any Dungeon"
+          },
+          {
+            "value": "local",
+            "label": "Local"
+          },
+          {
+            "value": "keylunacy",
+            "label": "Keylunacy"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_bigkeys",
+      "label": "Randomize Bigkeys",
+      "description": "Controls how big keys are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "dungeon",
+        "choices": [
+          {
+            "value": "startwith",
+            "label": "Startwith"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "dungeon",
+            "label": "Dungeon"
+          },
+          {
+            "value": "any_dungeon",
+            "label": "Any Dungeon"
+          },
+          {
+            "value": "local",
+            "label": "Local"
+          },
+          {
+            "value": "keylunacy",
+            "label": "Keylunacy"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sword_mode",
+      "label": "Sword Mode",
+      "description": "Controls whether you start with the Hero's Sword, the Hero's Sword is randomized, or if there are no swords in the entire game.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "start_with_sword",
+        "choices": [
+          {
+            "value": "start_with_sword",
+            "label": "Start With Sword"
+          },
+          {
+            "value": "no_starting_sword",
+            "label": "No Starting Sword"
+          },
+          {
+            "value": "swords_optional",
+            "label": "Swords Optional"
+          },
+          {
+            "value": "swordless",
+            "label": "Swordless"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "required_bosses",
+      "label": "Required Bosses",
+      "description": "In this mode, you will not be allowed to beat the game until certain randomly-chosen bosses are defeated.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "num_required_bosses",
+      "label": "Num Required Bosses",
+      "description": "Select the number of randomly-chosen bosses that are required in Required Bosses Mode.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 4
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "included_dungeons",
+      "label": "Included Dungeons",
+      "description": "A list of dungeons that should always be included when required bosses mode is on.",
+      "category": "general",
+      "type": {
+        "kind": "multi_select",
+        "defaults": [],
+        "choices": [
+          {
+            "value": "Dragon Roost Cavern",
+            "label": "Dragon Roost Cavern"
+          },
+          {
+            "value": "Earth Temple",
+            "label": "Earth Temple"
+          },
+          {
+            "value": "Forbidden Woods",
+            "label": "Forbidden Woods"
+          },
+          {
+            "value": "Forsaken Fortress",
+            "label": "Forsaken Fortress"
+          },
+          {
+            "value": "Tower of the Gods",
+            "label": "Tower Of The Gods"
+          },
+          {
+            "value": "Wind Temple",
+            "label": "Wind Temple"
+          }
+        ]
+      },
+      "advanced": true,
+      "dependencies": null
+    },
+    {
+      "id": "excluded_dungeons",
+      "label": "Excluded Dungeons",
+      "description": "A list of dungeons that should always be excluded when required bosses mode is on.",
+      "category": "general",
+      "type": {
+        "kind": "multi_select",
+        "defaults": [],
+        "choices": [
+          {
+            "value": "Dragon Roost Cavern",
+            "label": "Dragon Roost Cavern"
+          },
+          {
+            "value": "Earth Temple",
+            "label": "Earth Temple"
+          },
+          {
+            "value": "Forbidden Woods",
+            "label": "Forbidden Woods"
+          },
+          {
+            "value": "Forsaken Fortress",
+            "label": "Forsaken Fortress"
+          },
+          {
+            "value": "Tower of the Gods",
+            "label": "Tower Of The Gods"
+          },
+          {
+            "value": "Wind Temple",
+            "label": "Wind Temple"
+          }
+        ]
+      },
+      "advanced": true,
+      "dependencies": null
+    },
+    {
+      "id": "chest_type_matches_contents",
+      "label": "Chest Type Matches Contents",
+      "description": "Changes the chest type to reflect its contents.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hero_mode",
+      "label": "Hero Mode",
+      "description": "In Hero Mode, you take four times more damage than normal and heart refills will not drop.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "logic_obscurity",
+      "label": "Logic Obscurity",
+      "description": "Obscure tricks are ways of obtaining items that are not obvious and may involve thinking outside the box.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "very_hard",
+            "label": "Very Hard"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "logic_precision",
+      "label": "Logic Precision",
+      "description": "Precise tricks are ways of obtaining items that involve difficult inputs such as accurate aiming or perfect timing.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "very_hard",
+            "label": "Very Hard"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enable_tuner_logic",
+      "label": "Enable Tuner Logic",
+      "description": "If enabled, the randomizer can logically expect the Tingle Tuner for Tingle Chests.",
+      "category": "logic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_dungeon_entrances",
+      "label": "Randomize Dungeon Entrances",
+      "description": "Shuffles around which dungeon entrances take you into which dungeons.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_secret_cave_entrances",
+      "label": "Randomize Secret Cave Entrances",
+      "description": "Shuffles around which secret cave entrances take you into which secret caves.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_miniboss_entrances",
+      "label": "Randomize Miniboss Entrances",
+      "description": "Allows dungeon miniboss doors to act as entrances to be randomized.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_boss_entrances",
+      "label": "Randomize Boss Entrances",
+      "description": "Allows dungeon boss doors to act as entrances to be randomized.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_secret_cave_inner_entrances",
+      "label": "Randomize Secret Cave Inner Entrances",
+      "description": "Allows the pit in Ice Ring Isle's secret cave and the rear exit out of Cliff Plateau Isles' secret cave to act as entrances to be randomized.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_fairy_fountain_entrances",
+      "label": "Randomize Fairy Fountain Entrances",
+      "description": "Allows the pits that lead down into Fairy Fountains to act as entrances to be randomized.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "mix_entrances",
+      "label": "Mix Entrances",
+      "description": "Controls how the different types (pools) of randomized entrances should be shuffled.",
+      "category": "entrances",
+      "type": {
+        "kind": "select",
+        "default": "separate_pools",
+        "choices": [
+          {
+            "value": "separate_pools",
+            "label": "Separate Pools"
+          },
+          {
+            "value": "mix_pools",
+            "label": "Mix Pools"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_enemies",
+      "label": "Randomize Enemies",
+      "description": "Randomizes the placement of non-boss enemies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_starting_island",
+      "label": "Randomize Starting Island",
+      "description": "Randomizes which island you start the game on.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_charts",
+      "label": "Randomize Charts",
+      "description": "Randomizes which sector is drawn on each Triforce/Treasure Chart.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "swift_sail",
+      "label": "Swift Sail",
+      "description": "Sailing speed is doubled and the direction of the wind is always at your back as long as the sail is out.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "instant_text_boxes",
+      "label": "Instant Text Boxes",
+      "description": "Text appears instantly.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "reveal_full_sea_chart",
+      "label": "Reveal Full Sea Chart",
+      "description": "Start the game with the sea chart fully drawn out.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "add_shortcut_warps_between_dungeons",
+      "label": "Add Shortcut Warps Between Dungeons",
+      "description": "Adds new warp pots that act as shortcuts connecting dungeons to each other directly.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "skip_rematch_bosses",
+      "label": "Skip Rematch Bosses",
+      "description": "Removes the door in Ganon's Tower that only unlocks when you defeat the rematch versions of Gohma, Kalle Demos, Jalhalla, and Molgera.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "remove_music",
+      "label": "Remove Music",
+      "description": "Mutes all ingame music.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

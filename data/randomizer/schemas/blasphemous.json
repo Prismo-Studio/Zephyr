@@ -1,0 +1,378 @@
+{
+  "id": "blasphemous",
+  "name": "Blasphemous",
+  "version": "0.4.7",
+  "description": "Blasphemous is a challenging Metroidvania set in the cursed land of Cvstodia.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "prie_dieu_warp",
+      "label": "Prie Dieu Warp",
+      "description": "Automatically unlocks the ability to warp between Prie Dieu shrines.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "skip_cutscenes",
+      "label": "Skip Cutscenes",
+      "description": "Automatically skips most cutscenes.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "corpse_hints",
+      "label": "Corpse Hints",
+      "description": "Changes the 34 corpses in game to give various hints about item locations.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "difficulty",
+      "label": "Difficulty",
+      "description": "Adjusts the overall difficulty of the randomizer, including upgrades required to defeat bosses and advanced movement tricks or glitches.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "penitence",
+      "label": "Penitence",
+      "description": "Allows one of the three Penitences to be chosen at the beginning of the game.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "starting_location",
+      "label": "Starting Location",
+      "description": "Choose where to start the randomizer.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "brotherhood",
+        "choices": [
+          {
+            "value": "brotherhood",
+            "label": "Brotherhood"
+          },
+          {
+            "value": "albero",
+            "label": "Albero"
+          },
+          {
+            "value": "convent",
+            "label": "Convent"
+          },
+          {
+            "value": "grievance",
+            "label": "Grievance"
+          },
+          {
+            "value": "knot_of_words",
+            "label": "Knot Of Words"
+          },
+          {
+            "value": "rooftops",
+            "label": "Rooftops"
+          },
+          {
+            "value": "mourning_havoc",
+            "label": "Mourning Havoc"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ending",
+      "label": "Ending",
+      "description": "Choose which ending is required to complete the game.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "any_ending",
+        "choices": [
+          {
+            "value": "any_ending",
+            "label": "Any Ending"
+          },
+          {
+            "value": "ending_a",
+            "label": "Ending A"
+          },
+          {
+            "value": "ending_c",
+            "label": "Ending C"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "skip_long_quests",
+      "label": "Skip Long Quests",
+      "description": "Ensures that the rewards for long quests will be filler items.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "thorn_shuffle",
+      "label": "Thorn Shuffle",
+      "description": "Shuffles the Thorn given by Deogracias and all Thorn upgrades into the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "anywhere",
+        "choices": [
+          {
+            "value": "anywhere",
+            "label": "Anywhere"
+          },
+          {
+            "value": "local_only",
+            "label": "Local Only"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "dash_shuffle",
+      "label": "Dash Shuffle",
+      "description": "Turns the ability to dash into an item that must be found in the multiworld.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "wall_climb_shuffle",
+      "label": "Wall Climb Shuffle",
+      "description": "Turns the ability to climb walls with your sword into an item that must be found in the multiworld.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "reliquary_shuffle",
+      "label": "Reliquary Shuffle",
+      "description": "Adds the True Torment exclusive Reliquary rosary beads into the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "boots_of_pleading",
+      "label": "Boots Of Pleading",
+      "description": "Adds the custom relic Boots of Pleading into the item pool, which grants the ability to fall onto spikes and survive.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "purified_hand",
+      "label": "Purified Hand",
+      "description": "Adds the custom relic Purified Hand of the Nun into the item pool, which grants the ability to jump a second time in mid-air.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "start_wheel",
+      "label": "Start Wheel",
+      "description": "Changes the beginning gift to The Young Mason's Wheel.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "skill_randomizer",
+      "label": "Skill Randomizer",
+      "description": "Randomizes the abilities from the skill tree into the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemy_randomizer",
+      "label": "Enemy Randomizer",
+      "description": "Randomizes the enemies that appear in each room.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "randomized",
+            "label": "Randomized"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemy_groups",
+      "label": "Enemy Groups",
+      "description": "Randomized enemies will be chosen from sets of specific groups.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemy_scaling",
+      "label": "Enemy Scaling",
+      "description": "Randomized enemies will have their stats increased or decreased depending on the area they appear in.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

@@ -1,0 +1,703 @@
+{
+  "id": "kdl3",
+  "name": "Kirby's Dream Land 3",
+  "version": "0.1.6",
+  "description": "Join Kirby and his Animal Friends on an adventure to collect Heart Stars and drive Dark Matter away from Dream Land!",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "remote_items",
+      "label": "Remote Items",
+      "description": "Enables receiving items from your own world, primarily for co-op play.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "game_language",
+      "label": "Game Language",
+      "description": "The language that the game should display.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "english",
+        "choices": [
+          {
+            "value": "japanese",
+            "label": "Japanese"
+          },
+          {
+            "value": "english",
+            "label": "English"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "Zero: collect the Heart Stars, and defeat Zero in the Hyper Zone.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "zero",
+        "choices": [
+          {
+            "value": "zero",
+            "label": "Zero"
+          },
+          {
+            "value": "boss_butch",
+            "label": "Boss Butch"
+          },
+          {
+            "value": "mg5",
+            "label": "Mg5"
+          },
+          {
+            "value": "jumping",
+            "label": "Jumping"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal_speed",
+      "label": "Goal Speed",
+      "description": "Normal: the goal is unlocked after purifying the five bosses Fast: the goal is unlocked after acquiring the target number of Heart Stars",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "fast",
+            "label": "Fast"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_heart_stars",
+      "label": "Max Heart Stars",
+      "description": "Maximum number of heart stars to include in the pool of items.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 5,
+        "max": 99,
+        "step": 1,
+        "default": 30
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "heart_stars_required",
+      "label": "Heart Stars Required",
+      "description": "Percentage of heart stars required to purify the five bosses and reach Zero.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "filler_percentage",
+      "label": "Filler Percentage",
+      "description": "Percentage of non-required Heart Stars to be converted to filler items (1-Ups, Maxim Tomatoes, Invincibility Candy).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_percentage",
+      "label": "Trap Percentage",
+      "description": "Percentage of filler items to be converted to trap items (Gooey Bags, Slowness, Eject Ability).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gooey_trap_weight",
+      "label": "Gooey Trap Weight",
+      "description": "Chance that any given trap is a Gooey Bag (spawns Gooey when you receive it).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "slow_trap_weight",
+      "label": "Slow Trap Weight",
+      "description": "Chance that any given trap is Slowness (halves your max speed for 15 seconds when you receive it).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ability_trap_weight",
+      "label": "Ability Trap Weight",
+      "description": "Chance that any given trap is an Eject Ability (ejects your ability when you receive it).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "jumping_target",
+      "label": "Jumping Target",
+      "description": "The required score needed to complete the Jumping minigame.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 25,
+        "step": 1,
+        "default": 10
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "stage_shuffle",
+      "label": "Stage Shuffle",
+      "description": "None: No stage shuffling.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "same_world",
+            "label": "Same World"
+          },
+          {
+            "value": "pattern",
+            "label": "Pattern"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "boss_shuffle",
+      "label": "Boss Shuffle",
+      "description": "None: Bosses will remain in their vanilla locations Shuffled: Bosses will be shuffled amongst each other Full: Bosses will be randomized Singularity: All (non-Zero) bosses will be replaced with a single boss Supports plando placement.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "singularity",
+            "label": "Singularity"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "allow_bb",
+      "label": "Allow Bb",
+      "description": "Allow Boss Butch variants of bosses in Boss Shuffle.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "enabled",
+            "label": "Enabled"
+          },
+          {
+            "value": "enforced",
+            "label": "Enforced"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "animal_randomization",
+      "label": "Animal Randomization",
+      "description": "Disabled: all animal positions will be vanilla.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "copy_ability_randomization",
+      "label": "Copy Ability Randomization",
+      "description": "Disabled: enemies give regular copy abilities and health.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "enabled",
+            "label": "Enabled"
+          },
+          {
+            "value": "enabled_plus_minus",
+            "label": "Enabled Plus Minus"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "strict_bosses",
+      "label": "Strict Bosses",
+      "description": "If enabled, one will not be able to move onto the next world until the previous world's boss has been purified.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "open_world",
+      "label": "Open World",
+      "description": "If enabled, all 6 stages will be unlocked upon entering a world for the first time.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ow_boss_requirement",
+      "label": "Ow Boss Requirement",
+      "description": "The amount of stages completed needed to unlock the boss of a world when Open World is turned on.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "boss_requirement_random",
+      "label": "Boss Requirement Random",
+      "description": "If enabled, boss purification will require a random amount of Heart Stars.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "consumables",
+      "label": "Consumables",
+      "description": "When enabled, adds all 1-Ups and Maxim Tomatoes as possible locations.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "starsanity",
+      "label": "Starsanity",
+      "description": "When enabled, every star in a given stage will become a check.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gifting",
+      "label": "Gifting",
+      "description": "When enabled, the goal game item will be sent to other compatible games as a gift, and you can receive gifts from other players.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "kirby_flavor_preset",
+      "label": "Kirby Flavor Preset",
+      "description": "The color of Kirby, from a list of presets.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "default",
+        "choices": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "bubblegum",
+            "label": "Bubblegum"
+          },
+          {
+            "value": "cherry",
+            "label": "Cherry"
+          },
+          {
+            "value": "blueberry",
+            "label": "Blueberry"
+          },
+          {
+            "value": "lemon",
+            "label": "Lemon"
+          },
+          {
+            "value": "kiwi",
+            "label": "Kiwi"
+          },
+          {
+            "value": "grape",
+            "label": "Grape"
+          },
+          {
+            "value": "chocolate",
+            "label": "Chocolate"
+          },
+          {
+            "value": "marshmallow",
+            "label": "Marshmallow"
+          },
+          {
+            "value": "licorice",
+            "label": "Licorice"
+          },
+          {
+            "value": "watermelon",
+            "label": "Watermelon"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "lime",
+            "label": "Lime"
+          },
+          {
+            "value": "lavender",
+            "label": "Lavender"
+          },
+          {
+            "value": "miku",
+            "label": "Miku"
+          },
+          {
+            "value": "custom",
+            "label": "Custom"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gooey_flavor_preset",
+      "label": "Gooey Flavor Preset",
+      "description": "The color of Gooey, from a list of presets.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "default",
+        "choices": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "bubblegum",
+            "label": "Bubblegum"
+          },
+          {
+            "value": "cherry",
+            "label": "Cherry"
+          },
+          {
+            "value": "blueberry",
+            "label": "Blueberry"
+          },
+          {
+            "value": "lemon",
+            "label": "Lemon"
+          },
+          {
+            "value": "kiwi",
+            "label": "Kiwi"
+          },
+          {
+            "value": "grape",
+            "label": "Grape"
+          },
+          {
+            "value": "chocolate",
+            "label": "Chocolate"
+          },
+          {
+            "value": "marshmallow",
+            "label": "Marshmallow"
+          },
+          {
+            "value": "licorice",
+            "label": "Licorice"
+          },
+          {
+            "value": "watermelon",
+            "label": "Watermelon"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "lime",
+            "label": "Lime"
+          },
+          {
+            "value": "lavender",
+            "label": "Lavender"
+          },
+          {
+            "value": "custom",
+            "label": "Custom"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "music_shuffle",
+      "label": "Music Shuffle",
+      "description": "None: default music will play Shuffled: music will be shuffled amongst each other Full: random music will play in each room Note that certain songs will not be chosen in shuffled or full",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "virtual_console",
+      "label": "Virtual Console",
+      "description": "Adds the ability to enable 2 of the Virtual Console changes.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "flash_reduction",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "flash_reduction",
+            "label": "Flash Reduction"
+          },
+          {
+            "value": "color_changes",
+            "label": "Color Changes"
+          },
+          {
+            "value": "both",
+            "label": "Both"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

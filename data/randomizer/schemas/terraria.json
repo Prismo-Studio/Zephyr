@@ -1,0 +1,232 @@
+{
+  "id": "terraria",
+  "name": "Terraria",
+  "version": "0.1.6",
+  "description": "Terraria is a 2D multiplayer sandbox game featuring mining, building, exploration, and combat.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "calamity",
+      "label": "Calamity",
+      "description": "Calamity mod bosses and events are shuffled",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "getfixedboi",
+      "label": "Getfixedboi",
+      "description": "Generation accomodates the secret, very difficult \"getfixedboi\" seed",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "The victory condition for your run.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "mechanical_bosses",
+        "choices": [
+          {
+            "value": "mechanical_bosses",
+            "label": "Mechanical Bosses"
+          },
+          {
+            "value": "calamitas_clone",
+            "label": "Calamitas Clone"
+          },
+          {
+            "value": "plantera",
+            "label": "Plantera"
+          },
+          {
+            "value": "golem",
+            "label": "Golem"
+          },
+          {
+            "value": "empress_of_light",
+            "label": "Empress Of Light"
+          },
+          {
+            "value": "lunatic_cultist",
+            "label": "Lunatic Cultist"
+          },
+          {
+            "value": "astrum_deus",
+            "label": "Astrum Deus"
+          },
+          {
+            "value": "moon_lord",
+            "label": "Moon Lord"
+          },
+          {
+            "value": "providence_the_profaned_goddess",
+            "label": "Providence The Profaned Goddess"
+          },
+          {
+            "value": "devourer_of_gods",
+            "label": "Devourer Of Gods"
+          },
+          {
+            "value": "yharon_dragon_of_rebirth",
+            "label": "Yharon Dragon Of Rebirth"
+          },
+          {
+            "value": "zenith",
+            "label": "Zenith"
+          },
+          {
+            "value": "calamity_final_bosses",
+            "label": "Calamity Final Bosses"
+          },
+          {
+            "value": "primordial_wyrm",
+            "label": "Primordial Wyrm"
+          },
+          {
+            "value": "boss_rush",
+            "label": "Boss Rush"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "early_achievements",
+      "label": "Early Achievements",
+      "description": "Adds checks upon collecting early Pre-Hardmode achievements.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "normal_achievements",
+      "label": "Normal Achievements",
+      "description": "Adds checks upon collecting achivements not covered by the other options.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "grindy_achievements",
+      "label": "Grindy Achievements",
+      "description": "Adds checks upon collecting grindy achievements",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fishing_achievements",
+      "label": "Fishing Achievements",
+      "description": "Adds checks upon collecting fishing quest achievements",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fill_extra_checks_with",
+      "label": "Fill Extra Checks With",
+      "description": "Applies if you have achievements enabled.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "useful_items",
+        "choices": [
+          {
+            "value": "coins",
+            "label": "Coins"
+          },
+          {
+            "value": "useful_items",
+            "label": "Useful Items"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

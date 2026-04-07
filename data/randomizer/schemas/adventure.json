@@ -1,0 +1,327 @@
+{
+  "id": "adventure",
+  "name": "Adventure",
+  "version": "0.3.9",
+  "description": "Adventure for the Atari 2600 is an early graphical adventure game.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "dragon_slay_check",
+      "label": "Dragon Slay Check",
+      "description": "If true, slaying each dragon for the first time is a check",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "bat_logic",
+      "label": "Bat Logic",
+      "description": "How the bat is considered for logic With cannot_break, the bat cannot pick up an item that starts out-of-logic until the player touches it With can_break, the bat is free to pick up any items, even if they are out-of-logic With use_logic, the bat can pick up anything just like can_break, and locations are no longer considered to require the magnet or bridge to collect, since the bat can retrieve these.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "can_break",
+        "choices": [
+          {
+            "value": "cannot_break",
+            "label": "Cannot Break"
+          },
+          {
+            "value": "can_break",
+            "label": "Can Break"
+          },
+          {
+            "value": "use_logic",
+            "label": "Use Logic"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "freeincarnate_max",
+      "label": "Freeincarnate Max",
+      "description": "How many maximum freeincarnate items to allow When done generating items, any remaining item slots will be filled with freeincarnates, up to this maximum amount.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 17,
+        "step": 1,
+        "default": 17
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "dragon_rando_type",
+      "label": "Dragon Rando Type",
+      "description": "How to randomize the dragon starting locations normal: Grundle is in the overworld, Yorgle in the white castle, and Rhindle in the black castle shuffle: A random dragon is placed in the overworld, one in the white castle, and one in the black castle overworldplus: Dragons can be placed anywhere, but at least one will be in the overworld randomized: Dragons can be anywhere except the credits room Supported values: normal, shuffle, overworldplus, randomized Default value: shuffle",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "shuffle",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "overworldplus",
+            "label": "Overworldplus"
+          },
+          {
+            "value": "randomized",
+            "label": "Randomized"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "connector_multi_slot",
+      "label": "Connector Multi Slot",
+      "description": "If true, the client and lua connector will add lowest 8 bits of the player slot to the port number used to connect to each other, to simplify connecting multiple local clients to local EmuHawk instances.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "yorgle_speed",
+      "label": "Yorgle Speed",
+      "description": "Sets Yorgle's initial speed.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 9,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "yorgle_min_speed",
+      "label": "Yorgle Min Speed",
+      "description": "Sets Yorgle's speed when all speed reducers are found.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 9,
+        "step": 1,
+        "default": 1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "grundle_speed",
+      "label": "Grundle Speed",
+      "description": "Sets Grundle's initial speed.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 9,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "grundle_min_speed",
+      "label": "Grundle Min Speed",
+      "description": "Sets Grundle's speed when all speed reducers are found.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 9,
+        "step": 1,
+        "default": 1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rhindle_speed",
+      "label": "Rhindle Speed",
+      "description": "Sets Rhindle's initial speed.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 9,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rhindle_min_speed",
+      "label": "Rhindle Min Speed",
+      "description": "Sets Rhindle's speed when all speed reducers are found.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 9,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "difficulty_switch_a",
+      "label": "Difficulty Switch A",
+      "description": "Set availability of left difficulty switch This controls the speed of the dragons' bite animation",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "hard_with_unlock_item",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "locked_hard",
+            "label": "Locked Hard"
+          },
+          {
+            "value": "hard_with_unlock_item",
+            "label": "Hard With Unlock Item"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "difficulty_switch_b",
+      "label": "Difficulty Switch B",
+      "description": "Set availability of right difficulty switch On hard, dragons will run away from the sword",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "hard_with_unlock_item",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "locked_hard",
+            "label": "Locked Hard"
+          },
+          {
+            "value": "hard_with_unlock_item",
+            "label": "Hard With Unlock Item"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "start_castle",
+      "label": "Start Castle",
+      "description": "Choose or randomize which castle to start in front of.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "yellow",
+        "choices": [
+          {
+            "value": "yellow",
+            "label": "Yellow"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

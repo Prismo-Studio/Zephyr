@@ -1,0 +1,903 @@
+{
+  "id": "ladx",
+  "name": "Links Awakening DX",
+  "version": "0.1.6",
+  "description": "After a previous adventure, Link is stranded on Koholint Island, full of mystery and familiar faces.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "logic",
+      "label": "Logic",
+      "description": "Affects where items are allowed to be placed.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "glitched",
+            "label": "Glitched"
+          },
+          {
+            "value": "hell",
+            "label": "Hell"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tradequest",
+      "label": "Tradequest",
+      "description": "Trade quest items are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rooster",
+      "label": "Rooster",
+      "description": "Adds the rooster to the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "experimental_dungeon_shuffle",
+      "label": "Experimental Dungeon Shuffle",
+      "description": "Randomizes dungeon entrances with each other.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "experimental_entrance_shuffle",
+      "label": "Experimental Entrance Shuffle",
+      "description": "Randomizes where overworld entrances lead.",
+      "category": "entrances",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "simple",
+            "label": "Simple"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "The Goal of the game.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "instruments",
+        "choices": [
+          {
+            "value": "instruments",
+            "label": "Instruments"
+          },
+          {
+            "value": "seashells",
+            "label": "Seashells"
+          },
+          {
+            "value": "open",
+            "label": "Open"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "instrument_count",
+      "label": "Instrument Count",
+      "description": "Sets the number of instruments required to open the Egg.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 8,
+        "step": 1,
+        "default": 8
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "link_palette",
+      "label": "Link Palette",
+      "description": "Sets Link's palette.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "green",
+            "label": "Green"
+          },
+          {
+            "value": "yellow",
+            "label": "Yellow"
+          },
+          {
+            "value": "red",
+            "label": "Red"
+          },
+          {
+            "value": "blue",
+            "label": "Blue"
+          },
+          {
+            "value": "invert_a",
+            "label": "Invert A"
+          },
+          {
+            "value": "invert_b",
+            "label": "Invert B"
+          },
+          {
+            "value": "invert_c",
+            "label": "Invert C"
+          },
+          {
+            "value": "invert_d",
+            "label": "Invert D"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "warps",
+      "label": "Warps",
+      "description": "**Improved:** Adds remake style warp screen to the game.",
+      "category": "entrances",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "improved",
+            "label": "Improved"
+          },
+          {
+            "value": "improved_additional",
+            "label": "Improved Additional"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trendy_game",
+      "label": "Trendy Game",
+      "description": "**Easy:** All of the items hold still for you.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "harder",
+            "label": "Harder"
+          },
+          {
+            "value": "hardest",
+            "label": "Hardest"
+          },
+          {
+            "value": "impossible",
+            "label": "Impossible"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gfxmod",
+      "label": "Gfxmod",
+      "description": "If enabled, the patcher will prompt the user for a modification file to change sprites in the game and optionally some text.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "palette",
+      "label": "Palette",
+      "description": "Sets the palette for the game.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "1bit",
+            "label": "1Bit"
+          },
+          {
+            "value": "2bit",
+            "label": "2Bit"
+          },
+          {
+            "value": "greyscale",
+            "label": "Greyscale"
+          },
+          {
+            "value": "pink",
+            "label": "Pink"
+          },
+          {
+            "value": "inverted",
+            "label": "Inverted"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "text_shuffle",
+      "label": "Text Shuffle",
+      "description": "Shuffles all text in the game.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "foreign_item_icons",
+      "label": "Foreign Item Icons",
+      "description": "Choose how to display foreign items.",
+      "category": "items",
+      "type": {
+        "kind": "select",
+        "default": "guess_by_name",
+        "choices": [
+          {
+            "value": "guess_by_name",
+            "label": "Guess By Name"
+          },
+          {
+            "value": "indicate_progression",
+            "label": "Indicate Progression"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_nightmare_keys",
+      "label": "Shuffle Nightmare Keys",
+      "description": "**Original Dungeon:** The item will be within its original dungeon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "original_dungeon",
+        "choices": [
+          {
+            "value": "original_dungeon",
+            "label": "Original Dungeon"
+          },
+          {
+            "value": "own_dungeons",
+            "label": "Own Dungeons"
+          },
+          {
+            "value": "own_world",
+            "label": "Own World"
+          },
+          {
+            "value": "any_world",
+            "label": "Any World"
+          },
+          {
+            "value": "different_world",
+            "label": "Different World"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_small_keys",
+      "label": "Shuffle Small Keys",
+      "description": "**Original Dungeon:** The item will be within its original dungeon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "original_dungeon",
+        "choices": [
+          {
+            "value": "original_dungeon",
+            "label": "Original Dungeon"
+          },
+          {
+            "value": "own_dungeons",
+            "label": "Own Dungeons"
+          },
+          {
+            "value": "own_world",
+            "label": "Own World"
+          },
+          {
+            "value": "any_world",
+            "label": "Any World"
+          },
+          {
+            "value": "different_world",
+            "label": "Different World"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_maps",
+      "label": "Shuffle Maps",
+      "description": "**Original Dungeon:** The item will be within its original dungeon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "original_dungeon",
+        "choices": [
+          {
+            "value": "original_dungeon",
+            "label": "Original Dungeon"
+          },
+          {
+            "value": "own_dungeons",
+            "label": "Own Dungeons"
+          },
+          {
+            "value": "own_world",
+            "label": "Own World"
+          },
+          {
+            "value": "any_world",
+            "label": "Any World"
+          },
+          {
+            "value": "different_world",
+            "label": "Different World"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_compasses",
+      "label": "Shuffle Compasses",
+      "description": "**Original Dungeon:** The item will be within its original dungeon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "original_dungeon",
+        "choices": [
+          {
+            "value": "original_dungeon",
+            "label": "Original Dungeon"
+          },
+          {
+            "value": "own_dungeons",
+            "label": "Own Dungeons"
+          },
+          {
+            "value": "own_world",
+            "label": "Own World"
+          },
+          {
+            "value": "any_world",
+            "label": "Any World"
+          },
+          {
+            "value": "different_world",
+            "label": "Different World"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_stone_beaks",
+      "label": "Shuffle Stone Beaks",
+      "description": "**Original Dungeon:** The item will be within its original dungeon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "original_dungeon",
+        "choices": [
+          {
+            "value": "original_dungeon",
+            "label": "Original Dungeon"
+          },
+          {
+            "value": "own_dungeons",
+            "label": "Own Dungeons"
+          },
+          {
+            "value": "own_world",
+            "label": "Own World"
+          },
+          {
+            "value": "any_world",
+            "label": "Any World"
+          },
+          {
+            "value": "different_world",
+            "label": "Different World"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "music",
+      "label": "Music",
+      "description": "**Vanilla:** Regular Music **Shuffled:** Shuffled Music **Off:** No music",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "off",
+            "label": "Off"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_instruments",
+      "label": "Shuffle Instruments",
+      "description": "**Original Dungeon:** The item will be within its original dungeon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "original_dungeon",
+            "label": "Original Dungeon"
+          },
+          {
+            "value": "own_dungeons",
+            "label": "Own Dungeons"
+          },
+          {
+            "value": "own_world",
+            "label": "Own World"
+          },
+          {
+            "value": "any_world",
+            "label": "Any World"
+          },
+          {
+            "value": "different_world",
+            "label": "Different World"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "music_change_condition",
+      "label": "Music Change Condition",
+      "description": "Controls how the music changes.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "always",
+        "choices": [
+          {
+            "value": "sword",
+            "label": "Sword"
+          },
+          {
+            "value": "always",
+            "label": "Always"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "nag_messages",
+      "label": "Nag Messages",
+      "description": "Controls if nag messages are shown when rocks and crystals are touched.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ap_title_screen",
+      "label": "Ap Title Screen",
+      "description": "Enables AP specific title screen and disables the intro cutscene.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "boots_controls",
+      "label": "Boots Controls",
+      "description": "Adds an additional button to activate Pegasus Boots (does nothing if you haven't picked up your boots!) **Vanilla:** Nothing changes, you have to equip the boots to use them.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "bracelet",
+            "label": "Bracelet"
+          },
+          {
+            "value": "press_a",
+            "label": "Press A"
+          },
+          {
+            "value": "press_b",
+            "label": "Press B"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "stealing",
+      "label": "Stealing",
+      "description": "Puts stealing from the shop in logic if the player has a sword.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "out_of_logic",
+        "choices": [
+          {
+            "value": "in_logic",
+            "label": "In Logic"
+          },
+          {
+            "value": "out_of_logic",
+            "label": "Out Of Logic"
+          },
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "quickswap",
+      "label": "Quickswap",
+      "description": "Instead of opening the map, the *SELECT* button swaps the top item of your inventory on to your *A* or *B* button.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "a",
+            "label": "A"
+          },
+          {
+            "value": "b",
+            "label": "B"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hard_mode",
+      "label": "Hard Mode",
+      "description": "**Oracle:** Less iframes and health from drops.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "oracle",
+            "label": "Oracle"
+          },
+          {
+            "value": "hero",
+            "label": "Hero"
+          },
+          {
+            "value": "ohko",
+            "label": "Ohko"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "low_hp_beep",
+      "label": "Low Hp Beep",
+      "description": "Slows or disables the low health beeping sound.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "default",
+        "choices": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "slow",
+            "label": "Slow"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "text_mode",
+      "label": "Text Mode",
+      "description": "**Fast:** Makes text appear twice as fast.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "fast",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "fast",
+            "label": "Fast"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "no_flash",
+      "label": "No Flash",
+      "description": "Remove the flashing light effects from Mamu, shopkeeper and MadBatter.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "in_game_hints",
+      "label": "In Game Hints",
+      "description": "When enabled, owl statues and library books may indicate the location of your items in the multiworld.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tarins_gift",
+      "label": "Tarins Gift",
+      "description": "**Local Progression:** Forces Tarin's gift to be an item that immediately opens up local checks.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "local_progression",
+        "choices": [
+          {
+            "value": "local_progression",
+            "label": "Local Progression"
+          },
+          {
+            "value": "bush_breaker",
+            "label": "Bush Breaker"
+          },
+          {
+            "value": "any_item",
+            "label": "Any Item"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "overworld",
+      "label": "Overworld",
+      "description": "**Open Mabe:** Replaces rock on the east side of Mabe Village with bushes, allowing access to Ukuku Prairie without Power Bracelet.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "open_mabe",
+            "label": "Open Mabe"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "stabilize_item_pool",
+      "label": "Stabilize Item Pool",
+      "description": "By default, some rupees in the item pool are randomly swapped with bombs, arrows, powders, or capacity upgrades.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

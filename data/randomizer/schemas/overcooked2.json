@@ -1,0 +1,321 @@
+{
+  "id": "overcooked2",
+  "name": "Overcooked! 2",
+  "version": "0.3.8",
+  "description": "Overcooked!",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "location_balancing",
+      "label": "Location Balancing",
+      "description": "Location balancing affects the density of progression items found in your world relative to other worlds.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "compromise",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "compromise",
+            "label": "Compromise"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ramp_tricks",
+      "label": "Ramp Tricks",
+      "description": "If enabled, generated games may require sequence breaks on the overworld map.",
+      "category": "logic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "deathlink",
+      "label": "Deathlink",
+      "description": "DeathLink is an opt-in feature for Multiworlds where individual death events are propagated to all games with DeathLink enabled.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "death_only",
+            "label": "Death Only"
+          },
+          {
+            "value": "death_and_overcook",
+            "label": "Death And Overcook"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_level_order",
+      "label": "Shuffle Level Order",
+      "description": "Shuffles the order of kitchens on the overworld map.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "include_dlcs",
+      "label": "Include Dlcs",
+      "description": "Which DLCs should be included when 'Shuffle Level Order' is enabled?'",
+      "category": "general",
+      "type": {
+        "kind": "multi_select",
+        "defaults": [
+          "Seasonal",
+          "Story"
+        ],
+        "choices": [
+          {
+            "value": "Campfire Cook Off",
+            "label": "Campfire Cook Off"
+          },
+          {
+            "value": "Carnival of Chaos",
+            "label": "Carnival Of Chaos"
+          },
+          {
+            "value": "Night of the Hangry Horde",
+            "label": "Night Of The Hangry Horde"
+          },
+          {
+            "value": "Seasonal",
+            "label": "Seasonal"
+          },
+          {
+            "value": "Story",
+            "label": "Story"
+          },
+          {
+            "value": "Surf 'n' Turf",
+            "label": "Surf 'N' Turf"
+          }
+        ]
+      },
+      "advanced": true,
+      "dependencies": null
+    },
+    {
+      "id": "include_horde_levels",
+      "label": "Include Horde Levels",
+      "description": "Includes \"Horde Defense\" levels in the pool of possible kitchens when Shuffle Level Order is enabled.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "prep_levels",
+      "label": "Prep Levels",
+      "description": "Choose How \"Prep Levels\" are handled (levels where the timer does not start until the first order is served): - Original: Prep Levels may appear - Excluded: Prep Levels are excluded from the pool during level shuffling - All You Can Eat: Prep Levels may appear, but the timer automatically starts.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "excluded",
+        "choices": [
+          {
+            "value": "original",
+            "label": "Original"
+          },
+          {
+            "value": "excluded",
+            "label": "Excluded"
+          },
+          {
+            "value": "all_you_can_eat",
+            "label": "All You Can Eat"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "kevin_levels",
+      "label": "Kevin Levels",
+      "description": "Includes the 8 Kevin level locations on the map as unlockables.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fix_bugs",
+      "label": "Fix Bugs",
+      "description": "Fixes Bugs Present in the base game: - Double Serving Exploit - Sink Bug - Control Stick Cancel/Throw Bug - Can't Throw Near Empty Burner Bug",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shorter_level_duration",
+      "label": "Shorter Level Duration",
+      "description": "Modifies level duration to be about 1/3rd shorter than in the original game, thus bringing the item discovery pace in line with other popular Archipelago games.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "short_horde_levels",
+      "label": "Short Horde Levels",
+      "description": "Modifies horde levels to contain roughly 1/3rd fewer waves than in the original game.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "always_preserve_cooking_progress",
+      "label": "Always Preserve Cooking Progress",
+      "description": "Modifies the game to behave more like AYCE, where adding an item to an in-progress container doesn't reset the entire progress bar.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "always_serve_oldest_order",
+      "label": "Always Serve Oldest Order",
+      "description": "Modifies the game so that serving an expired order doesn't target the ticket with the highest tip.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "display_leaderboard_scores",
+      "label": "Display Leaderboard Scores",
+      "description": "Modifies the Overworld map to fetch and display the current world records for each level.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "stars_to_win",
+      "label": "Stars To Win",
+      "description": "Number of stars required to unlock 6-6.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 60
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "star_threshold_scale",
+      "label": "Star Threshold Scale",
+      "description": "How difficult should the third star for each level be on a scale of 1-100%, where 100% is the current world record score and 45% is the average vanilla 4-star score.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "default": 35
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

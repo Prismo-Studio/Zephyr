@@ -1,0 +1,2972 @@
+{
+  "id": "witness",
+  "name": "The Witness",
+  "version": "0.6.4",
+  "description": "The Witness is an open-world puzzle game with dozens of locations to explore and over 500 puzzles.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "puzzle_randomization",
+      "label": "Puzzle Randomization",
+      "description": "Puzzles in this randomizer are randomly generated.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "sigma_normal",
+        "choices": [
+          {
+            "value": "sigma_normal",
+            "label": "Sigma Normal"
+          },
+          {
+            "value": "sigma_expert",
+            "label": "Sigma Expert"
+          },
+          {
+            "value": "umbra_variety",
+            "label": "Umbra Variety"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_symbols",
+      "label": "Shuffle Symbols",
+      "description": "If on, you will need to unlock puzzle symbols as items to be able to solve the panels that contain those symbols.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_doors",
+      "label": "Shuffle Doors",
+      "description": "If on, opening doors, moving bridges etc.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "panels",
+            "label": "Panels"
+          },
+          {
+            "value": "doors",
+            "label": "Doors"
+          },
+          {
+            "value": "mixed",
+            "label": "Mixed"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "door_groupings",
+      "label": "Door Groupings",
+      "description": "Controls how door items are grouped.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "regional",
+            "label": "Regional"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_boat",
+      "label": "Shuffle Boat",
+      "description": "If on, adds a \"Boat\" item to the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_lasers",
+      "label": "Shuffle Lasers",
+      "description": "If on, the 11 lasers are turned into items and will activate on their own upon receiving them.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "local",
+            "label": "Local"
+          },
+          {
+            "value": "anywhere",
+            "label": "Anywhere"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "disable_non_randomized_puzzles",
+      "label": "Disable Non Randomized Puzzles",
+      "description": "Disables puzzles that cannot be randomized.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_discarded_panels",
+      "label": "Shuffle Discarded Panels",
+      "description": "Adds Discarded Panels into the location pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_vault_boxes",
+      "label": "Shuffle Vault Boxes",
+      "description": "Adds Vault Boxes to the location pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "obelisk_keys",
+      "label": "Obelisk Keys",
+      "description": "Add one Obelisk Key item per Obelisk, locking you out of solving any of the associated Environmental Puzzles.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "unlockable_warps",
+      "label": "Unlockable Warps",
+      "description": "Adds unlockable fast travel points to the game.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_EPs",
+      "label": "Shuffle Eps",
+      "description": "Adds Environmental/Obelisk Puzzles into the location pool.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "individual",
+            "label": "Individual"
+          },
+          {
+            "value": "obelisk_sides",
+            "label": "Obelisk Sides"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "EP_difficulty",
+      "label": "Ep Difficulty",
+      "description": "When \"Shuffle Environmental Puzzles\" is on, this setting governs which EPs are eligible for the location pool.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "tedious",
+            "label": "Tedious"
+          },
+          {
+            "value": "eclipse",
+            "label": "Eclipse"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_postgame",
+      "label": "Shuffle Postgame",
+      "description": "Adds locations into the pool that are guaranteed to become accessible after or at the same time as your goal.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "victory_condition",
+      "label": "Victory Condition",
+      "description": "Set the victory condition for this world.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "elevator",
+        "choices": [
+          {
+            "value": "elevator",
+            "label": "Elevator"
+          },
+          {
+            "value": "challenge",
+            "label": "Challenge"
+          },
+          {
+            "value": "mountain_box_short",
+            "label": "Mountain Box Short"
+          },
+          {
+            "value": "mountain_box_long",
+            "label": "Mountain Box Long"
+          },
+          {
+            "value": "panel_hunt",
+            "label": "Panel Hunt"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "mountain_lasers",
+      "label": "Mountain Lasers",
+      "description": "Sets the number of lasers required to enter the Mountain.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 11,
+        "step": 1,
+        "default": 7
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "challenge_lasers",
+      "label": "Challenge Lasers",
+      "description": "Sets the number of lasers required to enter the Caves through the Mountain Bottom Floor Discard and to unlock the Challenge Timer Panel.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 11,
+        "step": 1,
+        "default": 11
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "panel_hunt_total",
+      "label": "Panel Hunt Total",
+      "description": "Only relevant if the Victory Condition is \"Panel Hunt\".",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 5,
+        "max": 100,
+        "step": 1,
+        "default": 40
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "panel_hunt_required_percentage",
+      "label": "Panel Hunt Required Percentage",
+      "description": "Only relevant if the Victory Condition is \"Panel Hunt\".",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 20,
+        "max": 100,
+        "step": 1,
+        "default": 63
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "panel_hunt_postgame",
+      "label": "Panel Hunt Postgame",
+      "description": "Only relevant if the Victory Condition is \"Panel Hunt\".",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disable_anything_locked_by_lasers",
+        "choices": [
+          {
+            "value": "everything_is_eligible",
+            "label": "Everything Is Eligible"
+          },
+          {
+            "value": "disable_mountain_lasers_locations",
+            "label": "Disable Mountain Lasers Locations"
+          },
+          {
+            "value": "disable_challenge_lasers_locations",
+            "label": "Disable Challenge Lasers Locations"
+          },
+          {
+            "value": "disable_anything_locked_by_lasers",
+            "label": "Disable Anything Locked By Lasers"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "panel_hunt_discourage_same_area_factor",
+      "label": "Panel Hunt Discourage Same Area Factor",
+      "description": "Only relevant if the Victory Condition is \"Panel Hunt\".",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 40
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "panel_hunt_plando",
+      "label": "Panel Hunt Plando",
+      "description": "Only relevant if the Victory Condition is \"Panel Hunt\".",
+      "category": "general",
+      "type": {
+        "kind": "multi_select",
+        "defaults": [],
+        "choices": [
+          {
+            "value": "Bunker Drop-Down Door Close",
+            "label": "Bunker Drop-Down Door Close"
+          },
+          {
+            "value": "Bunker Drop-Down Door Open",
+            "label": "Bunker Drop-Down Door Open"
+          },
+          {
+            "value": "Bunker Elevator Control",
+            "label": "Bunker Elevator Control"
+          },
+          {
+            "value": "Bunker Entry Panel",
+            "label": "Bunker Entry Panel"
+          },
+          {
+            "value": "Bunker Glass Room 1",
+            "label": "Bunker Glass Room 1"
+          },
+          {
+            "value": "Bunker Glass Room 2",
+            "label": "Bunker Glass Room 2"
+          },
+          {
+            "value": "Bunker Glass Room 3",
+            "label": "Bunker Glass Room 3"
+          },
+          {
+            "value": "Bunker Intro Back 1",
+            "label": "Bunker Intro Back 1"
+          },
+          {
+            "value": "Bunker Intro Back 2",
+            "label": "Bunker Intro Back 2"
+          },
+          {
+            "value": "Bunker Intro Back 3",
+            "label": "Bunker Intro Back 3"
+          },
+          {
+            "value": "Bunker Intro Back 4",
+            "label": "Bunker Intro Back 4"
+          },
+          {
+            "value": "Bunker Intro Left 1",
+            "label": "Bunker Intro Left 1"
+          },
+          {
+            "value": "Bunker Intro Left 2",
+            "label": "Bunker Intro Left 2"
+          },
+          {
+            "value": "Bunker Intro Left 3",
+            "label": "Bunker Intro Left 3"
+          },
+          {
+            "value": "Bunker Intro Left 4",
+            "label": "Bunker Intro Left 4"
+          },
+          {
+            "value": "Bunker Intro Left 5",
+            "label": "Bunker Intro Left 5"
+          },
+          {
+            "value": "Bunker Laser Panel",
+            "label": "Bunker Laser Panel"
+          },
+          {
+            "value": "Bunker Tinted Glass Door Panel",
+            "label": "Bunker Tinted Glass Door Panel"
+          },
+          {
+            "value": "Bunker UV Room 1",
+            "label": "Bunker Uv Room 1"
+          },
+          {
+            "value": "Bunker UV Room 2",
+            "label": "Bunker Uv Room 2"
+          },
+          {
+            "value": "Caves Blue Tunnel Left First 1",
+            "label": "Caves Blue Tunnel Left First 1"
+          },
+          {
+            "value": "Caves Blue Tunnel Left Fourth 1",
+            "label": "Caves Blue Tunnel Left Fourth 1"
+          },
+          {
+            "value": "Caves Blue Tunnel Left Second 1",
+            "label": "Caves Blue Tunnel Left Second 1"
+          },
+          {
+            "value": "Caves Blue Tunnel Left Second 2",
+            "label": "Caves Blue Tunnel Left Second 2"
+          },
+          {
+            "value": "Caves Blue Tunnel Left Second 3",
+            "label": "Caves Blue Tunnel Left Second 3"
+          },
+          {
+            "value": "Caves Blue Tunnel Left Second 4",
+            "label": "Caves Blue Tunnel Left Second 4"
+          },
+          {
+            "value": "Caves Blue Tunnel Left Second 5",
+            "label": "Caves Blue Tunnel Left Second 5"
+          },
+          {
+            "value": "Caves Blue Tunnel Left Third 1",
+            "label": "Caves Blue Tunnel Left Third 1"
+          },
+          {
+            "value": "Caves Blue Tunnel Right First 1",
+            "label": "Caves Blue Tunnel Right First 1"
+          },
+          {
+            "value": "Caves Blue Tunnel Right First 2",
+            "label": "Caves Blue Tunnel Right First 2"
+          },
+          {
+            "value": "Caves Blue Tunnel Right First 3",
+            "label": "Caves Blue Tunnel Right First 3"
+          },
+          {
+            "value": "Caves Blue Tunnel Right First 4",
+            "label": "Caves Blue Tunnel Right First 4"
+          },
+          {
+            "value": "Caves Blue Tunnel Right Second 1",
+            "label": "Caves Blue Tunnel Right Second 1"
+          },
+          {
+            "value": "Caves Blue Tunnel Right Second 2",
+            "label": "Caves Blue Tunnel Right Second 2"
+          },
+          {
+            "value": "Caves Blue Tunnel Right Second 3",
+            "label": "Caves Blue Tunnel Right Second 3"
+          },
+          {
+            "value": "Caves Blue Tunnel Right Second 4",
+            "label": "Caves Blue Tunnel Right Second 4"
+          },
+          {
+            "value": "Caves Blue Tunnel Right Second 5",
+            "label": "Caves Blue Tunnel Right Second 5"
+          },
+          {
+            "value": "Caves Blue Tunnel Right Third 1",
+            "label": "Caves Blue Tunnel Right Third 1"
+          },
+          {
+            "value": "Caves Challenge Entry Panel",
+            "label": "Caves Challenge Entry Panel"
+          },
+          {
+            "value": "Caves Elevator Inside Control",
+            "label": "Caves Elevator Inside Control"
+          },
+          {
+            "value": "Caves Elevator Lower Outside Control",
+            "label": "Caves Elevator Lower Outside Control"
+          },
+          {
+            "value": "Caves Elevator Upper Outside Control",
+            "label": "Caves Elevator Upper Outside Control"
+          },
+          {
+            "value": "Caves First Floor Grounded",
+            "label": "Caves First Floor Grounded"
+          },
+          {
+            "value": "Caves First Floor Left",
+            "label": "Caves First Floor Left"
+          },
+          {
+            "value": "Caves First Floor Middle",
+            "label": "Caves First Floor Middle"
+          },
+          {
+            "value": "Caves First Floor Right",
+            "label": "Caves First Floor Right"
+          },
+          {
+            "value": "Caves First Wooden Beam",
+            "label": "Caves First Wooden Beam"
+          },
+          {
+            "value": "Caves Fourth Wooden Beam",
+            "label": "Caves Fourth Wooden Beam"
+          },
+          {
+            "value": "Caves Left Upstairs Left Row 1",
+            "label": "Caves Left Upstairs Left Row 1"
+          },
+          {
+            "value": "Caves Left Upstairs Left Row 2",
+            "label": "Caves Left Upstairs Left Row 2"
+          },
+          {
+            "value": "Caves Left Upstairs Left Row 3",
+            "label": "Caves Left Upstairs Left Row 3"
+          },
+          {
+            "value": "Caves Left Upstairs Left Row 4",
+            "label": "Caves Left Upstairs Left Row 4"
+          },
+          {
+            "value": "Caves Left Upstairs Left Row 5",
+            "label": "Caves Left Upstairs Left Row 5"
+          },
+          {
+            "value": "Caves Left Upstairs Single",
+            "label": "Caves Left Upstairs Single"
+          },
+          {
+            "value": "Caves Lone Pillar",
+            "label": "Caves Lone Pillar"
+          },
+          {
+            "value": "Caves Mountain Shortcut Panel",
+            "label": "Caves Mountain Shortcut Panel"
+          },
+          {
+            "value": "Caves Right Upstairs Left Row 1",
+            "label": "Caves Right Upstairs Left Row 1"
+          },
+          {
+            "value": "Caves Right Upstairs Left Row 2",
+            "label": "Caves Right Upstairs Left Row 2"
+          },
+          {
+            "value": "Caves Right Upstairs Left Row 3",
+            "label": "Caves Right Upstairs Left Row 3"
+          },
+          {
+            "value": "Caves Right Upstairs Left Row 4",
+            "label": "Caves Right Upstairs Left Row 4"
+          },
+          {
+            "value": "Caves Right Upstairs Left Row 5",
+            "label": "Caves Right Upstairs Left Row 5"
+          },
+          {
+            "value": "Caves Right Upstairs Left Row 6",
+            "label": "Caves Right Upstairs Left Row 6"
+          },
+          {
+            "value": "Caves Right Upstairs Left Row 7",
+            "label": "Caves Right Upstairs Left Row 7"
+          },
+          {
+            "value": "Caves Right Upstairs Left Row 8",
+            "label": "Caves Right Upstairs Left Row 8"
+          },
+          {
+            "value": "Caves Right Upstairs Right Row 1",
+            "label": "Caves Right Upstairs Right Row 1"
+          },
+          {
+            "value": "Caves Right Upstairs Right Row 2",
+            "label": "Caves Right Upstairs Right Row 2"
+          },
+          {
+            "value": "Caves Right Upstairs Right Row 3",
+            "label": "Caves Right Upstairs Right Row 3"
+          },
+          {
+            "value": "Caves Second Wooden Beam",
+            "label": "Caves Second Wooden Beam"
+          },
+          {
+            "value": "Caves Swamp Shortcut Panel",
+            "label": "Caves Swamp Shortcut Panel"
+          },
+          {
+            "value": "Caves Third Wooden Beam",
+            "label": "Caves Third Wooden Beam"
+          },
+          {
+            "value": "Challenge Big Basic",
+            "label": "Challenge Big Basic"
+          },
+          {
+            "value": "Challenge Dots Pillar",
+            "label": "Challenge Dots Pillar"
+          },
+          {
+            "value": "Challenge Maze Hidden 1",
+            "label": "Challenge Maze Hidden 1"
+          },
+          {
+            "value": "Challenge Maze Hidden 2",
+            "label": "Challenge Maze Hidden 2"
+          },
+          {
+            "value": "Challenge Maze Map",
+            "label": "Challenge Maze Map"
+          },
+          {
+            "value": "Challenge Small Basic",
+            "label": "Challenge Small Basic"
+          },
+          {
+            "value": "Challenge Square",
+            "label": "Challenge Square"
+          },
+          {
+            "value": "Challenge Squares Pillar",
+            "label": "Challenge Squares Pillar"
+          },
+          {
+            "value": "Challenge Start Timer",
+            "label": "Challenge Start Timer"
+          },
+          {
+            "value": "Challenge Tunnels Entry Panel",
+            "label": "Challenge Tunnels Entry Panel"
+          },
+          {
+            "value": "Challenge Vault Box",
+            "label": "Challenge Vault Box"
+          },
+          {
+            "value": "Desert Discard",
+            "label": "Desert Discard"
+          },
+          {
+            "value": "Desert Elevator Room Bent 1",
+            "label": "Desert Elevator Room Bent 1"
+          },
+          {
+            "value": "Desert Elevator Room Bent 2",
+            "label": "Desert Elevator Room Bent 2"
+          },
+          {
+            "value": "Desert Elevator Room Bent 3",
+            "label": "Desert Elevator Room Bent 3"
+          },
+          {
+            "value": "Desert Elevator Room Hexagonal",
+            "label": "Desert Elevator Room Hexagonal"
+          },
+          {
+            "value": "Desert Elevator Room Hexagonal Control",
+            "label": "Desert Elevator Room Hexagonal Control"
+          },
+          {
+            "value": "Desert Elevator Room Transparent",
+            "label": "Desert Elevator Room Transparent"
+          },
+          {
+            "value": "Desert Flood Room 1",
+            "label": "Desert Flood Room 1"
+          },
+          {
+            "value": "Desert Flood Room 2",
+            "label": "Desert Flood Room 2"
+          },
+          {
+            "value": "Desert Flood Room 3",
+            "label": "Desert Flood Room 3"
+          },
+          {
+            "value": "Desert Flood Room 4",
+            "label": "Desert Flood Room 4"
+          },
+          {
+            "value": "Desert Flood Room 5",
+            "label": "Desert Flood Room 5"
+          },
+          {
+            "value": "Desert Flood Room 6",
+            "label": "Desert Flood Room 6"
+          },
+          {
+            "value": "Desert Flood Room Entry Panel",
+            "label": "Desert Flood Room Entry Panel"
+          },
+          {
+            "value": "Desert Laser Panel",
+            "label": "Desert Laser Panel"
+          },
+          {
+            "value": "Desert Light Control",
+            "label": "Desert Light Control"
+          },
+          {
+            "value": "Desert Light Room 1",
+            "label": "Desert Light Room 1"
+          },
+          {
+            "value": "Desert Light Room 2",
+            "label": "Desert Light Room 2"
+          },
+          {
+            "value": "Desert Light Room 3",
+            "label": "Desert Light Room 3"
+          },
+          {
+            "value": "Desert Light Room Entry Panel",
+            "label": "Desert Light Room Entry Panel"
+          },
+          {
+            "value": "Desert Pond Room 1",
+            "label": "Desert Pond Room 1"
+          },
+          {
+            "value": "Desert Pond Room 2",
+            "label": "Desert Pond Room 2"
+          },
+          {
+            "value": "Desert Pond Room 3",
+            "label": "Desert Pond Room 3"
+          },
+          {
+            "value": "Desert Pond Room 4",
+            "label": "Desert Pond Room 4"
+          },
+          {
+            "value": "Desert Pond Room 5",
+            "label": "Desert Pond Room 5"
+          },
+          {
+            "value": "Desert Raise Water Level Far Left",
+            "label": "Desert Raise Water Level Far Left"
+          },
+          {
+            "value": "Desert Raise Water Level Far Right",
+            "label": "Desert Raise Water Level Far Right"
+          },
+          {
+            "value": "Desert Raise Water Level Near Left",
+            "label": "Desert Raise Water Level Near Left"
+          },
+          {
+            "value": "Desert Raise Water Level Near Right",
+            "label": "Desert Raise Water Level Near Right"
+          },
+          {
+            "value": "Desert Reduce Water Level Far Left",
+            "label": "Desert Reduce Water Level Far Left"
+          },
+          {
+            "value": "Desert Reduce Water Level Far Right",
+            "label": "Desert Reduce Water Level Far Right"
+          },
+          {
+            "value": "Desert Reduce Water Level Near Left",
+            "label": "Desert Reduce Water Level Near Left"
+          },
+          {
+            "value": "Desert Reduce Water Level Near Right",
+            "label": "Desert Reduce Water Level Near Right"
+          },
+          {
+            "value": "Desert Surface 1",
+            "label": "Desert Surface 1"
+          },
+          {
+            "value": "Desert Surface 2",
+            "label": "Desert Surface 2"
+          },
+          {
+            "value": "Desert Surface 3",
+            "label": "Desert Surface 3"
+          },
+          {
+            "value": "Desert Surface 3 Control",
+            "label": "Desert Surface 3 Control"
+          },
+          {
+            "value": "Desert Surface 4",
+            "label": "Desert Surface 4"
+          },
+          {
+            "value": "Desert Surface 5",
+            "label": "Desert Surface 5"
+          },
+          {
+            "value": "Desert Surface 6",
+            "label": "Desert Surface 6"
+          },
+          {
+            "value": "Desert Surface 7",
+            "label": "Desert Surface 7"
+          },
+          {
+            "value": "Desert Surface 8",
+            "label": "Desert Surface 8"
+          },
+          {
+            "value": "Desert Surface 8 Control",
+            "label": "Desert Surface 8 Control"
+          },
+          {
+            "value": "Desert Vault Box",
+            "label": "Desert Vault Box"
+          },
+          {
+            "value": "Desert Vault Panel",
+            "label": "Desert Vault Panel"
+          },
+          {
+            "value": "Glass Factory Back Wall 1",
+            "label": "Glass Factory Back Wall 1"
+          },
+          {
+            "value": "Glass Factory Back Wall 2",
+            "label": "Glass Factory Back Wall 2"
+          },
+          {
+            "value": "Glass Factory Back Wall 3",
+            "label": "Glass Factory Back Wall 3"
+          },
+          {
+            "value": "Glass Factory Back Wall 4",
+            "label": "Glass Factory Back Wall 4"
+          },
+          {
+            "value": "Glass Factory Back Wall 5",
+            "label": "Glass Factory Back Wall 5"
+          },
+          {
+            "value": "Glass Factory Boat Spawn",
+            "label": "Glass Factory Boat Spawn"
+          },
+          {
+            "value": "Glass Factory Discard",
+            "label": "Glass Factory Discard"
+          },
+          {
+            "value": "Glass Factory Entry Panel",
+            "label": "Glass Factory Entry Panel"
+          },
+          {
+            "value": "Glass Factory Front 1",
+            "label": "Glass Factory Front 1"
+          },
+          {
+            "value": "Glass Factory Front 2",
+            "label": "Glass Factory Front 2"
+          },
+          {
+            "value": "Glass Factory Front 3",
+            "label": "Glass Factory Front 3"
+          },
+          {
+            "value": "Glass Factory Melting 1",
+            "label": "Glass Factory Melting 1"
+          },
+          {
+            "value": "Glass Factory Melting 2",
+            "label": "Glass Factory Melting 2"
+          },
+          {
+            "value": "Glass Factory Melting 3",
+            "label": "Glass Factory Melting 3"
+          },
+          {
+            "value": "Jungle Discard",
+            "label": "Jungle Discard"
+          },
+          {
+            "value": "Jungle First Row 1",
+            "label": "Jungle First Row 1"
+          },
+          {
+            "value": "Jungle First Row 2",
+            "label": "Jungle First Row 2"
+          },
+          {
+            "value": "Jungle First Row 3",
+            "label": "Jungle First Row 3"
+          },
+          {
+            "value": "Jungle Laser Panel",
+            "label": "Jungle Laser Panel"
+          },
+          {
+            "value": "Jungle Laser Shortcut Panel",
+            "label": "Jungle Laser Shortcut Panel"
+          },
+          {
+            "value": "Jungle Monastery Garden Shortcut Panel",
+            "label": "Jungle Monastery Garden Shortcut Panel"
+          },
+          {
+            "value": "Jungle Popup Wall 1",
+            "label": "Jungle Popup Wall 1"
+          },
+          {
+            "value": "Jungle Popup Wall 2",
+            "label": "Jungle Popup Wall 2"
+          },
+          {
+            "value": "Jungle Popup Wall 3",
+            "label": "Jungle Popup Wall 3"
+          },
+          {
+            "value": "Jungle Popup Wall 4",
+            "label": "Jungle Popup Wall 4"
+          },
+          {
+            "value": "Jungle Popup Wall 5",
+            "label": "Jungle Popup Wall 5"
+          },
+          {
+            "value": "Jungle Popup Wall 6",
+            "label": "Jungle Popup Wall 6"
+          },
+          {
+            "value": "Jungle Popup Wall Control",
+            "label": "Jungle Popup Wall Control"
+          },
+          {
+            "value": "Jungle Second Row 1",
+            "label": "Jungle Second Row 1"
+          },
+          {
+            "value": "Jungle Second Row 2",
+            "label": "Jungle Second Row 2"
+          },
+          {
+            "value": "Jungle Second Row 3",
+            "label": "Jungle Second Row 3"
+          },
+          {
+            "value": "Jungle Second Row 4",
+            "label": "Jungle Second Row 4"
+          },
+          {
+            "value": "Jungle Shore Boat Spawn",
+            "label": "Jungle Shore Boat Spawn"
+          },
+          {
+            "value": "Jungle Vault Box",
+            "label": "Jungle Vault Box"
+          },
+          {
+            "value": "Jungle Vault Panel",
+            "label": "Jungle Vault Panel"
+          },
+          {
+            "value": "Keep Discard",
+            "label": "Keep Discard"
+          },
+          {
+            "value": "Keep Hedge Maze 1",
+            "label": "Keep Hedge Maze 1"
+          },
+          {
+            "value": "Keep Hedge Maze 2",
+            "label": "Keep Hedge Maze 2"
+          },
+          {
+            "value": "Keep Hedge Maze 3",
+            "label": "Keep Hedge Maze 3"
+          },
+          {
+            "value": "Keep Hedge Maze 4",
+            "label": "Keep Hedge Maze 4"
+          },
+          {
+            "value": "Keep Laser Panel Hedges",
+            "label": "Keep Laser Panel Hedges"
+          },
+          {
+            "value": "Keep Laser Panel Pressure Plates",
+            "label": "Keep Laser Panel Pressure Plates"
+          },
+          {
+            "value": "Keep Pressure Plates 1",
+            "label": "Keep Pressure Plates 1"
+          },
+          {
+            "value": "Keep Pressure Plates 2",
+            "label": "Keep Pressure Plates 2"
+          },
+          {
+            "value": "Keep Pressure Plates 3",
+            "label": "Keep Pressure Plates 3"
+          },
+          {
+            "value": "Keep Pressure Plates 4",
+            "label": "Keep Pressure Plates 4"
+          },
+          {
+            "value": "Keep Shadows Shortcut Panel",
+            "label": "Keep Shadows Shortcut Panel"
+          },
+          {
+            "value": "Keep Tower Shortcut Panel",
+            "label": "Keep Tower Shortcut Panel"
+          },
+          {
+            "value": "Monastery Entry Left",
+            "label": "Monastery Entry Left"
+          },
+          {
+            "value": "Monastery Entry Right",
+            "label": "Monastery Entry Right"
+          },
+          {
+            "value": "Monastery Inside 1",
+            "label": "Monastery Inside 1"
+          },
+          {
+            "value": "Monastery Inside 2",
+            "label": "Monastery Inside 2"
+          },
+          {
+            "value": "Monastery Inside 3",
+            "label": "Monastery Inside 3"
+          },
+          {
+            "value": "Monastery Inside 4",
+            "label": "Monastery Inside 4"
+          },
+          {
+            "value": "Monastery Laser Panel",
+            "label": "Monastery Laser Panel"
+          },
+          {
+            "value": "Monastery Laser Shortcut Panel",
+            "label": "Monastery Laser Shortcut Panel"
+          },
+          {
+            "value": "Monastery Outside 1",
+            "label": "Monastery Outside 1"
+          },
+          {
+            "value": "Monastery Outside 2",
+            "label": "Monastery Outside 2"
+          },
+          {
+            "value": "Monastery Outside 3",
+            "label": "Monastery Outside 3"
+          },
+          {
+            "value": "Monastery Shutters Control",
+            "label": "Monastery Shutters Control"
+          },
+          {
+            "value": "Mountain Bottom Floor Back Wall Left",
+            "label": "Mountain Bottom Floor Back Wall Left"
+          },
+          {
+            "value": "Mountain Bottom Floor Back Wall Right",
+            "label": "Mountain Bottom Floor Back Wall Right"
+          },
+          {
+            "value": "Mountain Bottom Floor Caves Entry Panel",
+            "label": "Mountain Bottom Floor Caves Entry Panel"
+          },
+          {
+            "value": "Mountain Bottom Floor Discard",
+            "label": "Mountain Bottom Floor Discard"
+          },
+          {
+            "value": "Mountain Bottom Floor Elevator Door Close Left",
+            "label": "Mountain Bottom Floor Elevator Door Close Left"
+          },
+          {
+            "value": "Mountain Bottom Floor Elevator Door Close Right",
+            "label": "Mountain Bottom Floor Elevator Door Close Right"
+          },
+          {
+            "value": "Mountain Bottom Floor Elevator Entry Left",
+            "label": "Mountain Bottom Floor Elevator Entry Left"
+          },
+          {
+            "value": "Mountain Bottom Floor Elevator Entry Right",
+            "label": "Mountain Bottom Floor Elevator Entry Right"
+          },
+          {
+            "value": "Mountain Bottom Floor Elevator Start",
+            "label": "Mountain Bottom Floor Elevator Start"
+          },
+          {
+            "value": "Mountain Bottom Floor Giant Puzzle",
+            "label": "Mountain Bottom Floor Giant Puzzle"
+          },
+          {
+            "value": "Mountain Bottom Floor Giant Puzzle Bottom Left",
+            "label": "Mountain Bottom Floor Giant Puzzle Bottom Left"
+          },
+          {
+            "value": "Mountain Bottom Floor Giant Puzzle Bottom Right",
+            "label": "Mountain Bottom Floor Giant Puzzle Bottom Right"
+          },
+          {
+            "value": "Mountain Bottom Floor Giant Puzzle Top Left",
+            "label": "Mountain Bottom Floor Giant Puzzle Top Left"
+          },
+          {
+            "value": "Mountain Bottom Floor Giant Puzzle Top Right",
+            "label": "Mountain Bottom Floor Giant Puzzle Top Right"
+          },
+          {
+            "value": "Mountain Bottom Floor Left Pillar 1",
+            "label": "Mountain Bottom Floor Left Pillar 1"
+          },
+          {
+            "value": "Mountain Bottom Floor Left Pillar 2",
+            "label": "Mountain Bottom Floor Left Pillar 2"
+          },
+          {
+            "value": "Mountain Bottom Floor Left Pillar 3",
+            "label": "Mountain Bottom Floor Left Pillar 3"
+          },
+          {
+            "value": "Mountain Bottom Floor Left Pillar 4",
+            "label": "Mountain Bottom Floor Left Pillar 4"
+          },
+          {
+            "value": "Mountain Bottom Floor Pillars Room Entry Left",
+            "label": "Mountain Bottom Floor Pillars Room Entry Left"
+          },
+          {
+            "value": "Mountain Bottom Floor Pillars Room Entry Right",
+            "label": "Mountain Bottom Floor Pillars Room Entry Right"
+          },
+          {
+            "value": "Mountain Bottom Floor Right Pillar 1",
+            "label": "Mountain Bottom Floor Right Pillar 1"
+          },
+          {
+            "value": "Mountain Bottom Floor Right Pillar 2",
+            "label": "Mountain Bottom Floor Right Pillar 2"
+          },
+          {
+            "value": "Mountain Bottom Floor Right Pillar 3",
+            "label": "Mountain Bottom Floor Right Pillar 3"
+          },
+          {
+            "value": "Mountain Bottom Floor Right Pillar 4",
+            "label": "Mountain Bottom Floor Right Pillar 4"
+          },
+          {
+            "value": "Mountain Bottom Floor Rock Control",
+            "label": "Mountain Bottom Floor Rock Control"
+          },
+          {
+            "value": "Mountain Floor 1 Back Row 1",
+            "label": "Mountain Floor 1 Back Row 1"
+          },
+          {
+            "value": "Mountain Floor 1 Back Row 2",
+            "label": "Mountain Floor 1 Back Row 2"
+          },
+          {
+            "value": "Mountain Floor 1 Back Row 3",
+            "label": "Mountain Floor 1 Back Row 3"
+          },
+          {
+            "value": "Mountain Floor 1 Left Row 1",
+            "label": "Mountain Floor 1 Left Row 1"
+          },
+          {
+            "value": "Mountain Floor 1 Left Row 2",
+            "label": "Mountain Floor 1 Left Row 2"
+          },
+          {
+            "value": "Mountain Floor 1 Left Row 3",
+            "label": "Mountain Floor 1 Left Row 3"
+          },
+          {
+            "value": "Mountain Floor 1 Left Row 4",
+            "label": "Mountain Floor 1 Left Row 4"
+          },
+          {
+            "value": "Mountain Floor 1 Left Row 5",
+            "label": "Mountain Floor 1 Left Row 5"
+          },
+          {
+            "value": "Mountain Floor 1 Left Row 6",
+            "label": "Mountain Floor 1 Left Row 6"
+          },
+          {
+            "value": "Mountain Floor 1 Left Row 7",
+            "label": "Mountain Floor 1 Left Row 7"
+          },
+          {
+            "value": "Mountain Floor 1 Light Bridge Controller",
+            "label": "Mountain Floor 1 Light Bridge Controller"
+          },
+          {
+            "value": "Mountain Floor 1 Right Row 1",
+            "label": "Mountain Floor 1 Right Row 1"
+          },
+          {
+            "value": "Mountain Floor 1 Right Row 2",
+            "label": "Mountain Floor 1 Right Row 2"
+          },
+          {
+            "value": "Mountain Floor 1 Right Row 3",
+            "label": "Mountain Floor 1 Right Row 3"
+          },
+          {
+            "value": "Mountain Floor 1 Right Row 4",
+            "label": "Mountain Floor 1 Right Row 4"
+          },
+          {
+            "value": "Mountain Floor 1 Right Row 5",
+            "label": "Mountain Floor 1 Right Row 5"
+          },
+          {
+            "value": "Mountain Floor 1 Trash Pillar 1",
+            "label": "Mountain Floor 1 Trash Pillar 1"
+          },
+          {
+            "value": "Mountain Floor 1 Trash Pillar 2",
+            "label": "Mountain Floor 1 Trash Pillar 2"
+          },
+          {
+            "value": "Mountain Floor 2 Elevator Control Panel",
+            "label": "Mountain Floor 2 Elevator Control Panel"
+          },
+          {
+            "value": "Mountain Floor 2 Elevator Discard",
+            "label": "Mountain Floor 2 Elevator Discard"
+          },
+          {
+            "value": "Mountain Floor 2 Far Row 1",
+            "label": "Mountain Floor 2 Far Row 1"
+          },
+          {
+            "value": "Mountain Floor 2 Far Row 2",
+            "label": "Mountain Floor 2 Far Row 2"
+          },
+          {
+            "value": "Mountain Floor 2 Far Row 3",
+            "label": "Mountain Floor 2 Far Row 3"
+          },
+          {
+            "value": "Mountain Floor 2 Far Row 4",
+            "label": "Mountain Floor 2 Far Row 4"
+          },
+          {
+            "value": "Mountain Floor 2 Far Row 5",
+            "label": "Mountain Floor 2 Far Row 5"
+          },
+          {
+            "value": "Mountain Floor 2 Far Row 6",
+            "label": "Mountain Floor 2 Far Row 6"
+          },
+          {
+            "value": "Mountain Floor 2 Light Bridge Controller Far",
+            "label": "Mountain Floor 2 Light Bridge Controller Far"
+          },
+          {
+            "value": "Mountain Floor 2 Light Bridge Controller Near",
+            "label": "Mountain Floor 2 Light Bridge Controller Near"
+          },
+          {
+            "value": "Mountain Floor 2 Near Row 1",
+            "label": "Mountain Floor 2 Near Row 1"
+          },
+          {
+            "value": "Mountain Floor 2 Near Row 2",
+            "label": "Mountain Floor 2 Near Row 2"
+          },
+          {
+            "value": "Mountain Floor 2 Near Row 3",
+            "label": "Mountain Floor 2 Near Row 3"
+          },
+          {
+            "value": "Mountain Floor 2 Near Row 4",
+            "label": "Mountain Floor 2 Near Row 4"
+          },
+          {
+            "value": "Mountain Floor 2 Near Row 5",
+            "label": "Mountain Floor 2 Near Row 5"
+          },
+          {
+            "value": "Mountainside Discard",
+            "label": "Mountainside Discard"
+          },
+          {
+            "value": "Mountainside Vault Box",
+            "label": "Mountainside Vault Box"
+          },
+          {
+            "value": "Mountainside Vault Panel",
+            "label": "Mountainside Vault Panel"
+          },
+          {
+            "value": "Mountaintop Mountain Entry Panel",
+            "label": "Mountaintop Mountain Entry Panel"
+          },
+          {
+            "value": "Mountaintop River Shape",
+            "label": "Mountaintop River Shape"
+          },
+          {
+            "value": "Orchard Apple Tree 1",
+            "label": "Orchard Apple Tree 1"
+          },
+          {
+            "value": "Orchard Apple Tree 2",
+            "label": "Orchard Apple Tree 2"
+          },
+          {
+            "value": "Orchard Apple Tree 3",
+            "label": "Orchard Apple Tree 3"
+          },
+          {
+            "value": "Orchard Apple Tree 4",
+            "label": "Orchard Apple Tree 4"
+          },
+          {
+            "value": "Orchard Apple Tree 5",
+            "label": "Orchard Apple Tree 5"
+          },
+          {
+            "value": "Outside Tutorial Discard",
+            "label": "Outside Tutorial Discard"
+          },
+          {
+            "value": "Outside Tutorial Outpost Entry Panel",
+            "label": "Outside Tutorial Outpost Entry Panel"
+          },
+          {
+            "value": "Outside Tutorial Outpost Exit Panel",
+            "label": "Outside Tutorial Outpost Exit Panel"
+          },
+          {
+            "value": "Outside Tutorial Shed Row 1",
+            "label": "Outside Tutorial Shed Row 1"
+          },
+          {
+            "value": "Outside Tutorial Shed Row 2",
+            "label": "Outside Tutorial Shed Row 2"
+          },
+          {
+            "value": "Outside Tutorial Shed Row 3",
+            "label": "Outside Tutorial Shed Row 3"
+          },
+          {
+            "value": "Outside Tutorial Shed Row 4",
+            "label": "Outside Tutorial Shed Row 4"
+          },
+          {
+            "value": "Outside Tutorial Shed Row 5",
+            "label": "Outside Tutorial Shed Row 5"
+          },
+          {
+            "value": "Outside Tutorial Tree Row 1",
+            "label": "Outside Tutorial Tree Row 1"
+          },
+          {
+            "value": "Outside Tutorial Tree Row 2",
+            "label": "Outside Tutorial Tree Row 2"
+          },
+          {
+            "value": "Outside Tutorial Tree Row 3",
+            "label": "Outside Tutorial Tree Row 3"
+          },
+          {
+            "value": "Outside Tutorial Tree Row 4",
+            "label": "Outside Tutorial Tree Row 4"
+          },
+          {
+            "value": "Outside Tutorial Tree Row 5",
+            "label": "Outside Tutorial Tree Row 5"
+          },
+          {
+            "value": "Outside Tutorial Tree Row 6",
+            "label": "Outside Tutorial Tree Row 6"
+          },
+          {
+            "value": "Outside Tutorial Tree Row 7",
+            "label": "Outside Tutorial Tree Row 7"
+          },
+          {
+            "value": "Outside Tutorial Tree Row 8",
+            "label": "Outside Tutorial Tree Row 8"
+          },
+          {
+            "value": "Outside Tutorial Tree Row 9",
+            "label": "Outside Tutorial Tree Row 9"
+          },
+          {
+            "value": "Outside Tutorial Vault Box",
+            "label": "Outside Tutorial Vault Box"
+          },
+          {
+            "value": "Outside Tutorial Vault Panel",
+            "label": "Outside Tutorial Vault Panel"
+          },
+          {
+            "value": "Quarry Boathouse Back First Row 1",
+            "label": "Quarry Boathouse Back First Row 1"
+          },
+          {
+            "value": "Quarry Boathouse Back First Row 2",
+            "label": "Quarry Boathouse Back First Row 2"
+          },
+          {
+            "value": "Quarry Boathouse Back First Row 3",
+            "label": "Quarry Boathouse Back First Row 3"
+          },
+          {
+            "value": "Quarry Boathouse Back First Row 4",
+            "label": "Quarry Boathouse Back First Row 4"
+          },
+          {
+            "value": "Quarry Boathouse Back First Row 5",
+            "label": "Quarry Boathouse Back First Row 5"
+          },
+          {
+            "value": "Quarry Boathouse Back First Row 6",
+            "label": "Quarry Boathouse Back First Row 6"
+          },
+          {
+            "value": "Quarry Boathouse Back First Row 7",
+            "label": "Quarry Boathouse Back First Row 7"
+          },
+          {
+            "value": "Quarry Boathouse Back First Row 8",
+            "label": "Quarry Boathouse Back First Row 8"
+          },
+          {
+            "value": "Quarry Boathouse Back First Row 9",
+            "label": "Quarry Boathouse Back First Row 9"
+          },
+          {
+            "value": "Quarry Boathouse Back Second Row 1",
+            "label": "Quarry Boathouse Back Second Row 1"
+          },
+          {
+            "value": "Quarry Boathouse Back Second Row 2",
+            "label": "Quarry Boathouse Back Second Row 2"
+          },
+          {
+            "value": "Quarry Boathouse Back Second Row 3",
+            "label": "Quarry Boathouse Back Second Row 3"
+          },
+          {
+            "value": "Quarry Boathouse Boat Spawn",
+            "label": "Quarry Boathouse Boat Spawn"
+          },
+          {
+            "value": "Quarry Boathouse Front Row 1",
+            "label": "Quarry Boathouse Front Row 1"
+          },
+          {
+            "value": "Quarry Boathouse Front Row 2",
+            "label": "Quarry Boathouse Front Row 2"
+          },
+          {
+            "value": "Quarry Boathouse Front Row 3",
+            "label": "Quarry Boathouse Front Row 3"
+          },
+          {
+            "value": "Quarry Boathouse Front Row 4",
+            "label": "Quarry Boathouse Front Row 4"
+          },
+          {
+            "value": "Quarry Boathouse Front Row 5",
+            "label": "Quarry Boathouse Front Row 5"
+          },
+          {
+            "value": "Quarry Boathouse Hook Control",
+            "label": "Quarry Boathouse Hook Control"
+          },
+          {
+            "value": "Quarry Boathouse Intro Left",
+            "label": "Quarry Boathouse Intro Left"
+          },
+          {
+            "value": "Quarry Boathouse Intro Right",
+            "label": "Quarry Boathouse Intro Right"
+          },
+          {
+            "value": "Quarry Boathouse Ramp Height Control",
+            "label": "Quarry Boathouse Ramp Height Control"
+          },
+          {
+            "value": "Quarry Boathouse Ramp Horizontal Control",
+            "label": "Quarry Boathouse Ramp Horizontal Control"
+          },
+          {
+            "value": "Quarry Boathouse Second Barrier Panel",
+            "label": "Quarry Boathouse Second Barrier Panel"
+          },
+          {
+            "value": "Quarry Discard",
+            "label": "Quarry Discard"
+          },
+          {
+            "value": "Quarry Elevator Control",
+            "label": "Quarry Elevator Control"
+          },
+          {
+            "value": "Quarry Entry 1 Panel",
+            "label": "Quarry Entry 1 Panel"
+          },
+          {
+            "value": "Quarry Entry 2 Panel",
+            "label": "Quarry Entry 2 Panel"
+          },
+          {
+            "value": "Quarry Laser Panel",
+            "label": "Quarry Laser Panel"
+          },
+          {
+            "value": "Quarry Stoneworks Control Room Left",
+            "label": "Quarry Stoneworks Control Room Left"
+          },
+          {
+            "value": "Quarry Stoneworks Control Room Right",
+            "label": "Quarry Stoneworks Control Room Right"
+          },
+          {
+            "value": "Quarry Stoneworks Entry Left Panel",
+            "label": "Quarry Stoneworks Entry Left Panel"
+          },
+          {
+            "value": "Quarry Stoneworks Entry Right Panel",
+            "label": "Quarry Stoneworks Entry Right Panel"
+          },
+          {
+            "value": "Quarry Stoneworks Lower Lift Control",
+            "label": "Quarry Stoneworks Lower Lift Control"
+          },
+          {
+            "value": "Quarry Stoneworks Lower Ramp Control",
+            "label": "Quarry Stoneworks Lower Ramp Control"
+          },
+          {
+            "value": "Quarry Stoneworks Lower Row 1",
+            "label": "Quarry Stoneworks Lower Row 1"
+          },
+          {
+            "value": "Quarry Stoneworks Lower Row 2",
+            "label": "Quarry Stoneworks Lower Row 2"
+          },
+          {
+            "value": "Quarry Stoneworks Lower Row 3",
+            "label": "Quarry Stoneworks Lower Row 3"
+          },
+          {
+            "value": "Quarry Stoneworks Lower Row 4",
+            "label": "Quarry Stoneworks Lower Row 4"
+          },
+          {
+            "value": "Quarry Stoneworks Lower Row 5",
+            "label": "Quarry Stoneworks Lower Row 5"
+          },
+          {
+            "value": "Quarry Stoneworks Lower Row 6",
+            "label": "Quarry Stoneworks Lower Row 6"
+          },
+          {
+            "value": "Quarry Stoneworks Roof Exit Panel",
+            "label": "Quarry Stoneworks Roof Exit Panel"
+          },
+          {
+            "value": "Quarry Stoneworks Side Exit Panel",
+            "label": "Quarry Stoneworks Side Exit Panel"
+          },
+          {
+            "value": "Quarry Stoneworks Stairs Panel",
+            "label": "Quarry Stoneworks Stairs Panel"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Lift Control",
+            "label": "Quarry Stoneworks Upper Lift Control"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Ramp Control",
+            "label": "Quarry Stoneworks Upper Ramp Control"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Row 1",
+            "label": "Quarry Stoneworks Upper Row 1"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Row 2",
+            "label": "Quarry Stoneworks Upper Row 2"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Row 3",
+            "label": "Quarry Stoneworks Upper Row 3"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Row 4",
+            "label": "Quarry Stoneworks Upper Row 4"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Row 5",
+            "label": "Quarry Stoneworks Upper Row 5"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Row 6",
+            "label": "Quarry Stoneworks Upper Row 6"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Row 7",
+            "label": "Quarry Stoneworks Upper Row 7"
+          },
+          {
+            "value": "Quarry Stoneworks Upper Row 8",
+            "label": "Quarry Stoneworks Upper Row 8"
+          },
+          {
+            "value": "Shadows Door Timer Inside",
+            "label": "Shadows Door Timer Inside"
+          },
+          {
+            "value": "Shadows Door Timer Outside",
+            "label": "Shadows Door Timer Outside"
+          },
+          {
+            "value": "Shadows Far 1",
+            "label": "Shadows Far 1"
+          },
+          {
+            "value": "Shadows Far 2",
+            "label": "Shadows Far 2"
+          },
+          {
+            "value": "Shadows Far 3",
+            "label": "Shadows Far 3"
+          },
+          {
+            "value": "Shadows Far 4",
+            "label": "Shadows Far 4"
+          },
+          {
+            "value": "Shadows Far 5",
+            "label": "Shadows Far 5"
+          },
+          {
+            "value": "Shadows Far 6",
+            "label": "Shadows Far 6"
+          },
+          {
+            "value": "Shadows Far 7",
+            "label": "Shadows Far 7"
+          },
+          {
+            "value": "Shadows Far 8",
+            "label": "Shadows Far 8"
+          },
+          {
+            "value": "Shadows Intro 1",
+            "label": "Shadows Intro 1"
+          },
+          {
+            "value": "Shadows Intro 2",
+            "label": "Shadows Intro 2"
+          },
+          {
+            "value": "Shadows Intro 3",
+            "label": "Shadows Intro 3"
+          },
+          {
+            "value": "Shadows Intro 4",
+            "label": "Shadows Intro 4"
+          },
+          {
+            "value": "Shadows Intro 5",
+            "label": "Shadows Intro 5"
+          },
+          {
+            "value": "Shadows Intro 6",
+            "label": "Shadows Intro 6"
+          },
+          {
+            "value": "Shadows Intro 7",
+            "label": "Shadows Intro 7"
+          },
+          {
+            "value": "Shadows Intro 8",
+            "label": "Shadows Intro 8"
+          },
+          {
+            "value": "Shadows Laser Panel",
+            "label": "Shadows Laser Panel"
+          },
+          {
+            "value": "Shadows Near 1",
+            "label": "Shadows Near 1"
+          },
+          {
+            "value": "Shadows Near 2",
+            "label": "Shadows Near 2"
+          },
+          {
+            "value": "Shadows Near 3",
+            "label": "Shadows Near 3"
+          },
+          {
+            "value": "Shadows Near 4",
+            "label": "Shadows Near 4"
+          },
+          {
+            "value": "Shadows Near 5",
+            "label": "Shadows Near 5"
+          },
+          {
+            "value": "Shipwreck Discard",
+            "label": "Shipwreck Discard"
+          },
+          {
+            "value": "Shipwreck Vault Box",
+            "label": "Shipwreck Vault Box"
+          },
+          {
+            "value": "Shipwreck Vault Panel",
+            "label": "Shipwreck Vault Panel"
+          },
+          {
+            "value": "Swamp Between Bridges Far Row 1",
+            "label": "Swamp Between Bridges Far Row 1"
+          },
+          {
+            "value": "Swamp Between Bridges Far Row 2",
+            "label": "Swamp Between Bridges Far Row 2"
+          },
+          {
+            "value": "Swamp Between Bridges Far Row 3",
+            "label": "Swamp Between Bridges Far Row 3"
+          },
+          {
+            "value": "Swamp Between Bridges Far Row 4",
+            "label": "Swamp Between Bridges Far Row 4"
+          },
+          {
+            "value": "Swamp Between Bridges Near Row 1",
+            "label": "Swamp Between Bridges Near Row 1"
+          },
+          {
+            "value": "Swamp Between Bridges Near Row 2",
+            "label": "Swamp Between Bridges Near Row 2"
+          },
+          {
+            "value": "Swamp Between Bridges Near Row 3",
+            "label": "Swamp Between Bridges Near Row 3"
+          },
+          {
+            "value": "Swamp Between Bridges Near Row 4",
+            "label": "Swamp Between Bridges Near Row 4"
+          },
+          {
+            "value": "Swamp Beyond Rotating Bridge 1",
+            "label": "Swamp Beyond Rotating Bridge 1"
+          },
+          {
+            "value": "Swamp Beyond Rotating Bridge 2",
+            "label": "Swamp Beyond Rotating Bridge 2"
+          },
+          {
+            "value": "Swamp Beyond Rotating Bridge 3",
+            "label": "Swamp Beyond Rotating Bridge 3"
+          },
+          {
+            "value": "Swamp Beyond Rotating Bridge 4",
+            "label": "Swamp Beyond Rotating Bridge 4"
+          },
+          {
+            "value": "Swamp Blue Underwater 1",
+            "label": "Swamp Blue Underwater 1"
+          },
+          {
+            "value": "Swamp Blue Underwater 2",
+            "label": "Swamp Blue Underwater 2"
+          },
+          {
+            "value": "Swamp Blue Underwater 3",
+            "label": "Swamp Blue Underwater 3"
+          },
+          {
+            "value": "Swamp Blue Underwater 4",
+            "label": "Swamp Blue Underwater 4"
+          },
+          {
+            "value": "Swamp Blue Underwater 5",
+            "label": "Swamp Blue Underwater 5"
+          },
+          {
+            "value": "Swamp Boat Spawn",
+            "label": "Swamp Boat Spawn"
+          },
+          {
+            "value": "Swamp Cyan Underwater 1",
+            "label": "Swamp Cyan Underwater 1"
+          },
+          {
+            "value": "Swamp Cyan Underwater 2",
+            "label": "Swamp Cyan Underwater 2"
+          },
+          {
+            "value": "Swamp Cyan Underwater 3",
+            "label": "Swamp Cyan Underwater 3"
+          },
+          {
+            "value": "Swamp Cyan Underwater 4",
+            "label": "Swamp Cyan Underwater 4"
+          },
+          {
+            "value": "Swamp Cyan Underwater 5",
+            "label": "Swamp Cyan Underwater 5"
+          },
+          {
+            "value": "Swamp Cyan Underwater Sliding Bridge Control",
+            "label": "Swamp Cyan Underwater Sliding Bridge Control"
+          },
+          {
+            "value": "Swamp Entry Panel",
+            "label": "Swamp Entry Panel"
+          },
+          {
+            "value": "Swamp Intro Back 1",
+            "label": "Swamp Intro Back 1"
+          },
+          {
+            "value": "Swamp Intro Back 2",
+            "label": "Swamp Intro Back 2"
+          },
+          {
+            "value": "Swamp Intro Back 3",
+            "label": "Swamp Intro Back 3"
+          },
+          {
+            "value": "Swamp Intro Back 4",
+            "label": "Swamp Intro Back 4"
+          },
+          {
+            "value": "Swamp Intro Back 5",
+            "label": "Swamp Intro Back 5"
+          },
+          {
+            "value": "Swamp Intro Back 6",
+            "label": "Swamp Intro Back 6"
+          },
+          {
+            "value": "Swamp Intro Back 7",
+            "label": "Swamp Intro Back 7"
+          },
+          {
+            "value": "Swamp Intro Back 8",
+            "label": "Swamp Intro Back 8"
+          },
+          {
+            "value": "Swamp Intro Front 1",
+            "label": "Swamp Intro Front 1"
+          },
+          {
+            "value": "Swamp Intro Front 2",
+            "label": "Swamp Intro Front 2"
+          },
+          {
+            "value": "Swamp Intro Front 3",
+            "label": "Swamp Intro Front 3"
+          },
+          {
+            "value": "Swamp Intro Front 4",
+            "label": "Swamp Intro Front 4"
+          },
+          {
+            "value": "Swamp Intro Front 5",
+            "label": "Swamp Intro Front 5"
+          },
+          {
+            "value": "Swamp Intro Front 6",
+            "label": "Swamp Intro Front 6"
+          },
+          {
+            "value": "Swamp Laser Panel",
+            "label": "Swamp Laser Panel"
+          },
+          {
+            "value": "Swamp Laser Shortcut Left Panel",
+            "label": "Swamp Laser Shortcut Left Panel"
+          },
+          {
+            "value": "Swamp Laser Shortcut Right Panel",
+            "label": "Swamp Laser Shortcut Right Panel"
+          },
+          {
+            "value": "Swamp Long Bridge Control",
+            "label": "Swamp Long Bridge Control"
+          },
+          {
+            "value": "Swamp Maze Control",
+            "label": "Swamp Maze Control"
+          },
+          {
+            "value": "Swamp Maze Control Other Side",
+            "label": "Swamp Maze Control Other Side"
+          },
+          {
+            "value": "Swamp Platform Row 1",
+            "label": "Swamp Platform Row 1"
+          },
+          {
+            "value": "Swamp Platform Row 2",
+            "label": "Swamp Platform Row 2"
+          },
+          {
+            "value": "Swamp Platform Row 3",
+            "label": "Swamp Platform Row 3"
+          },
+          {
+            "value": "Swamp Platform Row 4",
+            "label": "Swamp Platform Row 4"
+          },
+          {
+            "value": "Swamp Platform Shortcut Left Panel",
+            "label": "Swamp Platform Shortcut Left Panel"
+          },
+          {
+            "value": "Swamp Platform Shortcut Right Panel",
+            "label": "Swamp Platform Shortcut Right Panel"
+          },
+          {
+            "value": "Swamp Purple Underwater",
+            "label": "Swamp Purple Underwater"
+          },
+          {
+            "value": "Swamp Red Underwater 1",
+            "label": "Swamp Red Underwater 1"
+          },
+          {
+            "value": "Swamp Red Underwater 2",
+            "label": "Swamp Red Underwater 2"
+          },
+          {
+            "value": "Swamp Red Underwater 3",
+            "label": "Swamp Red Underwater 3"
+          },
+          {
+            "value": "Swamp Red Underwater 4",
+            "label": "Swamp Red Underwater 4"
+          },
+          {
+            "value": "Swamp Rotating Bridge",
+            "label": "Swamp Rotating Bridge"
+          },
+          {
+            "value": "Swamp Sliding Bridge",
+            "label": "Swamp Sliding Bridge"
+          },
+          {
+            "value": "Symmetry Island Back 1",
+            "label": "Symmetry Island Back 1"
+          },
+          {
+            "value": "Symmetry Island Back 2",
+            "label": "Symmetry Island Back 2"
+          },
+          {
+            "value": "Symmetry Island Back 3",
+            "label": "Symmetry Island Back 3"
+          },
+          {
+            "value": "Symmetry Island Back 4",
+            "label": "Symmetry Island Back 4"
+          },
+          {
+            "value": "Symmetry Island Back 5",
+            "label": "Symmetry Island Back 5"
+          },
+          {
+            "value": "Symmetry Island Back 6",
+            "label": "Symmetry Island Back 6"
+          },
+          {
+            "value": "Symmetry Island Laser Blue 1",
+            "label": "Symmetry Island Laser Blue 1"
+          },
+          {
+            "value": "Symmetry Island Laser Blue 2",
+            "label": "Symmetry Island Laser Blue 2"
+          },
+          {
+            "value": "Symmetry Island Laser Blue 3",
+            "label": "Symmetry Island Laser Blue 3"
+          },
+          {
+            "value": "Symmetry Island Laser Panel",
+            "label": "Symmetry Island Laser Panel"
+          },
+          {
+            "value": "Symmetry Island Laser Yellow 1",
+            "label": "Symmetry Island Laser Yellow 1"
+          },
+          {
+            "value": "Symmetry Island Laser Yellow 2",
+            "label": "Symmetry Island Laser Yellow 2"
+          },
+          {
+            "value": "Symmetry Island Laser Yellow 3",
+            "label": "Symmetry Island Laser Yellow 3"
+          },
+          {
+            "value": "Symmetry Island Left 1",
+            "label": "Symmetry Island Left 1"
+          },
+          {
+            "value": "Symmetry Island Left 2",
+            "label": "Symmetry Island Left 2"
+          },
+          {
+            "value": "Symmetry Island Left 3",
+            "label": "Symmetry Island Left 3"
+          },
+          {
+            "value": "Symmetry Island Left 4",
+            "label": "Symmetry Island Left 4"
+          },
+          {
+            "value": "Symmetry Island Left 5",
+            "label": "Symmetry Island Left 5"
+          },
+          {
+            "value": "Symmetry Island Left 6",
+            "label": "Symmetry Island Left 6"
+          },
+          {
+            "value": "Symmetry Island Left 7",
+            "label": "Symmetry Island Left 7"
+          },
+          {
+            "value": "Symmetry Island Lower Panel",
+            "label": "Symmetry Island Lower Panel"
+          },
+          {
+            "value": "Symmetry Island Right 1",
+            "label": "Symmetry Island Right 1"
+          },
+          {
+            "value": "Symmetry Island Right 2",
+            "label": "Symmetry Island Right 2"
+          },
+          {
+            "value": "Symmetry Island Right 3",
+            "label": "Symmetry Island Right 3"
+          },
+          {
+            "value": "Symmetry Island Right 4",
+            "label": "Symmetry Island Right 4"
+          },
+          {
+            "value": "Symmetry Island Right 5",
+            "label": "Symmetry Island Right 5"
+          },
+          {
+            "value": "Symmetry Island Scenery Outlines 1",
+            "label": "Symmetry Island Scenery Outlines 1"
+          },
+          {
+            "value": "Symmetry Island Scenery Outlines 2",
+            "label": "Symmetry Island Scenery Outlines 2"
+          },
+          {
+            "value": "Symmetry Island Scenery Outlines 3",
+            "label": "Symmetry Island Scenery Outlines 3"
+          },
+          {
+            "value": "Symmetry Island Scenery Outlines 4",
+            "label": "Symmetry Island Scenery Outlines 4"
+          },
+          {
+            "value": "Symmetry Island Scenery Outlines 5",
+            "label": "Symmetry Island Scenery Outlines 5"
+          },
+          {
+            "value": "Symmetry Island Upper Panel",
+            "label": "Symmetry Island Upper Panel"
+          },
+          {
+            "value": "Theater Challenge Video",
+            "label": "Theater Challenge Video"
+          },
+          {
+            "value": "Theater Desert Video",
+            "label": "Theater Desert Video"
+          },
+          {
+            "value": "Theater Discard",
+            "label": "Theater Discard"
+          },
+          {
+            "value": "Theater Exit Left Panel",
+            "label": "Theater Exit Left Panel"
+          },
+          {
+            "value": "Theater Exit Right Panel",
+            "label": "Theater Exit Right Panel"
+          },
+          {
+            "value": "Theater Jungle Video",
+            "label": "Theater Jungle Video"
+          },
+          {
+            "value": "Theater Mountain Video",
+            "label": "Theater Mountain Video"
+          },
+          {
+            "value": "Theater Shipwreck Video",
+            "label": "Theater Shipwreck Video"
+          },
+          {
+            "value": "Theater Tutorial Video",
+            "label": "Theater Tutorial Video"
+          },
+          {
+            "value": "Theater Video Input",
+            "label": "Theater Video Input"
+          },
+          {
+            "value": "Town Apple Tree",
+            "label": "Town Apple Tree"
+          },
+          {
+            "value": "Town Boat Spawn",
+            "label": "Town Boat Spawn"
+          },
+          {
+            "value": "Town Cargo Box Discard",
+            "label": "Town Cargo Box Discard"
+          },
+          {
+            "value": "Town Cargo Box Entry Panel",
+            "label": "Town Cargo Box Entry Panel"
+          },
+          {
+            "value": "Town Church Entry Panel",
+            "label": "Town Church Entry Panel"
+          },
+          {
+            "value": "Town Church Lattice",
+            "label": "Town Church Lattice"
+          },
+          {
+            "value": "Town Desert Laser Redirect Control",
+            "label": "Town Desert Laser Redirect Control"
+          },
+          {
+            "value": "Town Laser Panel",
+            "label": "Town Laser Panel"
+          },
+          {
+            "value": "Town Maze Panel",
+            "label": "Town Maze Panel"
+          },
+          {
+            "value": "Town Maze Rooftop Bridge Control",
+            "label": "Town Maze Rooftop Bridge Control"
+          },
+          {
+            "value": "Town RGB House Entry Panel",
+            "label": "Town Rgb House Entry Panel"
+          },
+          {
+            "value": "Town RGB House Sound Room Left",
+            "label": "Town Rgb House Sound Room Left"
+          },
+          {
+            "value": "Town RGB House Sound Room Right",
+            "label": "Town Rgb House Sound Room Right"
+          },
+          {
+            "value": "Town RGB House Upstairs Left",
+            "label": "Town Rgb House Upstairs Left"
+          },
+          {
+            "value": "Town RGB House Upstairs RGB Control",
+            "label": "Town Rgb House Upstairs Rgb Control"
+          },
+          {
+            "value": "Town RGB House Upstairs Right",
+            "label": "Town Rgb House Upstairs Right"
+          },
+          {
+            "value": "Town Red Rooftop 1",
+            "label": "Town Red Rooftop 1"
+          },
+          {
+            "value": "Town Red Rooftop 2",
+            "label": "Town Red Rooftop 2"
+          },
+          {
+            "value": "Town Red Rooftop 3",
+            "label": "Town Red Rooftop 3"
+          },
+          {
+            "value": "Town Red Rooftop 4",
+            "label": "Town Red Rooftop 4"
+          },
+          {
+            "value": "Town Red Rooftop 5",
+            "label": "Town Red Rooftop 5"
+          },
+          {
+            "value": "Town Rooftop Discard",
+            "label": "Town Rooftop Discard"
+          },
+          {
+            "value": "Town Tall Hexagonal",
+            "label": "Town Tall Hexagonal"
+          },
+          {
+            "value": "Town Transparent",
+            "label": "Town Transparent"
+          },
+          {
+            "value": "Town Triple Exit",
+            "label": "Town Triple Exit"
+          },
+          {
+            "value": "Town Vines",
+            "label": "Town Vines"
+          },
+          {
+            "value": "Town Wooden Roof Lower Row 1",
+            "label": "Town Wooden Roof Lower Row 1"
+          },
+          {
+            "value": "Town Wooden Roof Lower Row 2",
+            "label": "Town Wooden Roof Lower Row 2"
+          },
+          {
+            "value": "Town Wooden Roof Lower Row 3",
+            "label": "Town Wooden Roof Lower Row 3"
+          },
+          {
+            "value": "Town Wooden Roof Lower Row 4",
+            "label": "Town Wooden Roof Lower Row 4"
+          },
+          {
+            "value": "Town Wooden Roof Lower Row 5",
+            "label": "Town Wooden Roof Lower Row 5"
+          },
+          {
+            "value": "Town Wooden Rooftop",
+            "label": "Town Wooden Rooftop"
+          },
+          {
+            "value": "Treehouse Boat Spawn",
+            "label": "Treehouse Boat Spawn"
+          },
+          {
+            "value": "Treehouse Drawbridge Panel",
+            "label": "Treehouse Drawbridge Panel"
+          },
+          {
+            "value": "Treehouse First Door Panel",
+            "label": "Treehouse First Door Panel"
+          },
+          {
+            "value": "Treehouse First Purple Bridge 1",
+            "label": "Treehouse First Purple Bridge 1"
+          },
+          {
+            "value": "Treehouse First Purple Bridge 2",
+            "label": "Treehouse First Purple Bridge 2"
+          },
+          {
+            "value": "Treehouse First Purple Bridge 3",
+            "label": "Treehouse First Purple Bridge 3"
+          },
+          {
+            "value": "Treehouse First Purple Bridge 4",
+            "label": "Treehouse First Purple Bridge 4"
+          },
+          {
+            "value": "Treehouse First Purple Bridge 5",
+            "label": "Treehouse First Purple Bridge 5"
+          },
+          {
+            "value": "Treehouse Green Bridge 1",
+            "label": "Treehouse Green Bridge 1"
+          },
+          {
+            "value": "Treehouse Green Bridge 2",
+            "label": "Treehouse Green Bridge 2"
+          },
+          {
+            "value": "Treehouse Green Bridge 3",
+            "label": "Treehouse Green Bridge 3"
+          },
+          {
+            "value": "Treehouse Green Bridge 4 & Directional",
+            "label": "Treehouse Green Bridge 4 & Directional"
+          },
+          {
+            "value": "Treehouse Green Bridge 5",
+            "label": "Treehouse Green Bridge 5"
+          },
+          {
+            "value": "Treehouse Green Bridge 6",
+            "label": "Treehouse Green Bridge 6"
+          },
+          {
+            "value": "Treehouse Green Bridge 7",
+            "label": "Treehouse Green Bridge 7"
+          },
+          {
+            "value": "Treehouse Green Bridge Discard",
+            "label": "Treehouse Green Bridge Discard"
+          },
+          {
+            "value": "Treehouse Laser Discard",
+            "label": "Treehouse Laser Discard"
+          },
+          {
+            "value": "Treehouse Laser House Door Timer Inside",
+            "label": "Treehouse Laser House Door Timer Inside"
+          },
+          {
+            "value": "Treehouse Laser House Door Timer Outside",
+            "label": "Treehouse Laser House Door Timer Outside"
+          },
+          {
+            "value": "Treehouse Laser Panel",
+            "label": "Treehouse Laser Panel"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 1",
+            "label": "Treehouse Left Orange Bridge 1"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 10",
+            "label": "Treehouse Left Orange Bridge 10"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 11",
+            "label": "Treehouse Left Orange Bridge 11"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 12",
+            "label": "Treehouse Left Orange Bridge 12"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 13",
+            "label": "Treehouse Left Orange Bridge 13"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 14",
+            "label": "Treehouse Left Orange Bridge 14"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 15",
+            "label": "Treehouse Left Orange Bridge 15"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 2",
+            "label": "Treehouse Left Orange Bridge 2"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 3",
+            "label": "Treehouse Left Orange Bridge 3"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 4",
+            "label": "Treehouse Left Orange Bridge 4"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 5",
+            "label": "Treehouse Left Orange Bridge 5"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 6",
+            "label": "Treehouse Left Orange Bridge 6"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 7",
+            "label": "Treehouse Left Orange Bridge 7"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 8",
+            "label": "Treehouse Left Orange Bridge 8"
+          },
+          {
+            "value": "Treehouse Left Orange Bridge 9 & Directional",
+            "label": "Treehouse Left Orange Bridge 9 & Directional"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 1",
+            "label": "Treehouse Right Orange Bridge 1"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 10 & Directional",
+            "label": "Treehouse Right Orange Bridge 10 & Directional"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 11",
+            "label": "Treehouse Right Orange Bridge 11"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 12",
+            "label": "Treehouse Right Orange Bridge 12"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 2",
+            "label": "Treehouse Right Orange Bridge 2"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 3",
+            "label": "Treehouse Right Orange Bridge 3"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 4 & Directional",
+            "label": "Treehouse Right Orange Bridge 4 & Directional"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 5",
+            "label": "Treehouse Right Orange Bridge 5"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 6",
+            "label": "Treehouse Right Orange Bridge 6"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 7",
+            "label": "Treehouse Right Orange Bridge 7"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 8",
+            "label": "Treehouse Right Orange Bridge 8"
+          },
+          {
+            "value": "Treehouse Right Orange Bridge 9",
+            "label": "Treehouse Right Orange Bridge 9"
+          },
+          {
+            "value": "Treehouse Second Door Panel",
+            "label": "Treehouse Second Door Panel"
+          },
+          {
+            "value": "Treehouse Second Purple Bridge 1",
+            "label": "Treehouse Second Purple Bridge 1"
+          },
+          {
+            "value": "Treehouse Second Purple Bridge 2",
+            "label": "Treehouse Second Purple Bridge 2"
+          },
+          {
+            "value": "Treehouse Second Purple Bridge 3",
+            "label": "Treehouse Second Purple Bridge 3"
+          },
+          {
+            "value": "Treehouse Second Purple Bridge 4",
+            "label": "Treehouse Second Purple Bridge 4"
+          },
+          {
+            "value": "Treehouse Second Purple Bridge 5",
+            "label": "Treehouse Second Purple Bridge 5"
+          },
+          {
+            "value": "Treehouse Second Purple Bridge 6",
+            "label": "Treehouse Second Purple Bridge 6"
+          },
+          {
+            "value": "Treehouse Second Purple Bridge 7",
+            "label": "Treehouse Second Purple Bridge 7"
+          },
+          {
+            "value": "Treehouse Third Door Panel",
+            "label": "Treehouse Third Door Panel"
+          },
+          {
+            "value": "Treehouse Yellow Bridge 1",
+            "label": "Treehouse Yellow Bridge 1"
+          },
+          {
+            "value": "Treehouse Yellow Bridge 2",
+            "label": "Treehouse Yellow Bridge 2"
+          },
+          {
+            "value": "Treehouse Yellow Bridge 3",
+            "label": "Treehouse Yellow Bridge 3"
+          },
+          {
+            "value": "Treehouse Yellow Bridge 4",
+            "label": "Treehouse Yellow Bridge 4"
+          },
+          {
+            "value": "Treehouse Yellow Bridge 5",
+            "label": "Treehouse Yellow Bridge 5"
+          },
+          {
+            "value": "Treehouse Yellow Bridge 6",
+            "label": "Treehouse Yellow Bridge 6"
+          },
+          {
+            "value": "Treehouse Yellow Bridge 7",
+            "label": "Treehouse Yellow Bridge 7"
+          },
+          {
+            "value": "Treehouse Yellow Bridge 8",
+            "label": "Treehouse Yellow Bridge 8"
+          },
+          {
+            "value": "Treehouse Yellow Bridge 9",
+            "label": "Treehouse Yellow Bridge 9"
+          },
+          {
+            "value": "Tunnels Desert Shortcut Panel",
+            "label": "Tunnels Desert Shortcut Panel"
+          },
+          {
+            "value": "Tunnels Theater Shortcut Panel",
+            "label": "Tunnels Theater Shortcut Panel"
+          },
+          {
+            "value": "Tunnels Town Shortcut Panel",
+            "label": "Tunnels Town Shortcut Panel"
+          },
+          {
+            "value": "Tunnels Vault Box",
+            "label": "Tunnels Vault Box"
+          },
+          {
+            "value": "Tutorial Back Left",
+            "label": "Tutorial Back Left"
+          },
+          {
+            "value": "Tutorial Back Right",
+            "label": "Tutorial Back Right"
+          },
+          {
+            "value": "Tutorial Center Left",
+            "label": "Tutorial Center Left"
+          },
+          {
+            "value": "Tutorial First Hallway Bend",
+            "label": "Tutorial First Hallway Bend"
+          },
+          {
+            "value": "Tutorial First Hallway Straight",
+            "label": "Tutorial First Hallway Straight"
+          },
+          {
+            "value": "Tutorial Front Center",
+            "label": "Tutorial Front Center"
+          },
+          {
+            "value": "Tutorial Front Left",
+            "label": "Tutorial Front Left"
+          },
+          {
+            "value": "Tutorial Patio Floor",
+            "label": "Tutorial Patio Floor"
+          },
+          {
+            "value": "Tutorial Pillar",
+            "label": "Tutorial Pillar"
+          },
+          {
+            "value": "Windmill Entry Panel",
+            "label": "Windmill Entry Panel"
+          },
+          {
+            "value": "Windmill Theater Entry Panel",
+            "label": "Windmill Theater Entry Panel"
+          },
+          {
+            "value": "Windmill Turn Control",
+            "label": "Windmill Turn Control"
+          }
+        ]
+      },
+      "advanced": true,
+      "dependencies": null
+    },
+    {
+      "id": "early_caves",
+      "label": "Early Caves",
+      "description": "Adds an item that opens the Caves Shortcuts to Swamp and Mountain, allowing early access to the Caves even if you are not playing a remote Door Shuffle mode.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "add_to_pool",
+            "label": "Add To Pool"
+          },
+          {
+            "value": "starting_inventory",
+            "label": "Starting Inventory"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "elevators_come_to_you",
+      "label": "Elevators Come To You",
+      "description": "In vanilla, some bridges/elevators come to you if you walk up to them when they are not currently there.",
+      "category": "general",
+      "type": {
+        "kind": "multi_select",
+        "defaults": [
+          "Quarry Elevator"
+        ],
+        "choices": [
+          {
+            "value": "Bunker Elevator",
+            "label": "Bunker Elevator"
+          },
+          {
+            "value": "Quarry Elevator",
+            "label": "Quarry Elevator"
+          },
+          {
+            "value": "Swamp Long Bridge",
+            "label": "Swamp Long Bridge"
+          }
+        ]
+      },
+      "advanced": true,
+      "dependencies": null
+    },
+    {
+      "id": "trap_percentage",
+      "label": "Trap Percentage",
+      "description": "Replaces junk items with traps, at the specified rate.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 20
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "puzzle_skip_amount",
+      "label": "Puzzle Skip Amount",
+      "description": "Adds this many Puzzle Skips into the pool, if there is room.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "default": 10
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hint_amount",
+      "label": "Hint Amount",
+      "description": "Adds hints to Audio Logs.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 49,
+        "step": 1,
+        "default": 12
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "vague_hints",
+      "label": "Vague Hints",
+      "description": "Make Location Hints a bit more vague, where they only tell you about the general area the item is in.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "stable",
+            "label": "Stable"
+          },
+          {
+            "value": "experimental",
+            "label": "Experimental"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "area_hint_percentage",
+      "label": "Area Hint Percentage",
+      "description": "There are two types of hints for The Witness.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 33
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "laser_hints",
+      "label": "Laser Hints",
+      "description": "If on, lasers will tell you where their items are if you walk close to them in-game.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "If on, whenever you fail a puzzle (with some exceptions), you and everyone who is also on Death Link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link_amnesty",
+      "label": "Death Link Amnesty",
+      "description": "The number of panel fails to allow before sending a death through Death Link.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 5,
+        "step": 1,
+        "default": 1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_dog",
+      "label": "Shuffle Dog",
+      "description": "Adds petting the dog statue in Town into the location pool.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "puzzle_skip",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "puzzle_skip",
+            "label": "Puzzle Skip"
+          },
+          {
+            "value": "random_item",
+            "label": "Random Item"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "easter_egg_hunt",
+      "label": "Easter Egg Hunt",
+      "description": "Adds up to 120 Easter Eggs to the game, placed by NewSoupVi, Exempt-Medic, hatkirby, Scipio, and Rever.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "very_hard",
+            "label": "Very Hard"
+          },
+          {
+            "value": "extreme",
+            "label": "Extreme"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

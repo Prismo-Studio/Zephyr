@@ -1,0 +1,713 @@
+{
+  "id": "factorio",
+  "name": "Factorio",
+  "version": "0.6.0",
+  "description": "Factorio is a game about automation.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_science_pack",
+      "label": "Max Science Pack",
+      "description": "Maximum level of science pack required to complete the game.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "space_science_pack",
+        "choices": [
+          {
+            "value": "automation_science_pack",
+            "label": "Automation Science Pack"
+          },
+          {
+            "value": "logistic_science_pack",
+            "label": "Logistic Science Pack"
+          },
+          {
+            "value": "military_science_pack",
+            "label": "Military Science Pack"
+          },
+          {
+            "value": "chemical_science_pack",
+            "label": "Chemical Science Pack"
+          },
+          {
+            "value": "production_science_pack",
+            "label": "Production Science Pack"
+          },
+          {
+            "value": "utility_science_pack",
+            "label": "Utility Science Pack"
+          },
+          {
+            "value": "space_science_pack",
+            "label": "Space Science Pack"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "Goal required to complete the game.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "rocket",
+        "choices": [
+          {
+            "value": "rocket",
+            "label": "Rocket"
+          },
+          {
+            "value": "satellite",
+            "label": "Satellite"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "craftsanity",
+      "label": "Craftsanity",
+      "description": "Choose a number of researches to require crafting a specific item rather than with science packs.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 183,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tech_tree_layout",
+      "label": "Tech Tree Layout",
+      "description": "Selects how the tech tree nodes are interwoven.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "single",
+        "choices": [
+          {
+            "value": "single",
+            "label": "Single"
+          },
+          {
+            "value": "small_diamonds",
+            "label": "Small Diamonds"
+          },
+          {
+            "value": "medium_diamonds",
+            "label": "Medium Diamonds"
+          },
+          {
+            "value": "large_diamonds",
+            "label": "Large Diamonds"
+          },
+          {
+            "value": "small_pyramids",
+            "label": "Small Pyramids"
+          },
+          {
+            "value": "medium_pyramids",
+            "label": "Medium Pyramids"
+          },
+          {
+            "value": "large_pyramids",
+            "label": "Large Pyramids"
+          },
+          {
+            "value": "small_funnels",
+            "label": "Small Funnels"
+          },
+          {
+            "value": "medium_funnels",
+            "label": "Medium Funnels"
+          },
+          {
+            "value": "large_funnels",
+            "label": "Large Funnels"
+          },
+          {
+            "value": "trees",
+            "label": "Trees"
+          },
+          {
+            "value": "choices",
+            "label": "Choices"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "min_tech_cost",
+      "label": "Min Tech Cost",
+      "description": "The cheapest a Technology can be in Science Packs.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10000,
+        "step": 1,
+        "default": 5
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_tech_cost",
+      "label": "Max Tech Cost",
+      "description": "The most expensive a Technology can be in Science Packs.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10000,
+        "step": 1,
+        "default": 500
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tech_cost_distribution",
+      "label": "Tech Cost Distribution",
+      "description": "Random distribution of costs of the Science Packs.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "even",
+        "choices": [
+          {
+            "value": "even",
+            "label": "Even"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "middle",
+            "label": "Middle"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tech_cost_mix",
+      "label": "Tech Cost Mix",
+      "description": "Percent chance that a preceding Science Pack is also required.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 70
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ramping_tech_costs",
+      "label": "Ramping Tech Costs",
+      "description": "Forces the amount of Science Packs required to ramp up with the highest involved Pack.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "silo",
+      "label": "Silo",
+      "description": "Ingredients to craft rocket silo or auto-place if set to spawn.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "randomize_recipe",
+            "label": "Randomize Recipe"
+          },
+          {
+            "value": "spawn",
+            "label": "Spawn"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "satellite",
+      "label": "Satellite",
+      "description": "Ingredients to craft satellite.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "randomize_recipe",
+            "label": "Randomize Recipe"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "free_samples",
+      "label": "Free Samples",
+      "description": "Get free items with your technologies.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "stack",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "single_craft",
+            "label": "Single Craft"
+          },
+          {
+            "value": "half_stack",
+            "label": "Half Stack"
+          },
+          {
+            "value": "stack",
+            "label": "Stack"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "free_samples_quality",
+      "label": "Free Samples Quality",
+      "description": "If free samples are on, determine the quality of the granted items.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "uncommon",
+            "label": "Uncommon"
+          },
+          {
+            "value": "rare",
+            "label": "Rare"
+          },
+          {
+            "value": "epic",
+            "label": "Epic"
+          },
+          {
+            "value": "legendary",
+            "label": "Legendary"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tech_tree_information",
+      "label": "Tech Tree Information",
+      "description": "How much information should be displayed in the tech tree.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "advancement",
+            "label": "Advancement"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "recipe_time",
+      "label": "Recipe Time",
+      "description": "Randomize the time it takes for any recipe to craft, this includes smelting, chemical lab, hand crafting etc.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "fast",
+            "label": "Fast"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "slow",
+            "label": "Slow"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          },
+          {
+            "value": "new_fast",
+            "label": "New Fast"
+          },
+          {
+            "value": "new_normal",
+            "label": "New Normal"
+          },
+          {
+            "value": "new_slow",
+            "label": "New Slow"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "recipe_ingredients",
+      "label": "Recipe Ingredients",
+      "description": "Select if rocket, or rocket + science pack ingredients should be random.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "rocket",
+        "choices": [
+          {
+            "value": "rocket",
+            "label": "Rocket"
+          },
+          {
+            "value": "science_pack",
+            "label": "Science Pack"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "recipe_ingredients_offset",
+      "label": "Recipe Ingredients Offset",
+      "description": "When randomizing ingredients, remove or add this many \"slots\" of items.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": -1,
+        "max": 5,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "imported_blueprints",
+      "label": "Imported Blueprints",
+      "description": "Allow or Disallow Blueprints from outside the current savegame.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progressive",
+      "label": "Progressive",
+      "description": "Merges together Technologies like \"automation-1\" to \"automation-3\" into 3 copies of \"Progressive Automation\", which awards them in order.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "on",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "grouped_random",
+            "label": "Grouped Random"
+          },
+          {
+            "value": "on",
+            "label": "On"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "teleport_traps",
+      "label": "Teleport Traps",
+      "description": "Trap items that when received trigger a random teleport.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "grenade_traps",
+      "label": "Grenade Traps",
+      "description": "Trap items that when received trigger a grenade explosion on each player.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cluster_grenade_traps",
+      "label": "Cluster Grenade Traps",
+      "description": "Trap items that when received trigger a cluster grenade explosion on each player.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "artillery_traps",
+      "label": "Artillery Traps",
+      "description": "Trap items that when received trigger an artillery shell on each player.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "atomic_rocket_traps",
+      "label": "Atomic Rocket Traps",
+      "description": "Trap items that when received trigger an atomic rocket explosion on each player.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "atomic_cliff_remover_traps",
+      "label": "Atomic Cliff Remover Traps",
+      "description": "Trap items that when received trigger an atomic rocket explosion on a random cliff.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "inventory_spill_traps",
+      "label": "Inventory Spill Traps",
+      "description": "Trap items that when received trigger dropping your main inventory and trash inventory onto the ground.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "attack_traps",
+      "label": "Attack Traps",
+      "description": "Trap items that when received trigger an attack on your base.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "evolution_traps",
+      "label": "Evolution Traps",
+      "description": "Trap items that when received increase the enemy evolution.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "evolution_trap_increase",
+      "label": "Evolution Trap Increase",
+      "description": "How much an Evolution Trap increases the enemy evolution.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "default": 10
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "energy_link",
+      "label": "Energy Link",
+      "description": "Allow sending energy to other worlds.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

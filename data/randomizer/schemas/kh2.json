@@ -1,0 +1,635 @@
+{
+  "id": "kh2",
+  "name": "Kingdom Hearts 2",
+  "version": "0.4.4",
+  "description": "Kingdom Hearts II is an action role-playing game developed and published by Square Enix and released in 2005.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "LevelDepth",
+      "label": "Leveldepth",
+      "description": "Determines How many locations you want on levels Level 50: 23 checks spread through 50 levels.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "level_50",
+        "choices": [
+          {
+            "value": "level_50",
+            "label": "Level 50"
+          },
+          {
+            "value": "level_99",
+            "label": "Level 99"
+          },
+          {
+            "value": "level_50_sanity",
+            "label": "Level 50 Sanity"
+          },
+          {
+            "value": "level_99_sanity",
+            "label": "Level 99 Sanity"
+          },
+          {
+            "value": "level_1",
+            "label": "Level 1"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Sora_Level_EXP",
+      "label": "Sora Level Exp",
+      "description": "Sora Level Exp Multiplier",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 5
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Valor_Form_EXP",
+      "label": "Valor Form Exp",
+      "description": "Valor Form Exp Multiplier",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Wisdom_Form_EXP",
+      "label": "Wisdom Form Exp",
+      "description": "Wisdom Form Exp Multiplier",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Limit_Form_EXP",
+      "label": "Limit Form Exp",
+      "description": "Limit Form Exp Multiplier",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Master_Form_EXP",
+      "label": "Master Form Exp",
+      "description": "Master Form Exp Multiplier",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Final_Form_EXP",
+      "label": "Final Form Exp",
+      "description": "Final Form Exp Multiplier",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Summon_EXP",
+      "label": "Summon Exp",
+      "description": "Summon Exp Multiplier",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 5
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Schmovement",
+      "label": "Schmovement",
+      "description": "Level of Progressive Movement Abilities You Start With",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "level_1",
+        "choices": [
+          {
+            "value": "level_0",
+            "label": "Level 0"
+          },
+          {
+            "value": "level_1",
+            "label": "Level 1"
+          },
+          {
+            "value": "level_2",
+            "label": "Level 2"
+          },
+          {
+            "value": "level_3",
+            "label": "Level 3"
+          },
+          {
+            "value": "level_4",
+            "label": "Level 4"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "RandomGrowth",
+      "label": "Randomgrowth",
+      "description": "Amount of Random Progressive Movement Abilities You Start With",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "AntiForm",
+      "label": "Antiform",
+      "description": "Add Anti Form to the pool",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Promise_Charm",
+      "label": "Promise Charm",
+      "description": "Add Promise Charm to the pool",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Goal",
+      "label": "Goal",
+      "description": "Win Condition Three Proofs: Find the 3 Proofs to unlock the final door.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "lucky_emblem_hunt",
+        "choices": [
+          {
+            "value": "three_proofs",
+            "label": "Three Proofs"
+          },
+          {
+            "value": "lucky_emblem_hunt",
+            "label": "Lucky Emblem Hunt"
+          },
+          {
+            "value": "hitlist",
+            "label": "Hitlist"
+          },
+          {
+            "value": "hitlist_and_lucky_emblem",
+            "label": "Hitlist And Lucky Emblem"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "FinalXemnas",
+      "label": "Finalxemnas",
+      "description": "Kill Final Xemnas to Beat the Game.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "LuckyEmblemsAmount",
+      "label": "Luckyemblemsamount",
+      "description": "Number of Lucky Emblems that are in the pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 60,
+        "step": 1,
+        "default": 40
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "LuckyEmblemsRequired",
+      "label": "Luckyemblemsrequired",
+      "description": "Number of Lucky Emblems to collect to Win/Unlock Final Xemnas' Door.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 60,
+        "step": 1,
+        "default": 35
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "BountyAmount",
+      "label": "Bountyamount",
+      "description": "Number of Bounties that are in the pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 42,
+        "step": 1,
+        "default": 10
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "BountyRequired",
+      "label": "Bountyrequired",
+      "description": "Number of Bounties to collect to Win/Unlock Final Xemnas Door.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 42,
+        "step": 1,
+        "default": 7
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "BountyStartingHintToggle",
+      "label": "Bountystartinghinttoggle",
+      "description": "Start with Bounties Hinted",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Keyblade_Minimum",
+      "label": "Keyblade Minimum",
+      "description": "Minimum Stats for Keyblades",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Keyblade_Maximum",
+      "label": "Keyblade Maximum",
+      "description": "Maximum Stats for Keyblades",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 7
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "WeaponSlotStartHint",
+      "label": "Weaponslotstarthint",
+      "description": "Start with Weapon Slots' Hinted",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "FightLogic",
+      "label": "Fightlogic",
+      "description": "The level of logic to use when determining what fights in each KH2 world are beatable.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "FinalFormLogic",
+      "label": "Finalformlogic",
+      "description": "Determines forcing final form logic No Light and Darkness: Light and Darkness is not in logic.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "light_and_darkness",
+        "choices": [
+          {
+            "value": "no_light_and_darkness",
+            "label": "No Light And Darkness"
+          },
+          {
+            "value": "light_and_darkness",
+            "label": "Light And Darkness"
+          },
+          {
+            "value": "just_a_form",
+            "label": "Just A Form"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "AutoFormLogic",
+      "label": "Autoformlogic",
+      "description": "Have Auto Forms levels in logic.",
+      "category": "logic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "DonaldGoofyStatsanity",
+      "label": "Donaldgoofystatsanity",
+      "description": "Toggles if on Donald and Goofy's Get Bonus locations can be any item",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "FillerItemsLocal",
+      "label": "Filleritemslocal",
+      "description": "Make all dynamic filler classified items local.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Visitlocking",
+      "label": "Visitlocking",
+      "description": "Determines the level of visit locking No Visit Locking: Start with all 25 visit locking items.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "first_and_second_visit_locking",
+        "choices": [
+          {
+            "value": "no_visit_locking",
+            "label": "No Visit Locking"
+          },
+          {
+            "value": "second_visit_locking",
+            "label": "Second Visit Locking"
+          },
+          {
+            "value": "first_and_second_visit_locking",
+            "label": "First And Second Visit Locking"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "RandomVisitLockingItem",
+      "label": "Randomvisitlockingitem",
+      "description": "Start with random amount of visit locking items.",
+      "category": "items",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "SuperBosses",
+      "label": "Superbosses",
+      "description": "Terra Sephiroth and Data Fights Toggle.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "CasualBounties",
+      "label": "Casualbounties",
+      "description": "Adds more casual and generic locations that aren't superbosses to expand the bounty pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "Cups",
+      "label": "Cups",
+      "description": "Olympus Cups Toggles No Cups: All Cups are placed into Excluded Locations.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "no_cups",
+        "choices": [
+          {
+            "value": "no_cups",
+            "label": "No Cups"
+          },
+          {
+            "value": "cups",
+            "label": "Cups"
+          },
+          {
+            "value": "cups_and_hades_paradox",
+            "label": "Cups And Hades Paradox"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "SummonLevelLocationToggle",
+      "label": "Summonlevellocationtoggle",
+      "description": "Toggle Summon levels to have locations.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "AtlanticaToggle",
+      "label": "Atlanticatoggle",
+      "description": "Atlantica Toggle",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "CorSkipToggle",
+      "label": "Corskiptoggle",
+      "description": "Toggle for Cor skip.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

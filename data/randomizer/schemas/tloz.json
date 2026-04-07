@@ -1,0 +1,120 @@
+{
+  "id": "tloz",
+  "name": "The Legend of Zelda",
+  "version": "0.1.6",
+  "description": "The Legend of Zelda needs almost no introduction.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ExpandedPool",
+      "label": "Expandedpool",
+      "description": "Puts room clear drops and take any caves into the pool of items and locations.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "TriforceLocations",
+      "label": "Triforcelocations",
+      "description": "Where Triforce fragments can be located.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "dungeons",
+            "label": "Dungeons"
+          },
+          {
+            "value": "anywhere",
+            "label": "Anywhere"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "StartingPosition",
+      "label": "Startingposition",
+      "description": "How easy is the start of the game.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "safe",
+        "choices": [
+          {
+            "value": "safe",
+            "label": "Safe"
+          },
+          {
+            "value": "unsafe",
+            "label": "Unsafe"
+          },
+          {
+            "value": "dangerous",
+            "label": "Dangerous"
+          },
+          {
+            "value": "very_dangerous",
+            "label": "Very Dangerous"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

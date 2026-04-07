@@ -1,0 +1,156 @@
+{
+  "id": "hylics2",
+  "name": "Hylics 2",
+  "version": "0.1.6",
+  "description": "Hylics 2 is a surreal and unusual RPG, with a bizarre yet unique visual style.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "party_shuffle",
+      "label": "Party Shuffle",
+      "description": "Shuffles party members into the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gesture_shuffle",
+      "label": "Gesture Shuffle",
+      "description": "Choose where gestures will appear in the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "anywhere",
+        "choices": [
+          {
+            "value": "anywhere",
+            "label": "Anywhere"
+          },
+          {
+            "value": "tvs_only",
+            "label": "Tvs Only"
+          },
+          {
+            "value": "default_locations",
+            "label": "Default Locations"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "medallion_shuffle",
+      "label": "Medallion Shuffle",
+      "description": "Shuffles red medallions into the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "start_location",
+      "label": "Start Location",
+      "description": "Select the starting location from 1 of 4 positions.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "waynehouse",
+        "choices": [
+          {
+            "value": "waynehouse",
+            "label": "Waynehouse"
+          },
+          {
+            "value": "viewaxs_edifice",
+            "label": "Viewaxs Edifice"
+          },
+          {
+            "value": "tv_island",
+            "label": "Tv Island"
+          },
+          {
+            "value": "shield_facility",
+            "label": "Shield Facility"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "extra_items_in_logic",
+      "label": "Extra Items In Logic",
+      "description": "Include some extra items in logic (CHARGE UP, 1x PAPER CUP) to prevent the game from becoming too difficult.",
+      "category": "logic",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

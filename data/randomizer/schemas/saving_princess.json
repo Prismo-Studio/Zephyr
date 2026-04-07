@@ -1,0 +1,223 @@
+{
+  "id": "saving_princess",
+  "name": "Saving Princess",
+  "version": "0.5.0",
+  "description": "Explore a space station crawling with rogue machines and even rival bounty hunters with the same objective as you - but with far, far different intentions!",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "expanded_pool",
+      "label": "Expanded Pool",
+      "description": "Determines if places other than chests and special weapons will be locations.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_chance",
+      "label": "Trap Chance",
+      "description": "Likelihood of a filler item becoming a trap.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "instant_saving",
+      "label": "Instant Saving",
+      "description": "When enabled, save points activate with no delay when touched.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sprint_availability",
+      "label": "Sprint Availability",
+      "description": "Determines under which conditions the debug sprint is made accessible to the player.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "available_with_jacket",
+        "choices": [
+          {
+            "value": "never_available",
+            "label": "Never Available"
+          },
+          {
+            "value": "always_available",
+            "label": "Always Available"
+          },
+          {
+            "value": "available_with_jacket",
+            "label": "Available With Jacket"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cliff_weapon_upgrade",
+      "label": "Cliff Weapon Upgrade",
+      "description": "Determines which weapon Cliff uses against you, base or upgraded.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "always_upgraded",
+        "choices": [
+          {
+            "value": "never_upgraded",
+            "label": "Never Upgraded"
+          },
+          {
+            "value": "always_upgraded",
+            "label": "Always Upgraded"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ace_weapon_upgrade",
+      "label": "Ace Weapon Upgrade",
+      "description": "Determines which weapon Ace uses against you, base or upgraded.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "always_upgraded",
+        "choices": [
+          {
+            "value": "never_upgraded",
+            "label": "Never Upgraded"
+          },
+          {
+            "value": "always_upgraded",
+            "label": "Always Upgraded"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "iframes_duration",
+      "label": "Iframes Duration",
+      "description": "Percentage multiplier for Portia's invincibility frames.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 400,
+        "step": 1,
+        "default": 100
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shake_intensity",
+      "label": "Shake Intensity",
+      "description": "Percentage multiplier for screen shake effects.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "music_shuffle",
+      "label": "Music Shuffle",
+      "description": "Enables music shuffling.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

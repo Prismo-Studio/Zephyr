@@ -1,0 +1,1137 @@
+{
+  "id": "sm",
+  "name": "Super Metroid",
+  "version": "0.2.6",
+  "description": "This is Very Adaptive Randomizer of Items and Areas for Super Metroid (VARIA SM).",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "start_inventory_removes_from_pool",
+      "label": "Start Inventory Removes From Pool",
+      "description": "Remove items in starting inventory from pool.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "preset",
+      "label": "Preset",
+      "description": "Determines the general difficulty of the item placements by adjusting the list of tricks that logic allows.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "regular",
+        "choices": [
+          {
+            "value": "newbie",
+            "label": "Newbie"
+          },
+          {
+            "value": "casual",
+            "label": "Casual"
+          },
+          {
+            "value": "regular",
+            "label": "Regular"
+          },
+          {
+            "value": "veteran",
+            "label": "Veteran"
+          },
+          {
+            "value": "expert",
+            "label": "Expert"
+          },
+          {
+            "value": "master",
+            "label": "Master"
+          },
+          {
+            "value": "samus",
+            "label": "Samus"
+          },
+          {
+            "value": "season_races",
+            "label": "Season Races"
+          },
+          {
+            "value": "smrat2021",
+            "label": "Smrat2021"
+          },
+          {
+            "value": "solution",
+            "label": "Solution"
+          },
+          {
+            "value": "custom",
+            "label": "Custom"
+          },
+          {
+            "value": "varia_custom",
+            "label": "Varia Custom"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_difficulty",
+      "label": "Max Difficulty",
+      "description": "Maximum difficulty of tricks that are allowed from the seed's Preset.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "hardcore",
+        "choices": [
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "harder",
+            "label": "Harder"
+          },
+          {
+            "value": "hardcore",
+            "label": "Hardcore"
+          },
+          {
+            "value": "mania",
+            "label": "Mania"
+          },
+          {
+            "value": "infinity",
+            "label": "Infinity"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "start_location",
+      "label": "Start Location",
+      "description": "Choose where you want to start the game.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "landing_site",
+        "choices": [
+          {
+            "value": "ceres",
+            "label": "Ceres"
+          },
+          {
+            "value": "landing_site",
+            "label": "Landing Site"
+          },
+          {
+            "value": "gauntlet_top",
+            "label": "Gauntlet Top"
+          },
+          {
+            "value": "green_brinstar_elevator",
+            "label": "Green Brinstar Elevator"
+          },
+          {
+            "value": "big_pink",
+            "label": "Big Pink"
+          },
+          {
+            "value": "etecoons_supers",
+            "label": "Etecoons Supers"
+          },
+          {
+            "value": "wrecked_ship_main",
+            "label": "Wrecked Ship Main"
+          },
+          {
+            "value": "firefleas_top",
+            "label": "Firefleas Top"
+          },
+          {
+            "value": "business_center",
+            "label": "Business Center"
+          },
+          {
+            "value": "bubble_mountain",
+            "label": "Bubble Mountain"
+          },
+          {
+            "value": "mama_turtle",
+            "label": "Mama Turtle"
+          },
+          {
+            "value": "watering_hole",
+            "label": "Watering Hole"
+          },
+          {
+            "value": "aqueduct",
+            "label": "Aqueduct"
+          },
+          {
+            "value": "red_brinstar_elevator",
+            "label": "Red Brinstar Elevator"
+          },
+          {
+            "value": "golden_four",
+            "label": "Golden Four"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "remote_items",
+      "label": "Remote Items",
+      "description": "Items from your own world are sent via the Archipelago server.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When DeathLink is enabled and someone else with DeathLink dies, you will die.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disable",
+        "choices": [
+          {
+            "value": "disable",
+            "label": "Disable"
+          },
+          {
+            "value": "enable",
+            "label": "Enable"
+          },
+          {
+            "value": "enable_survive",
+            "label": "Enable Survive"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "morph_placement",
+      "label": "Morph Placement",
+      "description": "Influences where the Morphing Ball will be placed.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "early",
+        "choices": [
+          {
+            "value": "early",
+            "label": "Early"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hide_items",
+      "label": "Hide Items",
+      "description": "Hides half of the visible items.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "strict_minors",
+      "label": "Strict Minors",
+      "description": "Instead of using the Minors proportions as probabilities, enforce a strict distribution to match the proportions as closely as possible.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "missile_qty",
+      "label": "Missile Qty",
+      "description": "The higher the number, the higher the probability of choosing Missiles when placing a minor.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 10,
+        "max": 90,
+        "step": 1,
+        "default": 30
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "super_qty",
+      "label": "Super Qty",
+      "description": "The higher the number, the higher the probability of choosing Super Missiles when placing a minor.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 10,
+        "max": 90,
+        "step": 1,
+        "default": 20
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "power_bomb_qty",
+      "label": "Power Bomb Qty",
+      "description": "The higher the number, the higher the probability of choosing Power Bombs when placing a minor.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 10,
+        "max": 90,
+        "step": 1,
+        "default": 10
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "minor_qty",
+      "label": "Minor Qty",
+      "description": "From 7%, minimum number of minors required to finish the game, to 100%.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 7,
+        "max": 100,
+        "step": 1,
+        "default": 100
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "energy_qty",
+      "label": "Energy Qty",
+      "description": "Choose how many Energy/Reserve Tanks will be available, from 0-1 in ultra sparse, 4-6 in sparse, 8-12 in medium and 18 in vanilla.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "ultra_sparse",
+            "label": "Ultra Sparse"
+          },
+          {
+            "value": "sparse",
+            "label": "Sparse"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "area_randomization",
+      "label": "Area Randomization",
+      "description": "Randomize areas together using bidirectional access portals.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "light",
+            "label": "Light"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "area_layout",
+      "label": "Area Layout",
+      "description": "Some layout tweaks to make your life easier in areas randomizer.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "doors_colors_rando",
+      "label": "Doors Colors Rando",
+      "description": "Randomize the color of Red/Green/Yellow doors.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "allow_grey_doors",
+      "label": "Allow Grey Doors",
+      "description": "When randomizing the color of Red/Green/Yellow doors, some doors can be randomized to Grey.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "boss_randomization",
+      "label": "Boss Randomization",
+      "description": "Randomize Golden 4 bosses access doors using bidirectional access portals.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "escape_rando",
+      "label": "Escape Rando",
+      "description": "When leaving Tourian, get teleported to the exit of a random Map station (between Brinstar/Maridia/Norfair/Wrecked Ship).",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "remove_escape_enemies",
+      "label": "Remove Escape Enemies",
+      "description": "Remove enemies during escape sequence, disable it to blast through enemies with your Hyper Beam and cause lag.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fun_combat",
+      "label": "Fun Combat",
+      "description": "Forces removal of Plasma Beam and Screw Attack if the preset and settings allow it.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fun_movement",
+      "label": "Fun Movement",
+      "description": "Forces removal of Space Jump if the preset allows it.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fun_suits",
+      "label": "Fun Suits",
+      "description": "If the preset and seed layout allow it, will force removal of at least one of Varia Suit and/or Gravity Suit.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "layout_patches",
+      "label": "Layout Patches",
+      "description": "Include the anti-softlock layout patches.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "varia_tweaks",
+      "label": "Varia Tweaks",
+      "description": "Include minor tweaks for the game to behave 'as it should' in a randomizer context: - Bomb Torizo always activates after picking up its item and does not require Bomb to activate - Wrecked Ship item on the Energy Tank Chozo statue is present before defeating Phantoon - Lower Norfair Chozo statue that lowers the acid toward Gold Torizo does not require Space Jump to activate",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "nerfed_charge",
+      "label": "Nerfed Charge",
+      "description": "Samus begins with a starter Charge Beam that does one third of charged shot damage that can damage bosses.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gravity_behaviour",
+      "label": "Gravity Behaviour",
+      "description": "Modify the heat damage and enemy damage reduction qualities of the Gravity and Varia Suits.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "balanced",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "balanced",
+            "label": "Balanced"
+          },
+          {
+            "value": "progressive",
+            "label": "Progressive"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "elevators_speed",
+      "label": "Elevators Speed",
+      "description": "Accelerate elevators transitions.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fast_doors",
+      "label": "Fast Doors",
+      "description": "Accelerate doors transitions.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "spin_jump_restart",
+      "label": "Spin Jump Restart",
+      "description": "Allows Samus to start spinning in mid air after jumping or falling.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rando_speed",
+      "label": "Rando Speed",
+      "description": "Let Samus keeps her momentum when landing from a fall or from jumping.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "infinite_space_jump",
+      "label": "Infinite Space Jump",
+      "description": "Space jumps can be done quicker and at any time in air, water or lava, even after falling long distances.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "refill_before_save",
+      "label": "Refill Before Save",
+      "description": "Refill energy and ammo when saving.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hud",
+      "label": "Hud",
+      "description": "Displays the current area name and the number of remaining items of selected item split in the HUD for the current area.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "animals",
+      "label": "Animals",
+      "description": "Replace saving the animals in the escape sequence by a random surprise.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "no_music",
+      "label": "No Music",
+      "description": "Disable the background music.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "random_music",
+      "label": "Random Music",
+      "description": "Randomize the background music.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tourian",
+      "label": "Tourian",
+      "description": "Choose endgame Tourian behaviour: - Vanilla: regular vanilla Tourian - Fast: speed up Tourian to skip Metroids, Zebetites, and all cutscenes (including Mother Brain 3 fight).",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "fast",
+            "label": "Fast"
+          },
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "custom_objective",
+      "label": "Custom Objective",
+      "description": "Use randomized custom objectives.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "custom_objective_list",
+      "label": "Custom Objective List",
+      "description": "If \"\"Custom objectives\"\" is enabled, \"Custom Objective count\" will be used to pick an amount of objective from the list.",
+      "category": "general",
+      "type": {
+        "kind": "multi_select",
+        "defaults": [
+          "random"
+        ],
+        "choices": [
+          {
+            "value": "activate chozo robots",
+            "label": "Activate Chozo Robots"
+          },
+          {
+            "value": "clear crateria",
+            "label": "Clear Crateria"
+          },
+          {
+            "value": "clear croc's lair",
+            "label": "Clear Croc'S Lair"
+          },
+          {
+            "value": "clear east maridia",
+            "label": "Clear East Maridia"
+          },
+          {
+            "value": "clear green brinstar",
+            "label": "Clear Green Brinstar"
+          },
+          {
+            "value": "clear kraid's lair",
+            "label": "Clear Kraid'S Lair"
+          },
+          {
+            "value": "clear lower norfair",
+            "label": "Clear Lower Norfair"
+          },
+          {
+            "value": "clear red brinstar",
+            "label": "Clear Red Brinstar"
+          },
+          {
+            "value": "clear upper norfair",
+            "label": "Clear Upper Norfair"
+          },
+          {
+            "value": "clear west maridia",
+            "label": "Clear West Maridia"
+          },
+          {
+            "value": "clear wrecked ship",
+            "label": "Clear Wrecked Ship"
+          },
+          {
+            "value": "collect 100% items",
+            "label": "Collect 100% Items"
+          },
+          {
+            "value": "collect 25% items",
+            "label": "Collect 25% Items"
+          },
+          {
+            "value": "collect 50% items",
+            "label": "Collect 50% Items"
+          },
+          {
+            "value": "collect 75% items",
+            "label": "Collect 75% Items"
+          },
+          {
+            "value": "collect all upgrades",
+            "label": "Collect All Upgrades"
+          },
+          {
+            "value": "kill all G4",
+            "label": "Kill All G4"
+          },
+          {
+            "value": "kill all mini bosses",
+            "label": "Kill All Mini Bosses"
+          },
+          {
+            "value": "kill botwoon",
+            "label": "Kill Botwoon"
+          },
+          {
+            "value": "kill crocomire",
+            "label": "Kill Crocomire"
+          },
+          {
+            "value": "kill draygon",
+            "label": "Kill Draygon"
+          },
+          {
+            "value": "kill golden torizo",
+            "label": "Kill Golden Torizo"
+          },
+          {
+            "value": "kill king cacatac",
+            "label": "Kill King Cacatac"
+          },
+          {
+            "value": "kill kraid",
+            "label": "Kill Kraid"
+          },
+          {
+            "value": "kill one G4",
+            "label": "Kill One G4"
+          },
+          {
+            "value": "kill one miniboss",
+            "label": "Kill One Miniboss"
+          },
+          {
+            "value": "kill phantoon",
+            "label": "Kill Phantoon"
+          },
+          {
+            "value": "kill ridley",
+            "label": "Kill Ridley"
+          },
+          {
+            "value": "kill shaktool",
+            "label": "Kill Shaktool"
+          },
+          {
+            "value": "kill spore spawn",
+            "label": "Kill Spore Spawn"
+          },
+          {
+            "value": "kill the orange geemer",
+            "label": "Kill The Orange Geemer"
+          },
+          {
+            "value": "kill three G4",
+            "label": "Kill Three G4"
+          },
+          {
+            "value": "kill three minibosses",
+            "label": "Kill Three Minibosses"
+          },
+          {
+            "value": "kill two G4",
+            "label": "Kill Two G4"
+          },
+          {
+            "value": "kill two minibosses",
+            "label": "Kill Two Minibosses"
+          },
+          {
+            "value": "nothing",
+            "label": "Nothing"
+          },
+          {
+            "value": "random",
+            "label": "Random"
+          },
+          {
+            "value": "tickle the red fish",
+            "label": "Tickle The Red Fish"
+          },
+          {
+            "value": "visit the animals",
+            "label": "Visit The Animals"
+          }
+        ]
+      },
+      "advanced": true,
+      "dependencies": null
+    },
+    {
+      "id": "custom_objective_count",
+      "label": "Custom Objective Count",
+      "description": "By default you need to complete 4 objectives from the list to access Tourian.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 4
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "objective",
+      "label": "Objective",
+      "description": "If \"\"Custom objectives\"\" is disabled, choose which objectives are required to sink the Golden Four statue and to open access to Tourian.",
+      "category": "general",
+      "type": {
+        "kind": "multi_select",
+        "defaults": [
+          "kill all G4"
+        ],
+        "choices": [
+          {
+            "value": "activate chozo robots",
+            "label": "Activate Chozo Robots"
+          },
+          {
+            "value": "clear crateria",
+            "label": "Clear Crateria"
+          },
+          {
+            "value": "clear croc's lair",
+            "label": "Clear Croc'S Lair"
+          },
+          {
+            "value": "clear east maridia",
+            "label": "Clear East Maridia"
+          },
+          {
+            "value": "clear green brinstar",
+            "label": "Clear Green Brinstar"
+          },
+          {
+            "value": "clear kraid's lair",
+            "label": "Clear Kraid'S Lair"
+          },
+          {
+            "value": "clear lower norfair",
+            "label": "Clear Lower Norfair"
+          },
+          {
+            "value": "clear red brinstar",
+            "label": "Clear Red Brinstar"
+          },
+          {
+            "value": "clear upper norfair",
+            "label": "Clear Upper Norfair"
+          },
+          {
+            "value": "clear west maridia",
+            "label": "Clear West Maridia"
+          },
+          {
+            "value": "clear wrecked ship",
+            "label": "Clear Wrecked Ship"
+          },
+          {
+            "value": "collect 100% items",
+            "label": "Collect 100% Items"
+          },
+          {
+            "value": "collect 25% items",
+            "label": "Collect 25% Items"
+          },
+          {
+            "value": "collect 50% items",
+            "label": "Collect 50% Items"
+          },
+          {
+            "value": "collect 75% items",
+            "label": "Collect 75% Items"
+          },
+          {
+            "value": "collect all upgrades",
+            "label": "Collect All Upgrades"
+          },
+          {
+            "value": "kill all G4",
+            "label": "Kill All G4"
+          },
+          {
+            "value": "kill all mini bosses",
+            "label": "Kill All Mini Bosses"
+          },
+          {
+            "value": "kill botwoon",
+            "label": "Kill Botwoon"
+          },
+          {
+            "value": "kill crocomire",
+            "label": "Kill Crocomire"
+          },
+          {
+            "value": "kill draygon",
+            "label": "Kill Draygon"
+          },
+          {
+            "value": "kill golden torizo",
+            "label": "Kill Golden Torizo"
+          },
+          {
+            "value": "kill king cacatac",
+            "label": "Kill King Cacatac"
+          },
+          {
+            "value": "kill kraid",
+            "label": "Kill Kraid"
+          },
+          {
+            "value": "kill one G4",
+            "label": "Kill One G4"
+          },
+          {
+            "value": "kill one miniboss",
+            "label": "Kill One Miniboss"
+          },
+          {
+            "value": "kill phantoon",
+            "label": "Kill Phantoon"
+          },
+          {
+            "value": "kill ridley",
+            "label": "Kill Ridley"
+          },
+          {
+            "value": "kill shaktool",
+            "label": "Kill Shaktool"
+          },
+          {
+            "value": "kill spore spawn",
+            "label": "Kill Spore Spawn"
+          },
+          {
+            "value": "kill the orange geemer",
+            "label": "Kill The Orange Geemer"
+          },
+          {
+            "value": "kill three G4",
+            "label": "Kill Three G4"
+          },
+          {
+            "value": "kill three minibosses",
+            "label": "Kill Three Minibosses"
+          },
+          {
+            "value": "kill two G4",
+            "label": "Kill Two G4"
+          },
+          {
+            "value": "kill two minibosses",
+            "label": "Kill Two Minibosses"
+          },
+          {
+            "value": "nothing",
+            "label": "Nothing"
+          },
+          {
+            "value": "tickle the red fish",
+            "label": "Tickle The Red Fish"
+          },
+          {
+            "value": "visit the animals",
+            "label": "Visit The Animals"
+          }
+        ]
+      },
+      "advanced": true,
+      "dependencies": null
+    },
+    {
+      "id": "relaxed_round_robin_cf",
+      "label": "Relaxed Round Robin Cf",
+      "description": "Changes Crystal Flashes behavior and requirements as follows: You can perform a Crystal Flash with any amount of ammo, but you need at least one Power Bomb to begin the process.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

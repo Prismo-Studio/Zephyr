@@ -1,0 +1,343 @@
+{
+  "id": "mm2",
+  "name": "Mega Man 2",
+  "version": "0.1.6",
+  "description": "In the year 200X, following his prior defeat by Mega Man, the evil Dr.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "energy_link",
+      "label": "Energy Link",
+      "description": "Enables EnergyLink support.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "starting_robot_master",
+      "label": "Starting Robot Master",
+      "description": "The initial stage unlocked at the start.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "random",
+        "choices": [
+          {
+            "value": "heat_man",
+            "label": "Heat Man"
+          },
+          {
+            "value": "air_man",
+            "label": "Air Man"
+          },
+          {
+            "value": "wood_man",
+            "label": "Wood Man"
+          },
+          {
+            "value": "bubble_man",
+            "label": "Bubble Man"
+          },
+          {
+            "value": "quick_man",
+            "label": "Quick Man"
+          },
+          {
+            "value": "flash_man",
+            "label": "Flash Man"
+          },
+          {
+            "value": "metal_man",
+            "label": "Metal Man"
+          },
+          {
+            "value": "crash_man",
+            "label": "Crash Man"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "consumables",
+      "label": "Consumables",
+      "description": "When enabled, e-tanks/1-ups/health/weapon energy will be added to the pool of items and included as checks.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "1up_etank",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "1up_etank",
+            "label": "1Up Etank"
+          },
+          {
+            "value": "weapon_health",
+            "label": "Weapon Health"
+          },
+          {
+            "value": "all",
+            "label": "All"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "yoku_jumps",
+      "label": "Yoku Jumps",
+      "description": "When enabled, the player is expected to be able to perform the yoku block sequence in Heat Man's stage without Item 2.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enable_lasers",
+      "label": "Enable Lasers",
+      "description": "When enabled, the player is expected to complete (and acquire items within) the laser sections of Quick Man's stage without the Time Stopper.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemy_weakness",
+      "label": "Enemy Weakness",
+      "description": "Randomizes the damage dealt to enemies by weapons.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "strict_weakness",
+      "label": "Strict Weakness",
+      "description": "Only your starting Robot Master will take damage from the Mega Buster, the rest must be defeated with weapons.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "random_weakness",
+      "label": "Random Weakness",
+      "description": "None: Bosses will have their regular weaknesses.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "randomized",
+            "label": "Randomized"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "wily_5_requirement",
+      "label": "Wily 5 Requirement",
+      "description": "Change the number of Robot Masters that are required to be defeated for the teleporter to the Wily Machine to appear.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 8,
+        "step": 1,
+        "default": 8
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "palette_shuffle",
+      "label": "Palette Shuffle",
+      "description": "Change the color of Mega Man and the Robot Masters.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "randomized",
+            "label": "Randomized"
+          },
+          {
+            "value": "singularity",
+            "label": "Singularity"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "quickswap",
+      "label": "Quickswap",
+      "description": "When enabled, the player can quickswap through all received weapons by pressing Select.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "reduce_flashing",
+      "label": "Reduce Flashing",
+      "description": "Reduce flashing seen in gameplay, such as the stage select and when defeating a Wily boss.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "virtual_console",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "virtual_console",
+            "label": "Virtual Console"
+          },
+          {
+            "value": "minor",
+            "label": "Minor"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "random_music",
+      "label": "Random Music",
+      "description": "Vanilla: music is unchanged Shuffled: stage and certain menu music is shuffled.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "randomized",
+            "label": "Randomized"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

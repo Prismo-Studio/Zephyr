@@ -1,0 +1,130 @@
+{
+  "id": "v6",
+  "name": "VVVVVV",
+  "version": "0.1.6",
+  "description": "VVVVVV is a platform game all about exploring one simple mechanical idea - what if you reversed gravity instead of jumping?",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "music_rando",
+      "label": "Music Rando",
+      "description": "Randomize Music",
+      "category": "cosmetic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "area_rando",
+      "label": "Area Rando",
+      "description": "Randomize Entrances to Areas",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "door_cost",
+      "label": "Door Cost",
+      "description": "Amount of Trinkets required to enter Areas.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 3,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "area_cost",
+      "label": "Area Cost",
+      "description": "Randomize which Area requires which set of DoorCost Trinkets",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link_amnesty",
+      "label": "Death Link Amnesty",
+      "description": "Amount of Deaths to take before sending a DeathLink signal, for balancing difficulty",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "default": 15
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

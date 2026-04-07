@@ -1,0 +1,217 @@
+{
+  "id": "subnautica",
+  "name": "Subnautica",
+  "version": "0.6.2",
+  "description": "Subnautica is an undersea exploration game.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "swim_rule",
+      "label": "Swim Rule",
+      "description": "What logic considers ok swimming distances.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "easy",
+        "choices": [
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "items_easy",
+            "label": "Items Easy"
+          },
+          {
+            "value": "items_normal",
+            "label": "Items Normal"
+          },
+          {
+            "value": "items_hard",
+            "label": "Items Hard"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "early_seaglide",
+      "label": "Early Seaglide",
+      "description": "Make sure 2 of the Seaglide Fragments are available in or near the Safe Shallows (Sphere 1 Locations).",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "free_samples",
+      "label": "Free Samples",
+      "description": "Get free items with your blueprints.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "Goal to complete.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "launch",
+        "choices": [
+          {
+            "value": "launch",
+            "label": "Launch"
+          },
+          {
+            "value": "free",
+            "label": "Free"
+          },
+          {
+            "value": "infected",
+            "label": "Infected"
+          },
+          {
+            "value": "drive",
+            "label": "Drive"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "creature_scans",
+      "label": "Creature Scans",
+      "description": "Place items on specific, randomly chosen, creature scans.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "creature_scan_logic",
+      "label": "Creature Scan Logic",
+      "description": "By default (Stasis), aggressive Creature Scans are logically expected only with a Stasis Rifle.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "stasis",
+        "choices": [
+          {
+            "value": "stasis",
+            "label": "Stasis"
+          },
+          {
+            "value": "containment",
+            "label": "Containment"
+          },
+          {
+            "value": "either",
+            "label": "Either"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "removed",
+            "label": "Removed"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "empty_tanks",
+      "label": "Empty Tanks",
+      "description": "Oxygen Tanks stored in inventory are empty if enabled.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

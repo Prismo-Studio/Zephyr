@@ -1,0 +1,303 @@
+{
+  "id": "messenger",
+  "name": "The Messenger",
+  "version": "0.4.4",
+  "description": "As a demon army besieges his village, a young ninja ventures through a cursed world, to deliver a scroll paramount to his clan’s survival.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          },
+          {
+            "value": "items",
+            "label": "Items"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "logic_level",
+      "label": "Logic Level",
+      "description": "The level of logic to use when determining what locations in your world are accessible.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_shards",
+      "label": "Shuffle Shards",
+      "description": "Whether mega shards should be item locations.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "limited_movement",
+      "label": "Limited Movement",
+      "description": "Removes either rope dart or wingsuit from the itempool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "early_meditation",
+      "label": "Early Meditation",
+      "description": "Guarantees meditation will be found early",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "available_portals",
+      "label": "Available Portals",
+      "description": "Number of portals that are available from the start.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 3,
+        "max": 6,
+        "step": 1,
+        "default": 6
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_portals",
+      "label": "Shuffle Portals",
+      "description": "Whether the portals lead to random places.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "shops",
+            "label": "Shops"
+          },
+          {
+            "value": "checkpoints",
+            "label": "Checkpoints"
+          },
+          {
+            "value": "anywhere",
+            "label": "Anywhere"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_transitions",
+      "label": "Shuffle Transitions",
+      "description": "Whether the transitions between the levels should be randomized.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "coupled",
+            "label": "Coupled"
+          },
+          {
+            "value": "decoupled",
+            "label": "Decoupled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "Requirement to finish the game.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "open_music_box",
+        "choices": [
+          {
+            "value": "open_music_box",
+            "label": "Open Music Box"
+          },
+          {
+            "value": "power_seal_hunt",
+            "label": "Power Seal Hunt"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "music_box",
+      "label": "Music Box",
+      "description": "Whether the music box gauntlet needs to be done.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "notes_needed",
+      "label": "Notes Needed",
+      "description": "How many notes need to be found in order to access the Music Box.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 6
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "total_seals",
+      "label": "Total Seals",
+      "description": "Number of power seals that exist in the item pool when power seal hunt is the goal.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 85,
+        "step": 1,
+        "default": 45
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "percent_seals_required",
+      "label": "Percent Seals Required",
+      "description": "Percentage of total seals required to open the shop chest.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "default": 100
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "traps",
+      "label": "Traps",
+      "description": "Whether traps should be included in the itempool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shop_price",
+      "label": "Shop Price",
+      "description": "Percentage modifier for shuffled item prices in shops",
+      "category": "items",
+      "type": {
+        "kind": "range",
+        "min": 25,
+        "max": 400,
+        "step": 1,
+        "default": 100
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

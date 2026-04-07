@@ -1,0 +1,529 @@
+{
+  "id": "heretic",
+  "name": "Heretic",
+  "version": "0.5.0",
+  "description": "Heretic is a dark fantasy first-person shooter video game released in December 1994.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "Choose the main goal.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "complete_all_levels",
+        "choices": [
+          {
+            "value": "complete_all_levels",
+            "label": "Complete All Levels"
+          },
+          {
+            "value": "complete_boss_levels",
+            "label": "Complete Boss Levels"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "difficulty",
+      "label": "Difficulty",
+      "description": "Choose the game difficulty.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "wet_nurse",
+            "label": "Wet Nurse"
+          },
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "black_plague",
+            "label": "Black Plague"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "random_monsters",
+      "label": "Random Monsters",
+      "description": "Choose how monsters are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "shuffle",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "random_balanced",
+            "label": "Random Balanced"
+          },
+          {
+            "value": "random_chaotic",
+            "label": "Random Chaotic"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "random_pickups",
+      "label": "Random Pickups",
+      "description": "Choose how pickups are randomized.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "shuffle",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "random_balanced",
+            "label": "Random Balanced"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "random_music",
+      "label": "Random Music",
+      "description": "Level musics will be randomized.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffle_selected",
+            "label": "Shuffle Selected"
+          },
+          {
+            "value": "shuffle_game",
+            "label": "Shuffle Game"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "allow_death_logic",
+      "label": "Allow Death Logic",
+      "description": "Some locations require a timed puzzle that can only be tried once.",
+      "category": "logic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "pro",
+      "label": "Pro",
+      "description": "Include difficult tricks into rules.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "check_sanity",
+      "label": "Check Sanity",
+      "description": "Include redundant checks.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "start_with_map_scrolls",
+      "label": "Start With Map Scrolls",
+      "description": "Give the player all Map Scroll items from the start.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "reset_level_on_death",
+      "label": "Reset Level On Death",
+      "description": "When dying, levels are reset and monsters respawned.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "episode1",
+      "label": "Episode1",
+      "description": "City of the Damned.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "episode2",
+      "label": "Episode2",
+      "description": "Hell's Maw.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "episode3",
+      "label": "Episode3",
+      "description": "The Dome of D'Sparil.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "episode4",
+      "label": "Episode4",
+      "description": "The Ossuary.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "episode5",
+      "label": "Episode5",
+      "description": "The Stagnant Demesne.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "split_bag_of_holding",
+      "label": "Split Bag Of Holding",
+      "description": "Split the Bag of Holding into six individual items, each one increasing ammo capacity for one type of weapon only.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "bag_of_holding_count",
+      "label": "Bag Of Holding Count",
+      "description": "How many Bags of Holding will be available.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_ammo_crystals",
+      "label": "Max Ammo Crystals",
+      "description": "Set the starting ammo capacity for crystals (Elven Wand ammo).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 100,
+        "max": 999,
+        "step": 1,
+        "default": 100
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_ammo_arrows",
+      "label": "Max Ammo Arrows",
+      "description": "Set the starting ammo capacity for arrows (Ethereal Crossbow ammo).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 50,
+        "max": 999,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_ammo_claw_orbs",
+      "label": "Max Ammo Claw Orbs",
+      "description": "Set the starting ammo capacity for claw orbs (Dragon Claw ammo).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 200,
+        "max": 999,
+        "step": 1,
+        "default": 200
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_ammo_runes",
+      "label": "Max Ammo Runes",
+      "description": "Set the starting ammo capacity for runes (Hellstaff ammo).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 200,
+        "max": 999,
+        "step": 1,
+        "default": 200
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_ammo_flame_orbs",
+      "label": "Max Ammo Flame Orbs",
+      "description": "Set the starting ammo capacity for flame orbs (Phoenix Rod ammo).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 20,
+        "max": 999,
+        "step": 1,
+        "default": 20
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_ammo_spheres",
+      "label": "Max Ammo Spheres",
+      "description": "Set the starting ammo capacity for spheres (Firemace ammo).",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 150,
+        "max": 999,
+        "step": 1,
+        "default": 150
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "added_ammo_crystals",
+      "label": "Added Ammo Crystals",
+      "description": "Set the amount of crystal capacity gained when collecting a bag of holding or a capacity upgrade.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 10,
+        "max": 999,
+        "step": 1,
+        "default": 100
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "added_ammo_arrows",
+      "label": "Added Ammo Arrows",
+      "description": "Set the amount of arrow capacity gained when collecting a bag of holding or a capacity upgrade.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 5,
+        "max": 999,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "added_ammo_claw_orbs",
+      "label": "Added Ammo Claw Orbs",
+      "description": "Set the amount of claw orb capacity gained when collecting a bag of holding or a capacity upgrade.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 20,
+        "max": 999,
+        "step": 1,
+        "default": 200
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "added_ammo_runes",
+      "label": "Added Ammo Runes",
+      "description": "Set the amount of rune capacity gained when collecting a bag of holding or a capacity upgrade.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 20,
+        "max": 999,
+        "step": 1,
+        "default": 200
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "added_ammo_flame_orbs",
+      "label": "Added Ammo Flame Orbs",
+      "description": "Set the amount of flame orb capacity gained when collecting a bag of holding or a capacity upgrade.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 2,
+        "max": 999,
+        "step": 1,
+        "default": 20
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "added_ammo_spheres",
+      "label": "Added Ammo Spheres",
+      "description": "Set the amount of sphere capacity gained when collecting a bag of holding or a capacity upgrade.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 15,
+        "max": 999,
+        "step": 1,
+        "default": 150
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

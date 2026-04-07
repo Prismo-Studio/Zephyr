@@ -1,0 +1,117 @@
+{
+  "id": "mmbn3",
+  "name": "MegaMan Battle Network 3",
+  "version": "0.1.6",
+  "description": "Play as Lan and MegaMan to stop the evil organization WWW led by the nefarious Dr.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "extra_ranks",
+      "label": "Extra Ranks",
+      "description": "How many extra Undernet Ranks to add to the pool in place of filler items.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 16,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "include_jobs",
+      "label": "Include Jobs",
+      "description": "Whether Jobs can contain progression or useful items.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "include_secret",
+      "label": "Include Secret",
+      "description": "Whether the Secret Area (including Serenade) can contain progression or useful items.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trade_quest_hinting",
+      "label": "Trade Quest Hinting",
+      "description": "Whether NPCs offering Chip Trades should show what item they provide.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "partial",
+            "label": "Partial"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

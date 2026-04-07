@@ -1,0 +1,930 @@
+{
+  "id": "ffmq",
+  "name": "Final Fantasy Mystic Quest",
+  "version": "0.1.6",
+  "description": "Final Fantasy: Mystic Quest is a simple, humorous RPG for the Super Nintendo.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "items",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          },
+          {
+            "value": "items",
+            "label": "Items"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "logic",
+      "label": "Logic",
+      "description": "Placement logic sets the rules that will be applied when placing items.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "standard",
+        "choices": [
+          {
+            "value": "friendly",
+            "label": "Friendly"
+          },
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "expert",
+            "label": "Expert"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "brown_boxes",
+      "label": "Brown Boxes",
+      "description": "Include the 201 brown box locations from the original game.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "include",
+        "choices": [
+          {
+            "value": "exclude",
+            "label": "Exclude"
+          },
+          {
+            "value": "include",
+            "label": "Include"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sky_coin_mode",
+      "label": "Sky Coin Mode",
+      "description": "Configure how the Sky Coin is acquired.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "standard",
+        "choices": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "start_with",
+            "label": "Start With"
+          },
+          {
+            "value": "save_the_crystals",
+            "label": "Save The Crystals"
+          },
+          {
+            "value": "shattered_sky_coin",
+            "label": "Shattered Sky Coin"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shattered_sky_coin_quantity",
+      "label": "Shattered Sky Coin Quantity",
+      "description": "Configure the number of the 40 Sky Coin Fragments required to enter the Doom Castle.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "mid_24",
+        "choices": [
+          {
+            "value": "low_16",
+            "label": "Low 16"
+          },
+          {
+            "value": "mid_24",
+            "label": "Mid 24"
+          },
+          {
+            "value": "high_32",
+            "label": "High 32"
+          },
+          {
+            "value": "random_narrow",
+            "label": "Random Narrow"
+          },
+          {
+            "value": "random_wide",
+            "label": "Random Wide"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "starting_weapon",
+      "label": "Starting Weapon",
+      "description": "Choose your starting weapon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "random",
+        "choices": [
+          {
+            "value": "steel_sword",
+            "label": "Steel Sword"
+          },
+          {
+            "value": "axe",
+            "label": "Axe"
+          },
+          {
+            "value": "cat_claw",
+            "label": "Cat Claw"
+          },
+          {
+            "value": "bomb",
+            "label": "Bomb"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progressive_gear",
+      "label": "Progressive Gear",
+      "description": "Pieces of gear are always acquired from weakest to strongest in a set.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "leveling_curve",
+      "label": "Leveling Curve",
+      "description": "Adjust the level gain rate.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "double_and_half",
+        "choices": [
+          {
+            "value": "half",
+            "label": "Half"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "one_and_half",
+            "label": "One And Half"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "double_and_half",
+            "label": "Double And Half"
+          },
+          {
+            "value": "triple",
+            "label": "Triple"
+          },
+          {
+            "value": "quadruple",
+            "label": "Quadruple"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "starting_companion",
+      "label": "Starting Companion",
+      "description": "Set a companion to start with.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "kaeli",
+            "label": "Kaeli"
+          },
+          {
+            "value": "tristam",
+            "label": "Tristam"
+          },
+          {
+            "value": "phoebe",
+            "label": "Phoebe"
+          },
+          {
+            "value": "reuben",
+            "label": "Reuben"
+          },
+          {
+            "value": "random_companion",
+            "label": "Random Companion"
+          },
+          {
+            "value": "random_plus_none",
+            "label": "Random Plus None"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "available_companions",
+      "label": "Available Companions",
+      "description": "Select randomly which companions will join your party.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 4,
+        "step": 1,
+        "default": 4
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "companions_locations",
+      "label": "Companions Locations",
+      "description": "Set the primary location of companions.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "standard",
+        "choices": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "shuffled_extended",
+            "label": "Shuffled Extended"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "kaelis_mom_fight_minotaur",
+      "label": "Kaelis Mom Fight Minotaur",
+      "description": "Transfer Kaeli's requirements (Tree Wither, Elixir) and the two items she's giving to her mom.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "companion_leveling_type",
+      "label": "Companion Leveling Type",
+      "description": "Set how companions gain levels.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "quests",
+        "choices": [
+          {
+            "value": "quests",
+            "label": "Quests"
+          },
+          {
+            "value": "quests_extended",
+            "label": "Quests Extended"
+          },
+          {
+            "value": "save_crystals_individual",
+            "label": "Save Crystals Individual"
+          },
+          {
+            "value": "save_crystals_all",
+            "label": "Save Crystals All"
+          },
+          {
+            "value": "benjamin_level",
+            "label": "Benjamin Level"
+          },
+          {
+            "value": "benjamin_level_plus_5",
+            "label": "Benjamin Level Plus 5"
+          },
+          {
+            "value": "benjamin_level_plus_10",
+            "label": "Benjamin Level Plus 10"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "companion_spellbook_type",
+      "label": "Companion Spellbook Type",
+      "description": "Update companions' spellbook.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "standard",
+        "choices": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "extended",
+            "label": "Extended"
+          },
+          {
+            "value": "random_balanced",
+            "label": "Random Balanced"
+          },
+          {
+            "value": "random_chaos",
+            "label": "Random Chaos"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemies_density",
+      "label": "Enemies Density",
+      "description": "Set how many of the original enemies are on each map.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "all",
+        "choices": [
+          {
+            "value": "all",
+            "label": "All"
+          },
+          {
+            "value": "three_quarter",
+            "label": "Three Quarter"
+          },
+          {
+            "value": "half",
+            "label": "Half"
+          },
+          {
+            "value": "quarter",
+            "label": "Quarter"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemies_scaling_lower",
+      "label": "Enemies Scaling Lower",
+      "description": "Randomly adjust enemies stats by the selected range percentage.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "quarter",
+        "choices": [
+          {
+            "value": "quarter",
+            "label": "Quarter"
+          },
+          {
+            "value": "half",
+            "label": "Half"
+          },
+          {
+            "value": "three_quarter",
+            "label": "Three Quarter"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "one_and_quarter",
+            "label": "One And Quarter"
+          },
+          {
+            "value": "one_and_half",
+            "label": "One And Half"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "double_and_half",
+            "label": "Double And Half"
+          },
+          {
+            "value": "triple",
+            "label": "Triple"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemies_scaling_upper",
+      "label": "Enemies Scaling Upper",
+      "description": "Randomly adjust enemies stats by the selected range percentage.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "one_and_quarter",
+        "choices": [
+          {
+            "value": "quarter",
+            "label": "Quarter"
+          },
+          {
+            "value": "half",
+            "label": "Half"
+          },
+          {
+            "value": "three_quarter",
+            "label": "Three Quarter"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "one_and_quarter",
+            "label": "One And Quarter"
+          },
+          {
+            "value": "one_and_half",
+            "label": "One And Half"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "double_and_half",
+            "label": "Double And Half"
+          },
+          {
+            "value": "triple",
+            "label": "Triple"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "bosses_scaling_lower",
+      "label": "Bosses Scaling Lower",
+      "description": "Randomly adjust bosses stats by the selected range percentage.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "quarter",
+        "choices": [
+          {
+            "value": "quarter",
+            "label": "Quarter"
+          },
+          {
+            "value": "half",
+            "label": "Half"
+          },
+          {
+            "value": "three_quarter",
+            "label": "Three Quarter"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "one_and_quarter",
+            "label": "One And Quarter"
+          },
+          {
+            "value": "one_and_half",
+            "label": "One And Half"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "double_and_half",
+            "label": "Double And Half"
+          },
+          {
+            "value": "triple",
+            "label": "Triple"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "bosses_scaling_upper",
+      "label": "Bosses Scaling Upper",
+      "description": "Randomly adjust bosses stats by the selected range percentage.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "one_and_quarter",
+        "choices": [
+          {
+            "value": "quarter",
+            "label": "Quarter"
+          },
+          {
+            "value": "half",
+            "label": "Half"
+          },
+          {
+            "value": "three_quarter",
+            "label": "Three Quarter"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "one_and_quarter",
+            "label": "One And Quarter"
+          },
+          {
+            "value": "one_and_half",
+            "label": "One And Half"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "double_and_half",
+            "label": "Double And Half"
+          },
+          {
+            "value": "triple",
+            "label": "Triple"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemizer_attacks",
+      "label": "Enemizer Attacks",
+      "description": "Shuffles enemy attacks.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "safe",
+            "label": "Safe"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          },
+          {
+            "value": "self_destruct",
+            "label": "Self Destruct"
+          },
+          {
+            "value": "simple_shuffle",
+            "label": "Simple Shuffle"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemizer_groups",
+      "label": "Enemizer Groups",
+      "description": "Set which enemy groups will be affected by Enemizer.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "mobs_and_bosses",
+        "choices": [
+          {
+            "value": "mobs_only",
+            "label": "Mobs Only"
+          },
+          {
+            "value": "mobs_and_bosses",
+            "label": "Mobs And Bosses"
+          },
+          {
+            "value": "mobs_bosses_and_dark_king",
+            "label": "Mobs Bosses And Dark King"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_res_weak_types",
+      "label": "Shuffle Res Weak Types",
+      "description": "Resistance and Weakness types are shuffled for all enemies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_enemies_position",
+      "label": "Shuffle Enemies Position",
+      "description": "Instead of their original position in a given map, enemies are randomly placed.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progressive_formations",
+      "label": "Progressive Formations",
+      "description": "Enemies' formations are selected by regions, with the weakest formations always selected in Foresta and the strongest in Windia.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "regions_strict",
+            "label": "Regions Strict"
+          },
+          {
+            "value": "regions_keep_type",
+            "label": "Regions Keep Type"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "doom_castle_mode",
+      "label": "Doom Castle Mode",
+      "description": "Configure how you reach the Dark King.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "standard",
+        "choices": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "boss_rush",
+            "label": "Boss Rush"
+          },
+          {
+            "value": "dark_king_only",
+            "label": "Dark King Only"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "doom_castle_shortcut",
+      "label": "Doom Castle Shortcut",
+      "description": "Create a shortcut granting access from the start to Doom Castle at Focus Tower's entrance.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tweak_frustrating_dungeons",
+      "label": "Tweak Frustrating Dungeons",
+      "description": "Make some small changes to a few of the most annoying dungeons.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "map_shuffle",
+      "label": "Map Shuffle",
+      "description": "None: No shuffle.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "overworld",
+            "label": "Overworld"
+          },
+          {
+            "value": "dungeons",
+            "label": "Dungeons"
+          },
+          {
+            "value": "overworld_and_dungeons",
+            "label": "Overworld And Dungeons"
+          },
+          {
+            "value": "everything",
+            "label": "Everything"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "crest_shuffle",
+      "label": "Crest Shuffle",
+      "description": "Shuffle the Crest tiles amongst themselves.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_battlefield_rewards",
+      "label": "Shuffle Battlefield Rewards",
+      "description": "Shuffle the type of reward (Item, XP, GP) given by battlefields and color code them by reward type.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "map_shuffle_seed",
+      "label": "Map Shuffle Seed",
+      "description": "If this is a number, it will be used as a set seed number for Map, Crest, Battlefield Reward, and Companion shuffles.",
+      "category": "general",
+      "type": {
+        "kind": "text",
+        "default": "random",
+        "placeholder": null
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "battlefields_battles_quantities",
+      "label": "Battlefields Battles Quantities",
+      "description": "Adjust the number of battles that need to be fought to get a battlefield's reward.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "ten",
+        "choices": [
+          {
+            "value": "ten",
+            "label": "Ten"
+          },
+          {
+            "value": "seven",
+            "label": "Seven"
+          },
+          {
+            "value": "five",
+            "label": "Five"
+          },
+          {
+            "value": "three",
+            "label": "Three"
+          },
+          {
+            "value": "one",
+            "label": "One"
+          },
+          {
+            "value": "random_one_through_five",
+            "label": "Random One Through Five"
+          },
+          {
+            "value": "random_one_through_ten",
+            "label": "Random One Through Ten"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

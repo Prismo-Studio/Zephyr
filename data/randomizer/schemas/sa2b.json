@@ -1,0 +1,2355 @@
+{
+  "id": "sa2b",
+  "name": "Sonic Adventure 2 Battle",
+  "version": "0.1.6",
+  "description": "Sonic Adventure 2 Battle is an action platforming game.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "Determines the goal of the seed Biolizard: Finish Cannon's Core and defeat the Biolizard and Finalhazard Chaos Emerald Hunt: Find the Seven Chaos Emeralds and reach Green Hill Zone Finalhazard Chaos Emerald Hunt: Find the Seven Chaos Emeralds and reach Green Hill Zone, then defeat Finalhazard Grand Prix: Win every race in Kart Race Mode (all standard levels are disabled) Boss Rush: Beat all of the bosses in the Boss Rush, ending with Finalhazard Cannon's Core Boss Rush: Beat Cannon's Core, then beat all of the bosses in the Boss Rush, ending with Finalhazard Boss Rush Chaos Emerald Hunt: Find the Seven Chaos Emeralds, then beat all of the bosses in the Boss Rush, ending with Finalhazard Chaos Chao: Raise a Chaos Chao to win Minigame Madness: Win a certain amount of each Minigame Trap, then defeat Finalhazard",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "biolizard",
+        "choices": [
+          {
+            "value": "biolizard",
+            "label": "Biolizard"
+          },
+          {
+            "value": "chaos_emerald_hunt",
+            "label": "Chaos Emerald Hunt"
+          },
+          {
+            "value": "finalhazard_chaos_emerald_hunt",
+            "label": "Finalhazard Chaos Emerald Hunt"
+          },
+          {
+            "value": "grand_prix",
+            "label": "Grand Prix"
+          },
+          {
+            "value": "boss_rush",
+            "label": "Boss Rush"
+          },
+          {
+            "value": "cannons_core_boss_rush",
+            "label": "Cannons Core Boss Rush"
+          },
+          {
+            "value": "boss_rush_chaos_emerald_hunt",
+            "label": "Boss Rush Chaos Emerald Hunt"
+          },
+          {
+            "value": "chaos_chao",
+            "label": "Chaos Chao"
+          },
+          {
+            "value": "minigame_madness",
+            "label": "Minigame Madness"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "boss_rush_shuffle",
+      "label": "Boss Rush Shuffle",
+      "description": "Determines how bosses in Boss Rush Mode are shuffled Vanilla: Bosses appear in the Vanilla ordering Shuffled: The same bosses appear, but in a random order Chaos: Each boss is randomly chosen separately (one will always be King Boom Boo) Singularity: One boss is chosen and placed in every slot (one will always be replaced with King Boom Boo)",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          },
+          {
+            "value": "singularity",
+            "label": "Singularity"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "minigame_madness_requirement",
+      "label": "Minigame Madness Requirement",
+      "description": "Determines how many of each Minigame Trap must be won (for Minigame Madness goal) Receiving this many of a Minigame Trap will allow you to replay that minigame at-will in the Chao World lobby",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "minigame_madness_minimum",
+      "label": "Minigame Madness Minimum",
+      "description": "Determines the minimum number of each Minigame Trap that are created (for Minigame Madness goal) At least this many of each trap will be created as \"Progression Traps\", regardless of other trap option selections",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 5
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gate_boss_plando",
+      "label": "Gate Boss Plando",
+      "description": "Possible Locations: \"Gate 1 Boss\" \"Gate 2 Boss\" \"Gate 3 Boss\" \"Gate 4 Boss\" \"Gate 5 Boss\" Possible Bosses: \"Sonic vs Shadow 1\" \"Sonic vs Shadow 2\" \"Tails vs Eggman 1\" \"Tails vs Eggman 2\" \"Knuckles vs Rouge 1\" \"BIG FOOT\" \"HOT SHOT\" \"FLYING DOG\" \"Egg Golem (Sonic)\" \"Egg Golem (Eggman)\" \"King Boom Boo\"",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "plando",
+        "choices": [
+          {
+            "value": "plando",
+            "label": "Plando"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "logic_difficulty",
+      "label": "Logic Difficulty",
+      "description": "What set of Upgrade Requirement logic to use Standard: The logic assumes the \"intended\" usage of Upgrades to progress through levels Hard: Some simple skips or sequence breaks may be required, but no out-of-bounds Expert: If it is humanly possible, it may be required",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "standard",
+        "choices": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "expert",
+            "label": "Expert"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "required_rank",
+      "label": "Required Rank",
+      "description": "Determines what minimum Rank is required to send a check for a mission",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "e",
+        "choices": [
+          {
+            "value": "e",
+            "label": "E"
+          },
+          {
+            "value": "d",
+            "label": "D"
+          },
+          {
+            "value": "c",
+            "label": "C"
+          },
+          {
+            "value": "b",
+            "label": "B"
+          },
+          {
+            "value": "a",
+            "label": "A"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "max_emblem_cap",
+      "label": "Max Emblem Cap",
+      "description": "Determines the maximum number of emblems that can be in the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 50,
+        "max": 1000,
+        "step": 1,
+        "default": 180
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ring_loss",
+      "label": "Ring Loss",
+      "description": "How taking damage is handled Classic: You lose all of your rings when hit Modern: You lose 20 rings when hit OHKO: You die immediately when hit (NOTE: Some Hard or Expert Logic tricks may require damage boosts!)",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "classic",
+        "choices": [
+          {
+            "value": "classic",
+            "label": "Classic"
+          },
+          {
+            "value": "modern",
+            "label": "Modern"
+          },
+          {
+            "value": "ohko",
+            "label": "Ohko"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "mission_shuffle",
+      "label": "Mission Shuffle",
+      "description": "Determines whether missions order will be shuffled per level",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "required_cannons_core_missions",
+      "label": "Required Cannons Core Missions",
+      "description": "Determines how many Cannon's Core missions must be completed (for Biolizard or Cannon's Core goals) First: Only the first mission must be completed All Active: All active Cannon's Core missions must be completed",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "first",
+        "choices": [
+          {
+            "value": "first",
+            "label": "First"
+          },
+          {
+            "value": "all_active",
+            "label": "All Active"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "emblem_percentage_for_cannons_core",
+      "label": "Emblem Percentage For Cannons Core",
+      "description": "Allows logic to gate the final mission behind a number of Emblems",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 75,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "number_of_level_gates",
+      "label": "Number Of Level Gates",
+      "description": "The number emblem-locked gates which lock sets of levels",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 5,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "level_gate_distribution",
+      "label": "Level Gate Distribution",
+      "description": "Determines how levels are distributed between level gate regions Early: Earlier regions will have more levels than later regions Even: Levels will be evenly distributed between all regions Late: Later regions will have more levels than earlier regions",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "even",
+        "choices": [
+          {
+            "value": "early",
+            "label": "Early"
+          },
+          {
+            "value": "even",
+            "label": "Even"
+          },
+          {
+            "value": "late",
+            "label": "Late"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "level_gate_costs",
+      "label": "Level Gate Costs",
+      "description": "Determines how many emblems are required to unlock level gates",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "low",
+        "choices": [
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "keysanity",
+      "label": "Keysanity",
+      "description": "Determines whether picking up Chao Keys grants checks (86 Locations)",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "whistlesanity",
+      "label": "Whistlesanity",
+      "description": "Determines whether whistling at various spots grants checks None: No Whistle Spots grant checks Pipes: Whistling at Pipes grants checks (97 Locations) Hidden: Whistling at Hidden Whistle Spots grants checks (32 Locations) Both: Whistling at both Pipes and Hidden Whistle Spots grants checks (129 Locations)",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "pipes",
+            "label": "Pipes"
+          },
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "both",
+            "label": "Both"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "beetlesanity",
+      "label": "Beetlesanity",
+      "description": "Determines whether destroying Gold Beetles grants checks (27 Locations)",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "omosanity",
+      "label": "Omosanity",
+      "description": "Determines whether activating Omochao grants checks (192 Locations)",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "animalsanity",
+      "label": "Animalsanity",
+      "description": "Determines whether unique counts of animals grant checks.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "itemboxsanity",
+      "label": "Itemboxsanity",
+      "description": "Determines whether collecting Item Boxes grants checks None: No Item Boxes grant checks Extra Lives: Extra Life Boxes grant checks (94 Locations) All: All Item Boxes grant checks (502 Locations Total)",
+      "category": "items",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "extra_lives",
+            "label": "Extra Lives"
+          },
+          {
+            "value": "all",
+            "label": "All"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "bigsanity",
+      "label": "Bigsanity",
+      "description": "Determines whether helping Big fish grants checks.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "kart_race_checks",
+      "label": "Kart Race Checks",
+      "description": "Determines whether Kart Race Mode grants checks None: No Kart Races grant checks Mini: Each Kart Race difficulty must be beaten only once Full: Every Character must separately beat each Kart Race difficulty",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "mini",
+            "label": "Mini"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "black_market_slots",
+      "label": "Black Market Slots",
+      "description": "Determines how many multiworld items are available to purchase from the Black Market",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 64,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "black_market_unlock_costs",
+      "label": "Black Market Unlock Costs",
+      "description": "Determines how many Chao Coins are required to unlock sets of Black Market items",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "black_market_price_multiplier",
+      "label": "Black Market Price Multiplier",
+      "description": "Determines how many rings the Black Market items cost The base ring costs of items in the Black Market range from 50-100, and are then multiplied by this value",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "default": 1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_race_difficulty",
+      "label": "Chao Race Difficulty",
+      "description": "Determines the number of Chao Race difficulty levels included.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "beginner",
+            "label": "Beginner"
+          },
+          {
+            "value": "intermediate",
+            "label": "Intermediate"
+          },
+          {
+            "value": "expert",
+            "label": "Expert"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_karate_difficulty",
+      "label": "Chao Karate Difficulty",
+      "description": "Determines the number of Chao Karate difficulty levels included.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "beginner",
+            "label": "Beginner"
+          },
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "expert",
+            "label": "Expert"
+          },
+          {
+            "value": "super",
+            "label": "Super"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_stadium_checks",
+      "label": "Chao Stadium Checks",
+      "description": "Determines which Chao Stadium activities grant checks All: Each individual race and karate fight grants a check Prize: Only the races which grant Chao Toys grant checks (final race of each Beginner and Jewel cup, 4th, 8th, and 12th Challenge Races, 2nd and 4th Hero and Dark Races, final fight of each Karate difficulty)",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "all",
+        "choices": [
+          {
+            "value": "all",
+            "label": "All"
+          },
+          {
+            "value": "prize",
+            "label": "Prize"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_animal_parts",
+      "label": "Chao Animal Parts",
+      "description": "Determines whether giving Chao various animal parts grants checks (73 Locations)",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_stats",
+      "label": "Chao Stats",
+      "description": "Determines the highest level in each Chao Stat that grants checks (Swim, Fly, Run, Power)",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_stats_frequency",
+      "label": "Chao Stats Frequency",
+      "description": "Determines how many levels in each Chao Stat grant checks (up to the maximum set in the `chao_stats` option) `1` means every level is included, `2` means every other level is included, `3` means every third, and so on",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "default": 5
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_stats_stamina",
+      "label": "Chao Stats Stamina",
+      "description": "Determines whether Stamina is included in the `chao_stats` option",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_stats_hidden",
+      "label": "Chao Stats Hidden",
+      "description": "Determines whether the hidden stats (Luck and Intelligence) are included in the `chao_stats` option",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_kindergarten",
+      "label": "Chao Kindergarten",
+      "description": "Determines whether learning the lessons from the Kindergarten Classroom grants checks (WARNING: VERY SLOW) None: No Kindergarten classes have checks Basics: One class from each category (Drawing, Dance, Song, and Instrument) is a check (4 Locations) Full: Every class is a check (23 Locations)",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "basics",
+            "label": "Basics"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_starting_chao_eggs",
+      "label": "Shuffle Starting Chao Eggs",
+      "description": "Determines whether the starting Chao eggs in the gardens are random",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chao_entrance_randomization",
+      "label": "Chao Entrance Randomization",
+      "description": "Determines whether entrances in Chao World are randomized",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "junk_fill_percentage",
+      "label": "Junk Fill Percentage",
+      "description": "Replace a percentage of non-required emblems in the item pool with random junk items",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_fill_percentage",
+      "label": "Trap Fill Percentage",
+      "description": "Replace a percentage of junk items in the item pool with random traps",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "omochao_trap_weight",
+      "label": "Omochao Trap Weight",
+      "description": "Likelihood of receiving a trap which spawns several Omochao around the player",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "timestop_trap_weight",
+      "label": "Timestop Trap Weight",
+      "description": "Likelihood of receiving a trap which briefly stops time",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "confusion_trap_weight",
+      "label": "Confusion Trap Weight",
+      "description": "Likelihood of receiving a trap which causes the controls to be skewed for a period of time",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tiny_trap_weight",
+      "label": "Tiny Trap Weight",
+      "description": "Likelihood of receiving a trap which causes the player to become tiny",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gravity_trap_weight",
+      "label": "Gravity Trap Weight",
+      "description": "Likelihood of receiving a trap which increases gravity",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "exposition_trap_weight",
+      "label": "Exposition Trap Weight",
+      "description": "Likelihood of receiving a trap which tells you the story",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ice_trap_weight",
+      "label": "Ice Trap Weight",
+      "description": "Likelihood of receiving a trap which makes the world slippery",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "slow_trap_weight",
+      "label": "Slow Trap Weight",
+      "description": "Likelihood of receiving a trap which makes you gotta go slow",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cutscene_trap_weight",
+      "label": "Cutscene Trap Weight",
+      "description": "Likelihood of receiving a trap which makes you watch an unskippable cutscene",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "reverse_trap_weight",
+      "label": "Reverse Trap Weight",
+      "description": "Likelihood of receiving a trap which reverses your controls",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "literature_trap_weight",
+      "label": "Literature Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to read",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "controller_drift_trap_weight",
+      "label": "Controller Drift Trap Weight",
+      "description": "Likelihood of receiving a trap which causes your control sticks to drift",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "poison_trap_weight",
+      "label": "Poison Trap Weight",
+      "description": "Likelihood of receiving a trap which causes you to lose rings over time",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "bee_trap_weight",
+      "label": "Bee Trap Weight",
+      "description": "Likelihood of receiving a trap which spawns a swarm of bees",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "pong_trap_weight",
+      "label": "Pong Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Pong minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "breakout_trap_weight",
+      "label": "Breakout Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Breakout minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fishing_trap_weight",
+      "label": "Fishing Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Fishing minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trivia_trap_weight",
+      "label": "Trivia Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Trivia minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "pokemon_trivia_trap_weight",
+      "label": "Pokemon Trivia Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Pokemon Trivia minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "pokemon_count_trap_weight",
+      "label": "Pokemon Count Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Pokemon Count minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "number_sequence_trap_weight",
+      "label": "Number Sequence Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Number Sequence minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "light_up_path_trap_weight",
+      "label": "Light Up Path Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Light Up Path minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "pinball_trap_weight",
+      "label": "Pinball Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Pinball minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "math_quiz_trap_weight",
+      "label": "Math Quiz Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to solve a math problem",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "snake_trap_weight",
+      "label": "Snake Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to play a Snake minigame",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "input_sequence_trap_weight",
+      "label": "Input Sequence Trap Weight",
+      "description": "Likelihood of receiving a trap which forces you to press a sequence of inputs",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "minigame_trap_difficulty",
+      "label": "Minigame Trap Difficulty",
+      "description": "How difficult any Minigame-style traps are Chaos causes the difficulty to be random per-minigame",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "big_fishing_difficulty",
+      "label": "Big Fishing Difficulty",
+      "description": "How difficult Big's Fishing Minigames are Chaos causes the difficulty to be random per-minigame",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sadx_music",
+      "label": "Sadx Music",
+      "description": "Whether the randomizer will include Sonic Adventure DX Music in the music pool SA2B: Only SA2B music will be played SADX: Only SADX music will be played Both: Both SA2B and SADX music will be played NOTE: This option requires the player to own a PC copy of SADX and to follow the addition steps in the setup guide.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "sa2b",
+        "choices": [
+          {
+            "value": "sa2b",
+            "label": "Sa2B"
+          },
+          {
+            "value": "sadx",
+            "label": "Sadx"
+          },
+          {
+            "value": "both",
+            "label": "Both"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "music_shuffle",
+      "label": "Music Shuffle",
+      "description": "What type of Music Shuffle is used None: No music is shuffled.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "levels",
+            "label": "Levels"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "singularity",
+            "label": "Singularity"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "voice_shuffle",
+      "label": "Voice Shuffle",
+      "description": "What type of Voice Shuffle is used None: No voices are shuffled.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "shuffled",
+            "label": "Shuffled"
+          },
+          {
+            "value": "rude",
+            "label": "Rude"
+          },
+          {
+            "value": "chao",
+            "label": "Chao"
+          },
+          {
+            "value": "singularity",
+            "label": "Singularity"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "narrator",
+      "label": "Narrator",
+      "description": "Which menu narrator is used",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "default",
+        "choices": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "shadow",
+            "label": "Shadow"
+          },
+          {
+            "value": "rouge",
+            "label": "Rouge"
+          },
+          {
+            "value": "eggman",
+            "label": "Eggman"
+          },
+          {
+            "value": "maria",
+            "label": "Maria"
+          },
+          {
+            "value": "secretary",
+            "label": "Secretary"
+          },
+          {
+            "value": "omochao",
+            "label": "Omochao"
+          },
+          {
+            "value": "amy",
+            "label": "Amy"
+          },
+          {
+            "value": "tails",
+            "label": "Tails"
+          },
+          {
+            "value": "knuckles",
+            "label": "Knuckles"
+          },
+          {
+            "value": "sonic",
+            "label": "Sonic"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sonic_mission_count",
+      "label": "Sonic Mission Count",
+      "description": "The number of active missions to include for Sonic stages",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sonic_mission_2",
+      "label": "Sonic Mission 2",
+      "description": "Determines if the Sonic 100 rings missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sonic_mission_3",
+      "label": "Sonic Mission 3",
+      "description": "Determines if the Sonic lost chao missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sonic_mission_4",
+      "label": "Sonic Mission 4",
+      "description": "Determines if the Sonic time trial missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sonic_mission_5",
+      "label": "Sonic Mission 5",
+      "description": "Determines if the Sonic hard missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shadow_mission_count",
+      "label": "Shadow Mission Count",
+      "description": "The number of active missions to include for Shadow stages",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shadow_mission_2",
+      "label": "Shadow Mission 2",
+      "description": "Determines if the Shadow 100 rings missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shadow_mission_3",
+      "label": "Shadow Mission 3",
+      "description": "Determines if the Shadow lost chao missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shadow_mission_4",
+      "label": "Shadow Mission 4",
+      "description": "Determines if the Shadow time trial missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shadow_mission_5",
+      "label": "Shadow Mission 5",
+      "description": "Determines if the Shadow hard missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tails_mission_count",
+      "label": "Tails Mission Count",
+      "description": "The number of active missions to include for Tails stages",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tails_mission_2",
+      "label": "Tails Mission 2",
+      "description": "Determines if the Tails 100 rings missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tails_mission_3",
+      "label": "Tails Mission 3",
+      "description": "Determines if the Tails lost chao missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tails_mission_4",
+      "label": "Tails Mission 4",
+      "description": "Determines if the Tails time trial missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tails_mission_5",
+      "label": "Tails Mission 5",
+      "description": "Determines if the Tails hard missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "eggman_mission_count",
+      "label": "Eggman Mission Count",
+      "description": "The number of active missions to include for Eggman stages",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "eggman_mission_2",
+      "label": "Eggman Mission 2",
+      "description": "Determines if the Eggman 100 rings missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "eggman_mission_3",
+      "label": "Eggman Mission 3",
+      "description": "Determines if the Eggman lost chao missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "eggman_mission_4",
+      "label": "Eggman Mission 4",
+      "description": "Determines if the Eggman time trial missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "eggman_mission_5",
+      "label": "Eggman Mission 5",
+      "description": "Determines if the Eggman hard missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "knuckles_mission_count",
+      "label": "Knuckles Mission Count",
+      "description": "The number of active missions to include for Knuckles stages",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "knuckles_mission_2",
+      "label": "Knuckles Mission 2",
+      "description": "Determines if the Knuckles 100 rings missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "knuckles_mission_3",
+      "label": "Knuckles Mission 3",
+      "description": "Determines if the Knuckles lost chao missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "knuckles_mission_4",
+      "label": "Knuckles Mission 4",
+      "description": "Determines if the Knuckles time trial missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "knuckles_mission_5",
+      "label": "Knuckles Mission 5",
+      "description": "Determines if the Knuckles hard missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rouge_mission_count",
+      "label": "Rouge Mission Count",
+      "description": "The number of active missions to include for Rouge stages",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rouge_mission_2",
+      "label": "Rouge Mission 2",
+      "description": "Determines if the Rouge 100 rings missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rouge_mission_3",
+      "label": "Rouge Mission 3",
+      "description": "Determines if the Rouge lost chao missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rouge_mission_4",
+      "label": "Rouge Mission 4",
+      "description": "Determines if the Rouge time trial missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rouge_mission_5",
+      "label": "Rouge Mission 5",
+      "description": "Determines if the Rouge hard missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "kart_mission_count",
+      "label": "Kart Mission Count",
+      "description": "The number of active missions to include for Route 101 and 280",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "kart_mission_2",
+      "label": "Kart Mission 2",
+      "description": "Determines if the Route 101 and 280 100 rings missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "kart_mission_3",
+      "label": "Kart Mission 3",
+      "description": "Determines if the Route 101 and 280 avoid cars missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "kart_mission_4",
+      "label": "Kart Mission 4",
+      "description": "Determines if the Route 101 and 280 avoid walls missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "kart_mission_5",
+      "label": "Kart Mission 5",
+      "description": "Determines if the Route 101 and 280 hard missions should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cannons_core_mission_count",
+      "label": "Cannons Core Mission Count",
+      "description": "The number of active missions to include for Cannon's Core",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cannons_core_mission_2",
+      "label": "Cannons Core Mission 2",
+      "description": "Determines if the Cannon's Core 100 rings mission should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cannons_core_mission_3",
+      "label": "Cannons Core Mission 3",
+      "description": "Determines if the Cannon's Core lost chao mission should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cannons_core_mission_4",
+      "label": "Cannons Core Mission 4",
+      "description": "Determines if the Cannon's Core time trial mission should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cannons_core_mission_5",
+      "label": "Cannons Core Mission 5",
+      "description": "Determines if the Cannon's Core hard mission should be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ring_link",
+      "label": "Ring Link",
+      "description": "Whether your in-level ring gain/loss is linked to other players",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_link",
+      "label": "Trap Link",
+      "description": "Whether your received traps are linked to other players You will also receive any linked traps from other players with Trap Link enabled, if you have a weight above \"none\" set for that trap",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

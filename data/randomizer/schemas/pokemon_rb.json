@@ -1,0 +1,1855 @@
+{
+  "id": "pokemon_rb",
+  "name": "Pokemon Red and Blue",
+  "version": "0.4.2",
+  "description": "Pokémon Red and Pokémon Blue are the original monster-collecting turn-based RPGs.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "items",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          },
+          {
+            "value": "items",
+            "label": "Items"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "game_version",
+      "label": "Game Version",
+      "description": "Select Red or Blue version.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "random",
+        "choices": [
+          {
+            "value": "red",
+            "label": "Red"
+          },
+          {
+            "value": "blue",
+            "label": "Blue"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trainer_name",
+      "label": "Trainer Name",
+      "description": "Your trainer name.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "choose_in_game",
+        "choices": [
+          {
+            "value": "choose_in_game",
+            "label": "Choose In Game"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rival_name",
+      "label": "Rival Name",
+      "description": "Your rival's name.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "choose_in_game",
+        "choices": [
+          {
+            "value": "choose_in_game",
+            "label": "Choose In Game"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "elite_four_badges_condition",
+      "label": "Elite Four Badges Condition",
+      "description": "Number of badges required to challenge the Elite Four once the Indigo Plateau has been reached.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 8,
+        "step": 1,
+        "default": 8
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "elite_four_key_items_condition",
+      "label": "Elite Four Key Items Condition",
+      "description": "Percentage of available key items (not counting items you can lose) required to challenge the Elite Four.",
+      "category": "items",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "elite_four_pokedex_condition",
+      "label": "Elite Four Pokedex Condition",
+      "description": "Percentage of logically-reachable Pokemon that must be registered as \"owned\" in the Pokedex in order to challenge the Elite Four.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "victory_road_condition",
+      "label": "Victory Road Condition",
+      "description": "Number of badges required to reach the front entrance of Victory Road.",
+      "category": "goals",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 8,
+        "step": 1,
+        "default": 7
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "route_22_gate_condition",
+      "label": "Route 22 Gate Condition",
+      "description": "Number of badges required to pass through the Route 22 Gate",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 7,
+        "step": 1,
+        "default": 7
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "viridian_gym_condition",
+      "label": "Viridian Gym Condition",
+      "description": "Number of badges required to enter Viridian Gym.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 7,
+        "step": 1,
+        "default": 7
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cerulean_cave_badges_condition",
+      "label": "Cerulean Cave Badges Condition",
+      "description": "Number of badges needed to access the Cerulean Cave entrance in addition to the required Key Items.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 8,
+        "step": 1,
+        "default": 4
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cerulean_cave_key_items_condition",
+      "label": "Cerulean Cave Key Items Condition",
+      "description": "Percentage of available key items (not counting items you can lose) required to access the Cerulean Cave entrance in addition to the required badges.",
+      "category": "items",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "route_3_condition",
+      "label": "Route 3 Condition",
+      "description": "Set a condition to pass through from Pewter City to Route 3.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "defeat_brock",
+        "choices": [
+          {
+            "value": "open",
+            "label": "Open"
+          },
+          {
+            "value": "defeat_brock",
+            "label": "Defeat Brock"
+          },
+          {
+            "value": "defeat_any_gym",
+            "label": "Defeat Any Gym"
+          },
+          {
+            "value": "boulder_badge",
+            "label": "Boulder Badge"
+          },
+          {
+            "value": "any_badge",
+            "label": "Any Badge"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "robbed_house_officer",
+      "label": "Robbed House Officer",
+      "description": "You can disable to remove the requirement to help Bill before you can enter the robbed house in Cerulean City.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "second_fossil_check_condition",
+      "label": "Second Fossil Check Condition",
+      "description": "After choosing one of the fossil location items, you can obtain the remaining item from the Cinnabar Lab Scientist after reviving this number of fossils.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 3,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fossil_check_item_types",
+      "label": "Fossil Check Item Types",
+      "description": "The two fossil checks always contain items for your own game.",
+      "category": "items",
+      "type": {
+        "kind": "select",
+        "default": "any",
+        "choices": [
+          {
+            "value": "any",
+            "label": "Any"
+          },
+          {
+            "value": "key_items",
+            "label": "Key Items"
+          },
+          {
+            "value": "unique_items",
+            "label": "Unique Items"
+          },
+          {
+            "value": "no_key_items",
+            "label": "No Key Items"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "exp_all",
+      "label": "Exp All",
+      "description": "Choose how the Exp.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "randomize",
+        "choices": [
+          {
+            "value": "remove",
+            "label": "Remove"
+          },
+          {
+            "value": "randomize",
+            "label": "Randomize"
+          },
+          {
+            "value": "start_with",
+            "label": "Start With"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "old_man",
+      "label": "Old Man",
+      "description": "With Open Viridian City, the Old Man will let you through without needing to turn in Oak's Parcel.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "early_parcel",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "early_parcel",
+            "label": "Early Parcel"
+          },
+          {
+            "value": "open_viridian_city",
+            "label": "Open Viridian City"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "badgesanity",
+      "label": "Badgesanity",
+      "description": "Shuffle gym badges into the general item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "badges_needed_for_hm_moves",
+      "label": "Badges Needed For Hm Moves",
+      "description": "Off will remove the requirement for badges to use HM moves.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "on",
+        "choices": [
+          {
+            "value": "on",
+            "label": "On"
+          },
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "extra",
+            "label": "Extra"
+          },
+          {
+            "value": "extra_plus",
+            "label": "Extra Plus"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "key_items_only",
+      "label": "Key Items Only",
+      "description": "Shuffle only Key Items.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tea",
+      "label": "Tea",
+      "description": "Adds a Tea item to the item pool which the Saffron guards require instead of the vending machine drinks.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "extra_key_items",
+      "label": "Extra Key Items",
+      "description": "Adds key items that are required to access the Rocket Hideout, Cinnabar Mansion, Safari Zone, and Power Plant.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "split_card_key",
+      "label": "Split Card Key",
+      "description": "Splits the Card Key item into 10 different Keys, one for each Silph Co floor 2F through 11F.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "on",
+            "label": "On"
+          },
+          {
+            "value": "progressive",
+            "label": "Progressive"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "all_elevators_locked",
+      "label": "All Elevators Locked",
+      "description": "Adds requirements to the Celadon Department Store elevator and Silph Co elevators to have the Lift Key.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "extra_strength_boulders",
+      "label": "Extra Strength Boulders",
+      "description": "Adds Strength Boulders blocking the Route 11 gate, and in Route 13 (can be bypassed with Surf).",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "require_item_finder",
+      "label": "Require Item Finder",
+      "description": "Require Item Finder to pick up hidden items.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_hidden_items",
+      "label": "Randomize Hidden Items",
+      "description": "Randomize hidden items.",
+      "category": "items",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "on",
+            "label": "On"
+          },
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "exclude",
+            "label": "Exclude"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "prizesanity",
+      "label": "Prizesanity",
+      "description": "Shuffles the TM prizes at the Celadon Prize Corner into the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trainersanity",
+      "label": "Trainersanity",
+      "description": "Add location checks to trainers, which can be obtained by talking to a trainer after defeating them.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 317,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "dexsanity",
+      "label": "Dexsanity",
+      "description": "Adds location checks for Pokemon flagged \"owned\" on your Pokedex.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 151,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_pokedex",
+      "label": "Randomize Pokedex",
+      "description": "Randomize the location of the Pokedex, or start with it.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "randomize",
+            "label": "Randomize"
+          },
+          {
+            "value": "start_with",
+            "label": "Start With"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "require_pokedex",
+      "label": "Require Pokedex",
+      "description": "Require the Pokedex to obtain items from Oak's Aides or from Dexsanity checks.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "all_pokemon_seen",
+      "label": "All Pokemon Seen",
+      "description": "Start with all Pokemon \"seen\" in your Pokedex.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "oaks_aide_rt_2",
+      "label": "Oaks Aide Rt 2",
+      "description": "Number of Pokemon registered in the Pokedex required to receive the item from Oak's Aide on Route 2.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 80,
+        "step": 1,
+        "default": 10
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "oaks_aide_rt_11",
+      "label": "Oaks Aide Rt 11",
+      "description": "Number of Pokemon registered in the Pokedex required to receive the item from Oak's Aide on Route 11.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 80,
+        "step": 1,
+        "default": 20
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "oaks_aide_rt_15",
+      "label": "Oaks Aide Rt 15",
+      "description": "Number of Pokemon registered in the Pokedex required to receive the item from Oak's Aide on Route 15.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 80,
+        "step": 1,
+        "default": 30
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "stonesanity",
+      "label": "Stonesanity",
+      "description": "Removes the four evolution stones from the Celadon Department Store and replaces four of the five Moon Stones in the item pool with the four shop stones.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "door_shuffle",
+      "label": "Door Shuffle",
+      "description": "Simple: entrances are randomized together in groups: Pokemarts, Gyms, single exit dungeons, dual exit dungeons, single exit misc interiors, dual exit misc interiors are all shuffled separately.",
+      "category": "entrances",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "simple",
+            "label": "Simple"
+          },
+          {
+            "value": "interiors",
+            "label": "Interiors"
+          },
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "insanity",
+            "label": "Insanity"
+          },
+          {
+            "value": "decoupled",
+            "label": "Decoupled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "warp_tile_shuffle",
+      "label": "Warp Tile Shuffle",
+      "description": "Vanilla: The warp tiles in Silph Co and Sabrina's Gym are not changed.",
+      "category": "entrances",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "mixed",
+            "label": "Mixed"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_rock_tunnel",
+      "label": "Randomize Rock Tunnel",
+      "description": "Randomize the layout of Rock Tunnel.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "dark_rock_tunnel_logic",
+      "label": "Dark Rock Tunnel Logic",
+      "description": "Logically require Flash to traverse the Rock Tunnel, so you are never forced to traverse it in the dark.",
+      "category": "logic",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "free_fly_location",
+      "label": "Free Fly Location",
+      "description": "One random Fly destination will be unlocked by default.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "town_map_fly_location",
+      "label": "Town Map Fly Location",
+      "description": "One random Fly destination will be unlocked when you obtain the Town Map.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "blind_trainers",
+      "label": "Blind Trainers",
+      "description": "Chance each frame that you are standing on a tile in a trainer's line of sight that they will fail to initiate a battle.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "minimum_steps_between_encounters",
+      "label": "Minimum Steps Between Encounters",
+      "description": "Minimum number of steps between wild Pokemon encounters.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 255,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "level_scaling",
+      "label": "Level Scaling",
+      "description": "Off: Encounters use vanilla game levels.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "auto",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "by_spheres",
+            "label": "By Spheres"
+          },
+          {
+            "value": "by_spheres_and_distance",
+            "label": "By Spheres And Distance"
+          },
+          {
+            "value": "auto",
+            "label": "Auto"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "exp_modifier",
+      "label": "Exp Modifier",
+      "description": "Modifier for EXP gained.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 4,
+        "max": 255,
+        "step": 1,
+        "default": 16
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_wild_pokemon",
+      "label": "Randomize Wild Pokemon",
+      "description": "Randomize all wild Pokemon and game corner prize Pokemon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "match_types",
+            "label": "Match Types"
+          },
+          {
+            "value": "match_base_stats",
+            "label": "Match Base Stats"
+          },
+          {
+            "value": "match_types_and_base_stats",
+            "label": "Match Types And Base Stats"
+          },
+          {
+            "value": "completely_random",
+            "label": "Completely Random"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "area_1_to_1_mapping",
+      "label": "Area 1 To 1 Mapping",
+      "description": "When randomizing wild Pokemon, for each zone, all instances of a particular Pokemon will be replaced with the same Pokemon, resulting in fewer Pokemon in each area.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_starter_pokemon",
+      "label": "Randomize Starter Pokemon",
+      "description": "Randomize the starter Pokemon choices.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "match_types",
+            "label": "Match Types"
+          },
+          {
+            "value": "match_base_stats",
+            "label": "Match Base Stats"
+          },
+          {
+            "value": "match_types_and_base_stats",
+            "label": "Match Types And Base Stats"
+          },
+          {
+            "value": "completely_random",
+            "label": "Completely Random"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_static_pokemon",
+      "label": "Randomize Static Pokemon",
+      "description": "Randomize one-time gift and encountered Pokemon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "match_types",
+            "label": "Match Types"
+          },
+          {
+            "value": "match_base_stats",
+            "label": "Match Base Stats"
+          },
+          {
+            "value": "match_types_and_base_stats",
+            "label": "Match Types And Base Stats"
+          },
+          {
+            "value": "completely_random",
+            "label": "Completely Random"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_legendary_pokemon",
+      "label": "Randomize Legendary Pokemon",
+      "description": "Randomize Legendaries.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "static",
+            "label": "Static"
+          },
+          {
+            "value": "any",
+            "label": "Any"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "catch_em_all",
+      "label": "Catch Em All",
+      "description": "Guarantee all first evolution stage Pokemon are available, or all Pokemon of all stages.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "first_stage",
+            "label": "First Stage"
+          },
+          {
+            "value": "all_pokemon",
+            "label": "All Pokemon"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_pokemon_stats",
+      "label": "Randomize Pokemon Stats",
+      "description": "Randomize base stats for each Pokemon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "randomize",
+            "label": "Randomize"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_pokemon_catch_rates",
+      "label": "Randomize Pokemon Catch Rates",
+      "description": "Randomize the catch rate for each Pokemon.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "minimum_catch_rate",
+      "label": "Minimum Catch Rate",
+      "description": "Minimum catch rate for each Pokemon.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 255,
+        "step": 1,
+        "default": 3
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_trainer_parties",
+      "label": "Randomize Trainer Parties",
+      "description": "Randomize enemy Pokemon encountered in trainer battles.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "match_types",
+            "label": "Match Types"
+          },
+          {
+            "value": "match_base_stats",
+            "label": "Match Base Stats"
+          },
+          {
+            "value": "match_types_and_base_stats",
+            "label": "Match Types And Base Stats"
+          },
+          {
+            "value": "completely_random",
+            "label": "Completely Random"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trainer_legendaries",
+      "label": "Trainer Legendaries",
+      "description": "Allow legendary Pokemon in randomized trainer parties.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "move_balancing",
+      "label": "Move Balancing",
+      "description": "All one-hit-KO moves and fixed-damage moves become normal damaging moves.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fix_combat_bugs",
+      "label": "Fix Combat Bugs",
+      "description": "Fixes a variety of combat-related bugs.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_pokemon_movesets",
+      "label": "Randomize Pokemon Movesets",
+      "description": "Randomize the moves learned by Pokemon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "prefer_types",
+            "label": "Prefer Types"
+          },
+          {
+            "value": "completely_random",
+            "label": "Completely Random"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "confine_transform_to_ditto",
+      "label": "Confine Transform To Ditto",
+      "description": "Regardless of moveset randomization, will keep Ditto's first move as Transform no others will learn it.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "start_with_four_moves",
+      "label": "Start With Four Moves",
+      "description": "If movesets are randomized, this will give all Pokemon 4 starting moves.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "same_type_attack_bonus",
+      "label": "Same Type Attack Bonus",
+      "description": "Here you can disable Same Type Attack Bonus, so that a move matching a Pokemon's type has no benefit.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_tm_moves",
+      "label": "Randomize Tm Moves",
+      "description": "Randomize the moves taught by TMs.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tm_same_type_compatibility",
+      "label": "Tm Same Type Compatibility",
+      "description": "Chance of each TM being usable on each Pokemon whose type matches the move.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": -1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tm_normal_type_compatibility",
+      "label": "Tm Normal Type Compatibility",
+      "description": "Chance of each TM being usable on each Pokemon if the move is Normal type and the Pokemon is not.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": -1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tm_other_type_compatibility",
+      "label": "Tm Other Type Compatibility",
+      "description": "Chance of each TM being usable on each Pokemon if the move a type other than Normal or one of the Pokemon's types.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": -1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hm_same_type_compatibility",
+      "label": "Hm Same Type Compatibility",
+      "description": "Chance of each HM being usable on each Pokemon whose type matches the move.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": -1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hm_normal_type_compatibility",
+      "label": "Hm Normal Type Compatibility",
+      "description": "Chance of each HM being usable on each Pokemon if the move is Normal type and the Pokemon is not.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": -1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hm_other_type_compatibility",
+      "label": "Hm Other Type Compatibility",
+      "description": "Chance of each HM being usable on each Pokemon if the move a type other than Normal or one of the Pokemon's types.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": -1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "inherit_tm_hm_compatibility",
+      "label": "Inherit Tm Hm Compatibility",
+      "description": "If on, evolved Pokemon will inherit their pre-evolved form's TM and HM compatibilities.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_move_types",
+      "label": "Randomize Move Types",
+      "description": "Randomize the types of each move.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_pokemon_types",
+      "label": "Randomize Pokemon Types",
+      "description": "Randomize the types of each Pokemon.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "follow_evolutions",
+            "label": "Follow Evolutions"
+          },
+          {
+            "value": "randomize",
+            "label": "Randomize"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "secondary_type_chance",
+      "label": "Secondary Type Chance",
+      "description": "If randomize_pokemon_types is on, this is the chance each Pokemon will have a secondary type.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": -1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_type_chart",
+      "label": "Randomize Type Chart",
+      "description": "Randomize the type chart.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "randomize",
+            "label": "Randomize"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "normal_matchups",
+      "label": "Normal Matchups",
+      "description": "If 'randomize' is chosen for Randomize Type Chart, this will be the weight for neutral matchups.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 225,
+        "step": 1,
+        "default": 143
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "super_effective_matchups",
+      "label": "Super Effective Matchups",
+      "description": "If 'randomize' is chosen for Randomize Type Chart, this will be the weight for super effective matchups.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 225,
+        "step": 1,
+        "default": 38
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "not_very_effective_matchups",
+      "label": "Not Very Effective Matchups",
+      "description": "If 'randomize' is chosen for Randomize Type Chart, this will be the weight for not very effective matchups.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 225,
+        "step": 1,
+        "default": 38
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "immunity_matchups",
+      "label": "Immunity Matchups",
+      "description": "If 'randomize' is chosen for Randomize Type Chart, this will be the exact number of immunities.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 6
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "type_chart_seed",
+      "label": "Type Chart Seed",
+      "description": "You can enter a number to use as a seed for the type chart.",
+      "category": "general",
+      "type": {
+        "kind": "text",
+        "default": "random",
+        "placeholder": null
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "safari_zone_normal_battles",
+      "label": "Safari Zone Normal Battles",
+      "description": "Change the Safari Zone to have standard wild Pokemon battles.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "normalize_encounter_chances",
+      "label": "Normalize Encounter Chances",
+      "description": "Each wild encounter table has 10 slots for Pokemon.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "reusable_tms",
+      "label": "Reusable Tms",
+      "description": "Makes TMs reusable, so they will not be consumed upon use.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "better_shops",
+      "label": "Better Shops",
+      "description": "Change every town's Pokemart to contain all normal Pokemart items.",
+      "category": "items",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "on",
+            "label": "On"
+          },
+          {
+            "value": "add_master_ball",
+            "label": "Add Master Ball"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "master_ball_price",
+      "label": "Master Ball Price",
+      "description": "Price for Master Balls.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 999999,
+        "step": 1,
+        "default": 5000
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "starting_money",
+      "label": "Starting Money",
+      "description": "The amount of money you start with.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 999999,
+        "step": 1,
+        "default": 3000
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "lose_money_on_blackout",
+      "label": "Lose Money On Blackout",
+      "description": "Lose half your money when blacking out, as in vanilla.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "poke_doll_skip",
+      "label": "Poke Doll Skip",
+      "description": "Patch out the Pokemon Tower Poke Doll skip or have this skip considered in logic.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "patched",
+        "choices": [
+          {
+            "value": "patched",
+            "label": "Patched"
+          },
+          {
+            "value": "in_logic",
+            "label": "In Logic"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "bicycle_gate_skips",
+      "label": "Bicycle Gate Skips",
+      "description": "Patch out the Route 16/18 Bicycle Gate skips or have these skips considered in logic.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "patched",
+        "choices": [
+          {
+            "value": "patched",
+            "label": "Patched"
+          },
+          {
+            "value": "in_logic",
+            "label": "In Logic"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_percentage",
+      "label": "Trap Percentage",
+      "description": "Chance for each filler item to be replaced with trap items.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "poison_trap_weight",
+      "label": "Poison Trap Weight",
+      "description": "Weights for Poison Traps.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          },
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fire_trap_weight",
+      "label": "Fire Trap Weight",
+      "description": "Weights for Fire Traps.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          },
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "paralyze_trap_weight",
+      "label": "Paralyze Trap Weight",
+      "description": "Weights for Paralyze Traps.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          },
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sleep_trap_weight",
+      "label": "Sleep Trap Weight",
+      "description": "Weights for Sleep Traps.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          },
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ice_trap_weight",
+      "label": "Ice Trap Weight",
+      "description": "Weights for Ice Traps.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          },
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_pokemon_palettes",
+      "label": "Randomize Pokemon Palettes",
+      "description": "Modify Super Gameboy palettes of Pokemon.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "primary_type",
+            "label": "Primary Type"
+          },
+          {
+            "value": "follow_evolutions",
+            "label": "Follow Evolutions"
+          },
+          {
+            "value": "completely_random",
+            "label": "Completely Random"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

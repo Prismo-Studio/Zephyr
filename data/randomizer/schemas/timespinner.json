@@ -1,0 +1,797 @@
+{
+  "id": "timespinner",
+  "name": "Timespinner",
+  "version": "0.4.2",
+  "description": "Timespinner is a beautiful metroidvania inspired by classic 90s action-platformers.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "start_with_jewelry_box",
+      "label": "Start With Jewelry Box",
+      "description": "Start with Jewelry Box unlocked",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "downloadable_items",
+      "label": "Downloadable Items",
+      "description": "With the tablet you will be able to download items at terminals",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "eye_spy",
+      "label": "Eye Spy",
+      "description": "Requires Oculus Ring in inventory to be able to break hidden walls.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "start_with_meyef",
+      "label": "Start With Meyef",
+      "description": "Start with Meyef, ideal for when you want to play multiplayer.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "quick_seed",
+      "label": "Quick Seed",
+      "description": "Start with Talaria Attachment, Nyoom!",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "specific_keycards",
+      "label": "Specific Keycards",
+      "description": "Keycards can only open corresponding doors",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "inverted",
+      "label": "Inverted",
+      "description": "Start in the past",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gyre_archives",
+      "label": "Gyre Archives",
+      "description": "Gyre locations are in logic.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cantoran",
+      "label": "Cantoran",
+      "description": "Cantoran's fight and check are available upon revisiting his room",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "lore_checks",
+      "label": "Lore Checks",
+      "description": "Memories and journal entries contain items.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "boss_rando",
+      "label": "Boss Rando",
+      "description": "Wheter all boss locations are shuffled, and if their damage/hp should be scaled.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "scaled",
+            "label": "Scaled"
+          },
+          {
+            "value": "unscaled",
+            "label": "Unscaled"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "boss_rando_type",
+      "label": "Boss Rando Type",
+      "description": "Sets what type of boss shuffling occurs.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "shuffle",
+        "choices": [
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          },
+          {
+            "value": "singularity",
+            "label": "Singularity"
+          },
+          {
+            "value": "manual",
+            "label": "Manual"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enemy_rando",
+      "label": "Enemy Rando",
+      "description": "Wheter enemies will be randomized, and if their damage/hp should be scaled.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "scaled",
+            "label": "Scaled"
+          },
+          {
+            "value": "unscaled",
+            "label": "Unscaled"
+          },
+          {
+            "value": "ryshia",
+            "label": "Ryshia"
+          },
+          {
+            "value": "no_hell_spiders",
+            "label": "No Hell Spiders"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "damage_rando",
+      "label": "Damage Rando",
+      "description": "Randomly nerfs and buffs some orbs and their associated spells as well as some associated rings.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "allnerfs",
+            "label": "Allnerfs"
+          },
+          {
+            "value": "mostlynerfs",
+            "label": "Mostlynerfs"
+          },
+          {
+            "value": "balanced",
+            "label": "Balanced"
+          },
+          {
+            "value": "mostlybuffs",
+            "label": "Mostlybuffs"
+          },
+          {
+            "value": "allbuffs",
+            "label": "Allbuffs"
+          },
+          {
+            "value": "manual",
+            "label": "Manual"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hp_cap",
+      "label": "Hp Cap",
+      "description": "Sets the number that Lunais's HP maxes out at.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 999,
+        "step": 1,
+        "default": 999
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "aura_cap",
+      "label": "Aura Cap",
+      "description": "Sets the maximum Aura Lunais is allowed to have.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 45,
+        "max": 999,
+        "step": 1,
+        "default": 999
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "level_cap",
+      "label": "Level Cap",
+      "description": "Sets the max level Lunais can achieve.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 99,
+        "step": 1,
+        "default": 99
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "extra_earrings_xp",
+      "label": "Extra Earrings Xp",
+      "description": "Adds additional XP granted by Galaxy Earrings.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "boss_healing",
+      "label": "Boss Healing",
+      "description": "Enables/disables healing after boss fights.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shop_fill",
+      "label": "Shop Fill",
+      "description": "Sets the items for sale in Merchant Crow's shops.",
+      "category": "items",
+      "type": {
+        "kind": "select",
+        "default": "default",
+        "choices": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "randomized",
+            "label": "Randomized"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "empty",
+            "label": "Empty"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shop_warp_shards",
+      "label": "Shop Warp Shards",
+      "description": "Shops always sell warp shards (when keys possessed), ignoring inventory setting.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shop_multiplier",
+      "label": "Shop Multiplier",
+      "description": "Multiplier for the cost of items in the shop.",
+      "category": "items",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "loot_pool",
+      "label": "Loot Pool",
+      "description": "Sets the items that drop from enemies (does not apply to boss reward checks) Vanilla: Drops are the same as the base game Randomized: Each slot of every enemy's drop table is given a random use item or piece of equipment.",
+      "category": "items",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "randomized",
+            "label": "Randomized"
+          },
+          {
+            "value": "empty",
+            "label": "Empty"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "drop_rate_category",
+      "label": "Drop Rate Category",
+      "description": "Sets the drop rate when 'Loot Pool' is set to 'Random' Tiered: Based on item rarity/value Vanilla: Based on bestiary slot the item is placed into Random: Assigned a random tier/drop rate Fixed: Set by the 'Fixed Drop Rate' setting",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "tiered",
+        "choices": [
+          {
+            "value": "tiered",
+            "label": "Tiered"
+          },
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "randomized",
+            "label": "Randomized"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fixed_drop_rate",
+      "label": "Fixed Drop Rate",
+      "description": "Base drop rate percentage when 'Drop Rate Category' is set to 'Fixed'",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 5
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "loot_tier_distro",
+      "label": "Loot Tier Distro",
+      "description": "Sets how often items of each rarity tier are placed when 'Loot Pool' is set to 'Random' Default Weight: Rarer items will be assigned to enemy drop slots less frequently than common items Full Random: Any item has an equal chance of being placed in an enemy's drop slot Inverted Weight: Rarest items show up the most frequently, while common items are the rarest",
+      "category": "items",
+      "type": {
+        "kind": "select",
+        "default": "default_weight",
+        "choices": [
+          {
+            "value": "default_weight",
+            "label": "Default Weight"
+          },
+          {
+            "value": "full_random",
+            "label": "Full Random"
+          },
+          {
+            "value": "inverted_weight",
+            "label": "Inverted Weight"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "show_bestiary",
+      "label": "Show Bestiary",
+      "description": "All entries in the bestiary are visible, without needing to kill one of a given enemy first",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "show_drops",
+      "label": "Show Drops",
+      "description": "All item drops in the bestiary are visible, without needing an enemy to drop one of a given item first",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "enter_sandman",
+      "label": "Enter Sandman",
+      "description": "The Ancient Pyramid is unlocked by the Twin Pyramid Keys, but the final boss door opens if you have all 5 Timespinner pieces",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "dad_percent",
+      "label": "Dad Percent",
+      "description": "The win condition is beating the boss of Emperor's Tower",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "rising_tides",
+      "label": "Rising Tides",
+      "description": "Random areas are flooded or drained, can be further specified with RisingTidesOverrides",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "unchained_keys",
+      "label": "Unchained Keys",
+      "description": "Start with Twin Pyramid Key, which does not give free warp; warp items for Past, Present, (and ???",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "back_to_the_future",
+      "label": "Back To The Future",
+      "description": "When inverted, allows using the refugee camp warp when both the Timespinner Wheel and Spindle is acquired.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "prism_break",
+      "label": "Prism Break",
+      "description": "Adds 3 Laser Access items to the item pool to remove the lasers blocking the military hangar area instead of needing to beat the Golden Idol, Aelana, and The Maw.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "lock_key_amadeus",
+      "label": "Lock Key Amadeus",
+      "description": "Lasers in Amadeus' Laboratory are disabled via items, rather than by de-powering the lab.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "risky_warps",
+      "label": "Risky Warps",
+      "description": "Expanded free-warp eligible locations, including Azure Queen, Xarion, Amadeus' Laboratory, and Emperor's Tower.",
+      "category": "entrances",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "pyramid_start",
+      "label": "Pyramid Start",
+      "description": "Start in ???.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gate_keep",
+      "label": "Gate Keep",
+      "description": "The castle drawbridge starts raised, and can be lowered via item.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "royal_roadblock",
+      "label": "Royal Roadblock",
+      "description": "The Royal Towers entrance door requires a royal orb (Plasma Orb, Plasma Geyser, or Royal Ring) to enter.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "pure_torcher",
+      "label": "Pure Torcher",
+      "description": "All lanterns contain checks.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "find_the_flame",
+      "label": "Find The Flame",
+      "description": "Lanterns in 'Pure Torcher' will not break without new item 'Cube of Bodie'.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_chance",
+      "label": "Trap Chance",
+      "description": "Chance of traps in the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 10
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "traps",
+      "label": "Traps",
+      "description": "List of traps that may be in the item pool to find",
+      "category": "general",
+      "type": {
+        "kind": "multi_select",
+        "defaults": [
+          "Bee Trap",
+          "Chaos Trap",
+          "Lights Out Trap",
+          "Meteor Sparrow Trap",
+          "Neurotoxin Trap",
+          "Palm Punch Trap",
+          "Poison Trap",
+          "Spider Trap",
+          "Throw Stun Trap"
+        ],
+        "choices": [
+          {
+            "value": "Bee Trap",
+            "label": "Bee Trap"
+          },
+          {
+            "value": "Chaos Trap",
+            "label": "Chaos Trap"
+          },
+          {
+            "value": "Lights Out Trap",
+            "label": "Lights Out Trap"
+          },
+          {
+            "value": "Meteor Sparrow Trap",
+            "label": "Meteor Sparrow Trap"
+          },
+          {
+            "value": "Neurotoxin Trap",
+            "label": "Neurotoxin Trap"
+          },
+          {
+            "value": "Palm Punch Trap",
+            "label": "Palm Punch Trap"
+          },
+          {
+            "value": "Poison Trap",
+            "label": "Poison Trap"
+          },
+          {
+            "value": "Spider Trap",
+            "label": "Spider Trap"
+          },
+          {
+            "value": "Throw Stun Trap",
+            "label": "Throw Stun Trap"
+          }
+        ]
+      },
+      "advanced": true,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

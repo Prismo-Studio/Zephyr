@@ -1,0 +1,637 @@
+{
+  "id": "mlss",
+  "name": "Mario & Luigi Superstar Saga",
+  "version": "0.5.0",
+  "description": "Adventure with Mario and Luigi together in the Beanbean Kingdom to stop the evil Cackletta and retrieve the Beanstar.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "coins",
+      "label": "Coins",
+      "description": "Add all coin blocks in the game to the location pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "difficult_logic",
+      "label": "Difficult Logic",
+      "description": "This adjusts the logic to be more difficult in a few areas, allowing for the logic to account for players getting to certain areas in unintended ways.",
+      "category": "logic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "castle_skip",
+      "label": "Castle Skip",
+      "description": "Skip straight from the Entrance Hall to Bowletta in Bowser's Castle.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "extra_pipes",
+      "label": "Extra Pipes",
+      "description": "Gives the player access to pipes 1, 3, 4, and 6 from the start.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "skip_minecart",
+      "label": "Skip Minecart",
+      "description": "Skip the minecart minigame that leads you through Hoohoo Mountain Base.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "disable_surf",
+      "label": "Disable Surf",
+      "description": "Remove the surf minigame location from the location pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "disable_harhalls_pants",
+      "label": "Disable Harhalls Pants",
+      "description": "This will remove the Harhall's Pants check from the pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "block_visibility",
+      "label": "Block Visibility",
+      "description": "This makes any hidden blocks in the game into regular item blocks and vice versa.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "hidden_visible",
+            "label": "Hidden Visible"
+          },
+          {
+            "value": "blocks_invisible",
+            "label": "Blocks Invisible"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "chuckle_beans",
+      "label": "Chuckle Beans",
+      "description": "Choose how you want chuckle bean digspots to be randomized.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "all",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "only_visible",
+            "label": "Only Visible"
+          },
+          {
+            "value": "all",
+            "label": "All"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "Vanilla: Complete jokes end with the required items and defeat Birdo to unlock Bowser's Castle.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "emblem_hunt",
+            "label": "Emblem Hunt"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "emblems_required",
+      "label": "Emblems Required",
+      "description": "Number of Beanstar Emblems to collect to unlock Bowser's Castle.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "emblems_amount",
+      "label": "Emblems Amount",
+      "description": "Number of Beanstar Emblems that are in the pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 150,
+        "step": 1,
+        "default": 75
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "music_options",
+      "label": "Music Options",
+      "description": "Choose if you want to randomize or disable music.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "default",
+        "choices": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "randomize",
+            "label": "Randomize"
+          },
+          {
+            "value": "disable",
+            "label": "Disable"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_sounds",
+      "label": "Randomize Sounds",
+      "description": "Randomizes every sound in the game, minus a select few that can softlock the game.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_enemies",
+      "label": "Randomize Enemies",
+      "description": "Randomize all normal enemy encounters in the game.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "vanilla_groups",
+            "label": "Vanilla Groups"
+          },
+          {
+            "value": "custom_groups",
+            "label": "Custom Groups"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_bosses",
+      "label": "Randomize Bosses",
+      "description": "Randomize all boss encounters in the game.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "disabled",
+        "choices": [
+          {
+            "value": "disabled",
+            "label": "Disabled"
+          },
+          {
+            "value": "boss_only",
+            "label": "Boss Only"
+          },
+          {
+            "value": "boss_normal",
+            "label": "Boss Normal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_backgrounds",
+      "label": "Randomize Backgrounds",
+      "description": "This randomizes the background image in battles.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "scale_stats",
+      "label": "Scale Stats",
+      "description": "This scales enemy HP, POW, DEF, and XP to vanilla values.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "xp_multiplier",
+      "label": "Xp Multiplier",
+      "description": "This will multiply any XP you receive in battle by the chosen multiplier.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 4,
+        "step": 1,
+        "default": 1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "tattle_hp",
+      "label": "Tattle Hp",
+      "description": "This will display the enemies' current and max health while in battle.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "mario_color",
+      "label": "Mario Color",
+      "description": "This changes the color of Mario's hat, as well as some key colors that are red including UI etc.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "red",
+        "choices": [
+          {
+            "value": "red",
+            "label": "Red"
+          },
+          {
+            "value": "green",
+            "label": "Green"
+          },
+          {
+            "value": "blue",
+            "label": "Blue"
+          },
+          {
+            "value": "cyan",
+            "label": "Cyan"
+          },
+          {
+            "value": "yellow",
+            "label": "Yellow"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "purple",
+            "label": "Purple"
+          },
+          {
+            "value": "pink",
+            "label": "Pink"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "silhouette",
+            "label": "Silhouette"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          },
+          {
+            "value": "true_chaos",
+            "label": "True Chaos"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "luigi_color",
+      "label": "Luigi Color",
+      "description": "This changes the color of Luigi's hat, as well as some key colors that are green including UI etc.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "green",
+        "choices": [
+          {
+            "value": "red",
+            "label": "Red"
+          },
+          {
+            "value": "green",
+            "label": "Green"
+          },
+          {
+            "value": "blue",
+            "label": "Blue"
+          },
+          {
+            "value": "cyan",
+            "label": "Cyan"
+          },
+          {
+            "value": "yellow",
+            "label": "Yellow"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "purple",
+            "label": "Purple"
+          },
+          {
+            "value": "pink",
+            "label": "Pink"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "silhouette",
+            "label": "Silhouette"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          },
+          {
+            "value": "true_chaos",
+            "label": "True Chaos"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "mario_pants",
+      "label": "Mario Pants",
+      "description": "This changes the color of Mario's trousers.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "red",
+            "label": "Red"
+          },
+          {
+            "value": "green",
+            "label": "Green"
+          },
+          {
+            "value": "blue",
+            "label": "Blue"
+          },
+          {
+            "value": "cyan",
+            "label": "Cyan"
+          },
+          {
+            "value": "yellow",
+            "label": "Yellow"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "purple",
+            "label": "Purple"
+          },
+          {
+            "value": "pink",
+            "label": "Pink"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "luigi_pants",
+      "label": "Luigi Pants",
+      "description": "This changes the color of Luigi's trousers.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "red",
+            "label": "Red"
+          },
+          {
+            "value": "green",
+            "label": "Green"
+          },
+          {
+            "value": "blue",
+            "label": "Blue"
+          },
+          {
+            "value": "cyan",
+            "label": "Cyan"
+          },
+          {
+            "value": "yellow",
+            "label": "Yellow"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "purple",
+            "label": "Purple"
+          },
+          {
+            "value": "pink",
+            "label": "Pink"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

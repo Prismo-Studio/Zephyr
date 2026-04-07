@@ -1,0 +1,356 @@
+{
+  "id": "shorthike",
+  "name": "A Short Hike",
+  "version": "0.4.4",
+  "description": "A Short Hike is a relaxing adventure set on the islands of Hawk Peak.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal",
+      "label": "Goal",
+      "description": "Choose the end goal.",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "help_everyone",
+        "choices": [
+          {
+            "value": "nap",
+            "label": "Nap"
+          },
+          {
+            "value": "photo",
+            "label": "Photo"
+          },
+          {
+            "value": "races",
+            "label": "Races"
+          },
+          {
+            "value": "help_everyone",
+            "label": "Help Everyone"
+          },
+          {
+            "value": "fishmonger",
+            "label": "Fishmonger"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "coins_in_shops",
+      "label": "Coins In Shops",
+      "description": "When enabled, the randomizer can place coins into locations that are purchased, such as shops.",
+      "category": "items",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "golden_feathers",
+      "label": "Golden Feathers",
+      "description": "Number of Golden Feathers in the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 20
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "silver_feathers",
+      "label": "Silver Feathers",
+      "description": "Number of Silver Feathers in the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "buckets",
+      "label": "Buckets",
+      "description": "Number of Buckets in the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 2,
+        "step": 1,
+        "default": 2
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "sticks",
+      "label": "Sticks",
+      "description": "Number of Sticks in the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 8,
+        "step": 1,
+        "default": 8
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "toy_shovels",
+      "label": "Toy Shovels",
+      "description": "Number of Toy Shovels in the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 5
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "golden_feather_progression",
+      "label": "Golden Feather Progression",
+      "description": "Determines which locations are considered in logic based on the required amount of golden feathers to reach them.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "hard",
+            "label": "Hard"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "cost_multiplier",
+      "label": "Cost Multiplier",
+      "description": "The percentage that all item shop costs will be of the vanilla values.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 25,
+        "max": 200,
+        "step": 1,
+        "default": 100
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "filler_coin_amount",
+      "label": "Filler Coin Amount",
+      "description": "The number of coins that will be in each filler coin item.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "13_coins",
+        "choices": [
+          {
+            "value": "7_coins",
+            "label": "7 Coins"
+          },
+          {
+            "value": "13_coins",
+            "label": "13 Coins"
+          },
+          {
+            "value": "15_coins",
+            "label": "15 Coins"
+          },
+          {
+            "value": "18_coins",
+            "label": "18 Coins"
+          },
+          {
+            "value": "21_coins",
+            "label": "21 Coins"
+          },
+          {
+            "value": "25_coins",
+            "label": "25 Coins"
+          },
+          {
+            "value": "27_coins",
+            "label": "27 Coins"
+          },
+          {
+            "value": "32_coins",
+            "label": "32 Coins"
+          },
+          {
+            "value": "33_coins",
+            "label": "33 Coins"
+          },
+          {
+            "value": "50_coins",
+            "label": "50 Coins"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "random_walkie_talkie",
+      "label": "Random Walkie Talkie",
+      "description": "When enabled, the Walkie Talkie item will be placed into the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "easier_races",
+      "label": "Easier Races",
+      "description": "When enabled, the Running Shoes will be added as a logical requirement for beating any of the races.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shop_check_logic",
+      "label": "Shop Check Logic",
+      "description": "Determines which items will be added as logical requirements to making certain purchases in shops.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "fishing_rod",
+        "choices": [
+          {
+            "value": "nothing",
+            "label": "Nothing"
+          },
+          {
+            "value": "fishing_rod",
+            "label": "Fishing Rod"
+          },
+          {
+            "value": "shovel",
+            "label": "Shovel"
+          },
+          {
+            "value": "fishing_rod_and_shovel",
+            "label": "Fishing Rod And Shovel"
+          },
+          {
+            "value": "golden_fishing_rod",
+            "label": "Golden Fishing Rod"
+          },
+          {
+            "value": "golden_fishing_rod_and_shovel",
+            "label": "Golden Fishing Rod And Shovel"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "min_shop_check_logic",
+      "label": "Min Shop Check Logic",
+      "description": "Determines the minimum cost of a shop item that will have the shop check logic applied to it.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "100_coins",
+        "choices": [
+          {
+            "value": "40_coins",
+            "label": "40 Coins"
+          },
+          {
+            "value": "100_coins",
+            "label": "100 Coins"
+          },
+          {
+            "value": "400_coins",
+            "label": "400 Coins"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

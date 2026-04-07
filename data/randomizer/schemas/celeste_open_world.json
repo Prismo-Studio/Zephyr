@@ -1,0 +1,1192 @@
+{
+  "id": "celeste_open_world",
+  "name": "Celeste (Open World)",
+  "version": "0.1.6",
+  "description": "Celeste (Open World) is a randomizer for the original Celeste.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "full",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link",
+      "label": "Death Link",
+      "description": "When you die, everyone who enabled death link dies.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "death_link_amnesty",
+      "label": "Death Link Amnesty",
+      "description": "How many deaths it takes to send a DeathLink",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "default": 10
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_link",
+      "label": "Trap Link",
+      "description": "Whether your received traps are linked to other players You will also receive any linked traps from other players with Trap Link enabled, if you have a weight above \"none\" set for that trap",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal_area",
+      "label": "Goal Area",
+      "description": "What Area must be cleared to gain access to the Epilogue and complete the game",
+      "category": "goals",
+      "type": {
+        "kind": "select",
+        "default": "the_summit_a",
+        "choices": [
+          {
+            "value": "the_summit_a",
+            "label": "The Summit A"
+          },
+          {
+            "value": "the_summit_b",
+            "label": "The Summit B"
+          },
+          {
+            "value": "the_summit_c",
+            "label": "The Summit C"
+          },
+          {
+            "value": "core_a",
+            "label": "Core A"
+          },
+          {
+            "value": "core_b",
+            "label": "Core B"
+          },
+          {
+            "value": "core_c",
+            "label": "Core C"
+          },
+          {
+            "value": "empty_space",
+            "label": "Empty Space"
+          },
+          {
+            "value": "farewell",
+            "label": "Farewell"
+          },
+          {
+            "value": "farewell_golden",
+            "label": "Farewell Golden"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "lock_goal_area",
+      "label": "Lock Goal Area",
+      "description": "Determines whether your Goal Area will be locked until you receive your required Strawberries, or only the Epilogue",
+      "category": "goals",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "goal_area_checkpointsanity",
+      "label": "Goal Area Checkpointsanity",
+      "description": "Determines whether the Checkpoints in your Goal Area will be shuffled into the item pool (if Checkpointsanity is active)",
+      "category": "goals",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "total_strawberries",
+      "label": "Total Strawberries",
+      "description": "Maximum number of how many Strawberries can exist",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 202,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "strawberries_required_percentage",
+      "label": "Strawberries Required Percentage",
+      "description": "Percentage of existing Strawberries you must receive to access your Goal Area (if Lock Goal Area is active) and the Epilogue",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 80
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "junk_fill_percentage",
+      "label": "Junk Fill Percentage",
+      "description": "Replace a percentage of non-required Strawberries in the item pool with junk items",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_fill_percentage",
+      "label": "Trap Fill Percentage",
+      "description": "Replace a percentage of junk items in the item pool with random traps",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_expiration_action",
+      "label": "Trap Expiration Action",
+      "description": "The type of action which causes traps to wear off",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "deaths",
+        "choices": [
+          {
+            "value": "return_to_menu",
+            "label": "Return To Menu"
+          },
+          {
+            "value": "deaths",
+            "label": "Deaths"
+          },
+          {
+            "value": "new_screens",
+            "label": "New Screens"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "trap_expiration_amount",
+      "label": "Trap Expiration Amount",
+      "description": "The amount of the selected Trap Expiration Action that must occur for the trap to wear off",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 5
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "bald_trap_weight",
+      "label": "Bald Trap Weight",
+      "description": "Likelihood of receiving a trap which makes Maddy bald",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "literature_trap_weight",
+      "label": "Literature Trap Weight",
+      "description": "Likelihood of a receiving a trap which causes the player to read literature",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "stun_trap_weight",
+      "label": "Stun Trap Weight",
+      "description": "Likelihood of a receiving a trap which briefly stuns Maddy",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "invisible_trap_weight",
+      "label": "Invisible Trap Weight",
+      "description": "Likelihood of a receiving a trap which turns Maddy invisible",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "fast_trap_weight",
+      "label": "Fast Trap Weight",
+      "description": "Likelihood of a receiving a trap which increases the game speed",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "slow_trap_weight",
+      "label": "Slow Trap Weight",
+      "description": "Likelihood of a receiving a trap which decreases the game speed",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "ice_trap_weight",
+      "label": "Ice Trap Weight",
+      "description": "Likelihood of a receiving a trap which causes the level to become slippery",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "reverse_trap_weight",
+      "label": "Reverse Trap Weight",
+      "description": "Likelihood of a receiving a trap which causes the controls to be reversed",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "screen_flip_trap_weight",
+      "label": "Screen Flip Trap Weight",
+      "description": "Likelihood of a receiving a trap which causes the screen to be flipped",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "laughter_trap_weight",
+      "label": "Laughter Trap Weight",
+      "description": "Likelihood of a receiving a trap which causes Maddy to laugh uncontrollably",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "hiccup_trap_weight",
+      "label": "Hiccup Trap Weight",
+      "description": "Likelihood of a receiving a trap which causes Maddy to hiccup uncontrollably",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "zoom_trap_weight",
+      "label": "Zoom Trap Weight",
+      "description": "Likelihood of a receiving a trap which causes the camera to focus on Maddy",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "medium",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "low",
+            "label": "Low"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "high",
+            "label": "High"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "checkpointsanity",
+      "label": "Checkpointsanity",
+      "description": "Determines whether Checkpoints will be shuffled into the item pool",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "binosanity",
+      "label": "Binosanity",
+      "description": "Determines whether using Binoculars sends location checks",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "keysanity",
+      "label": "Keysanity",
+      "description": "Determines whether individual Keys are shuffled into the item pool",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "gemsanity",
+      "label": "Gemsanity",
+      "description": "Determines whether Summit Gems are shuffled into the item pool",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "carsanity",
+      "label": "Carsanity",
+      "description": "Determines whether riding on cars grants location checks",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "roomsanity",
+      "label": "Roomsanity",
+      "description": "Determines whether entering individual rooms sends location checks",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "include_goldens",
+      "label": "Include Goldens",
+      "description": "Determines whether collecting Golden Strawberries sends location checks",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "include_core",
+      "label": "Include Core",
+      "description": "Determines whether Chapter 8 - Core Levels will be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "include_farewell",
+      "label": "Include Farewell",
+      "description": "Determines how much of Chapter 9 - Farewell Level will be included",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "empty_space",
+            "label": "Empty Space"
+          },
+          {
+            "value": "farewell",
+            "label": "Farewell"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "include_b_sides",
+      "label": "Include B Sides",
+      "description": "Determines whether the B-Side Levels will be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "include_c_sides",
+      "label": "Include C Sides",
+      "description": "Determines whether the C-Side Levels will be included",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "music_shuffle",
+      "label": "Music Shuffle",
+      "description": "Music shuffle type None: No Music is shuffled Consistent: Each music track is consistently shuffled throughout the game Singularity: The entire game uses one song for levels",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "none",
+        "choices": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "consistent",
+            "label": "Consistent"
+          },
+          {
+            "value": "singularity",
+            "label": "Singularity"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "require_cassettes",
+      "label": "Require Cassettes",
+      "description": "Determines whether you must receive a level's Cassette Item to hear that level's music",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "madeline_hair_length",
+      "label": "Madeline Hair Length",
+      "description": "How long Madeline's hair is",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "default",
+        "choices": [
+          {
+            "value": "very_short",
+            "label": "Very Short"
+          },
+          {
+            "value": "short",
+            "label": "Short"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "long",
+            "label": "Long"
+          },
+          {
+            "value": "very_long",
+            "label": "Very Long"
+          },
+          {
+            "value": "absurd",
+            "label": "Absurd"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "madeline_one_dash_hair_color",
+      "label": "Madeline One Dash Hair Color",
+      "description": "What color Madeline's hair is when she has one dash The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "strawberry",
+        "choices": [
+          {
+            "value": "strawberry",
+            "label": "Strawberry"
+          },
+          {
+            "value": "empty",
+            "label": "Empty"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "golden",
+            "label": "Golden"
+          },
+          {
+            "value": "baddy",
+            "label": "Baddy"
+          },
+          {
+            "value": "fire_red",
+            "label": "Fire Red"
+          },
+          {
+            "value": "maroon",
+            "label": "Maroon"
+          },
+          {
+            "value": "salmon",
+            "label": "Salmon"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "lime_green",
+            "label": "Lime Green"
+          },
+          {
+            "value": "bright_green",
+            "label": "Bright Green"
+          },
+          {
+            "value": "forest_green",
+            "label": "Forest Green"
+          },
+          {
+            "value": "royal_blue",
+            "label": "Royal Blue"
+          },
+          {
+            "value": "brown",
+            "label": "Brown"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "grey",
+            "label": "Grey"
+          },
+          {
+            "value": "any_color",
+            "label": "Any Color"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "madeline_two_dash_hair_color",
+      "label": "Madeline Two Dash Hair Color",
+      "description": "What color Madeline's hair is when she has two dashes The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "double",
+        "choices": [
+          {
+            "value": "strawberry",
+            "label": "Strawberry"
+          },
+          {
+            "value": "empty",
+            "label": "Empty"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "golden",
+            "label": "Golden"
+          },
+          {
+            "value": "baddy",
+            "label": "Baddy"
+          },
+          {
+            "value": "fire_red",
+            "label": "Fire Red"
+          },
+          {
+            "value": "maroon",
+            "label": "Maroon"
+          },
+          {
+            "value": "salmon",
+            "label": "Salmon"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "lime_green",
+            "label": "Lime Green"
+          },
+          {
+            "value": "bright_green",
+            "label": "Bright Green"
+          },
+          {
+            "value": "forest_green",
+            "label": "Forest Green"
+          },
+          {
+            "value": "royal_blue",
+            "label": "Royal Blue"
+          },
+          {
+            "value": "brown",
+            "label": "Brown"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "grey",
+            "label": "Grey"
+          },
+          {
+            "value": "any_color",
+            "label": "Any Color"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "madeline_no_dash_hair_color",
+      "label": "Madeline No Dash Hair Color",
+      "description": "What color Madeline's hair is when she has no dashes The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "empty",
+        "choices": [
+          {
+            "value": "strawberry",
+            "label": "Strawberry"
+          },
+          {
+            "value": "empty",
+            "label": "Empty"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "golden",
+            "label": "Golden"
+          },
+          {
+            "value": "baddy",
+            "label": "Baddy"
+          },
+          {
+            "value": "fire_red",
+            "label": "Fire Red"
+          },
+          {
+            "value": "maroon",
+            "label": "Maroon"
+          },
+          {
+            "value": "salmon",
+            "label": "Salmon"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "lime_green",
+            "label": "Lime Green"
+          },
+          {
+            "value": "bright_green",
+            "label": "Bright Green"
+          },
+          {
+            "value": "forest_green",
+            "label": "Forest Green"
+          },
+          {
+            "value": "royal_blue",
+            "label": "Royal Blue"
+          },
+          {
+            "value": "brown",
+            "label": "Brown"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "grey",
+            "label": "Grey"
+          },
+          {
+            "value": "any_color",
+            "label": "Any Color"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "madeline_feather_hair_color",
+      "label": "Madeline Feather Hair Color",
+      "description": "What color Madeline's hair is when she has a feather The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "select",
+        "default": "golden",
+        "choices": [
+          {
+            "value": "strawberry",
+            "label": "Strawberry"
+          },
+          {
+            "value": "empty",
+            "label": "Empty"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "golden",
+            "label": "Golden"
+          },
+          {
+            "value": "baddy",
+            "label": "Baddy"
+          },
+          {
+            "value": "fire_red",
+            "label": "Fire Red"
+          },
+          {
+            "value": "maroon",
+            "label": "Maroon"
+          },
+          {
+            "value": "salmon",
+            "label": "Salmon"
+          },
+          {
+            "value": "orange",
+            "label": "Orange"
+          },
+          {
+            "value": "lime_green",
+            "label": "Lime Green"
+          },
+          {
+            "value": "bright_green",
+            "label": "Bright Green"
+          },
+          {
+            "value": "forest_green",
+            "label": "Forest Green"
+          },
+          {
+            "value": "royal_blue",
+            "label": "Royal Blue"
+          },
+          {
+            "value": "brown",
+            "label": "Brown"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "grey",
+            "label": "Grey"
+          },
+          {
+            "value": "any_color",
+            "label": "Any Color"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}

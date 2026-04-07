@@ -1,0 +1,335 @@
+{
+  "id": "marioland2",
+  "name": "Super Mario Land 2",
+  "version": "0.1.6",
+  "description": "Super Mario Land 2 is a classic platformer that follows Mario on a quest to reclaim his castle from the villainous Wario.",
+  "meta": {
+    "rom_required": false,
+    "supported_versions": [],
+    "wiki_url": null,
+    "icon": "mdi:gamepad-variant"
+  },
+  "options": [
+    {
+      "id": "progression_balancing",
+      "label": "Progression Balancing",
+      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "default": 50
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "description": "Set rules for reachability of your items/locations.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "items",
+        "choices": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          },
+          {
+            "value": "items",
+            "label": "Items"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_golden_coins",
+      "label": "Shuffle Golden Coins",
+      "description": "Vanilla: Golden Coins are received when defeating bosses.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "vanilla",
+        "choices": [
+          {
+            "value": "vanilla",
+            "label": "Vanilla"
+          },
+          {
+            "value": "shuffle",
+            "label": "Shuffle"
+          },
+          {
+            "value": "mario_coin_fragment_hunt",
+            "label": "Mario Coin Fragment Hunt"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "required_golden_coins",
+      "label": "Required Golden Coins",
+      "description": "Number of Golden Coins required to enter Mario's Castle.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 6,
+        "step": 1,
+        "default": 6
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "mario_coin_fragment_percentage",
+      "label": "Mario Coin Fragment Percentage",
+      "description": "Percentage of filler items to be replaced with Mario Coin Fragments.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "default": 20
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "mario_coin_fragments_required_percentage",
+      "label": "Mario Coin Fragments Required Percentage",
+      "description": "Percentage of the Mario Coins in the item pool that are required to put the Mario Coin together.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "default": 75
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "coinsanity",
+      "label": "Coinsanity",
+      "description": "Shuffles the singular coins found freestanding and in question mark blocks into the item pool, and adds location checks made by obtaining a sufficient number of coins in particular levels within a single playthrough.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "coinsanity_checks",
+      "label": "Coinsanity Checks",
+      "description": "Number of Coinsanity checks.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 31,
+        "max": 2597,
+        "step": 1,
+        "default": 150
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_midway_bells",
+      "label": "Shuffle Midway Bells",
+      "description": "Shuffle Midway Bells into the item pool.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "marios_castle_midway_bell",
+      "label": "Marios Castle Midway Bell",
+      "description": "Adds a Midway Bell to the final stage, just before the Wario fight.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "shuffle_pipe_traversal",
+      "label": "Shuffle Pipe Traversal",
+      "description": "Single: Shuffle a Pipe Traversal item into the item pool, which is required to enter any pipes.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "off",
+        "choices": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "single",
+            "label": "Single"
+          },
+          {
+            "value": "split",
+            "label": "Split"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "auto_scroll_mode",
+      "label": "Auto Scroll Mode",
+      "description": "Always: Any auto scroll levels will always auto-scroll.",
+      "category": "general",
+      "type": {
+        "kind": "select",
+        "default": "always",
+        "choices": [
+          {
+            "value": "always",
+            "label": "Always"
+          },
+          {
+            "value": "global_trap_item",
+            "label": "Global Trap Item"
+          },
+          {
+            "value": "level_trap_items",
+            "label": "Level Trap Items"
+          },
+          {
+            "value": "global_cancel_item",
+            "label": "Global Cancel Item"
+          },
+          {
+            "value": "level_cancel_items",
+            "label": "Level Cancel Items"
+          },
+          {
+            "value": "chaos",
+            "label": "Chaos"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "auto_scroll_chances",
+      "label": "Auto Scroll Chances",
+      "description": "Chance per eligible level to be made into an auto scroll level.",
+      "category": "general",
+      "type": {
+        "kind": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": -1
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "difficulty_mode",
+      "label": "Difficulty Mode",
+      "description": "Play in normal or easy mode.",
+      "category": "logic",
+      "type": {
+        "kind": "select",
+        "default": "normal",
+        "choices": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "easy",
+            "label": "Easy"
+          },
+          {
+            "value": "normal_to_easy",
+            "label": "Normal To Easy"
+          },
+          {
+            "value": "easy_to_normal",
+            "label": "Easy To Normal"
+          }
+        ]
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_enemies",
+      "label": "Randomize Enemies",
+      "description": "Randomize enemies throughout levels.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_platforms",
+      "label": "Randomize Platforms",
+      "description": "Randomize platforms throughout levels.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "randomize_music",
+      "label": "Randomize Music",
+      "description": "Randomize the music that plays in levels and overworld areas.",
+      "category": "cosmetic",
+      "type": {
+        "kind": "toggle",
+        "default": false
+      },
+      "advanced": false,
+      "dependencies": null
+    },
+    {
+      "id": "energy_link",
+      "label": "Energy Link",
+      "description": "All extra lives beyond 1 are transferred into the server's shared EnergyLink storage.",
+      "category": "general",
+      "type": {
+        "kind": "toggle",
+        "default": true
+      },
+      "advanced": false,
+      "dependencies": null
+    }
+  ],
+  "presets": []
+}
