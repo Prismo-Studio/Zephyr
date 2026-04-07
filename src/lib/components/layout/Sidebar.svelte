@@ -317,7 +317,7 @@
 	<div class="z-sidebar-bottom" class:legend-active={legendActive}>
 		<Tooltip text={i18nState.locale && m.toolBar_launchGame_button()} position="right" delay={300}>
 			<button class="z-launch-btn" onclick={launchGame}>
-				<img src="/launch-icon.png" alt="Launch Game" class="z-custom-launch-icon" />
+				<img src="/launch-icon.svg" alt="Launch Game" class="z-custom-launch-icon" />
 			</button>
 		</Tooltip>
 
