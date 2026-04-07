@@ -20,6 +20,7 @@ mod game;
 mod logger;
 mod prefs;
 mod profile;
+mod randomizer;
 pub mod source;
 mod state;
 mod thunderstore;
@@ -44,6 +45,9 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
+
+    use tauri::Manager;
+    app.manage(crate::randomizer::ap_runner::ServerState::default());
 
     if let Err(err) = state::setup(app.handle()) {
         error!("setup error: {:?}", err);
@@ -243,6 +247,23 @@ pub fn run() {
             config::commands::reset_config_entry,
             config::commands::open_config_file,
             config::commands::delete_config_file,
+            randomizer::commands::list_supported_games,
+            randomizer::commands::get_game_schema,
+            randomizer::commands::generate_yaml,
+            randomizer::commands::validate_config,
+            randomizer::commands::lint_yaml,
+            randomizer::commands::check_python,
+            randomizer::commands::save_player_yaml,
+            randomizer::commands::list_player_yamls,
+            randomizer::commands::delete_player_yaml,
+            randomizer::commands::generate_seed,
+            randomizer::commands::start_server,
+            randomizer::commands::stop_server,
+            randomizer::commands::server_status,
+            randomizer::commands::open_workspace_dir,
+            randomizer::commands::list_seeds,
+            randomizer::commands::delete_seed,
+            randomizer::commands::clear_seeds,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())

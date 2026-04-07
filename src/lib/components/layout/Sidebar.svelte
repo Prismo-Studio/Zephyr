@@ -44,6 +44,7 @@
 		{ path: '/browse', icon: 'mdi:store-search', label: () => m.navBar_label_browse() },
 		{ path: '/profiles', icon: 'mdi:account-group', label: () => m.menuBar_profile_title() },
 		{ path: '/config', icon: 'mdi:cog', label: () => m.navBar_label_config() },
+		{ path: '/randomizer', icon: 'mdi:dice-multiple', label: () => 'Randomizer' },
 		{ path: '/prefs', icon: 'mdi:tune-vertical', label: () => m.navBar_label_settings() }
 	];
 
