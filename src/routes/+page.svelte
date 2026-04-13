@@ -31,7 +31,12 @@
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { pushToast } from '$lib/toast';
 	import { handleMultiSelect } from '$lib/utils/multiSelect';
-	import { createDragGhost, computeInsertPosition, type DragState } from '$lib/utils/dragDrop';
+	import {
+		createDragGhost,
+		computeInsertPosition,
+		resetGridPositions,
+		type DragState
+	} from '$lib/utils/dragDrop';
 
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
@@ -53,6 +58,7 @@
 
 	let isCustomSort = $derived(profileQuery.current.sortBy === 'custom');
 	let canDrag = $derived(isCustomSort && !profiles.activeLocked);
+
 
 	function handleDragHandleDown(e: PointerEvent, mod: Mod) {
 		if (!canDrag || isModPinned(mod.uuid)) return;
@@ -133,6 +139,7 @@
 		placeholderIndex = -1;
 		dragFromIndex = -1;
 		isDragging = false;
+		resetGridPositions();
 	}
 
 	function handlePointerMoveThrottled(e: PointerEvent) {
@@ -1154,6 +1161,7 @@
 		gap: var(--space-md);
 	}
 
+
 	.z-mods-list.z-grid-layout .z-mods-empty,
 	.z-mods-list.z-grid-layout .z-drop-placeholder {
 		grid-column: 1 / -1;
@@ -1253,12 +1261,15 @@
 		pointer-events: none;
 	}
 
+	.z-grid-layout .z-dragging-card {
+		display: none;
+	}
+
 	.z-drop-placeholder-grid {
 		width: 100%;
 		border: 2px dashed var(--accent-400);
 		border-radius: var(--radius-lg);
 		background: rgba(26, 255, 250, 0.08);
-		animation: placeholderIn 150ms ease;
 		overflow: hidden;
 		position: relative;
 		display: flex;
