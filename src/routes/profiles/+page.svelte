@@ -191,7 +191,7 @@
 			z-index: 9999;
 			opacity: 0.95;
 			border: 2px solid var(--accent-400);
-			box-shadow: 0 12px 40px rgba(26, 255, 250, 0.25);
+			box-shadow: var(--shadow-glow-strong);
 			transform: scale(1.03);
 			cursor: grabbing;
 		`;
@@ -476,7 +476,7 @@
 
 	.z-profile-card.drag-over {
 		border-color: var(--accent-400);
-		box-shadow: 0 0 0 2px rgba(26, 255, 250, 0.3);
+		box-shadow: 0 0 0 2px var(--accent-400);
 	}
 
 	.z-profile-card:hover {
@@ -485,7 +485,7 @@
 
 	.z-profile-card.active {
 		border-color: var(--border-accent);
-		box-shadow: 0 0 16px rgba(26, 255, 250, 0.06);
+		box-shadow: var(--shadow-glow);
 	}
 
 	.z-profile-select {
@@ -584,7 +584,7 @@
 		height: 8px;
 		border-radius: 50%;
 		background: var(--accent-400);
-		box-shadow: 0 0 6px rgba(26, 255, 250, 0.5);
+		box-shadow: 0 0 6px var(--accent-400);
 		flex-shrink: 0;
 	}
 

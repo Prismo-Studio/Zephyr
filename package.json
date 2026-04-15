@@ -13,6 +13,7 @@
 		"format": "prettier --write .",
 		"lint:fix": "prettier --write --list-different .",
 		"tauri": "tauri",
+		"start": "tauri dev",
 		"machine-translate": "inlang machine translate --project project.inlang",
 		"tauri:build": "tauri build",
 		"tauri:build:appimage": "tauri build && ./appimage-build/post_build_fix.sh",

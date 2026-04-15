@@ -33,7 +33,7 @@ export function createDragGhost(card: HTMLElement, e: PointerEvent): HTMLDivElem
 		z-index: 9999;
 		opacity: 0.9;
 		border: 1px solid var(--accent-400);
-		box-shadow: 0 8px 32px rgba(26, 255, 250, 0.2), 0 0 0 1px rgba(26, 255, 250, 0.3);
+		box-shadow: var(--shadow-glow-strong), 0 0 0 1px var(--accent-400);
 		background: var(--bg-elevated);
 		border-radius: var(--radius-lg);
 		transform: scale(1.02);

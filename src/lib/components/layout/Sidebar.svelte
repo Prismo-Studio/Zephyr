@@ -317,7 +317,15 @@
 	<div class="z-sidebar-bottom" class:legend-active={legendActive}>
 		<Tooltip text={i18nState.locale && m.toolBar_launchGame_button()} position="right" delay={300}>
 			<button class="z-launch-btn" onclick={launchGame}>
-				<img src="/launch-icon.svg" alt="Launch Game" class="z-custom-launch-icon" />
+				<svg
+					width="28"
+					height="28"
+					viewBox="0 0 24 24"
+					fill="currentColor"
+					class="z-custom-launch-icon"
+				>
+					<path d="M8 5v14l11-7z" />
+				</svg>
 			</button>
 		</Tooltip>
 
@@ -639,8 +647,8 @@
 	}
 
 	.z-nav-item.active {
-		color: #1afffa;
-		background: rgba(26, 255, 250, 0.15);
+		color: var(--text-accent);
+		background: var(--bg-active);
 	}
 
 	:global(.z-nav-icon) {
@@ -648,7 +656,7 @@
 	}
 
 	.z-nav-item.active :global(.z-nav-icon) {
-		color: #1afffa;
+		color: var(--text-accent);
 	}
 
 	.z-nav-label {
@@ -667,7 +675,7 @@
 		height: 20px;
 		background: var(--accent-400);
 		border-radius: 0 var(--radius-full) var(--radius-full) 0;
-		box-shadow: 0 0 8px rgba(26, 255, 250, 0.4);
+		box-shadow: var(--shadow-glow);
 	}
 
 	/* Bottom */
@@ -701,9 +709,9 @@
 	}
 
 	.z-launch-btn:hover {
-		background: rgba(26, 255, 250, 0.1);
+		background: var(--bg-active);
 		transform: translateY(-2px);
-		box-shadow: 0 4px 16px rgba(26, 255, 250, 0.15);
+		box-shadow: var(--shadow-glow);
 	}
 
 	.z-launch-btn:active {
@@ -739,8 +747,6 @@
 	.z-custom-launch-icon {
 		width: 28px;
 		height: 28px;
-		object-fit: cover;
-		border-radius: var(--radius-sm);
 	}
 
 	/* Profile switcher */
@@ -809,9 +815,7 @@
 		max-height: 320px;
 		overflow-y: auto;
 		z-index: var(--z-dropdown);
-		box-shadow:
-			var(--shadow-lg),
-			0 0 20px rgba(26, 255, 250, 0.08);
+		box-shadow: var(--shadow-lg), var(--shadow-glow);
 		animation: slideUp 150ms ease;
 	}
 
@@ -872,7 +876,7 @@
 	}
 
 	.z-profile-item.active {
-		background: rgba(26, 255, 250, 0.1);
+		background: var(--bg-active);
 		color: var(--accent-400);
 	}
 
@@ -917,7 +921,7 @@
 		letter-spacing: 0.05em;
 		text-transform: uppercase;
 		color: var(--accent-400);
-		background: rgba(26, 255, 250, 0.12);
+		background: var(--bg-active);
 		padding: 2px 6px;
 		border-radius: var(--radius-full);
 		flex-shrink: 0;

@@ -59,7 +59,6 @@
 	let isCustomSort = $derived(profileQuery.current.sortBy === 'custom');
 	let canDrag = $derived(isCustomSort && !profiles.activeLocked);
 
-
 	function handleDragHandleDown(e: PointerEvent, mod: Mod) {
 		if (!canDrag || isModPinned(mod.uuid)) return;
 
@@ -1037,6 +1036,9 @@
 		overflow-y: auto;
 		padding: 0 var(--space-xl);
 		padding-bottom: var(--space-xl);
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
 	}
 
 	.z-mods-filters {
@@ -1153,18 +1155,25 @@
 		flex-direction: column;
 		gap: 2px;
 		user-select: none;
+		flex: 1;
 	}
 
 	.z-mods-list.z-grid-layout {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		grid-auto-rows: min-content;
 		gap: var(--space-md);
 	}
 
-
 	.z-mods-list.z-grid-layout .z-mods-empty,
-	.z-mods-list.z-grid-layout .z-drop-placeholder {
+	.z-mods-list.z-grid-layout .z-drop-placeholder,
+	.z-mods-list.z-grid-layout > :global(.z-loader) {
 		grid-column: 1 / -1;
+	}
+
+	.z-mods-list > :global(.z-loader) {
+		flex: 1;
+		min-height: 50vh;
 	}
 
 	.z-mods-list.z-grid-layout .z-drop-placeholder-grid {
