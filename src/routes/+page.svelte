@@ -31,7 +31,12 @@
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { pushToast } from '$lib/toast';
 	import { handleMultiSelect } from '$lib/utils/multiSelect';
-	import { createDragGhost, computeInsertPosition, type DragState } from '$lib/utils/dragDrop';
+	import {
+		createDragGhost,
+		computeInsertPosition,
+		resetGridPositions,
+		type DragState
+	} from '$lib/utils/dragDrop';
 
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
@@ -133,6 +138,7 @@
 		placeholderIndex = -1;
 		dragFromIndex = -1;
 		isDragging = false;
+		resetGridPositions();
 	}
 
 	function handlePointerMoveThrottled(e: PointerEvent) {
@@ -1030,6 +1036,9 @@
 		overflow-y: auto;
 		padding: 0 var(--space-xl);
 		padding-bottom: var(--space-xl);
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
 	}
 
 	.z-mods-filters {
@@ -1146,17 +1155,25 @@
 		flex-direction: column;
 		gap: 2px;
 		user-select: none;
+		flex: 1;
 	}
 
 	.z-mods-list.z-grid-layout {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		grid-auto-rows: min-content;
 		gap: var(--space-md);
 	}
 
 	.z-mods-list.z-grid-layout .z-mods-empty,
-	.z-mods-list.z-grid-layout .z-drop-placeholder {
+	.z-mods-list.z-grid-layout .z-drop-placeholder,
+	.z-mods-list.z-grid-layout > :global(.z-loader) {
 		grid-column: 1 / -1;
+	}
+
+	.z-mods-list > :global(.z-loader) {
+		flex: 1;
+		min-height: 50vh;
 	}
 
 	.z-mods-list.z-grid-layout .z-drop-placeholder-grid {
@@ -1253,12 +1270,15 @@
 		pointer-events: none;
 	}
 
+	.z-grid-layout .z-dragging-card {
+		display: none;
+	}
+
 	.z-drop-placeholder-grid {
 		width: 100%;
 		border: 2px dashed var(--accent-400);
 		border-radius: var(--radius-lg);
 		background: rgba(26, 255, 250, 0.08);
-		animation: placeholderIn 150ms ease;
 		overflow: hidden;
 		position: relative;
 		display: flex;

@@ -4,7 +4,7 @@ import { convertFileSrc } from '@tauri-apps/api/core';
 import games from '$lib/state/game.svelte';
 import * as api from '$lib/api';
 import { marked } from 'marked';
-import { THUNDERSTORE_ICON_URL } from '$lib/constants/api.constants';
+import { THUNDERSTORE_ICON_URL, ZEPHYR_GAME_ICON_URL } from '$lib/constants/api.constants';
 
 export function isOutdated(mod: Mod): boolean {
 	if (mod.versions.length === 0) {
@@ -24,7 +24,7 @@ export function modIconSrc(mod: Mod) {
 		const path = mod.enabled === false ? mod.icon + '.old' : mod.icon;
 		return convertFileSrc(path);
 	} else {
-		return `games/${games.active?.slug}.webp`;
+		return ZEPHYR_GAME_ICON_URL(games.active?.slug ?? '');
 	}
 }
 

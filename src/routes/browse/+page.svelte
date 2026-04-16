@@ -1057,6 +1057,9 @@
 		overflow-y: auto;
 		padding: 0 var(--space-xl);
 		padding-bottom: var(--space-xl);
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
 	}
 
 	.z-browse-filters {
@@ -1205,16 +1208,24 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
+		flex: 1;
 	}
 
 	.z-browse-list.z-grid-layout {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		grid-auto-rows: min-content;
 		gap: var(--space-md);
 	}
 
-	.z-browse-list.z-grid-layout .z-browse-empty {
+	.z-browse-list.z-grid-layout .z-browse-empty,
+	.z-browse-list.z-grid-layout > :global(.z-loader) {
 		grid-column: 1 / -1;
+	}
+
+	.z-browse-list > :global(.z-loader) {
+		flex: 1;
+		min-height: 50vh;
 	}
 
 	.z-browse-empty,

@@ -5,6 +5,7 @@
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { isModPinned, installState } from '$lib/state/misc.svelte';
@@ -89,7 +90,7 @@
 					<Icon icon="mdi:check-circle" class="text-[12px]" />
 				</span>
 			{/if}
-			{#if mod.uuid.startsWith('curseforge:')}
+			{#if mod.uuid.startsWith('curseforge:') || mod.uuid.startsWith('zephyr-server:')}
 				<img src="/logos/curseforge.png" alt="CF" class="z-grid-source" />
 			{:else if mod.uuid.startsWith('nexusmods:')}
 				<img src="/logos/nexusmods.png" alt="NX" class="z-grid-source" />
@@ -105,7 +106,9 @@
 			{/if}
 			<div class="z-grid-stats">
 				{#if mod.version}
-					<span class="z-grid-version">{mod.version}</span>
+					<Tooltip text={mod.version} position="top" delay={150}>
+						<span class="z-grid-version">{mod.version}</span>
+					</Tooltip>
 				{/if}
 				{#if mod.downloads != null}
 					<span class="z-grid-stat">
@@ -199,7 +202,7 @@
 				{#if isModPinned(mod.uuid)}
 					<Icon icon="mdi:pin" class="z-mod-badge-icon pinned" />
 				{/if}
-				{#if mod.uuid.startsWith('curseforge:')}
+				{#if mod.uuid.startsWith('curseforge:') || mod.uuid.startsWith('zephyr-server:')}
 					<img src="/logos/curseforge.png" alt="CF" class="z-mod-source-icon" />
 				{:else if mod.uuid.startsWith('nexusmods:')}
 					<img src="/logos/nexusmods.png" alt="NX" class="z-mod-source-icon" />
@@ -223,7 +226,9 @@
 					<span class="z-mod-author">{mod.author}</span>
 				{/if}
 				{#if mod.version}
-					<span class="z-mod-version">{mod.version}</span>
+					<Tooltip text={mod.version} position="top" delay={150}>
+						<span class="z-mod-version">{mod.version}</span>
+					</Tooltip>
 				{/if}
 				{#if mod.downloads != null}
 					<span class="z-mod-stat">
@@ -302,7 +307,7 @@
 	.z-mod-card.selected {
 		background: var(--bg-active);
 		border-color: var(--border-accent);
-		box-shadow: 0 0 16px rgba(26, 255, 250, 0.06);
+		box-shadow: var(--shadow-glow);
 	}
 
 	.z-mod-card.disabled-mod {
@@ -478,6 +483,12 @@
 	.z-mod-version {
 		font-family: var(--font-mono);
 		font-size: 10px;
+		max-width: 140px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		display: inline-block;
+		vertical-align: middle;
 	}
 
 	.z-mod-stat {
@@ -581,9 +592,7 @@
 	.z-mod-grid-card.selected {
 		border-color: var(--accent-400);
 		border-width: 2px;
-		box-shadow:
-			0 0 20px rgba(26, 255, 250, 0.15),
-			inset 0 0 0 1px rgba(26, 255, 250, 0.1);
+		box-shadow: var(--shadow-glow-strong);
 	}
 
 	.z-mod-grid-card.disabled-mod {
@@ -598,7 +607,7 @@
 		overflow: hidden;
 	}
 
-	.z-grid-icon > img {
+	.z-grid-icon > img:not(.z-grid-source) {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -643,10 +652,8 @@
 		font-weight: 700;
 		font-size: 13px;
 		color: var(--text-primary);
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
 		line-height: 1.3;
+		word-break: break-word;
 	}
 
 	.z-grid-author {
@@ -660,19 +667,33 @@
 	.z-grid-stats {
 		display: flex;
 		align-items: center;
+		flex-wrap: wrap;
 		gap: 8px;
 		margin-top: 4px;
 		font-size: 11px;
 		color: var(--text-muted);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.z-grid-stats :global(.z-tooltip-trigger) {
+		min-width: 0;
+		max-width: 100%;
 	}
 
 	.z-grid-version {
 		font-family: var(--font-mono);
 		font-size: 10px;
 		color: var(--text-accent);
-		background: rgba(26, 255, 250, 0.08);
+		background: var(--bg-active);
 		padding: 1px 6px;
 		border-radius: var(--radius-full);
+		max-width: 100px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		display: inline-block;
+		min-width: 0;
 	}
 
 	.z-grid-stat {

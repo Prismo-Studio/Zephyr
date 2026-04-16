@@ -1,14 +1,27 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	// Moves the node to document.body on mount so `position: fixed` is not
+	// trapped inside an ancestor that establishes a containing block
+	// (e.g. a parent with `transform`, `filter`, `perspective`, etc.).
+	function portal(node: HTMLElement) {
+		document.body.appendChild(node);
+		return {
+			destroy() {
+				node.remove();
+			}
+		};
+	}
+
 	type Props = {
 		text: string;
 		position?: 'top' | 'bottom' | 'left' | 'right';
 		delay?: number;
+		block?: boolean;
 		children?: Snippet;
 	};
 
-	let { text, position = 'top', delay = 0, children }: Props = $props();
+	let { text, position = 'top', delay = 0, block = false, children }: Props = $props();
 
 	let visible = $state(false);
 	let timer: ReturnType<typeof setTimeout> | null = null;
@@ -58,12 +71,18 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="z-tooltip-trigger" bind:this={triggerEl} onmouseenter={show} onmouseleave={hide}>
+<div
+	class="z-tooltip-trigger"
+	class:block
+	bind:this={triggerEl}
+	onmouseenter={show}
+	onmouseleave={hide}
+>
 	{#if children}{@render children()}{/if}
 </div>
 
 {#if visible && text}
-	<div class="z-tooltip" role="tooltip" {style}>
+	<div class="z-tooltip" role="tooltip" {style} use:portal>
 		{text}
 	</div>
 {/if}
@@ -72,6 +91,12 @@
 	.z-tooltip-trigger {
 		position: relative;
 		display: inline-flex;
+	}
+
+	.z-tooltip-trigger.block {
+		display: flex;
+		width: 100%;
+		min-width: 0;
 	}
 
 	.z-tooltip {

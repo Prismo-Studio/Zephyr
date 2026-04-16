@@ -225,23 +225,43 @@
 				<Icon icon="mdi:palette" />
 				{i18nState.locale && m.prefs_appearance_title()}
 			</h3>
-			<div class="z-theme-grid">
-				{#each visibleThemes as theme}
-					<button
-						class="z-theme-option"
-						class:active={currentTheme === theme.id}
-						onclick={() => switchTheme(theme.id)}
-					>
-						<div class="z-theme-preview" data-theme={theme.id}>
-							<div class="z-theme-dots">
-								<span style="background: var(--accent-400)"></span>
-								<span style="background: var(--bg-elevated)"></span>
-								<span style="background: var(--text-primary)"></span>
+			<div class="z-theme-carousel-wrapper">
+				<button
+					class="z-carousel-arrow z-carousel-left"
+					onclick={() => {
+						const track = document.querySelector('.z-theme-carousel');
+						if (track) track.scrollBy({ left: -200, behavior: 'smooth' });
+					}}
+				>
+					<Icon icon="mdi:chevron-left" />
+				</button>
+				<div class="z-theme-carousel">
+					{#each visibleThemes as theme}
+						<button
+							class="z-theme-option"
+							class:active={currentTheme === theme.id}
+							onclick={() => switchTheme(theme.id)}
+						>
+							<div class="z-theme-preview" data-theme={theme.id}>
+								<div class="z-theme-dots">
+									<span style="background: var(--accent-400, var(--text-accent))"></span>
+									<span style="background: var(--bg-elevated)"></span>
+									<span style="background: var(--text-primary)"></span>
+								</div>
 							</div>
-						</div>
-						<span>{theme.label}</span>
-					</button>
-				{/each}
+							<span>{theme.label}</span>
+						</button>
+					{/each}
+				</div>
+				<button
+					class="z-carousel-arrow z-carousel-right"
+					onclick={() => {
+						const track = document.querySelector('.z-theme-carousel');
+						if (track) track.scrollBy({ left: 200, behavior: 'smooth' });
+					}}
+				>
+					<Icon icon="mdi:chevron-right" />
+				</button>
 			</div>
 		</section>
 
@@ -588,11 +608,45 @@
 		border-bottom: 1px solid var(--border-subtle);
 	}
 
-	/* Theme grid */
-	.z-theme-grid {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+	.z-theme-carousel-wrapper {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	.z-carousel-arrow {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-elevated);
+		color: var(--text-muted);
+		cursor: pointer;
+		flex-shrink: 0;
+		font-size: 18px;
+		transition: all var(--transition-fast);
+	}
+
+	.z-carousel-arrow:hover {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+		border-color: var(--border-default);
+	}
+
+	.z-theme-carousel {
+		display: flex;
 		gap: var(--space-md);
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+		flex: 1;
+	}
+
+	.z-theme-carousel::-webkit-scrollbar {
+		display: none;
 	}
 
 	.z-theme-option {
@@ -609,6 +663,9 @@
 		font-family: var(--font-body);
 		font-size: 12px;
 		color: var(--text-secondary);
+		min-width: calc(25% - var(--space-md));
+		flex-shrink: 0;
+		scroll-snap-align: start;
 	}
 
 	.z-theme-option:hover {

@@ -1,7 +1,3 @@
-/**
- * Manages pointer-based drag-and-drop reordering in a vertical list.
- * Tracks ghost element, insertion position, and placeholder index.
- */
 export type DragState<T> = {
 	item: T | null;
 	fromIndex: number;
@@ -37,7 +33,7 @@ export function createDragGhost(card: HTMLElement, e: PointerEvent): HTMLDivElem
 		z-index: 9999;
 		opacity: 0.9;
 		border: 1px solid var(--accent-400);
-		box-shadow: 0 8px 32px rgba(26, 255, 250, 0.2), 0 0 0 1px rgba(26, 255, 250, 0.3);
+		box-shadow: var(--shadow-glow-strong), 0 0 0 1px var(--accent-400);
 		background: var(--bg-elevated);
 		border-radius: var(--radius-lg);
 		transform: scale(1.02);
@@ -47,11 +43,12 @@ export function createDragGhost(card: HTMLElement, e: PointerEvent): HTMLDivElem
 	return ghost;
 }
 
-/**
- * Computes the insertion position.
- * For list view: counts items with vertical center above the cursor.
- * For grid view: finds the item closest to the cursor position based on center point.
- */
+let _lastGridResult = -1;
+
+export function resetGridPositions() {
+	_lastGridResult = -1;
+}
+
 export function computeInsertPosition(
 	e: PointerEvent,
 	dragFromIndex: number,
@@ -59,71 +56,48 @@ export function computeInsertPosition(
 	isGridView: boolean = false
 ): { insertPos: number; placeholderIndex: number } {
 	const wrappers = document.querySelectorAll(itemSelector);
-	let aboveCount = 0;
 
 	if (!isGridView) {
-		// List view: vertical positioning
+		let aboveCount = 0;
 		wrappers.forEach((el) => {
 			const idx = parseInt(el.getAttribute('data-mod-index')!);
 			if (idx === dragFromIndex) return;
-
 			const rect = el.getBoundingClientRect();
-			const midY = rect.top + rect.height / 2;
-			if (midY < e.clientY) aboveCount++;
+			if (rect.top + rect.height / 2 < e.clientY) aboveCount++;
 		});
 
 		const insertPos = aboveCount;
 		let placeholderIndex: number;
-
-		if (insertPos <= dragFromIndex) {
-			placeholderIndex = insertPos;
-		} else {
-			placeholderIndex = insertPos + 1;
-		}
-
-		if (insertPos === dragFromIndex) {
-			placeholderIndex = -1;
-		}
-
+		if (insertPos <= dragFromIndex) placeholderIndex = insertPos;
+		else placeholderIndex = insertPos + 1;
+		if (insertPos === dragFromIndex) placeholderIndex = -1;
 		return { insertPos, placeholderIndex };
 	} else {
-		// Grid view: find closest item based on center point
-		let closestIndex = -1;
-		let closestDistance = Infinity;
-
+		let hoverIdx = -1;
 		wrappers.forEach((el) => {
 			const idx = parseInt(el.getAttribute('data-mod-index')!);
 			if (idx === dragFromIndex) return;
-
 			const rect = el.getBoundingClientRect();
-			const midX = rect.left + rect.width / 2;
-			const midY = rect.top + rect.height / 2;
-
-			// Calculate distance from cursor to center of item
-			const distX = e.clientX - midX;
-			const distY = e.clientY - midY;
-			const distance = Math.sqrt(distX * distX + distY * distY);
-
-			if (distance < closestDistance) {
-				closestDistance = distance;
-				closestIndex = idx;
+			if (
+				e.clientX >= rect.left &&
+				e.clientX <= rect.right &&
+				e.clientY >= rect.top &&
+				e.clientY <= rect.bottom
+			) {
+				hoverIdx = idx;
 			}
 		});
 
-		let insertPos = closestIndex;
-		if (insertPos < 0) insertPos = 0;
-
-		let placeholderIndex: number;
-		if (insertPos <= dragFromIndex) {
-			placeholderIndex = insertPos;
-		} else {
-			placeholderIndex = insertPos + 1;
+		if (hoverIdx !== -1 && hoverIdx !== dragFromIndex) {
+			_lastGridResult = hoverIdx;
 		}
 
-		if (insertPos === dragFromIndex) {
-			placeholderIndex = -1;
+		if (_lastGridResult === -1 || _lastGridResult === dragFromIndex) {
+			return { insertPos: dragFromIndex, placeholderIndex: -1 };
 		}
 
-		return { insertPos, placeholderIndex };
+		const placeholderIndex =
+			_lastGridResult > dragFromIndex ? _lastGridResult + 1 : _lastGridResult;
+		return { insertPos: _lastGridResult, placeholderIndex };
 	}
 }
