@@ -266,6 +266,9 @@ pub fn run() {
             randomizer::commands::delete_seed,
             randomizer::commands::rename_seed,
             randomizer::commands::clear_seeds,
+            randomizer::commands::read_file_base64,
+            randomizer::commands::remote_upload_seed,
+            randomizer::commands::remote_request,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())

@@ -176,6 +176,7 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
         .current_dir(&dir)
         .env("SKIP_REQUIREMENTS_UPDATE", "1")
         .env("PYTHONIOENCODING", "utf-8")
+        .env("PYTHONDONTWRITEBYTECODE", "1")
         .arg("Generate.py")
         .arg("--player_files_path")
         .arg(&players)
@@ -744,12 +745,8 @@ impl ServerState {
             bail!("multidata file not found: {}", multidata.display());
         }
 
-        // Keep host.yaml in sync with the port we're about to use.
-        // CLI --port still wins at runtime, but this ensures any external tool
-        // reading host.yaml sees the same port.
-        if let Err(err) = update_host_yaml_port(&dir, port) {
-            tracing::warn!("failed to update host.yaml port: {err:#}");
-        }
+        // Note: host.yaml update removed to avoid triggering Tauri's file watcher.
+        // The port is passed via --port CLI arg which takes precedence anyway.
 
         let mut cmd = Command::new(&python);
         cmd.current_dir(&dir)

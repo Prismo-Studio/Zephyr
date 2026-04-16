@@ -135,3 +135,54 @@ pub fn rename_seed(path: String, new_name: String) -> Result<String> {
 pub fn clear_seeds(app: AppHandle) -> Result<usize> {
     Ok(ap_runner::clear_seeds(&app)?)
 }
+
+#[command]
+pub fn read_file_base64(path: String) -> Result<String> {
+    use base64::Engine;
+    let bytes = std::fs::read(&path)
+        .map_err(|e| eyre::eyre!("read {path}: {e}"))?;
+    Ok(base64::engine::general_purpose::STANDARD.encode(&bytes))
+}
+
+#[command]
+pub async fn remote_upload_seed(path: String, remote_url: String) -> Result<String> {
+    let bytes = std::fs::read(&path)
+        .map_err(|e| eyre::eyre!("read {path}: {e}"))?;
+    let file_name = std::path::Path::new(&path)
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or("seed.archipelago")
+        .to_string();
+
+    let client = reqwest::Client::new();
+    let resp = client
+        .post(format!("{remote_url}/upload"))
+        .header("Content-Type", "application/octet-stream")
+        .header("X-Filename", &file_name)
+        .body(bytes)
+        .send()
+        .await
+        .map_err(|e| eyre::eyre!("upload failed: {e}"))?;
+
+    let body = resp.text().await.map_err(|e| eyre::eyre!("read response: {e}"))?;
+    Ok(body)
+}
+
+#[command]
+pub async fn remote_request(remote_url: String, endpoint: String, method: String, body: Option<String>) -> Result<String> {
+    let client = reqwest::Client::new();
+    let url = format!("{remote_url}{endpoint}");
+    let req = match method.as_str() {
+        "POST" => {
+            let mut r = client.post(&url);
+            if let Some(b) = body {
+                r = r.header("Content-Type", "application/json").body(b);
+            }
+            r
+        }
+        _ => client.get(&url),
+    };
+    let resp = req.send().await.map_err(|e| eyre::eyre!("request failed: {e}"))?;
+    let text = resp.text().await.map_err(|e| eyre::eyre!("read response: {e}"))?;
+    Ok(text)
+}

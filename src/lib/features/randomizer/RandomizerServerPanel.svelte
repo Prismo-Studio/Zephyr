@@ -4,6 +4,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import { pushToast } from '$lib/toast';
 	import * as api from './api';
 	import type {
 		GenerateOutcome,
@@ -26,6 +27,12 @@
 	let generateLog: string = $state('');
 	let generating = $state(false);
 	let starting = $state(false);
+
+	// --- Remote server state ---
+	let hostMode: 'local' | 'remote' = $state('remote');
+	let remote: api.RemoteStatus | null = $state(null);
+	let uploading = $state(false);
+	let remoteStarting = $state(false);
 
 	let portStr = $state('38281');
 	const port = $derived.by(() => {
@@ -60,7 +67,11 @@
 
 	onMount(() => {
 		refreshAll();
-		pollHandle = setInterval(() => api.serverStatus().then((s) => (server = s)), 2500);
+		refreshRemote();
+		pollHandle = setInterval(() => {
+			api.serverStatus().then((s) => (server = s));
+			refreshRemote();
+		}, 5000);
 	});
 
 	onDestroy(() => {
@@ -93,11 +104,48 @@
 		}
 	}
 
+	let remoteLog: string[] = $state([]);
+
+	async function uploadAndStartRemote() {
+		if (!selectedSeed) return;
+		uploading = true;
+		remoteLog = [];
+		try {
+			remoteLog.push(`Uploading ${selectedSeed.split(/[/\\]/).pop()}...`);
+			const result = await api.remoteUploadSeed(selectedSeed);
+			remoteLog.push(`Uploaded: ${result.uploaded}`);
+			remoteStarting = true;
+			remoteLog.push('Starting remote server...');
+			remote = await api.remoteStart(result.uploaded);
+			remoteLog.push(remote.running ? 'Server started!' : 'Server failed to start');
+		} catch (e: any) {
+			remoteLog.push(`Error: ${e?.message || e}`);
+		} finally {
+			uploading = false;
+			remoteStarting = false;
+		}
+	}
+
+	async function stopRemote() {
+		remote = await api.remoteStop();
+	}
+
+	async function refreshRemote() {
+		try {
+			const status = await api.remoteStatus();
+			remote = status;
+		} catch {
+			// Don't reset remote state on network error — keep last known state
+		}
+	}
+
 	async function startHost() {
 		if (!selectedSeed || !portValid) return;
 		starting = true;
 		try {
 			server = await api.startServer(selectedSeed, port, password.trim() || null);
+		} catch (e: any) {
+			pushToast({ type: 'error', name: 'Server error', message: e?.message || String(e) });
 		} finally {
 			starting = false;
 		}
@@ -352,6 +400,76 @@
 			Host
 		</div>
 
+		<div class="rdz-host-toggle">
+			<button class="rdz-toggle-btn" class:active={hostMode === 'remote'} onclick={() => (hostMode = 'remote')}>
+				<Icon icon="mdi:cloud" /> Remote
+			</button>
+			<button class="rdz-toggle-btn" class:active={hostMode === 'local'} onclick={() => (hostMode = 'local')}>
+				<Icon icon="mdi:laptop" /> Local
+			</button>
+		</div>
+
+		{#if hostMode === 'remote'}
+			<div class="rdz-remote-host">
+				{#if remote?.running}
+					<div class="rdz-status-row">
+						<div class="rdz-status-pill rdz-status-on">
+							<Icon icon="mdi:circle" /> Running: {remote.seed}
+						</div>
+					</div>
+					<div class="rdz-conn-card">
+						<span class="rdz-label"><Icon icon="mdi:cloud" /> Connect address</span>
+						<code>nozomi.proxy.rlwy.net:45465</code>
+					</div>
+					<Button variant="ghost" onclick={stopRemote}>
+						{#snippet icon()}<Icon icon="mdi:stop" />{/snippet}
+						Stop remote server
+					</Button>
+				{:else}
+					<p class="rdz-muted">
+						{#if !selectedSeed}
+							Select a seed above to upload and host.
+						{:else}
+							Ready to upload and start.
+						{/if}
+					</p>
+					<Button
+						variant="primary"
+						disabled={!selectedSeed || uploading || remoteStarting}
+						loading={uploading || remoteStarting}
+						onclick={uploadAndStartRemote}
+					>
+						{#snippet icon()}<Icon icon="mdi:cloud-upload" />{/snippet}
+						{uploading ? 'Uploading...' : remoteStarting ? 'Starting...' : 'Upload & Start remote'}
+					</Button>
+				{/if}
+				{#if remoteLog.length > 0}
+					<details class="rdz-log-details" open>
+						<summary>
+							<span>Remote log</span>
+							<button class="rdz-log-copy" onclick={(e) => { e.preventDefault(); copyText(remoteLog.join('\n'), 'remote'); }}>
+								<Icon icon={copiedKey === 'remote' ? 'mdi:check' : 'mdi:content-copy'} />
+								{copiedKey === 'remote' ? 'Copied' : 'Copy'}
+							</button>
+						</summary>
+						<pre class="rdz-log">{remoteLog.join('\n')}</pre>
+					</details>
+				{/if}
+				{#if remote?.recent_log && remote.recent_log.length > 0}
+					<details class="rdz-log-details">
+						<summary>
+							<span>Server log</span>
+							<button class="rdz-log-copy" onclick={(e) => { e.preventDefault(); copyText(remote?.recent_log.join('\n') ?? '', 'rsrv'); }}>
+								<Icon icon={copiedKey === 'rsrv' ? 'mdi:check' : 'mdi:content-copy'} />
+								{copiedKey === 'rsrv' ? 'Copied' : 'Copy'}
+							</button>
+						</summary>
+						<pre class="rdz-log">{remote.recent_log.join('\n')}</pre>
+					</details>
+				{/if}
+			</div>
+		{:else}
+
 		{#if server?.running}
 			<div class="rdz-server-running">
 				<div class="rdz-status-row">
@@ -507,6 +625,9 @@
 				<pre class="rdz-log">{server.recent_log.join('\n')}</pre>
 			</details>
 		{/if}
+
+		{/if}
+		<!-- end hostMode if/else -->
 	</div>
 </section>
 
@@ -543,6 +664,48 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-md);
+	}
+
+	.rdz-host-toggle {
+		display: flex;
+		gap: 2px;
+		padding: 2px;
+		background: var(--bg-base);
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-md);
+	}
+
+	.rdz-toggle-btn {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		padding: 6px 12px;
+		border: none;
+		border-radius: var(--radius-sm);
+		background: transparent;
+		color: var(--text-muted);
+		font-size: 12px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.rdz-toggle-btn:hover {
+		color: var(--text-secondary);
+	}
+
+	.rdz-toggle-btn.active {
+		background: var(--bg-elevated);
+		color: var(--text-primary);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.rdz-remote-host {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
 	}
 
 	.rdz-server-header {
