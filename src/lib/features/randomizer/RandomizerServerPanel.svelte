@@ -2,6 +2,8 @@
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import * as api from './api';
 	import type {
 		GenerateOutcome,
@@ -11,6 +13,10 @@
 		ServerStatus
 	} from './types';
 	import { onDestroy, onMount } from 'svelte';
+
+	export function refresh() {
+		refreshAll();
+	}
 
 	let python: PythonStatus | null = $state(null);
 	let players: PlayerFile[] = $state([]);
@@ -67,10 +73,21 @@
 		try {
 			const outcome: GenerateOutcome = await api.generateSeed();
 			generateLog = (outcome.stdout + '\n' + outcome.stderr).trim();
-			seeds = await api.listSeeds();
-			if (outcome.zip_path) {
-				selectedSeed = outcome.zip_path;
+			// Auto-rename the seed with a friendly name based on player names
+			if (outcome.success && outcome.zip_path) {
+				const playerNames = players.map((p) => p.name).join('_') || 'seed';
+				const now = new Date();
+				const date = now.toISOString().slice(0, 10).replace(/-/g, '');
+				const time = now.toTimeString().slice(0, 8).replace(/:/g, '');
+				const friendlyName = `${playerNames}_${date}_${time}`;
+				try {
+					const newPath = await api.renameSeed(outcome.zip_path, friendlyName);
+					selectedSeed = newPath;
+				} catch {
+					selectedSeed = outcome.zip_path;
+				}
 			}
+			seeds = await api.listSeeds();
 		} finally {
 			generating = false;
 		}
@@ -91,6 +108,33 @@
 		server = await api.serverStatus();
 	}
 
+	// ── Rename modal state ──
+	let renameModal = $state<{ open: boolean; type: 'player' | 'seed'; path: string; value: string }>({
+		open: false, type: 'player', path: '', value: ''
+	});
+
+	function openRenamePlayer(p: PlayerFile) {
+		renameModal = { open: true, type: 'player', path: p.path, value: p.name };
+	}
+
+	function openRenameSeed(s: SeedFile) {
+		renameModal = { open: true, type: 'seed', path: s.path, value: s.name.replace('.archipelago', '') };
+	}
+
+	async function confirmRename() {
+		const { type, path, value } = renameModal;
+		if (!value.trim()) return;
+		if (type === 'player') {
+			await api.renamePlayerYaml(path, value.trim());
+			players = await api.listPlayerYamls();
+		} else {
+			const newPath = await api.renameSeed(path, value.trim());
+			if (selectedSeed === path) selectedSeed = newPath;
+			seeds = await api.listSeeds();
+		}
+		renameModal.open = false;
+	}
+
 	async function deletePlayer(p: PlayerFile) {
 		await api.deletePlayerYaml(p.path);
 		players = await api.listPlayerYamls();
@@ -103,8 +147,14 @@
 		if (!selectedSeed && seeds.length > 0) selectedSeed = seeds[0].path;
 	}
 
+	let confirmClearSeeds = $state(false);
+
 	async function clearAllSeeds() {
-		if (!confirm('Delete all generated seeds?')) return;
+		confirmClearSeeds = true;
+	}
+
+	async function doConfirmClearSeeds() {
+		confirmClearSeeds = false;
 		await api.clearSeeds();
 		selectedSeed = null;
 		seeds = await api.listSeeds();
@@ -194,13 +244,18 @@
 						<Icon icon="mdi:file-document" />
 						<span class="rdz-player-name">{p.name}</span>
 						<span class="rdz-player-size">{Math.ceil(p.size / 102.4) / 10} KB</span>
-						<button
-							class="rdz-icon-btn"
-							aria-label="Delete"
-							onclick={() => deletePlayer(p)}
-						>
-							<Icon icon="mdi:delete" />
-						</button>
+						<div class="rdz-seed-actions">
+							<Tooltip text="Rename" position="top" delay={200}>
+								<button class="rdz-icon-btn" onclick={() => openRenamePlayer(p)}>
+									<Icon icon="mdi:pencil" />
+								</button>
+							</Tooltip>
+							<Tooltip text="Delete" position="top" delay={200}>
+								<button class="rdz-icon-btn" onclick={() => deletePlayer(p)}>
+									<Icon icon="mdi:delete" />
+								</button>
+							</Tooltip>
+						</div>
 					</li>
 				{/each}
 			</ul>
@@ -213,9 +268,11 @@
 			<Icon icon="mdi:dice-multiple" />
 			Seeds ({seeds.length})
 			{#if seeds.length > 0}
-				<button class="rdz-icon-btn rdz-clear-all" onclick={clearAllSeeds} title="Delete all seeds">
-					<Icon icon="mdi:delete-sweep" />
-				</button>
+				<Tooltip text="Delete all seeds" position="top" delay={200}>
+					<button class="rdz-icon-btn rdz-clear-all" onclick={clearAllSeeds}>
+						<Icon icon="mdi:delete-sweep" />
+					</button>
+				</Tooltip>
 			{/if}
 		</div>
 
@@ -250,14 +307,18 @@
 								<small>{fmtTime(s.modified)} - {fmtBytes(s.size)}</small>
 							</div>
 						</button>
-						<button
-							class="rdz-icon-btn"
-							aria-label="Delete seed"
-							disabled={isHosted}
-							onclick={() => deleteOneSeed(s)}
-						>
-							<Icon icon="mdi:delete" />
-						</button>
+						<div class="rdz-seed-actions">
+							<Tooltip text="Rename" position="top" delay={200}>
+								<button class="rdz-icon-btn" disabled={isHosted} onclick={() => openRenameSeed(s)}>
+									<Icon icon="mdi:pencil" />
+								</button>
+							</Tooltip>
+							<Tooltip text="Delete" position="top" delay={200}>
+								<button class="rdz-icon-btn" disabled={isHosted} onclick={() => deleteOneSeed(s)}>
+									<Icon icon="mdi:delete" />
+								</button>
+							</Tooltip>
+						</div>
 					</li>
 				{/each}
 			</ul>
@@ -419,8 +480,8 @@
 				<Icon icon="mdi:information-outline" />
 				<div>
 					<strong>Friend can't connect from outside?</strong><br />
-					Many ISPs use <em>CGNAT</em> (shared IP) or block incoming ports — port-forwarding
-					won't work. Easiest fix: install <strong>Tailscale</strong> on both machines (free, 2
+					Many ISPs use <em>CGNAT</em> (shared IP) or block incoming ports, so port forwarding
+					won't work. Install <strong>Tailscale</strong> on both machines (free, 2
 					min setup), then share your Tailscale IP from the "LAN / Tailscale" card above. No
 					firewall, no port forwarding needed.
 				</div>
@@ -448,6 +509,34 @@
 		{/if}
 	</div>
 </section>
+
+<Modal
+	bind:open={renameModal.open}
+	title={renameModal.type === 'player' ? 'Rename player slot' : 'Rename seed'}
+	onclose={() => (renameModal.open = false)}
+>
+	<Input
+		bind:value={renameModal.value}
+		placeholder="New name"
+		onkeydown={(e) => { if (e.key === 'Enter') confirmRename(); }}
+	/>
+	{#snippet actions()}
+		<Button variant="ghost" onclick={() => (renameModal.open = false)}>Cancel</Button>
+		<Button variant="primary" onclick={confirmRename}>Rename</Button>
+	{/snippet}
+</Modal>
+
+<Modal
+	bind:open={confirmClearSeeds}
+	title="Delete all seeds"
+	onclose={() => (confirmClearSeeds = false)}
+>
+	<p>Are you sure you want to delete all generated seeds? This cannot be undone.</p>
+	{#snippet actions()}
+		<Button variant="ghost" onclick={() => (confirmClearSeeds = false)}>Cancel</Button>
+		<Button variant="primary" onclick={doConfirmClearSeeds}>Delete all</Button>
+	{/snippet}
+</Modal>
 
 <style>
 	.rdz-server {
@@ -576,6 +665,14 @@
 		font-family: var(--font-mono, monospace);
 	}
 
+	.rdz-seed-actions {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+		margin-left: auto;
+		flex-shrink: 0;
+	}
+
 	.rdz-icon-btn {
 		display: inline-flex;
 		align-items: center;
@@ -606,6 +703,10 @@
 	}
 
 	.rdz-clear-all {
+		margin-left: 0;
+	}
+
+	.rdz-block-title > :global(.z-tooltip-trigger:last-child) {
 		margin-left: auto;
 	}
 
@@ -762,9 +863,9 @@
 		gap: var(--space-sm);
 		margin-top: var(--space-sm);
 		padding: var(--space-sm) var(--space-md);
-		background: rgba(26, 255, 250, 0.04);
-		border-left: 3px solid var(--accent-400);
-		border-radius: var(--radius-sm);
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-md);
 		color: var(--text-secondary);
 		font-size: 11px;
 		line-height: 1.5;

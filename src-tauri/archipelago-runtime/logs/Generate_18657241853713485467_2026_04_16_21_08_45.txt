@@ -1,0 +1,99 @@
+﻿[root at 2026-04-16 21:08:45,716]: Archipelago (0.6.7) logging initialized on Windows-10-10.0.26200-SP0 process 39284 running Python 3.11.9
+[root at 2026-04-16 21:08:45,716]: P1 Weights: Player5.yaml >> No description specified
+[root at 2026-04-16 21:08:45,716]: Generating for 1 player, 36734776957075695235 Seed 18657241853713485467 with plando: connections, texts, bosses
+[root at 2026-04-16 21:08:49,656]: Archipelago Version 0.6.7  -  Seed: 18657241853713485467
+
+[root at 2026-04-16 21:08:49,656]: Found 82 World Types:
+[root at 2026-04-16 21:08:49,659]:  Adventure                               : v0.0.0  | Items:   15 | Locations:    24
+[root at 2026-04-16 21:08:49,659]:  A Hat in Time                           : v0.0.0  | Items:   58 | Locations:   480
+[root at 2026-04-16 21:08:49,659]:  A Link to the Past                      : v5.1.0  | Items:  146 | Locations:   286
+[root at 2026-04-16 21:08:49,659]:  APQuest                                 : v1.0.1  | Items:    7 | Locations:     7
+[root at 2026-04-16 21:08:49,659]:  Aquaria                                 : v0.0.0  | Items:  135 | Locations:   219
+[root at 2026-04-16 21:08:49,659]:  Blasphemous                             : v0.0.0  | Items:  204 | Locations:   306
+[root at 2026-04-16 21:08:49,659]:  Bomb Rush Cyberfunk                     : v1.0.6  | Items:  165 | Locations:   247
+[root at 2026-04-16 21:08:49,659]:  Bumper Stickers                         : v1.0.0  | Items:   12 | Locations:   100
+[root at 2026-04-16 21:08:49,659]:  Choo-Choo Charles                       : v0.0.0  | Items:   43 | Locations:   691
+[root at 2026-04-16 21:08:49,659]:  Celeste 64                              : v1.3.1  | Items:   24 | Locations:    56
+[root at 2026-04-16 21:08:49,659]:  Celeste (Open World)                    : v1.0.7  | Items:  177 | Locations:  1215
+[root at 2026-04-16 21:08:49,659]:  ChecksFinder                            : v0.0.0  | Items:    3 | Locations:    25
+[root at 2026-04-16 21:08:49,659]:  Civilization VI                         : v0.0.0  | Items:  167 | Locations:   278
+[root at 2026-04-16 21:08:49,659]:  Castlevania 64                          : v0.0.0  | Items:   36 | Locations:   352
+[root at 2026-04-16 21:08:49,659]:  Castlevania - Circle of the Moon        : v0.0.0  | Items:   31 | Locations:   125
+[root at 2026-04-16 21:08:49,659]:  Dark Souls III                          : v0.0.0  | Items: 1204 | Locations:  1506
+[root at 2026-04-16 21:08:49,659]:  Donkey Kong Country 3                   : v1.1.0  | Items:    8 | Locations:   230
+[root at 2026-04-16 21:08:49,659]:  DLCQuest                                : v0.0.0  | Items:   51 | Locations: 18913
+[root at 2026-04-16 21:08:49,659]:  DOOM 1993                               : v0.0.0  | Items:  195 | Locations:   474
+[root at 2026-04-16 21:08:49,659]:  DOOM II                                 : v0.0.0  | Items:  178 | Locations:   479
+[root at 2026-04-16 21:08:49,659]:  EarthBound                              : v4.3.1  | Items:  274 | Locations:   526
+[root at 2026-04-16 21:08:49,659]:  Factorio                                : v0.0.0  | Items:  233 | Locations:  7176
+[root at 2026-04-16 21:08:49,659]:  Faxanadu                                : v0.0.0  | Items:   30 | Locations:   110
+[root at 2026-04-16 21:08:49,659]:  Final Fantasy                           : v1.0.0  | Items:  194 | Locations:   267
+[root at 2026-04-16 21:08:49,659]:  Final Fantasy Mystic Quest              : v0.0.0  | Items:   67 | Locations:   266
+[root at 2026-04-16 21:08:49,659]:  Heretic                                 : v0.0.0  | Items:  269 | Locations:  1014
+[root at 2026-04-16 21:08:49,659]:  Hollow Knight                           : v0.0.0  | Items:  249 | Locations:   740
+[root at 2026-04-16 21:08:49,659]:  Hylics 2                                : v0.0.0  | Items:   70 | Locations:   166
+[root at 2026-04-16 21:08:49,659]:  Inscryption                             : v0.0.0  | Items:   42 | Locations:   100
+[root at 2026-04-16 21:08:49,659]:  Jak and Daxter: The Precursor Legacy    : v1.1.5  | Items:   75 | Locations:  4239
+[root at 2026-04-16 21:08:49,659]:  Kirby's Dream Land 3                    : v0.0.0  | Items:   24 | Locations:   876
+[root at 2026-04-16 21:08:49,659]:  Kingdom Hearts                          : v0.0.0  | Items:  215 | Locations:   714
+[root at 2026-04-16 21:08:49,659]:  Kingdom Hearts 2                        : v2.0.0  | Items:  293 | Locations:   724
+[root at 2026-04-16 21:08:49,659]:  Links Awakening DX                      : v2.0.2  | Items:  118 | Locations:   255
+[root at 2026-04-16 21:08:49,659]:  Landstalker - The Treasures of King Nole: v1.8.7  | Items:   62 | Locations:   292
+[root at 2026-04-16 21:08:49,659]:  Lingo                                   : v5.0.0  | Items:  276 | Locations:   872
+[root at 2026-04-16 21:08:49,659]:  Lufia II Ancient Cave                   : v0.0.0  | Items:  415 | Locations:   123
+[root at 2026-04-16 21:08:49,659]:  Super Mario Land 2                      : v0.0.0  | Items: 2725 | Locations:  2657
+[root at 2026-04-16 21:08:49,659]:  Meritous                                : v1.0.0  | Items:   23 | Locations:   104
+[root at 2026-04-16 21:08:49,659]:  The Messenger                           : v0.0.0  | Items:   64 | Locations:   136
+[root at 2026-04-16 21:08:49,659]:  Mario & Luigi Superstar Saga            : v1.10.2 | Items:  146 | Locations:   600
+[root at 2026-04-16 21:08:49,659]:  Mega Man 2                              : v0.3.3  | Items:   23 | Locations:    71
+[root at 2026-04-16 21:08:49,659]:  Mega Man 3                              : v0.1.8  | Items:   27 | Locations:   170
+[root at 2026-04-16 21:08:49,659]:  MegaMan Battle Network 3                : v0.0.0  | Items:  224 | Locations:   263
+[root at 2026-04-16 21:08:49,659]:  Muse Dash                               : v1.5.30 | Items:  723 | Locations:  1416
+[root at 2026-04-16 21:08:49,659]:  Noita                                   : v1.4.0  | Items:   32 | Locations:   672
+[root at 2026-04-16 21:08:49,659]:  Ocarina of Time                         : v7.0.0  | Items:  143 | Locations:  1623
+[root at 2026-04-16 21:08:49,659]:  Old School Runescape                    : v0.0.0  | Items:   86 | Locations:   169
+[root at 2026-04-16 21:08:49,659]:  Overcooked! 2                           : v0.0.0  | Items:   45 | Locations:    43
+[root at 2026-04-16 21:08:49,659]:  Paint                                   : v0.5.2  | Items:   27 | Locations:   380
+[root at 2026-04-16 21:08:49,659]:  Pokemon Emerald                         : v2.5.0  | Items:  291 | Locations:  1338
+[root at 2026-04-16 21:08:49,659]:  Pokemon Red and Blue                    : v0.0.0  | Items:  207 | Locations:   709
+[root at 2026-04-16 21:08:49,659]:  Raft                                    : v0.0.0  | Items:  325 | Locations:   154
+[root at 2026-04-16 21:08:49,659]:  Risk of Rain 2                          : v1.5.0  | Items:   59 | Locations:  1262
+[root at 2026-04-16 21:08:49,659]:  Sonic Adventure 2 Battle                : v2.4.2  | Items:  182 | Locations:  2555
+[root at 2026-04-16 21:08:49,659]:  Satisfactory                            : v2.2.0  | Items:  805 | Locations:   706
+[root at 2026-04-16 21:08:49,659]:  Saving Princess                         : v1.0.0  | Items:   20 | Locations:    36
+[root at 2026-04-16 21:08:49,659]:  Starcraft 2                             : v4.0.0  | Items: 1716 | Locations:  3668
+[root at 2026-04-16 21:08:49,659]:  shapez                                  : v0.0.0  | Items:   67 | Locations:  3543
+[root at 2026-04-16 21:08:49,659]:  Shivers                                 : v2.7.5  | Items:   76 | Locations:   117
+[root at 2026-04-16 21:08:49,659]:  A Short Hike                            : v0.0.0  | Items:   37 | Locations:   131
+[root at 2026-04-16 21:08:49,659]:  Super Metroid                           : v0.0.0  | Items:   24 | Locations:   101
+[root at 2026-04-16 21:08:49,659]:  Super Mario 64                          : v0.0.0  | Items:   40 | Locations:   164
+[root at 2026-04-16 21:08:49,659]:  Super Mario World                       : v2.1.1  | Items:   29 | Locations:   765
+[root at 2026-04-16 21:08:49,659]:  SMZ3                                    : v0.0.0  | Items:  151 | Locations:   316
+[root at 2026-04-16 21:08:49,659]:  Secret of Evermore                      : v0.50.1 | Items:  165 | Locations:   913
+[root at 2026-04-16 21:08:49,659]:  Stardew Valley                          : v7.4.0  | Items: 1060 | Locations:  4051
+[root at 2026-04-16 21:08:49,659]:  Subnautica                              : v0.0.0  | Items:  104 | Locations:   181
+[root at 2026-04-16 21:08:49,659]:  Terraria                                : v0.0.0  | Items:  188 | Locations:   159
+[root at 2026-04-16 21:08:49,659]:  Timespinner                             : v1.38.0 | Items:  202 | Locations:   748
+[root at 2026-04-16 21:08:49,659]:  The Legend of Zelda                     : v1.0.0  | Items:   33 | Locations:   155
+[root at 2026-04-16 21:08:49,659]:  TUNIC                                   : v4.2.7  | Items:  182 | Locations:  6860
+[root at 2026-04-16 21:08:49,660]:  The Wind Waker                          : v0.0.0  | Items:  152 | Locations:   313
+[root at 2026-04-16 21:08:49,660]:  Undertale                               : v0.0.0  | Items:   85 | Locations:   122
+[root at 2026-04-16 21:08:49,660]:  VVVVVV                                  : v0.0.0  | Items:   20 | Locations:    20
+[root at 2026-04-16 21:08:49,660]:  Wargroove                               : v1.0.0  | Items:   31 | Locations:    38
+[root at 2026-04-16 21:08:49,660]:  The Witness                             : v8.0.0  | Items:  267 | Locations:  1004
+[root at 2026-04-16 21:08:49,660]:  Yacht Dice                              : v2.1.4  | Items:   47 | Locations:  1000
+[root at 2026-04-16 21:08:49,660]:  Yoshi's Island                          : v1.0.0  | Items:   69 | Locations:   235
+[root at 2026-04-16 21:08:49,660]:  Yu-Gi-Oh! 2006                          : v0.0.0  | Items:  172 | Locations:   165
+[root at 2026-04-16 21:08:49,660]:  Zillion                                 : v0.0.0  | Items:   12 | Locations:  1555
+[root at 2026-04-16 21:08:49,660]: 
+[root at 2026-04-16 21:08:49,660]: Creating MultiWorld.
+[root at 2026-04-16 21:08:49,660]: Creating Items.
+[root at 2026-04-16 21:08:49,660]: Calculating Access Rules.
+[root at 2026-04-16 21:08:49,660]: Running Item Plando.
+[root at 2026-04-16 21:08:49,661]: Running Pre Main Fill.
+[root at 2026-04-16 21:08:49,661]: Filling the multiworld with 155 items.
+[root at 2026-04-16 21:08:49,675]: Progression balancing skipped.
+[root at 2026-04-16 21:08:49,675]: Beginning output...
+[root at 2026-04-16 21:08:49,681]: Generating output files (2/2).
+[root at 2026-04-16 21:08:49,681]: Creating final archive at C:\Users\Asuki\AppData\Roaming\com.prismo-studio.zephyr\randomizer\output\AP_36734776957075695235.zip
+[root at 2026-04-16 21:08:49,682]: Done. Enjoy. Total Time: 0.02462549999472685

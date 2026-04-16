@@ -1,0 +1,54 @@
+{% extends 'pageWrapper.html' %}
+{% import "macros.html" as macros %}
+{% set show_footer = True %}
+
+{% block head %}
+    <title>View Seed {{ seed.id|suuid }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename="styles/viewSeed.css") }}"/>
+    <script type="application/ecmascript" src="{{ url_for('static', filename="assets/viewSeed.js") }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% include 'header/oceanIslandHeader.html' %}
+    <div id="view-seed-wrapper">
+        <div id="view-seed" class="grass-island">
+            <h1>Seed Info</h1>
+            <table>
+                <tbody>
+                <tr>
+                    <td>Seed:&nbsp;</td>
+                    <td>{{ seed.id|suuid }}</td>
+                </tr>
+                <tr>
+                    <td>Created:&nbsp;</td>
+                    <td id="creation-time" data-creation-time="{{ seed.creation_time }}"></td>
+                </tr>
+                <tr>
+                    <td>Players:&nbsp;</td>
+                    <td>{{ slot_count }}</td>
+                </tr>
+                {% if seed.spoiler %}
+                    <tr>
+                        <td>Spoiler:&nbsp;</td>
+                        <td><a href="{{ url_for("download_spoiler", seed_id=seed.id) }}">Download</a></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td>Rooms:&nbsp;</td>
+                    <td>
+                        {% call macros.list_rooms(seed.rooms | selectattr("owner", "eq", session["_id"])) %}
+                            <li>
+                                <a href="{{ url_for("new_room", seed=seed.id) }}">Create New Room</a>
+                            </li>
+                        {% endcall %}
+                        {% if seed.rooms %}<span>
+                            There are a total of {{ seed.rooms | length }} Rooms, only those created by you are linked above.
+                        </span>{% endif %}
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

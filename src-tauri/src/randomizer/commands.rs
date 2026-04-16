@@ -72,6 +72,12 @@ pub fn delete_player_yaml(path: String) -> Result<()> {
 }
 
 #[command]
+pub fn rename_player_yaml(path: String, new_name: String) -> Result<String> {
+    let new_path = ap_runner::rename_player_yaml(&PathBuf::from(path), &new_name)?;
+    Ok(new_path.to_string_lossy().to_string())
+}
+
+#[command]
 pub fn generate_seed(app: AppHandle) -> Result<GenerateOutcome> {
     Ok(ap_runner::run_generate(&app)?)
 }
@@ -117,6 +123,12 @@ pub fn list_seeds(app: AppHandle) -> Result<Vec<SeedFile>> {
 pub fn delete_seed(path: String) -> Result<()> {
     ap_runner::delete_seed(&PathBuf::from(path))?;
     Ok(())
+}
+
+#[command]
+pub fn rename_seed(path: String, new_name: String) -> Result<String> {
+    let new_path = ap_runner::rename_seed(&PathBuf::from(path), &new_name)?;
+    Ok(new_path.to_string_lossy().to_string())
 }
 
 #[command]

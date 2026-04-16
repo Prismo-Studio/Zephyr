@@ -5,7 +5,7 @@ Run from the Zephyr repo root:
 
     python scripts/extract_ap_schemas.py
 
-Reads every world under packages/Archipelago/worlds/ and writes one JSON file
+Reads every world under src-tauri/archipelago-runtime/worlds/ and writes one JSON file
 per world to data/randomizer/schemas/<world_id>.json. Worlds whose modules
 fail to import (missing optional deps, missing ROMs, etc.) are skipped with a
 logged reason. The script never installs anything globally; it just adds the
@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-AP_ROOT = REPO_ROOT / "packages" / "Archipelago"
+AP_ROOT = REPO_ROOT / "src-tauri" / "archipelago-runtime"
 WORLDS_DIR = AP_ROOT / "worlds"
 OUT_DIR = REPO_ROOT / "data" / "randomizer" / "schemas"
 

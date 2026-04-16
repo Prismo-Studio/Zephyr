@@ -1,0 +1,18 @@
+{% extends 'pageWrapper.html' %}
+
+{% block head %}
+    {% include 'header/grassHeader.html' %}
+    <title>Option Templates (YAML)</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename="styles/markdown.css") }}" />
+{% endblock %}
+
+{% block body %}
+    <div class="markdown">
+    <h1>Option Templates (YAML)</h1>
+    <ul>
+        {% for file in files %}
+        <li><a href="{{ url_for('static', filename="generated/configs/"+file+".yaml") }}">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+    </div>
+{%  endblock %}

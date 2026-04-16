@@ -1,7 +1,8 @@
 //! Subprocess wrappers for Archipelago's `Generate.py` and `MultiServer.py`.
 //!
-//! All paths are resolved relative to `<repo>/packages/Archipelago` (the bundled
-//! Archipelago checkout). Long-running server processes are tracked in a
+//! All paths are resolved relative to `<repo>/src-tauri/archipelago-runtime`
+//! (the Archipelago code bundled inside Zephyr). A Python venv is expected at
+//! `archipelago-runtime/venv/`. Long-running server processes are tracked in a
 //! [`ServerHandle`] kept inside the Tauri state.
 
 use std::{
@@ -21,19 +22,38 @@ use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Manager};
 use tracing::{info, warn};
 
-/// Resolve the directory of the bundled Archipelago checkout.
+/// Resolve the directory of the bundled Archipelago runtime.
+/// In dev: `src-tauri/archipelago-runtime` (relative to CWD or one level up).
+/// In prod: could be the Tauri resource dir in the future.
 pub fn ap_dir(_app: &AppHandle) -> PathBuf {
     let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
     let candidates = [
-        cwd.join("packages/Archipelago"),
-        cwd.join("../packages/Archipelago"),
+        cwd.join("archipelago-runtime"),
+        cwd.join("../src-tauri/archipelago-runtime"),
+        cwd.join("src-tauri/archipelago-runtime"),
     ];
     for c in &candidates {
         if c.exists() {
             return c.clone();
         }
     }
-    cwd.join("packages/Archipelago")
+    // Fallback — first candidate
+    candidates[0].clone()
+}
+
+/// Path to the Python venv inside the Archipelago runtime directory.
+pub fn venv_dir(_app: &AppHandle) -> PathBuf {
+    ap_dir(_app).join("venv")
+}
+
+/// Return the venv Python executable path (platform-specific).
+fn venv_python(app: &AppHandle) -> PathBuf {
+    let venv = venv_dir(app);
+    if cfg!(target_os = "windows") {
+        venv.join("Scripts").join("python.exe")
+    } else {
+        venv.join("bin").join("python")
+    }
 }
 
 /// Workspace where we drop player YAMLs and harvest the generated `.zip`.
@@ -62,9 +82,19 @@ pub struct PythonStatus {
     pub ap_present: bool,
 }
 
-/// Find a usable `python` / `python3` executable on the host.
-pub fn detect_python() -> Option<(String, String)> {
-    for candidate in ["python", "python3", "py"] {
+/// Find a usable Python executable.
+/// Priority: venv Python > system python > python3 > py.
+pub fn detect_python(app: &AppHandle) -> Option<(String, String)> {
+    // 1. Try our own venv first
+    let venv_py = venv_python(app);
+    let mut candidates: Vec<String> = Vec::new();
+    if venv_py.exists() {
+        candidates.push(venv_py.to_string_lossy().to_string());
+    }
+    // 2. System fallbacks
+    candidates.extend(["python".to_string(), "python3".to_string(), "py".to_string()]);
+
+    for candidate in &candidates {
         if let Ok(out) = Command::new(candidate).arg("--version").output() {
             if out.status.success() {
                 let version = String::from_utf8_lossy(&out.stdout)
@@ -79,7 +109,7 @@ pub fn detect_python() -> Option<(String, String)> {
                 } else {
                     version
                 };
-                return Some((candidate.to_string(), v2));
+                return Some((candidate.clone(), v2));
             }
         }
     }
@@ -89,7 +119,7 @@ pub fn detect_python() -> Option<(String, String)> {
 pub fn check_python(app: &AppHandle) -> PythonStatus {
     let dir = ap_dir(app);
     let present = dir.join("Generate.py").exists();
-    match detect_python() {
+    match detect_python(app) {
         Some((exe, ver)) => PythonStatus {
             available: true,
             executable: Some(exe),
@@ -118,7 +148,7 @@ pub struct GenerateOutcome {
 /// Run `python Generate.py --player_files_path <players> --outputpath <output>`
 /// in the bundled Archipelago directory and return the produced `.zip` path.
 pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
-    let (python, _) = detect_python().ok_or_else(|| {
+    let (python, _) = detect_python(app).ok_or_else(|| {
         eyre::eyre!("python is not installed on this machine; install Python 3.11+ to generate seeds")
     })?;
 
@@ -193,9 +223,15 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
 
     // Auto-extract the .archipelago multidata next to the zip; that's what we
     // hand to MultiServer.py (its zip support is unreliable).
+    // After successful extraction, delete the zip to avoid ghost duplicates
+    // when list_seeds() tries to re-extract from renamed zips.
     let extracted = if let Some(zip) = new_zip.as_ref() {
         match extract_archipelago(zip) {
-            Ok(p) => Some(p.to_string_lossy().to_string()),
+            Ok(p) => {
+                // Remove the zip — the .archipelago is all we need
+                let _ = std::fs::remove_file(zip);
+                Some(p.to_string_lossy().to_string())
+            }
             Err(err) => {
                 tracing::warn!("failed to extract .archipelago from {}: {err:#}", zip.display());
                 None
@@ -207,8 +243,6 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
 
     Ok(GenerateOutcome {
         success: true,
-        // Return the extracted multidata path so the UI hosts that one,
-        // and fall back to the raw zip path only if extraction failed.
         zip_path: extracted.or_else(|| new_zip.map(|p| p.to_string_lossy().to_string())),
         stdout,
         stderr,
@@ -301,6 +335,40 @@ pub fn list_seeds(app: &AppHandle) -> Result<Vec<SeedFile>> {
     Ok(out)
 }
 
+pub fn rename_seed(path: &Path, new_name: &str) -> Result<PathBuf> {
+    if !path.exists() {
+        bail!("seed file not found: {}", path.display());
+    }
+    let parent = path.parent().ok_or_else(|| eyre::eyre!("no parent"))?;
+    let old_stem = path.file_stem().and_then(|s| s.to_str()).unwrap_or("");
+    let safe: String = new_name
+        .chars()
+        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' || c == '.' { c } else { '_' })
+        .collect();
+    let safe = if safe.is_empty() { "seed".to_string() } else { safe };
+
+    // Rename the .archipelago file
+    let new_path = parent.join(format!("{safe}.archipelago"));
+    if new_path != path {
+        std::fs::rename(path, &new_path)
+            .with_context(|| format!("rename {} -> {}", path.display(), new_path.display()))?;
+    }
+
+    // Rename companion files (.zip, .apsave, _Spoiler.txt)
+    for ext in &[".zip", ".apsave"] {
+        let old = parent.join(format!("{old_stem}{ext}"));
+        if old.exists() {
+            let _ = std::fs::rename(&old, parent.join(format!("{safe}{ext}")));
+        }
+    }
+    let old_spoiler = parent.join(format!("{old_stem}_Spoiler.txt"));
+    if old_spoiler.exists() {
+        let _ = std::fs::rename(&old_spoiler, parent.join(format!("{safe}_Spoiler.txt")));
+    }
+
+    Ok(new_path)
+}
+
 pub fn delete_seed(path: &Path) -> Result<()> {
     if path.exists() {
         std::fs::remove_file(path).with_context(|| format!("delete {}", path.display()))?;
@@ -375,6 +443,23 @@ pub fn delete_player_yaml(path: &Path) -> Result<()> {
     }
     std::fs::remove_file(path).with_context(|| format!("delete {}", path.display()))?;
     Ok(())
+}
+
+pub fn rename_player_yaml(path: &Path, new_name: &str) -> Result<PathBuf> {
+    if !path.exists() {
+        bail!("player file not found: {}", path.display());
+    }
+    let safe: String = new_name
+        .chars()
+        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' { c } else { '_' })
+        .collect();
+    let safe = if safe.is_empty() { "player".to_string() } else { safe };
+    let new_path = path.with_file_name(format!("{safe}.yaml"));
+    if new_path != path {
+        std::fs::rename(path, &new_path)
+            .with_context(|| format!("rename {} -> {}", path.display(), new_path.display()))?;
+    }
+    Ok(new_path)
 }
 
 // ---- Server lifecycle ----
@@ -647,7 +732,7 @@ impl ServerState {
         // stop existing
         let _ = self.stop();
 
-        let (python, _) = detect_python().ok_or_else(|| {
+        let (python, _) = detect_python(app).ok_or_else(|| {
             eyre::eyre!("python is not installed on this machine; install Python 3.11+ to host a server")
         })?;
 

@@ -1,0 +1,121 @@
+@font-face{
+    font-family: LexendDeca-ExtraLight;
+    src: url("../../static/static/fonts/LexendDeca-ExtraLight.ttf");
+}
+
+@font-face{
+    font-family: LexendDeca-Light;
+    src: url("../../static/static/fonts/LexendDeca-Light.ttf");
+}
+
+@font-face{
+    font-family: LexendDeca-Regular;
+    src: url("../../static/static/fonts/LexendDeca-Regular.ttf");
+}
+
+@font-face{
+    font-family: LexendDeca-Medium;
+    src: url("../../static/static/fonts/LexendDeca-Medium.ttf");
+}
+
+@font-face{
+    font-family: LondrinaSolid-Regular;
+    src: url("../../static/static/fonts/LondrinaSolid-Regular.ttf");
+}
+
+@font-face{
+    font-family: LondrinaSolid-Light;
+    src: url("../../static/static/fonts/LondrinaSolid-Light.ttf");
+}
+
+html{
+    font-family: LexendDeca-ExtraLight, sans-serif;
+    font-size: 1.1rem;
+    color: #000000;
+}
+
+body{
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 110px);
+}
+
+main {
+    flex-grow: 1;
+}
+
+a{
+    color: #ffef00;
+    text-decoration: none;
+    font-family: LexendDeca-Regular, sans-serif;
+}
+
+button, input[type=submit]{
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 10px 17px 11px 16px; /* top right bottom left */
+    border-radius: 4px;
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+    border-left: 1px solid rgba(0, 0, 0, 0.5);
+    border-right: 2px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+    font-kerning: auto;
+    cursor: pointer;
+}
+
+button:active, input[type=submit]:active{
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    padding-right: 16px;
+    margin-right: 2px;
+    padding-bottom: 10px;
+    margin-bottom: 2px;
+}
+
+button.button-grass, input[type=submit].button-grass{
+    border: 1px solid black;
+}
+
+button.button-dirt, input[type=submit].button-dirt{
+    border: 1px solid black;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-weight: normal;
+    margin: 0;
+    color: #032605;
+}
+
+h1{ font-size: 3rem; }
+h2{ font-size: 2rem; }
+h3{ font-size: 1.75rem; }
+h4{
+    font-size: 1.5rem;
+    margin-bottom:0.5rem;
+}
+h5, h6{
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.user-message{
+    width: 50%;
+    min-width: 500px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    color: #000000;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    background-color: #ffff00;
+}
+.user-message a{
+    color: #ff7700;
+}
+
+.interactive{
+    color: #ffef00;
+}

@@ -1,0 +1,188 @@
+/**
+This tooltip file is a modified version of the class found here: https://chrisbracco.com/a-simple-css-tooltip/.
+The styles in this file are used in compliance with the Creative Commons Attribution-ShareAlike 4.0 International
+license, which may be found here: https://creativecommons.org/licenses/by-sa/4.0/.
+*/
+
+/**
+README:
+To give any element a tooltip, simply give that element a data-tooltip attribute with a value of your desired
+tooltip content. Tooltips position themselves above elements by default. To change the position of the tooltip,
+give it one of the following classes: tooltip-left, tooltip-right, tooltip-top, or tooltip-bottom.
+*/
+
+/* Base styles for the element that has a tooltip */
+[data-tooltip], .tooltip-container {
+	position: relative;
+}
+
+/* Base styles for the entire tooltip */
+[data-tooltip]:before, [data-tooltip]:after, .tooltip-container:before, .tooltip {
+	position: absolute;
+	visibility: hidden;
+	opacity: 0;
+	-webkit-transition:
+		opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        -webkit-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+    -moz-transition:
+		opacity 0.2s ease-in-out,
+		visibility 0.2s ease-in-out,
+		-moz-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+    transition:
+        opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform:	translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	pointer-events: none;
+}
+
+[data-tooltip]:hover:before, [data-tooltip]:hover:after, .tooltip-container:hover:before,
+.tooltip-container:hover .tooltip {
+	visibility: visible;
+	opacity: 1;
+	word-break: break-word;
+}
+
+/** Directional arrow styles */
+[data-tooltip]:before, .tooltip-container:before {
+	z-index: 10000;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+}
+
+/** Content styles */
+[data-tooltip]:after, .tooltip {
+	width: 260px;
+	z-index: 10000;
+	padding: 8px;
+    border-radius: 4px;
+	background-color: #000;
+	background-color: hsla(0, 0%, 20%, 0.9);
+	color: #fff;
+	content: attr(data-tooltip);
+	font-size: 14px;
+	line-height: 1.2;
+}
+
+[data-tooltip]:after {
+	white-space: pre-wrap;
+}
+
+[data-tooltip]:before, [data-tooltip]:after, .tooltip-container:before, .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-tooltip]:before, [data-tooltip]:after, .tooltip-container:before, .tooltip {
+	bottom: 100%;
+	left: 50%;
+}
+
+[data-tooltip]:before, .tooltip-container:before {
+	margin-left: -6px;
+	margin-bottom: -12px;
+	border-top-color: #000;
+	border-top-color: hsla(0, 0%, 20%, 0.9);
+}
+
+/** Horizontally align tooltips on the top and bottom */
+[data-tooltip]:after, .tooltip {
+	margin-left: -80px;
+}
+
+[data-tooltip]:hover:before, [data-tooltip]:hover:after, .tooltip-container:hover:before,
+.tooltip-container:hover .tooltip {
+	-webkit-transform: translateY(-12px);
+	-moz-transform:	translateY(-12px);
+	transform: translateY(-12px);
+}
+
+/** Tooltips on the left */
+.tooltip-left:before, [data-tooltip].tooltip-left:after, .tooltip-left .tooltip {
+	right: 100%;
+	bottom: 50%;
+	left: auto;
+}
+
+.tooltip-left:before {
+	margin-left: 0;
+	margin-right: -12px;
+	margin-bottom: 0;
+	border-top-color: transparent;
+	border-left-color: #000;
+	border-left-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-left:hover:before, [data-tooltip].tooltip-left:hover:after, .tooltip-left:hover .tooltip {
+	-webkit-transform: translateX(-12px);
+	-moz-transform:	translateX(-12px);
+	transform: translateX(-12px);
+}
+
+/** Tooltips on the bottom */
+.tooltip-bottom:before, [data-tooltip].tooltip-bottom:after, .tooltip-bottom .tooltip {
+	top: 100%;
+	bottom: auto;
+	left: 50%;
+}
+
+.tooltip-bottom:before {
+	margin-top: -12px;
+	margin-bottom: 0;
+	border-top-color: transparent;
+	border-bottom-color: #000;
+	border-bottom-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-bottom:hover:before, [data-tooltip].tooltip-bottom:hover:after,
+.tooltip-bottom:hover .tooltip {
+	-webkit-transform: translateY(12px);
+	-moz-transform: translateY(12px);
+	transform: translateY(12px);
+}
+
+/** Tooltips on the right */
+.tooltip-right:before, [data-tooltip].tooltip-right:after, .tooltip-right .tooltip {
+	bottom: 50%;
+	left: 100%;
+}
+
+.tooltip-right:before {
+	margin-bottom: 0;
+	margin-left: -12px;
+	border-top-color: transparent;
+	border-right-color: #000;
+	border-right-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-right:hover:before, [data-tooltip].tooltip-right:hover:after,
+.tooltip-right:hover .tooltip {
+	-webkit-transform: translateX(12px);
+	-moz-transform:	translateX(12px);
+	transform: translateX(12px);
+}
+
+/** Adjustment for directional arrows for tooltips on the left and right */
+.tooltip-left:before, .tooltip-right:before {
+	top: 3px;
+}
+
+/** Center content vertically for tooltips ont he left and right */
+[data-tooltip].tooltip-left:after, [data-tooltip].tooltip-right:after,
+.tooltip-left .tooltip, .tooltip-right .tooltip {
+	margin-left: 0;
+	margin-bottom: -16px;
+}
+
+.tooltip ul, .tooltip ol {
+	padding-left: 1rem;
+}
+
+.tooltip :last-child {
+	margin-bottom: 0;
+}

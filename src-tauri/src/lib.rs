@@ -256,6 +256,7 @@ pub fn run() {
             randomizer::commands::save_player_yaml,
             randomizer::commands::list_player_yamls,
             randomizer::commands::delete_player_yaml,
+            randomizer::commands::rename_player_yaml,
             randomizer::commands::generate_seed,
             randomizer::commands::start_server,
             randomizer::commands::stop_server,
@@ -263,6 +264,7 @@ pub fn run() {
             randomizer::commands::open_workspace_dir,
             randomizer::commands::list_seeds,
             randomizer::commands::delete_seed,
+            randomizer::commands::rename_seed,
             randomizer::commands::clear_seeds,
         ])
         .plugin(tauri_plugin_dialog::init())

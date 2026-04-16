@@ -30,7 +30,7 @@
 		<div class="rdz-catalog-title">
 			<h1>Randomizer</h1>
 			<p class="rdz-subtitle">
-				Configure your seed without writing a single line of YAML —
+				Configure your seed without writing a single line of YAML.
 				<strong>{randomizerStore.catalog.length}</strong> games available.
 			</p>
 		</div>

@@ -13,3 +13,4 @@ vite.config.ts.timestamp-*
 packages/
 src-tauri/gen
 ./packages
+src-tauri/archipelago-runtime/venv/

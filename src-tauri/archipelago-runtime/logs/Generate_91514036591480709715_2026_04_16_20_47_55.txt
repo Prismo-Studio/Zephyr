@@ -1,0 +1,9 @@
+﻿[root at 2026-04-16 20:47:55,557]: Archipelago (0.6.7) logging initialized on Windows-10-10.0.26200-SP0 process 46660 running Python 3.11.9
+[root at 2026-04-16 20:47:55,557]: Uncaught exception
+Traceback (most recent call last):
+  File "C:\Users\Asuki\Documents\perso\fork\Zephyr\src-tauri\archipelago-runtime\Generate.py", line 653, in <module>
+    erargs, seed = main()
+                   ^^^^^^
+  File "C:\Users\Asuki\Documents\perso\fork\Zephyr\src-tauri\archipelago-runtime\Generate.py", line 164, in main
+    raise ValueError(
+ValueError: No individual player files found and number of players is 0. Provide individual player files or specify the number of players via host.yaml or --multi.

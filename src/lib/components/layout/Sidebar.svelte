@@ -418,15 +418,15 @@
 	.z-sidebar {
 		display: flex;
 		flex-direction: column;
-		width: 68px;
-		min-width: 68px;
+		width: 78px;
+		min-width: 78px;
 		height: 100%;
 		background: var(--bg-surface);
 		border-right: 1px solid var(--border-subtle);
 		padding: var(--space-md) 0;
 		gap: var(--space-sm);
 		position: relative;
-		z-index: var(--z-tooltip);
+		z-index: var(--z-dropdown);
 	}
 
 	/* Game selector */

@@ -37,6 +37,9 @@ export const listPlayerYamls = () => invoke<PlayerFile[]>('list_player_yamls');
 
 export const deletePlayerYaml = (path: string) => invoke('delete_player_yaml', { path });
 
+export const renamePlayerYaml = (path: string, newName: string) =>
+	invoke<string>('rename_player_yaml', { path, newName });
+
 export const generateSeed = () => invoke<GenerateOutcome>('generate_seed');
 
 export const startServer = (multidata: string, port: number, password: string | null) =>
@@ -51,5 +54,8 @@ export const openWorkspaceDir = () => invoke('open_workspace_dir');
 export const listSeeds = () => invoke<SeedFile[]>('list_seeds');
 
 export const deleteSeed = (path: string) => invoke('delete_seed', { path });
+
+export const renameSeed = (path: string, newName: string) =>
+	invoke<string>('rename_seed', { path, newName });
 
 export const clearSeeds = () => invoke<number>('clear_seeds');

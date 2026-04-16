@@ -1,0 +1,26 @@
+{% extends 'pageWrapper.html' %}
+
+{% block head %}
+    <title>Mystery Check Result</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename="styles/check.css") }}" />
+    <script type="application/ecmascript" src="{{ url_for('static', filename="assets/check.js") }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% include 'header/oceanIslandHeader.html' %}
+    <div id="check-wrapper">
+        <div id="check" class="grass-island">
+            <h3>Upload Yaml</h3>
+            <p>
+                This page checks a .yaml file for you, to be used as options for a mystery multiworld.
+                You can also upload a .zip with multiple YAMLs.
+            </p>
+            <div id="check-form-wrapper">
+                <form id="check-form" method="post" enctype="multipart/form-data">
+                    <input id="file-input" type="file" name="file" multiple>
+                </form>
+                <button id="check-button">Upload File(s)</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

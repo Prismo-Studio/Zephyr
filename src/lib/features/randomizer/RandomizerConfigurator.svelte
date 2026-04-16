@@ -12,6 +12,7 @@
 	import YamlPreview from './YamlPreview.svelte';
 
 	let rightTab: 'yaml' | 'server' = $state('yaml');
+	let serverPanelRef: RandomizerServerPanel | undefined = $state();
 
 	async function saveSlot() {
 		if (!randomizerStore.generatedYaml) {
@@ -26,6 +27,8 @@
 				message: `${slot} -> ${path.split(/[/\\]/).pop()}`
 			});
 			rightTab = 'server';
+			// Refresh the server panel's player list so the new slot appears
+			serverPanelRef?.refresh();
 		} catch {
 			// invoke() already toasted
 		}
@@ -260,7 +263,7 @@
 					<YamlPreview />
 				{:else}
 					<div class="rdz-right-scroll">
-						<RandomizerServerPanel />
+						<RandomizerServerPanel bind:this={serverPanelRef} />
 					</div>
 				{/if}
 			</div>

@@ -53,7 +53,7 @@
 			},
 			"minimumSystemVersion": "10.15"
 		},
-		"resources": [],
+		"resources": ["../data/randomizer/schemas"],
 		"fileAssociations": [
 			{
 				"ext": ["r2z"],

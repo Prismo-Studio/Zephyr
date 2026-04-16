@@ -1,0 +1,43 @@
+#tutorial-landing{}
+
+#tutorial-landing h2, #tutorial-landing h3, #tutorial-landing h4, #tutorial-landing h5, #tutorial-landing h6 {
+    text-transform: none;
+    cursor: unset;
+}
+
+#tutorial-landing h1{
+    font-size: 60px;
+    cursor: unset;
+}
+
+#tutorial-landing h2{
+    color: #fff677;
+    margin-bottom: 2px;
+    margin-top: 33px;
+    font-size: 44px;
+}
+
+#tutorial-landing a{
+    font-size: 16px;
+}
+
+#tutorial-landing .link-spacer{
+    margin: 0 6px;
+    color: #fffc95;
+}
+
+#tutorial-landing p{
+    line-height: 25px;
+    margin-bottom: 7px;
+    font-size: 17px;
+}
+
+#tutorial-landing ul{
+    font-size: 17px;
+    margin-top: 0;
+    margin-bottom: 26px;
+}
+
+#tutorial-landing li{
+    line-height: 22px;
+}
