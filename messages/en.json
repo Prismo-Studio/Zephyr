@@ -807,5 +807,8 @@
 	"randomizer_serverStarted": "Server started!",
 	"randomizer_serverFailed": "Server failed to start",
 	"randomizer_startingRemote": "Starting remote server...",
-	"randomizer_uploadError": "Error:"
+	"randomizer_uploadError": "Error:",
+	"randomizer_pythonRemoteTooltip": "Not needed in Remote mode. Python runs on the server.",
+	"randomizer_localOnly": "Local only",
+	"dashboard_toggleFavorite": "Toggle favorite"
 }

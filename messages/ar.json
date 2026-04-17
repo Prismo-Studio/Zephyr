@@ -807,5 +807,8 @@
 	"randomizer_serverStarted": "تم بدء الخادم!",
 	"randomizer_serverFailed": "فشل بدء الخادم",
 	"randomizer_startingRemote": "جاري بدء الخادم عن بُعد...",
-	"randomizer_uploadError": "خطأ:"
+	"randomizer_uploadError": "خطأ:",
+	"randomizer_pythonRemoteTooltip": "غير مطلوب في وضع Remote. Python يعمل على الخادم.",
+	"randomizer_localOnly": "محلي فقط",
+	"dashboard_toggleFavorite": "تبديل المفضلة"
 }

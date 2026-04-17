@@ -792,5 +792,8 @@
 	"randomizer_serverStarted": "Сервер запущен!",
 	"randomizer_serverFailed": "Не удалось запустить сервер",
 	"randomizer_startingRemote": "Запуск удалённого сервера...",
-	"randomizer_uploadError": "Ошибка:"
+	"randomizer_uploadError": "Ошибка:",
+	"randomizer_pythonRemoteTooltip": "Не нужен в режиме Remote. Python работает на сервере.",
+	"randomizer_localOnly": "Только локально",
+	"dashboard_toggleFavorite": "Переключить избранное"
 }

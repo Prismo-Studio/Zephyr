@@ -267,34 +267,47 @@
 		</Button>
 	</header>
 
-	<!-- Python check -->
-	<div class="rdz-block">
-		<div class="rdz-block-title">
-			<Icon icon="mdi:language-python" />
-			{i18nState.locale && m.randomizer_pythonRuntime()}
-		</div>
-		{#if python === null}
-			<p class="rdz-muted">{i18nState.locale && m.randomizer_checking()}</p>
-		{:else if python.available}
-			<p class="rdz-ok">
-				<Icon icon="mdi:check-circle" />
-				{i18nState.locale && m.randomizer_pythonFound({ version: python.version ?? '' })} ({python.executable})
-			</p>
-			{#if !python.ap_present}
-				<p class="rdz-warn">
-					<Icon icon="mdi:alert" />
-					{i18nState.locale && m.randomizer_apNotFound()} <code>{python.ap_dir}</code>
+	<!-- Python check (greyed out in remote mode — python runs on the Fly server, not locally) -->
+	<Tooltip
+		text={hostMode === 'remote' ? (i18nState.locale && m.randomizer_pythonRemoteTooltip()) : ''}
+		position="top"
+		delay={300}
+		block
+	>
+		<div class="rdz-block" class:rdz-block-disabled={hostMode === 'remote'}>
+			<div class="rdz-block-title">
+				<Icon icon="mdi:language-python" />
+				{i18nState.locale && m.randomizer_pythonRuntime()}
+				{#if hostMode === 'remote'}
+					<span class="rdz-block-badge">
+						<Icon icon="mdi:laptop" />
+						{i18nState.locale && m.randomizer_localOnly()}
+					</span>
+				{/if}
+			</div>
+			{#if python === null}
+				<p class="rdz-muted">{i18nState.locale && m.randomizer_checking()}</p>
+			{:else if python.available}
+				<p class="rdz-ok">
+					<Icon icon="mdi:check-circle" />
+					{i18nState.locale && m.randomizer_pythonFound({ version: python.version ?? '' })} ({python.executable})
 				</p>
+				{#if !python.ap_present}
+					<p class="rdz-warn">
+						<Icon icon="mdi:alert" />
+						{i18nState.locale && m.randomizer_apNotFound()} <code>{python.ap_dir}</code>
+					</p>
+				{:else}
+					<p class="rdz-muted"><code>{python.ap_dir}</code></p>
+				{/if}
 			{:else}
-				<p class="rdz-muted"><code>{python.ap_dir}</code></p>
+				<p class="rdz-err">
+					<Icon icon="mdi:close-circle" />
+					{i18nState.locale && m.randomizer_pythonNotDetected()}
+				</p>
 			{/if}
-		{:else}
-			<p class="rdz-err">
-				<Icon icon="mdi:close-circle" />
-				{i18nState.locale && m.randomizer_pythonNotDetected()}
-			</p>
-		{/if}
-	</div>
+		</div>
+	</Tooltip>
 
 	<!-- Player files -->
 	<div class="rdz-block">
@@ -814,6 +827,57 @@
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
 		border-radius: var(--radius-lg);
+		transition: opacity var(--transition-fast);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.rdz-block-disabled {
+		pointer-events: none;
+	}
+
+	.rdz-block-disabled > *:not(.rdz-block-title) {
+		opacity: 0.4;
+	}
+
+	.rdz-block-disabled .rdz-block-title :global(svg:first-child),
+	.rdz-block-disabled .rdz-block-title {
+		color: var(--text-muted);
+	}
+
+	.rdz-block-disabled::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: repeating-linear-gradient(
+			135deg,
+			transparent,
+			transparent 10px,
+			var(--bg-active) 10px,
+			var(--bg-active) 11px
+		);
+		pointer-events: none;
+		z-index: 1;
+		opacity: 0.6;
+	}
+
+	.rdz-block-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		margin-left: auto;
+		padding: 2px 8px;
+		border-radius: var(--radius-full);
+		background: var(--bg-active);
+		border: 1px solid var(--border-accent);
+		color: var(--text-accent);
+		font-size: 10px;
+		font-weight: 700;
+		text-transform: none;
+		letter-spacing: 0;
+		position: relative;
+		z-index: 2;
+		opacity: 2; /* Compensate the parent's 0.5 opacity so badge stays at full opacity */
 	}
 
 	.rdz-block-title {

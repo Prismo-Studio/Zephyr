@@ -787,5 +787,8 @@
 	"randomizer_serverStarted": "Serveur démarré !",
 	"randomizer_serverFailed": "Le serveur n'a pas pu démarrer",
 	"randomizer_startingRemote": "Démarrage du serveur Remote...",
-	"randomizer_uploadError": "Erreur :"
+	"randomizer_uploadError": "Erreur :",
+	"randomizer_pythonRemoteTooltip": "Pas nécessaire en mode Remote. Python tourne sur le serveur.",
+	"randomizer_localOnly": "Local uniquement",
+	"dashboard_toggleFavorite": "Basculer favori"
 }

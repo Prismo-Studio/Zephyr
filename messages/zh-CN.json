@@ -783,5 +783,8 @@
 	"randomizer_serverStarted": "服务器已启动！",
 	"randomizer_serverFailed": "服务器启动失败",
 	"randomizer_startingRemote": "正在启动远程服务器...",
-	"randomizer_uploadError": "错误："
+	"randomizer_uploadError": "错误：",
+	"randomizer_pythonRemoteTooltip": "Remote 模式下不需要。Python 运行在服务器上。",
+	"randomizer_localOnly": "仅限本地",
+	"dashboard_toggleFavorite": "切换收藏"
 }

@@ -722,5 +722,8 @@
 	"randomizer_serverStarted": "Servidor iniciado!",
 	"randomizer_serverFailed": "O servidor não pôde ser iniciado",
 	"randomizer_startingRemote": "Iniciando servidor remoto...",
-	"randomizer_uploadError": "Erro:"
+	"randomizer_uploadError": "Erro:",
+	"randomizer_pythonRemoteTooltip": "Não necessário em modo Remote. Python roda no servidor.",
+	"randomizer_localOnly": "Só local",
+	"dashboard_toggleFavorite": "Alternar favorito"
 }
