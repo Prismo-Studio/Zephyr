@@ -243,9 +243,10 @@ impl Prefs {
             fs::create_dir_all(&*self.cache_dir).context("failed to create cache directory")?;
         }
 
+        // dpi_scale is applied as CSS zoom in the frontend; the webview zoom
+        // only reflects zoom_factor here.
         let window = app.get_webview_window("main").unwrap();
-        let effective_zoom = self.zoom_factor as f64 * self.dpi_scale as f64;
-        window.zoom(effective_zoom).ok();
+        window.zoom(self.zoom_factor as f64).ok();
 
         self.save(db)?;
 
@@ -286,12 +287,10 @@ impl Prefs {
         self.data_dir.set(value.data_dir.value)?;
         self.cache_dir.set(value.cache_dir.value)?;
 
-        if self.zoom_factor != value.zoom_factor || self.dpi_scale != value.dpi_scale {
-            let new_dpi = value.dpi_scale.clamp(0.5, 2.0);
-            let effective_zoom = value.zoom_factor as f64 * new_dpi as f64;
+        if self.zoom_factor != value.zoom_factor {
             let window = app.get_webview_window("main").unwrap();
             window
-                .zoom(effective_zoom)
+                .zoom(value.zoom_factor as f64)
                 .context("failed to set zoom level")?;
         }
         self.zoom_factor = value.zoom_factor;

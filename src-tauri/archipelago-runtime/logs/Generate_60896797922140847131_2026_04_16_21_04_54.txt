@@ -1,3 +1,0 @@
-﻿[root at 2026-04-16 21:04:54,112]: Archipelago (0.6.7) logging initialized on Windows-10-10.0.26200-SP0 process 30432 running Python 3.11.9
-[root at 2026-04-16 21:04:54,113]: P1 Weights: Player5.yaml >> No description specified
-[root at 2026-04-16 21:04:54,113]: Generating for 1 player, 71990268534797837335 Seed 60896797922140847131 with plando: connections, texts, bosses

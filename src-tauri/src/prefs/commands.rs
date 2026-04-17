@@ -49,6 +49,23 @@ pub fn zoom_window(value: Zoom, window: Window, app: AppHandle) -> Result<()> {
 }
 
 #[command]
+pub fn set_dpi_scale(value: f32, app: AppHandle) -> Result<f32> {
+    let mut prefs = app.lock_prefs();
+    let new_dpi = value.clamp(0.5, 2.0);
+    prefs.dpi_scale = new_dpi;
+    // Defensively reset webview zoom to zoom_factor so any accumulated
+    // native zoom from Ctrl+/-/0 hotkeys is undone. Frontend applies
+    // dpi_scale via CSS zoom.
+    if let Some(window) = app.get_webview_window("main") {
+        window
+            .zoom(prefs.zoom_factor as f64)
+            .map_err(|err| anyhow!(err))?;
+    }
+    prefs.save(app.db())?;
+    Ok(new_dpi)
+}
+
+#[command]
 pub fn get_system_fonts() -> Result<Vec<String>> {
     let fonts = SystemSource::new().all_families().unwrap();
 

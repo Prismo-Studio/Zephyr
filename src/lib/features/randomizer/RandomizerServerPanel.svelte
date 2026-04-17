@@ -269,7 +269,7 @@
 
 	<!-- Python check (greyed out in remote mode — python runs on the Fly server, not locally) -->
 	<Tooltip
-		text={hostMode === 'remote' ? (i18nState.locale && m.randomizer_pythonRemoteTooltip()) : ''}
+		text={hostMode === 'remote' ? i18nState.locale && m.randomizer_pythonRemoteTooltip() : ''}
 		position="top"
 		delay={300}
 		block

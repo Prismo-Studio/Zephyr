@@ -33,8 +33,9 @@
 	let restoreOpen = $state(false);
 	let restoreItems: ListedSyncProfile[] = $state([]);
 	let crossGameOpen = $state(false);
-	let crossGameBuckets: { slug: string; name: string; game: Game | null; count: number }[] =
-		$state([]);
+	let crossGameBuckets: { slug: string; name: string; game: Game | null; count: number }[] = $state(
+		[]
+	);
 
 	let disconnectId: number | null = $state(null);
 	let disconnectName = $state('');
@@ -46,7 +47,9 @@
 		disconnectName = name;
 		const p = profiles.list.find((pr) => pr.id === id);
 		disconnectAlsoDelete = !!(
-			p?.sync && auth.user && p.sync.owner.discordId === auth.user.discordId
+			p?.sync &&
+			auth.user &&
+			p.sync.owner.discordId === auth.user.discordId
 		);
 	}
 
@@ -187,11 +190,7 @@
 		try {
 			const info = await api.profile.getInfo();
 			const fresh = info.profiles.find((pr) => pr.id === id);
-			if (
-				fresh?.sync &&
-				auth.user &&
-				fresh.sync.owner.discordId === auth.user.discordId
-			) {
+			if (fresh?.sync && auth.user && fresh.sync.owner.discordId === auth.user.discordId) {
 				syncId = fresh.sync.id;
 			}
 		} catch {}
@@ -246,7 +245,9 @@
 		if (index === -1) return;
 		const target = profiles.list.find((pr) => pr.id === renameId);
 		const isOwnedSync = !!(
-			target?.sync && auth.user && target.sync.owner.discordId === auth.user.discordId
+			target?.sync &&
+			auth.user &&
+			target.sync.owner.discordId === auth.user.discordId
 		);
 		const previousActiveIndex =
 			profiles.activeId !== null ? getProfileIndex(profiles.activeId) : -1;
@@ -448,7 +449,11 @@
 	>
 		{#snippet actions()}
 			{#if auth.user}
-				<Tooltip text={(i18nState.locale && m.sync_restoreTooltip()) || ''} position="bottom" delay={200}>
+				<Tooltip
+					text={(i18nState.locale && m.sync_restoreTooltip()) || ''}
+					position="bottom"
+					delay={200}
+				>
 					<Button variant="secondary" size="sm" onclick={() => checkForRestorable(false)}>
 						{#snippet icon()}<Icon icon="mdi:cloud-download" />{/snippet}
 						{i18nState.locale && m.sync_restore()}
@@ -463,7 +468,9 @@
 					<span>{auth.user.displayName}</span>
 					<button
 						class="z-auth-logout"
-						onclick={async () => { await auth.logout(); }}
+						onclick={async () => {
+							await auth.logout();
+						}}
 						title={(i18nState.locale && m.sync_logOut()) || ''}
 					>
 						<Icon icon="mdi:logout" />
@@ -569,7 +576,11 @@
 
 						<div class="z-profile-actions">
 							{#if auth.user && !profile.sync}
-								<Tooltip text={(i18nState.locale && m.sync_toCloud()) || ''} position="bottom" delay={200}>
+								<Tooltip
+									text={(i18nState.locale && m.sync_toCloud()) || ''}
+									position="bottom"
+									delay={200}
+								>
 									<button
 										class="z-profile-action"
 										onclick={async () => {
@@ -602,7 +613,11 @@
 								</Tooltip>
 							{/if}
 							{#if auth.user && profile.sync}
-								<Tooltip text={(i18nState.locale && m.sync_stopSyncing()) || ''} position="bottom" delay={200}>
+								<Tooltip
+									text={(i18nState.locale && m.sync_stopSyncing()) || ''}
+									position="bottom"
+									delay={200}
+								>
 									<button
 										class="z-profile-action"
 										onclick={() => askDisconnect(profile.id, profile.name)}

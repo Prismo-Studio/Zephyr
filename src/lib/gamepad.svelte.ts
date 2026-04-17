@@ -11,7 +11,8 @@
  * - Start / Menu (9): Focus batch actions
  */
 
-const DEADZONE = 0.4;
+const DEADZONE = 0.5; // stick must exceed this to trigger a navigation
+const STICK_RELEASE = 0.25; // stick must drop below this before it can re-trigger
 const SCROLL_DEADZONE = 0.2;
 const BUTTON_THRESHOLD = 0.5;
 const REPEAT_DELAY = 400;
@@ -68,7 +69,12 @@ let repeatTimers: Map<string, { last: number; started: number }> = new Map();
 let multiSelectHeld = false; // Track multi-select button held state for chain select
 let prevStickDir: Direction | null = null; // Track left stick direction for nav
 let stickRepeatTimer: { last: number; started: number } | null = null;
+let stickLowFrames = 0; // frames with mag < STICK_RELEASE (debounce for Xbox Linux jitter)
+let prevDpadDir: Direction | null = null; // Track d-pad-as-axes direction (Linux Xbox)
+let dpadRepeatTimer: { last: number; started: number } | null = null;
 let _initialFocusSet = false;
+let _prevRtPressed = false;
+let _nextDumpAt = 0;
 
 // Focus persistence across tab/page switches
 let focusMemory: Map<string, string> = new Map(); // route -> data-mod-uuid or selector
@@ -480,8 +486,8 @@ function pressButton(button: number) {
 
 		case BTN.RT: {
 			const filterTarget =
-				document.querySelector<HTMLElement>('.z-search-input input') ??
 				document.querySelector<HTMLElement>('.z-filter-btn') ??
+				document.querySelector<HTMLElement>('.z-search-input input') ??
 				document.querySelector<HTMLElement>('.z-sort-trigger');
 			if (filterTarget) focusElement(filterTarget);
 			break;
@@ -639,8 +645,10 @@ function pollGamepads(timestamp: number) {
 		return;
 	}
 
-	// Process buttons
+	// Process buttons. Skip RT — it's handled separately below because Linux
+	// Xbox analog triggers don't reliably set `pressed`.
 	for (let i = 0; i < gp.buttons.length; i++) {
+		if (i === BTN.RT) continue;
 		const pressed = isButtonPressed(gp.buttons[i]);
 		const wasPressed = prevButtons[i] ?? false;
 
@@ -662,56 +670,130 @@ function pollGamepads(timestamp: number) {
 	// Track multi-select button held state for chain multi-select
 	multiSelectHeld = gp.buttons[BTN.Y] ? isButtonPressed(gp.buttons[BTN.Y]) : false;
 
-	// Left stick navigation (axes 0/1) — primary navigation method
+	// Left stick navigation (axes 0/1) — primary navigation method.
+	// Uses hysteresis: must exceed DEADZONE to trigger/repeat, must drop below
+	// STICK_RELEASE to re-arm. The in-between range is a "settling" zone where
+	// nothing happens — important on Linux where Xbox sticks drift ~0.3–0.45.
 	const lx = gp.axes[0] ?? 0;
 	const ly = gp.axes[1] ?? 0;
+	const mag = Math.max(Math.abs(lx), Math.abs(ly));
 	let stickDir: Direction | null = null;
 
-	if (Math.abs(lx) > DEADZONE || Math.abs(ly) > DEADZONE) {
-		// Pick the dominant axis
-		if (Math.abs(lx) > Math.abs(ly)) {
+	if (mag > DEADZONE) {
+		// Direction lock: once a flick is committed, keep that direction until
+		// the stick releases. Xbox sticks can have enough off-axis wobble during
+		// a flick that the dominant axis flips (e.g. (0.5,0.8) -> (0.8,0.5)),
+		// which would otherwise fire a second navigate() in a different direction
+		// and skip an element. PS5 sticks travel cleaner so this doesn't bite.
+		if (prevStickDir) {
+			stickDir = prevStickDir;
+		} else if (Math.abs(lx) > Math.abs(ly)) {
 			stickDir = lx > 0 ? 'right' : 'left';
 		} else {
 			stickDir = ly > 0 ? 'down' : 'up';
 		}
 	}
 
-	// D-pad axes fallback (some controllers map D-pad to axes 6/7 or 9)
-	// Only trigger on edge (not hold)
-	if (!stickDir && gp.axes.length > 7) {
-		const dpadX = gp.axes[6] ?? 0;
-		const dpadY = gp.axes[7] ?? 0;
-		if (dpadX > 0.5 && prevStickDir !== 'right') stickDir = 'right';
-		else if (dpadX < -0.5 && prevStickDir !== 'left') stickDir = 'left';
-		else if (dpadY > 0.5 && prevStickDir !== 'down') stickDir = 'down';
-		else if (dpadY < -0.5 && prevStickDir !== 'up') stickDir = 'up';
-	}
-
 	if (stickDir && stickDir !== prevStickDir) {
-		// New direction — navigate immediately
 		navigate(stickDir);
 		stickRepeatTimer = { last: timestamp, started: timestamp };
+		prevStickDir = stickDir;
 	} else if (stickDir && stickDir === prevStickDir && stickRepeatTimer) {
-		// Held — repeat
 		const elapsed = timestamp - stickRepeatTimer.started;
 		const since = timestamp - stickRepeatTimer.last;
 		const rate = elapsed > 600 ? REPEAT_RATE : REPEAT_DELAY;
-		if (since >= rate) {
+		// On Xbox the stick takes long enough to return that a quick flick can
+		// sit above DEADZONE past REPEAT_DELAY on spring-return alone. Require a
+		// high magnitude to repeat so only an intentional hold keeps firing.
+		if (since >= rate && mag > 0.85) {
 			navigate(stickDir);
 			stickRepeatTimer.last = timestamp;
 		}
-	} else if (!stickDir) {
-		stickRepeatTimer = null;
 	}
-	prevStickDir = stickDir;
 
-	// RT as axis fallback (Linux: some controllers map triggers to axes)
-	const rtAxis = gp.axes[5] ?? -1;
-	const rtPressed = rtAxis > 0.5;
-	const rtBtnPressed = gp.buttons[BTN.RT] ? isButtonPressed(gp.buttons[BTN.RT]) : false;
-	if ((rtPressed || rtBtnPressed) && !prevButtons[BTN.RT]) {
+	if (mag < STICK_RELEASE) {
+		stickLowFrames++;
+		if (stickLowFrames >= 3) {
+			stickRepeatTimer = null;
+			prevStickDir = null;
+		}
+	} else {
+		stickLowFrames = 0;
+	}
+
+	// D-pad axes fallback — some controllers report D-pad as axes 6/7 instead
+	// of buttons 12–15 (notably Xbox on Linux). Tracked independently from the
+	// left stick so the edge gate doesn't reset every other frame.
+	let dpadDir: Direction | null = null;
+	if (gp.axes.length > 7) {
+		const dpadX = gp.axes[6] ?? 0;
+		const dpadY = gp.axes[7] ?? 0;
+		if (Math.abs(dpadX) > Math.abs(dpadY)) {
+			if (dpadX > 0.5) dpadDir = 'right';
+			else if (dpadX < -0.5) dpadDir = 'left';
+		} else {
+			if (dpadY > 0.5) dpadDir = 'down';
+			else if (dpadY < -0.5) dpadDir = 'up';
+		}
+	}
+
+	if (dpadDir && dpadDir !== prevDpadDir) {
+		navigate(dpadDir);
+		dpadRepeatTimer = { last: timestamp, started: timestamp };
+	} else if (dpadDir && dpadDir === prevDpadDir && dpadRepeatTimer) {
+		const elapsed = timestamp - dpadRepeatTimer.started;
+		const since = timestamp - dpadRepeatTimer.last;
+		const rate = elapsed > 600 ? REPEAT_RATE : REPEAT_DELAY;
+		if (since >= rate) {
+			navigate(dpadDir);
+			dpadRepeatTimer.last = timestamp;
+		}
+	} else if (!dpadDir) {
+		dpadRepeatTimer = null;
+	}
+	prevDpadDir = dpadDir;
+
+	// RT detection across mappings. Linux drivers don't reliably set buttons[7].pressed
+	// for Xbox analog triggers, and some non-standard mappings put the trigger on
+	// axes[5] (with -1 at rest, 1 at full pull). Combine both signals with a lower
+	// threshold so a normal press is detected regardless of backend.
+	const rtBtnObj = gp.buttons[BTN.RT];
+	const rtBtnPressed = rtBtnObj ? rtBtnObj.pressed : false;
+	const rtBtnVal = rtBtnObj?.value ?? 0;
+	const rtAxisVal = gp.axes.length >= 6 ? ((gp.axes[5] ?? -1) + 1) / 2 : 0;
+	const rtVal = Math.max(rtBtnVal, rtAxisVal);
+	const rtNow = rtBtnPressed || rtVal > 0.2;
+
+	// DIAGNOSTIC: dump full gamepad state whenever ANYTHING is deflected off rest,
+	// throttled to once every 200 ms so it's readable. This lets us see exactly
+	// what Linux Xbox reports for right stick + triggers regardless of which axis
+	// indices they land on.
+	if (!_nextDumpAt || timestamp >= _nextDumpAt) {
+		const all = navigator.getGamepads();
+		for (let i = 0; i < all.length; i++) {
+			const p = all[i];
+			if (!p) continue;
+			const activeBtns = p.buttons
+				.map((b, bi) =>
+					b.pressed || b.value > 0.05 ? `${bi}:${b.value.toFixed(2)}${b.pressed ? 'P' : ''}` : null
+				)
+				.filter(Boolean)
+				.join(' ');
+			const activeAxes = p.axes
+				.map((a, ai) => (Math.abs(a) > 0.05 ? `${ai}:${a.toFixed(2)}` : null))
+				.filter(Boolean)
+				.join(' ');
+			console.log(
+				`[gamepad] slot=${i} idx=${p.index} id="${p.id}" map=${p.mapping || 'none'} axesLen=${p.axes.length} btnsLen=${p.buttons.length} activeAxes=[${activeAxes}] activeBtns=[${activeBtns}]`
+			);
+		}
+		_nextDumpAt = timestamp + 500;
+	}
+
+	if (rtNow && !_prevRtPressed) {
 		pressButton(BTN.RT);
 	}
+	_prevRtPressed = rtNow;
 
 	// Set initial focus to content when gamepad first activates
 	if (!_initialFocusSet) {
@@ -734,20 +816,31 @@ function pollGamepads(timestamp: number) {
 	}
 	lastRoute = currentRoute;
 
-	// Right stick scroll (axes 3 on most, 5 on some Linux controllers)
+	// Right stick scroll. Axis index depends on mapping:
+	//   standard (4 axes): ry = axes[3]
+	//   non-standard Linux xpad (6 axes): ry = axes[4]; axes[3] is rx and axes[2]/[5] are triggers
+	// Pick the index whose axis is actually driven past the deadzone, preferring
+	// the canonical indices but skipping trigger axes that idle near -1 or 1.
 	let ry = 0;
-	for (const idx of [3, 5, 4]) {
+	const candidates = gp.axes.length >= 6 ? [4, 3] : [3];
+	for (const idx of candidates) {
 		const val = gp.axes[idx] ?? 0;
 		if (Math.abs(val) > SCROLL_DEADZONE) {
 			ry = val;
 			break;
 		}
 	}
-	const scrollContainer = getScrollContainer();
 
-	if (scrollContainer && Math.abs(ry) > SCROLL_DEADZONE) {
+	if (Math.abs(ry) > SCROLL_DEADZONE) {
 		const scrollSpeed = Math.sign(ry) * Math.pow(Math.abs(ry), 1.5) * 14;
-		scrollContainer.scrollTop += scrollSpeed;
+		const scrollContainer = getScrollContainer();
+		const before = scrollContainer?.scrollTop ?? -1;
+		if (scrollContainer) scrollContainer.scrollTop += scrollSpeed;
+		// Fallback: if the chosen container didn't actually move (e.g. document.scrollingElement
+		// on a page where the scroll is on an inner flex child), try window.scrollBy.
+		if (!scrollContainer || scrollContainer.scrollTop === before) {
+			window.scrollBy(0, scrollSpeed);
+		}
 	}
 
 	animFrameId = requestAnimationFrame(pollGamepads);

@@ -128,7 +128,11 @@
 
 		<div class="z-restore-toolbar">
 			<button class="z-restore-toggle-all" onclick={toggleAll}>
-				<Icon icon={selected.size === items.length ? 'mdi:checkbox-marked' : 'mdi:checkbox-blank-outline'} />
+				<Icon
+					icon={selected.size === items.length
+						? 'mdi:checkbox-marked'
+						: 'mdi:checkbox-blank-outline'}
+				/>
 				<span>
 					{i18nState.locale &&
 						(selected.size === items.length ? m.restore_unselectAll() : m.restore_selectAll())}
@@ -153,10 +157,7 @@
 						}
 					}}
 				>
-					<Checkbox
-						checked={selected.has(item.id)}
-						onchange={() => toggle(item.id)}
-					/>
+					<Checkbox checked={selected.has(item.id)} onchange={() => toggle(item.id)} />
 					<div class="z-restore-item-body">
 						<div class="z-restore-item-name">{item.name}</div>
 						<div class="z-restore-item-meta">

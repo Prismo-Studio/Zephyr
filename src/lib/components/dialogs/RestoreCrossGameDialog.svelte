@@ -56,11 +56,7 @@
 
 		<div class="z-cross-list">
 			{#each buckets as bucket (bucket.slug)}
-				<button
-					class="z-cross-item"
-					disabled={busy !== null}
-					onclick={() => pick(bucket.slug)}
-				>
+				<button class="z-cross-item" disabled={busy !== null} onclick={() => pick(bucket.slug)}>
 					{#if bucket.game}
 						<img src={gameIconSrc(bucket.game)} alt={bucket.name} class="z-cross-item-img" />
 					{:else}

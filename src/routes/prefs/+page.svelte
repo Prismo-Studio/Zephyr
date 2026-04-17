@@ -134,12 +134,13 @@
 		if (prefs) await api.prefs.set(prefs);
 	}
 
-	function changeDpiScale(value: string) {
+	async function changeDpiScale(value: string) {
 		if (!prefs) return;
 		const scale = parseFloat(value);
 		if (isNaN(scale)) return;
-		prefs.dpiScale = scale;
-		savePrefs();
+		const applied = await api.prefs.setDpiScale(scale);
+		prefs.dpiScale = applied;
+		document.documentElement.style.setProperty('zoom', String(applied));
 	}
 
 	function toggleGamepad() {

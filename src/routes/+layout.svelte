@@ -8,7 +8,6 @@
 	import InstallPopover from '$lib/components/toolbar/InstallPopover.svelte';
 	import InstallModDialog from '$lib/components/dialogs/InstallModDialog.svelte';
 	import ImportProfileDialog from '$lib/components/dialogs/ImportProfileDialog.svelte';
-	import GamepadManager from '$lib/components/GamepadManager.svelte';
 
 	import { onMount, type Snippet } from 'svelte';
 	import { refreshColor, refreshFont } from '$lib/themeSystem';
@@ -50,6 +49,18 @@
 
 	let updateInstalling = $state(false);
 	let appVersion = $state('');
+
+	let currentDpiScale = 1;
+
+	function applyDpiScaleCss(scale: number) {
+		document.documentElement.style.setProperty('zoom', String(scale));
+	}
+
+	async function nudgeDpiScale(delta: number) {
+		const next = Math.round((currentDpiScale + delta) * 100) / 100;
+		currentDpiScale = await api.prefs.setDpiScale(next);
+		applyDpiScaleCss(currentDpiScale);
+	}
 
 	async function installUpdate() {
 		if (!updates.next || updateInstalling) return;
@@ -95,7 +106,10 @@
 			let prefs = await api.prefs.get();
 			let lang: string;
 
-			// DPI scale is now applied via WebView zoom in the backend
+			currentDpiScale = prefs.dpiScale;
+			applyDpiScaleCss(currentDpiScale);
+
+			// DPI scale is applied via WebView zoom in the backend and CSS zoom in the DOM
 
 			// Initialize gamepad
 			initGamepad();
@@ -168,6 +182,16 @@
 			profiles.refresh().catch(() => {});
 			games.refresh().catch(() => {});
 			return;
+		}
+		// Ctrl+=/Ctrl++ to increase DPI scale, Ctrl+- to decrease. Matches browser zoom shortcuts.
+		if (evt.ctrlKey && !evt.altKey) {
+			const isPlus = evt.key === '=' || evt.key === '+';
+			const isMinus = evt.key === '-' || evt.key === '_';
+			if (isPlus || isMinus) {
+				evt.preventDefault();
+				nudgeDpiScale(isPlus ? 0.1 : -0.1);
+				return;
+			}
 		}
 		// Block Ctrl+shortcuts except Ctrl+C/V/X/A/Z (standard editing)
 		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey) {
@@ -260,7 +284,6 @@
 
 	<Toasts />
 	<InstallPopover />
-	<GamepadManager />
 	<InstallModDialog />
 	<ImportProfileDialog />
 

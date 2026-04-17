@@ -16,6 +16,28 @@
 	let rightTab: 'yaml' | 'server' = $state('yaml');
 	let serverPanelRef: RandomizerServerPanel | undefined = $state();
 
+	// Maps game id (schema.id, matches the world folder) to the English tutorial
+	// URL path on archipelago.gg. Defaults to "setup/en" for games not listed.
+	const TUTORIAL_PATH_OVERRIDES: Record<string, string> = {
+		alttp: 'multiworld/en',
+		celeste64: 'guide/en',
+		celeste_open_world: 'guide/en',
+		ff1: 'multiworld/en',
+		kh1: 'kh1/en',
+		landstalker: 'landstalker_setup/en',
+		paint: 'guide/en',
+		sm: 'multiworld/en',
+		smz3: 'multiworld/en',
+		soe: 'multiworld/en',
+		tloz: 'multiworld/en',
+		wargroove: 'wargroove/en'
+	};
+
+	function setupGuideUrl(id: string, name: string): string {
+		const path = TUTORIAL_PATH_OVERRIDES[id] ?? 'setup/en';
+		return `https://archipelago.gg/tutorial/${encodeURIComponent(name)}/${path}`;
+	}
+
 	async function saveSlot() {
 		if (!randomizerStore.generatedYaml) {
 			await randomizerStore.refreshGenerated();
@@ -130,7 +152,7 @@
 				</div>
 				<a
 					class="rdz-setup-link"
-					href={`https://archipelago.gg/games/${encodeURIComponent(schema.name)}/info/en`}
+					href={setupGuideUrl(schema.id, schema.name)}
 					target="_blank"
 					rel="noopener"
 				>

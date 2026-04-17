@@ -81,8 +81,7 @@ export async function maybeSyncAfterImport(
 	}
 	if (!active) return false;
 
-	const ownsSync =
-		!!active.sync && active.sync.owner.discordId === auth.user.discordId;
+	const ownsSync = !!active.sync && active.sync.owner.discordId === auth.user.discordId;
 
 	try {
 		if (!options.forceFork && ownsSync) {
