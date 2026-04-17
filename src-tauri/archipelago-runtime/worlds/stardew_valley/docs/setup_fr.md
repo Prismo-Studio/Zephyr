@@ -12,7 +12,6 @@
 - Launcher Archipelago à partir de la [page des versions d'Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases)
   - (Uniquement pour le client textuel)
 - Autres [mods supportés](https://github.com/agilbert1412/StardewArchipelago/blob/7.x.x/Documentation/Supported%20Mods.md) que vous pouvez ajouter au yaml pour les inclure dans la randomization d'Archipelago
-
   - Il n'est **pas** recommandé de modder Stardew Valley avec des mods non supportés, même s'il est possible de le faire.
     Les interactions entre mods peuvent être imprévisibles, et aucune aide ne sera fournie pour les bugs qui y sont liés.
   - Plus vous avez de mods non supportés, et plus ils sont gros, plus vous avez de chances de casser des choses.
@@ -33,7 +32,7 @@ Vous pouvez personnaliser vos options en visitant la [Page d'options de joueur p
 
 - Installer [SMAPI](https://www.nexusmods.com/stardewvalley/mods/2400?tab=files) en suivant les instructions sur la page du mod.
 - Télécharger et extraire le mod [StardewArchipelago](https://github.com/agilbert1412/StardewArchipelago/releases) dans le dossier "Mods" de Stardew Valley.
-- *Optionnel*: Si vous voulez lancer le jeu depuis Steam, ajouter l'option de lancement suivante à Stardew Valley : `"[PATH TO STARDEW VALLEY]\Stardew Valley\StardewModdingAPI.exe" %command%`
+- _Optionnel_: Si vous voulez lancer le jeu depuis Steam, ajouter l'option de lancement suivante à Stardew Valley : `"[PATH TO STARDEW VALLEY]\Stardew Valley\StardewModdingAPI.exe" %command%`
 - Sinon, exécutez juste "StardewModdingAPI.exe" dans le dossier d'installation de Stardew Valley.
 - Stardew Valley devrait se lancer avec une console qui liste les informations des mods installés, et intéragit avec certains d'entre eux.
 

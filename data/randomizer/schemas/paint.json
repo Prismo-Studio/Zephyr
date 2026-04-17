@@ -1,211 +1,211 @@
 {
-  "id": "paint",
-  "name": "Paint",
-  "version": "0.1.6",
-  "description": "The classic Microsoft app, reimagined as an Archipelago game!",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "logic_percent",
-      "label": "Logic Percent",
-      "description": "Sets the maximum percent similarity required for a check to be in logic.",
-      "category": "logic",
-      "type": {
-        "kind": "range",
-        "min": 50,
-        "max": 95,
-        "step": 1,
-        "default": 80
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal_percent",
-      "label": "Goal Percent",
-      "description": "Sets the percent similarity required to achieve your goal.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 50,
-        "max": 95,
-        "step": 1,
-        "default": 80
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "half_percent_checks",
-      "label": "Half Percent Checks",
-      "description": "Sets the lowest percent at which locations will be created for each 0.5% of similarity.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 95,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "quarter_percent_checks",
-      "label": "Quarter Percent Checks",
-      "description": "Sets the lowest percent at which locations will be created for each 0.25% of similarity.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 95,
-        "step": 1,
-        "default": 70
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "canvas_size_increment",
-      "label": "Canvas Size Increment",
-      "description": "Sets the number of pixels the canvas will expand for each width/height item received.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "100",
-        "choices": [
-          {
-            "value": "25",
-            "label": "25"
-          },
-          {
-            "value": "50",
-            "label": "50"
-          },
-          {
-            "value": "100",
-            "label": "100"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_tool",
-      "label": "Starting Tool",
-      "description": "Sets which tool (other than Magnifier) you will be able to use from the start.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "brush",
-        "choices": [
-          {
-            "value": "brush",
-            "label": "Brush"
-          },
-          {
-            "value": "pencil",
-            "label": "Pencil"
-          },
-          {
-            "value": "eraser",
-            "label": "Eraser"
-          },
-          {
-            "value": "airbrush",
-            "label": "Airbrush"
-          },
-          {
-            "value": "line",
-            "label": "Line"
-          },
-          {
-            "value": "rectangle",
-            "label": "Rectangle"
-          },
-          {
-            "value": "ellipse",
-            "label": "Ellipse"
-          },
-          {
-            "value": "rounded_rectangle",
-            "label": "Rounded Rectangle"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_count",
-      "label": "Trap Count",
-      "description": "Sets the percentage of filler items to be replaced by random traps.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "If on, using the Undo or Clear Image functions will send a death to all other players with death link on.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "paint",
+	"name": "Paint",
+	"version": "0.1.6",
+	"description": "The classic Microsoft app, reimagined as an Archipelago game!",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "logic_percent",
+			"label": "Logic Percent",
+			"description": "Sets the maximum percent similarity required for a check to be in logic.",
+			"category": "logic",
+			"type": {
+				"kind": "range",
+				"min": 50,
+				"max": 95,
+				"step": 1,
+				"default": 80
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal_percent",
+			"label": "Goal Percent",
+			"description": "Sets the percent similarity required to achieve your goal.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 50,
+				"max": 95,
+				"step": 1,
+				"default": 80
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "half_percent_checks",
+			"label": "Half Percent Checks",
+			"description": "Sets the lowest percent at which locations will be created for each 0.5% of similarity.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 95,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "quarter_percent_checks",
+			"label": "Quarter Percent Checks",
+			"description": "Sets the lowest percent at which locations will be created for each 0.25% of similarity.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 95,
+				"step": 1,
+				"default": 70
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "canvas_size_increment",
+			"label": "Canvas Size Increment",
+			"description": "Sets the number of pixels the canvas will expand for each width/height item received.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "100",
+				"choices": [
+					{
+						"value": "25",
+						"label": "25"
+					},
+					{
+						"value": "50",
+						"label": "50"
+					},
+					{
+						"value": "100",
+						"label": "100"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_tool",
+			"label": "Starting Tool",
+			"description": "Sets which tool (other than Magnifier) you will be able to use from the start.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "brush",
+				"choices": [
+					{
+						"value": "brush",
+						"label": "Brush"
+					},
+					{
+						"value": "pencil",
+						"label": "Pencil"
+					},
+					{
+						"value": "eraser",
+						"label": "Eraser"
+					},
+					{
+						"value": "airbrush",
+						"label": "Airbrush"
+					},
+					{
+						"value": "line",
+						"label": "Line"
+					},
+					{
+						"value": "rectangle",
+						"label": "Rectangle"
+					},
+					{
+						"value": "ellipse",
+						"label": "Ellipse"
+					},
+					{
+						"value": "rounded_rectangle",
+						"label": "Rounded Rectangle"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_count",
+			"label": "Trap Count",
+			"description": "Sets the percentage of filler items to be replaced by random traps.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "If on, using the Undo or Clear Image functions will send a death to all other players with death link on.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

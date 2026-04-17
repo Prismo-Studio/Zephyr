@@ -33,4 +33,3 @@ Items belonging to other worlds are represented by the four orbs icon from the [
 ## When the player receives an item, what happens?
 
 When the player receives an item, the same items popup will be displayed as when you would normally obtain the item.
-

@@ -7,6 +7,7 @@ The [player options page for this game](../player-options) contains all the opti
 ## What does randomization do to this game?
 
 Mario's basic abilities are removed, and placed into the item pool as items that any player can find. This includes:
+
 - Carry
 - Climb
 - Run
@@ -20,12 +21,14 @@ Additionally, the ability to use powerups (Mushrooms, Fire Flowers, Capes, Stars
 ## What is the goal of Super Mario World when randomized?
 
 There are two goals which can be chosen:
+
 - `Bowser`: Reach Bowser's Castle and defeat Bowser, after defeating a certain number of bosses.
 - `Yoshi Egg Hunt`: Collect a certain number of Yoshi Eggs, then return to Yoshi's House
 
 ## What items and locations get shuffled?
 
 Each unique level exit awards a location check. Additionally, the following in-level actions can be set to award a location check:
+
 - Collecting Five Dragon Coins
 - Collecting 3-Up Moons
 - Activating Bonus Blocks

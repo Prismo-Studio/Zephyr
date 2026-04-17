@@ -64,14 +64,14 @@ will exit to the Sunny Day checkpoint, and the Searing Crags Portal will exit to
 ## Transition Plando
 
 This option allows you to specify certain connections when using transition shuffle. This will only work if
-transition shuffle and the `connections` plando host setting are enabled. 
+transition shuffle and the `connections` plando host setting are enabled.
 
 Each transition connection is plandoed by specifying its attributes:
 
-* `entrance` is where you will enter this transition from.
-* `exit` is where the transition will lead.
-* `percentage` is the chance this connection will happen at all.
-* `direction` is used to specify whether this connection will also go in reverse. This entry will be ignored if the
+- `entrance` is where you will enter this transition from.
+- `exit` is where the transition will lead.
+- `percentage` is the chance this connection will happen at all.
+- `direction` is used to specify whether this connection will also go in reverse. This entry will be ignored if the
   transition shuffle is set to `coupled` or if the specified connection can only occur in one direction, such as exiting
   to Riviere Turquoise. The default direction is "both", which will make it so that returning through the exit
   transition will return you to where you entered it from. "entrance" and "exit" are treated the same, with them both
@@ -95,6 +95,7 @@ The Messenger:
 ```
 
 This block will create the following connections:
+
 1. Leaving Searing Crags towards Glacial Peak will take you to the beginning of Dark Cave, and leaving the Dark Cave
    door will return you to the top of Searing Crags.
 2. Taking Manfred to leave Glacial Peak, will take you to Corrupted Future. There is no reverse connection here so it

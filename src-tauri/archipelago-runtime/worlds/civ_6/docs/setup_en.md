@@ -30,7 +30,7 @@ The following are required in order to play Civ VI in Archipelago:
 
 1. In the main menu, navigate to the "Game Options" page. On the "Game" menu, make sure that "Tuner (disables achievements)" is enabled.
 
-2. In the main menu, navigate to the "Additional Content" page, then go to "Mods" and make sure the Archipelago mod is enabled. 
+2. In the main menu, navigate to the "Additional Content" page, then go to "Mods" and make sure the Archipelago mod is enabled.
 
 3. When starting the game make sure you are on the Gathering Storm ruleset in a Single Player game. Additionally you must start in the ancient era, other settings and game modes can be customised to your own liking. An important thing to note is that settings preset saves the mod list from when you created it, so if you want to use a setting preset with this you must create it after installing the Archipelago mod.
 
@@ -56,5 +56,4 @@ The following are required in order to play Civ VI in Archipelago:
 
 - If you are neither receiving or sending items, make sure you have the correct client open. The client should be the Civ6 and NOT the Text Client.
 
-- This should be compatible with a lot of other mods, but if you are having issues try disabling all mods other than the Archipelago mod and see if the problem still persists. 
-
+- This should be compatible with a lot of other mods, but if you are having issues try disabling all mods other than the Archipelago mod and see if the problem still persists.

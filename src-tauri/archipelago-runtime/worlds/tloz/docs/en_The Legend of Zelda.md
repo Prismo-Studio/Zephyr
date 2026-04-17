@@ -30,7 +30,7 @@ All items can appear in other players' worlds.
 ## What does another world's item look like in The Legend of Zelda?
 
 All local items appear as normal. All remote items, no matter the game they originate from, will take on the appearance
-of a single Rupee. These single Rupees will have variable prices in shops: progression and trap items will cost more, 
+of a single Rupee. These single Rupees will have variable prices in shops: progression and trap items will cost more,
 filler and useful items will cost less, and uncategorized items will be in the middle.
 
 ## Are there any other changes made?

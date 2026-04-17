@@ -1,493 +1,493 @@
 {
-  "id": "tunic",
-  "name": "TUNIC",
-  "version": "0.1.6",
-  "description": "Explore a land filled with lost legends, ancient powers, and ferocious monsters in TUNIC, an isometric action game about a small fox on a big adventure.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "sword_progression",
-      "label": "Sword Progression",
-      "description": "Adds four sword upgrades to the item pool that will progressively grant stronger melee weapons, including two new swords with increased range and attack power.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "start_with_sword",
-      "label": "Start With Sword",
-      "description": "Start with a sword in the player's inventory.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keys_behind_bosses",
-      "label": "Keys Behind Bosses",
-      "description": "Places the three hexagon keys behind their respective boss fight in your world.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ability_shuffling",
-      "label": "Ability Shuffling",
-      "description": "Locks the usage of Prayer, Holy Cross*, and the Icebolt combo until the relevant pages of the manual have been found.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "fool_traps",
-      "label": "Fool Traps",
-      "description": "Replaces low-to-medium value money rewards in the item pool with fool traps, which cause random negative effects to the player.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "onslaught",
-            "label": "Onslaught"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "laurels_location",
-      "label": "Laurels Location",
-      "description": "Force the Hero's Laurels to be placed at a location in your world.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "anywhere",
-        "choices": [
-          {
-            "value": "anywhere",
-            "label": "Anywhere"
-          },
-          {
-            "value": "6_coins",
-            "label": "6 Coins"
-          },
-          {
-            "value": "10_coins",
-            "label": "10 Coins"
-          },
-          {
-            "value": "10_fairies",
-            "label": "10 Fairies"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hexagon_quest",
-      "label": "Hexagon Quest",
-      "description": "An alternate goal that shuffles Gold \"Questagon\" items into the item pool and allows the game to be completed after collecting the required number of them.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hexagon_goal",
-      "label": "Hexagon Goal",
-      "description": "How many Gold Questagons are required to complete the game on Hexagon Quest.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "extra_hexagon_percentage",
-      "label": "Extra Hexagon Percentage",
-      "description": "How many extra Gold Questagons are shuffled into the item pool, taken as a percentage of the goal amount.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hexagon_quest_ability_type",
-      "label": "Hexagon Quest Ability Type",
-      "description": "Determines how abilities are unlocked when playing Hexagon Quest with Shuffled Abilities enabled.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "hexagons",
-        "choices": [
-          {
-            "value": "hexagons",
-            "label": "Hexagons"
-          },
-          {
-            "value": "pages",
-            "label": "Pages"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_ladders",
-      "label": "Shuffle Ladders",
-      "description": "Turns several ladders in the game into items that must be found before they can be climbed on.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_fuses",
-      "label": "Shuffle Fuses",
-      "description": "Praying at a fuse will reward a check instead of turning on the power.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_bells",
-      "label": "Shuffle Bells",
-      "description": "The East and West bells are shuffled into the item pool and must be found in order to unlock the Sealed Temple.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "grass_randomizer",
-      "label": "Grass Randomizer",
-      "description": "Turns over 6,000 blades of grass and bushes in the game into checks.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "breakable_shuffle",
-      "label": "Breakable Shuffle",
-      "description": "Turns approximately 250 breakable objects in the game into checks.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "local_fill",
-      "label": "Local Fill",
-      "description": "Choose the percentage of your filler/trap items that will be kept local or distributed to other TUNIC players with this option enabled.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 98,
-        "step": 1,
-        "default": -1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "entrance_rando",
-      "label": "Entrance Rando",
-      "description": "Randomize the connections between scenes.",
-      "category": "entrances",
-      "type": {
-        "kind": "select",
-        "default": "no",
-        "choices": [
-          {
-            "value": "no",
-            "label": "No"
-          },
-          {
-            "value": "yes",
-            "label": "Yes"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "entrance_layout",
-      "label": "Entrance Layout",
-      "description": "Decide how the Entrance Randomizer chooses how to pair the entrances.",
-      "category": "entrances",
-      "type": {
-        "kind": "select",
-        "default": "standard",
-        "choices": [
-          {
-            "value": "standard",
-            "label": "Standard"
-          },
-          {
-            "value": "fixed_shop",
-            "label": "Fixed Shop"
-          },
-          {
-            "value": "direction_pairs",
-            "label": "Direction Pairs"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "decoupled",
-      "label": "Decoupled",
-      "description": "Decouple the entrances, so that when you go from one entrance to another, the return trip won't necessarily bring you back to the same place.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "combat_logic",
-      "label": "Combat Logic",
-      "description": "If enabled, the player will logically require a combination of stat upgrade items and equipment to get some checks or navigate to some areas, with a goal of matching the vanilla combat difficulty.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "bosses_only",
-            "label": "Bosses Only"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lanternless",
-      "label": "Lanternless",
-      "description": "When enabled, you may be required to navigate dark areas without the Lantern.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "maskless",
-      "label": "Maskless",
-      "description": "When enabled, you may be required to traverse Lower Quarry without the Scavenger's Mask.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "laurels_zips",
-      "label": "Laurels Zips",
-      "description": "Choose whether to include using the Hero's Laurels to zip through gates, doors, and tricky spots.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ice_grappling",
-      "label": "Ice Grappling",
-      "description": "Choose whether grappling frozen enemies is in logic.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "easy",
-            "label": "Easy"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ladder_storage",
-      "label": "Ladder Storage",
-      "description": "Choose whether Ladder Storage is in logic.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "easy",
-            "label": "Easy"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ladder_storage_without_items",
-      "label": "Ladder Storage Without Items",
-      "description": "If disabled, you logically require Stick, Sword, Magic Orb, or Shield to perform Ladder Storage.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "tunic",
+	"name": "TUNIC",
+	"version": "0.1.6",
+	"description": "Explore a land filled with lost legends, ancient powers, and ferocious monsters in TUNIC, an isometric action game about a small fox on a big adventure.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "sword_progression",
+			"label": "Sword Progression",
+			"description": "Adds four sword upgrades to the item pool that will progressively grant stronger melee weapons, including two new swords with increased range and attack power.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "start_with_sword",
+			"label": "Start With Sword",
+			"description": "Start with a sword in the player's inventory.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keys_behind_bosses",
+			"label": "Keys Behind Bosses",
+			"description": "Places the three hexagon keys behind their respective boss fight in your world.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ability_shuffling",
+			"label": "Ability Shuffling",
+			"description": "Locks the usage of Prayer, Holy Cross*, and the Icebolt combo until the relevant pages of the manual have been found.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "fool_traps",
+			"label": "Fool Traps",
+			"description": "Replaces low-to-medium value money rewards in the item pool with fool traps, which cause random negative effects to the player.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "onslaught",
+						"label": "Onslaught"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "laurels_location",
+			"label": "Laurels Location",
+			"description": "Force the Hero's Laurels to be placed at a location in your world.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "anywhere",
+				"choices": [
+					{
+						"value": "anywhere",
+						"label": "Anywhere"
+					},
+					{
+						"value": "6_coins",
+						"label": "6 Coins"
+					},
+					{
+						"value": "10_coins",
+						"label": "10 Coins"
+					},
+					{
+						"value": "10_fairies",
+						"label": "10 Fairies"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hexagon_quest",
+			"label": "Hexagon Quest",
+			"description": "An alternate goal that shuffles Gold \"Questagon\" items into the item pool and allows the game to be completed after collecting the required number of them.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hexagon_goal",
+			"label": "Hexagon Goal",
+			"description": "How many Gold Questagons are required to complete the game on Hexagon Quest.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "extra_hexagon_percentage",
+			"label": "Extra Hexagon Percentage",
+			"description": "How many extra Gold Questagons are shuffled into the item pool, taken as a percentage of the goal amount.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hexagon_quest_ability_type",
+			"label": "Hexagon Quest Ability Type",
+			"description": "Determines how abilities are unlocked when playing Hexagon Quest with Shuffled Abilities enabled.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "hexagons",
+				"choices": [
+					{
+						"value": "hexagons",
+						"label": "Hexagons"
+					},
+					{
+						"value": "pages",
+						"label": "Pages"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_ladders",
+			"label": "Shuffle Ladders",
+			"description": "Turns several ladders in the game into items that must be found before they can be climbed on.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_fuses",
+			"label": "Shuffle Fuses",
+			"description": "Praying at a fuse will reward a check instead of turning on the power.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_bells",
+			"label": "Shuffle Bells",
+			"description": "The East and West bells are shuffled into the item pool and must be found in order to unlock the Sealed Temple.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "grass_randomizer",
+			"label": "Grass Randomizer",
+			"description": "Turns over 6,000 blades of grass and bushes in the game into checks.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "breakable_shuffle",
+			"label": "Breakable Shuffle",
+			"description": "Turns approximately 250 breakable objects in the game into checks.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "local_fill",
+			"label": "Local Fill",
+			"description": "Choose the percentage of your filler/trap items that will be kept local or distributed to other TUNIC players with this option enabled.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 98,
+				"step": 1,
+				"default": -1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "entrance_rando",
+			"label": "Entrance Rando",
+			"description": "Randomize the connections between scenes.",
+			"category": "entrances",
+			"type": {
+				"kind": "select",
+				"default": "no",
+				"choices": [
+					{
+						"value": "no",
+						"label": "No"
+					},
+					{
+						"value": "yes",
+						"label": "Yes"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "entrance_layout",
+			"label": "Entrance Layout",
+			"description": "Decide how the Entrance Randomizer chooses how to pair the entrances.",
+			"category": "entrances",
+			"type": {
+				"kind": "select",
+				"default": "standard",
+				"choices": [
+					{
+						"value": "standard",
+						"label": "Standard"
+					},
+					{
+						"value": "fixed_shop",
+						"label": "Fixed Shop"
+					},
+					{
+						"value": "direction_pairs",
+						"label": "Direction Pairs"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "decoupled",
+			"label": "Decoupled",
+			"description": "Decouple the entrances, so that when you go from one entrance to another, the return trip won't necessarily bring you back to the same place.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "combat_logic",
+			"label": "Combat Logic",
+			"description": "If enabled, the player will logically require a combination of stat upgrade items and equipment to get some checks or navigate to some areas, with a goal of matching the vanilla combat difficulty.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "bosses_only",
+						"label": "Bosses Only"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lanternless",
+			"label": "Lanternless",
+			"description": "When enabled, you may be required to navigate dark areas without the Lantern.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "maskless",
+			"label": "Maskless",
+			"description": "When enabled, you may be required to traverse Lower Quarry without the Scavenger's Mask.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "laurels_zips",
+			"label": "Laurels Zips",
+			"description": "Choose whether to include using the Hero's Laurels to zip through gates, doors, and tricky spots.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ice_grappling",
+			"label": "Ice Grappling",
+			"description": "Choose whether grappling frozen enemies is in logic.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "easy",
+						"label": "Easy"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ladder_storage",
+			"label": "Ladder Storage",
+			"description": "Choose whether Ladder Storage is in logic.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "easy",
+						"label": "Easy"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ladder_storage_without_items",
+			"label": "Ladder Storage Without Items",
+			"description": "If disabled, you logically require Stick, Sword, Magic Orb, or Shield to perform Ladder Storage.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -46,8 +46,8 @@ The autotracker code for communication with magpie tracker is directly copied fr
 
 The following sprite sheets have been included with permission of their respective authors:
 
-* by [Madam Materia](https://www.twitch.tv/isabelle_zephyr)
-  * Matty_LA
+- by [Madam Materia](https://www.twitch.tv/isabelle_zephyr)
+  - Matty_LA
 
 Title screen graphics by [toomanyteeth✨](https://instagram.com/toomanyyyteeth)
 

@@ -1,587 +1,587 @@
 {
-  "id": "celeste64",
-  "name": "Celeste 64",
-  "version": "0.1.6",
-  "description": "Relive the magic of Celeste Mountain alongside Madeline in this small, heartfelt 3D platformer.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link_amnesty",
-      "label": "Death Link Amnesty",
-      "description": "How many deaths it takes to send a DeathLink",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 30,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "total_strawberries",
-      "label": "Total Strawberries",
-      "description": "How many Strawberries exist",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 55,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "strawberries_required_percentage",
-      "label": "Strawberries Required Percentage",
-      "description": "Percentage of existing Strawberries you must receive to finish",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 80
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "logic_difficulty",
-      "label": "Logic Difficulty",
-      "description": "Whether the logic expects you to play the intended way, or to be able to use advanced tricks and skips",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "standard",
-        "choices": [
-          {
-            "value": "standard",
-            "label": "Standard"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "move_shuffle",
-      "label": "Move Shuffle",
-      "description": "Whether the following base movement abilities are shuffled into the item pool: - Ground Dash - Air Dash - Skid Jump - Climb NOTE: Having Move Shuffle and Standard Logic Difficulty will guarantee that one of the four Move items will be immediately accessible WARNING: Combining Move Shuffle and Hard Logic Difficulty can require very difficult tricks",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "friendsanity",
-      "label": "Friendsanity",
-      "description": "Whether chatting with your friends grants location checks",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "signsanity",
-      "label": "Signsanity",
-      "description": "Whether reading signs grants location checks",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "carsanity",
-      "label": "Carsanity",
-      "description": "Whether riding on cars grants location checks",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "checkpointsanity",
-      "label": "Checkpointsanity",
-      "description": "Whether activating Checkpoints grants location checks Activating this will also shuffle items into the pool which allow usage and warping to each Checkpoint",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "madeline_one_dash_hair_color",
-      "label": "Madeline One Dash Hair Color",
-      "description": "What color Madeline's hair is when she has one dash The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "strawberry",
-        "choices": [
-          {
-            "value": "strawberry",
-            "label": "Strawberry"
-          },
-          {
-            "value": "empty",
-            "label": "Empty"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "golden",
-            "label": "Golden"
-          },
-          {
-            "value": "baddy",
-            "label": "Baddy"
-          },
-          {
-            "value": "fire_red",
-            "label": "Fire Red"
-          },
-          {
-            "value": "maroon",
-            "label": "Maroon"
-          },
-          {
-            "value": "salmon",
-            "label": "Salmon"
-          },
-          {
-            "value": "orange",
-            "label": "Orange"
-          },
-          {
-            "value": "lime_green",
-            "label": "Lime Green"
-          },
-          {
-            "value": "bright_green",
-            "label": "Bright Green"
-          },
-          {
-            "value": "forest_green",
-            "label": "Forest Green"
-          },
-          {
-            "value": "royal_blue",
-            "label": "Royal Blue"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "black",
-            "label": "Black"
-          },
-          {
-            "value": "white",
-            "label": "White"
-          },
-          {
-            "value": "grey",
-            "label": "Grey"
-          },
-          {
-            "value": "any_color",
-            "label": "Any Color"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "madeline_two_dash_hair_color",
-      "label": "Madeline Two Dash Hair Color",
-      "description": "What color Madeline's hair is when she has two dashes The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "double",
-        "choices": [
-          {
-            "value": "strawberry",
-            "label": "Strawberry"
-          },
-          {
-            "value": "empty",
-            "label": "Empty"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "golden",
-            "label": "Golden"
-          },
-          {
-            "value": "baddy",
-            "label": "Baddy"
-          },
-          {
-            "value": "fire_red",
-            "label": "Fire Red"
-          },
-          {
-            "value": "maroon",
-            "label": "Maroon"
-          },
-          {
-            "value": "salmon",
-            "label": "Salmon"
-          },
-          {
-            "value": "orange",
-            "label": "Orange"
-          },
-          {
-            "value": "lime_green",
-            "label": "Lime Green"
-          },
-          {
-            "value": "bright_green",
-            "label": "Bright Green"
-          },
-          {
-            "value": "forest_green",
-            "label": "Forest Green"
-          },
-          {
-            "value": "royal_blue",
-            "label": "Royal Blue"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "black",
-            "label": "Black"
-          },
-          {
-            "value": "white",
-            "label": "White"
-          },
-          {
-            "value": "grey",
-            "label": "Grey"
-          },
-          {
-            "value": "any_color",
-            "label": "Any Color"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "madeline_no_dash_hair_color",
-      "label": "Madeline No Dash Hair Color",
-      "description": "What color Madeline's hair is when she has no dashes The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "empty",
-        "choices": [
-          {
-            "value": "strawberry",
-            "label": "Strawberry"
-          },
-          {
-            "value": "empty",
-            "label": "Empty"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "golden",
-            "label": "Golden"
-          },
-          {
-            "value": "baddy",
-            "label": "Baddy"
-          },
-          {
-            "value": "fire_red",
-            "label": "Fire Red"
-          },
-          {
-            "value": "maroon",
-            "label": "Maroon"
-          },
-          {
-            "value": "salmon",
-            "label": "Salmon"
-          },
-          {
-            "value": "orange",
-            "label": "Orange"
-          },
-          {
-            "value": "lime_green",
-            "label": "Lime Green"
-          },
-          {
-            "value": "bright_green",
-            "label": "Bright Green"
-          },
-          {
-            "value": "forest_green",
-            "label": "Forest Green"
-          },
-          {
-            "value": "royal_blue",
-            "label": "Royal Blue"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "black",
-            "label": "Black"
-          },
-          {
-            "value": "white",
-            "label": "White"
-          },
-          {
-            "value": "grey",
-            "label": "Grey"
-          },
-          {
-            "value": "any_color",
-            "label": "Any Color"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "madeline_feather_hair_color",
-      "label": "Madeline Feather Hair Color",
-      "description": "What color Madeline's hair is when she has a feather The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "golden",
-        "choices": [
-          {
-            "value": "strawberry",
-            "label": "Strawberry"
-          },
-          {
-            "value": "empty",
-            "label": "Empty"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "golden",
-            "label": "Golden"
-          },
-          {
-            "value": "baddy",
-            "label": "Baddy"
-          },
-          {
-            "value": "fire_red",
-            "label": "Fire Red"
-          },
-          {
-            "value": "maroon",
-            "label": "Maroon"
-          },
-          {
-            "value": "salmon",
-            "label": "Salmon"
-          },
-          {
-            "value": "orange",
-            "label": "Orange"
-          },
-          {
-            "value": "lime_green",
-            "label": "Lime Green"
-          },
-          {
-            "value": "bright_green",
-            "label": "Bright Green"
-          },
-          {
-            "value": "forest_green",
-            "label": "Forest Green"
-          },
-          {
-            "value": "royal_blue",
-            "label": "Royal Blue"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "black",
-            "label": "Black"
-          },
-          {
-            "value": "white",
-            "label": "White"
-          },
-          {
-            "value": "grey",
-            "label": "Grey"
-          },
-          {
-            "value": "any_color",
-            "label": "Any Color"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "badeline_chaser_source",
-      "label": "Badeline Chaser Source",
-      "description": "What type of action causes more Badeline Chasers to start spawning Locations: The number of locations you've checked contributes to Badeline Chasers Strawberries: The number of Strawberry items you've received contributes to Badeline Chasers",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "locations",
-        "choices": [
-          {
-            "value": "locations",
-            "label": "Locations"
-          },
-          {
-            "value": "strawberries",
-            "label": "Strawberries"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "badeline_chaser_frequency",
-      "label": "Badeline Chaser Frequency",
-      "description": "How many of the `Badeline Chaser Source` actions must occur to make each Badeline Chaser start spawning NOTE: Choosing `0` disables Badeline Chasers entirely WARNING: Turning on Badeline Chasers alongside Move Shuffle could result in extremely difficult situations",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "badeline_chaser_speed",
-      "label": "Badeline Chaser Speed",
-      "description": "How many seconds behind you each Badeline Chaser will be",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 2,
-        "max": 10,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "celeste64",
+	"name": "Celeste 64",
+	"version": "0.1.6",
+	"description": "Relive the magic of Celeste Mountain alongside Madeline in this small, heartfelt 3D platformer.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link_amnesty",
+			"label": "Death Link Amnesty",
+			"description": "How many deaths it takes to send a DeathLink",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 30,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "total_strawberries",
+			"label": "Total Strawberries",
+			"description": "How many Strawberries exist",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 55,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "strawberries_required_percentage",
+			"label": "Strawberries Required Percentage",
+			"description": "Percentage of existing Strawberries you must receive to finish",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 80
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "logic_difficulty",
+			"label": "Logic Difficulty",
+			"description": "Whether the logic expects you to play the intended way, or to be able to use advanced tricks and skips",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "standard",
+				"choices": [
+					{
+						"value": "standard",
+						"label": "Standard"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "move_shuffle",
+			"label": "Move Shuffle",
+			"description": "Whether the following base movement abilities are shuffled into the item pool: - Ground Dash - Air Dash - Skid Jump - Climb NOTE: Having Move Shuffle and Standard Logic Difficulty will guarantee that one of the four Move items will be immediately accessible WARNING: Combining Move Shuffle and Hard Logic Difficulty can require very difficult tricks",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "friendsanity",
+			"label": "Friendsanity",
+			"description": "Whether chatting with your friends grants location checks",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "signsanity",
+			"label": "Signsanity",
+			"description": "Whether reading signs grants location checks",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "carsanity",
+			"label": "Carsanity",
+			"description": "Whether riding on cars grants location checks",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "checkpointsanity",
+			"label": "Checkpointsanity",
+			"description": "Whether activating Checkpoints grants location checks Activating this will also shuffle items into the pool which allow usage and warping to each Checkpoint",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "madeline_one_dash_hair_color",
+			"label": "Madeline One Dash Hair Color",
+			"description": "What color Madeline's hair is when she has one dash The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "strawberry",
+				"choices": [
+					{
+						"value": "strawberry",
+						"label": "Strawberry"
+					},
+					{
+						"value": "empty",
+						"label": "Empty"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "golden",
+						"label": "Golden"
+					},
+					{
+						"value": "baddy",
+						"label": "Baddy"
+					},
+					{
+						"value": "fire_red",
+						"label": "Fire Red"
+					},
+					{
+						"value": "maroon",
+						"label": "Maroon"
+					},
+					{
+						"value": "salmon",
+						"label": "Salmon"
+					},
+					{
+						"value": "orange",
+						"label": "Orange"
+					},
+					{
+						"value": "lime_green",
+						"label": "Lime Green"
+					},
+					{
+						"value": "bright_green",
+						"label": "Bright Green"
+					},
+					{
+						"value": "forest_green",
+						"label": "Forest Green"
+					},
+					{
+						"value": "royal_blue",
+						"label": "Royal Blue"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "black",
+						"label": "Black"
+					},
+					{
+						"value": "white",
+						"label": "White"
+					},
+					{
+						"value": "grey",
+						"label": "Grey"
+					},
+					{
+						"value": "any_color",
+						"label": "Any Color"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "madeline_two_dash_hair_color",
+			"label": "Madeline Two Dash Hair Color",
+			"description": "What color Madeline's hair is when she has two dashes The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "double",
+				"choices": [
+					{
+						"value": "strawberry",
+						"label": "Strawberry"
+					},
+					{
+						"value": "empty",
+						"label": "Empty"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "golden",
+						"label": "Golden"
+					},
+					{
+						"value": "baddy",
+						"label": "Baddy"
+					},
+					{
+						"value": "fire_red",
+						"label": "Fire Red"
+					},
+					{
+						"value": "maroon",
+						"label": "Maroon"
+					},
+					{
+						"value": "salmon",
+						"label": "Salmon"
+					},
+					{
+						"value": "orange",
+						"label": "Orange"
+					},
+					{
+						"value": "lime_green",
+						"label": "Lime Green"
+					},
+					{
+						"value": "bright_green",
+						"label": "Bright Green"
+					},
+					{
+						"value": "forest_green",
+						"label": "Forest Green"
+					},
+					{
+						"value": "royal_blue",
+						"label": "Royal Blue"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "black",
+						"label": "Black"
+					},
+					{
+						"value": "white",
+						"label": "White"
+					},
+					{
+						"value": "grey",
+						"label": "Grey"
+					},
+					{
+						"value": "any_color",
+						"label": "Any Color"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "madeline_no_dash_hair_color",
+			"label": "Madeline No Dash Hair Color",
+			"description": "What color Madeline's hair is when she has no dashes The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "empty",
+				"choices": [
+					{
+						"value": "strawberry",
+						"label": "Strawberry"
+					},
+					{
+						"value": "empty",
+						"label": "Empty"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "golden",
+						"label": "Golden"
+					},
+					{
+						"value": "baddy",
+						"label": "Baddy"
+					},
+					{
+						"value": "fire_red",
+						"label": "Fire Red"
+					},
+					{
+						"value": "maroon",
+						"label": "Maroon"
+					},
+					{
+						"value": "salmon",
+						"label": "Salmon"
+					},
+					{
+						"value": "orange",
+						"label": "Orange"
+					},
+					{
+						"value": "lime_green",
+						"label": "Lime Green"
+					},
+					{
+						"value": "bright_green",
+						"label": "Bright Green"
+					},
+					{
+						"value": "forest_green",
+						"label": "Forest Green"
+					},
+					{
+						"value": "royal_blue",
+						"label": "Royal Blue"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "black",
+						"label": "Black"
+					},
+					{
+						"value": "white",
+						"label": "White"
+					},
+					{
+						"value": "grey",
+						"label": "Grey"
+					},
+					{
+						"value": "any_color",
+						"label": "Any Color"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "madeline_feather_hair_color",
+			"label": "Madeline Feather Hair Color",
+			"description": "What color Madeline's hair is when she has a feather The `any_color` option will choose a fully random color A custom color entry may be supplied as a 6-character RGB hex color code e.g.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "golden",
+				"choices": [
+					{
+						"value": "strawberry",
+						"label": "Strawberry"
+					},
+					{
+						"value": "empty",
+						"label": "Empty"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "golden",
+						"label": "Golden"
+					},
+					{
+						"value": "baddy",
+						"label": "Baddy"
+					},
+					{
+						"value": "fire_red",
+						"label": "Fire Red"
+					},
+					{
+						"value": "maroon",
+						"label": "Maroon"
+					},
+					{
+						"value": "salmon",
+						"label": "Salmon"
+					},
+					{
+						"value": "orange",
+						"label": "Orange"
+					},
+					{
+						"value": "lime_green",
+						"label": "Lime Green"
+					},
+					{
+						"value": "bright_green",
+						"label": "Bright Green"
+					},
+					{
+						"value": "forest_green",
+						"label": "Forest Green"
+					},
+					{
+						"value": "royal_blue",
+						"label": "Royal Blue"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "black",
+						"label": "Black"
+					},
+					{
+						"value": "white",
+						"label": "White"
+					},
+					{
+						"value": "grey",
+						"label": "Grey"
+					},
+					{
+						"value": "any_color",
+						"label": "Any Color"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "badeline_chaser_source",
+			"label": "Badeline Chaser Source",
+			"description": "What type of action causes more Badeline Chasers to start spawning Locations: The number of locations you've checked contributes to Badeline Chasers Strawberries: The number of Strawberry items you've received contributes to Badeline Chasers",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "locations",
+				"choices": [
+					{
+						"value": "locations",
+						"label": "Locations"
+					},
+					{
+						"value": "strawberries",
+						"label": "Strawberries"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "badeline_chaser_frequency",
+			"label": "Badeline Chaser Frequency",
+			"description": "How many of the `Badeline Chaser Source` actions must occur to make each Badeline Chaser start spawning NOTE: Choosing `0` disables Badeline Chasers entirely WARNING: Turning on Badeline Chasers alongside Move Shuffle could result in extremely difficult situations",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "badeline_chaser_speed",
+			"label": "Badeline Chaser Speed",
+			"description": "How many seconds behind you each Badeline Chaser will be",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 2,
+				"max": 10,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

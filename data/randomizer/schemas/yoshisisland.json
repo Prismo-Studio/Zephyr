@@ -1,586 +1,586 @@
 {
-  "id": "yoshisisland",
-  "name": "Yoshi's Island",
-  "version": "0.4.4",
-  "description": "Yoshi's Island is a 2D platforming game.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_world",
-      "label": "Starting World",
-      "description": "This sets which world you start in.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "world_1",
-        "choices": [
-          {
-            "value": "world_1",
-            "label": "World 1"
-          },
-          {
-            "value": "world_2",
-            "label": "World 2"
-          },
-          {
-            "value": "world_3",
-            "label": "World 3"
-          },
-          {
-            "value": "world_4",
-            "label": "World 4"
-          },
-          {
-            "value": "world_5",
-            "label": "World 5"
-          },
-          {
-            "value": "world_6",
-            "label": "World 6"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_lives",
-      "label": "Starting Lives",
-      "description": "This sets the amount of lives Yoshi will have upon loading the game.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 999,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "This sets the goal.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "bowser",
-        "choices": [
-          {
-            "value": "bowser",
-            "label": "Bowser"
-          },
-          {
-            "value": "luigi_hunt",
-            "label": "Luigi Hunt"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "luigi_pieces_required",
-      "label": "Luigi Pieces Required",
-      "description": "This will set how many Luigi Pieces are required to trigger a victory.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "luigi_pieces_in_pool",
-      "label": "Luigi Pieces In Pool",
-      "description": "This will set how many Luigi Pieces are in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "extras_enabled",
-      "label": "Extras Enabled",
-      "description": "If enabled, the more difficult Extra stages will be added into logic.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "minigame_checks",
-      "label": "Minigame Checks",
-      "description": "This will set minigame victories to give Archipelago checks.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "bandit_games",
-            "label": "Bandit Games"
-          },
-          {
-            "value": "bonus_games",
-            "label": "Bonus Games"
-          },
-          {
-            "value": "both",
-            "label": "Both"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "split_extras",
-      "label": "Split Extras",
-      "description": "If enabled, Extra stages will be unlocked individually.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "split_bonus",
-      "label": "Split Bonus",
-      "description": "If enabled, Bonus Games will be unlocked individually.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hidden_object_visibility",
-      "label": "Hidden Object Visibility",
-      "description": "This will determine the default visibility of objects revealed by the Magnifying Glass.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "coins_only",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "coins_only",
-            "label": "Coins Only"
-          },
-          {
-            "value": "clouds_only",
-            "label": "Clouds Only"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "add_secretlens",
-      "label": "Add Secretlens",
-      "description": "If enabled, the Secret Lens will be added to the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_midrings",
-      "label": "Shuffle Midrings",
-      "description": "If enabled, Middle Rings will be added to the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "stage_logic",
-      "label": "Stage Logic",
-      "description": "This determines what logic mode the stages will use.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "strict",
-        "choices": [
-          {
-            "value": "strict",
-            "label": "Strict"
-          },
-          {
-            "value": "loose",
-            "label": "Loose"
-          },
-          {
-            "value": "expert",
-            "label": "Expert"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_logic",
-      "label": "Item Logic",
-      "description": "This will enable logic to expect consumables to be used from the inventory in place of some major items.",
-      "category": "logic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "disable_autoscroll",
-      "label": "Disable Autoscroll",
-      "description": "If enabled, will disable autoscrolling during levels, except during levels which cannot function otherwise.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "softlock_prevention",
-      "label": "Softlock Prevention",
-      "description": "If enabled, hold R + X to warp to the last used Middle Ring, or the start of the level if none have been activated.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "castle_open_condition",
-      "label": "Castle Open Condition",
-      "description": "This sets how many bosses need to be defeated to access 6-8.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 11,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "castle_clear_condition",
-      "label": "Castle Clear Condition",
-      "description": "This sets how many bosses need to be defeated to access the boss of 6-8.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 11,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bowser_door_mode",
-      "label": "Bowser Door Mode",
-      "description": "This will set which route you take through 6-8.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "manual",
-        "choices": [
-          {
-            "value": "manual",
-            "label": "Manual"
-          },
-          {
-            "value": "door_1",
-            "label": "Door 1"
-          },
-          {
-            "value": "door_2",
-            "label": "Door 2"
-          },
-          {
-            "value": "door_3",
-            "label": "Door 3"
-          },
-          {
-            "value": "door_4",
-            "label": "Door 4"
-          },
-          {
-            "value": "gauntlet",
-            "label": "Gauntlet"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "level_shuffle",
-      "label": "Level Shuffle",
-      "description": "Disabled: All levels will appear in their normal location.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "disabled",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "bosses_guaranteed",
-            "label": "Bosses Guaranteed"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "boss_shuffle",
-      "label": "Boss Shuffle",
-      "description": "This whill shuffle which boss each boss door will lead to.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "yoshi_colors",
-      "label": "Yoshi Colors",
-      "description": "Sets the Yoshi color for each level.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "random_order",
-            "label": "Random Order"
-          },
-          {
-            "value": "random_color",
-            "label": "Random Color"
-          },
-          {
-            "value": "singularity",
-            "label": "Singularity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "yoshi_singularity_color",
-      "label": "Yoshi Singularity Color",
-      "description": "Sets which color Yoshi will be if Yoshi Colors is set to singularity.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "green",
-        "choices": [
-          {
-            "value": "green",
-            "label": "Green"
-          },
-          {
-            "value": "pink",
-            "label": "Pink"
-          },
-          {
-            "value": "cyan",
-            "label": "Cyan"
-          },
-          {
-            "value": "yellow",
-            "label": "Yellow"
-          },
-          {
-            "value": "purple",
-            "label": "Purple"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "red",
-            "label": "Red"
-          },
-          {
-            "value": "blue",
-            "label": "Blue"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "baby_mario_sound",
-      "label": "Baby Mario Sound",
-      "description": "Change the sound that Baby Mario makes when not on Yoshi.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "random_sound_effect",
-            "label": "Random Sound Effect"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "traps_enabled",
-      "label": "Traps Enabled",
-      "description": "Will place traps into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_percent",
-      "label": "Trap Percent",
-      "description": "Percentage of the item pool that becomes replaced with traps.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "yoshisisland",
+	"name": "Yoshi's Island",
+	"version": "0.4.4",
+	"description": "Yoshi's Island is a 2D platforming game.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_world",
+			"label": "Starting World",
+			"description": "This sets which world you start in.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "world_1",
+				"choices": [
+					{
+						"value": "world_1",
+						"label": "World 1"
+					},
+					{
+						"value": "world_2",
+						"label": "World 2"
+					},
+					{
+						"value": "world_3",
+						"label": "World 3"
+					},
+					{
+						"value": "world_4",
+						"label": "World 4"
+					},
+					{
+						"value": "world_5",
+						"label": "World 5"
+					},
+					{
+						"value": "world_6",
+						"label": "World 6"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_lives",
+			"label": "Starting Lives",
+			"description": "This sets the amount of lives Yoshi will have upon loading the game.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 999,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "This sets the goal.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "bowser",
+				"choices": [
+					{
+						"value": "bowser",
+						"label": "Bowser"
+					},
+					{
+						"value": "luigi_hunt",
+						"label": "Luigi Hunt"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "luigi_pieces_required",
+			"label": "Luigi Pieces Required",
+			"description": "This will set how many Luigi Pieces are required to trigger a victory.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "luigi_pieces_in_pool",
+			"label": "Luigi Pieces In Pool",
+			"description": "This will set how many Luigi Pieces are in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "extras_enabled",
+			"label": "Extras Enabled",
+			"description": "If enabled, the more difficult Extra stages will be added into logic.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "minigame_checks",
+			"label": "Minigame Checks",
+			"description": "This will set minigame victories to give Archipelago checks.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "bandit_games",
+						"label": "Bandit Games"
+					},
+					{
+						"value": "bonus_games",
+						"label": "Bonus Games"
+					},
+					{
+						"value": "both",
+						"label": "Both"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "split_extras",
+			"label": "Split Extras",
+			"description": "If enabled, Extra stages will be unlocked individually.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "split_bonus",
+			"label": "Split Bonus",
+			"description": "If enabled, Bonus Games will be unlocked individually.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hidden_object_visibility",
+			"label": "Hidden Object Visibility",
+			"description": "This will determine the default visibility of objects revealed by the Magnifying Glass.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "coins_only",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "coins_only",
+						"label": "Coins Only"
+					},
+					{
+						"value": "clouds_only",
+						"label": "Clouds Only"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "add_secretlens",
+			"label": "Add Secretlens",
+			"description": "If enabled, the Secret Lens will be added to the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_midrings",
+			"label": "Shuffle Midrings",
+			"description": "If enabled, Middle Rings will be added to the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "stage_logic",
+			"label": "Stage Logic",
+			"description": "This determines what logic mode the stages will use.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "strict",
+				"choices": [
+					{
+						"value": "strict",
+						"label": "Strict"
+					},
+					{
+						"value": "loose",
+						"label": "Loose"
+					},
+					{
+						"value": "expert",
+						"label": "Expert"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_logic",
+			"label": "Item Logic",
+			"description": "This will enable logic to expect consumables to be used from the inventory in place of some major items.",
+			"category": "logic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "disable_autoscroll",
+			"label": "Disable Autoscroll",
+			"description": "If enabled, will disable autoscrolling during levels, except during levels which cannot function otherwise.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "softlock_prevention",
+			"label": "Softlock Prevention",
+			"description": "If enabled, hold R + X to warp to the last used Middle Ring, or the start of the level if none have been activated.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "castle_open_condition",
+			"label": "Castle Open Condition",
+			"description": "This sets how many bosses need to be defeated to access 6-8.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 11,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "castle_clear_condition",
+			"label": "Castle Clear Condition",
+			"description": "This sets how many bosses need to be defeated to access the boss of 6-8.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 11,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bowser_door_mode",
+			"label": "Bowser Door Mode",
+			"description": "This will set which route you take through 6-8.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "manual",
+				"choices": [
+					{
+						"value": "manual",
+						"label": "Manual"
+					},
+					{
+						"value": "door_1",
+						"label": "Door 1"
+					},
+					{
+						"value": "door_2",
+						"label": "Door 2"
+					},
+					{
+						"value": "door_3",
+						"label": "Door 3"
+					},
+					{
+						"value": "door_4",
+						"label": "Door 4"
+					},
+					{
+						"value": "gauntlet",
+						"label": "Gauntlet"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "level_shuffle",
+			"label": "Level Shuffle",
+			"description": "Disabled: All levels will appear in their normal location.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "disabled",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "bosses_guaranteed",
+						"label": "Bosses Guaranteed"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "boss_shuffle",
+			"label": "Boss Shuffle",
+			"description": "This whill shuffle which boss each boss door will lead to.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "yoshi_colors",
+			"label": "Yoshi Colors",
+			"description": "Sets the Yoshi color for each level.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "random_order",
+						"label": "Random Order"
+					},
+					{
+						"value": "random_color",
+						"label": "Random Color"
+					},
+					{
+						"value": "singularity",
+						"label": "Singularity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "yoshi_singularity_color",
+			"label": "Yoshi Singularity Color",
+			"description": "Sets which color Yoshi will be if Yoshi Colors is set to singularity.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "green",
+				"choices": [
+					{
+						"value": "green",
+						"label": "Green"
+					},
+					{
+						"value": "pink",
+						"label": "Pink"
+					},
+					{
+						"value": "cyan",
+						"label": "Cyan"
+					},
+					{
+						"value": "yellow",
+						"label": "Yellow"
+					},
+					{
+						"value": "purple",
+						"label": "Purple"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "red",
+						"label": "Red"
+					},
+					{
+						"value": "blue",
+						"label": "Blue"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "baby_mario_sound",
+			"label": "Baby Mario Sound",
+			"description": "Change the sound that Baby Mario makes when not on Yoshi.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "random_sound_effect",
+						"label": "Random Sound Effect"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "traps_enabled",
+			"label": "Traps Enabled",
+			"description": "Will place traps into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_percent",
+			"label": "Trap Percent",
+			"description": "Percentage of the item pool that becomes replaced with traps.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

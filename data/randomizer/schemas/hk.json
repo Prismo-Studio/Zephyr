@@ -1,1257 +1,1257 @@
 {
-  "id": "hk",
-  "name": "Hollow Knight",
-  "version": "0.1.6",
-  "description": "Beneath the fading town of Dirtmouth sleeps a vast, ancient kingdom.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeDreamers",
-      "label": "Randomizedreamers",
-      "description": "Allow for Dreamers to be randomized into the item pool and opens their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeSkills",
-      "label": "Randomizeskills",
-      "description": "Allow for Skills, such as Mantis Claw or Shade Soul, to be randomized into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeFocus",
-      "label": "Randomizefocus",
-      "description": "Removes the ability to focus and randomizes it into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeSwim",
-      "label": "Randomizeswim",
-      "description": "Removes the ability to swim in water and randomizes it into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeCharms",
-      "label": "Randomizecharms",
-      "description": "Allow for Charms to be randomized into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeKeys",
-      "label": "Randomizekeys",
-      "description": "Allow for Keys to be randomized into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeMaskShards",
-      "label": "Randomizemaskshards",
-      "description": "Allow for Mask Shard to be randomized into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeVesselFragments",
-      "label": "Randomizevesselfragments",
-      "description": "Allow for Vessel Fragments to be randomized into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeCharmNotches",
-      "label": "Randomizecharmnotches",
-      "description": "Allow for Charm Notches to be randomized into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizePaleOre",
-      "label": "Randomizepaleore",
-      "description": "Randomize Pale Ores into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeGeoChests",
-      "label": "Randomizegeochests",
-      "description": "Allow for Geo Chests to contain randomized items, as well as their Geo reward being randomized into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeJunkPitChests",
-      "label": "Randomizejunkpitchests",
-      "description": "Randomize the contents of junk pit chests into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeRancidEggs",
-      "label": "Randomizerancideggs",
-      "description": "Randomize Rancid Eggs into the item pool and open their locations for randomization This option adds approximately 20 locations.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeRelics",
-      "label": "Randomizerelics",
-      "description": "Randomize Relics (King's Idol, et al.) into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeWhisperingRoots",
-      "label": "Randomizewhisperingroots",
-      "description": "Randomize the essence rewards from Whispering Roots into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeBossEssence",
-      "label": "Randomizebossessence",
-      "description": "Randomize boss essence drops, such as those for defeating Warrior Dreams, into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeGrubs",
-      "label": "Randomizegrubs",
-      "description": "Randomize Grubs into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeMimics",
-      "label": "Randomizemimics",
-      "description": "Randomize Mimic Grubs into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeMaps",
-      "label": "Randomizemaps",
-      "description": "Randomize Maps into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeStags",
-      "label": "Randomizestags",
-      "description": "Randomize Stag Stations unlocks into the item pool as well as placing randomized items on the stag station bell/toll.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeLifebloodCocoons",
-      "label": "Randomizelifebloodcocoons",
-      "description": "Randomize Lifeblood Cocoon grants into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeGrimmkinFlames",
-      "label": "Randomizegrimmkinflames",
-      "description": "Randomize Grimmkin Flames into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeJournalEntries",
-      "label": "Randomizejournalentries",
-      "description": "Randomize the Hunter's Journal as well as the findable journal entries into the item pool, and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeNail",
-      "label": "Randomizenail",
-      "description": "Removes the ability to swing the nail left, right and up, and shuffles these into the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeGeoRocks",
-      "label": "Randomizegeorocks",
-      "description": "Randomize Geo Rock rewards into the item pool and open their locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeBossGeo",
-      "label": "Randomizebossgeo",
-      "description": "Randomize boss Geo drops into the item pool and open those locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeSoulTotems",
-      "label": "Randomizesoultotems",
-      "description": "Randomize Soul Refill items into the item pool and open the Soul Totem locations for randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeLoreTablets",
-      "label": "Randomizeloretablets",
-      "description": "Randomize Lore items into the itempool, one per Lore Tablet, and place randomized item grants on the tablets themselves.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeElevatorPass",
-      "label": "Randomizeelevatorpass",
-      "description": "Adds an Elevator Pass item to the item pool, which is then required to use the large elevators connecting City of Tears to the Forgotten Crossroads and Resting Grounds.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "PreciseMovement",
-      "label": "Precisemovement",
-      "description": "Places skips into logic which require extremely precise player movement, possibly without movement skills such as dash or claw.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ProficientCombat",
-      "label": "Proficientcombat",
-      "description": "Places skips into logic which require proficient combat, possibly with limited items.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "BackgroundObjectPogos",
-      "label": "Backgroundobjectpogos",
-      "description": "Places skips into logic for locations which are reachable via pogoing off of background objects.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "EnemyPogos",
-      "label": "Enemypogos",
-      "description": "Places skips into logic for locations which are reachable via pogos off of enemies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ObscureSkips",
-      "label": "Obscureskips",
-      "description": "Places skips into logic which are considered obscure enough that a beginner is not expected to know them.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ShadeSkips",
-      "label": "Shadeskips",
-      "description": "Places shade skips into logic which utilize the player's shade for pogoing or damage boosting.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "InfectionSkips",
-      "label": "Infectionskips",
-      "description": "Places skips into logic which are only possible after the crossroads become infected.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "FireballSkips",
-      "label": "Fireballskips",
-      "description": "Places skips into logic which require the use of spells to reset fall speed while in mid-air.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "SpikeTunnels",
-      "label": "Spiketunnels",
-      "description": "Places skips into logic which require the navigation of narrow tunnels filled with spikes.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "AcidSkips",
-      "label": "Acidskips",
-      "description": "Places skips into logic which require crossing a pool of acid without Isma's Tear, or water if swim is disabled.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DamageBoosts",
-      "label": "Damageboosts",
-      "description": "Places skips into logic which require you to take damage from an enemy or hazard to progress.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DangerousSkips",
-      "label": "Dangerousskips",
-      "description": "Places skips into logic which contain a high risk of taking damage.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DarkRooms",
-      "label": "Darkrooms",
-      "description": "Places skips into logic which require navigating dark rooms without the use of the Lumafly Lantern.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ComplexSkips",
-      "label": "Complexskips",
-      "description": "Places skips into logic which require intense setup or are obscure even beyond advanced skip standards.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DifficultSkips",
-      "label": "Difficultskips",
-      "description": "Places skips into logic which are considered more difficult than typical.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RemoveSpellUpgrades",
-      "label": "Removespellupgrades",
-      "description": "Removes the second level of all spells from the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "StartLocation",
-      "label": "Startlocation",
-      "description": "Choose your start location.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "king's_pass",
-        "choices": [
-          {
-            "value": "king's_pass",
-            "label": "king's_pass"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "Goal",
-      "label": "Goal",
-      "description": "The goal required of you in order to complete your run in Archipelago.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "any",
-        "choices": [
-          {
-            "value": "any",
-            "label": "Any"
-          },
-          {
-            "value": "hollowknight",
-            "label": "Hollowknight"
-          },
-          {
-            "value": "siblings",
-            "label": "Siblings"
-          },
-          {
-            "value": "radiance",
-            "label": "Radiance"
-          },
-          {
-            "value": "godhome",
-            "label": "Godhome"
-          },
-          {
-            "value": "godhome_flower",
-            "label": "Godhome Flower"
-          },
-          {
-            "value": "grub_hunt",
-            "label": "Grub Hunt"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "GrubHuntGoal",
-      "label": "Grubhuntgoal",
-      "description": "The amount of grubs required to finish Grub Hunt.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 46,
-        "step": 1,
-        "default": 46
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "WhitePalace",
-      "label": "Whitepalace",
-      "description": "Whether or not to include White Palace or not.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "exclude",
-        "choices": [
-          {
-            "value": "exclude",
-            "label": "Exclude"
-          },
-          {
-            "value": "kingfragment",
-            "label": "Kingfragment"
-          },
-          {
-            "value": "nopathofpain",
-            "label": "Nopathofpain"
-          },
-          {
-            "value": "include",
-            "label": "Include"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ExtraPlatforms",
-      "label": "Extraplatforms",
-      "description": "Places additional platforms to make traveling throughout Hallownest more convenient.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "AddUnshuffledLocations",
-      "label": "Addunshuffledlocations",
-      "description": "Adds non-randomized locations to the location pool, which allows syncing of location state with co-op or automatic collection via collect.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "StartingGeo",
-      "label": "Startinggeo",
-      "description": "The amount of starting geo you have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 1000,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DeathLink",
-      "label": "Deathlink",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DeathLinkShade",
-      "label": "Deathlinkshade",
-      "description": "Sets whether to create a shade when you are killed by a DeathLink and how to handle your existing shade, if any.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "shade",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "shadeless",
-            "label": "Shadeless"
-          },
-          {
-            "value": "shade",
-            "label": "Shade"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DeathLinkBreaksFragileCharms",
-      "label": "Deathlinkbreaksfragilecharms",
-      "description": "Sets if fragile charms break when you are killed by a DeathLink.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MinimumGeoPrice",
-      "label": "Minimumgeoprice",
-      "description": "The minimum geo price for items in geo shops.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 200,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MaximumGeoPrice",
-      "label": "Maximumgeoprice",
-      "description": "The maximum geo price for items in geo shops.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 2000,
-        "step": 1,
-        "default": 400
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MinimumGrubPrice",
-      "label": "Minimumgrubprice",
-      "description": "The minimum grub price in the range of prices that an item should cost from Grubfather.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 46,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MaximumGrubPrice",
-      "label": "Maximumgrubprice",
-      "description": "The maximum grub price in the range of prices that an item should cost from Grubfather.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 46,
-        "step": 1,
-        "default": 23
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MinimumEssencePrice",
-      "label": "Minimumessenceprice",
-      "description": "The minimum essence price in the range of prices that an item should cost from Seer.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 2800,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MaximumEssencePrice",
-      "label": "Maximumessenceprice",
-      "description": "The maximum essence price in the range of prices that an item should cost from Seer.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 2800,
-        "step": 1,
-        "default": 1400
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MinimumCharmPrice",
-      "label": "Minimumcharmprice",
-      "description": "The minimum charm price in the range of prices that an item should cost for Salubra's shop item which also carry a charm cost.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 40,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MaximumCharmPrice",
-      "label": "Maximumcharmprice",
-      "description": "The maximum charm price in the range of prices that an item should cost for Salubra's shop item which also carry a charm cost.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 40,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomCharmCosts",
-      "label": "Randomcharmcosts",
-      "description": "Total Notch Cost of all Charms together.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 240,
-        "step": 1,
-        "default": -1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MinimumEggPrice",
-      "label": "Minimumeggprice",
-      "description": "The minimum rancid egg price in the range of prices that an item should cost from Jiji.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 20,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MaximumEggPrice",
-      "label": "Maximumeggprice",
-      "description": "The maximum rancid egg price in the range of prices that an item should cost from Jiji.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 20,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "EggShopSlots",
-      "label": "Eggshopslots",
-      "description": "For each slot, add a location to the Egg Shop and a filler item to the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "SlyShopSlots",
-      "label": "Slyshopslots",
-      "description": "For each extra slot, add a location to the Sly Shop and a filler item to the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "SlyKeyShopSlots",
-      "label": "Slykeyshopslots",
-      "description": "For each extra slot, add a location to the Sly Shop (requiring Shopkeeper's Key) and a filler item to the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 6
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "IseldaShopSlots",
-      "label": "Iseldashopslots",
-      "description": "For each extra slot, add a location to the Iselda Shop and a filler item to the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "SalubraShopSlots",
-      "label": "Salubrashopslots",
-      "description": "For each extra slot, add a location to the Salubra Shop, and a filler item to the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "SalubraCharmShopSlots",
-      "label": "Salubracharmshopslots",
-      "description": "For each extra slot, add a location to the Salubra Shop (requiring Charms), and a filler item to the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "LegEaterShopSlots",
-      "label": "Legeatershopslots",
-      "description": "For each extra slot, add a location to the Leg Eater Shop and a filler item to the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "GrubfatherRewardSlots",
-      "label": "Grubfatherrewardslots",
-      "description": "For each extra slot, add a location to the Grubfather and a filler item to the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "SeerRewardSlots",
-      "label": "Seerrewardslots",
-      "description": "For each extra slot, add a location to the Seer and a filler item to the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ExtraShopSlots",
-      "label": "Extrashopslots",
-      "description": "For each extra slot, add a location to a randomly chosen shop a filler item to the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 144,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "SplitCrystalHeart",
-      "label": "Splitcrystalheart",
-      "description": "Splits the Crystal Heart into left- and right-only versions of the item.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "SplitMothwingCloak",
-      "label": "Splitmothwingcloak",
-      "description": "Splits the Mothwing Cloak into left- and right-only versions of the item.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "SplitMantisClaw",
-      "label": "Splitmantisclaw",
-      "description": "Splits the Mantis Claw into left- and right-only versions of the item.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "CostSanity",
-      "label": "Costsanity",
-      "description": "If enabled, most locations with costs (like stag stations) will have randomly determined costs.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "shopsonly",
-            "label": "Shopsonly"
-          },
-          {
-            "value": "notshops",
-            "label": "Notshops"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "CostSanityHybridChance",
-      "label": "Costsanityhybridchance",
-      "description": "The chance that a CostSanity cost will include two components instead of one, e.g.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "CostSanityEggWeight",
-      "label": "Costsanityeggweight",
-      "description": "The likelihood of Costsanity choosing a Egg cost.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 1000,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "CostSanityGrubWeight",
-      "label": "Costsanitygrubweight",
-      "description": "The likelihood of Costsanity choosing a Grub cost.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 1000,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "CostSanityEssenceWeight",
-      "label": "Costsanityessenceweight",
-      "description": "The likelihood of Costsanity choosing a Essence cost.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 1000,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "CostSanityCharmWeight",
-      "label": "Costsanitycharmweight",
-      "description": "The likelihood of Costsanity choosing a Charm cost.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 1000,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "CostSanityGeoWeight",
-      "label": "Costsanitygeoweight",
-      "description": "The likelihood of Costsanity choosing a Geo cost.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 1000,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "hk",
+	"name": "Hollow Knight",
+	"version": "0.1.6",
+	"description": "Beneath the fading town of Dirtmouth sleeps a vast, ancient kingdom.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeDreamers",
+			"label": "Randomizedreamers",
+			"description": "Allow for Dreamers to be randomized into the item pool and opens their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeSkills",
+			"label": "Randomizeskills",
+			"description": "Allow for Skills, such as Mantis Claw or Shade Soul, to be randomized into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeFocus",
+			"label": "Randomizefocus",
+			"description": "Removes the ability to focus and randomizes it into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeSwim",
+			"label": "Randomizeswim",
+			"description": "Removes the ability to swim in water and randomizes it into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeCharms",
+			"label": "Randomizecharms",
+			"description": "Allow for Charms to be randomized into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeKeys",
+			"label": "Randomizekeys",
+			"description": "Allow for Keys to be randomized into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeMaskShards",
+			"label": "Randomizemaskshards",
+			"description": "Allow for Mask Shard to be randomized into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeVesselFragments",
+			"label": "Randomizevesselfragments",
+			"description": "Allow for Vessel Fragments to be randomized into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeCharmNotches",
+			"label": "Randomizecharmnotches",
+			"description": "Allow for Charm Notches to be randomized into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizePaleOre",
+			"label": "Randomizepaleore",
+			"description": "Randomize Pale Ores into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeGeoChests",
+			"label": "Randomizegeochests",
+			"description": "Allow for Geo Chests to contain randomized items, as well as their Geo reward being randomized into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeJunkPitChests",
+			"label": "Randomizejunkpitchests",
+			"description": "Randomize the contents of junk pit chests into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeRancidEggs",
+			"label": "Randomizerancideggs",
+			"description": "Randomize Rancid Eggs into the item pool and open their locations for randomization This option adds approximately 20 locations.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeRelics",
+			"label": "Randomizerelics",
+			"description": "Randomize Relics (King's Idol, et al.) into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeWhisperingRoots",
+			"label": "Randomizewhisperingroots",
+			"description": "Randomize the essence rewards from Whispering Roots into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeBossEssence",
+			"label": "Randomizebossessence",
+			"description": "Randomize boss essence drops, such as those for defeating Warrior Dreams, into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeGrubs",
+			"label": "Randomizegrubs",
+			"description": "Randomize Grubs into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeMimics",
+			"label": "Randomizemimics",
+			"description": "Randomize Mimic Grubs into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeMaps",
+			"label": "Randomizemaps",
+			"description": "Randomize Maps into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeStags",
+			"label": "Randomizestags",
+			"description": "Randomize Stag Stations unlocks into the item pool as well as placing randomized items on the stag station bell/toll.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeLifebloodCocoons",
+			"label": "Randomizelifebloodcocoons",
+			"description": "Randomize Lifeblood Cocoon grants into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeGrimmkinFlames",
+			"label": "Randomizegrimmkinflames",
+			"description": "Randomize Grimmkin Flames into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeJournalEntries",
+			"label": "Randomizejournalentries",
+			"description": "Randomize the Hunter's Journal as well as the findable journal entries into the item pool, and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeNail",
+			"label": "Randomizenail",
+			"description": "Removes the ability to swing the nail left, right and up, and shuffles these into the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeGeoRocks",
+			"label": "Randomizegeorocks",
+			"description": "Randomize Geo Rock rewards into the item pool and open their locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeBossGeo",
+			"label": "Randomizebossgeo",
+			"description": "Randomize boss Geo drops into the item pool and open those locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeSoulTotems",
+			"label": "Randomizesoultotems",
+			"description": "Randomize Soul Refill items into the item pool and open the Soul Totem locations for randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeLoreTablets",
+			"label": "Randomizeloretablets",
+			"description": "Randomize Lore items into the itempool, one per Lore Tablet, and place randomized item grants on the tablets themselves.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeElevatorPass",
+			"label": "Randomizeelevatorpass",
+			"description": "Adds an Elevator Pass item to the item pool, which is then required to use the large elevators connecting City of Tears to the Forgotten Crossroads and Resting Grounds.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "PreciseMovement",
+			"label": "Precisemovement",
+			"description": "Places skips into logic which require extremely precise player movement, possibly without movement skills such as dash or claw.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ProficientCombat",
+			"label": "Proficientcombat",
+			"description": "Places skips into logic which require proficient combat, possibly with limited items.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "BackgroundObjectPogos",
+			"label": "Backgroundobjectpogos",
+			"description": "Places skips into logic for locations which are reachable via pogoing off of background objects.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "EnemyPogos",
+			"label": "Enemypogos",
+			"description": "Places skips into logic for locations which are reachable via pogos off of enemies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ObscureSkips",
+			"label": "Obscureskips",
+			"description": "Places skips into logic which are considered obscure enough that a beginner is not expected to know them.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ShadeSkips",
+			"label": "Shadeskips",
+			"description": "Places shade skips into logic which utilize the player's shade for pogoing or damage boosting.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "InfectionSkips",
+			"label": "Infectionskips",
+			"description": "Places skips into logic which are only possible after the crossroads become infected.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "FireballSkips",
+			"label": "Fireballskips",
+			"description": "Places skips into logic which require the use of spells to reset fall speed while in mid-air.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "SpikeTunnels",
+			"label": "Spiketunnels",
+			"description": "Places skips into logic which require the navigation of narrow tunnels filled with spikes.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "AcidSkips",
+			"label": "Acidskips",
+			"description": "Places skips into logic which require crossing a pool of acid without Isma's Tear, or water if swim is disabled.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DamageBoosts",
+			"label": "Damageboosts",
+			"description": "Places skips into logic which require you to take damage from an enemy or hazard to progress.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DangerousSkips",
+			"label": "Dangerousskips",
+			"description": "Places skips into logic which contain a high risk of taking damage.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DarkRooms",
+			"label": "Darkrooms",
+			"description": "Places skips into logic which require navigating dark rooms without the use of the Lumafly Lantern.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ComplexSkips",
+			"label": "Complexskips",
+			"description": "Places skips into logic which require intense setup or are obscure even beyond advanced skip standards.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DifficultSkips",
+			"label": "Difficultskips",
+			"description": "Places skips into logic which are considered more difficult than typical.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RemoveSpellUpgrades",
+			"label": "Removespellupgrades",
+			"description": "Removes the second level of all spells from the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "StartLocation",
+			"label": "Startlocation",
+			"description": "Choose your start location.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "king's_pass",
+				"choices": [
+					{
+						"value": "king's_pass",
+						"label": "king's_pass"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "Goal",
+			"label": "Goal",
+			"description": "The goal required of you in order to complete your run in Archipelago.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "any",
+				"choices": [
+					{
+						"value": "any",
+						"label": "Any"
+					},
+					{
+						"value": "hollowknight",
+						"label": "Hollowknight"
+					},
+					{
+						"value": "siblings",
+						"label": "Siblings"
+					},
+					{
+						"value": "radiance",
+						"label": "Radiance"
+					},
+					{
+						"value": "godhome",
+						"label": "Godhome"
+					},
+					{
+						"value": "godhome_flower",
+						"label": "Godhome Flower"
+					},
+					{
+						"value": "grub_hunt",
+						"label": "Grub Hunt"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "GrubHuntGoal",
+			"label": "Grubhuntgoal",
+			"description": "The amount of grubs required to finish Grub Hunt.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 46,
+				"step": 1,
+				"default": 46
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "WhitePalace",
+			"label": "Whitepalace",
+			"description": "Whether or not to include White Palace or not.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "exclude",
+				"choices": [
+					{
+						"value": "exclude",
+						"label": "Exclude"
+					},
+					{
+						"value": "kingfragment",
+						"label": "Kingfragment"
+					},
+					{
+						"value": "nopathofpain",
+						"label": "Nopathofpain"
+					},
+					{
+						"value": "include",
+						"label": "Include"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ExtraPlatforms",
+			"label": "Extraplatforms",
+			"description": "Places additional platforms to make traveling throughout Hallownest more convenient.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "AddUnshuffledLocations",
+			"label": "Addunshuffledlocations",
+			"description": "Adds non-randomized locations to the location pool, which allows syncing of location state with co-op or automatic collection via collect.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "StartingGeo",
+			"label": "Startinggeo",
+			"description": "The amount of starting geo you have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 1000,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DeathLink",
+			"label": "Deathlink",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DeathLinkShade",
+			"label": "Deathlinkshade",
+			"description": "Sets whether to create a shade when you are killed by a DeathLink and how to handle your existing shade, if any.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "shade",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "shadeless",
+						"label": "Shadeless"
+					},
+					{
+						"value": "shade",
+						"label": "Shade"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DeathLinkBreaksFragileCharms",
+			"label": "Deathlinkbreaksfragilecharms",
+			"description": "Sets if fragile charms break when you are killed by a DeathLink.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MinimumGeoPrice",
+			"label": "Minimumgeoprice",
+			"description": "The minimum geo price for items in geo shops.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 200,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MaximumGeoPrice",
+			"label": "Maximumgeoprice",
+			"description": "The maximum geo price for items in geo shops.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 2000,
+				"step": 1,
+				"default": 400
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MinimumGrubPrice",
+			"label": "Minimumgrubprice",
+			"description": "The minimum grub price in the range of prices that an item should cost from Grubfather.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 46,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MaximumGrubPrice",
+			"label": "Maximumgrubprice",
+			"description": "The maximum grub price in the range of prices that an item should cost from Grubfather.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 46,
+				"step": 1,
+				"default": 23
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MinimumEssencePrice",
+			"label": "Minimumessenceprice",
+			"description": "The minimum essence price in the range of prices that an item should cost from Seer.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 2800,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MaximumEssencePrice",
+			"label": "Maximumessenceprice",
+			"description": "The maximum essence price in the range of prices that an item should cost from Seer.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 2800,
+				"step": 1,
+				"default": 1400
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MinimumCharmPrice",
+			"label": "Minimumcharmprice",
+			"description": "The minimum charm price in the range of prices that an item should cost for Salubra's shop item which also carry a charm cost.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 40,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MaximumCharmPrice",
+			"label": "Maximumcharmprice",
+			"description": "The maximum charm price in the range of prices that an item should cost for Salubra's shop item which also carry a charm cost.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 40,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomCharmCosts",
+			"label": "Randomcharmcosts",
+			"description": "Total Notch Cost of all Charms together.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 240,
+				"step": 1,
+				"default": -1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MinimumEggPrice",
+			"label": "Minimumeggprice",
+			"description": "The minimum rancid egg price in the range of prices that an item should cost from Jiji.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 20,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MaximumEggPrice",
+			"label": "Maximumeggprice",
+			"description": "The maximum rancid egg price in the range of prices that an item should cost from Jiji.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 20,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "EggShopSlots",
+			"label": "Eggshopslots",
+			"description": "For each slot, add a location to the Egg Shop and a filler item to the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "SlyShopSlots",
+			"label": "Slyshopslots",
+			"description": "For each extra slot, add a location to the Sly Shop and a filler item to the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "SlyKeyShopSlots",
+			"label": "Slykeyshopslots",
+			"description": "For each extra slot, add a location to the Sly Shop (requiring Shopkeeper's Key) and a filler item to the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 6
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "IseldaShopSlots",
+			"label": "Iseldashopslots",
+			"description": "For each extra slot, add a location to the Iselda Shop and a filler item to the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "SalubraShopSlots",
+			"label": "Salubrashopslots",
+			"description": "For each extra slot, add a location to the Salubra Shop, and a filler item to the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "SalubraCharmShopSlots",
+			"label": "Salubracharmshopslots",
+			"description": "For each extra slot, add a location to the Salubra Shop (requiring Charms), and a filler item to the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "LegEaterShopSlots",
+			"label": "Legeatershopslots",
+			"description": "For each extra slot, add a location to the Leg Eater Shop and a filler item to the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "GrubfatherRewardSlots",
+			"label": "Grubfatherrewardslots",
+			"description": "For each extra slot, add a location to the Grubfather and a filler item to the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "SeerRewardSlots",
+			"label": "Seerrewardslots",
+			"description": "For each extra slot, add a location to the Seer and a filler item to the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ExtraShopSlots",
+			"label": "Extrashopslots",
+			"description": "For each extra slot, add a location to a randomly chosen shop a filler item to the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 144,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "SplitCrystalHeart",
+			"label": "Splitcrystalheart",
+			"description": "Splits the Crystal Heart into left- and right-only versions of the item.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "SplitMothwingCloak",
+			"label": "Splitmothwingcloak",
+			"description": "Splits the Mothwing Cloak into left- and right-only versions of the item.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "SplitMantisClaw",
+			"label": "Splitmantisclaw",
+			"description": "Splits the Mantis Claw into left- and right-only versions of the item.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "CostSanity",
+			"label": "Costsanity",
+			"description": "If enabled, most locations with costs (like stag stations) will have randomly determined costs.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "shopsonly",
+						"label": "Shopsonly"
+					},
+					{
+						"value": "notshops",
+						"label": "Notshops"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "CostSanityHybridChance",
+			"label": "Costsanityhybridchance",
+			"description": "The chance that a CostSanity cost will include two components instead of one, e.g.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "CostSanityEggWeight",
+			"label": "Costsanityeggweight",
+			"description": "The likelihood of Costsanity choosing a Egg cost.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 1000,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "CostSanityGrubWeight",
+			"label": "Costsanitygrubweight",
+			"description": "The likelihood of Costsanity choosing a Grub cost.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 1000,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "CostSanityEssenceWeight",
+			"label": "Costsanityessenceweight",
+			"description": "The likelihood of Costsanity choosing a Essence cost.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 1000,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "CostSanityCharmWeight",
+			"label": "Costsanitycharmweight",
+			"description": "The likelihood of Costsanity choosing a Charm cost.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 1000,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "CostSanityGeoWeight",
+			"label": "Costsanitygeoweight",
+			"description": "The likelihood of Costsanity choosing a Geo cost.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 1000,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -19,17 +19,17 @@ Once BizHawk has been installed, open EmuHawk and change the following settings:
 
 - (≤ 2.8) Go to Config > Customize. Switch to the Advanced tab, then switch the Lua Core from "NLua+KopiLua" to
   "Lua+LuaInterface". Then restart EmuHawk. This is required for the Lua script to function correctly.
-  **NOTE: Even if "Lua+LuaInterface" is already selected, toggle between the two options and reselect it. Fresh installs** 
-  **of newer versions of EmuHawk have a tendency to show "Lua+LuaInterface" as the default selected option but still load** 
+  **NOTE: Even if "Lua+LuaInterface" is already selected, toggle between the two options and reselect it. Fresh installs**
+  **of newer versions of EmuHawk have a tendency to show "Lua+LuaInterface" as the default selected option but still load**
   **"NLua+KopiLua" until this step is done.**
 - Under Config > Customize, check the "Run in background" box. This will prevent disconnecting from the client while
-EmuHawk is running in the background.
+  EmuHawk is running in the background.
 
 - It is recommended that you provide a path to EmuHawk in your host.yaml for Adventure so the client can start it automatically
 - At the same time, you can set an option to automatically load the connector_adventure.lua script when launching EmuHawk
-from AdventureClient.
-Default Windows install example:
-```rom_args: "--lua=C:/ProgramData/Archipelago/data/lua/connector_adventure.lua"```
+  from AdventureClient.
+  Default Windows install example:
+  `rom_args: "--lua=C:/ProgramData/Archipelago/data/lua/connector_adventure.lua"`
 
 ## Configuring your YAML file
 
@@ -44,7 +44,8 @@ an experience customized for their taste, and different players in the same mult
 You can generate a yaml or download a template by visiting the [Adventure Options Page](/games/Adventure/player-options)
 
 ### What are recommended options to tweak for beginners to the rando?
-Setting difficulty_switch_a and lowering the dragons' speeds makes the dragons easier to avoid.  Adding Chalice to 
+
+Setting difficulty_switch_a and lowering the dragons' speeds makes the dragons easier to avoid. Adding Chalice to
 local_items guarantees you'll visit at least one of the interesting castles, as it can only be placed in a castle or
 the credits room.
 
@@ -56,8 +57,8 @@ When you join a multiworld game, you will be asked to provide your YAML file to 
 the host will provide you with either a link to download your data file, or with a zip file containing everyone's data
 files. Your data file should have a `.apadvn` extension.
 
-Drag your patch file to the AdventureClient.exe to start your client and start the ROM patch process. Once the process 
-is finished (this can take a while), the client and the emulator will be started automatically (if you set the emulator 
+Drag your patch file to the AdventureClient.exe to start your client and start the ROM patch process. Once the process
+is finished (this can take a while), the client and the emulator will be started automatically (if you set the emulator
 path as recommended).
 
 ### Connect to the Multiserver

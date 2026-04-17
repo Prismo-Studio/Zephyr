@@ -23,6 +23,7 @@ la logique du multiworld).
 
 Désarchiver le randomizer d'Aquaria et copier tous les fichiers de l'archive dans le répertoire du jeu d'Aquaria. Le
 fichier d'archive devrait contenir les fichiers suivants:
+
 - aquaria_randomizer.exe
 - OpenAL32.dll
 - randomizer_files (directory)
@@ -88,6 +89,7 @@ avant de déposer le randomizer à l'intérieur permet de vous assurer de garder
 
 Désarchiver le fichier tar et copier tous les fichiers qu'il contient dans le répertoire du jeu d'origine d'Aquaria. Les
 fichiers extraient du fichier tar devraient être les suivants:
+
 - aquaria_randomizer
 - randomizer_files (directory)
 - usersettings.xml
@@ -129,6 +131,7 @@ pour vous assurer que votre fichier est exécutable:
 ```bash
 chmod +x aquaria_randomizer
 ```
+
 ### Steam Deck
 
 Pour installer le randomizer sur la Steam Deck, seulement suivre la procédure pour les fichiers AppImage

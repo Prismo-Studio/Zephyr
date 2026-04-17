@@ -1,449 +1,449 @@
 {
-  "id": "yachtdice",
-  "name": "Yacht Dice",
-  "version": "0.1.6",
-  "description": "Yacht Dice is a straightforward game, custom-made for Archipelago, where you cast your dice to chart a course for high scores, unlocking valuable treasures along the way.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "game_difficulty",
-      "label": "Game Difficulty",
-      "description": "Difficulty.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "medium",
-        "choices": [
-          {
-            "value": "easy",
-            "label": "Easy"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          },
-          {
-            "value": "extreme",
-            "label": "Extreme"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "score_for_last_check",
-      "label": "Score For Last Check",
-      "description": "The items in the item pool will always allow you to reach a score of 1000.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 500,
-        "max": 1000,
-        "step": 1,
-        "default": 1000
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "score_for_goal",
-      "label": "Score For Goal",
-      "description": "This option determines what score you need to reach to finish the game.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 500,
-        "max": 1000,
-        "step": 1,
-        "default": 777
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "minimal_number_of_dice_and_rolls",
-      "label": "Minimal Number Of Dice And Rolls",
-      "description": "The minimal number of dice and rolls in the pool.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "5_dice_and_3_rolls",
-        "choices": [
-          {
-            "value": "5_dice_and_3_rolls",
-            "label": "5 Dice And 3 Rolls"
-          },
-          {
-            "value": "5_dice_and_5_rolls",
-            "label": "5 Dice And 5 Rolls"
-          },
-          {
-            "value": "6_dice_and_4_rolls",
-            "label": "6 Dice And 4 Rolls"
-          },
-          {
-            "value": "7_dice_and_3_rolls",
-            "label": "7 Dice And 3 Rolls"
-          },
-          {
-            "value": "8_dice_and_2_rolls",
-            "label": "8 Dice And 2 Rolls"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "number_of_dice_fragments_per_dice",
-      "label": "Number Of Dice Fragments Per Dice",
-      "description": "Dice can be split into fragments, gathering enough will give you an extra dice.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 5,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "number_of_roll_fragments_per_roll",
-      "label": "Number Of Roll Fragments Per Roll",
-      "description": "Rolls can be split into fragments, gathering enough will give you an extra roll.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 5,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "alternative_categories",
-      "label": "Alternative Categories",
-      "description": "There are 16 default categories, but there are also 16 alternative categories.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "allow_manual_input",
-      "label": "Allow Manual Input",
-      "description": "If allowed, players can roll IRL dice and input them manually into the game.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "yes_allow",
-        "choices": [
-          {
-            "value": "yes_allow",
-            "label": "Yes Allow"
-          },
-          {
-            "value": "no_dont_allow",
-            "label": "No Dont Allow"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "weight_of_dice",
-      "label": "Weight Of Dice",
-      "description": "The item pool is always filled in such a way that you can reach a score of 1000.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "weight_of_roll",
-      "label": "Weight Of Roll",
-      "description": "With more rolls, you will be able to reach higher scores.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "weight_of_fixed_score_multiplier",
-      "label": "Weight Of Fixed Score Multiplier",
-      "description": "Getting a Fixed Score Multiplier will boost all future scores by 10%.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 30
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "weight_of_step_score_multiplier",
-      "label": "Weight Of Step Score Multiplier",
-      "description": "The Step Score Multiplier boosts your multiplier after every roll by 1%, and resets on sheet reset.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "weight_of_double_category",
-      "label": "Weight Of Double Category",
-      "description": "This option allows categories to appear multiple times.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "weight_of_points",
-      "label": "Weight Of Points",
-      "description": "Are you tired of rolling dice countless times and tallying up points one by one, all by yourself?",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "points_size",
-      "label": "Points Size",
-      "description": "If you choose to add points to the item pool, you can choose to have many small points, medium-size points, a few larger points, or a mix of them.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "medium",
-        "choices": [
-          {
-            "value": "small",
-            "label": "Small"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "large",
-            "label": "Large"
-          },
-          {
-            "value": "mix",
-            "label": "Mix"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "minimize_extra_items",
-      "label": "Minimize Extra Items",
-      "description": "Besides necessary items, Yacht Dice has extra useful/filler items in the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "no_dont",
-        "choices": [
-          {
-            "value": "no_dont",
-            "label": "No Dont"
-          },
-          {
-            "value": "yes_please",
-            "label": "Yes Please"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "add_bonus_points",
-      "label": "Add Bonus Points",
-      "description": "Yacht Dice typically has space for extra items.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "sure",
-        "choices": [
-          {
-            "value": "all_of_it",
-            "label": "All Of It"
-          },
-          {
-            "value": "sure",
-            "label": "Sure"
-          },
-          {
-            "value": "never",
-            "label": "Never"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "add_story_chapters",
-      "label": "Add Story Chapters",
-      "description": "Yacht Dice typically has space for more items.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "never",
-        "choices": [
-          {
-            "value": "all_of_it",
-            "label": "All Of It"
-          },
-          {
-            "value": "sure",
-            "label": "Sure"
-          },
-          {
-            "value": "never",
-            "label": "Never"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "which_story",
-      "label": "Which Story",
-      "description": "The most important part of Yacht Dice is the narrative.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random_story",
-        "choices": [
-          {
-            "value": "the_quest_of_the_dice_warrior",
-            "label": "The Quest Of The Dice Warrior"
-          },
-          {
-            "value": "the_tragedy_of_fortunas_gambit",
-            "label": "The Tragedy Of Fortunas Gambit"
-          },
-          {
-            "value": "the_dicey_animal_dice_game",
-            "label": "The Dicey Animal Dice Game"
-          },
-          {
-            "value": "whispers_of_fate",
-            "label": "Whispers Of Fate"
-          },
-          {
-            "value": "a_yacht_dice_odyssey",
-            "label": "A Yacht Dice Odyssey"
-          },
-          {
-            "value": "a_rollin_rhyme_adventure",
-            "label": "A Rollin Rhyme Adventure"
-          },
-          {
-            "value": "random_story",
-            "label": "Random Story"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "yachtdice",
+	"name": "Yacht Dice",
+	"version": "0.1.6",
+	"description": "Yacht Dice is a straightforward game, custom-made for Archipelago, where you cast your dice to chart a course for high scores, unlocking valuable treasures along the way.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "game_difficulty",
+			"label": "Game Difficulty",
+			"description": "Difficulty.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "medium",
+				"choices": [
+					{
+						"value": "easy",
+						"label": "Easy"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					},
+					{
+						"value": "extreme",
+						"label": "Extreme"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "score_for_last_check",
+			"label": "Score For Last Check",
+			"description": "The items in the item pool will always allow you to reach a score of 1000.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 500,
+				"max": 1000,
+				"step": 1,
+				"default": 1000
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "score_for_goal",
+			"label": "Score For Goal",
+			"description": "This option determines what score you need to reach to finish the game.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 500,
+				"max": 1000,
+				"step": 1,
+				"default": 777
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "minimal_number_of_dice_and_rolls",
+			"label": "Minimal Number Of Dice And Rolls",
+			"description": "The minimal number of dice and rolls in the pool.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "5_dice_and_3_rolls",
+				"choices": [
+					{
+						"value": "5_dice_and_3_rolls",
+						"label": "5 Dice And 3 Rolls"
+					},
+					{
+						"value": "5_dice_and_5_rolls",
+						"label": "5 Dice And 5 Rolls"
+					},
+					{
+						"value": "6_dice_and_4_rolls",
+						"label": "6 Dice And 4 Rolls"
+					},
+					{
+						"value": "7_dice_and_3_rolls",
+						"label": "7 Dice And 3 Rolls"
+					},
+					{
+						"value": "8_dice_and_2_rolls",
+						"label": "8 Dice And 2 Rolls"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "number_of_dice_fragments_per_dice",
+			"label": "Number Of Dice Fragments Per Dice",
+			"description": "Dice can be split into fragments, gathering enough will give you an extra dice.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 5,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "number_of_roll_fragments_per_roll",
+			"label": "Number Of Roll Fragments Per Roll",
+			"description": "Rolls can be split into fragments, gathering enough will give you an extra roll.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 5,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "alternative_categories",
+			"label": "Alternative Categories",
+			"description": "There are 16 default categories, but there are also 16 alternative categories.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "allow_manual_input",
+			"label": "Allow Manual Input",
+			"description": "If allowed, players can roll IRL dice and input them manually into the game.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "yes_allow",
+				"choices": [
+					{
+						"value": "yes_allow",
+						"label": "Yes Allow"
+					},
+					{
+						"value": "no_dont_allow",
+						"label": "No Dont Allow"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "weight_of_dice",
+			"label": "Weight Of Dice",
+			"description": "The item pool is always filled in such a way that you can reach a score of 1000.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "weight_of_roll",
+			"label": "Weight Of Roll",
+			"description": "With more rolls, you will be able to reach higher scores.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "weight_of_fixed_score_multiplier",
+			"label": "Weight Of Fixed Score Multiplier",
+			"description": "Getting a Fixed Score Multiplier will boost all future scores by 10%.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 30
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "weight_of_step_score_multiplier",
+			"label": "Weight Of Step Score Multiplier",
+			"description": "The Step Score Multiplier boosts your multiplier after every roll by 1%, and resets on sheet reset.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "weight_of_double_category",
+			"label": "Weight Of Double Category",
+			"description": "This option allows categories to appear multiple times.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "weight_of_points",
+			"label": "Weight Of Points",
+			"description": "Are you tired of rolling dice countless times and tallying up points one by one, all by yourself?",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "points_size",
+			"label": "Points Size",
+			"description": "If you choose to add points to the item pool, you can choose to have many small points, medium-size points, a few larger points, or a mix of them.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "medium",
+				"choices": [
+					{
+						"value": "small",
+						"label": "Small"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "large",
+						"label": "Large"
+					},
+					{
+						"value": "mix",
+						"label": "Mix"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "minimize_extra_items",
+			"label": "Minimize Extra Items",
+			"description": "Besides necessary items, Yacht Dice has extra useful/filler items in the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "no_dont",
+				"choices": [
+					{
+						"value": "no_dont",
+						"label": "No Dont"
+					},
+					{
+						"value": "yes_please",
+						"label": "Yes Please"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "add_bonus_points",
+			"label": "Add Bonus Points",
+			"description": "Yacht Dice typically has space for extra items.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "sure",
+				"choices": [
+					{
+						"value": "all_of_it",
+						"label": "All Of It"
+					},
+					{
+						"value": "sure",
+						"label": "Sure"
+					},
+					{
+						"value": "never",
+						"label": "Never"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "add_story_chapters",
+			"label": "Add Story Chapters",
+			"description": "Yacht Dice typically has space for more items.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "never",
+				"choices": [
+					{
+						"value": "all_of_it",
+						"label": "All Of It"
+					},
+					{
+						"value": "sure",
+						"label": "Sure"
+					},
+					{
+						"value": "never",
+						"label": "Never"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "which_story",
+			"label": "Which Story",
+			"description": "The most important part of Yacht Dice is the narrative.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random_story",
+				"choices": [
+					{
+						"value": "the_quest_of_the_dice_warrior",
+						"label": "The Quest Of The Dice Warrior"
+					},
+					{
+						"value": "the_tragedy_of_fortunas_gambit",
+						"label": "The Tragedy Of Fortunas Gambit"
+					},
+					{
+						"value": "the_dicey_animal_dice_game",
+						"label": "The Dicey Animal Dice Game"
+					},
+					{
+						"value": "whispers_of_fate",
+						"label": "Whispers Of Fate"
+					},
+					{
+						"value": "a_yacht_dice_odyssey",
+						"label": "A Yacht Dice Odyssey"
+					},
+					{
+						"value": "a_rollin_rhyme_adventure",
+						"label": "A Rollin Rhyme Adventure"
+					},
+					{
+						"value": "random_story",
+						"label": "Random Story"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

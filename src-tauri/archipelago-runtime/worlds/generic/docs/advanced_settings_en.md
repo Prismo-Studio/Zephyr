@@ -1,4 +1,5 @@
 # Advanced YAML Guide
+
 This guide covers more the more advanced options available in YAML files. This guide is intended for the user who plans
 to edit their YAML file manually. This guide should take about 10 minutes to read.
 
@@ -8,7 +9,7 @@ game you intend to play.
 The options page can be found on the supported games page, just click the "Options Page" link under the name of the
 game you would like.
 
-* Supported games page: [Archipelago Games List](/games)
+- Supported games page: [Archipelago Games List](/games)
 
 Clicking on the "Export Options" button at the bottom-left will provide you with a pre-filled YAML with your options.
 The player options page also has a link to download a full template file for that game which will have every option
@@ -62,26 +63,25 @@ Currently, there are only a few options that are root options. Everything else s
 options or in some cases nested within other nested options. The only options that should exist in root
 are `description`, `name`, `game`, `requires`, and the name of the games you want options for.
 
-* `description` is ignored by the generator and is simply a good way for you to organize if you have multiple files
+- `description` is ignored by the generator and is simply a good way for you to organize if you have multiple files
   using this to detail the intention of the file.
 
-* `name` is the player name you would like to use and is used for your slot data to connect with most games. This can
+- `name` is the player name you would like to use and is used for your slot data to connect with most games. This can
   also be filled with multiple names each having a weight to it. Names can also contain certain keywords, surrounded by
   curly-braces, which will be replaced on generation with a number:
-  
-  * `{player}` will be replaced with the player's slot number.
-  * `{PLAYER}` will be replaced with the player's slot number if that slot number is greater than 1, otherwise blank.
-  * `{number}` will be replaced with the counter value of the name.
-  * `{NUMBER}` will be replaced with the counter value of the name if the counter value is greater than 1, otherwise 
-  blank.
+  - `{player}` will be replaced with the player's slot number.
+  - `{PLAYER}` will be replaced with the player's slot number if that slot number is greater than 1, otherwise blank.
+  - `{number}` will be replaced with the counter value of the name.
+  - `{NUMBER}` will be replaced with the counter value of the name if the counter value is greater than 1, otherwise
+    blank.
 
-* `game` is where either your chosen game goes or, if you would like, can be filled with multiple games each with
+- `game` is where either your chosen game goes or, if you would like, can be filled with multiple games each with
   different weights.
 
-* `requires` details different requirements from the generator for the YAML to work as you expect it to. Generally this
+- `requires` details different requirements from the generator for the YAML to work as you expect it to. Generally this
   is good for detailing the version of Archipelago this YAML was prepared for. If it is rolled on an older version,
   options may be missing and as such it will not work as expected. If any plando is used in the file then requiring it
-  here to ensure it will be used is good practice. Specific versions of custom worlds can also be required, ensuring 
+  here to ensure it will be used is good practice. Specific versions of custom worlds can also be required, ensuring
   that the generator is using a compatible version.
 
 ## Game Options
@@ -102,41 +102,41 @@ various plando options.
 See the plando guide for more info on plando options. Plando
 guide: [Archipelago Plando Guide](/tutorial/Archipelago/plando/en)
 
-* `accessibility` determines the level of access to the game the generation will expect you to have in order to reach
+- `accessibility` determines the level of access to the game the generation will expect you to have in order to reach
   your completion goal. This supports `full`, `items`, and `minimal` and is set to `full` by default.
-    * `full` will guarantee all locations are accessible in your world.
-    * `items` will guarantee you can acquire all logically relevant items in your world. Some items, such as keys, may
-      be self-locking. This value only exists in and affects some worlds.
-    * `minimal` will only guarantee that the seed is beatable. You will be guaranteed able to finish the seed logically
-      but may not be able to access all locations or acquire all items. A good example of this is having a big key in
-      the big chest in a dungeon in ALTTP making it impossible to get and finish the dungeon.
-* `progression_balancing` is a system the Archipelago generator uses to try and reduce
+  - `full` will guarantee all locations are accessible in your world.
+  - `items` will guarantee you can acquire all logically relevant items in your world. Some items, such as keys, may
+    be self-locking. This value only exists in and affects some worlds.
+  - `minimal` will only guarantee that the seed is beatable. You will be guaranteed able to finish the seed logically
+    but may not be able to access all locations or acquire all items. A good example of this is having a big key in
+    the big chest in a dungeon in ALTTP making it impossible to get and finish the dungeon.
+- `progression_balancing` is a system the Archipelago generator uses to try and reduce
   ["BK mode"](/glossary/en/#burger-king-/-bk-mode)
   as much as possible.
   This primarily involves moving necessary progression items into earlier logic spheres to make the games more
   accessible so that players almost always have something to do. This can be in a range from 0 to 99, and is 50 by
   default. This number represents a percentage of the furthest progressible player.
-    * For example: With the default of 50%, if the furthest player can access 40% of their items, the randomizer tries
-      to let you access at least 20% of your items. 50% of 40% is 20%.
-    * Note that it is not always guaranteed that it will be able to bring you up to this threshold.
-* `triggers` is one of the more advanced options that allows you to create conditional adjustments. You can read
+  - For example: With the default of 50%, if the furthest player can access 40% of their items, the randomizer tries
+    to let you access at least 20% of your items. 50% of 40% is 20%.
+  - Note that it is not always guaranteed that it will be able to bring you up to this threshold.
+- `triggers` is one of the more advanced options that allows you to create conditional adjustments. You can read
   more triggers in the triggers guide. Triggers
   guide: [Archipelago Triggers Guide](/tutorial/Archipelago/triggers/en)
-* `local_items` will force any items you want to be in your world instead of being in another world.
-* `non_local_items` is the inverse of `local_items`, forcing any items you want to be in another world instead of
+- `local_items` will force any items you want to be in your world instead of being in another world.
+- `non_local_items` is the inverse of `local_items`, forcing any items you want to be in another world instead of
   your own.
-* `start_inventory` will give any items defined here to you at the beginning of your game. The format for this must be
+- `start_inventory` will give any items defined here to you at the beginning of your game. The format for this must be
   the name as it appears in the game files and the amount you would like to start with. For example `Rupees(5): 6` which
   will give you 30 rupees.
-* `start_hints` gives you free server hints for the defined items at the beginning of the game, allowing you to hint for
+- `start_hints` gives you free server hints for the defined items at the beginning of the game, allowing you to hint for
   the location without using any hint points.
-* `start_location_hints` is the same as `start_hints` but for locations, allowing you to hint for the item contained
+- `start_location_hints` is the same as `start_hints` but for locations, allowing you to hint for the item contained
   there without using any hint points.
-* `exclude_locations` lets you define any locations that you don't want to do and prevents items classified as
+- `exclude_locations` lets you define any locations that you don't want to do and prevents items classified as
   "progression" or "useful" from being placed on them.
-* `priority_locations` lets you define any locations that you want to do and forces a progression item into these
+- `priority_locations` lets you define any locations that you want to do and forces a progression item into these
   locations.
-* `item_links` allows players to link their items into a group with the same item link name and game. The items declared
+- `item_links` allows players to link their items into a group with the same item link name and game. The items declared
   in `item_pool` get combined and when an item is found for the group, all players in the group receive it. Item links
   can also have local and non-local items, forcing the items to either be placed within the worlds of the group or in
   worlds outside the group. If players have a varying amount of a specific item in the link, the lowest amount from the
@@ -146,32 +146,31 @@ guide: [Archipelago Plando Guide](/tutorial/Archipelago/plando/en)
 
 Options taking a choice of a number can also use a variety of `random` options to choose a number randomly.
 
-* `random` will choose a number allowed for the setting at random
-* `random-low` will choose a number allowed for the setting at random, but will be weighted towards lower numbers
-* `random-middle` will choose a number allowed for the setting at random, but will be weighted towards the middle of the
+- `random` will choose a number allowed for the setting at random
+- `random-low` will choose a number allowed for the setting at random, but will be weighted towards lower numbers
+- `random-middle` will choose a number allowed for the setting at random, but will be weighted towards the middle of the
   range
-* `random-high` will choose a number allowed for the setting at random, but will be weighted towards higher numbers
-* `random-range-#-#` will choose a number at random from between the specified numbers. For example `random-range-40-60`
+- `random-high` will choose a number allowed for the setting at random, but will be weighted towards higher numbers
+- `random-range-#-#` will choose a number at random from between the specified numbers. For example `random-range-40-60`
   will choose a number between 40 and 60
-* `random-range-low-#-#`, `random-range-middle-#-#`, and `random-range-high-#-#` will choose a number at random from the
+- `random-range-low-#-#`, `random-range-middle-#-#`, and `random-range-high-#-#` will choose a number at random from the
   specified numbers, but with the specified weights
 
-Options defining a unique set of options can also make use of the prior `random` options to select a subset of possible 
+Options defining a unique set of options can also make use of the prior `random` options to select a subset of possible
 options. The resulting number is used as the number of random items the set should contain.
 
 ### Example
 
 ```yaml
-
 description: An example using various advanced options
 name: Example Player
-game: 
+game:
   A Link to the Past: 10
   Timespinner: 10
-requires: 
+requires:
   version: 0.6.4
   game:
-      A Link to the Past: 0.6.4
+    A Link to the Past: 0.6.4
 A Link to the Past:
   accessibility: minimal
   progression_balancing: 50
@@ -204,7 +203,7 @@ A Link to the Past:
       item_pool:
         - Fire Rod
         - Ice Rod
-      replacement_item: "Rupee (1)"
+      replacement_item: 'Rupee (1)'
       link_replacement: true
   triggers:
     - option_category: A Link to the Past
@@ -231,56 +230,55 @@ Timespinner:
 
 #### This is a fully functional yaml file that will do all the following things:
 
-* `description` gives us a general overview so if we pull up this file later we can understand the intent.
-* `name` is `Example Player` and this will be used in the server console when sending and receiving items.
-* `game` has an equal chance of being either `A Link to the Past` or `Timespinner` with a 10/20 chance for each. This is
+- `description` gives us a general overview so if we pull up this file later we can understand the intent.
+- `name` is `Example Player` and this will be used in the server console when sending and receiving items.
+- `game` has an equal chance of being either `A Link to the Past` or `Timespinner` with a 10/20 chance for each. This is
   because each game has a weight of 10 and the total of all weights is 20.
-* `requires` is set to require Archipelago release version 0.6.4 or higher, as well as A Link to the Past version 0.6.4.
-* `accessibility` for both games is set to `minimal` which will set this seed to beatable only, so some locations and
+- `requires` is set to require Archipelago release version 0.6.4 or higher, as well as A Link to the Past version 0.6.4.
+- `accessibility` for both games is set to `minimal` which will set this seed to beatable only, so some locations and
   items may be completely inaccessible but the seed will still be completable.
-* `progression_balancing` for both games is set to 50, the default value, meaning we will likely receive important items
+- `progression_balancing` for both games is set to 50, the default value, meaning we will likely receive important items
   earlier, increasing the chance of having things to do.
-* `A Link to the Past` defines a location for us to nest all the game options we would like to use for our
+- `A Link to the Past` defines a location for us to nest all the game options we would like to use for our
   game `A Link to the Past`.
-* `smallkey_shuffle` is an option for A Link to the Past which determines how dungeon small keys are shuffled. In this
+- `smallkey_shuffle` is an option for A Link to the Past which determines how dungeon small keys are shuffled. In this
   example we have a 1/2 chance for them to either be placed in their original dungeon and a 1/2 chance for them to be
   placed anywhere amongst the multiworld.
-* `crystals_needed_for_gt` determines the number of crystals required to enter the Ganon's Tower entrance. In this
+- `crystals_needed_for_gt` determines the number of crystals required to enter the Ganon's Tower entrance. In this
   example a random number will be chosen from the allowed range for this setting (0 through 7) but will be weighted
   towards a lower number.
-* `crystals_needed_for_ganon` determines the number of crystals required to beat Ganon. In this example a number between
+- `crystals_needed_for_ganon` determines the number of crystals required to beat Ganon. In this example a number between
   1 and 7 will be chosen at random, weighted towards a high number.
-* `local_items` forces the `Bombos`, `Ether`, and `Quake` medallions to all be placed within our own world, meaning we
+- `local_items` forces the `Bombos`, `Ether`, and `Quake` medallions to all be placed within our own world, meaning we
   have to find it ourselves.
-* `non_local_items` forces the `Moon Pearl` to be placed in someone else's world, meaning we won't be able to find it.
-* `start_inventory` defines an area for us to determine what items we would like to start the seed with. For this
+- `non_local_items` forces the `Moon Pearl` to be placed in someone else's world, meaning we won't be able to find it.
+- `start_inventory` defines an area for us to determine what items we would like to start the seed with. For this
   example we have:
-  * `Pegasus Boots: 1` which gives us 1 copy of the Pegasus Boots
-  * `Bombs (3): 2` gives us 2 packs of 3 bombs or 6 total bombs
-* `start_hints` gives us a starting hint for the hammer available at the beginning of the multiworld which we can use
+  - `Pegasus Boots: 1` which gives us 1 copy of the Pegasus Boots
+  - `Bombs (3): 2` gives us 2 packs of 3 bombs or 6 total bombs
+- `start_hints` gives us a starting hint for the hammer available at the beginning of the multiworld which we can use
   with no cost.
-* `start_location_hints` gives us a starting hint for the `Spike Cave` location available at the beginning of the
+- `start_location_hints` gives us a starting hint for the `Spike Cave` location available at the beginning of the
   multiworld that can be used for no cost.
-* `exclude_locations` forces a not important item to be placed on the `Cave 45` location.
-* `priority_locations` forces a progression item to be placed on the `Link's House` location.
-* `item_links`
-  * For `A Link to the Past` all players in the `rods` item link group will share their fire and ice rods and the player
+- `exclude_locations` forces a not important item to be placed on the `Cave 45` location.
+- `priority_locations` forces a progression item to be placed on the `Link's House` location.
+- `item_links`
+  - For `A Link to the Past` all players in the `rods` item link group will share their fire and ice rods and the player
     items will be replaced with single rupees. The rupee will also be shared among those players.
-  * For `Timespinner` all players in the `TSAll` item link group will share their entire item pool and the `Twin Pyramid
-    Key` and `Timespinner Wheel` will be forced among the worlds of those in the group. The `null` replacement item
+  - For `Timespinner` all players in the `TSAll` item link group will share their entire item pool and the `Twin Pyramid
+Key` and `Timespinner Wheel` will be forced among the worlds of those in the group. The `null` replacement item
     will, instead of forcing a specific chosen item, allow the generator to randomly pick a filler item to replace the
     player items. This item link will only be created if there are at least two players in the group.
-* `triggers` allows us to define a trigger such that if our `smallkey_shuffle` option happens to roll the `any_world`
+- `triggers` allows us to define a trigger such that if our `smallkey_shuffle` option happens to roll the `any_world`
   result it will also ensure that `bigkey_shuffle`, `map_shuffle`, and `compass_shuffle` are also forced to the
   `any_world` result. More information on triggers can be found in the
   [triggers guide](/tutorial/Archipelago/triggers/en).
-
 
 ## Generating Multiple Worlds
 
 YAML files can be configured to generate multiple worlds using only one file. This is mostly useful if you are playing
 an asynchronous multiworld (shortened to async) and are wanting to submit multiple worlds as they can be condensed into
-one file, removing the need to manage separate files if one chooses to do so.  
+one file, removing the need to manage separate files if one chooses to do so.
 
 As a precautionary measure, before submitting a multi-game yaml like this one in a synchronous/sync multiworld, please
 confirm that the other players in the multi are OK with what you are submitting, and please be fairly reasonable about
@@ -316,16 +314,13 @@ Super Mario 64:
     false: 1
 
 ---
-
 description: Example of generating multiple worlds. World 2 of 2
 name: ExampleFinder
 game: ChecksFinder
 
-ChecksFinder: 
+ChecksFinder:
   progression_balancing: 50
   accessibility: items
 ```
 
 The above example will generate 2 worlds - one Super Mario 64 and one ChecksFinder.
- 
-

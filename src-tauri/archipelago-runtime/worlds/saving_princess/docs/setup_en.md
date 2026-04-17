@@ -1,6 +1,7 @@
 # Saving Princess Setup Guide
 
 ## Quick Links
+
 - [Game Info](/games/Saving%20Princess/info/en)
 - [Options Page](/games/Saving%20Princess/player-options)
 - [Saving Princess Archipelago GitHub](https://github.com/LeonarthCG/saving-princess-archipelago)
@@ -9,7 +10,7 @@
 
 ### Automated Installation
 
-*These instructions have only been tested on Windows and Ubuntu.*
+_These instructions have only been tested on Windows and Ubuntu._
 
 Once everything is set up, it is recommended to continue launching the game through this method, as it will check for any updates to the mod and automatically apply them.
 This is also the method used by the Automatic Connection described further below.
@@ -17,44 +18,49 @@ This is also the method used by the Automatic Connection described further below
 1. Purchase and download [Saving Princess](https://brainos.itch.io/savingprincess)
 2. Download and install the latest [Archipelago release](https://github.com/ArchipelagoMW/Archipelago/releases/latest)
 3. Launch `ArchipelagoLauncher` and click on "Saving Princess Client"
-   * You will probably need to scroll down on the Clients column to see it
+   - You will probably need to scroll down on the Clients column to see it
 4. Follow the prompts
-   * On Linux, you will need one of either Wine or 7z for the automated installation
+   - On Linux, you will need one of either Wine or 7z for the automated installation
 
 When launching the game, Windows machines will simply run the executable. For any other OS, the launcher defaults to trying to run the game through Wine. You can change this by modifying the `launch_command` in `options.yaml` or `host.yaml`, under the `saving_princess_settings` section.
 
 ### Manual Windows Installation
 
 Required software:
+
 - Saving Princess, found at its [itch.io Store Page](https://brainos.itch.io/savingprincess)
 - `saving_princess_basepatch.bsdiff4` and `gm-apclientpp.dll`, from [saving_princess_archipelago.zip](https://github.com/LeonarthCG/saving-princess-archipelago/releases/latest)
 - Software that can decompress the previous files, such as [7-zip](https://www.7-zip.org/download.html)
 - A way to apply `.bsdiff4` patches, such as [bspatch](https://www.romhacking.net/utilities/929/)
 
 Steps:
+
 1. Extract all files from `Saving Princess.exe`, as if it were a `.7z` file
-   * Feel free to rename `Saving Princess.exe` to `Saving Princess.exe.7z` if needed
-   * If installed through the itch app, you can find the installation directory from the game's page, pressing the cog button, then "Manage" and finally "Open folder in explorer"
+   - Feel free to rename `Saving Princess.exe` to `Saving Princess.exe.7z` if needed
+   - If installed through the itch app, you can find the installation directory from the game's page, pressing the cog button, then "Manage" and finally "Open folder in explorer"
 2. Extract all files from `saving_princess_archipelago.zip` into the same directory as the files extracted in the previous step
-   * This should include, at least, `saving_princess_basepatch.bsdiff4` and `gm-apclientpp.dll`
+   - This should include, at least, `saving_princess_basepatch.bsdiff4` and `gm-apclientpp.dll`
 3. If you don't have `original_data.win`, copy `data.win` and rename its copy to `original_data.win`
-   * By keeping an unmodified copy of `data.win`, you will have an easier time updating in the future
+   - By keeping an unmodified copy of `data.win`, you will have an easier time updating in the future
 4. Apply the `saving_princess_basepatch.bsdiff4` patch using your patching software
 5. To launch the game, run `Saving Princess v0_8.exe`
 
 ### Manual Linux Installation
 
-*These instructions have only been tested on Ubuntu.*
+_These instructions have only been tested on Ubuntu._
 
 The game does run mostly well through Wine, so it is possible to play on Linux, although there are some minor sprite displacement and sound issues from time to time.
 
 You can follow the instructions for Windows with very few changes:
 
-* Using the `p7zip-full` package to decompress the file.
+- Using the `p7zip-full` package to decompress the file.
+
 ```
 7z e 'Saving Princess.exe'
 ```
-* And the `bsdiff` package for patching.
+
+- And the `bsdiff` package for patching.
+
 ```
 bspatch original_data.win data.win saving_princess_basepatch.bsdiff4
 ```
@@ -82,7 +88,7 @@ validator page: [YAML Validation page](/check).
 1. Go to the room page of the MultiWorld you are going to join.
 2. Click on your slot name on the left side.
 3. Click the "Saving Princess Client" button in the prompt.
-   * This launches the same client described in the Automated Installation section.
+   - This launches the same client described in the Automated Installation section.
 4. Upon reaching the title screen, a connection attempt will automatically be started.
 
 Note that this updates your Saving Princess saved connection details, which are described in the Manual Connection section.
@@ -91,12 +97,13 @@ Note that this updates your Saving Princess saved connection details, which are 
 
 After launching the game, enter the Archipelago options menu through the in-game button with the Archipelago icon.
 From here, enter the different menus and type in the following details in their respective fields:
+
 - **server:port** (e.g. `archipelago.gg:38281`)
-   * If hosting on the website, this detail will be shown in your created room.
+  - If hosting on the website, this detail will be shown in your created room.
 - **slot name** (e.g. `Player`)
-   * This is your player name, which you chose along with your player options.
+  - This is your player name, which you chose along with your player options.
 - **password** (e.g. `123456`)
-  * If the room does not have a password, it can be left empty.
+  - If the room does not have a password, it can be left empty.
 
 This configuration persists through launches and even updates.
 

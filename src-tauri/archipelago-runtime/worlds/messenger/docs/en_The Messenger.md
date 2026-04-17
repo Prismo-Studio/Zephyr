@@ -16,26 +16,26 @@ obtained. You'll be forced to do sections of the game in different ways with you
 
 ## What items can appear in other players' worlds?
 
-* The player's movement items
-* Quest and pedestal items
-* Music Box notes
-* The Phobekins
-* Time shards
-* Shop Upgrades
-* Power Seals
+- The player's movement items
+- Quest and pedestal items
+- Music Box notes
+- The Phobekins
+- Time shards
+- Shop Upgrades
+- Power Seals
 
 ## Where can I find items?
 
 You can find items wherever items can be picked up in the original game. This includes:
 
-* Shopkeeper dialog where the player originally gains movement items
-* Quest Item pickups
-* Music Box notes
-* Phobekins
-* Bosses
-* Shop Upgrades, Money Wrench, and Figurine Purchases
-* Power seals
-* Mega Time Shards
+- Shopkeeper dialog where the player originally gains movement items
+- Quest Item pickups
+- Music Box notes
+- Phobekins
+- Bosses
+- Shop Upgrades, Money Wrench, and Figurine Purchases
+- Power seals
+- Mega Time Shards
 
 ## What are the item name groups?
 
@@ -45,35 +45,35 @@ for it.
 
 The groups you can use for The Messenger are:
 
-* Notes - This covers the music notes
-* Keys - An alternative name for the music notes
-* Crest - The Sun and Moon Crests
-* Phobekin - Any of the Phobekins
-* Phobe - An alternative name for the Phobekins
+- Notes - This covers the music notes
+- Keys - An alternative name for the music notes
+- Crest - The Sun and Moon Crests
+- Phobekin - Any of the Phobekins
+- Phobe - An alternative name for the Phobekins
 
 ## Other changes
 
-* The player can return to the Tower of Time HQ at any point by selecting the button from the options menu
-    * This can cause issues if used at specific times. If used in any of these known problematic areas, immediately
-      quit to title and reload the save. The currently known areas include:
-        * During Boss fights
-        * After Courage Note collection (Corrupted Future chase)
-* After reaching ninja village a teleport option is added to the menu to reach it quickly
-* Toggle Windmill Shuriken button is added to option menu once the item is received
-* The mod option menu will also have a hint item button, as well as a release and collect button that are all placed
+- The player can return to the Tower of Time HQ at any point by selecting the button from the options menu
+  - This can cause issues if used at specific times. If used in any of these known problematic areas, immediately
+    quit to title and reload the save. The currently known areas include:
+    - During Boss fights
+    - After Courage Note collection (Corrupted Future chase)
+- After reaching ninja village a teleport option is added to the menu to reach it quickly
+- Toggle Windmill Shuriken button is added to option menu once the item is received
+- The mod option menu will also have a hint item button, as well as a release and collect button that are all placed
   when the player fulfills the necessary conditions.
-* After running the game with the mod, a config file (APConfig.toml) will be generated in your game folder that can be
+- After running the game with the mod, a config file (APConfig.toml) will be generated in your game folder that can be
   used to modify certain settings such as text size and color. This can also be used to specify a player name that can't
   be entered in game.
 
 ## Known issues
 
-* Ruxxtin Coffin cutscene will sometimes not play correctly, but will still reward the item
-* If you receive the Magic Firefly while in Quillshroom Marsh, The De-curse Queen cutscene will not play. You can exit
+- Ruxxtin Coffin cutscene will sometimes not play correctly, but will still reward the item
+- If you receive the Magic Firefly while in Quillshroom Marsh, The De-curse Queen cutscene will not play. You can exit
   to Searing Crags and re-enter to get it to play correctly.
-* Teleporting back to HQ, then returning to the same level you just left through a Portal can cause Ninja to run left
+- Teleporting back to HQ, then returning to the same level you just left through a Portal can cause Ninja to run left
   and enter a different portal than the one entered by the player or lead to other incorrect inputs, causing a soft lock
-* Text entry menus don't accept controller input
+- Text entry menus don't accept controller input
 
 ## What do I do if I have a problem?
 
@@ -82,14 +82,14 @@ installation and send a bug report either on GitHub or the [Archipelago Discord 
 
 ## FAQ
 
-* The tracker says I can get some checks in Howling Grotto, but I can't defeat the Emerald Golem. How do I get there?
-    * Due to the way the vanilla game handles bosses and level transitions, if you die to him, the room will be unlocked,
-      and you can leave.
-* I have the money wrench. Why won't the shopkeeper let me enter the sink?
-    * The money wrench is both an item you must find or receive from another player and a location check, which you must
-      purchase from the Artificer, as in vanilla.
-* How do I unfreeze Manfred? Where is the monk?
-    * The monk will only appear near Manfred after you cleanse the Queen of Quills with the fairy (magic firefly).
-* I have all the power seals I need to win, but nothing is happening when I open the chest.
-    * Due to how the level loading code works, I am currently unable to teleport you out of HQ at will; you must enter the
-      shop from within a level.
+- The tracker says I can get some checks in Howling Grotto, but I can't defeat the Emerald Golem. How do I get there?
+  - Due to the way the vanilla game handles bosses and level transitions, if you die to him, the room will be unlocked,
+    and you can leave.
+- I have the money wrench. Why won't the shopkeeper let me enter the sink?
+  - The money wrench is both an item you must find or receive from another player and a location check, which you must
+    purchase from the Artificer, as in vanilla.
+- How do I unfreeze Manfred? Where is the monk?
+  - The monk will only appear near Manfred after you cleanse the Queen of Quills with the fairy (magic firefly).
+- I have all the power seals I need to win, but nothing is happening when I open the chest.
+  - Due to how the level loading code works, I am currently unable to teleport you out of HQ at will; you must enter the
+    shop from within a level.

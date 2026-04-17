@@ -9,7 +9,7 @@ eine YAML-Datei zu konfigurieren und zu exportieren.
 
 Items, welche der Spieler für gewöhnlich im Verlauf des Spiels erhalten würde, wurden umhergemischt. Die Logik bleit
 bestehen, damit ist das Spiel immer durchspielbar. Doch weil die Items durch das ganze Spiel gemischt wurden, müssen
- manche Bereiche früher bescuht werden, als man es in Vanilla tun würde.
+manche Bereiche früher bescuht werden, als man es in Vanilla tun würde.
 Eine Liste von implementierter Logik, die unoffensichtlich erscheinen kann, kann
 [hier (Englisch)](https://wiki.ootrandomizer.com/index.php?title=Logic) gefunden werden.
 

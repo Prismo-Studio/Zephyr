@@ -8,7 +8,7 @@
 
 ## Instructions (Windows)
 
-1. Download and install BepInEx 5 (32-bit, version 5.4.20 or newer) to your Hylics 2 root folder. *Do not use any pre-release versions of BepInEx 6.*
+1. Download and install BepInEx 5 (32-bit, version 5.4.20 or newer) to your Hylics 2 root folder. _Do not use any pre-release versions of BepInEx 6._
 
 2. Start Hylics 2 once so that BepInEx can create its required configuration files.
 

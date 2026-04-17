@@ -8,10 +8,13 @@
 	let copied = $state(false);
 
 	function copy() {
-		navigator.clipboard.writeText(randomizerStore.generatedYaml).then(() => {
-			copied = true;
-			setTimeout(() => (copied = false), 1500);
-		}).catch(() => {});
+		navigator.clipboard
+			.writeText(randomizerStore.generatedYaml)
+			.then(() => {
+				copied = true;
+				setTimeout(() => (copied = false), 1500);
+			})
+			.catch(() => {});
 	}
 
 	const lintErrors = $derived(randomizerStore.lintIssues.filter((i) => i.level === 'error'));
@@ -64,7 +67,8 @@
 			const above = tRect.top < cRect.top + 8;
 			const below = tRect.bottom > cRect.bottom - 8;
 			if (above || below) {
-				const offset = tRect.top - cRect.top + codeEl.scrollTop - cRect.height / 2 + tRect.height / 2;
+				const offset =
+					tRect.top - cRect.top + codeEl.scrollTop - cRect.height / 2 + tRect.height / 2;
 				codeEl.scrollTo({ top: offset, behavior: 'smooth' });
 			}
 		});
@@ -82,14 +86,21 @@
 				{#if lintStatus === 'ok'}
 					<Icon icon="mdi:check-circle" /> {i18nState.locale && m.randomizer_lintOk()}
 				{:else if lintStatus === 'warning'}
-					<Icon icon="mdi:alert" /> {lintWarnings.length} warning{lintWarnings.length > 1 ? 's' : ''}
+					<Icon icon="mdi:alert" />
+					{lintWarnings.length} warning{lintWarnings.length > 1 ? 's' : ''}
 				{:else if lintStatus === 'error'}
-					<Icon icon="mdi:close-circle" /> {lintErrors.length} error{lintErrors.length > 1 ? 's' : ''}
+					<Icon icon="mdi:close-circle" />
+					{lintErrors.length} error{lintErrors.length > 1 ? 's' : ''}
 				{:else}
 					<Icon icon="mdi:dots-horizontal" /> {i18nState.locale && m.randomizer_idle()}
 				{/if}
 			</span>
-			<button class="rdz-yaml-copy" onclick={copy} disabled={!randomizerStore.generatedYaml} aria-label={i18nState.locale && m.randomizer_copyYaml()}>
+			<button
+				class="rdz-yaml-copy"
+				onclick={copy}
+				disabled={!randomizerStore.generatedYaml}
+				aria-label={i18nState.locale && m.randomizer_copyYaml()}
+			>
 				<Icon icon={copied ? 'mdi:check' : 'mdi:content-copy'} />
 			</button>
 		</div>
@@ -99,7 +110,10 @@
 		<div class="rdz-yaml-errors">
 			<div class="rdz-yaml-errors-title">
 				<Icon icon="mdi:alert-circle" />
-				{randomizerStore.validationErrors.length} validation issue{randomizerStore.validationErrors.length > 1 ? 's' : ''}
+				{randomizerStore.validationErrors.length} validation issue{randomizerStore.validationErrors
+					.length > 1
+					? 's'
+					: ''}
 			</div>
 			<ul>
 				{#each randomizerStore.validationErrors as err}

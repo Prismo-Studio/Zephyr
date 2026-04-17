@@ -3,7 +3,7 @@
 ## Required Software
 
 - A Short Hike: [Steam](https://store.steampowered.com/app/1055540/A_Short_Hike/)
-    - The Epic Games Store or itch.io version of A Short Hike will also work.
+  - The Epic Games Store or itch.io version of A Short Hike will also work.
 - A Short Hike Randomizer: [GitHub](https://github.com/BrandenEK/AShortHike.Randomizer)
 
 ## Optional Software

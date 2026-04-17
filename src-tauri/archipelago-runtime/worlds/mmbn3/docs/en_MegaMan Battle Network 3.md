@@ -35,17 +35,19 @@ which will be the eight item in the `progressive-undernet` item sequence. You wi
 ## What items and locations get shuffled?
 
 Locations in which items can be found:
+
 - All Blue and Purple Mystery Data.
-- The rewards from all available Jobs (Note: The four "Tora" jobs are story progress, and therefore have 
-been already completed). 
+- The rewards from all available Jobs (Note: The four "Tora" jobs are story progress, and therefore have
+  been already completed).
 - All overworld item pick ups, including Trades and Quizzes with NPCs
 - 31 Items from the Numberman Lottery Trader (which have been changed to require Zenny instead of lotto numbers)
-- 32 Items from the Nut-Wafer Chocolate stand in Yoka Metro Station (which have been changed to require BugFrags 
-instead of Zenny)
+- 32 Items from the Nut-Wafer Chocolate stand in Yoka Metro Station (which have been changed to require BugFrags
+  instead of Zenny)
 
 Items that are shuffled:
+
 - All of the original rewards from above (Note: Certain common chips and low amounts of Zenny have been classified
-as "filler" and might be replaced with progression items)
+  as "filler" and might be replaced with progression items)
 - All four Cybermetro passes, normally obtained through story progression
 - Eight Progressive Undernet Ranks, normally obtained through story progression
 - Several chips required for specific Jobs or Trades that would normally be unobtainable without RNG
@@ -54,14 +56,15 @@ as "filler" and might be replaced with progression items)
 - Higsby's `OrderSys`, which will enable access to the Chip Order System
 
 ## What items are _not_ randomized?
+
 Certain Key Items are kept in their original locations:
+
 - All four of the ID Keys in the WWW-Comp machines on the WWW Base
 - Items in Undernet 7 locked behind post-game progression gates, such as beating Serenade or gathering all chips
 
 ## Which items can be in another player's world?
 
 Any shuffled item can be in other players' worlds.
-
 
 ## What does another world's item look like in Mega Man Battle Network 3?
 

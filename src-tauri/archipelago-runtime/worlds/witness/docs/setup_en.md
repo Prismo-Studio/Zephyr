@@ -39,8 +39,8 @@ It is recommended to have Archipelago's Text Client open on the side to keep tra
 The Witness has a fully functional map tracker that supports auto-tracking.
 
 1. Download [The Witness Map- and Auto-Tracker](https://github.com/NewSoupVi/witness_archipelago_tracker/releases) and [PopTracker](https://github.com/black-sliver/PopTracker/releases).
-2. Open PopTracker, and load the Witness pack. 
+2. Open PopTracker, and load the Witness pack.
 3. Click on the "AP" symbol at the top.
-4. Enter the AP address, slot name and password. 
+4. Enter the AP address, slot name and password.
 
 The rest should take care of itself! Items and checks will be marked automatically, and it even knows your options - It will hide checks & adjust logic accordingly.

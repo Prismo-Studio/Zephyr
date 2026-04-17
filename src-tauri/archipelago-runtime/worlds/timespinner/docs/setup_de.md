@@ -35,7 +35,7 @@ Weitere Informationen zum Randomizer findest du hier: [ReadMe](https://github.co
 2. Wähle "New Game"
 3. Wechsle "<< Select Seed >>" zu "<< Archiplago >>" indem du "links" auf deinem Controller oder der Tastatur drückst
 4. Wähle "<< Archipelago >>" um ein neues Menu zu öffnen, wo du deine Logininformationen für Archipelago eingeben kannst
-    * ANMERKUNG: Die Eingabefelder unterstützen das Einfügen von Informationen mittels 'Ctrl + V'
+   - ANMERKUNG: Die Eingabefelder unterstützen das Einfügen von Informationen mittels 'Ctrl + V'
 5. Wähle "Connect"
 6. Wenn alles funktioniert hat, wechselt das Spiel zurück zur Auswahl des Schwierigkeitsgrads und das Spiel startet,
    sobald du einen davon ausgewählt hast
@@ -45,6 +45,6 @@ Weitere Informationen zum Randomizer findest du hier: [ReadMe](https://github.co
 Die [Player Options](/games/Timespinner/player-options) Seite auf der Website erlaubt dir,
 persönliche Einstellungen zu definieren und diese in eine Konfigurationsdatei zu exportieren
 
-* Die Timespinner Randomizer Option "StinkyMaw" ist in Archipelago Seeds aktuell immer an
-* Die Timespinner Randomizer Optionen "ProgressiveVerticalMovement" & "ProgressiveKeycards" werden in Archipelago Seeds
+- Die Timespinner Randomizer Option "StinkyMaw" ist in Archipelago Seeds aktuell immer an
+- Die Timespinner Randomizer Optionen "ProgressiveVerticalMovement" & "ProgressiveKeycards" werden in Archipelago Seeds
   aktuell nicht unterstützt

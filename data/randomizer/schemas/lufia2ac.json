@@ -1,887 +1,887 @@
 {
-  "id": "lufia2ac",
-  "name": "Lufia II Ancient Cave",
-  "version": "0.4.4",
-  "description": "The Ancient Cave is a roguelike dungeon crawling game built into the RGP Lufia II.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "blue_chest_chance",
-      "label": "Blue Chest Chance",
-      "description": "The chance of a chest being a blue chest.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 5,
-        "max": 75,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "blue_chest_count",
-      "label": "Blue Chest Count",
-      "description": "The number of blue chest items that will be in your item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 10,
-        "max": 100,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "boss",
-      "label": "Boss",
-      "description": "Which boss to fight on the final floor.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "master",
-        "choices": [
-          {
-            "value": "lizard_man",
-            "label": "Lizard Man"
-          },
-          {
-            "value": "big_catfish",
-            "label": "Big Catfish"
-          },
-          {
-            "value": "regal_goblin",
-            "label": "Regal Goblin"
-          },
-          {
-            "value": "follower_x2",
-            "label": "Follower X2"
-          },
-          {
-            "value": "camu",
-            "label": "Camu"
-          },
-          {
-            "value": "tarantula",
-            "label": "Tarantula"
-          },
-          {
-            "value": "pierre",
-            "label": "Pierre"
-          },
-          {
-            "value": "daniele",
-            "label": "Daniele"
-          },
-          {
-            "value": "gades_a",
-            "label": "Gades A"
-          },
-          {
-            "value": "mummy_x4",
-            "label": "Mummy X4"
-          },
-          {
-            "value": "troll_x3",
-            "label": "Troll X3"
-          },
-          {
-            "value": "gades_b",
-            "label": "Gades B"
-          },
-          {
-            "value": "idura_a",
-            "label": "Idura A"
-          },
-          {
-            "value": "lion_x2",
-            "label": "Lion X2"
-          },
-          {
-            "value": "idura_b",
-            "label": "Idura B"
-          },
-          {
-            "value": "idura_c",
-            "label": "Idura C"
-          },
-          {
-            "value": "rogue_flower",
-            "label": "Rogue Flower"
-          },
-          {
-            "value": "soldier_x4",
-            "label": "Soldier X4"
-          },
-          {
-            "value": "gargoyle_x4",
-            "label": "Gargoyle X4"
-          },
-          {
-            "value": "venge_ghost",
-            "label": "Venge Ghost"
-          },
-          {
-            "value": "white_dragon_x3",
-            "label": "White Dragon X3"
-          },
-          {
-            "value": "fire_dragon",
-            "label": "Fire Dragon"
-          },
-          {
-            "value": "ghost_ship",
-            "label": "Ghost Ship"
-          },
-          {
-            "value": "tank",
-            "label": "Tank"
-          },
-          {
-            "value": "gades_c",
-            "label": "Gades C"
-          },
-          {
-            "value": "amon",
-            "label": "Amon"
-          },
-          {
-            "value": "erim",
-            "label": "Erim"
-          },
-          {
-            "value": "daos",
-            "label": "Daos"
-          },
-          {
-            "value": "egg_dragon",
-            "label": "Egg Dragon"
-          },
-          {
-            "value": "master",
-            "label": "Master"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "capsule_cravings_jp_style",
-      "label": "Capsule Cravings Jp Style",
-      "description": "Make capsule monster cravings behave as in the Japanese version.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "capsule_starting_form",
-      "label": "Capsule Starting Form",
-      "description": "The starting form of your capsule monsters.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 5,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "capsule_starting_level",
-      "label": "Capsule Starting Level",
-      "description": "The starting level of your capsule monsters.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 99,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "crowded_floor_chance",
-      "label": "Crowded Floor Chance",
-      "description": "The chance of a floor being a crowded floor.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 255,
-        "step": 1,
-        "default": 16
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "default_capsule",
-      "label": "Default Capsule",
-      "description": "Preselect the active capsule monster.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "jelze",
-        "choices": [
-          {
-            "value": "jelze",
-            "label": "Jelze"
-          },
-          {
-            "value": "flash",
-            "label": "Flash"
-          },
-          {
-            "value": "gusto",
-            "label": "Gusto"
-          },
-          {
-            "value": "zeppy",
-            "label": "Zeppy"
-          },
-          {
-            "value": "darbi",
-            "label": "Darbi"
-          },
-          {
-            "value": "sully",
-            "label": "Sully"
-          },
-          {
-            "value": "blaze",
-            "label": "Blaze"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "default_party",
-      "label": "Default Party",
-      "description": "Preselect the party lineup.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "m",
-        "choices": [
-          {
-            "value": "random-2p",
-            "label": "Random-2P"
-          },
-          {
-            "value": "random-3p",
-            "label": "Random-3P"
-          },
-          {
-            "value": "random-4p",
-            "label": "Random-4P"
-          },
-          {
-            "value": "m",
-            "label": "M"
-          },
-          {
-            "value": "ma",
-            "label": "Ma"
-          },
-          {
-            "value": "md",
-            "label": "Md"
-          },
-          {
-            "value": "mg",
-            "label": "Mg"
-          },
-          {
-            "value": "ml",
-            "label": "Ml"
-          },
-          {
-            "value": "ms",
-            "label": "Ms"
-          },
-          {
-            "value": "mt",
-            "label": "Mt"
-          },
-          {
-            "value": "mad",
-            "label": "Mad"
-          },
-          {
-            "value": "mag",
-            "label": "Mag"
-          },
-          {
-            "value": "mal",
-            "label": "Mal"
-          },
-          {
-            "value": "mas",
-            "label": "Mas"
-          },
-          {
-            "value": "mat",
-            "label": "Mat"
-          },
-          {
-            "value": "mdg",
-            "label": "Mdg"
-          },
-          {
-            "value": "mdl",
-            "label": "Mdl"
-          },
-          {
-            "value": "mds",
-            "label": "Mds"
-          },
-          {
-            "value": "mdt",
-            "label": "Mdt"
-          },
-          {
-            "value": "mgl",
-            "label": "Mgl"
-          },
-          {
-            "value": "mgs",
-            "label": "Mgs"
-          },
-          {
-            "value": "mgt",
-            "label": "Mgt"
-          },
-          {
-            "value": "mls",
-            "label": "Mls"
-          },
-          {
-            "value": "mlt",
-            "label": "Mlt"
-          },
-          {
-            "value": "mst",
-            "label": "Mst"
-          },
-          {
-            "value": "madg",
-            "label": "Madg"
-          },
-          {
-            "value": "madl",
-            "label": "Madl"
-          },
-          {
-            "value": "mads",
-            "label": "Mads"
-          },
-          {
-            "value": "madt",
-            "label": "Madt"
-          },
-          {
-            "value": "magl",
-            "label": "Magl"
-          },
-          {
-            "value": "mags",
-            "label": "Mags"
-          },
-          {
-            "value": "magt",
-            "label": "Magt"
-          },
-          {
-            "value": "mals",
-            "label": "Mals"
-          },
-          {
-            "value": "malt",
-            "label": "Malt"
-          },
-          {
-            "value": "mast",
-            "label": "Mast"
-          },
-          {
-            "value": "mdgl",
-            "label": "Mdgl"
-          },
-          {
-            "value": "mdgs",
-            "label": "Mdgs"
-          },
-          {
-            "value": "mdgt",
-            "label": "Mdgt"
-          },
-          {
-            "value": "mdls",
-            "label": "Mdls"
-          },
-          {
-            "value": "mdlt",
-            "label": "Mdlt"
-          },
-          {
-            "value": "mdst",
-            "label": "Mdst"
-          },
-          {
-            "value": "mgls",
-            "label": "Mgls"
-          },
-          {
-            "value": "mglt",
-            "label": "Mglt"
-          },
-          {
-            "value": "mgst",
-            "label": "Mgst"
-          },
-          {
-            "value": "mlst",
-            "label": "Mlst"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enemy_floor_numbers",
-      "label": "Enemy Floor Numbers",
-      "description": "Change which enemy types are encountered at which floor numbers.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "shuffle",
-            "label": "Shuffle"
-          },
-          {
-            "value": "randomize",
-            "label": "Randomize"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enemy_movement_patterns",
-      "label": "Enemy Movement Patterns",
-      "description": "Change the movement patterns of enemies.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "shuffle_by_pattern",
-            "label": "Shuffle By Pattern"
-          },
-          {
-            "value": "randomize_by_pattern",
-            "label": "Randomize By Pattern"
-          },
-          {
-            "value": "shuffle_by_sprite",
-            "label": "Shuffle By Sprite"
-          },
-          {
-            "value": "randomize_by_sprite",
-            "label": "Randomize By Sprite"
-          },
-          {
-            "value": "singularity",
-            "label": "Singularity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enemy_sprites",
-      "label": "Enemy Sprites",
-      "description": "Change the appearance of enemies.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "shuffle",
-            "label": "Shuffle"
-          },
-          {
-            "value": "randomize",
-            "label": "Randomize"
-          },
-          {
-            "value": "singularity",
-            "label": "Singularity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exp_modifier",
-      "label": "Exp Modifier",
-      "description": "Percentage modifier for EXP gained from enemies.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 100,
-        "max": 500,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "final_floor",
-      "label": "Final Floor",
-      "description": "The final floor, where the boss resides.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 2,
-        "max": 99,
-        "step": 1,
-        "default": 99
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "gear_variety_after_b9",
-      "label": "Gear Variety After B9",
-      "description": "Fixes a bug that prevents various gear from appearing after B9.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "The objective you have to fulfill in order to complete the game.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "boss",
-        "choices": [
-          {
-            "value": "boss",
-            "label": "Boss"
-          },
-          {
-            "value": "iris_treasure_hunt",
-            "label": "Iris Treasure Hunt"
-          },
-          {
-            "value": "boss_iris_treasure_hunt",
-            "label": "Boss Iris Treasure Hunt"
-          },
-          {
-            "value": "final_floor",
-            "label": "Final Floor"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "gold_modifier",
-      "label": "Gold Modifier",
-      "description": "Percentage modifier for gold gained from enemies.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 25,
-        "max": 400,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "healing_floor_chance",
-      "label": "Healing Floor Chance",
-      "description": "The chance of a floor having a healing tile hidden under a bush.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 255,
-        "step": 1,
-        "default": 16
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "inactive_exp_gain",
-      "label": "Inactive Exp Gain",
-      "description": "The rate at which characters not currently in the active party gain EXP.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "disabled",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "half",
-            "label": "Half"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "initial_floor",
-      "label": "Initial Floor",
-      "description": "The initial floor, where you begin your journey.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 98,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "iris_floor_chance",
-      "label": "Iris Floor Chance",
-      "description": "The chance of a floor being able to generate an Iris treasure.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 5,
-        "max": 255,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "iris_treasures_required",
-      "label": "Iris Treasures Required",
-      "description": "The number of Iris treasures required to complete the goal.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 9,
-        "step": 1,
-        "default": 9
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "master_hp",
-      "label": "Master Hp",
-      "description": "The number of hit points of the Master (Only has an effect if boss is set to master.) Supported values: 1 – 9980 Default value: 9980 (same as in an unmodified game)",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 9980,
-        "step": 1,
-        "default": 9980
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "party_starting_level",
-      "label": "Party Starting Level",
-      "description": "The starting level of your party members.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 99,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "run_speed",
-      "label": "Run Speed",
-      "description": "Modifies the game to allow you to move faster than normal when pressing the Y button.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "disabled",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "triple",
-            "label": "Triple"
-          },
-          {
-            "value": "quadruple",
-            "label": "Quadruple"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shop_interval",
-      "label": "Shop Interval",
-      "description": "Place shops after a certain number of floors.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 10,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_capsule_monsters",
-      "label": "Shuffle Capsule Monsters",
-      "description": "Shuffle the capsule monsters into the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_party_members",
-      "label": "Shuffle Party Members",
-      "description": "Shuffle the party members into the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "lufia2ac",
+	"name": "Lufia II Ancient Cave",
+	"version": "0.4.4",
+	"description": "The Ancient Cave is a roguelike dungeon crawling game built into the RGP Lufia II.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "blue_chest_chance",
+			"label": "Blue Chest Chance",
+			"description": "The chance of a chest being a blue chest.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 5,
+				"max": 75,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "blue_chest_count",
+			"label": "Blue Chest Count",
+			"description": "The number of blue chest items that will be in your item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 10,
+				"max": 100,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "boss",
+			"label": "Boss",
+			"description": "Which boss to fight on the final floor.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "master",
+				"choices": [
+					{
+						"value": "lizard_man",
+						"label": "Lizard Man"
+					},
+					{
+						"value": "big_catfish",
+						"label": "Big Catfish"
+					},
+					{
+						"value": "regal_goblin",
+						"label": "Regal Goblin"
+					},
+					{
+						"value": "follower_x2",
+						"label": "Follower X2"
+					},
+					{
+						"value": "camu",
+						"label": "Camu"
+					},
+					{
+						"value": "tarantula",
+						"label": "Tarantula"
+					},
+					{
+						"value": "pierre",
+						"label": "Pierre"
+					},
+					{
+						"value": "daniele",
+						"label": "Daniele"
+					},
+					{
+						"value": "gades_a",
+						"label": "Gades A"
+					},
+					{
+						"value": "mummy_x4",
+						"label": "Mummy X4"
+					},
+					{
+						"value": "troll_x3",
+						"label": "Troll X3"
+					},
+					{
+						"value": "gades_b",
+						"label": "Gades B"
+					},
+					{
+						"value": "idura_a",
+						"label": "Idura A"
+					},
+					{
+						"value": "lion_x2",
+						"label": "Lion X2"
+					},
+					{
+						"value": "idura_b",
+						"label": "Idura B"
+					},
+					{
+						"value": "idura_c",
+						"label": "Idura C"
+					},
+					{
+						"value": "rogue_flower",
+						"label": "Rogue Flower"
+					},
+					{
+						"value": "soldier_x4",
+						"label": "Soldier X4"
+					},
+					{
+						"value": "gargoyle_x4",
+						"label": "Gargoyle X4"
+					},
+					{
+						"value": "venge_ghost",
+						"label": "Venge Ghost"
+					},
+					{
+						"value": "white_dragon_x3",
+						"label": "White Dragon X3"
+					},
+					{
+						"value": "fire_dragon",
+						"label": "Fire Dragon"
+					},
+					{
+						"value": "ghost_ship",
+						"label": "Ghost Ship"
+					},
+					{
+						"value": "tank",
+						"label": "Tank"
+					},
+					{
+						"value": "gades_c",
+						"label": "Gades C"
+					},
+					{
+						"value": "amon",
+						"label": "Amon"
+					},
+					{
+						"value": "erim",
+						"label": "Erim"
+					},
+					{
+						"value": "daos",
+						"label": "Daos"
+					},
+					{
+						"value": "egg_dragon",
+						"label": "Egg Dragon"
+					},
+					{
+						"value": "master",
+						"label": "Master"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "capsule_cravings_jp_style",
+			"label": "Capsule Cravings Jp Style",
+			"description": "Make capsule monster cravings behave as in the Japanese version.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "capsule_starting_form",
+			"label": "Capsule Starting Form",
+			"description": "The starting form of your capsule monsters.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 5,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "capsule_starting_level",
+			"label": "Capsule Starting Level",
+			"description": "The starting level of your capsule monsters.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 99,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "crowded_floor_chance",
+			"label": "Crowded Floor Chance",
+			"description": "The chance of a floor being a crowded floor.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 255,
+				"step": 1,
+				"default": 16
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "default_capsule",
+			"label": "Default Capsule",
+			"description": "Preselect the active capsule monster.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "jelze",
+				"choices": [
+					{
+						"value": "jelze",
+						"label": "Jelze"
+					},
+					{
+						"value": "flash",
+						"label": "Flash"
+					},
+					{
+						"value": "gusto",
+						"label": "Gusto"
+					},
+					{
+						"value": "zeppy",
+						"label": "Zeppy"
+					},
+					{
+						"value": "darbi",
+						"label": "Darbi"
+					},
+					{
+						"value": "sully",
+						"label": "Sully"
+					},
+					{
+						"value": "blaze",
+						"label": "Blaze"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "default_party",
+			"label": "Default Party",
+			"description": "Preselect the party lineup.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "m",
+				"choices": [
+					{
+						"value": "random-2p",
+						"label": "Random-2P"
+					},
+					{
+						"value": "random-3p",
+						"label": "Random-3P"
+					},
+					{
+						"value": "random-4p",
+						"label": "Random-4P"
+					},
+					{
+						"value": "m",
+						"label": "M"
+					},
+					{
+						"value": "ma",
+						"label": "Ma"
+					},
+					{
+						"value": "md",
+						"label": "Md"
+					},
+					{
+						"value": "mg",
+						"label": "Mg"
+					},
+					{
+						"value": "ml",
+						"label": "Ml"
+					},
+					{
+						"value": "ms",
+						"label": "Ms"
+					},
+					{
+						"value": "mt",
+						"label": "Mt"
+					},
+					{
+						"value": "mad",
+						"label": "Mad"
+					},
+					{
+						"value": "mag",
+						"label": "Mag"
+					},
+					{
+						"value": "mal",
+						"label": "Mal"
+					},
+					{
+						"value": "mas",
+						"label": "Mas"
+					},
+					{
+						"value": "mat",
+						"label": "Mat"
+					},
+					{
+						"value": "mdg",
+						"label": "Mdg"
+					},
+					{
+						"value": "mdl",
+						"label": "Mdl"
+					},
+					{
+						"value": "mds",
+						"label": "Mds"
+					},
+					{
+						"value": "mdt",
+						"label": "Mdt"
+					},
+					{
+						"value": "mgl",
+						"label": "Mgl"
+					},
+					{
+						"value": "mgs",
+						"label": "Mgs"
+					},
+					{
+						"value": "mgt",
+						"label": "Mgt"
+					},
+					{
+						"value": "mls",
+						"label": "Mls"
+					},
+					{
+						"value": "mlt",
+						"label": "Mlt"
+					},
+					{
+						"value": "mst",
+						"label": "Mst"
+					},
+					{
+						"value": "madg",
+						"label": "Madg"
+					},
+					{
+						"value": "madl",
+						"label": "Madl"
+					},
+					{
+						"value": "mads",
+						"label": "Mads"
+					},
+					{
+						"value": "madt",
+						"label": "Madt"
+					},
+					{
+						"value": "magl",
+						"label": "Magl"
+					},
+					{
+						"value": "mags",
+						"label": "Mags"
+					},
+					{
+						"value": "magt",
+						"label": "Magt"
+					},
+					{
+						"value": "mals",
+						"label": "Mals"
+					},
+					{
+						"value": "malt",
+						"label": "Malt"
+					},
+					{
+						"value": "mast",
+						"label": "Mast"
+					},
+					{
+						"value": "mdgl",
+						"label": "Mdgl"
+					},
+					{
+						"value": "mdgs",
+						"label": "Mdgs"
+					},
+					{
+						"value": "mdgt",
+						"label": "Mdgt"
+					},
+					{
+						"value": "mdls",
+						"label": "Mdls"
+					},
+					{
+						"value": "mdlt",
+						"label": "Mdlt"
+					},
+					{
+						"value": "mdst",
+						"label": "Mdst"
+					},
+					{
+						"value": "mgls",
+						"label": "Mgls"
+					},
+					{
+						"value": "mglt",
+						"label": "Mglt"
+					},
+					{
+						"value": "mgst",
+						"label": "Mgst"
+					},
+					{
+						"value": "mlst",
+						"label": "Mlst"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enemy_floor_numbers",
+			"label": "Enemy Floor Numbers",
+			"description": "Change which enemy types are encountered at which floor numbers.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "shuffle",
+						"label": "Shuffle"
+					},
+					{
+						"value": "randomize",
+						"label": "Randomize"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enemy_movement_patterns",
+			"label": "Enemy Movement Patterns",
+			"description": "Change the movement patterns of enemies.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "shuffle_by_pattern",
+						"label": "Shuffle By Pattern"
+					},
+					{
+						"value": "randomize_by_pattern",
+						"label": "Randomize By Pattern"
+					},
+					{
+						"value": "shuffle_by_sprite",
+						"label": "Shuffle By Sprite"
+					},
+					{
+						"value": "randomize_by_sprite",
+						"label": "Randomize By Sprite"
+					},
+					{
+						"value": "singularity",
+						"label": "Singularity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enemy_sprites",
+			"label": "Enemy Sprites",
+			"description": "Change the appearance of enemies.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "shuffle",
+						"label": "Shuffle"
+					},
+					{
+						"value": "randomize",
+						"label": "Randomize"
+					},
+					{
+						"value": "singularity",
+						"label": "Singularity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exp_modifier",
+			"label": "Exp Modifier",
+			"description": "Percentage modifier for EXP gained from enemies.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 100,
+				"max": 500,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "final_floor",
+			"label": "Final Floor",
+			"description": "The final floor, where the boss resides.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 2,
+				"max": 99,
+				"step": 1,
+				"default": 99
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "gear_variety_after_b9",
+			"label": "Gear Variety After B9",
+			"description": "Fixes a bug that prevents various gear from appearing after B9.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "The objective you have to fulfill in order to complete the game.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "boss",
+				"choices": [
+					{
+						"value": "boss",
+						"label": "Boss"
+					},
+					{
+						"value": "iris_treasure_hunt",
+						"label": "Iris Treasure Hunt"
+					},
+					{
+						"value": "boss_iris_treasure_hunt",
+						"label": "Boss Iris Treasure Hunt"
+					},
+					{
+						"value": "final_floor",
+						"label": "Final Floor"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "gold_modifier",
+			"label": "Gold Modifier",
+			"description": "Percentage modifier for gold gained from enemies.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 25,
+				"max": 400,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "healing_floor_chance",
+			"label": "Healing Floor Chance",
+			"description": "The chance of a floor having a healing tile hidden under a bush.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 255,
+				"step": 1,
+				"default": 16
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "inactive_exp_gain",
+			"label": "Inactive Exp Gain",
+			"description": "The rate at which characters not currently in the active party gain EXP.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "disabled",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "half",
+						"label": "Half"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "initial_floor",
+			"label": "Initial Floor",
+			"description": "The initial floor, where you begin your journey.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 98,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "iris_floor_chance",
+			"label": "Iris Floor Chance",
+			"description": "The chance of a floor being able to generate an Iris treasure.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 5,
+				"max": 255,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "iris_treasures_required",
+			"label": "Iris Treasures Required",
+			"description": "The number of Iris treasures required to complete the goal.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 9,
+				"step": 1,
+				"default": 9
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "master_hp",
+			"label": "Master Hp",
+			"description": "The number of hit points of the Master (Only has an effect if boss is set to master.) Supported values: 1 – 9980 Default value: 9980 (same as in an unmodified game)",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 9980,
+				"step": 1,
+				"default": 9980
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "party_starting_level",
+			"label": "Party Starting Level",
+			"description": "The starting level of your party members.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 99,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "run_speed",
+			"label": "Run Speed",
+			"description": "Modifies the game to allow you to move faster than normal when pressing the Y button.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "disabled",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "triple",
+						"label": "Triple"
+					},
+					{
+						"value": "quadruple",
+						"label": "Quadruple"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shop_interval",
+			"label": "Shop Interval",
+			"description": "Place shops after a certain number of floors.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 10,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_capsule_monsters",
+			"label": "Shuffle Capsule Monsters",
+			"description": "Shuffle the capsule monsters into the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_party_members",
+			"label": "Shuffle Party Members",
+			"description": "Shuffle the party members into the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

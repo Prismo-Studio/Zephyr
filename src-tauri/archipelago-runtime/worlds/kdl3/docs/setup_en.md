@@ -4,30 +4,30 @@
 
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases).
 - Hardware or software capable of loading and playing SNES ROM files
-    - An emulator capable of connecting to SNI with ROM access. Any one of the following will work:
-        - snes9x-emunwa from: [snes9x-emunwa Releases Page](https://github.com/Skarsnik/snes9x-emunwa/releases)
-        - snes9x-rr from: [snes9x-rr Releases Page](https://github.com/gocha/snes9x-rr/releases)
-        - BizHawk from: [BizHawk Website](http://tasvideos.org/BizHawk.html)
-        - bsnes-plus-nwa from: [bsnes-plus GitHub](https://github.com/black-sliver/bsnes-plus)
-        - **RetroArch is currently incompatible with Kirby's Dream Land 3**
-    - Or SD2SNES, FXPak Pro ([FXPak Pro Store Page](https://krikzz.com/store/home/54-fxpak-pro.html)), or other
-      compatible hardware.
+  - An emulator capable of connecting to SNI with ROM access. Any one of the following will work:
+    - snes9x-emunwa from: [snes9x-emunwa Releases Page](https://github.com/Skarsnik/snes9x-emunwa/releases)
+    - snes9x-rr from: [snes9x-rr Releases Page](https://github.com/gocha/snes9x-rr/releases)
+    - BizHawk from: [BizHawk Website](http://tasvideos.org/BizHawk.html)
+    - bsnes-plus-nwa from: [bsnes-plus GitHub](https://github.com/black-sliver/bsnes-plus)
+    - **RetroArch is currently incompatible with Kirby's Dream Land 3**
+  - Or SD2SNES, FXPak Pro ([FXPak Pro Store Page](https://krikzz.com/store/home/54-fxpak-pro.html)), or other
+    compatible hardware.
 - Your KDL3 ROM file, probably named either `Kirby's Dream Land 3 (USA).sfc` or `Hoshi no Kirby 3 (J).sfc`
 
 ## Installation Procedures
 
 1. Download and install Archipelago from the link above, making sure to install the most recent version.
    **The installer file is located in the assets section at the bottom of the version information**.
-    - During generation/patching, you will be asked to locate your base ROM file. This is your Kirby's Dream Land 3 ROM file.
+   - During generation/patching, you will be asked to locate your base ROM file. This is your Kirby's Dream Land 3 ROM file.
 
 2. If you are using an emulator, you should assign your SNI-compatible emulator as your default program for launching ROM
    files.
-    1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
-    2. Right-click on a ROM file and select **Open with...**
-    3. Check the box next to **Always use this app to open .sfc files**
-    4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
-    5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
-       extracted in step one.
+   1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
+   2. Right-click on a ROM file and select **Open with...**
+   3. Check the box next to **Always use this app to open .sfc files**
+   4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
+   5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
+      extracted in step one.
 
 ## Create a Config (.yaml) File
 
@@ -86,9 +86,9 @@ first time launching, you may be prompted to allow it to communicate through the
 3. Click on **New Lua Script Window...**
 4. In the new window, click **Browse...**
 5. Select the connector lua file included with your client
-    - Look in the Archipelago folder for `/SNI/lua/Connector.lua`
-6. If you see an error while loading the script that states `socket.dll missing` or similar, navigate to the folder of 
-the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
+   - Look in the Archipelago folder for `/SNI/lua/Connector.lua`
+6. If you see an error while loading the script that states `socket.dll missing` or similar, navigate to the folder of
+   the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
 
 ##### BizHawk
 
@@ -100,7 +100,7 @@ the lua you are using in your file explorer and copy the `socket.dll` to the bas
 3. Click on the Tools menu and click on **Lua Console**
 4. Click Script -> Open Script...
 5. Select the `Connector.lua` file you downloaded above
-    - Look in the Archipelago folder for `/SNI/lua/Connector.lua`
+   - Look in the Archipelago folder for `/SNI/lua/Connector.lua`
 
 ##### bsnes-plus-nwa and snes9x-nwa
 

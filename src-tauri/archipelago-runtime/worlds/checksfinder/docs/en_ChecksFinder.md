@@ -23,4 +23,3 @@ next to an icon, the number is how many you have gotten and the icon represents 
 
 Victory is achieved when the player wins a board they were given after they have received all of their Map Width, Map
 Height, and Map Bomb items. The game will say at the bottom of the screen how many of each you have received.
-

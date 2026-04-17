@@ -1,266 +1,266 @@
 {
-  "id": "raft",
-  "name": "Raft",
-  "version": "0.3.4",
-  "description": "Raft is a flooded world exploration game.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "minimum_resource_pack_amount",
-      "label": "Minimum Resource Pack Amount",
-      "description": "The minimum amount of resources available in a resource pack",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 15,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "maximum_resource_pack_amount",
-      "label": "Maximum Resource Pack Amount",
-      "description": "The maximum amount of resources available in a resource pack",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 15,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "duplicate_items",
-      "label": "Duplicate Items",
-      "description": "Adds duplicates of items to the item pool (if configured in Filler items).",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "any",
-        "choices": [
-          {
-            "value": "progression",
-            "label": "Progression"
-          },
-          {
-            "value": "non_progression",
-            "label": "Non Progression"
-          },
-          {
-            "value": "any",
-            "label": "Any"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "filler_item_types",
-      "label": "Filler Item Types",
-      "description": "Determines whether to use Resource Packs, Duplicate Items (as configured), or both.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "resource_packs",
-        "choices": [
-          {
-            "value": "resource_packs",
-            "label": "Resource Packs"
-          },
-          {
-            "value": "duplicates",
-            "label": "Duplicates"
-          },
-          {
-            "value": "both",
-            "label": "Both"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "island_frequency_locations",
-      "label": "Island Frequency Locations",
-      "description": "Sets where frequencies for story islands are located.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random_island_order",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "random_on_island",
-            "label": "Random On Island"
-          },
-          {
-            "value": "random_island_order",
-            "label": "Random Island Order"
-          },
-          {
-            "value": "random_on_island_random_order",
-            "label": "Random On Island Random Order"
-          },
-          {
-            "value": "progressive",
-            "label": "Progressive"
-          },
-          {
-            "value": "anywhere",
-            "label": "Anywhere"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "island_generation_distance",
-      "label": "Island Generation Distance",
-      "description": "Sets how far away islands spawn from you when you input their coordinates into the Receiver.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "quarter",
-            "label": "Quarter"
-          },
-          {
-            "value": "half",
-            "label": "Half"
-          },
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "quadrouple",
-            "label": "Quadrouple"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "expensive_research",
-      "label": "Expensive Research",
-      "description": "If No is selected, researching items and unlocking items in the Crafting Table works the same as vanilla Raft.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progressive_items",
-      "label": "Progressive Items",
-      "description": "Makes some items, like the Bow and Arrow, progressive rather than raw unlocks.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "big_island_early_crafting",
-      "label": "Big Island Early Crafting",
-      "description": "Allows recipes that require items from big islands (eg leather) to lock earlygame items like the Receiver, Bolt, or Smelter.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "paddleboard_mode",
-      "label": "Paddleboard Mode",
-      "description": "Sets later story islands to be in logic without an Engine or Steering Wheel.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "raft",
+	"name": "Raft",
+	"version": "0.3.4",
+	"description": "Raft is a flooded world exploration game.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "minimum_resource_pack_amount",
+			"label": "Minimum Resource Pack Amount",
+			"description": "The minimum amount of resources available in a resource pack",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 15,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "maximum_resource_pack_amount",
+			"label": "Maximum Resource Pack Amount",
+			"description": "The maximum amount of resources available in a resource pack",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 15,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "duplicate_items",
+			"label": "Duplicate Items",
+			"description": "Adds duplicates of items to the item pool (if configured in Filler items).",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "any",
+				"choices": [
+					{
+						"value": "progression",
+						"label": "Progression"
+					},
+					{
+						"value": "non_progression",
+						"label": "Non Progression"
+					},
+					{
+						"value": "any",
+						"label": "Any"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "filler_item_types",
+			"label": "Filler Item Types",
+			"description": "Determines whether to use Resource Packs, Duplicate Items (as configured), or both.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "resource_packs",
+				"choices": [
+					{
+						"value": "resource_packs",
+						"label": "Resource Packs"
+					},
+					{
+						"value": "duplicates",
+						"label": "Duplicates"
+					},
+					{
+						"value": "both",
+						"label": "Both"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "island_frequency_locations",
+			"label": "Island Frequency Locations",
+			"description": "Sets where frequencies for story islands are located.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random_island_order",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "random_on_island",
+						"label": "Random On Island"
+					},
+					{
+						"value": "random_island_order",
+						"label": "Random Island Order"
+					},
+					{
+						"value": "random_on_island_random_order",
+						"label": "Random On Island Random Order"
+					},
+					{
+						"value": "progressive",
+						"label": "Progressive"
+					},
+					{
+						"value": "anywhere",
+						"label": "Anywhere"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "island_generation_distance",
+			"label": "Island Generation Distance",
+			"description": "Sets how far away islands spawn from you when you input their coordinates into the Receiver.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "quarter",
+						"label": "Quarter"
+					},
+					{
+						"value": "half",
+						"label": "Half"
+					},
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "quadrouple",
+						"label": "Quadrouple"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "expensive_research",
+			"label": "Expensive Research",
+			"description": "If No is selected, researching items and unlocking items in the Crafting Table works the same as vanilla Raft.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progressive_items",
+			"label": "Progressive Items",
+			"description": "Makes some items, like the Bow and Arrow, progressive rather than raw unlocks.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "big_island_early_crafting",
+			"label": "Big Island Early Crafting",
+			"description": "Allows recipes that require items from big islands (eg leather) to lock earlygame items like the Receiver, Bolt, or Smelter.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "paddleboard_mode",
+			"label": "Paddleboard Mode",
+			"description": "Sets later story islands to be in logic without an Engine or Steering Wheel.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -1,282 +1,282 @@
 {
-  "id": "inscryption",
-  "name": "Inscryption",
-  "version": "0.1.6",
-  "description": "Inscryption is an inky black card-based odyssey that blends the deckbuilding roguelike, escape-room style puzzles, and psychological horror into a blood-laced smoothie.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "act1_death_link_behaviour",
-      "label": "Act1 Death Link Behaviour",
-      "description": "If DeathLink is enabled, determines what counts as a death in act 1.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "sacrificed",
-        "choices": [
-          {
-            "value": "sacrificed",
-            "label": "Sacrificed"
-          },
-          {
-            "value": "candle_extinguished",
-            "label": "Candle Extinguished"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "Defines the goal to accomplish in order to complete the randomizer.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "full_story_in_order",
-        "choices": [
-          {
-            "value": "full_story_in_order",
-            "label": "Full Story In Order"
-          },
-          {
-            "value": "full_story_any_order",
-            "label": "Full Story Any Order"
-          },
-          {
-            "value": "first_act",
-            "label": "First Act"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_codes",
-      "label": "Randomize Codes",
-      "description": "Randomize codes and passwords in the game (clocks, safes, etc.)",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_deck",
-      "label": "Randomize Deck",
-      "description": "Randomize cards in your deck into new cards.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "disable",
-        "choices": [
-          {
-            "value": "disable",
-            "label": "Disable"
-          },
-          {
-            "value": "every_encounter_within_same_type",
-            "label": "Every Encounter Within Same Type"
-          },
-          {
-            "value": "every_encounter_any_type",
-            "label": "Every Encounter Any Type"
-          },
-          {
-            "value": "starting_only",
-            "label": "Starting Only"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_sigils",
-      "label": "Randomize Sigils",
-      "description": "Randomize sigils printed on the cards into new sigils every encounter.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "disable",
-        "choices": [
-          {
-            "value": "disable",
-            "label": "Disable"
-          },
-          {
-            "value": "randomize_addons",
-            "label": "Randomize Addons"
-          },
-          {
-            "value": "randomize_all",
-            "label": "Randomize All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "optional_death_card",
-      "label": "Optional Death Card",
-      "description": "Add a moment after death in act 1 where you can decide to create a death card or not.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "deathlink_only",
-        "choices": [
-          {
-            "value": "disable",
-            "label": "Disable"
-          },
-          {
-            "value": "always_on",
-            "label": "Always On"
-          },
-          {
-            "value": "deathlink_only",
-            "label": "Deathlink Only"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_tutorial",
-      "label": "Skip Tutorial",
-      "description": "Skips the first few tutorial runs of act 1.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_epilogue",
-      "label": "Skip Epilogue",
-      "description": "Completes the goal as soon as the required acts are completed without the need of completing the epilogue.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "epitaph_pieces_randomization",
-      "label": "Epitaph Pieces Randomization",
-      "description": "Determines how epitaph pieces in act 2 are randomized.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "all_pieces",
-        "choices": [
-          {
-            "value": "all_pieces",
-            "label": "All Pieces"
-          },
-          {
-            "value": "in_groups",
-            "label": "In Groups"
-          },
-          {
-            "value": "as_one_item",
-            "label": "As One Item"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "painting_checks_balancing",
-      "label": "Painting Checks Balancing",
-      "description": "Generation options for the second and third painting checks in act 1.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "balanced",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "balanced",
-            "label": "Balanced"
-          },
-          {
-            "value": "force_filler",
-            "label": "Force Filler"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "inscryption",
+	"name": "Inscryption",
+	"version": "0.1.6",
+	"description": "Inscryption is an inky black card-based odyssey that blends the deckbuilding roguelike, escape-room style puzzles, and psychological horror into a blood-laced smoothie.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "act1_death_link_behaviour",
+			"label": "Act1 Death Link Behaviour",
+			"description": "If DeathLink is enabled, determines what counts as a death in act 1.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "sacrificed",
+				"choices": [
+					{
+						"value": "sacrificed",
+						"label": "Sacrificed"
+					},
+					{
+						"value": "candle_extinguished",
+						"label": "Candle Extinguished"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "Defines the goal to accomplish in order to complete the randomizer.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "full_story_in_order",
+				"choices": [
+					{
+						"value": "full_story_in_order",
+						"label": "Full Story In Order"
+					},
+					{
+						"value": "full_story_any_order",
+						"label": "Full Story Any Order"
+					},
+					{
+						"value": "first_act",
+						"label": "First Act"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_codes",
+			"label": "Randomize Codes",
+			"description": "Randomize codes and passwords in the game (clocks, safes, etc.)",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_deck",
+			"label": "Randomize Deck",
+			"description": "Randomize cards in your deck into new cards.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "disable",
+				"choices": [
+					{
+						"value": "disable",
+						"label": "Disable"
+					},
+					{
+						"value": "every_encounter_within_same_type",
+						"label": "Every Encounter Within Same Type"
+					},
+					{
+						"value": "every_encounter_any_type",
+						"label": "Every Encounter Any Type"
+					},
+					{
+						"value": "starting_only",
+						"label": "Starting Only"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_sigils",
+			"label": "Randomize Sigils",
+			"description": "Randomize sigils printed on the cards into new sigils every encounter.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "disable",
+				"choices": [
+					{
+						"value": "disable",
+						"label": "Disable"
+					},
+					{
+						"value": "randomize_addons",
+						"label": "Randomize Addons"
+					},
+					{
+						"value": "randomize_all",
+						"label": "Randomize All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "optional_death_card",
+			"label": "Optional Death Card",
+			"description": "Add a moment after death in act 1 where you can decide to create a death card or not.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "deathlink_only",
+				"choices": [
+					{
+						"value": "disable",
+						"label": "Disable"
+					},
+					{
+						"value": "always_on",
+						"label": "Always On"
+					},
+					{
+						"value": "deathlink_only",
+						"label": "Deathlink Only"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_tutorial",
+			"label": "Skip Tutorial",
+			"description": "Skips the first few tutorial runs of act 1.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_epilogue",
+			"label": "Skip Epilogue",
+			"description": "Completes the goal as soon as the required acts are completed without the need of completing the epilogue.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "epitaph_pieces_randomization",
+			"label": "Epitaph Pieces Randomization",
+			"description": "Determines how epitaph pieces in act 2 are randomized.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "all_pieces",
+				"choices": [
+					{
+						"value": "all_pieces",
+						"label": "All Pieces"
+					},
+					{
+						"value": "in_groups",
+						"label": "In Groups"
+					},
+					{
+						"value": "as_one_item",
+						"label": "As One Item"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "painting_checks_balancing",
+			"label": "Painting Checks Balancing",
+			"description": "Generation options for the second and third painting checks in act 1.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "balanced",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "balanced",
+						"label": "Balanced"
+					},
+					{
+						"value": "force_filler",
+						"label": "Force Filler"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

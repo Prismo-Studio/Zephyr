@@ -7,11 +7,11 @@ Comme nous utilisons BizHawk, ce guide s'applique uniquement aux systèmes Windo
 ## Logiciel requis
 
 - BizHawk : [Sorties BizHawk de TASVideos](https://tasvideos.org/BizHawk/ReleaseHistory)
-   - Les versions 2.10 et ultérieures sont prises en charge. La version 2.10 est recommandée pour des raisons de stabilité.
-   - Des instructions d'installation détaillées pour BizHawk peuvent être trouvées sur le lien ci-dessus.
-   - Les utilisateurs Windows doivent d'abord exécuter le programme d'installation des prérequis, qui peut également être trouvé sur le lien ci-dessus.
+  - Les versions 2.10 et ultérieures sont prises en charge. La version 2.10 est recommandée pour des raisons de stabilité.
+  - Des instructions d'installation détaillées pour BizHawk peuvent être trouvées sur le lien ci-dessus.
+  - Les utilisateurs Windows doivent d'abord exécuter le programme d'installation des prérequis, qui peut également être trouvé sur le lien ci-dessus.
 - Le client Archipelago intégré, qui peut être installé [ici](https://github.com/ArchipelagoMW/Archipelago/releases)
-   (sélectionnez « Ocarina of Time Client » lors de l'installation).
+  (sélectionnez « Ocarina of Time Client » lors de l'installation).
 - Un fichier ROM v1.0 US d'Ocarina of Time.
 
 ## Configuration de BizHawk
@@ -19,13 +19,13 @@ Comme nous utilisons BizHawk, ce guide s'applique uniquement aux systèmes Windo
 Une fois BizHawk installé, ouvrez EmuHawk et modifiez les paramètres suivants :
 
 - Sous Config > Personnaliser > Avancé, assurez-vous que la case AutoSaveRAM est cochée et cliquez sur le bouton 5s.
-   Cela réduit la possibilité de perdre des données de sauvegarde en cas de crash de l'émulateur.
+  Cela réduit la possibilité de perdre des données de sauvegarde en cas de crash de l'émulateur.
 - Sous Config > Personnaliser, cochez les cases « Exécuter en arrière-plan » et « Accepter la saisie en arrière-plan ». Cela vous permettra continuez à jouer en arrière-plan, même si une autre fenêtre est sélectionnée.
 - Sous Config > Hotkeys, de nombreux raccourcis clavier sont répertoriés, dont beaucoup sont liés aux touches communes du clavier. Vous voudrez probablement pour désactiver la plupart d'entre eux, ce que vous pouvez faire rapidement en utilisant « Esc ».
 - Si vous jouez avec une manette, lorsque vous associez des commandes, désactivez "P1 A Up", "P1 A Down", "P1 A Left" et "P1 A Right".
-   car ceux-ci interfèrent avec la visée s’ils sont liés. Définissez plutôt l'entrée directionnelle à l'aide de l'onglet Analogique.
+  car ceux-ci interfèrent avec la visée s’ils sont liés. Définissez plutôt l'entrée directionnelle à l'aide de l'onglet Analogique.
 - Sous N64, activez "Utiliser le connecteur d'extension". Ceci est nécessaire pour que les états de sauvegarde fonctionnent.
-   (Le menu N64 n'apparaît qu'après le chargement d'une ROM.)
+  (Le menu N64 n'apparaît qu'après le chargement d'une ROM.)
 
 Il est fortement recommandé d'associer les extensions de rom N64 (\*.n64, \*.z64) à l'EmuHawk que nous venons d'installer.
 Pour ce faire, vous devez simplement rechercher n'importe quelle rom N64 que vous possédez, faire un clic droit et sélectionner "Ouvrir avec...", déplier la liste qui apparaît et sélectionnez l'option du bas "Rechercher une autre application", puis accédez au dossier BizHawk et sélectionnez EmuHawk.exe.
@@ -46,7 +46,7 @@ La page Paramètres du lecteur sur le site Web vous permet de configurer vos par
 
 ### Vérification de votre fichier de configuration
 
-Si vous souhaitez valider votre fichier de configuration pour vous assurer qu'il fonctionne, vous pouvez le faire sur la page YAML Validator. 
+Si vous souhaitez valider votre fichier de configuration pour vous assurer qu'il fonctionne, vous pouvez le faire sur la page YAML Validator.
 YAML page du validateur : [page de validation YAML](/mysterycheck)
 
 ## Rejoindre un jeu multimonde

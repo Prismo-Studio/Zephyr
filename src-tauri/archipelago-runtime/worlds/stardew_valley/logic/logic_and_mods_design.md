@@ -48,13 +48,13 @@ dependencies. Vanilla would always be first, then anything that depends only on 
 
 1. In `generate_early`, content packs are selected. The logic builders are created and content packs are unpacked so all their content is in the proper
    item/npc/weapon lists.
-    - `ContentPack` instances are shared across players. However, some mods need to modify content of other packs. In that case, an instance of the content is
-      created specifically for that player (For instance, SVE changes the Wizard). This probably does not happen enough to require sharing those instances. If
-      necessary, a FlyWeight design pattern could be used.
+   - `ContentPack` instances are shared across players. However, some mods need to modify content of other packs. In that case, an instance of the content is
+     created specifically for that player (For instance, SVE changes the Wizard). This probably does not happen enough to require sharing those instances. If
+     necessary, a FlyWeight design pattern could be used.
 2. In `create_regions`, AP regions and entrances are unpacked, and randomized if needed.
 3. In `create_items`, AP items are unpacked, and randomized.
 4. In `set_rules`, the rules are applied to the AP entrances and locations. Each content pack have to apply the proper rules for their entrances and locations.
-    - (idea) To begin this step, sphere 0 could be simplified instantly as sphere 0 regions and items are already known.
+   - (idea) To begin this step, sphere 0 could be simplified instantly as sphere 0 regions and items are already known.
 5. Nothing to do in `generate_basic`.
 
 ## Item Sources

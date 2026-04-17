@@ -7,8 +7,9 @@
 - BepinEx (utilisé comme un modloader pour DLCQuest. La version du mod ci-dessus inclut BepInEx si vous choisissez la version d'installation complète)
 
 ## Logiciels optionnels
+
 - [Archipelago] (https://github.com/ArchipelagoMW/Archipelago/releases)
-    - (Uniquement pour le TextClient)
+  - (Uniquement pour le TextClient)
 
 ## Créer un fichier de configuration (.yaml)
 
@@ -26,13 +27,12 @@ Vous pouvez personnaliser vos paramètres en visitant la [page des paramètres d
 
 - Télécharger le [DLCQuestipelago mod release](https://github.com/agilbert1412/DLCQuestipelago/releases). Si c'est la première fois que vous installez le mod, ou si vous n'êtes pas à l'aise avec l'édition manuelle de fichiers, vous devriez choisir l'Installateur. Il se chargera de la plus grande partie du travail pour vous
 
-
 - Extraire l'archive .zip à l'emplacement de votre choix
-
 
 - Exécutez "DLCQuestipelagoInstaller.exe".
 
 ![image](https://i.imgur.com/2sPhMgs.png)
+
 - Le programme d'installation devrait décrire ce qu'il fait à chaque étape, et vous demandera votre avis si nécessaire.
   - Il vous permettra de choisir l'emplacement d'installation de votre jeu moddé et vous proposera un emplacement par défaut
   - Il **essayera** de trouver votre jeu DLCQuest sur votre ordinateur et, en cas d'échec, vous demandera d'indiquer le chemin d'accès.
@@ -43,7 +43,7 @@ Vous pouvez personnaliser vos paramètres en visitant la [page des paramètres d
 - Localisez le fichier "ArchipelagoConnectionInfo.json", qui se situe dans le même emplacement que votre installation moddée. Vous pouvez éditer ce fichier avec n'importe quel éditeur de texte, et vous devez entrer l'adresse IP du serveur, le port et votre nom de joueur dans les champs appropriés.
 
 - Exécutez BepInEx.NET.Framework.Launcher.exe. Si vous avez opté pour un raccourci sur le bureau, vous le trouverez avec une icône et un nom plus reconnaissable.
-![image](https://i.imgur.com/ZUiFrhf.png)
+  ![image](https://i.imgur.com/ZUiFrhf.png)
 
 - Votre jeu devrait se lancer en même temps qu'une console de modloader, qui contiendra des informations de débogage importantes si vous rencontrez des problèmes.
 - Le jeu devrait se connecter automatiquement, et tenter de se reconnecter si votre internet ou le serveur se déconnecte, pendant que vous jouez.

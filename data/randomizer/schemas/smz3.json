@@ -1,323 +1,323 @@
 {
-  "id": "smz3",
-  "name": "SMZ3",
-  "version": "0.4.4",
-  "description": "A python port of Super Metroid & A Link To The Past Crossover Item Randomizer based on v11.2 of Total's SMZ3.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "items",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          },
-          {
-            "value": "items",
-            "label": "Items"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "sm_logic",
-      "label": "Sm Logic",
-      "description": "This option selects what kind of logic to use for item placement inside Super Metroid.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "sword_location",
-      "label": "Sword Location",
-      "description": "This option decides where the first sword will be placed.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "randomized",
-        "choices": [
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          },
-          {
-            "value": "early",
-            "label": "Early"
-          },
-          {
-            "value": "uncle",
-            "label": "Uncle"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "morph_location",
-      "label": "Morph Location",
-      "description": "This option decides where the morph ball will be placed.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "randomized",
-        "choices": [
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          },
-          {
-            "value": "early",
-            "label": "Early"
-          },
-          {
-            "value": "original",
-            "label": "Original"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "This option decides what goal is required to finish the randomizer.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "defeatboth",
-        "choices": [
-          {
-            "value": "defeatboth",
-            "label": "Defeatboth"
-          },
-          {
-            "value": "fastganondefeatmotherbrain",
-            "label": "Fastganondefeatmotherbrain"
-          },
-          {
-            "value": "alldungeonsdefeatmotherbrain",
-            "label": "Alldungeonsdefeatmotherbrain"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "key_shuffle",
-      "label": "Key Shuffle",
-      "description": "This option decides how dungeon items such as keys are shuffled.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "keysanity",
-            "label": "Keysanity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "open_tower",
-      "label": "Open Tower",
-      "description": "The amount of crystals required to be able to enter Ganon's Tower.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 7,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ganon_vulnerable",
-      "label": "Ganon Vulnerable",
-      "description": "The amount of crystals required to be able to harm Ganon.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 7,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "open_tourian",
-      "label": "Open Tourian",
-      "description": "The amount of boss tokens required to enter Tourian.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 4,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spin_jumps_animation",
-      "label": "Spin Jumps Animation",
-      "description": "Enable separate space/screw jump animations",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "heart_beep_speed",
-      "label": "Heart Beep Speed",
-      "description": "Sets the speed of the heart beep sound in A Link to the Past.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "quarter",
-            "label": "Quarter"
-          },
-          {
-            "value": "half",
-            "label": "Half"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "heart_color",
-      "label": "Heart Color",
-      "description": "Changes the color of the hearts in the HUD for A Link to the Past.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "red",
-        "choices": [
-          {
-            "value": "red",
-            "label": "Red"
-          },
-          {
-            "value": "green",
-            "label": "Green"
-          },
-          {
-            "value": "blue",
-            "label": "Blue"
-          },
-          {
-            "value": "yellow",
-            "label": "Yellow"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "quick_swap",
-      "label": "Quick Swap",
-      "description": "When enabled, lets you switch items in ALTTP with L/R",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "energy_beep",
-      "label": "Energy Beep",
-      "description": "Toggles the low health energy beep in Super Metroid.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "smz3",
+	"name": "SMZ3",
+	"version": "0.4.4",
+	"description": "A python port of Super Metroid & A Link To The Past Crossover Item Randomizer based on v11.2 of Total's SMZ3.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "items",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					},
+					{
+						"value": "items",
+						"label": "Items"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "sm_logic",
+			"label": "Sm Logic",
+			"description": "This option selects what kind of logic to use for item placement inside Super Metroid.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "sword_location",
+			"label": "Sword Location",
+			"description": "This option decides where the first sword will be placed.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "randomized",
+				"choices": [
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					},
+					{
+						"value": "early",
+						"label": "Early"
+					},
+					{
+						"value": "uncle",
+						"label": "Uncle"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "morph_location",
+			"label": "Morph Location",
+			"description": "This option decides where the morph ball will be placed.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "randomized",
+				"choices": [
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					},
+					{
+						"value": "early",
+						"label": "Early"
+					},
+					{
+						"value": "original",
+						"label": "Original"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "This option decides what goal is required to finish the randomizer.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "defeatboth",
+				"choices": [
+					{
+						"value": "defeatboth",
+						"label": "Defeatboth"
+					},
+					{
+						"value": "fastganondefeatmotherbrain",
+						"label": "Fastganondefeatmotherbrain"
+					},
+					{
+						"value": "alldungeonsdefeatmotherbrain",
+						"label": "Alldungeonsdefeatmotherbrain"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "key_shuffle",
+			"label": "Key Shuffle",
+			"description": "This option decides how dungeon items such as keys are shuffled.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "keysanity",
+						"label": "Keysanity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "open_tower",
+			"label": "Open Tower",
+			"description": "The amount of crystals required to be able to enter Ganon's Tower.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 7,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ganon_vulnerable",
+			"label": "Ganon Vulnerable",
+			"description": "The amount of crystals required to be able to harm Ganon.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 7,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "open_tourian",
+			"label": "Open Tourian",
+			"description": "The amount of boss tokens required to enter Tourian.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 4,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spin_jumps_animation",
+			"label": "Spin Jumps Animation",
+			"description": "Enable separate space/screw jump animations",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "heart_beep_speed",
+			"label": "Heart Beep Speed",
+			"description": "Sets the speed of the heart beep sound in A Link to the Past.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "quarter",
+						"label": "Quarter"
+					},
+					{
+						"value": "half",
+						"label": "Half"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "heart_color",
+			"label": "Heart Color",
+			"description": "Changes the color of the hearts in the HUD for A Link to the Past.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "red",
+				"choices": [
+					{
+						"value": "red",
+						"label": "Red"
+					},
+					{
+						"value": "green",
+						"label": "Green"
+					},
+					{
+						"value": "blue",
+						"label": "Blue"
+					},
+					{
+						"value": "yellow",
+						"label": "Yellow"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "quick_swap",
+			"label": "Quick Swap",
+			"description": "When enabled, lets you switch items in ALTTP with L/R",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "energy_beep",
+			"label": "Energy Beep",
+			"description": "Toggles the low health energy beep in Super Metroid.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

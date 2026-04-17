@@ -17,7 +17,7 @@ This is how warps are encoded:
 
 - `source_map`: The map the warp events are located in
 - `source_warp_ids`: The ids of all adjacent warp events in source_map which lead to the same destination (these must be
-in ascending order)
+  in ascending order)
 - `dest_map`: The map of the warp event to which this one is connected
 - `dest_warp_ids`: The ids of the warp events in dest_map
 - `[!]`: If the warp expects to lead to a destination which does not lead back to it, add a ! to the end

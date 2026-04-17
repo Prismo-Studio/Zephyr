@@ -1,241 +1,241 @@
 {
-  "id": "dlcquest",
-  "name": "DLCQuest",
-  "version": "0.1.6",
-  "description": "DLCQuest is a metroid ish game where everything is an in-game dlc.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "double_jump_glitch",
-      "label": "Double Jump Glitch",
-      "description": "Whether to include the double jump glitches in logic.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "simple",
-            "label": "Simple"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "coinsanity",
-      "label": "Coinsanity",
-      "description": "Whether collecting coins are checks If none, you will collect your own coins",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "coin",
-            "label": "Coin"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "coinbundlequantity",
-      "label": "Coinbundlequantity",
-      "description": "This is the amount of coins in a coin bundle You need to collect that number of coins to get a location check, and when receiving coin items, you will get bundles of this size It is highly recommended to not set this value below 10, as it generates a very large number of boring locations and items.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "permanent_coins",
-      "label": "Permanent Coins",
-      "description": "If purchasing a pack decreases your current coins amounts.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "false",
-        "choices": [
-          {
-            "value": "false",
-            "label": "False"
-          },
-          {
-            "value": "true",
-            "label": "True"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "time_is_money",
-      "label": "Time Is Money",
-      "description": "Whether the Time is Money pack is considered required to complete the grindstone.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "required",
-        "choices": [
-          {
-            "value": "required",
-            "label": "Required"
-          },
-          {
-            "value": "optional",
-            "label": "Optional"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ending_choice",
-      "label": "Ending Choice",
-      "description": "Which ending is considered completion for the DLC Quest campaign, either any ending or the true ending",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "true",
-        "choices": [
-          {
-            "value": "any",
-            "label": "Any"
-          },
-          {
-            "value": "true",
-            "label": "True"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "campaign",
-      "label": "Campaign",
-      "description": "Which campaign you want to play",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "basic",
-        "choices": [
-          {
-            "value": "basic",
-            "label": "Basic"
-          },
-          {
-            "value": "live_freemium_or_die",
-            "label": "Live Freemium Or Die"
-          },
-          {
-            "value": "both",
-            "label": "Both"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_shuffle",
-      "label": "Item Shuffle",
-      "description": "Should Inventory Items be separate from their DLCs and shuffled in the item pool",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "disabled",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "shuffled",
-            "label": "Shuffled"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": true,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "dlcquest",
+	"name": "DLCQuest",
+	"version": "0.1.6",
+	"description": "DLCQuest is a metroid ish game where everything is an in-game dlc.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "double_jump_glitch",
+			"label": "Double Jump Glitch",
+			"description": "Whether to include the double jump glitches in logic.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "simple",
+						"label": "Simple"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "coinsanity",
+			"label": "Coinsanity",
+			"description": "Whether collecting coins are checks If none, you will collect your own coins",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "coin",
+						"label": "Coin"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "coinbundlequantity",
+			"label": "Coinbundlequantity",
+			"description": "This is the amount of coins in a coin bundle You need to collect that number of coins to get a location check, and when receiving coin items, you will get bundles of this size It is highly recommended to not set this value below 10, as it generates a very large number of boring locations and items.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "permanent_coins",
+			"label": "Permanent Coins",
+			"description": "If purchasing a pack decreases your current coins amounts.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "false",
+				"choices": [
+					{
+						"value": "false",
+						"label": "False"
+					},
+					{
+						"value": "true",
+						"label": "True"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "time_is_money",
+			"label": "Time Is Money",
+			"description": "Whether the Time is Money pack is considered required to complete the grindstone.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "required",
+				"choices": [
+					{
+						"value": "required",
+						"label": "Required"
+					},
+					{
+						"value": "optional",
+						"label": "Optional"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ending_choice",
+			"label": "Ending Choice",
+			"description": "Which ending is considered completion for the DLC Quest campaign, either any ending or the true ending",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "true",
+				"choices": [
+					{
+						"value": "any",
+						"label": "Any"
+					},
+					{
+						"value": "true",
+						"label": "True"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "campaign",
+			"label": "Campaign",
+			"description": "Which campaign you want to play",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "basic",
+				"choices": [
+					{
+						"value": "basic",
+						"label": "Basic"
+					},
+					{
+						"value": "live_freemium_or_die",
+						"label": "Live Freemium Or Die"
+					},
+					{
+						"value": "both",
+						"label": "Both"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_shuffle",
+			"label": "Item Shuffle",
+			"description": "Should Inventory Items be separate from their DLCs and shuffled in the item pool",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "disabled",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "shuffled",
+						"label": "Shuffled"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": true,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

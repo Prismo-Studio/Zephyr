@@ -54,7 +54,10 @@
 					<span class="rdz-field-tag">{i18nState.locale && m.randomizer_advanced()}</span>
 				{/if}
 				{#if dependents.length > 0}
-					<span class="rdz-field-tag rdz-field-tag-soft" title={`Affects ${dependents.length} option(s)`}>
+					<span
+						class="rdz-field-tag rdz-field-tag-soft"
+						title={`Affects ${dependents.length} option(s)`}
+					>
 						<Icon icon="mdi:link-variant" />
 						{dependents.length}
 					</span>
@@ -68,22 +71,17 @@
 		<div class="rdz-field-control">
 			{#if option.type.kind === 'toggle'}
 				<div class="rdz-toggle-row">
-					<Toggle
-						checked={value === true}
-						onchange={(checked) => set(checked)}
-					/>
-					<span class="rdz-toggle-state">{value === true ? (i18nState.locale && m.randomizer_on()) : (i18nState.locale && m.randomizer_off())}</span>
+					<Toggle checked={value === true} onchange={(checked) => set(checked)} />
+					<span class="rdz-toggle-state"
+						>{value === true
+							? i18nState.locale && m.randomizer_on()
+							: i18nState.locale && m.randomizer_off()}</span
+					>
 				</div>
 			{:else if option.type.kind === 'range'}
 				{@const t = option.type}
 				{@const cur = typeof value === 'number' ? value : t.default}
-				<Slider
-					value={cur}
-					min={t.min}
-					max={t.max}
-					step={t.step}
-					onchange={(v) => set(v)}
-				/>
+				<Slider value={cur} min={t.min} max={t.max} step={t.step} onchange={(v) => set(v)} />
 			{:else if option.type.kind === 'select'}
 				{@const t = option.type}
 				<Dropdown
@@ -142,12 +140,16 @@
 		height: auto;
 		min-height: fit-content;
 		overflow: visible;
-		transition: border-color 200ms ease, box-shadow 200ms ease;
+		transition:
+			border-color 200ms ease,
+			box-shadow 200ms ease;
 	}
 
 	.rdz-field.just-changed {
 		border-color: var(--accent-400);
-		box-shadow: 0 0 0 1px var(--accent-400), var(--shadow-glow);
+		box-shadow:
+			0 0 0 1px var(--accent-400),
+			var(--shadow-glow);
 	}
 
 	.rdz-field.just-impacted {

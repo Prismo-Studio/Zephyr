@@ -1,539 +1,539 @@
 {
-  "id": "aquaria",
-  "name": "Aquaria",
-  "version": "0.1.6",
-  "description": "Aquaria is a side-scrolling action-adventure game.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "objective",
-      "label": "Objective",
-      "description": "**Kill the Creator:** Get to the final boss (the Creator) and beat all it's forms.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "kill_the_creator",
-        "choices": [
-          {
-            "value": "kill_the_creator",
-            "label": "Kill The Creator"
-          },
-          {
-            "value": "obtain_secrets_and_kill_the_creator",
-            "label": "Obtain Secrets And Kill The Creator"
-          },
-          {
-            "value": "killing_the_four_gods",
-            "label": "Killing The Four Gods"
-          },
-          {
-            "value": "gods_and_creator",
-            "label": "Gods And Creator"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mini_bosses_to_beat",
-      "label": "Mini Bosses To Beat",
-      "description": "The number of minibosses to beat before having access to the goal.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 8,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "big_bosses_to_beat",
-      "label": "Big Bosses To Beat",
-      "description": "The number of big bosses to beat before having access to the creator (the final boss).",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "turtle_randomizer",
-      "label": "Turtle Randomizer",
-      "description": "Randomize the transportation turtle.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "all_except_final",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          },
-          {
-            "value": "all_except_final",
-            "label": "All Except Final"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_energy_form",
-      "label": "Early Energy Form",
-      "description": "Force the Energy form to be in a location early in the multiworld (or directly in your world if Early and Local is selected).",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "early",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "early",
-            "label": "Early"
-          },
-          {
-            "value": "early_and_local",
-            "label": "Early And Local"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_bind_song",
-      "label": "Early Bind Song",
-      "description": "Force the Bind song to be in a location early in the multiworld (or directly in your world if Early and Local is selected).",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "early",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "early",
-            "label": "Early"
-          },
-          {
-            "value": "early_and_local",
-            "label": "Early And Local"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "light_needed_to_get_to_dark_places",
-      "label": "Light Needed To Get To Dark Places",
-      "description": "Make sure that the sun form or the dumbo pet can be acquired before getting to dark places.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "on",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "sun_form",
-            "label": "Sun Form"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bind_song_needed_to_get_under_rock_bulb",
-      "label": "Bind Song Needed To Get Under Rock Bulb",
-      "description": "Make sure that the bind song can be acquired before having to obtain sing bulbs under rocks.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "unconfine_home_water",
-      "label": "Unconfine Home Water",
-      "description": "Open the way out of the Home Waters area so that Naija can go to open water and beyond without the bind song.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "via_energy_door",
-            "label": "Via Energy Door"
-          },
-          {
-            "value": "via_transturtle",
-            "label": "Via Transturtle"
-          },
-          {
-            "value": "via_both",
-            "label": "Via Both"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ingredient_randomizer",
-      "label": "Ingredient Randomizer",
-      "description": "Select if the simple ingredients (that do not have a recipe) should be randomized.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "common_ingredients",
-            "label": "Common Ingredients"
-          },
-          {
-            "value": "all_ingredients",
-            "label": "All Ingredients"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dish_randomizer",
-      "label": "Dish Randomizer",
-      "description": "Randomize the drop of Dishes (Ingredients with recipe).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "aquarian_translation",
-      "label": "Aquarian Translation",
-      "description": "Translate the Aquarian scripture in the game into English.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_first_vision",
-      "label": "Skip First Vision",
-      "description": "Skip the first vision in the game, where Naija transforms into Energy Form and gets flooded by enemies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "blind_goal",
-      "label": "Blind Goal",
-      "description": "Hide the goal's requirements from the help page so that you don't know what is needed to goal.",
-      "category": "goals",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "infinite_hot_soup",
-      "label": "Infinite Hot Soup",
-      "description": "As soon as a \"hot soup\" is received, the user will never run out of this dish.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "open_body_tongue",
-      "label": "Open Body Tongue",
-      "description": "Remove the body tongue making the body accessible without going in the sunken city",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "maximum_ingredient_amount",
-      "label": "Maximum Ingredient Amount",
-      "description": "The maximum number of the same ingredients that can be stacked on the ingredient inventory.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 2,
-        "max": 20,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_final_boss_3rd_form",
-      "label": "Skip Final Boss 3Rd Form",
-      "description": "The Final boss third form (the hide and seek form) can be easy and quite long.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "save_healing",
-      "label": "Save Healing",
-      "description": "When you save, Naija is healed back to full health.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "throne_as_location",
-      "label": "Throne As Location",
-      "description": "If enabled, sitting on the Mithalas City Castle throne (with the seal on it) will be a location and opening the door to the Mithalas Cathedral will be an item.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_hard_or_hidden_locations",
-      "label": "No Progression Hard Or Hidden Locations",
-      "description": "Make sure that there are no progression items at hard-to-reach or hard-to-find locations.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_simon_says",
-      "label": "No Progression Simon Says",
-      "description": "Make sure that there are no progression items in the says area.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_kelp_forest",
-      "label": "No Progression Kelp Forest",
-      "description": "Make sure that there are no progression items in Kelp Forest (excluding Simon says area).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_veil",
-      "label": "No Progression Veil",
-      "description": "Make sure that there are no progression items in the Veil.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_mithalas",
-      "label": "No Progression Mithalas",
-      "description": "Make sure that there are no progression items in the Mithalas (city, castle and cathedral).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_energy_temple",
-      "label": "No Progression Energy Temple",
-      "description": "Make sure that there are no progression items in the Energy Temple.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_arnassi_ruins",
-      "label": "No Progression Arnassi Ruins",
-      "description": "Make sure that there are no progression items in the Arnassi Ruins.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_frozen_veil",
-      "label": "No Progression Frozen Veil",
-      "description": "Make sure that there are no progression items in the Frozen Veil (including Ice Cavern and Bubble Cave).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_abyss",
-      "label": "No Progression Abyss",
-      "description": "Make sure that there are no progression items in the Abyss.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_sunken_city",
-      "label": "No Progression Sunken City",
-      "description": "Make sure that there are no progression items in the Sunken City.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_progression_body",
-      "label": "No Progression Body",
-      "description": "Make sure that there are no progression items in the Body (including the before-boss transturtle room and the boss location).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "aquaria",
+	"name": "Aquaria",
+	"version": "0.1.6",
+	"description": "Aquaria is a side-scrolling action-adventure game.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "objective",
+			"label": "Objective",
+			"description": "**Kill the Creator:** Get to the final boss (the Creator) and beat all it's forms.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "kill_the_creator",
+				"choices": [
+					{
+						"value": "kill_the_creator",
+						"label": "Kill The Creator"
+					},
+					{
+						"value": "obtain_secrets_and_kill_the_creator",
+						"label": "Obtain Secrets And Kill The Creator"
+					},
+					{
+						"value": "killing_the_four_gods",
+						"label": "Killing The Four Gods"
+					},
+					{
+						"value": "gods_and_creator",
+						"label": "Gods And Creator"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mini_bosses_to_beat",
+			"label": "Mini Bosses To Beat",
+			"description": "The number of minibosses to beat before having access to the goal.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 8,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "big_bosses_to_beat",
+			"label": "Big Bosses To Beat",
+			"description": "The number of big bosses to beat before having access to the creator (the final boss).",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "turtle_randomizer",
+			"label": "Turtle Randomizer",
+			"description": "Randomize the transportation turtle.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "all_except_final",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					},
+					{
+						"value": "all_except_final",
+						"label": "All Except Final"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_energy_form",
+			"label": "Early Energy Form",
+			"description": "Force the Energy form to be in a location early in the multiworld (or directly in your world if Early and Local is selected).",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "early",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "early",
+						"label": "Early"
+					},
+					{
+						"value": "early_and_local",
+						"label": "Early And Local"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_bind_song",
+			"label": "Early Bind Song",
+			"description": "Force the Bind song to be in a location early in the multiworld (or directly in your world if Early and Local is selected).",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "early",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "early",
+						"label": "Early"
+					},
+					{
+						"value": "early_and_local",
+						"label": "Early And Local"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "light_needed_to_get_to_dark_places",
+			"label": "Light Needed To Get To Dark Places",
+			"description": "Make sure that the sun form or the dumbo pet can be acquired before getting to dark places.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "on",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "sun_form",
+						"label": "Sun Form"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bind_song_needed_to_get_under_rock_bulb",
+			"label": "Bind Song Needed To Get Under Rock Bulb",
+			"description": "Make sure that the bind song can be acquired before having to obtain sing bulbs under rocks.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "unconfine_home_water",
+			"label": "Unconfine Home Water",
+			"description": "Open the way out of the Home Waters area so that Naija can go to open water and beyond without the bind song.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "via_energy_door",
+						"label": "Via Energy Door"
+					},
+					{
+						"value": "via_transturtle",
+						"label": "Via Transturtle"
+					},
+					{
+						"value": "via_both",
+						"label": "Via Both"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ingredient_randomizer",
+			"label": "Ingredient Randomizer",
+			"description": "Select if the simple ingredients (that do not have a recipe) should be randomized.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "common_ingredients",
+						"label": "Common Ingredients"
+					},
+					{
+						"value": "all_ingredients",
+						"label": "All Ingredients"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dish_randomizer",
+			"label": "Dish Randomizer",
+			"description": "Randomize the drop of Dishes (Ingredients with recipe).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "aquarian_translation",
+			"label": "Aquarian Translation",
+			"description": "Translate the Aquarian scripture in the game into English.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_first_vision",
+			"label": "Skip First Vision",
+			"description": "Skip the first vision in the game, where Naija transforms into Energy Form and gets flooded by enemies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "blind_goal",
+			"label": "Blind Goal",
+			"description": "Hide the goal's requirements from the help page so that you don't know what is needed to goal.",
+			"category": "goals",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "infinite_hot_soup",
+			"label": "Infinite Hot Soup",
+			"description": "As soon as a \"hot soup\" is received, the user will never run out of this dish.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "open_body_tongue",
+			"label": "Open Body Tongue",
+			"description": "Remove the body tongue making the body accessible without going in the sunken city",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "maximum_ingredient_amount",
+			"label": "Maximum Ingredient Amount",
+			"description": "The maximum number of the same ingredients that can be stacked on the ingredient inventory.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 2,
+				"max": 20,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_final_boss_3rd_form",
+			"label": "Skip Final Boss 3Rd Form",
+			"description": "The Final boss third form (the hide and seek form) can be easy and quite long.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "save_healing",
+			"label": "Save Healing",
+			"description": "When you save, Naija is healed back to full health.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "throne_as_location",
+			"label": "Throne As Location",
+			"description": "If enabled, sitting on the Mithalas City Castle throne (with the seal on it) will be a location and opening the door to the Mithalas Cathedral will be an item.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_hard_or_hidden_locations",
+			"label": "No Progression Hard Or Hidden Locations",
+			"description": "Make sure that there are no progression items at hard-to-reach or hard-to-find locations.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_simon_says",
+			"label": "No Progression Simon Says",
+			"description": "Make sure that there are no progression items in the says area.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_kelp_forest",
+			"label": "No Progression Kelp Forest",
+			"description": "Make sure that there are no progression items in Kelp Forest (excluding Simon says area).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_veil",
+			"label": "No Progression Veil",
+			"description": "Make sure that there are no progression items in the Veil.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_mithalas",
+			"label": "No Progression Mithalas",
+			"description": "Make sure that there are no progression items in the Mithalas (city, castle and cathedral).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_energy_temple",
+			"label": "No Progression Energy Temple",
+			"description": "Make sure that there are no progression items in the Energy Temple.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_arnassi_ruins",
+			"label": "No Progression Arnassi Ruins",
+			"description": "Make sure that there are no progression items in the Arnassi Ruins.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_frozen_veil",
+			"label": "No Progression Frozen Veil",
+			"description": "Make sure that there are no progression items in the Frozen Veil (including Ice Cavern and Bubble Cave).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_abyss",
+			"label": "No Progression Abyss",
+			"description": "Make sure that there are no progression items in the Abyss.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_sunken_city",
+			"label": "No Progression Sunken City",
+			"description": "Make sure that there are no progression items in the Sunken City.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_progression_body",
+			"label": "No Progression Body",
+			"description": "Make sure that there are no progression items in the Body (including the before-boss transturtle room and the boss location).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

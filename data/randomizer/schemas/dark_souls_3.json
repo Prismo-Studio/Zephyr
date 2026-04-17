@@ -1,566 +1,566 @@
 {
-  "id": "dark_souls_3",
-  "name": "Dark Souls III",
-  "version": "0.4.2",
-  "description": "Dark souls III is an Action role-playing game and is part of the Souls series developed by FromSoftware.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_banner",
-      "label": "Early Banner",
-      "description": "Force Small Lothric Banner into an early sphere in your world or across all worlds.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "early_global",
-            "label": "Early Global"
-          },
-          {
-            "value": "early_local",
-            "label": "Early Local"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "late_basin_of_vows",
-      "label": "Late Basin Of Vows",
-      "description": "Guarantee that you don't need to enter Lothric Castle until later in the run.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "after_small_lothric_banner",
-            "label": "After Small Lothric Banner"
-          },
-          {
-            "value": "after_small_doll",
-            "label": "After Small Doll"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "late_dlc",
-      "label": "Late Dlc",
-      "description": "Guarantee that you don't need to enter the DLC until later in the run.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "after_small_doll",
-            "label": "After Small Doll"
-          },
-          {
-            "value": "after_basin",
-            "label": "After Basin"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_dlc",
-      "label": "Enable Dlc",
-      "description": "Include DLC locations, items, and enemies in the randomized pools.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_ngp",
-      "label": "Enable Ngp",
-      "description": "Include items and locations exclusive to NG+ cycles.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_starting_loadout",
-      "label": "Random Starting Loadout",
-      "description": "Randomizes the equipment characters begin with.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "require_one_handed_starting_weapons",
-      "label": "Require One Handed Starting Weapons",
-      "description": "Require starting equipment to be usable one-handed.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "auto_equip",
-      "label": "Auto Equip",
-      "description": "Automatically equips any received armor or left/right weapons.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lock_equip",
-      "label": "Lock Equip",
-      "description": "Lock the equipment slots so you cannot change your armor or your left/right weapons.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_equip_load",
-      "label": "No Equip Load",
-      "description": "Disable the equip load constraint from the game.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_weapon_requirements",
-      "label": "No Weapon Requirements",
-      "description": "Disable the weapon requirements by removing any movement or damage penalties, permitting you to use any weapon early.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_spell_requirements",
-      "label": "No Spell Requirements",
-      "description": "Disable the spell requirements permitting you to use any spell.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_infusion",
-      "label": "Randomize Infusion",
-      "description": "Enable this option to infuse a percentage of the pool of weapons and shields.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_infusion_percentage",
-      "label": "Randomize Infusion Percentage",
-      "description": "The percentage of weapons/shields in the pool to be infused if Randomize Infusion is toggled.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 33
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_weapon_level",
-      "label": "Randomize Weapon Level",
-      "description": "Enable this option to upgrade a percentage of the pool of weapons to a random value between the minimum and maximum levels defined.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          },
-          {
-            "value": "basic",
-            "label": "Basic"
-          },
-          {
-            "value": "epic",
-            "label": "Epic"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_weapon_level_percentage",
-      "label": "Randomize Weapon Level Percentage",
-      "description": "The percentage of weapons in the pool to be upgraded if randomize weapons level is toggled.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 33
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "min_levels_in_5",
-      "label": "Min Levels In 5",
-      "description": "The minimum upgraded value of a weapon in the pool of weapons that can only reach +5.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "max_levels_in_5",
-      "label": "Max Levels In 5",
-      "description": "The maximum upgraded value of a weapon in the pool of weapons that can only reach +5.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "min_levels_in_10",
-      "label": "Min Levels In 10",
-      "description": "The minimum upgraded value of a weapon in the pool of weapons that can reach +10.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "max_levels_in_10",
-      "label": "Max Levels In 10",
-      "description": "The maximum upgraded value of a weapon in the pool of weapons that can reach +10.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "smooth_soul_items",
-      "label": "Smooth Soul Items",
-      "description": "Distribute soul items in a similar order as the base game.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "smooth_upgrade_items",
-      "label": "Smooth Upgrade Items",
-      "description": "Distribute upgrade items in a similar order as the base game.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "smooth_upgraded_weapons",
-      "label": "Smooth Upgraded Weapons",
-      "description": "Distribute upgraded weapons in a similar order as the base game.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_enemies",
-      "label": "Randomize Enemies",
-      "description": "Randomize enemy and boss placements.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "simple_early_bosses",
-      "label": "Simple Early Bosses",
-      "description": "Avoid replacing Iudex Gundyr and Vordt with difficult bosses.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "scale_enemies",
-      "label": "Scale Enemies",
-      "description": "Scale randomized enemy stats to match the areas in which they appear.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_mimics_with_enemies",
-      "label": "Randomize Mimics With Enemies",
-      "description": "Mix Mimics into the main enemy pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_small_crystal_lizards_with_enemies",
-      "label": "Randomize Small Crystal Lizards With Enemies",
-      "description": "Mix small Crystal Lizards into the main enemy pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "reduce_harmless_enemies",
-      "label": "Reduce Harmless Enemies",
-      "description": "Reduce the frequency that \"harmless\" enemies appear.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "all_chests_are_mimics",
-      "label": "All Chests Are Mimics",
-      "description": "Replace all chests with mimics that drop the same items.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "impatient_mimics",
-      "label": "Impatient Mimics",
-      "description": "Mimics attack as soon as you get close instead of waiting for you to open them.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "excluded_location_behavior",
-      "label": "Excluded Location Behavior",
-      "description": "How to choose items for excluded locations in DS3.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "forbid_useful",
-        "choices": [
-          {
-            "value": "allow_useful",
-            "label": "Allow Useful"
-          },
-          {
-            "value": "forbid_useful",
-            "label": "Forbid Useful"
-          },
-          {
-            "value": "do_not_randomize",
-            "label": "Do Not Randomize"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "missable_location_behavior",
-      "label": "Missable Location Behavior",
-      "description": "Which items can be placed in locations that can be permanently missed.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "forbid_useful",
-        "choices": [
-          {
-            "value": "allow_useful",
-            "label": "Allow Useful"
-          },
-          {
-            "value": "forbid_useful",
-            "label": "Forbid Useful"
-          },
-          {
-            "value": "do_not_randomize",
-            "label": "Do Not Randomize"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "dark_souls_3",
+	"name": "Dark Souls III",
+	"version": "0.4.2",
+	"description": "Dark souls III is an Action role-playing game and is part of the Souls series developed by FromSoftware.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_banner",
+			"label": "Early Banner",
+			"description": "Force Small Lothric Banner into an early sphere in your world or across all worlds.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "early_global",
+						"label": "Early Global"
+					},
+					{
+						"value": "early_local",
+						"label": "Early Local"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "late_basin_of_vows",
+			"label": "Late Basin Of Vows",
+			"description": "Guarantee that you don't need to enter Lothric Castle until later in the run.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "after_small_lothric_banner",
+						"label": "After Small Lothric Banner"
+					},
+					{
+						"value": "after_small_doll",
+						"label": "After Small Doll"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "late_dlc",
+			"label": "Late Dlc",
+			"description": "Guarantee that you don't need to enter the DLC until later in the run.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "after_small_doll",
+						"label": "After Small Doll"
+					},
+					{
+						"value": "after_basin",
+						"label": "After Basin"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_dlc",
+			"label": "Enable Dlc",
+			"description": "Include DLC locations, items, and enemies in the randomized pools.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_ngp",
+			"label": "Enable Ngp",
+			"description": "Include items and locations exclusive to NG+ cycles.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_starting_loadout",
+			"label": "Random Starting Loadout",
+			"description": "Randomizes the equipment characters begin with.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "require_one_handed_starting_weapons",
+			"label": "Require One Handed Starting Weapons",
+			"description": "Require starting equipment to be usable one-handed.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "auto_equip",
+			"label": "Auto Equip",
+			"description": "Automatically equips any received armor or left/right weapons.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lock_equip",
+			"label": "Lock Equip",
+			"description": "Lock the equipment slots so you cannot change your armor or your left/right weapons.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_equip_load",
+			"label": "No Equip Load",
+			"description": "Disable the equip load constraint from the game.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_weapon_requirements",
+			"label": "No Weapon Requirements",
+			"description": "Disable the weapon requirements by removing any movement or damage penalties, permitting you to use any weapon early.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_spell_requirements",
+			"label": "No Spell Requirements",
+			"description": "Disable the spell requirements permitting you to use any spell.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_infusion",
+			"label": "Randomize Infusion",
+			"description": "Enable this option to infuse a percentage of the pool of weapons and shields.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_infusion_percentage",
+			"label": "Randomize Infusion Percentage",
+			"description": "The percentage of weapons/shields in the pool to be infused if Randomize Infusion is toggled.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 33
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_weapon_level",
+			"label": "Randomize Weapon Level",
+			"description": "Enable this option to upgrade a percentage of the pool of weapons to a random value between the minimum and maximum levels defined.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					},
+					{
+						"value": "basic",
+						"label": "Basic"
+					},
+					{
+						"value": "epic",
+						"label": "Epic"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_weapon_level_percentage",
+			"label": "Randomize Weapon Level Percentage",
+			"description": "The percentage of weapons in the pool to be upgraded if randomize weapons level is toggled.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 33
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "min_levels_in_5",
+			"label": "Min Levels In 5",
+			"description": "The minimum upgraded value of a weapon in the pool of weapons that can only reach +5.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "max_levels_in_5",
+			"label": "Max Levels In 5",
+			"description": "The maximum upgraded value of a weapon in the pool of weapons that can only reach +5.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "min_levels_in_10",
+			"label": "Min Levels In 10",
+			"description": "The minimum upgraded value of a weapon in the pool of weapons that can reach +10.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "max_levels_in_10",
+			"label": "Max Levels In 10",
+			"description": "The maximum upgraded value of a weapon in the pool of weapons that can reach +10.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "smooth_soul_items",
+			"label": "Smooth Soul Items",
+			"description": "Distribute soul items in a similar order as the base game.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "smooth_upgrade_items",
+			"label": "Smooth Upgrade Items",
+			"description": "Distribute upgrade items in a similar order as the base game.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "smooth_upgraded_weapons",
+			"label": "Smooth Upgraded Weapons",
+			"description": "Distribute upgraded weapons in a similar order as the base game.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_enemies",
+			"label": "Randomize Enemies",
+			"description": "Randomize enemy and boss placements.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "simple_early_bosses",
+			"label": "Simple Early Bosses",
+			"description": "Avoid replacing Iudex Gundyr and Vordt with difficult bosses.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "scale_enemies",
+			"label": "Scale Enemies",
+			"description": "Scale randomized enemy stats to match the areas in which they appear.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_mimics_with_enemies",
+			"label": "Randomize Mimics With Enemies",
+			"description": "Mix Mimics into the main enemy pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_small_crystal_lizards_with_enemies",
+			"label": "Randomize Small Crystal Lizards With Enemies",
+			"description": "Mix small Crystal Lizards into the main enemy pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "reduce_harmless_enemies",
+			"label": "Reduce Harmless Enemies",
+			"description": "Reduce the frequency that \"harmless\" enemies appear.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "all_chests_are_mimics",
+			"label": "All Chests Are Mimics",
+			"description": "Replace all chests with mimics that drop the same items.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "impatient_mimics",
+			"label": "Impatient Mimics",
+			"description": "Mimics attack as soon as you get close instead of waiting for you to open them.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "excluded_location_behavior",
+			"label": "Excluded Location Behavior",
+			"description": "How to choose items for excluded locations in DS3.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "forbid_useful",
+				"choices": [
+					{
+						"value": "allow_useful",
+						"label": "Allow Useful"
+					},
+					{
+						"value": "forbid_useful",
+						"label": "Forbid Useful"
+					},
+					{
+						"value": "do_not_randomize",
+						"label": "Do Not Randomize"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "missable_location_behavior",
+			"label": "Missable Location Behavior",
+			"description": "Which items can be placed in locations that can be permanently missed.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "forbid_useful",
+				"choices": [
+					{
+						"value": "allow_useful",
+						"label": "Allow Useful"
+					},
+					{
+						"value": "forbid_useful",
+						"label": "Forbid Useful"
+					},
+					{
+						"value": "do_not_randomize",
+						"label": "Do Not Randomize"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -5,14 +5,14 @@
 ##### Players
 
 - Factorio: [Factorio Official Website](https://factorio.com)
-    - Needed by Players and Hosts
+  - Needed by Players and Hosts
 
 ##### Server Hosts
 
 - Factorio: [Factorio Official Website](https://factorio.com)
-    - Needed by Players and Hosts
+  - Needed by Players and Hosts
 - Archipelago: [Archipelago Releases Page](https://github.com/ArchipelagoMW/Archipelago/releases)
-    - Needed by Hosts
+  - Needed by Hosts
 
 ## Create a Config (.yaml) File
 
@@ -88,9 +88,8 @@ Factorio product code. This will allow you to download the game directly from th
 
 It is recommended to download the standalone version of Factorio for use as a dedicated server. Doing so prevents any
 potential conflicts with your currently-installed version of Factorio. Download the file by clicking on the button
-appropriate to your operating system, and extract the folder to a convenient location. The best place to do this for 
+appropriate to your operating system, and extract the folder to a convenient location. The best place to do this for
 Archipelago is to place the extracted game folder into the `Archipelago` directory and rename it to just be "Factorio".
-
 
 ![Factorio Download Options](factorio-download.png)
 
@@ -100,8 +99,8 @@ have logged in, you may close the game.
 
 #### Configure your Archipelago Installation
 
-If you did not place the Factorio standalone in your Archipelago installation, you must modify your `host.yaml` file 
-inside your Archipelago installation directory so that it points to your standalone Factorio executable. Here is an 
+If you did not place the Factorio standalone in your Archipelago installation, you must modify your `host.yaml` file
+inside your Archipelago installation directory so that it points to your standalone Factorio executable. Here is an
 example of the appropriate setup, note the double `\\` are required:
 
 ```yaml
@@ -148,6 +147,7 @@ For more information about the commands you can use, see the [Commands Guide](/t
 By default, peaceful mode is disabled. There are two methods to enable peaceful mode:
 
 ### By config file
+
 You can specify Factorio game options such as peaceful mode and terrain and resource generation parameters in your
 config .yaml file by including the `world_gen` option. This option is currently not supported by the web UI, so you'll
 have to manually create or edit your config file with a text editor of your choice.
@@ -157,12 +157,15 @@ To enable peaceful mode, simply replace `peaceful_mode: false` with `peaceful_mo
 [.yaml checker](/check) to ensure your file is valid.
 
 ### After starting
+
 If you have already submitted your config file, generated the seed, or even started playing, you can retroactively
 enable peaceful mode by entering the following commands into your Archipelago Factorio Client:
+
 ```
 /factorio /c game.surfaces[1].peaceful_mode=true
 /factorio /c game.forces["enemy"].kill_all_units()
 ```
+
 (If this warns you that these commands may disable achievements, you may need to repeat them for them to take effect.)
 
 ## Other Options
@@ -171,9 +174,11 @@ enable peaceful mode by entering the following commands into your Archipelago Fa
 
 By default, all item sends are displayed in-game. In larger async seeds this may become overly spammy.
 To hide all item sends that are not to or from your factory, do one of the following:
+
 - Type `/toggle-ap-send-filter` in-game
 - Type `/toggle_send_filter` in the Archipelago Client
 - In your `host.yaml` set
+
 ```
 factorio_options:
   filter_item_sends: true
@@ -183,24 +188,30 @@ factorio_options:
 
 By default, all player joined and player stopped tracking notifications are displayed in-game. In larger async seeds this may become overly spammy.
 To hide all connection changes, do one of the following:
+
 - Type `/toggle-ap-connection-change-filter` in-game
 - Type `/toggle_connection_change_filter` in the Achipelago Client
 - In your `host.yaml` set
+
 ```
 factorio_options:
   filter_connection_changes: true
 ```
 
 ### bridge_chat_out
+
 By default, in-game chat is bridged to Archipelago. If you prefer to be able to speak privately, you can disable this
 feature by doing one of the following:
+
 - Type `/toggle-ap-chat` in-game
 - Type `/toggle_chat` in the Archipelago Client
 - In your `host.yaml` set
+
 ```
 factorio_options:
   bridge_chat_out: false
 ```
+
 Note that this will also disable `!` commands from within the game, and that it will not affect incoming chat.
 
 ## Troubleshooting

@@ -29,7 +29,7 @@ You can also set lasers to be items you can receive.
 
 ## What else can I find in the world?
 
-By default, the audio logs scattered around the world will have 10 hints for your locations or items on them. 
+By default, the audio logs scattered around the world will have 10 hints for your locations or items on them.
 
 Example: "Shipwreck Vault contains Triangles".
 

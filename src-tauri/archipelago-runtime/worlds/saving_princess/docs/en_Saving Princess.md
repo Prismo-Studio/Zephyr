@@ -1,6 +1,7 @@
 # Saving Princess
 
 ## Quick Links
+
 - [Setup Guide](/tutorial/Saving%20Princess/setup/en)
 - [Options Page](/games/Saving%20Princess/player-options)
 - [Saving Princess Archipelago GitHub](https://github.com/LeonarthCG/saving-princess-archipelago)
@@ -8,6 +9,7 @@
 ## What changes have been made?
 
 The game has had several changes made to add new features and prevent issues. The most important changes are the following:
+
 - There is an in-game connection settings menu, autotracker and client console.
 - New save files are created and used automatically for each seed and slot played.
 - The game window can now be dragged and a new integer scaling option has been added.
@@ -19,6 +21,7 @@ The chest contents and special weapons are the items and locations that get shuf
 Additionally, there are new items to work as filler and traps, ranging from a full health and ammo restore to spawning a Ninja on top of you.
 
 The Expanded Pool option, which is enabled by default, adds a few more items and locations:
+
 - Completing the intro sequence, powering the generator with the Volt Laser and defeating each boss become locations.
 - 4 Keys will be shuffled, which serve to open the door to the final area in place of defeating the main area bosses.
 - A System Power item will be shuffled, which restores power to the final area instead of this happening when the generator is powered.
@@ -42,6 +45,7 @@ If you send an item to yourself, however, the sending player will be omitted.
 ## Unique Local Commands
 
 The following commands are only available when using the in-game console in Saving Princess:
+
 - `/help` Returns the help listing.
 - `/options` Lists currently applied options.
 - `/resync` Manually triggers a resync. This also resends all found locations.

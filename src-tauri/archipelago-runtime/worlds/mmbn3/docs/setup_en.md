@@ -12,7 +12,7 @@ As we are using Bizhawk, this guide is only applicable to Windows and Linux syst
   - Windows users must run the prereq installer first, which can also be found at the above link.
 - The built-in Archipelago client, which can be installed [here](https://github.com/ArchipelagoMW/Archipelago/releases).
 - A US MegaMan Battle Network 3 Blue Rom. If you have the [MegaMan Battle Network Legacy Collection Vol. 1](https://store.steampowered.com/app/1798010/Mega_Man_Battle_Network_Legacy_Collection_Vol_1/)
-on Steam, you can obtain a copy of this ROM from the game's files, see instructions below.
+  on Steam, you can obtain a copy of this ROM from the game's files, see instructions below.
 
 ## Configuring Bizhawk
 
@@ -21,8 +21,8 @@ Once Bizhawk has been installed, open Bizhawk and change the following settings:
 - **If you are using a version of BizHawk older than 2.9**, you will need to modify the Lua Core.
   Go to Config > Customize. Switch to the Advanced tab, then switch the Lua Core from "NLua+KopiLua" to
   "Lua+LuaInterface". This is required for the Lua script to function correctly.  
-  **NOTE:** Even if "Lua+LuaInterface" is already selected, toggle between the two options and reselect it. Fresh installs 
-  of newer versions of Bizhawk have a tendency to show "Lua+LuaInterface" as the default selected option but still load 
+  **NOTE:** Even if "Lua+LuaInterface" is already selected, toggle between the two options and reselect it. Fresh installs
+  of newer versions of Bizhawk have a tendency to show "Lua+LuaInterface" as the default selected option but still load
   "NLua+KopiLua" until this step is done.
 - Under Config > Customize > Advanced, make sure the box for AutoSaveRAM is checked, and click the 5s button.
   This reduces the possibility of losing save data in emulator crashes.
@@ -54,7 +54,7 @@ an experience customized for their taste, and different players in the same mult
 
 ### Where do I get a YAML file?
 
-You can customize your options by visiting the 
+You can customize your options by visiting the
 [MegaMan Battle Network 3 Player Options Page](/games/MegaMan%20Battle%20Network%203/player-options)
 
 ## Joining a MultiWorld Game
@@ -85,6 +85,6 @@ Don't forget to start manipulating RNG early by shouting during generation:
 
 ```
 JACK IN!
-[Your name]!   
+[Your name]!
 EXECUTE!
 ```

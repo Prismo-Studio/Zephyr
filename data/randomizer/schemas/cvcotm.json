@@ -1,522 +1,522 @@
 {
-  "id": "cvcotm",
-  "name": "Castlevania - Circle of the Moon",
-  "version": "0.1.6",
-  "description": "Castlevania: Circle of the Moon is a launch title for the Game Boy Advance and the first of three Castlevania games released for the handheld in the \"Metroidvania\" format.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "completion_goal",
-      "label": "Completion Goal",
-      "description": "The goal for game completion.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "dracula",
-        "choices": [
-          {
-            "value": "dracula",
-            "label": "Dracula"
-          },
-          {
-            "value": "battle_arena",
-            "label": "Battle Arena"
-          },
-          {
-            "value": "battle_arena_and_dracula",
-            "label": "Battle Arena And Dracula"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ignore_cleansing",
-      "label": "Ignore Cleansing",
-      "description": "Removes the logical requirement for the Cleansing to go beyond the first Underground Waterway rooms from either of the area's sides.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "auto_run",
-      "label": "Auto Run",
-      "description": "Makes Nathan always run when pressing left or right without needing to double-tap.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dss_patch",
-      "label": "Dss Patch",
-      "description": "Patches out being able to pause during the DSS startup animation and switch the cards in the menu to use any combos you don't currently have, as well as changing the element of a summon to one you don't currently have.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "always_allow_speed_dash",
-      "label": "Always Allow Speed Dash",
-      "description": "Allows activating the speed dash combo (Pluto + Griffin) without needing the respective cards first.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "iron_maiden_behavior",
-      "label": "Iron Maiden Behavior",
-      "description": "Sets how the iron maiden barriers blocking the entrances to Underground Gallery and Waterway will behave.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "start_broken",
-            "label": "Start Broken"
-          },
-          {
-            "value": "detonator_in_pool",
-            "label": "Detonator In Pool"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "required_last_keys",
-      "label": "Required Last Keys",
-      "description": "How many Last Keys are needed to open the door to the Ceremonial Room.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 9,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "available_last_keys",
-      "label": "Available Last Keys",
-      "description": "How many Last Keys are in the pool in total.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 9,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "buff_ranged_familiars",
-      "label": "Buff Ranged Familiars",
-      "description": "Makes Familiar projectiles deal double damage to enemies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "buff_sub_weapons",
-      "label": "Buff Sub Weapons",
-      "description": "Increases damage dealt by sub-weapons and item crushes in Shooter and non-Shooter Modes.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "buff_shooter_strength",
-      "label": "Buff Shooter Strength",
-      "description": "Increases Nathan's strength in Shooter Mode to match his strength in Vampire Killer Mode.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_drop_randomization",
-      "label": "Item Drop Randomization",
-      "description": "Randomizes what enemies drop what items as well as the drop rates for said items.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "tiered",
-            "label": "Tiered"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "halve_dss_cards_placed",
-      "label": "Halve Dss Cards Placed",
-      "description": "Places only half of the DSS Cards in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "countdown",
-      "label": "Countdown",
-      "description": "Displays, below and near the right side of the MP bar, the number of un-found progression/useful-marked items or the total check locations remaining in the area you are currently in.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "majors",
-            "label": "Majors"
-          },
-          {
-            "value": "all_locations",
-            "label": "All Locations"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "sub_weapon_shuffle",
-      "label": "Sub Weapon Shuffle",
-      "description": "Randomizes which sub-weapon candles have which sub-weapons.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "disable_battle_arena_mp_drain",
-      "label": "Disable Battle Arena Mp Drain",
-      "description": "Makes the Battle Arena not drain Nathan's MP, so that DSS combos can be used like normal.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "required_skirmishes",
-      "label": "Required Skirmishes",
-      "description": "Forces a Last Key after every boss or after every boss and the Battle Arena and forces the required Last Keys to enter the Ceremonial Room to 8 or 9 for All Bosses and All Bosses And Arena respectively.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "all_bosses",
-            "label": "All Bosses"
-          },
-          {
-            "value": "all_bosses_and_arena",
-            "label": "All Bosses And Arena"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "pluto_griffin_air_speed",
-      "label": "Pluto Griffin Air Speed",
-      "description": "Increases Nathan's air speeds with the Pluto + Griffin combo active to be the same as his ground speeds.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_dialogues",
-      "label": "Skip Dialogues",
-      "description": "Skips all cutscene dialogue besides the ending.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_tutorials",
-      "label": "Skip Tutorials",
-      "description": "Skips all Magic Item and DSS-related tutorial textboxes.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "nerf_roc_wing",
-      "label": "Nerf Roc Wing",
-      "description": "Initially nerfs the Roc Wing by removing its ability to jump infinitely and reducing its jump height.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_escape_item",
-      "label": "Early Escape Item",
-      "description": "Ensures the chosen Catacomb escape item will be placed in a starting location within your own game, accessible with nothing.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "double",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "roc_wing",
-            "label": "Roc Wing"
-          },
-          {
-            "value": "double_or_roc_wing",
-            "label": "Double Or Roc Wing"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "battle_arena_music",
-      "label": "Battle Arena Music",
-      "description": "Enables any looping song from the game to play inside the Battle Arena instead of it being silent the whole time.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "nothing",
-        "choices": [
-          {
-            "value": "nothing",
-            "label": "Nothing"
-          },
-          {
-            "value": "requiem",
-            "label": "Requiem"
-          },
-          {
-            "value": "a_vision_of_dark_secrets",
-            "label": "A Vision Of Dark Secrets"
-          },
-          {
-            "value": "inversion",
-            "label": "Inversion"
-          },
-          {
-            "value": "awake",
-            "label": "Awake"
-          },
-          {
-            "value": "the_sinking_old_sanctuary",
-            "label": "The Sinking Old Sanctuary"
-          },
-          {
-            "value": "clockwork",
-            "label": "Clockwork"
-          },
-          {
-            "value": "shudder",
-            "label": "Shudder"
-          },
-          {
-            "value": "fate_to_despair",
-            "label": "Fate To Despair"
-          },
-          {
-            "value": "aquarius",
-            "label": "Aquarius"
-          },
-          {
-            "value": "clockwork_mansion",
-            "label": "Clockwork Mansion"
-          },
-          {
-            "value": "big_battle",
-            "label": "Big Battle"
-          },
-          {
-            "value": "nightmare",
-            "label": "Nightmare"
-          },
-          {
-            "value": "vampire_killer",
-            "label": "Vampire Killer"
-          },
-          {
-            "value": "illusionary_dance",
-            "label": "Illusionary Dance"
-          },
-          {
-            "value": "proof_of_blood",
-            "label": "Proof Of Blood"
-          },
-          {
-            "value": "repose_of_souls",
-            "label": "Repose Of Souls"
-          },
-          {
-            "value": "circle_of_the_moon",
-            "label": "Circle Of The Moon"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "arena_on",
-            "label": "Arena On"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "cvcotm",
+	"name": "Castlevania - Circle of the Moon",
+	"version": "0.1.6",
+	"description": "Castlevania: Circle of the Moon is a launch title for the Game Boy Advance and the first of three Castlevania games released for the handheld in the \"Metroidvania\" format.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "completion_goal",
+			"label": "Completion Goal",
+			"description": "The goal for game completion.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "dracula",
+				"choices": [
+					{
+						"value": "dracula",
+						"label": "Dracula"
+					},
+					{
+						"value": "battle_arena",
+						"label": "Battle Arena"
+					},
+					{
+						"value": "battle_arena_and_dracula",
+						"label": "Battle Arena And Dracula"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ignore_cleansing",
+			"label": "Ignore Cleansing",
+			"description": "Removes the logical requirement for the Cleansing to go beyond the first Underground Waterway rooms from either of the area's sides.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "auto_run",
+			"label": "Auto Run",
+			"description": "Makes Nathan always run when pressing left or right without needing to double-tap.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dss_patch",
+			"label": "Dss Patch",
+			"description": "Patches out being able to pause during the DSS startup animation and switch the cards in the menu to use any combos you don't currently have, as well as changing the element of a summon to one you don't currently have.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "always_allow_speed_dash",
+			"label": "Always Allow Speed Dash",
+			"description": "Allows activating the speed dash combo (Pluto + Griffin) without needing the respective cards first.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "iron_maiden_behavior",
+			"label": "Iron Maiden Behavior",
+			"description": "Sets how the iron maiden barriers blocking the entrances to Underground Gallery and Waterway will behave.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "start_broken",
+						"label": "Start Broken"
+					},
+					{
+						"value": "detonator_in_pool",
+						"label": "Detonator In Pool"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "required_last_keys",
+			"label": "Required Last Keys",
+			"description": "How many Last Keys are needed to open the door to the Ceremonial Room.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 9,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "available_last_keys",
+			"label": "Available Last Keys",
+			"description": "How many Last Keys are in the pool in total.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 9,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "buff_ranged_familiars",
+			"label": "Buff Ranged Familiars",
+			"description": "Makes Familiar projectiles deal double damage to enemies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "buff_sub_weapons",
+			"label": "Buff Sub Weapons",
+			"description": "Increases damage dealt by sub-weapons and item crushes in Shooter and non-Shooter Modes.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "buff_shooter_strength",
+			"label": "Buff Shooter Strength",
+			"description": "Increases Nathan's strength in Shooter Mode to match his strength in Vampire Killer Mode.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_drop_randomization",
+			"label": "Item Drop Randomization",
+			"description": "Randomizes what enemies drop what items as well as the drop rates for said items.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "tiered",
+						"label": "Tiered"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "halve_dss_cards_placed",
+			"label": "Halve Dss Cards Placed",
+			"description": "Places only half of the DSS Cards in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "countdown",
+			"label": "Countdown",
+			"description": "Displays, below and near the right side of the MP bar, the number of un-found progression/useful-marked items or the total check locations remaining in the area you are currently in.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "majors",
+						"label": "Majors"
+					},
+					{
+						"value": "all_locations",
+						"label": "All Locations"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "sub_weapon_shuffle",
+			"label": "Sub Weapon Shuffle",
+			"description": "Randomizes which sub-weapon candles have which sub-weapons.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "disable_battle_arena_mp_drain",
+			"label": "Disable Battle Arena Mp Drain",
+			"description": "Makes the Battle Arena not drain Nathan's MP, so that DSS combos can be used like normal.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "required_skirmishes",
+			"label": "Required Skirmishes",
+			"description": "Forces a Last Key after every boss or after every boss and the Battle Arena and forces the required Last Keys to enter the Ceremonial Room to 8 or 9 for All Bosses and All Bosses And Arena respectively.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "all_bosses",
+						"label": "All Bosses"
+					},
+					{
+						"value": "all_bosses_and_arena",
+						"label": "All Bosses And Arena"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "pluto_griffin_air_speed",
+			"label": "Pluto Griffin Air Speed",
+			"description": "Increases Nathan's air speeds with the Pluto + Griffin combo active to be the same as his ground speeds.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_dialogues",
+			"label": "Skip Dialogues",
+			"description": "Skips all cutscene dialogue besides the ending.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_tutorials",
+			"label": "Skip Tutorials",
+			"description": "Skips all Magic Item and DSS-related tutorial textboxes.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "nerf_roc_wing",
+			"label": "Nerf Roc Wing",
+			"description": "Initially nerfs the Roc Wing by removing its ability to jump infinitely and reducing its jump height.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_escape_item",
+			"label": "Early Escape Item",
+			"description": "Ensures the chosen Catacomb escape item will be placed in a starting location within your own game, accessible with nothing.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "double",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "roc_wing",
+						"label": "Roc Wing"
+					},
+					{
+						"value": "double_or_roc_wing",
+						"label": "Double Or Roc Wing"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "battle_arena_music",
+			"label": "Battle Arena Music",
+			"description": "Enables any looping song from the game to play inside the Battle Arena instead of it being silent the whole time.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "nothing",
+				"choices": [
+					{
+						"value": "nothing",
+						"label": "Nothing"
+					},
+					{
+						"value": "requiem",
+						"label": "Requiem"
+					},
+					{
+						"value": "a_vision_of_dark_secrets",
+						"label": "A Vision Of Dark Secrets"
+					},
+					{
+						"value": "inversion",
+						"label": "Inversion"
+					},
+					{
+						"value": "awake",
+						"label": "Awake"
+					},
+					{
+						"value": "the_sinking_old_sanctuary",
+						"label": "The Sinking Old Sanctuary"
+					},
+					{
+						"value": "clockwork",
+						"label": "Clockwork"
+					},
+					{
+						"value": "shudder",
+						"label": "Shudder"
+					},
+					{
+						"value": "fate_to_despair",
+						"label": "Fate To Despair"
+					},
+					{
+						"value": "aquarius",
+						"label": "Aquarius"
+					},
+					{
+						"value": "clockwork_mansion",
+						"label": "Clockwork Mansion"
+					},
+					{
+						"value": "big_battle",
+						"label": "Big Battle"
+					},
+					{
+						"value": "nightmare",
+						"label": "Nightmare"
+					},
+					{
+						"value": "vampire_killer",
+						"label": "Vampire Killer"
+					},
+					{
+						"value": "illusionary_dance",
+						"label": "Illusionary Dance"
+					},
+					{
+						"value": "proof_of_blood",
+						"label": "Proof Of Blood"
+					},
+					{
+						"value": "repose_of_souls",
+						"label": "Repose Of Souls"
+					},
+					{
+						"value": "circle_of_the_moon",
+						"label": "Circle Of The Moon"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "arena_on",
+						"label": "Arena On"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

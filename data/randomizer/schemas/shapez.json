@@ -1,436 +1,436 @@
 {
-  "id": "shapez",
-  "name": "shapez",
-  "version": "0.1.6",
-  "description": "shapez is an automation game about cutting, rotating, stacking, and painting shapes, that you extract from randomly generated patches on an infinite canvas, without the need to manage your infinite resources or to pay for building your factories.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "Sets the goal of your world.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "mam",
-            "label": "Mam"
-          },
-          {
-            "value": "even_fasterer",
-            "label": "Even Fasterer"
-          },
-          {
-            "value": "efficiency_iii",
-            "label": "Efficiency Iii"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal_amount",
-      "label": "Goal Amount",
-      "description": "Specify, what level or tier (when either MAM or Even Fasterer is chosen as goal) is required to reach the goal.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 9,
-        "max": 500,
-        "step": 1,
-        "default": 27
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "required_shapes_multiplier",
-      "label": "Required Shapes Multiplier",
-      "description": "Multiplies the amount of required shapes for levels and upgrades by value/10.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "allow_floating_layers",
-      "label": "Allow Floating Layers",
-      "description": "Toggle whether shape requirements are allowed to have floating layers (like the logo or the rocket shape).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_level_requirements",
-      "label": "Randomize Level Requirements",
-      "description": "Randomize the required shapes to complete levels.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_upgrade_requirements",
-      "label": "Randomize Upgrade Requirements",
-      "description": "Randomize the required shapes to buy upgrades.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_level_logic",
-      "label": "Randomize Level Logic",
-      "description": "If level requirements are randomized, this sets how those random shapes are generated and how logic works for levels.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "stretched",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "vanilla_shuffled",
-            "label": "Vanilla Shuffled"
-          },
-          {
-            "value": "stretched",
-            "label": "Stretched"
-          },
-          {
-            "value": "stretched_shuffled",
-            "label": "Stretched Shuffled"
-          },
-          {
-            "value": "quick",
-            "label": "Quick"
-          },
-          {
-            "value": "quick_shuffled",
-            "label": "Quick Shuffled"
-          },
-          {
-            "value": "random_steps",
-            "label": "Random Steps"
-          },
-          {
-            "value": "random_steps_shuffled",
-            "label": "Random Steps Shuffled"
-          },
-          {
-            "value": "hardcore",
-            "label": "Hardcore"
-          },
-          {
-            "value": "dopamine",
-            "label": "Dopamine"
-          },
-          {
-            "value": "dopamine_overflow",
-            "label": "Dopamine Overflow"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_upgrade_logic",
-      "label": "Randomize Upgrade Logic",
-      "description": "If upgrade requirements are randomized, this sets how those random shapes are generated and how logic works for upgrades.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "linear",
-        "choices": [
-          {
-            "value": "vanilla_like",
-            "label": "Vanilla Like"
-          },
-          {
-            "value": "linear",
-            "label": "Linear"
-          },
-          {
-            "value": "category",
-            "label": "Category"
-          },
-          {
-            "value": "category_random",
-            "label": "Category Random"
-          },
-          {
-            "value": "hardcore",
-            "label": "Hardcore"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "throughput_levels_ratio",
-      "label": "Throughput Levels Ratio",
-      "description": "If level requirements are randomized, this sets the ratio of how many levels (approximately) will require either a total amount or per second amount (throughput) of shapes delivered.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "complexity_growth_gradient",
-      "label": "Complexity Growth Gradient",
-      "description": "If level requirements are randomized, this determines how fast complexity will grow each level.",
-      "category": "general",
-      "type": {
-        "kind": "text",
-        "default": "0.5",
-        "placeholder": null
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "same_late_upgrade_requirements",
-      "label": "Same Late Upgrade Requirements",
-      "description": "If upgrade requirements are randomized, should the last 3 shapes for each category be the same, as in vanilla?",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_balancer_tunnel_and_trash",
-      "label": "Early Balancer Tunnel And Trash",
-      "description": "Makes the balancer, tunnel, and trash appear in earlier spheres.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "3_buildings",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "5_buildings",
-            "label": "5 Buildings"
-          },
-          {
-            "value": "3_buildings",
-            "label": "3 Buildings"
-          },
-          {
-            "value": "sphere_1",
-            "label": "Sphere 1"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lock_belt_and_extractor",
-      "label": "Lock Belt And Extractor",
-      "description": "Locks Belts and Extractors and adds them to the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "include_achievements",
-      "label": "Include Achievements",
-      "description": "Include up to 45 achievements (depending on other options) as additional locations.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exclude_softlock_achievements",
-      "label": "Exclude Softlock Achievements",
-      "description": "Exclude 6 achievements, that can become unreachable in a save file, if not achieved until a certain level.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exclude_long_playtime_achievements",
-      "label": "Exclude Long Playtime Achievements",
-      "description": "Exclude 2 achievements, that require actively playing for a really long time.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exclude_progression_unreasonable",
-      "label": "Exclude Progression Unreasonable",
-      "description": "Exclude progression and useful items from being placed into softlock and long playtime achievements.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shapesanity_amount",
-      "label": "Shapesanity Amount",
-      "description": "Amount of single-layer shapes that will be included as locations.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 4,
-        "max": 1000,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "traps_percentage",
-      "label": "Traps Percentage",
-      "description": "The probability of any filler item (in percent) being replaced by a trap.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "include_whacky_upgrades",
-      "label": "Include Whacky Upgrades",
-      "description": "Includes some very unusual upgrade items in generation (and logic), that greatly increase or decrease building speeds.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "split_inventory_draining_trap",
-      "label": "Split Inventory Draining Trap",
-      "description": "If set to true, the inventory draining trap will be split into level, upgrade, and blueprint draining traps instead of executing as one of those 3 randomly.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "toolbar_shuffling",
-      "label": "Toolbar Shuffling",
-      "description": "If set to true, the toolbars (main and wires layer) will be shuffled (including bottom and top row).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "shapez",
+	"name": "shapez",
+	"version": "0.1.6",
+	"description": "shapez is an automation game about cutting, rotating, stacking, and painting shapes, that you extract from randomly generated patches on an infinite canvas, without the need to manage your infinite resources or to pay for building your factories.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "Sets the goal of your world.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "mam",
+						"label": "Mam"
+					},
+					{
+						"value": "even_fasterer",
+						"label": "Even Fasterer"
+					},
+					{
+						"value": "efficiency_iii",
+						"label": "Efficiency Iii"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal_amount",
+			"label": "Goal Amount",
+			"description": "Specify, what level or tier (when either MAM or Even Fasterer is chosen as goal) is required to reach the goal.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 9,
+				"max": 500,
+				"step": 1,
+				"default": 27
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "required_shapes_multiplier",
+			"label": "Required Shapes Multiplier",
+			"description": "Multiplies the amount of required shapes for levels and upgrades by value/10.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "allow_floating_layers",
+			"label": "Allow Floating Layers",
+			"description": "Toggle whether shape requirements are allowed to have floating layers (like the logo or the rocket shape).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_level_requirements",
+			"label": "Randomize Level Requirements",
+			"description": "Randomize the required shapes to complete levels.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_upgrade_requirements",
+			"label": "Randomize Upgrade Requirements",
+			"description": "Randomize the required shapes to buy upgrades.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_level_logic",
+			"label": "Randomize Level Logic",
+			"description": "If level requirements are randomized, this sets how those random shapes are generated and how logic works for levels.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "stretched",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "vanilla_shuffled",
+						"label": "Vanilla Shuffled"
+					},
+					{
+						"value": "stretched",
+						"label": "Stretched"
+					},
+					{
+						"value": "stretched_shuffled",
+						"label": "Stretched Shuffled"
+					},
+					{
+						"value": "quick",
+						"label": "Quick"
+					},
+					{
+						"value": "quick_shuffled",
+						"label": "Quick Shuffled"
+					},
+					{
+						"value": "random_steps",
+						"label": "Random Steps"
+					},
+					{
+						"value": "random_steps_shuffled",
+						"label": "Random Steps Shuffled"
+					},
+					{
+						"value": "hardcore",
+						"label": "Hardcore"
+					},
+					{
+						"value": "dopamine",
+						"label": "Dopamine"
+					},
+					{
+						"value": "dopamine_overflow",
+						"label": "Dopamine Overflow"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_upgrade_logic",
+			"label": "Randomize Upgrade Logic",
+			"description": "If upgrade requirements are randomized, this sets how those random shapes are generated and how logic works for upgrades.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "linear",
+				"choices": [
+					{
+						"value": "vanilla_like",
+						"label": "Vanilla Like"
+					},
+					{
+						"value": "linear",
+						"label": "Linear"
+					},
+					{
+						"value": "category",
+						"label": "Category"
+					},
+					{
+						"value": "category_random",
+						"label": "Category Random"
+					},
+					{
+						"value": "hardcore",
+						"label": "Hardcore"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "throughput_levels_ratio",
+			"label": "Throughput Levels Ratio",
+			"description": "If level requirements are randomized, this sets the ratio of how many levels (approximately) will require either a total amount or per second amount (throughput) of shapes delivered.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "complexity_growth_gradient",
+			"label": "Complexity Growth Gradient",
+			"description": "If level requirements are randomized, this determines how fast complexity will grow each level.",
+			"category": "general",
+			"type": {
+				"kind": "text",
+				"default": "0.5",
+				"placeholder": null
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "same_late_upgrade_requirements",
+			"label": "Same Late Upgrade Requirements",
+			"description": "If upgrade requirements are randomized, should the last 3 shapes for each category be the same, as in vanilla?",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_balancer_tunnel_and_trash",
+			"label": "Early Balancer Tunnel And Trash",
+			"description": "Makes the balancer, tunnel, and trash appear in earlier spheres.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "3_buildings",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "5_buildings",
+						"label": "5 Buildings"
+					},
+					{
+						"value": "3_buildings",
+						"label": "3 Buildings"
+					},
+					{
+						"value": "sphere_1",
+						"label": "Sphere 1"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lock_belt_and_extractor",
+			"label": "Lock Belt And Extractor",
+			"description": "Locks Belts and Extractors and adds them to the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "include_achievements",
+			"label": "Include Achievements",
+			"description": "Include up to 45 achievements (depending on other options) as additional locations.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exclude_softlock_achievements",
+			"label": "Exclude Softlock Achievements",
+			"description": "Exclude 6 achievements, that can become unreachable in a save file, if not achieved until a certain level.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exclude_long_playtime_achievements",
+			"label": "Exclude Long Playtime Achievements",
+			"description": "Exclude 2 achievements, that require actively playing for a really long time.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exclude_progression_unreasonable",
+			"label": "Exclude Progression Unreasonable",
+			"description": "Exclude progression and useful items from being placed into softlock and long playtime achievements.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shapesanity_amount",
+			"label": "Shapesanity Amount",
+			"description": "Amount of single-layer shapes that will be included as locations.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 4,
+				"max": 1000,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "traps_percentage",
+			"label": "Traps Percentage",
+			"description": "The probability of any filler item (in percent) being replaced by a trap.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "include_whacky_upgrades",
+			"label": "Include Whacky Upgrades",
+			"description": "Includes some very unusual upgrade items in generation (and logic), that greatly increase or decrease building speeds.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "split_inventory_draining_trap",
+			"label": "Split Inventory Draining Trap",
+			"description": "If set to true, the inventory draining trap will be split into level, upgrade, and blueprint draining traps instead of executing as one of those 3 randomly.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "toolbar_shuffling",
+			"label": "Toolbar Shuffling",
+			"description": "If set to true, the toolbars (main and wires layer) will be shuffled (including bottom and top row).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

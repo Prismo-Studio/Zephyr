@@ -38,7 +38,7 @@ The player can choose from a number of goals using their YAML settings:
   - There is no partial progress system for this goal - combining it with another goal is recommended.
   - Time to finish this goal varies significantly depending on your map knowledge, equipment, and movement skills.
 
-You can also configure whether completing your slot requires *any one* goal or *all* goals to be met.
+You can also configure whether completing your slot requires _any one_ goal or _all_ goals to be met.
 
 ## What Satisfactory items can appear in other players' worlds?
 
@@ -157,7 +157,7 @@ the rest are filler or useful.
 You can use the game's built-in chat menu.
 Check the game's keybinding options to see how to open it.
 Run the `/help` command to list all available commands.
-Note that Archipelago commands are *not* prefixed with `!` inside of Satisfactory.
+Note that Archipelago commands are _not_ prefixed with `!` inside of Satisfactory.
 
 Note that multiple base-game bugs affect the chat menu's functionality
 and Archipelago can put a lot of info into the chat.

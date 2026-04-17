@@ -43,4 +43,4 @@ The Witness hat einen voll funktionsfähigen Tracker mit Kartenansicht und Autot
 3. Klicke auf das "AP"-Symbol am oberen Fensterrand.
 4. Gib die Archipelago-Adresse, deinen Namen und evtl. das Passwort ein.
 
-Der Rest sollte vollautomatisch ohne weitere Eingabe funktionieren. Der Tracker wird deine momentanen Items anzeigen und lösbare Rätsel grün auf der Karte anzeigen. Sobald du eine Rätselsequenz abschließt, wird sie grau markiert. 
+Der Rest sollte vollautomatisch ohne weitere Eingabe funktionieren. Der Tracker wird deine momentanen Items anzeigen und lösbare Rätsel grün auf der Karte anzeigen. Sobald du eine Rätselsequenz abschließt, wird sie grau markiert.

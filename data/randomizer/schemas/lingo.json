@@ -1,406 +1,406 @@
 {
-  "id": "lingo",
-  "name": "Lingo",
-  "version": "0.1.6",
-  "description": "Lingo is a first person indie puzzle game in the vein of The Witness.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_doors",
-      "label": "Shuffle Doors",
-      "description": "This option specifies how doors open.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "panels",
-            "label": "Panels"
-          },
-          {
-            "value": "doors",
-            "label": "Doors"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "group_doors",
-      "label": "Group Doors",
-      "description": "By default, door shuffle in either panels or doors mode will create individual keys for every panel or door to be locked.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progressive_orange_tower",
-      "label": "Progressive Orange Tower",
-      "description": "When \"Shuffle Doors\" is on doors mode, this setting governs the manner in which the Orange Tower floors open up.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progressive_colorful",
-      "label": "Progressive Colorful",
-      "description": "When \"Shuffle Doors\" is on either panels or doors mode and \"Group Doors\" is off, this setting governs the manner in which The Colorful opens up.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "location_checks",
-      "label": "Location Checks",
-      "description": "Determines what locations are available.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "reduced",
-            "label": "Reduced"
-          },
-          {
-            "value": "insanity",
-            "label": "Insanity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_colors",
-      "label": "Shuffle Colors",
-      "description": "If on, an item is added to the pool for every puzzle color (besides White).",
-      "category": "cosmetic",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_panels",
-      "label": "Shuffle Panels",
-      "description": "Determines how panel puzzles are randomized.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "rearrange",
-            "label": "Rearrange"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_paintings",
-      "label": "Shuffle Paintings",
-      "description": "If on, the destination, location, and appearance of the painting warps in the game will be randomized.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_pilgrimage",
-      "label": "Enable Pilgrimage",
-      "description": "Determines how the pilgrimage works.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "pilgrimage_allows_roof_access",
-      "label": "Pilgrimage Allows Roof Access",
-      "description": "If on, you may use the Crossroads roof access during a pilgrimage (and you may be expected to do so).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "pilgrimage_allows_paintings",
-      "label": "Pilgrimage Allows Paintings",
-      "description": "If on, you may use paintings during a pilgrimage (and you may be expected to do so).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "sunwarp_access",
-      "label": "Sunwarp Access",
-      "description": "Determines how access to sunwarps works.",
-      "category": "entrances",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "unlock",
-            "label": "Unlock"
-          },
-          {
-            "value": "individual",
-            "label": "Individual"
-          },
-          {
-            "value": "progressive",
-            "label": "Progressive"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_sunwarps",
-      "label": "Shuffle Sunwarps",
-      "description": "If on, the pairing and ordering of the sunwarps in the game will be randomized.",
-      "category": "entrances",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "victory_condition",
-      "label": "Victory Condition",
-      "description": "Change the victory condition.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "the_end",
-        "choices": [
-          {
-            "value": "the_end",
-            "label": "The End"
-          },
-          {
-            "value": "the_master",
-            "label": "The Master"
-          },
-          {
-            "value": "level_2",
-            "label": "Level 2"
-          },
-          {
-            "value": "pilgrimage",
-            "label": "Pilgrimage"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mastery_achievements",
-      "label": "Mastery Achievements",
-      "description": "The number of achievements required to unlock THE MASTER.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 24,
-        "step": 1,
-        "default": 21
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "level_2_requirement",
-      "label": "Level 2 Requirement",
-      "description": "The number of panel solves required to unlock LEVEL 2.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 800,
-        "step": 1,
-        "default": 223
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_color_hallways",
-      "label": "Early Color Hallways",
-      "description": "When on, a painting warp to the color hallways area will appear in the starting room.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_postgame",
-      "label": "Shuffle Postgame",
-      "description": "When off, locations that could not be reached without also reaching your victory condition are removed.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_percentage",
-      "label": "Trap Percentage",
-      "description": "Replaces junk items with traps, at the specified rate.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "speed_boost_mode",
-      "label": "Speed Boost Mode",
-      "description": "If on, the player's default speed is halved, as if affected by a Slowness Trap.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "puzzle_skip_percentage",
-      "label": "Puzzle Skip Percentage",
-      "description": "Replaces junk items with puzzle skips, at the specified rate.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "If on: Whenever another player on death link dies, you will be returned to the starting room.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "lingo",
+	"name": "Lingo",
+	"version": "0.1.6",
+	"description": "Lingo is a first person indie puzzle game in the vein of The Witness.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_doors",
+			"label": "Shuffle Doors",
+			"description": "This option specifies how doors open.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "panels",
+						"label": "Panels"
+					},
+					{
+						"value": "doors",
+						"label": "Doors"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "group_doors",
+			"label": "Group Doors",
+			"description": "By default, door shuffle in either panels or doors mode will create individual keys for every panel or door to be locked.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progressive_orange_tower",
+			"label": "Progressive Orange Tower",
+			"description": "When \"Shuffle Doors\" is on doors mode, this setting governs the manner in which the Orange Tower floors open up.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progressive_colorful",
+			"label": "Progressive Colorful",
+			"description": "When \"Shuffle Doors\" is on either panels or doors mode and \"Group Doors\" is off, this setting governs the manner in which The Colorful opens up.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "location_checks",
+			"label": "Location Checks",
+			"description": "Determines what locations are available.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "reduced",
+						"label": "Reduced"
+					},
+					{
+						"value": "insanity",
+						"label": "Insanity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_colors",
+			"label": "Shuffle Colors",
+			"description": "If on, an item is added to the pool for every puzzle color (besides White).",
+			"category": "cosmetic",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_panels",
+			"label": "Shuffle Panels",
+			"description": "Determines how panel puzzles are randomized.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "rearrange",
+						"label": "Rearrange"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_paintings",
+			"label": "Shuffle Paintings",
+			"description": "If on, the destination, location, and appearance of the painting warps in the game will be randomized.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_pilgrimage",
+			"label": "Enable Pilgrimage",
+			"description": "Determines how the pilgrimage works.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "pilgrimage_allows_roof_access",
+			"label": "Pilgrimage Allows Roof Access",
+			"description": "If on, you may use the Crossroads roof access during a pilgrimage (and you may be expected to do so).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "pilgrimage_allows_paintings",
+			"label": "Pilgrimage Allows Paintings",
+			"description": "If on, you may use paintings during a pilgrimage (and you may be expected to do so).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "sunwarp_access",
+			"label": "Sunwarp Access",
+			"description": "Determines how access to sunwarps works.",
+			"category": "entrances",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "unlock",
+						"label": "Unlock"
+					},
+					{
+						"value": "individual",
+						"label": "Individual"
+					},
+					{
+						"value": "progressive",
+						"label": "Progressive"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_sunwarps",
+			"label": "Shuffle Sunwarps",
+			"description": "If on, the pairing and ordering of the sunwarps in the game will be randomized.",
+			"category": "entrances",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "victory_condition",
+			"label": "Victory Condition",
+			"description": "Change the victory condition.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "the_end",
+				"choices": [
+					{
+						"value": "the_end",
+						"label": "The End"
+					},
+					{
+						"value": "the_master",
+						"label": "The Master"
+					},
+					{
+						"value": "level_2",
+						"label": "Level 2"
+					},
+					{
+						"value": "pilgrimage",
+						"label": "Pilgrimage"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mastery_achievements",
+			"label": "Mastery Achievements",
+			"description": "The number of achievements required to unlock THE MASTER.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 24,
+				"step": 1,
+				"default": 21
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "level_2_requirement",
+			"label": "Level 2 Requirement",
+			"description": "The number of panel solves required to unlock LEVEL 2.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 800,
+				"step": 1,
+				"default": 223
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_color_hallways",
+			"label": "Early Color Hallways",
+			"description": "When on, a painting warp to the color hallways area will appear in the starting room.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_postgame",
+			"label": "Shuffle Postgame",
+			"description": "When off, locations that could not be reached without also reaching your victory condition are removed.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_percentage",
+			"label": "Trap Percentage",
+			"description": "Replaces junk items with traps, at the specified rate.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "speed_boost_mode",
+			"label": "Speed Boost Mode",
+			"description": "If on, the player's default speed is halved, as if affected by a Slowness Trap.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "puzzle_skip_percentage",
+			"label": "Puzzle Skip Percentage",
+			"description": "Replaces junk items with puzzle skips, at the specified rate.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "If on: Whenever another player on death link dies, you will be returned to the starting room.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -1,289 +1,289 @@
 {
-  "id": "mm3",
-  "name": "Mega Man 3",
-  "version": "0.1.6",
-  "description": "Following his second defeat by Mega Man, Dr.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "energy_link",
-      "label": "Energy Link",
-      "description": "Enables EnergyLink support.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_robot_master",
-      "label": "Starting Robot Master",
-      "description": "The initial stage unlocked at the start.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random",
-        "choices": [
-          {
-            "value": "needle_man",
-            "label": "Needle Man"
-          },
-          {
-            "value": "magnet_man",
-            "label": "Magnet Man"
-          },
-          {
-            "value": "gemini_man",
-            "label": "Gemini Man"
-          },
-          {
-            "value": "hard_man",
-            "label": "Hard Man"
-          },
-          {
-            "value": "top_man",
-            "label": "Top Man"
-          },
-          {
-            "value": "snake_man",
-            "label": "Snake Man"
-          },
-          {
-            "value": "spark_man",
-            "label": "Spark Man"
-          },
-          {
-            "value": "shadow_man",
-            "label": "Shadow Man"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "consumables",
-      "label": "Consumables",
-      "description": "When enabled, e-tanks/1-ups/health/weapon energy will be added to the pool of items and included as checks.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "1up_etank",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "1up_etank",
-            "label": "1Up Etank"
-          },
-          {
-            "value": "weapon_health",
-            "label": "Weapon Health"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enemy_weakness",
-      "label": "Enemy Weakness",
-      "description": "Randomizes the damage dealt to enemies by weapons.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "strict_weakness",
-      "label": "Strict Weakness",
-      "description": "Only your starting Robot Master will take damage from the Mega Buster, the rest must be defeated with weapons.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_weakness",
-      "label": "Random Weakness",
-      "description": "None: Bosses will have their regular weaknesses.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "shuffled",
-            "label": "Shuffled"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "wily_4_requirement",
-      "label": "Wily 4 Requirement",
-      "description": "Change the amount of Robot Masters that are required to be defeated for the door to the Wily Machine to open.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 8,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "palette_shuffle",
-      "label": "Palette Shuffle",
-      "description": "Change the color of Mega Man and the Robot Masters.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "shuffled",
-            "label": "Shuffled"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          },
-          {
-            "value": "singularity",
-            "label": "Singularity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "reduce_flashing",
-      "label": "Reduce Flashing",
-      "description": "Reduce flashing seen in gameplay, such as in stages and when defeating certain bosses.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "music_shuffle",
-      "label": "Music Shuffle",
-      "description": "Shuffle the music that plays in every stage",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "shuffled",
-            "label": "Shuffled"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          },
-          {
-            "value": "no_music",
-            "label": "No Music"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "mm3",
+	"name": "Mega Man 3",
+	"version": "0.1.6",
+	"description": "Following his second defeat by Mega Man, Dr.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "energy_link",
+			"label": "Energy Link",
+			"description": "Enables EnergyLink support.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_robot_master",
+			"label": "Starting Robot Master",
+			"description": "The initial stage unlocked at the start.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random",
+				"choices": [
+					{
+						"value": "needle_man",
+						"label": "Needle Man"
+					},
+					{
+						"value": "magnet_man",
+						"label": "Magnet Man"
+					},
+					{
+						"value": "gemini_man",
+						"label": "Gemini Man"
+					},
+					{
+						"value": "hard_man",
+						"label": "Hard Man"
+					},
+					{
+						"value": "top_man",
+						"label": "Top Man"
+					},
+					{
+						"value": "snake_man",
+						"label": "Snake Man"
+					},
+					{
+						"value": "spark_man",
+						"label": "Spark Man"
+					},
+					{
+						"value": "shadow_man",
+						"label": "Shadow Man"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "consumables",
+			"label": "Consumables",
+			"description": "When enabled, e-tanks/1-ups/health/weapon energy will be added to the pool of items and included as checks.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "1up_etank",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "1up_etank",
+						"label": "1Up Etank"
+					},
+					{
+						"value": "weapon_health",
+						"label": "Weapon Health"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enemy_weakness",
+			"label": "Enemy Weakness",
+			"description": "Randomizes the damage dealt to enemies by weapons.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "strict_weakness",
+			"label": "Strict Weakness",
+			"description": "Only your starting Robot Master will take damage from the Mega Buster, the rest must be defeated with weapons.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_weakness",
+			"label": "Random Weakness",
+			"description": "None: Bosses will have their regular weaknesses.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "shuffled",
+						"label": "Shuffled"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "wily_4_requirement",
+			"label": "Wily 4 Requirement",
+			"description": "Change the amount of Robot Masters that are required to be defeated for the door to the Wily Machine to open.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 8,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "palette_shuffle",
+			"label": "Palette Shuffle",
+			"description": "Change the color of Mega Man and the Robot Masters.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "shuffled",
+						"label": "Shuffled"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					},
+					{
+						"value": "singularity",
+						"label": "Singularity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "reduce_flashing",
+			"label": "Reduce Flashing",
+			"description": "Reduce flashing seen in gameplay, such as in stages and when defeating certain bosses.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "music_shuffle",
+			"label": "Music Shuffle",
+			"description": "Shuffle the music that plays in every stage",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "shuffled",
+						"label": "Shuffled"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					},
+					{
+						"value": "no_music",
+						"label": "No Music"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

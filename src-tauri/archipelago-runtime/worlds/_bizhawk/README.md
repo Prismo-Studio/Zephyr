@@ -16,10 +16,11 @@ handed to a function you write for your game (`game_watcher`) which should inter
 locations have been checked, give the player items, detect and send deathlinks, etc...
 
 Table of Contents:
+
 - [Connector Requests](#connector-requests)
-    - [Requests that depend on other requests](#requests-that-depend-on-other-requests)
+  - [Requests that depend on other requests](#requests-that-depend-on-other-requests)
 - [Implementing a Client](#implementing-a-client)
-    - [Example](#example)
+  - [Example](#example)
 - [Tips](#tips)
 
 ## Connector Requests
@@ -94,8 +95,8 @@ loaded a new map, meaning we've written data to who knows where.
 There are two solutions to this problem.
 
 1. Use `guarded_write` instead of `write`. We can include a guard against the address changing, and the script will only
-perform the write if the data in memory matches what's in the guard. In the below example, `write_result` will be `True`
-if the guard validated and the data was written, and `False` if the guard failed to validate.
+   perform the write if the data in memory matches what's in the guard. In the below example, `write_result` will be `True`
+   if the guard validated and the data was written, and `False` if the guard failed to validate.
 
 ```py
 # Get the address of the save data
@@ -121,9 +122,9 @@ else:
 ```
 
 2. Use `lock` and `unlock` (discouraged if not necessary). When you call `lock`, you tell the emulator to stop advancing
-frames and just process requests until it receives an unlock request. This means you can lock, read the address, write
-the data, and then unlock on a single frame. **However**, this is _slow_. If you can't get in and get out quickly
-enough, players will notice a stutter in the emulation.
+   frames and just process requests until it receives an unlock request. This means you can lock, read the address, write
+   the data, and then unlock on a single frame. **However**, this is _slow_. If you can't get in and get out quickly
+   enough, players will notice a stutter in the emulation.
 
 ```py
 # Pause emulation
@@ -256,28 +257,28 @@ class MyGameClient(BizHawkClient):
 ### Tips
 
 - Make sure your client gets imported when your world is imported. You probably don't need to actually use anything in
-your `client.py` elsewhere, but you still have to import the file for your client to register itself.
+  your `client.py` elsewhere, but you still have to import the file for your client to register itself.
 - When it comes to performance, there are two directions to optimize:
   1. If you need to execute multiple commands on the same frame, do as little work as possible. Only read and write necessary data,
-  and if you have to use locks, unlock as soon as it's okay to advance frames. This is probably the obvious one.
+     and if you have to use locks, unlock as soon as it's okay to advance frames. This is probably the obvious one.
   2. Multiple things that don't have to happen on the same frame should be split up if they're likely to be slow.
-  Remember, the game watcher runs only a few times per second. Extra function calls on the client aren't that big of a
-  deal; the player will not notice if your `game_watcher` is slow. But the emulator has to be done with any given set of
-  commands in 1/60th of a second to avoid hiccups (faster still if your players use speedup). Too many reads of too much
-  data at the same time is more likely to cause a bad user experience.
+     Remember, the game watcher runs only a few times per second. Extra function calls on the client aren't that big of a
+     deal; the player will not notice if your `game_watcher` is slow. But the emulator has to be done with any given set of
+     commands in 1/60th of a second to avoid hiccups (faster still if your players use speedup). Too many reads of too much
+     data at the same time is more likely to cause a bad user experience.
 - Your `game_watcher` will be called regardless of the status of the client's connection to the server. Double-check the
-server connection before trying to interact with it.
+  server connection before trying to interact with it.
 - By default, the player will be asked to provide their slot name after connecting to the server and validating, and
-that input will be used to authenticate with the `Connect` command. You can override `set_auth` in your own client to
-set it automatically based on data in the ROM or on your client instance.
+  that input will be used to authenticate with the `Connect` command. You can override `set_auth` in your own client to
+  set it automatically based on data in the ROM or on your client instance.
 - Use `get_memory_size` inside `validate_rom` if you need to read at large addresses, in case some other game has a
-smaller ROM size.
+  smaller ROM size.
 - You can override `on_package` in your client to watch raw packages, but don't forget you also have access to a
-subclass of `CommonContext` and its API.
+  subclass of `CommonContext` and its API.
 - You can import `BizHawkClientContext` for type hints using `typing.TYPE_CHECKING`. Importing it without conditions at
-the top of the file will probably cause a circular dependency.
+  the top of the file will probably cause a circular dependency.
 - Your game's system may have multiple usable cores in BizHawk. You can use `get_cores` to try to determine which one is
-currently loaded (it's the best we can do). Some cores may differ in the names of memory domains. It's good to check all
-the available cores to find differences before your users do.
+  currently loaded (it's the best we can do). Some cores may differ in the names of memory domains. It's good to check all
+  the available cores to find differences before your users do.
 - The connector script includes a DEBUG variable that you can use to log requests/responses. (Be aware that as the log
-grows in size in BizHawk, it begins to stutter while trying to print it.)
+  grows in size in BizHawk, it begins to stutter while trying to print it.)

@@ -4,21 +4,20 @@
 
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases).
 
-
 - Hardware or software capable of loading and playing SNES ROM files
-    - An emulator capable of connecting to SNI such as:
-        - snes9x-rr from: [snes9x rr](https://github.com/gocha/snes9x-rr/releases),
-        - BizHawk from: [TASVideos](https://tasvideos.org/BizHawk)
-        - snes9x-nwa from: [snes9x nwa](https://github.com/Skarsnik/snes9x-emunwa/releases)
-        - RetroArch 1.10.3 or newer from: RetroArch Website
-        - You can additionally use the FX Pack Pro, however some issues with it have been reported and it is not officially recommended.
-    
+  - An emulator capable of connecting to SNI such as:
+    - snes9x-rr from: [snes9x rr](https://github.com/gocha/snes9x-rr/releases),
+    - BizHawk from: [TASVideos](https://tasvideos.org/BizHawk)
+    - snes9x-nwa from: [snes9x nwa](https://github.com/Skarsnik/snes9x-emunwa/releases)
+    - RetroArch 1.10.3 or newer from: RetroArch Website
+    - You can additionally use the FX Pack Pro, however some issues with it have been reported and it is not officially recommended.
 - Your legally obtained EarthBound English ROM file, probably named `EarthBound (USA).sfc`
 
 ## Optional Software
+
 - EarthBound Archipelago Poptracker Pack
-	- PopTracker from: [PopTracker Releases Page](https://github.com/black-sliver/PopTracker/releases/)
-	- EarthBound Archipelago PopTracker pack from: [EarthBound AP Tracker Releases Page](https://github.com/PinkSwitch/earthbound_poptracker/releases/tag/ebpoptracker1.0)
+  - PopTracker from: [PopTracker Releases Page](https://github.com/black-sliver/PopTracker/releases/)
+  - EarthBound Archipelago PopTracker pack from: [EarthBound AP Tracker Releases Page](https://github.com/PinkSwitch/earthbound_poptracker/releases/tag/ebpoptracker1.0)
     - The EarthBound Sprite Injector Tool (For custom sprite usage): [EarthBound Sprite Injector](https://github.com/PinkSwitch/eb-sprite-injector/releases/)
 
 ## Installation Procedures
@@ -29,12 +28,12 @@
 2. During generation/patching, you will be asked to locate your base ROM file. This is your EarthBound ROM file.
 3. If you are using an emulator, you should assign your Lua capable emulator as your default program for launching ROM
    files.
-    1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
-    2. Right-click on a ROM file and select **Open with...**
-    3. Check the box next to **Always use this app to open .sfc files**
-    4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
-    5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
-       extracted in step one.
+   1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
+   2. Right-click on a ROM file and select **Open with...**
+   3. Check the box next to **Always use this app to open .sfc files**
+   4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
+   5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
+      extracted in step one.
 
 ## Create a Config (.yaml) File
 
@@ -78,24 +77,22 @@ first time launching, you may be prompted to allow it to communicate through the
 3. Click on **New Lua Script Window...**
 4. In the new window, click **Browse...**
 5. Select the connector lua file included with your client
-    - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
+   - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
 6. If you see an error while loading the script that states `socket.dll missing` or similar, navigate to the folder of
-the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
+   the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
 
 ##### BizHawk
 
 1. Ensure you have the BSNES core loaded. This is done with the main menubar, under:
-    - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
-    - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
+   - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
+   - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
 2. Load your ROM file if it hasn't already been loaded.
    If you changed your core preference after loading the ROM, don't forget to reload it (default hotkey: Ctrl+R).
 3. Drag+drop the `Connector.lua` file included with your client onto the main EmuHawk window.
-    - Look in the Archipelago folder for `/SNI/lua/x64` or `/SNI/lua/x86` depending on if the
-      emulator is 64-bit or 32-bit. Please note the most recent versions of BizHawk are 64-bit only.
-    - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to `Connector.lua`
-      with the file picker.
-
-
+   - Look in the Archipelago folder for `/SNI/lua/x64` or `/SNI/lua/x86` depending on if the
+     emulator is 64-bit or 32-bit. Please note the most recent versions of BizHawk are 64-bit only.
+   - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to `Connector.lua`
+     with the file picker.
 
 ### Connect to the Archipelago Server
 
@@ -118,7 +115,7 @@ The recommended way to host a game is to use our hosting service. The process is
 1. Collect config files from your players.
 2. Create a zip file containing your players' config files.
 3. Upload that zip file to the Generate page above.
-    - Generate page: [WebHost Seed Generation Page](/generate)
+   - Generate page: [WebHost Seed Generation Page](/generate)
 4. Wait a moment while the seed is generated.
 5. When the seed is generated, you will be redirected to a "Seed Info" page.
 6. Click "Create New Room". This will take you to the server page. Provide the link to this page to your players, so

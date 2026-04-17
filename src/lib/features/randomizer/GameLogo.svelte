@@ -73,11 +73,7 @@
 		}
 
 		// Try a couple of query variants
-		const variants = [
-			`${name} (video game)`,
-			`${name} video game`,
-			name
-		];
+		const variants = [`${name} (video game)`, `${name} video game`, name];
 		let found: string | null = null;
 		for (const q of variants) {
 			found = await fetchWikipediaImage(q);

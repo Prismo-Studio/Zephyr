@@ -13,7 +13,7 @@ APQuest ist ungefähr 20 Sekunden lang. Der Client kann aber nahtlos zwischen me
 Wenn du 10 APQuest-Slots in einer Multiworld haben willst, sollte das also problemlos möglich sein.if you want to have 10 of them, that should work pretty well.
 
 Ausschlaggebend ist bei APQuest, dass das gesamte Spiel in der .apworld enthalten ist.  
-Wenn du also die .apworld in deine 
+Wenn du also die .apworld in deine
 [Archipelago-Installation](https://github.com/ArchipelagoMW/Archipelago/releases/latest) installiert hast,
 kannst du APQuest spielen.
 

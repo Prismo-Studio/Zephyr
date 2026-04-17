@@ -6,6 +6,7 @@ Relive the magic of Celeste Mountain alongside Madeline in this small, heartfelt
 Created in a week(ish) by the Celeste team to celebrate the game's sixth anniversary.
 
 Ported to Archipelago in a week(ish) by PoryGone, this World provides the following as unlockable items:
+
 - Strawberries
 - Dash Refills
 - Double Dash Refills

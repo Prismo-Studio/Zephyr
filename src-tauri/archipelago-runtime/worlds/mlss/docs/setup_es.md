@@ -27,7 +27,7 @@ de una experiencia personalizada a su gusto, y distintos jugadores de un mismo m
 
 ### ¿Dónde consigo un archivo YAML?
 
-Puedes personalizar tus opciones visitando 
+Puedes personalizar tus opciones visitando
 [Mario & Luigi Superstar Saga Options Page](/games/Mario%20&%20Luigi%20Superstar%20Saga/player-options)
 
 ## Unirse a una partida MultiWorld

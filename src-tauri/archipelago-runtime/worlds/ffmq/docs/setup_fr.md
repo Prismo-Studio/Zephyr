@@ -4,42 +4,41 @@
 
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases)
 - Une solution logicielle ou matérielle capable de charger et de lancer des fichiers ROM de SNES
-    - Un émulateur capable d'éxécuter des scripts Lua
-      - snes9x-rr de: [snes9x rr](https://github.com/gocha/snes9x-rr/releases),
-      - BizHawk from: [BizHawk Website](http://tasvideos.org/BizHawk.html),
-      - RetroArch 1.10.1 or newer from: [RetroArch Website](https://retroarch.com?page=platforms). Ou,
-    - Un SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), ou une autre solution matérielle
-      compatible
+  - Un émulateur capable d'éxécuter des scripts Lua
+    - snes9x-rr de: [snes9x rr](https://github.com/gocha/snes9x-rr/releases),
+    - BizHawk from: [BizHawk Website](http://tasvideos.org/BizHawk.html),
+    - RetroArch 1.10.1 or newer from: [RetroArch Website](https://retroarch.com?page=platforms). Ou,
+  - Un SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), ou une autre solution matérielle
+    compatible
 - Le fichier ROM de la v1.0 ou v1.1 NA de Final Fantasy Mystic Quest obtenu légalement, sûrement nommé `Final Fantasy - Mystic Quest (U) (V1.0).sfc` ou `Final Fantasy - Mystic Quest (U) (V1.1).sfc`
-La communauté d'Archipelago ne peut vous fournir avec ce fichier.
+  La communauté d'Archipelago ne peut vous fournir avec ce fichier.
 
 ## Procédure d'installation
 
 ### Installation sur Linux
 
-1. Téléchargez et installez [Archipelago](<https://github.com/ArchipelagoMW/Archipelago/releases/latest>). 
-** Le fichier d'installation est situé dans la section "assets" dans le bas de la fenêtre d'information de la version. Vous voulez probablement le `.AppImage`**
+1. Téléchargez et installez [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases/latest).
+   ** Le fichier d'installation est situé dans la section "assets" dans le bas de la fenêtre d'information de la version. Vous voulez probablement le `.AppImage`**
 2. L'utilisation de RetroArch ou BizHawk est recommandé pour les utilisateurs linux, puisque snes9x-rr n'est pas compatible.
 
 ### Installation sur Windows
 
-1. Téléchargez et installez [Archipelago](<https://github.com/ArchipelagoMW/Archipelago/releases/latest>). 
-** Le fichier d'installation est situé dans la section "assets" dans le bas de la fenêtre d'information de la version.**
+1. Téléchargez et installez [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases/latest).
+   ** Le fichier d'installation est situé dans la section "assets" dans le bas de la fenêtre d'information de la version.**
 2. Si vous utilisez un émulateur, il est recommandé d'assigner votre émulateur capable d'éxécuter des scripts Lua comme
    programme par défaut pour ouvrir vos ROMs.
-    1. Extrayez votre dossier d'émulateur sur votre Bureau, ou à un endroit dont vous vous souviendrez.
-    2. Faites un clic droit sur un fichier ROM et sélectionnez **Ouvrir avec...**
-    3. Cochez la case à côté de **Toujours utiliser cette application pour ouvrir les fichiers `.sfc`**
-    4. Descendez jusqu'en bas de la liste et sélectionnez **Rechercher une autre application sur ce PC**
-    5. Naviguez dans les dossiers jusqu'au fichier `.exe` de votre émulateur et choisissez **Ouvrir**. Ce fichier
-       devrait se trouver dans le dossier que vous avez extrait à la première étape.
-
+   1. Extrayez votre dossier d'émulateur sur votre Bureau, ou à un endroit dont vous vous souviendrez.
+   2. Faites un clic droit sur un fichier ROM et sélectionnez **Ouvrir avec...**
+   3. Cochez la case à côté de **Toujours utiliser cette application pour ouvrir les fichiers `.sfc`**
+   4. Descendez jusqu'en bas de la liste et sélectionnez **Rechercher une autre application sur ce PC**
+   5. Naviguez dans les dossiers jusqu'au fichier `.exe` de votre émulateur et choisissez **Ouvrir**. Ce fichier
+      devrait se trouver dans le dossier que vous avez extrait à la première étape.
 
 ## Créer son fichier de configuration (.yaml)
 
 ### Qu'est-ce qu'un fichier de configuration et pourquoi en ai-je besoin ?
 
-Votre fichier de configuration contient un ensemble d'options de configuration pour indiquer au générateur 
+Votre fichier de configuration contient un ensemble d'options de configuration pour indiquer au générateur
 comment il devrait générer votre seed. Chaque joueur d'un multiworld devra fournir son propre fichier de configuration. Cela permet
 à chaque joueur d'apprécier une expérience personalisée. Les différents joueurs d'un même multiworld
 pouront avoir des options de génération différentes.
@@ -49,7 +48,7 @@ Vous pouvez lire le [guide pour créer un YAML de base](/tutorial/Archipelago/se
 
 La [page d'options sur le site](/games/Final%20Fantasy%20Mystic%20Quest/player-options) vous permet de choisir vos
 options de génération et de les exporter vers un fichier de configuration.
-Il vous est aussi possible de trouver le fichier de configuration modèle de Mystic Quest dans votre répertoire d'installation d'Archipelago, 
+Il vous est aussi possible de trouver le fichier de configuration modèle de Mystic Quest dans votre répertoire d'installation d'Archipelago,
 dans le dossier Players/Templates.
 
 ### Vérifier son fichier de configuration
@@ -65,8 +64,8 @@ Si vous voulez valider votre fichier de configuration pour être sûr qu'il fonc
 3. Cliquez sur le lien "Create New Room".
 4. Vous verrez s'afficher la page du server, de laquelle vous pourrez télécharger votre fichier patch `.apmq`.
 5. Rendez-vous sur le [site FFMQR](https://ap.ffmqrando.net/Archipelago).
-Sur cette page, sélectionnez votre ROM Final Fantasy Mystic Quest original dans le boîte "ROM", puis votre ficher patch `.apmq` dans la boîte "Load Archipelago Config File".
-Cliquez sur "Generate". Un téléchargement avec votre ROM aléatoire devrait s'amorcer.
+   Sur cette page, sélectionnez votre ROM Final Fantasy Mystic Quest original dans le boîte "ROM", puis votre ficher patch `.apmq` dans la boîte "Load Archipelago Config File".
+   Cliquez sur "Generate". Un téléchargement avec votre ROM aléatoire devrait s'amorcer.
 6. Puisque cette partie est à un seul joueur, vous n'avez plus besoin du client Archipelago ni du serveur, sentez-vous libre de les fermer.
 
 ## Rejoindre un MultiWorld
@@ -97,10 +96,10 @@ Windows.
 3. Cliquez alors sur **New Lua Script Window...**
 4. Dans la nouvelle fenêtre, sélectionnez **Browse...**
 5. Sélectionnez le fichier connecteur lua fourni avec votre client
-    - Regardez dans le dossier Archipelago et cherchez `/SNI/lua/x64` ou `/SNI/lua/x86`, dépendemment de si votre emulateur 
-      est 64-bit ou 32-bit.
-6. Si vous obtenez une erreur `socket.dll missing` ou une erreur similaire lorsque vous chargez le script lua, vous devez naviguer dans le dossier 
-contenant le script lua, puis copier le fichier `socket.dll` dans le dossier d'installation de votre emulateur snes9x.
+   - Regardez dans le dossier Archipelago et cherchez `/SNI/lua/x64` ou `/SNI/lua/x86`, dépendemment de si votre emulateur
+     est 64-bit ou 32-bit.
+6. Si vous obtenez une erreur `socket.dll missing` ou une erreur similaire lorsque vous chargez le script lua, vous devez naviguer dans le dossier
+   contenant le script lua, puis copier le fichier `socket.dll` dans le dossier d'installation de votre emulateur snes9x.
 
 ##### BizHawk
 
@@ -110,11 +109,11 @@ contenant le script lua, puis copier le fichier `socket.dll` dans le dossier d'i
    Une fois le coeur changé, vous devez redémarrer BizHawk.
 2. Chargez votre ROM si ce n'est pas déjà fait.
 3. Cliquez sur le menu "Tools" et cliquez sur **Lua Console**
-4. Cliquez sur le bouton pour ouvrir un nouveau script Lua, soit par le bouton avec un icône "Ouvrir un dossier", 
-    en cliquant `Open Script...` dans le menu Script ou en appuyant sur `ctrl-O`.
+4. Cliquez sur le bouton pour ouvrir un nouveau script Lua, soit par le bouton avec un icône "Ouvrir un dossier",
+   en cliquant `Open Script...` dans le menu Script ou en appuyant sur `ctrl-O`.
 5. Sélectionnez le fichier `Connector.lua` inclus avec le client
-    - Regardez dans le dossier Archipelago et cherchez `/SNI/lua/x64` ou `/SNI/lua/x86`, dépendemment de si votre emulateur 
-      est 64-bit ou 32-bit. Notez que les versions les plus récentes de BizHawk ne sont que 64-bit.
+   - Regardez dans le dossier Archipelago et cherchez `/SNI/lua/x64` ou `/SNI/lua/x86`, dépendemment de si votre emulateur
+     est 64-bit ou 32-bit. Notez que les versions les plus récentes de BizHawk ne sont que 64-bit.
 
 ##### RetroArch 1.10.1 ou plus récent
 
@@ -122,13 +121,13 @@ Vous ne devez faire ces étapes qu'une fois. À noter que RetroArch 1.9.x ne fon
 
 1. Entrez dans le menu principal de RetroArch.
 2. Allez dans Settings --> User Interface. Activez l'option "Show Advanced Settings".
-3. Allez dans Settings --> Network. Activez l'option "Network Commands", qui se trouve sous "Request Device 16". 
+3. Allez dans Settings --> Network. Activez l'option "Network Commands", qui se trouve sous "Request Device 16".
    Laissez le "Network Command Port" à sa valeur par defaut, qui devrait être 55355. \
    ![Capture d'écran du menu Network Commands setting](../../generic/docs/retroarch-network-commands-fr.png)
 4. Allez dans le Menu Principal --> Online Updater --> Core Downloader. Trouvez et sélectionnez "Nintendo - SNES / SFC (bsnes-mercury
    Performance)".
 
-Lorsque vous chargez un ROM pour Archipelago, assurez vous de toujours sélectionner le coeur **bsnes-mercury**. 
+Lorsque vous chargez un ROM pour Archipelago, assurez vous de toujours sélectionner le coeur **bsnes-mercury**.
 Ce sont les seuls coeurs qui permettent à des outils extérieurs de lire les données du ROM.
 
 #### Avec une solution matérielle
@@ -165,11 +164,11 @@ Archipelago. Le processus est relativement simple :
 1. Récupérez les fichiers de configuration (.yaml) des joueurs.
 2. Créez une archive zip contenant ces fichiers de configuration.
 3. Téléversez l'archive zip sur le lien ci-dessous.
-     - Generate page: [WebHost Seed Generation Page](/generate)
+   - Generate page: [WebHost Seed Generation Page](/generate)
 4. Attendez un moment que la seed soit générée.
 5. Lorsque la seed est générée, vous serez redirigé vers une page d'informations "Seed Info".
 6. Cliquez sur "Create New Room". Cela vous amènera à la page du serveur. Fournissez le lien de cette page aux autres
-   joueurs afin qu'ils puissent récupérer leurs patchs.  
+   joueurs afin qu'ils puissent récupérer leurs patchs.
 7. Remarquez qu'un lien vers le traqueur du MultiWorld est en haut de la page de la salle. Vous devriez également
    fournir ce lien aux joueurs pour qu'ils puissent suivre la progression de la partie. N'importe quelle personne voulant
    observer devrait avoir accès à ce lien.

@@ -1,140 +1,140 @@
 {
-  "id": "meritous",
-  "name": "Meritous",
-  "version": "0.2.4",
-  "description": "Meritous Gaiden is a procedurally generated bullet-hell dungeon crawl game.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "Which goal must be achieved to trigger completion.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "return_the_cursed_seal",
-        "choices": [
-          {
-            "value": "return_the_cursed_seal",
-            "label": "Return The Cursed Seal"
-          },
-          {
-            "value": "any_ending",
-            "label": "Any Ending"
-          },
-          {
-            "value": "true_ending",
-            "label": "True Ending"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "include_psi_keys",
-      "label": "Include Psi Keys",
-      "description": "Whether PSI Keys should be included in the multiworld pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "include_evolution_traps",
-      "label": "Include Evolution Traps",
-      "description": "Whether evolution traps should be included in the multiworld pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_cache_cost",
-      "label": "Item Cache Cost",
-      "description": "Determines how the cost for Alpha, Beta, and Gamma caches will scale.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "reduced",
-            "label": "Reduced"
-          },
-          {
-            "value": "heavily_reduced",
-            "label": "Heavily Reduced"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "meritous",
+	"name": "Meritous",
+	"version": "0.2.4",
+	"description": "Meritous Gaiden is a procedurally generated bullet-hell dungeon crawl game.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "Which goal must be achieved to trigger completion.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "return_the_cursed_seal",
+				"choices": [
+					{
+						"value": "return_the_cursed_seal",
+						"label": "Return The Cursed Seal"
+					},
+					{
+						"value": "any_ending",
+						"label": "Any Ending"
+					},
+					{
+						"value": "true_ending",
+						"label": "True Ending"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "include_psi_keys",
+			"label": "Include Psi Keys",
+			"description": "Whether PSI Keys should be included in the multiworld pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "include_evolution_traps",
+			"label": "Include Evolution Traps",
+			"description": "Whether evolution traps should be included in the multiworld pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_cache_cost",
+			"label": "Item Cache Cost",
+			"description": "Determines how the cost for Alpha, Beta, and Gamma caches will scale.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "reduced",
+						"label": "Reduced"
+					},
+					{
+						"value": "heavily_reduced",
+						"label": "Heavily Reduced"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

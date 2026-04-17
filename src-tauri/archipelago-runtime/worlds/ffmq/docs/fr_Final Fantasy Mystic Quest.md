@@ -1,7 +1,8 @@
 # Final Fantasy Mystic Quest
 
 ## Page d'info dans d'autres langues :
-* [English](/games/Final%20Fantasy%20Mystic%20Quest/info/en)
+
+- [English](/games/Final%20Fantasy%20Mystic%20Quest/info/en)
 
 ## Où se situe la page d'options?
 
@@ -28,7 +29,6 @@ Les coffres rouges seront des objets utiles ou de progression, alors que les cof
 Les pièges peuvent apparaître comme des coffres rouges ou bruns.
 Lorsque vous ouvrirez un coffre contenant un objet d'un autre joueur, vous recevrez l'icône d'Archipelago et
 la boîte de dialogue vous indiquera avoir reçu un "Archipelago Item".
-
 
 ## Lorsqu'un joueur reçoit un objet, qu'arrive-t-il?
 

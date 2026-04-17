@@ -6,14 +6,14 @@
 - [SNI](https://github.com/alttpo/sni/releases). This is automatically included with your Archipelago installation above.
 - SNI is not compatible with (Q)Usb2Snes.
 - Hardware or software capable of loading and playing SNES ROM files, including:
-    - An emulator capable of connecting to SNI
-      ([snes9x-nwa](https://github.com/Skarsnik/snes9x-emunwa/releases), [snes9x-rr](https://github.com/gocha/snes9x-rr/releases),
-      [BSNES-plus](https://github.com/black-sliver/bsnes-plus),
-      [BizHawk](http://tasvideos.org/BizHawk.html), or
-      [RetroArch](https://retroarch.com?page=platforms) 1.10.1 or newer)
-    - An SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), or other compatible hardware. **note:
-      modded SNES minis are currently not supported by SNI. Some users have claimed success with QUsb2Snes for this system,
-      but it is not supported.**
+  - An emulator capable of connecting to SNI
+    ([snes9x-nwa](https://github.com/Skarsnik/snes9x-emunwa/releases), [snes9x-rr](https://github.com/gocha/snes9x-rr/releases),
+    [BSNES-plus](https://github.com/black-sliver/bsnes-plus),
+    [BizHawk](http://tasvideos.org/BizHawk.html), or
+    [RetroArch](https://retroarch.com?page=platforms) 1.10.1 or newer)
+  - An SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), or other compatible hardware. **note:
+    modded SNES minis are currently not supported by SNI. Some users have claimed success with QUsb2Snes for this system,
+    but it is not supported.**
 - Your legally obtained Super Metroid ROM file, probably named `Super Metroid (Japan, USA).sfc` and
   Your Japanese Zelda3 v1.0 ROM file, probably named `Zelda no Densetsu - Kamigami no Triforce (Japan).sfc`
 
@@ -21,18 +21,18 @@
 
 ### Windows Setup
 
-1. Download and install [Archipelago](<https://github.com/ArchipelagoMW/Archipelago/releases/latest>). **The installer 
+1. Download and install [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases/latest). **The installer
    file is located in the assets section at the bottom of the version information.**
 2. The first time you do local generation or patch your game, you will be asked to locate your base ROM file.  
    This is your Super Metroid and Zelda3 ROM files. This only needs to be done once.
 3. If you are using an emulator, you should assign your Lua capable emulator as your default program for launching ROM
    files.
-    1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
-    2. Right-click on a ROM file and select **Open with...**
-    3. Check the box next to **Always use this app to open .sfc files**
-    4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
-    5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
-       extracted in step one.
+   1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
+   2. Right-click on a ROM file and select **Open with...**
+   3. Check the box next to **Always use this app to open .sfc files**
+   4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
+   5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
+      extracted in step one.
 
 ## Create a Config (.yaml) File
 
@@ -54,7 +54,7 @@ validator page: [YAML Validation page](/check)
 ## Generating a Single-Player Game
 
 1. Navigate to the Player Options page, configure your options, and click the "Generate Game" button.
-    - Player Options page: [SMZ3 Player Options Page](/games/SMZ3/player-options)
+   - Player Options page: [SMZ3 Player Options Page](/games/SMZ3/player-options)
 2. You will be presented with a "Seed Info" page.
 3. Click the "Create New Room" link.
 4. You will be presented with a server page, from which you can download your patch file.
@@ -92,9 +92,9 @@ first time launching, you may be prompted to allow it to communicate through the
 3. Click on **New Lua Script Window...**
 4. In the new window, click **Browse...**
 5. Select the connector lua file included with your client
-    - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
-6. If you see an error while loading the script that states `socket.dll missing` or similar, navigate to the folder of 
-the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
+   - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
+6. If you see an error while loading the script that states `socket.dll missing` or similar, navigate to the folder of
+   the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
 
 #### BSNES-Plus
 
@@ -104,14 +104,14 @@ the lua you are using in your file explorer and copy the `socket.dll` to the bas
 ##### BizHawk
 
 1. Ensure you have the BSNES core loaded. This is done with the main menubar, under:
-    - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
-    - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
+   - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
+   - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
 2. Load your ROM file if it hasn't already been loaded.
    If you changed your core preference after loading the ROM, don't forget to reload it (default hotkey: Ctrl+R).
 3. Drag+drop the `Connector.lua` file included with your client onto the main EmuHawk window.
-    - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
-    - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to `Connector.lua`
-      with the file picker.
+   - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
+   - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to `Connector.lua`
+     with the file picker.
 
 ##### RetroArch 1.10.3 or newer
 
@@ -161,7 +161,7 @@ The recommended way to host a game is to use our hosting service. The process is
 1. Collect config files from your players.
 2. Create a zip file containing your players' config files.
 3. Upload that zip file to the Generate page above.
-    - Generate page: [WebHost Seed Generation Page](/generate)
+   - Generate page: [WebHost Seed Generation Page](/generate)
 4. Wait a moment while the seed is generated.
 5. When the seed is generated, you will be redirected to a "Seed Info" page.
 6. Click "Create New Room". This will take you to the server page. Provide the link to this page to your players, so

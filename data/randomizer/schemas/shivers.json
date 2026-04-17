@@ -1,2607 +1,2607 @@
 {
-  "id": "shivers",
-  "name": "Shivers",
-  "version": "0.1.6",
-  "description": "Shivers is a horror themed point and click adventure.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "local_items",
-      "label": "Local Items",
-      "description": "Forces these items to be in their native world.",
-      "category": "items",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Ash Always Available in Burial Room",
-            "label": "Ash Always Available In Burial Room"
-          },
-          {
-            "value": "Ash Always Available in Office",
-            "label": "Ash Always Available In Office"
-          },
-          {
-            "value": "Ash Pot Bottom",
-            "label": "Ash Pot Bottom"
-          },
-          {
-            "value": "Ash Pot Complete",
-            "label": "Ash Pot Complete"
-          },
-          {
-            "value": "Ash Pot Top",
-            "label": "Ash Pot Top"
-          },
-          {
-            "value": "Cloth Always Available in Burial Room",
-            "label": "Cloth Always Available In Burial Room"
-          },
-          {
-            "value": "Cloth Always Available in Egypt",
-            "label": "Cloth Always Available In Egypt"
-          },
-          {
-            "value": "Cloth Pot Bottom",
-            "label": "Cloth Pot Bottom"
-          },
-          {
-            "value": "Cloth Pot Complete",
-            "label": "Cloth Pot Complete"
-          },
-          {
-            "value": "Cloth Pot Top",
-            "label": "Cloth Pot Top"
-          },
-          {
-            "value": "Crawling",
-            "label": "Crawling"
-          },
-          {
-            "value": "Crystal Always Available in Lobby",
-            "label": "Crystal Always Available In Lobby"
-          },
-          {
-            "value": "Crystal Always Available in Ocean",
-            "label": "Crystal Always Available In Ocean"
-          },
-          {
-            "value": "Crystal Pot Bottom",
-            "label": "Crystal Pot Bottom"
-          },
-          {
-            "value": "Crystal Pot Complete",
-            "label": "Crystal Pot Complete"
-          },
-          {
-            "value": "Crystal Pot Top",
-            "label": "Crystal Pot Top"
-          },
-          {
-            "value": "Easier Lyre",
-            "label": "Easier Lyre"
-          },
-          {
-            "value": "Heal",
-            "label": "Heal"
-          },
-          {
-            "value": "Key for Bedroom",
-            "label": "Key For Bedroom"
-          },
-          {
-            "value": "Key for Bedroom Elevator",
-            "label": "Key For Bedroom Elevator"
-          },
-          {
-            "value": "Key for Egypt Room",
-            "label": "Key For Egypt Room"
-          },
-          {
-            "value": "Key for Front Door",
-            "label": "Key For Front Door"
-          },
-          {
-            "value": "Key for Generator Room",
-            "label": "Key For Generator Room"
-          },
-          {
-            "value": "Key for Greenhouse",
-            "label": "Key For Greenhouse"
-          },
-          {
-            "value": "Key for Janitor Closet",
-            "label": "Key For Janitor Closet"
-          },
-          {
-            "value": "Key for Library",
-            "label": "Key For Library"
-          },
-          {
-            "value": "Key for Ocean Room",
-            "label": "Key For Ocean Room"
-          },
-          {
-            "value": "Key for Office",
-            "label": "Key For Office"
-          },
-          {
-            "value": "Key for Office Elevator",
-            "label": "Key For Office Elevator"
-          },
-          {
-            "value": "Key for Prehistoric Room",
-            "label": "Key For Prehistoric Room"
-          },
-          {
-            "value": "Key for Projector Room",
-            "label": "Key For Projector Room"
-          },
-          {
-            "value": "Key for Puzzle Room",
-            "label": "Key For Puzzle Room"
-          },
-          {
-            "value": "Key for Shaman Room",
-            "label": "Key For Shaman Room"
-          },
-          {
-            "value": "Key for Three Floor Elevator",
-            "label": "Key For Three Floor Elevator"
-          },
-          {
-            "value": "Key for Torture Room",
-            "label": "Key For Torture Room"
-          },
-          {
-            "value": "Key for UFO Room",
-            "label": "Key For Ufo Room"
-          },
-          {
-            "value": "Key for Underground Lake",
-            "label": "Key For Underground Lake"
-          },
-          {
-            "value": "Key for Workshop",
-            "label": "Key For Workshop"
-          },
-          {
-            "value": "Lightning Pot Bottom",
-            "label": "Lightning Pot Bottom"
-          },
-          {
-            "value": "Lightning Pot Complete",
-            "label": "Lightning Pot Complete"
-          },
-          {
-            "value": "Lightning Pot Top",
-            "label": "Lightning Pot Top"
-          },
-          {
-            "value": "Metal Always Available in Bedroom",
-            "label": "Metal Always Available In Bedroom"
-          },
-          {
-            "value": "Metal Always Available in Prehistoric",
-            "label": "Metal Always Available In Prehistoric"
-          },
-          {
-            "value": "Metal Always Available in Projector Room",
-            "label": "Metal Always Available In Projector Room"
-          },
-          {
-            "value": "Metal Pot Bottom",
-            "label": "Metal Pot Bottom"
-          },
-          {
-            "value": "Metal Pot Complete",
-            "label": "Metal Pot Complete"
-          },
-          {
-            "value": "Metal Pot Top",
-            "label": "Metal Pot Top"
-          },
-          {
-            "value": "Oil Always Available in Prehistoric Room",
-            "label": "Oil Always Available In Prehistoric Room"
-          },
-          {
-            "value": "Oil Pot Bottom",
-            "label": "Oil Pot Bottom"
-          },
-          {
-            "value": "Oil Pot Complete",
-            "label": "Oil Pot Complete"
-          },
-          {
-            "value": "Oil Pot Top",
-            "label": "Oil Pot Top"
-          },
-          {
-            "value": "Sand Always Available in Greenhouse",
-            "label": "Sand Always Available In Greenhouse"
-          },
-          {
-            "value": "Sand Always Available in Ocean",
-            "label": "Sand Always Available In Ocean"
-          },
-          {
-            "value": "Sand Pot Bottom",
-            "label": "Sand Pot Bottom"
-          },
-          {
-            "value": "Sand Pot Complete",
-            "label": "Sand Pot Complete"
-          },
-          {
-            "value": "Sand Pot Top",
-            "label": "Sand Pot Top"
-          },
-          {
-            "value": "Water Always Available in Lobby",
-            "label": "Water Always Available In Lobby"
-          },
-          {
-            "value": "Water Pot Bottom",
-            "label": "Water Pot Bottom"
-          },
-          {
-            "value": "Water Pot Complete",
-            "label": "Water Pot Complete"
-          },
-          {
-            "value": "Water Pot Top",
-            "label": "Water Pot Top"
-          },
-          {
-            "value": "Wax Always Available in Anansi Room",
-            "label": "Wax Always Available In Anansi Room"
-          },
-          {
-            "value": "Wax Always Available in Library",
-            "label": "Wax Always Available In Library"
-          },
-          {
-            "value": "Wax Always Available in Shaman Room",
-            "label": "Wax Always Available In Shaman Room"
-          },
-          {
-            "value": "Wax Pot Bottom",
-            "label": "Wax Pot Bottom"
-          },
-          {
-            "value": "Wax Pot Complete",
-            "label": "Wax Pot Complete"
-          },
-          {
-            "value": "Wax Pot Top",
-            "label": "Wax Pot Top"
-          },
-          {
-            "value": "Wood Always Available in Blue Maze",
-            "label": "Wood Always Available In Blue Maze"
-          },
-          {
-            "value": "Wood Always Available in Gods Room",
-            "label": "Wood Always Available In Gods Room"
-          },
-          {
-            "value": "Wood Always Available in Pegasus Room",
-            "label": "Wood Always Available In Pegasus Room"
-          },
-          {
-            "value": "Wood Always Available in Workshop",
-            "label": "Wood Always Available In Workshop"
-          },
-          {
-            "value": "Wood Pot Bottom",
-            "label": "Wood Pot Bottom"
-          },
-          {
-            "value": "Wood Pot Complete",
-            "label": "Wood Pot Complete"
-          },
-          {
-            "value": "Wood Pot Top",
-            "label": "Wood Pot Top"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "non_local_items",
-      "label": "Non Local Items",
-      "description": "Forces these items to be outside their native world.",
-      "category": "items",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Ash Always Available in Burial Room",
-            "label": "Ash Always Available In Burial Room"
-          },
-          {
-            "value": "Ash Always Available in Office",
-            "label": "Ash Always Available In Office"
-          },
-          {
-            "value": "Ash Pot Bottom",
-            "label": "Ash Pot Bottom"
-          },
-          {
-            "value": "Ash Pot Complete",
-            "label": "Ash Pot Complete"
-          },
-          {
-            "value": "Ash Pot Top",
-            "label": "Ash Pot Top"
-          },
-          {
-            "value": "Cloth Always Available in Burial Room",
-            "label": "Cloth Always Available In Burial Room"
-          },
-          {
-            "value": "Cloth Always Available in Egypt",
-            "label": "Cloth Always Available In Egypt"
-          },
-          {
-            "value": "Cloth Pot Bottom",
-            "label": "Cloth Pot Bottom"
-          },
-          {
-            "value": "Cloth Pot Complete",
-            "label": "Cloth Pot Complete"
-          },
-          {
-            "value": "Cloth Pot Top",
-            "label": "Cloth Pot Top"
-          },
-          {
-            "value": "Crawling",
-            "label": "Crawling"
-          },
-          {
-            "value": "Crystal Always Available in Lobby",
-            "label": "Crystal Always Available In Lobby"
-          },
-          {
-            "value": "Crystal Always Available in Ocean",
-            "label": "Crystal Always Available In Ocean"
-          },
-          {
-            "value": "Crystal Pot Bottom",
-            "label": "Crystal Pot Bottom"
-          },
-          {
-            "value": "Crystal Pot Complete",
-            "label": "Crystal Pot Complete"
-          },
-          {
-            "value": "Crystal Pot Top",
-            "label": "Crystal Pot Top"
-          },
-          {
-            "value": "Easier Lyre",
-            "label": "Easier Lyre"
-          },
-          {
-            "value": "Heal",
-            "label": "Heal"
-          },
-          {
-            "value": "Key for Bedroom",
-            "label": "Key For Bedroom"
-          },
-          {
-            "value": "Key for Bedroom Elevator",
-            "label": "Key For Bedroom Elevator"
-          },
-          {
-            "value": "Key for Egypt Room",
-            "label": "Key For Egypt Room"
-          },
-          {
-            "value": "Key for Front Door",
-            "label": "Key For Front Door"
-          },
-          {
-            "value": "Key for Generator Room",
-            "label": "Key For Generator Room"
-          },
-          {
-            "value": "Key for Greenhouse",
-            "label": "Key For Greenhouse"
-          },
-          {
-            "value": "Key for Janitor Closet",
-            "label": "Key For Janitor Closet"
-          },
-          {
-            "value": "Key for Library",
-            "label": "Key For Library"
-          },
-          {
-            "value": "Key for Ocean Room",
-            "label": "Key For Ocean Room"
-          },
-          {
-            "value": "Key for Office",
-            "label": "Key For Office"
-          },
-          {
-            "value": "Key for Office Elevator",
-            "label": "Key For Office Elevator"
-          },
-          {
-            "value": "Key for Prehistoric Room",
-            "label": "Key For Prehistoric Room"
-          },
-          {
-            "value": "Key for Projector Room",
-            "label": "Key For Projector Room"
-          },
-          {
-            "value": "Key for Puzzle Room",
-            "label": "Key For Puzzle Room"
-          },
-          {
-            "value": "Key for Shaman Room",
-            "label": "Key For Shaman Room"
-          },
-          {
-            "value": "Key for Three Floor Elevator",
-            "label": "Key For Three Floor Elevator"
-          },
-          {
-            "value": "Key for Torture Room",
-            "label": "Key For Torture Room"
-          },
-          {
-            "value": "Key for UFO Room",
-            "label": "Key For Ufo Room"
-          },
-          {
-            "value": "Key for Underground Lake",
-            "label": "Key For Underground Lake"
-          },
-          {
-            "value": "Key for Workshop",
-            "label": "Key For Workshop"
-          },
-          {
-            "value": "Lightning Pot Bottom",
-            "label": "Lightning Pot Bottom"
-          },
-          {
-            "value": "Lightning Pot Complete",
-            "label": "Lightning Pot Complete"
-          },
-          {
-            "value": "Lightning Pot Top",
-            "label": "Lightning Pot Top"
-          },
-          {
-            "value": "Metal Always Available in Bedroom",
-            "label": "Metal Always Available In Bedroom"
-          },
-          {
-            "value": "Metal Always Available in Prehistoric",
-            "label": "Metal Always Available In Prehistoric"
-          },
-          {
-            "value": "Metal Always Available in Projector Room",
-            "label": "Metal Always Available In Projector Room"
-          },
-          {
-            "value": "Metal Pot Bottom",
-            "label": "Metal Pot Bottom"
-          },
-          {
-            "value": "Metal Pot Complete",
-            "label": "Metal Pot Complete"
-          },
-          {
-            "value": "Metal Pot Top",
-            "label": "Metal Pot Top"
-          },
-          {
-            "value": "Oil Always Available in Prehistoric Room",
-            "label": "Oil Always Available In Prehistoric Room"
-          },
-          {
-            "value": "Oil Pot Bottom",
-            "label": "Oil Pot Bottom"
-          },
-          {
-            "value": "Oil Pot Complete",
-            "label": "Oil Pot Complete"
-          },
-          {
-            "value": "Oil Pot Top",
-            "label": "Oil Pot Top"
-          },
-          {
-            "value": "Sand Always Available in Greenhouse",
-            "label": "Sand Always Available In Greenhouse"
-          },
-          {
-            "value": "Sand Always Available in Ocean",
-            "label": "Sand Always Available In Ocean"
-          },
-          {
-            "value": "Sand Pot Bottom",
-            "label": "Sand Pot Bottom"
-          },
-          {
-            "value": "Sand Pot Complete",
-            "label": "Sand Pot Complete"
-          },
-          {
-            "value": "Sand Pot Top",
-            "label": "Sand Pot Top"
-          },
-          {
-            "value": "Water Always Available in Lobby",
-            "label": "Water Always Available In Lobby"
-          },
-          {
-            "value": "Water Pot Bottom",
-            "label": "Water Pot Bottom"
-          },
-          {
-            "value": "Water Pot Complete",
-            "label": "Water Pot Complete"
-          },
-          {
-            "value": "Water Pot Top",
-            "label": "Water Pot Top"
-          },
-          {
-            "value": "Wax Always Available in Anansi Room",
-            "label": "Wax Always Available In Anansi Room"
-          },
-          {
-            "value": "Wax Always Available in Library",
-            "label": "Wax Always Available In Library"
-          },
-          {
-            "value": "Wax Always Available in Shaman Room",
-            "label": "Wax Always Available In Shaman Room"
-          },
-          {
-            "value": "Wax Pot Bottom",
-            "label": "Wax Pot Bottom"
-          },
-          {
-            "value": "Wax Pot Complete",
-            "label": "Wax Pot Complete"
-          },
-          {
-            "value": "Wax Pot Top",
-            "label": "Wax Pot Top"
-          },
-          {
-            "value": "Wood Always Available in Blue Maze",
-            "label": "Wood Always Available In Blue Maze"
-          },
-          {
-            "value": "Wood Always Available in Gods Room",
-            "label": "Wood Always Available In Gods Room"
-          },
-          {
-            "value": "Wood Always Available in Pegasus Room",
-            "label": "Wood Always Available In Pegasus Room"
-          },
-          {
-            "value": "Wood Always Available in Workshop",
-            "label": "Wood Always Available In Workshop"
-          },
-          {
-            "value": "Wood Pot Bottom",
-            "label": "Wood Pot Bottom"
-          },
-          {
-            "value": "Wood Pot Complete",
-            "label": "Wood Pot Complete"
-          },
-          {
-            "value": "Wood Pot Top",
-            "label": "Wood Pot Top"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "start_hints",
-      "label": "Start Hints",
-      "description": "Start with these item's locations prefilled into the ``!hint`` command.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Ash Always Available in Burial Room",
-            "label": "Ash Always Available In Burial Room"
-          },
-          {
-            "value": "Ash Always Available in Office",
-            "label": "Ash Always Available In Office"
-          },
-          {
-            "value": "Ash Pot Bottom",
-            "label": "Ash Pot Bottom"
-          },
-          {
-            "value": "Ash Pot Complete",
-            "label": "Ash Pot Complete"
-          },
-          {
-            "value": "Ash Pot Top",
-            "label": "Ash Pot Top"
-          },
-          {
-            "value": "Cloth Always Available in Burial Room",
-            "label": "Cloth Always Available In Burial Room"
-          },
-          {
-            "value": "Cloth Always Available in Egypt",
-            "label": "Cloth Always Available In Egypt"
-          },
-          {
-            "value": "Cloth Pot Bottom",
-            "label": "Cloth Pot Bottom"
-          },
-          {
-            "value": "Cloth Pot Complete",
-            "label": "Cloth Pot Complete"
-          },
-          {
-            "value": "Cloth Pot Top",
-            "label": "Cloth Pot Top"
-          },
-          {
-            "value": "Crawling",
-            "label": "Crawling"
-          },
-          {
-            "value": "Crystal Always Available in Lobby",
-            "label": "Crystal Always Available In Lobby"
-          },
-          {
-            "value": "Crystal Always Available in Ocean",
-            "label": "Crystal Always Available In Ocean"
-          },
-          {
-            "value": "Crystal Pot Bottom",
-            "label": "Crystal Pot Bottom"
-          },
-          {
-            "value": "Crystal Pot Complete",
-            "label": "Crystal Pot Complete"
-          },
-          {
-            "value": "Crystal Pot Top",
-            "label": "Crystal Pot Top"
-          },
-          {
-            "value": "Easier Lyre",
-            "label": "Easier Lyre"
-          },
-          {
-            "value": "Heal",
-            "label": "Heal"
-          },
-          {
-            "value": "Key for Bedroom",
-            "label": "Key For Bedroom"
-          },
-          {
-            "value": "Key for Bedroom Elevator",
-            "label": "Key For Bedroom Elevator"
-          },
-          {
-            "value": "Key for Egypt Room",
-            "label": "Key For Egypt Room"
-          },
-          {
-            "value": "Key for Front Door",
-            "label": "Key For Front Door"
-          },
-          {
-            "value": "Key for Generator Room",
-            "label": "Key For Generator Room"
-          },
-          {
-            "value": "Key for Greenhouse",
-            "label": "Key For Greenhouse"
-          },
-          {
-            "value": "Key for Janitor Closet",
-            "label": "Key For Janitor Closet"
-          },
-          {
-            "value": "Key for Library",
-            "label": "Key For Library"
-          },
-          {
-            "value": "Key for Ocean Room",
-            "label": "Key For Ocean Room"
-          },
-          {
-            "value": "Key for Office",
-            "label": "Key For Office"
-          },
-          {
-            "value": "Key for Office Elevator",
-            "label": "Key For Office Elevator"
-          },
-          {
-            "value": "Key for Prehistoric Room",
-            "label": "Key For Prehistoric Room"
-          },
-          {
-            "value": "Key for Projector Room",
-            "label": "Key For Projector Room"
-          },
-          {
-            "value": "Key for Puzzle Room",
-            "label": "Key For Puzzle Room"
-          },
-          {
-            "value": "Key for Shaman Room",
-            "label": "Key For Shaman Room"
-          },
-          {
-            "value": "Key for Three Floor Elevator",
-            "label": "Key For Three Floor Elevator"
-          },
-          {
-            "value": "Key for Torture Room",
-            "label": "Key For Torture Room"
-          },
-          {
-            "value": "Key for UFO Room",
-            "label": "Key For Ufo Room"
-          },
-          {
-            "value": "Key for Underground Lake",
-            "label": "Key For Underground Lake"
-          },
-          {
-            "value": "Key for Workshop",
-            "label": "Key For Workshop"
-          },
-          {
-            "value": "Lightning Pot Bottom",
-            "label": "Lightning Pot Bottom"
-          },
-          {
-            "value": "Lightning Pot Complete",
-            "label": "Lightning Pot Complete"
-          },
-          {
-            "value": "Lightning Pot Top",
-            "label": "Lightning Pot Top"
-          },
-          {
-            "value": "Metal Always Available in Bedroom",
-            "label": "Metal Always Available In Bedroom"
-          },
-          {
-            "value": "Metal Always Available in Prehistoric",
-            "label": "Metal Always Available In Prehistoric"
-          },
-          {
-            "value": "Metal Always Available in Projector Room",
-            "label": "Metal Always Available In Projector Room"
-          },
-          {
-            "value": "Metal Pot Bottom",
-            "label": "Metal Pot Bottom"
-          },
-          {
-            "value": "Metal Pot Complete",
-            "label": "Metal Pot Complete"
-          },
-          {
-            "value": "Metal Pot Top",
-            "label": "Metal Pot Top"
-          },
-          {
-            "value": "Oil Always Available in Prehistoric Room",
-            "label": "Oil Always Available In Prehistoric Room"
-          },
-          {
-            "value": "Oil Pot Bottom",
-            "label": "Oil Pot Bottom"
-          },
-          {
-            "value": "Oil Pot Complete",
-            "label": "Oil Pot Complete"
-          },
-          {
-            "value": "Oil Pot Top",
-            "label": "Oil Pot Top"
-          },
-          {
-            "value": "Sand Always Available in Greenhouse",
-            "label": "Sand Always Available In Greenhouse"
-          },
-          {
-            "value": "Sand Always Available in Ocean",
-            "label": "Sand Always Available In Ocean"
-          },
-          {
-            "value": "Sand Pot Bottom",
-            "label": "Sand Pot Bottom"
-          },
-          {
-            "value": "Sand Pot Complete",
-            "label": "Sand Pot Complete"
-          },
-          {
-            "value": "Sand Pot Top",
-            "label": "Sand Pot Top"
-          },
-          {
-            "value": "Water Always Available in Lobby",
-            "label": "Water Always Available In Lobby"
-          },
-          {
-            "value": "Water Pot Bottom",
-            "label": "Water Pot Bottom"
-          },
-          {
-            "value": "Water Pot Complete",
-            "label": "Water Pot Complete"
-          },
-          {
-            "value": "Water Pot Top",
-            "label": "Water Pot Top"
-          },
-          {
-            "value": "Wax Always Available in Anansi Room",
-            "label": "Wax Always Available In Anansi Room"
-          },
-          {
-            "value": "Wax Always Available in Library",
-            "label": "Wax Always Available In Library"
-          },
-          {
-            "value": "Wax Always Available in Shaman Room",
-            "label": "Wax Always Available In Shaman Room"
-          },
-          {
-            "value": "Wax Pot Bottom",
-            "label": "Wax Pot Bottom"
-          },
-          {
-            "value": "Wax Pot Complete",
-            "label": "Wax Pot Complete"
-          },
-          {
-            "value": "Wax Pot Top",
-            "label": "Wax Pot Top"
-          },
-          {
-            "value": "Wood Always Available in Blue Maze",
-            "label": "Wood Always Available In Blue Maze"
-          },
-          {
-            "value": "Wood Always Available in Gods Room",
-            "label": "Wood Always Available In Gods Room"
-          },
-          {
-            "value": "Wood Always Available in Pegasus Room",
-            "label": "Wood Always Available In Pegasus Room"
-          },
-          {
-            "value": "Wood Always Available in Workshop",
-            "label": "Wood Always Available In Workshop"
-          },
-          {
-            "value": "Wood Pot Bottom",
-            "label": "Wood Pot Bottom"
-          },
-          {
-            "value": "Wood Pot Complete",
-            "label": "Wood Pot Complete"
-          },
-          {
-            "value": "Wood Pot Top",
-            "label": "Wood Pot Top"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "start_location_hints",
-      "label": "Start Location Hints",
-      "description": "Start with these locations and their item prefilled into the ``!hint`` command.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Final Riddle: Beth's Body Page 17",
-            "label": "Final Riddle: Beth'S Body Page 17"
-          },
-          {
-            "value": "Final Riddle: Fortune Teller",
-            "label": "Final Riddle: Fortune Teller"
-          },
-          {
-            "value": "Final Riddle: Guillotine Dropped",
-            "label": "Final Riddle: Guillotine Dropped"
-          },
-          {
-            "value": "Final Riddle: Norse God Stone Message",
-            "label": "Final Riddle: Norse God Stone Message"
-          },
-          {
-            "value": "Final Riddle: Planets Aligned",
-            "label": "Final Riddle: Planets Aligned"
-          },
-          {
-            "value": "Flashback Memory Obtained Ancient Astrology",
-            "label": "Flashback Memory Obtained Ancient Astrology"
-          },
-          {
-            "value": "Flashback Memory Obtained Beth's Address Book",
-            "label": "Flashback Memory Obtained Beth'S Address Book"
-          },
-          {
-            "value": "Flashback Memory Obtained Beth's Ghost",
-            "label": "Flashback Memory Obtained Beth'S Ghost"
-          },
-          {
-            "value": "Flashback Memory Obtained Black Book",
-            "label": "Flashback Memory Obtained Black Book"
-          },
-          {
-            "value": "Flashback Memory Obtained Egyptian Hieroglyphics Explained",
-            "label": "Flashback Memory Obtained Egyptian Hieroglyphics Explained"
-          },
-          {
-            "value": "Flashback Memory Obtained In Search of the Unexplained",
-            "label": "Flashback Memory Obtained In Search Of The Unexplained"
-          },
-          {
-            "value": "Flashback Memory Obtained Merrick's Ghost",
-            "label": "Flashback Memory Obtained Merrick'S Ghost"
-          },
-          {
-            "value": "Flashback Memory Obtained Merrick's Notebook",
-            "label": "Flashback Memory Obtained Merrick'S Notebook"
-          },
-          {
-            "value": "Flashback Memory Obtained Museum Blueprints",
-            "label": "Flashback Memory Obtained Museum Blueprints"
-          },
-          {
-            "value": "Flashback Memory Obtained Museum Brochure",
-            "label": "Flashback Memory Obtained Museum Brochure"
-          },
-          {
-            "value": "Flashback Memory Obtained Mythology of the Stars",
-            "label": "Flashback Memory Obtained Mythology Of The Stars"
-          },
-          {
-            "value": "Flashback Memory Obtained Professor Windlenot's Diary",
-            "label": "Flashback Memory Obtained Professor Windlenot'S Diary"
-          },
-          {
-            "value": "Flashback Memory Obtained Scrapbook",
-            "label": "Flashback Memory Obtained Scrapbook"
-          },
-          {
-            "value": "Flashback Memory Obtained South American Pictographs",
-            "label": "Flashback Memory Obtained South American Pictographs"
-          },
-          {
-            "value": "Flashback Memory Obtained Theater Movie",
-            "label": "Flashback Memory Obtained Theater Movie"
-          },
-          {
-            "value": "Flashback Memory Obtained Windlenot's Ghost",
-            "label": "Flashback Memory Obtained Windlenot'S Ghost"
-          },
-          {
-            "value": "Information Plaque: (Anansi) African Creation Myth",
-            "label": "Information Plaque: (Anansi) African Creation Myth"
-          },
-          {
-            "value": "Information Plaque: (Anansi) Apophis the Serpent",
-            "label": "Information Plaque: (Anansi) Apophis The Serpent"
-          },
-          {
-            "value": "Information Plaque: (Anansi) Death",
-            "label": "Information Plaque: (Anansi) Death"
-          },
-          {
-            "value": "Information Plaque: (Burial) Animal Crematorium",
-            "label": "Information Plaque: (Burial) Animal Crematorium"
-          },
-          {
-            "value": "Information Plaque: (Burial) Cremation",
-            "label": "Information Plaque: (Burial) Cremation"
-          },
-          {
-            "value": "Information Plaque: (Burial) Norse Burial Ship",
-            "label": "Information Plaque: (Burial) Norse Burial Ship"
-          },
-          {
-            "value": "Information Plaque: (Burial) Paracas Burial Bundles",
-            "label": "Information Plaque: (Burial) Paracas Burial Bundles"
-          },
-          {
-            "value": "Information Plaque: (Burial) Spectacular Coffins of Ghana",
-            "label": "Information Plaque: (Burial) Spectacular Coffins Of Ghana"
-          },
-          {
-            "value": "Information Plaque: (Egypt) Curse of Anubis",
-            "label": "Information Plaque: (Egypt) Curse Of Anubis"
-          },
-          {
-            "value": "Information Plaque: (Egypt) The Sphinx",
-            "label": "Information Plaque: (Egypt) The Sphinx"
-          },
-          {
-            "value": "Information Plaque: (Egypt) Tomb of the Ixupi",
-            "label": "Information Plaque: (Egypt) Tomb Of The Ixupi"
-          },
-          {
-            "value": "Information Plaque: (Gods) Celtic Janus Sculpture",
-            "label": "Information Plaque: (Gods) Celtic Janus Sculpture"
-          },
-          {
-            "value": "Information Plaque: (Gods) Chuen",
-            "label": "Information Plaque: (Gods) Chuen"
-          },
-          {
-            "value": "Information Plaque: (Gods) Fisherman's Canoe God",
-            "label": "Information Plaque: (Gods) Fisherman'S Canoe God"
-          },
-          {
-            "value": "Information Plaque: (Gods) Mayan Gods",
-            "label": "Information Plaque: (Gods) Mayan Gods"
-          },
-          {
-            "value": "Information Plaque: (Gods) Sumerian Bull God - An",
-            "label": "Information Plaque: (Gods) Sumerian Bull God - An"
-          },
-          {
-            "value": "Information Plaque: (Gods) Sumerian Lyre",
-            "label": "Information Plaque: (Gods) Sumerian Lyre"
-          },
-          {
-            "value": "Information Plaque: (Gods) Thor",
-            "label": "Information Plaque: (Gods) Thor"
-          },
-          {
-            "value": "Information Plaque: (Lobby) Jade Skull",
-            "label": "Information Plaque: (Lobby) Jade Skull"
-          },
-          {
-            "value": "Information Plaque: (Lobby) Transforming Masks",
-            "label": "Information Plaque: (Lobby) Transforming Masks"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Colossus of Rhodes",
-            "label": "Information Plaque: (Ocean) Colossus Of Rhodes"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Poseidon",
-            "label": "Information Plaque: (Ocean) Poseidon"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Poseidon's Temple",
-            "label": "Information Plaque: (Ocean) Poseidon'S Temple"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Quartz Crystal",
-            "label": "Information Plaque: (Ocean) Quartz Crystal"
-          },
-          {
-            "value": "Information Plaque: (Pegasus) Cyclops",
-            "label": "Information Plaque: (Pegasus) Cyclops"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Bronze Unicorn",
-            "label": "Information Plaque: (Prehistoric) Bronze Unicorn"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Eagles Nest",
-            "label": "Information Plaque: (Prehistoric) Eagles Nest"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Griffin",
-            "label": "Information Plaque: (Prehistoric) Griffin"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Large Spider",
-            "label": "Information Plaque: (Prehistoric) Large Spider"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Starfish",
-            "label": "Information Plaque: (Prehistoric) Starfish"
-          },
-          {
-            "value": "Information Plaque: (Shaman) Sarombe doctor of Mozambique",
-            "label": "Information Plaque: (Shaman) Sarombe Doctor Of Mozambique"
-          },
-          {
-            "value": "Information Plaque: (Shaman) Witch Doctors of the Congo",
-            "label": "Information Plaque: (Shaman) Witch Doctors Of The Congo"
-          },
-          {
-            "value": "Information Plaque: (Torture) Guillotine",
-            "label": "Information Plaque: (Torture) Guillotine"
-          },
-          {
-            "value": "Information Plaque: (UFO) Aliens",
-            "label": "Information Plaque: (Ufo) Aliens"
-          },
-          {
-            "value": "Information Plaque: (UFO) Astronomical Construction",
-            "label": "Information Plaque: (Ufo) Astronomical Construction"
-          },
-          {
-            "value": "Information Plaque: (UFO) Coincidence or Extraterrestrial Visits?",
-            "label": "Information Plaque: (Ufo) Coincidence Or Extraterrestrial Visits?"
-          },
-          {
-            "value": "Information Plaque: (UFO) Planets",
-            "label": "Information Plaque: (Ufo) Planets"
-          },
-          {
-            "value": "Information Plaque: (Underground Maze Staircase) Subterranean World",
-            "label": "Information Plaque: (Underground Maze Staircase) Subterranean World"
-          },
-          {
-            "value": "Information Plaque: (Underground Maze) Dero",
-            "label": "Information Plaque: (Underground Maze) Dero"
-          },
-          {
-            "value": "Information Plaque: (Werewolf) Lycanthropy",
-            "label": "Information Plaque: (Werewolf) Lycanthropy"
-          },
-          {
-            "value": "Ixupi Captured Ash",
-            "label": "Ixupi Captured Ash"
-          },
-          {
-            "value": "Ixupi Captured Cloth",
-            "label": "Ixupi Captured Cloth"
-          },
-          {
-            "value": "Ixupi Captured Crystal",
-            "label": "Ixupi Captured Crystal"
-          },
-          {
-            "value": "Ixupi Captured Lightning",
-            "label": "Ixupi Captured Lightning"
-          },
-          {
-            "value": "Ixupi Captured Metal",
-            "label": "Ixupi Captured Metal"
-          },
-          {
-            "value": "Ixupi Captured Oil",
-            "label": "Ixupi Captured Oil"
-          },
-          {
-            "value": "Ixupi Captured Sand",
-            "label": "Ixupi Captured Sand"
-          },
-          {
-            "value": "Ixupi Captured Water",
-            "label": "Ixupi Captured Water"
-          },
-          {
-            "value": "Ixupi Captured Wax",
-            "label": "Ixupi Captured Wax"
-          },
-          {
-            "value": "Ixupi Captured Wood",
-            "label": "Ixupi Captured Wood"
-          },
-          {
-            "value": "Puzzle Hint Found: Atlantis Map",
-            "label": "Puzzle Hint Found: Atlantis Map"
-          },
-          {
-            "value": "Puzzle Hint Found: Basilisk Bone Fragments",
-            "label": "Puzzle Hint Found: Basilisk Bone Fragments"
-          },
-          {
-            "value": "Puzzle Hint Found: Beth's Note",
-            "label": "Puzzle Hint Found: Beth'S Note"
-          },
-          {
-            "value": "Puzzle Hint Found: Brown Symbol",
-            "label": "Puzzle Hint Found: Brown Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Egyptian Sphinx Heard",
-            "label": "Puzzle Hint Found: Egyptian Sphinx Heard"
-          },
-          {
-            "value": "Puzzle Hint Found: Elevator Writing",
-            "label": "Puzzle Hint Found: Elevator Writing"
-          },
-          {
-            "value": "Puzzle Hint Found: Gallows Information Plaque",
-            "label": "Puzzle Hint Found: Gallows Information Plaque"
-          },
-          {
-            "value": "Puzzle Hint Found: Green Symbol",
-            "label": "Puzzle Hint Found: Green Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Mailbox",
-            "label": "Puzzle Hint Found: Mailbox"
-          },
-          {
-            "value": "Puzzle Hint Found: Mastermind Information Plaque",
-            "label": "Puzzle Hint Found: Mastermind Information Plaque"
-          },
-          {
-            "value": "Puzzle Hint Found: Orange Symbol",
-            "label": "Puzzle Hint Found: Orange Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Shaman Security Camera",
-            "label": "Puzzle Hint Found: Shaman Security Camera"
-          },
-          {
-            "value": "Puzzle Hint Found: Silver Symbol",
-            "label": "Puzzle Hint Found: Silver Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Sirens Song Heard",
-            "label": "Puzzle Hint Found: Sirens Song Heard"
-          },
-          {
-            "value": "Puzzle Hint Found: Tan Symbol",
-            "label": "Puzzle Hint Found: Tan Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Tape Recorder Heard",
-            "label": "Puzzle Hint Found: Tape Recorder Heard"
-          },
-          {
-            "value": "Puzzle Hint Found: White Symbol",
-            "label": "Puzzle Hint Found: White Symbol"
-          },
-          {
-            "value": "Puzzle Solved Alchemy",
-            "label": "Puzzle Solved Alchemy"
-          },
-          {
-            "value": "Puzzle Solved Anansi Music Box",
-            "label": "Puzzle Solved Anansi Music Box"
-          },
-          {
-            "value": "Puzzle Solved Atlantis",
-            "label": "Puzzle Solved Atlantis"
-          },
-          {
-            "value": "Puzzle Solved Bedroom Elevator",
-            "label": "Puzzle Solved Bedroom Elevator"
-          },
-          {
-            "value": "Puzzle Solved Burial Door",
-            "label": "Puzzle Solved Burial Door"
-          },
-          {
-            "value": "Puzzle Solved Chinese Solitaire",
-            "label": "Puzzle Solved Chinese Solitaire"
-          },
-          {
-            "value": "Puzzle Solved Clock Chains",
-            "label": "Puzzle Solved Clock Chains"
-          },
-          {
-            "value": "Puzzle Solved Clock Tower Door",
-            "label": "Puzzle Solved Clock Tower Door"
-          },
-          {
-            "value": "Puzzle Solved Columns of RA",
-            "label": "Puzzle Solved Columns Of Ra"
-          },
-          {
-            "value": "Puzzle Solved Combination Lock",
-            "label": "Puzzle Solved Combination Lock"
-          },
-          {
-            "value": "Puzzle Solved Fortune Teller Door",
-            "label": "Puzzle Solved Fortune Teller Door"
-          },
-          {
-            "value": "Puzzle Solved Gallows",
-            "label": "Puzzle Solved Gallows"
-          },
-          {
-            "value": "Puzzle Solved Gears",
-            "label": "Puzzle Solved Gears"
-          },
-          {
-            "value": "Puzzle Solved Library Statue",
-            "label": "Puzzle Solved Library Statue"
-          },
-          {
-            "value": "Puzzle Solved Lyre",
-            "label": "Puzzle Solved Lyre"
-          },
-          {
-            "value": "Puzzle Solved Marble Flipper",
-            "label": "Puzzle Solved Marble Flipper"
-          },
-          {
-            "value": "Puzzle Solved Mastermind",
-            "label": "Puzzle Solved Mastermind"
-          },
-          {
-            "value": "Puzzle Solved Maze Door",
-            "label": "Puzzle Solved Maze Door"
-          },
-          {
-            "value": "Puzzle Solved Office Elevator",
-            "label": "Puzzle Solved Office Elevator"
-          },
-          {
-            "value": "Puzzle Solved Organ",
-            "label": "Puzzle Solved Organ"
-          },
-          {
-            "value": "Puzzle Solved Red Door",
-            "label": "Puzzle Solved Red Door"
-          },
-          {
-            "value": "Puzzle Solved Shaman Drums",
-            "label": "Puzzle Solved Shaman Drums"
-          },
-          {
-            "value": "Puzzle Solved Skull Dial Door",
-            "label": "Puzzle Solved Skull Dial Door"
-          },
-          {
-            "value": "Puzzle Solved Stone Henge",
-            "label": "Puzzle Solved Stone Henge"
-          },
-          {
-            "value": "Puzzle Solved Theater Door",
-            "label": "Puzzle Solved Theater Door"
-          },
-          {
-            "value": "Puzzle Solved Three Floor Elevator",
-            "label": "Puzzle Solved Three Floor Elevator"
-          },
-          {
-            "value": "Puzzle Solved UFO Symbols",
-            "label": "Puzzle Solved Ufo Symbols"
-          },
-          {
-            "value": "Puzzle Solved Workshop Drawers",
-            "label": "Puzzle Solved Workshop Drawers"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "exclude_locations",
-      "label": "Exclude Locations",
-      "description": "Prevent these locations from having an important item.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Final Riddle: Beth's Body Page 17",
-            "label": "Final Riddle: Beth'S Body Page 17"
-          },
-          {
-            "value": "Final Riddle: Fortune Teller",
-            "label": "Final Riddle: Fortune Teller"
-          },
-          {
-            "value": "Final Riddle: Guillotine Dropped",
-            "label": "Final Riddle: Guillotine Dropped"
-          },
-          {
-            "value": "Final Riddle: Norse God Stone Message",
-            "label": "Final Riddle: Norse God Stone Message"
-          },
-          {
-            "value": "Final Riddle: Planets Aligned",
-            "label": "Final Riddle: Planets Aligned"
-          },
-          {
-            "value": "Flashback Memory Obtained Ancient Astrology",
-            "label": "Flashback Memory Obtained Ancient Astrology"
-          },
-          {
-            "value": "Flashback Memory Obtained Beth's Address Book",
-            "label": "Flashback Memory Obtained Beth'S Address Book"
-          },
-          {
-            "value": "Flashback Memory Obtained Beth's Ghost",
-            "label": "Flashback Memory Obtained Beth'S Ghost"
-          },
-          {
-            "value": "Flashback Memory Obtained Black Book",
-            "label": "Flashback Memory Obtained Black Book"
-          },
-          {
-            "value": "Flashback Memory Obtained Egyptian Hieroglyphics Explained",
-            "label": "Flashback Memory Obtained Egyptian Hieroglyphics Explained"
-          },
-          {
-            "value": "Flashback Memory Obtained In Search of the Unexplained",
-            "label": "Flashback Memory Obtained In Search Of The Unexplained"
-          },
-          {
-            "value": "Flashback Memory Obtained Merrick's Ghost",
-            "label": "Flashback Memory Obtained Merrick'S Ghost"
-          },
-          {
-            "value": "Flashback Memory Obtained Merrick's Notebook",
-            "label": "Flashback Memory Obtained Merrick'S Notebook"
-          },
-          {
-            "value": "Flashback Memory Obtained Museum Blueprints",
-            "label": "Flashback Memory Obtained Museum Blueprints"
-          },
-          {
-            "value": "Flashback Memory Obtained Museum Brochure",
-            "label": "Flashback Memory Obtained Museum Brochure"
-          },
-          {
-            "value": "Flashback Memory Obtained Mythology of the Stars",
-            "label": "Flashback Memory Obtained Mythology Of The Stars"
-          },
-          {
-            "value": "Flashback Memory Obtained Professor Windlenot's Diary",
-            "label": "Flashback Memory Obtained Professor Windlenot'S Diary"
-          },
-          {
-            "value": "Flashback Memory Obtained Scrapbook",
-            "label": "Flashback Memory Obtained Scrapbook"
-          },
-          {
-            "value": "Flashback Memory Obtained South American Pictographs",
-            "label": "Flashback Memory Obtained South American Pictographs"
-          },
-          {
-            "value": "Flashback Memory Obtained Theater Movie",
-            "label": "Flashback Memory Obtained Theater Movie"
-          },
-          {
-            "value": "Flashback Memory Obtained Windlenot's Ghost",
-            "label": "Flashback Memory Obtained Windlenot'S Ghost"
-          },
-          {
-            "value": "Information Plaque: (Anansi) African Creation Myth",
-            "label": "Information Plaque: (Anansi) African Creation Myth"
-          },
-          {
-            "value": "Information Plaque: (Anansi) Apophis the Serpent",
-            "label": "Information Plaque: (Anansi) Apophis The Serpent"
-          },
-          {
-            "value": "Information Plaque: (Anansi) Death",
-            "label": "Information Plaque: (Anansi) Death"
-          },
-          {
-            "value": "Information Plaque: (Burial) Animal Crematorium",
-            "label": "Information Plaque: (Burial) Animal Crematorium"
-          },
-          {
-            "value": "Information Plaque: (Burial) Cremation",
-            "label": "Information Plaque: (Burial) Cremation"
-          },
-          {
-            "value": "Information Plaque: (Burial) Norse Burial Ship",
-            "label": "Information Plaque: (Burial) Norse Burial Ship"
-          },
-          {
-            "value": "Information Plaque: (Burial) Paracas Burial Bundles",
-            "label": "Information Plaque: (Burial) Paracas Burial Bundles"
-          },
-          {
-            "value": "Information Plaque: (Burial) Spectacular Coffins of Ghana",
-            "label": "Information Plaque: (Burial) Spectacular Coffins Of Ghana"
-          },
-          {
-            "value": "Information Plaque: (Egypt) Curse of Anubis",
-            "label": "Information Plaque: (Egypt) Curse Of Anubis"
-          },
-          {
-            "value": "Information Plaque: (Egypt) The Sphinx",
-            "label": "Information Plaque: (Egypt) The Sphinx"
-          },
-          {
-            "value": "Information Plaque: (Egypt) Tomb of the Ixupi",
-            "label": "Information Plaque: (Egypt) Tomb Of The Ixupi"
-          },
-          {
-            "value": "Information Plaque: (Gods) Celtic Janus Sculpture",
-            "label": "Information Plaque: (Gods) Celtic Janus Sculpture"
-          },
-          {
-            "value": "Information Plaque: (Gods) Chuen",
-            "label": "Information Plaque: (Gods) Chuen"
-          },
-          {
-            "value": "Information Plaque: (Gods) Fisherman's Canoe God",
-            "label": "Information Plaque: (Gods) Fisherman'S Canoe God"
-          },
-          {
-            "value": "Information Plaque: (Gods) Mayan Gods",
-            "label": "Information Plaque: (Gods) Mayan Gods"
-          },
-          {
-            "value": "Information Plaque: (Gods) Sumerian Bull God - An",
-            "label": "Information Plaque: (Gods) Sumerian Bull God - An"
-          },
-          {
-            "value": "Information Plaque: (Gods) Sumerian Lyre",
-            "label": "Information Plaque: (Gods) Sumerian Lyre"
-          },
-          {
-            "value": "Information Plaque: (Gods) Thor",
-            "label": "Information Plaque: (Gods) Thor"
-          },
-          {
-            "value": "Information Plaque: (Lobby) Jade Skull",
-            "label": "Information Plaque: (Lobby) Jade Skull"
-          },
-          {
-            "value": "Information Plaque: (Lobby) Transforming Masks",
-            "label": "Information Plaque: (Lobby) Transforming Masks"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Colossus of Rhodes",
-            "label": "Information Plaque: (Ocean) Colossus Of Rhodes"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Poseidon",
-            "label": "Information Plaque: (Ocean) Poseidon"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Poseidon's Temple",
-            "label": "Information Plaque: (Ocean) Poseidon'S Temple"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Quartz Crystal",
-            "label": "Information Plaque: (Ocean) Quartz Crystal"
-          },
-          {
-            "value": "Information Plaque: (Pegasus) Cyclops",
-            "label": "Information Plaque: (Pegasus) Cyclops"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Bronze Unicorn",
-            "label": "Information Plaque: (Prehistoric) Bronze Unicorn"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Eagles Nest",
-            "label": "Information Plaque: (Prehistoric) Eagles Nest"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Griffin",
-            "label": "Information Plaque: (Prehistoric) Griffin"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Large Spider",
-            "label": "Information Plaque: (Prehistoric) Large Spider"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Starfish",
-            "label": "Information Plaque: (Prehistoric) Starfish"
-          },
-          {
-            "value": "Information Plaque: (Shaman) Sarombe doctor of Mozambique",
-            "label": "Information Plaque: (Shaman) Sarombe Doctor Of Mozambique"
-          },
-          {
-            "value": "Information Plaque: (Shaman) Witch Doctors of the Congo",
-            "label": "Information Plaque: (Shaman) Witch Doctors Of The Congo"
-          },
-          {
-            "value": "Information Plaque: (Torture) Guillotine",
-            "label": "Information Plaque: (Torture) Guillotine"
-          },
-          {
-            "value": "Information Plaque: (UFO) Aliens",
-            "label": "Information Plaque: (Ufo) Aliens"
-          },
-          {
-            "value": "Information Plaque: (UFO) Astronomical Construction",
-            "label": "Information Plaque: (Ufo) Astronomical Construction"
-          },
-          {
-            "value": "Information Plaque: (UFO) Coincidence or Extraterrestrial Visits?",
-            "label": "Information Plaque: (Ufo) Coincidence Or Extraterrestrial Visits?"
-          },
-          {
-            "value": "Information Plaque: (UFO) Planets",
-            "label": "Information Plaque: (Ufo) Planets"
-          },
-          {
-            "value": "Information Plaque: (Underground Maze Staircase) Subterranean World",
-            "label": "Information Plaque: (Underground Maze Staircase) Subterranean World"
-          },
-          {
-            "value": "Information Plaque: (Underground Maze) Dero",
-            "label": "Information Plaque: (Underground Maze) Dero"
-          },
-          {
-            "value": "Information Plaque: (Werewolf) Lycanthropy",
-            "label": "Information Plaque: (Werewolf) Lycanthropy"
-          },
-          {
-            "value": "Ixupi Captured Ash",
-            "label": "Ixupi Captured Ash"
-          },
-          {
-            "value": "Ixupi Captured Cloth",
-            "label": "Ixupi Captured Cloth"
-          },
-          {
-            "value": "Ixupi Captured Crystal",
-            "label": "Ixupi Captured Crystal"
-          },
-          {
-            "value": "Ixupi Captured Lightning",
-            "label": "Ixupi Captured Lightning"
-          },
-          {
-            "value": "Ixupi Captured Metal",
-            "label": "Ixupi Captured Metal"
-          },
-          {
-            "value": "Ixupi Captured Oil",
-            "label": "Ixupi Captured Oil"
-          },
-          {
-            "value": "Ixupi Captured Sand",
-            "label": "Ixupi Captured Sand"
-          },
-          {
-            "value": "Ixupi Captured Water",
-            "label": "Ixupi Captured Water"
-          },
-          {
-            "value": "Ixupi Captured Wax",
-            "label": "Ixupi Captured Wax"
-          },
-          {
-            "value": "Ixupi Captured Wood",
-            "label": "Ixupi Captured Wood"
-          },
-          {
-            "value": "Puzzle Hint Found: Atlantis Map",
-            "label": "Puzzle Hint Found: Atlantis Map"
-          },
-          {
-            "value": "Puzzle Hint Found: Basilisk Bone Fragments",
-            "label": "Puzzle Hint Found: Basilisk Bone Fragments"
-          },
-          {
-            "value": "Puzzle Hint Found: Beth's Note",
-            "label": "Puzzle Hint Found: Beth'S Note"
-          },
-          {
-            "value": "Puzzle Hint Found: Brown Symbol",
-            "label": "Puzzle Hint Found: Brown Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Egyptian Sphinx Heard",
-            "label": "Puzzle Hint Found: Egyptian Sphinx Heard"
-          },
-          {
-            "value": "Puzzle Hint Found: Elevator Writing",
-            "label": "Puzzle Hint Found: Elevator Writing"
-          },
-          {
-            "value": "Puzzle Hint Found: Gallows Information Plaque",
-            "label": "Puzzle Hint Found: Gallows Information Plaque"
-          },
-          {
-            "value": "Puzzle Hint Found: Green Symbol",
-            "label": "Puzzle Hint Found: Green Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Mailbox",
-            "label": "Puzzle Hint Found: Mailbox"
-          },
-          {
-            "value": "Puzzle Hint Found: Mastermind Information Plaque",
-            "label": "Puzzle Hint Found: Mastermind Information Plaque"
-          },
-          {
-            "value": "Puzzle Hint Found: Orange Symbol",
-            "label": "Puzzle Hint Found: Orange Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Shaman Security Camera",
-            "label": "Puzzle Hint Found: Shaman Security Camera"
-          },
-          {
-            "value": "Puzzle Hint Found: Silver Symbol",
-            "label": "Puzzle Hint Found: Silver Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Sirens Song Heard",
-            "label": "Puzzle Hint Found: Sirens Song Heard"
-          },
-          {
-            "value": "Puzzle Hint Found: Tan Symbol",
-            "label": "Puzzle Hint Found: Tan Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Tape Recorder Heard",
-            "label": "Puzzle Hint Found: Tape Recorder Heard"
-          },
-          {
-            "value": "Puzzle Hint Found: White Symbol",
-            "label": "Puzzle Hint Found: White Symbol"
-          },
-          {
-            "value": "Puzzle Solved Alchemy",
-            "label": "Puzzle Solved Alchemy"
-          },
-          {
-            "value": "Puzzle Solved Anansi Music Box",
-            "label": "Puzzle Solved Anansi Music Box"
-          },
-          {
-            "value": "Puzzle Solved Atlantis",
-            "label": "Puzzle Solved Atlantis"
-          },
-          {
-            "value": "Puzzle Solved Bedroom Elevator",
-            "label": "Puzzle Solved Bedroom Elevator"
-          },
-          {
-            "value": "Puzzle Solved Burial Door",
-            "label": "Puzzle Solved Burial Door"
-          },
-          {
-            "value": "Puzzle Solved Chinese Solitaire",
-            "label": "Puzzle Solved Chinese Solitaire"
-          },
-          {
-            "value": "Puzzle Solved Clock Chains",
-            "label": "Puzzle Solved Clock Chains"
-          },
-          {
-            "value": "Puzzle Solved Clock Tower Door",
-            "label": "Puzzle Solved Clock Tower Door"
-          },
-          {
-            "value": "Puzzle Solved Columns of RA",
-            "label": "Puzzle Solved Columns Of Ra"
-          },
-          {
-            "value": "Puzzle Solved Combination Lock",
-            "label": "Puzzle Solved Combination Lock"
-          },
-          {
-            "value": "Puzzle Solved Fortune Teller Door",
-            "label": "Puzzle Solved Fortune Teller Door"
-          },
-          {
-            "value": "Puzzle Solved Gallows",
-            "label": "Puzzle Solved Gallows"
-          },
-          {
-            "value": "Puzzle Solved Gears",
-            "label": "Puzzle Solved Gears"
-          },
-          {
-            "value": "Puzzle Solved Library Statue",
-            "label": "Puzzle Solved Library Statue"
-          },
-          {
-            "value": "Puzzle Solved Lyre",
-            "label": "Puzzle Solved Lyre"
-          },
-          {
-            "value": "Puzzle Solved Marble Flipper",
-            "label": "Puzzle Solved Marble Flipper"
-          },
-          {
-            "value": "Puzzle Solved Mastermind",
-            "label": "Puzzle Solved Mastermind"
-          },
-          {
-            "value": "Puzzle Solved Maze Door",
-            "label": "Puzzle Solved Maze Door"
-          },
-          {
-            "value": "Puzzle Solved Office Elevator",
-            "label": "Puzzle Solved Office Elevator"
-          },
-          {
-            "value": "Puzzle Solved Organ",
-            "label": "Puzzle Solved Organ"
-          },
-          {
-            "value": "Puzzle Solved Red Door",
-            "label": "Puzzle Solved Red Door"
-          },
-          {
-            "value": "Puzzle Solved Shaman Drums",
-            "label": "Puzzle Solved Shaman Drums"
-          },
-          {
-            "value": "Puzzle Solved Skull Dial Door",
-            "label": "Puzzle Solved Skull Dial Door"
-          },
-          {
-            "value": "Puzzle Solved Stone Henge",
-            "label": "Puzzle Solved Stone Henge"
-          },
-          {
-            "value": "Puzzle Solved Theater Door",
-            "label": "Puzzle Solved Theater Door"
-          },
-          {
-            "value": "Puzzle Solved Three Floor Elevator",
-            "label": "Puzzle Solved Three Floor Elevator"
-          },
-          {
-            "value": "Puzzle Solved UFO Symbols",
-            "label": "Puzzle Solved Ufo Symbols"
-          },
-          {
-            "value": "Puzzle Solved Workshop Drawers",
-            "label": "Puzzle Solved Workshop Drawers"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "priority_locations",
-      "label": "Priority Locations",
-      "description": "Prevent these locations from having an unimportant item.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Final Riddle: Beth's Body Page 17",
-            "label": "Final Riddle: Beth'S Body Page 17"
-          },
-          {
-            "value": "Final Riddle: Fortune Teller",
-            "label": "Final Riddle: Fortune Teller"
-          },
-          {
-            "value": "Final Riddle: Guillotine Dropped",
-            "label": "Final Riddle: Guillotine Dropped"
-          },
-          {
-            "value": "Final Riddle: Norse God Stone Message",
-            "label": "Final Riddle: Norse God Stone Message"
-          },
-          {
-            "value": "Final Riddle: Planets Aligned",
-            "label": "Final Riddle: Planets Aligned"
-          },
-          {
-            "value": "Flashback Memory Obtained Ancient Astrology",
-            "label": "Flashback Memory Obtained Ancient Astrology"
-          },
-          {
-            "value": "Flashback Memory Obtained Beth's Address Book",
-            "label": "Flashback Memory Obtained Beth'S Address Book"
-          },
-          {
-            "value": "Flashback Memory Obtained Beth's Ghost",
-            "label": "Flashback Memory Obtained Beth'S Ghost"
-          },
-          {
-            "value": "Flashback Memory Obtained Black Book",
-            "label": "Flashback Memory Obtained Black Book"
-          },
-          {
-            "value": "Flashback Memory Obtained Egyptian Hieroglyphics Explained",
-            "label": "Flashback Memory Obtained Egyptian Hieroglyphics Explained"
-          },
-          {
-            "value": "Flashback Memory Obtained In Search of the Unexplained",
-            "label": "Flashback Memory Obtained In Search Of The Unexplained"
-          },
-          {
-            "value": "Flashback Memory Obtained Merrick's Ghost",
-            "label": "Flashback Memory Obtained Merrick'S Ghost"
-          },
-          {
-            "value": "Flashback Memory Obtained Merrick's Notebook",
-            "label": "Flashback Memory Obtained Merrick'S Notebook"
-          },
-          {
-            "value": "Flashback Memory Obtained Museum Blueprints",
-            "label": "Flashback Memory Obtained Museum Blueprints"
-          },
-          {
-            "value": "Flashback Memory Obtained Museum Brochure",
-            "label": "Flashback Memory Obtained Museum Brochure"
-          },
-          {
-            "value": "Flashback Memory Obtained Mythology of the Stars",
-            "label": "Flashback Memory Obtained Mythology Of The Stars"
-          },
-          {
-            "value": "Flashback Memory Obtained Professor Windlenot's Diary",
-            "label": "Flashback Memory Obtained Professor Windlenot'S Diary"
-          },
-          {
-            "value": "Flashback Memory Obtained Scrapbook",
-            "label": "Flashback Memory Obtained Scrapbook"
-          },
-          {
-            "value": "Flashback Memory Obtained South American Pictographs",
-            "label": "Flashback Memory Obtained South American Pictographs"
-          },
-          {
-            "value": "Flashback Memory Obtained Theater Movie",
-            "label": "Flashback Memory Obtained Theater Movie"
-          },
-          {
-            "value": "Flashback Memory Obtained Windlenot's Ghost",
-            "label": "Flashback Memory Obtained Windlenot'S Ghost"
-          },
-          {
-            "value": "Information Plaque: (Anansi) African Creation Myth",
-            "label": "Information Plaque: (Anansi) African Creation Myth"
-          },
-          {
-            "value": "Information Plaque: (Anansi) Apophis the Serpent",
-            "label": "Information Plaque: (Anansi) Apophis The Serpent"
-          },
-          {
-            "value": "Information Plaque: (Anansi) Death",
-            "label": "Information Plaque: (Anansi) Death"
-          },
-          {
-            "value": "Information Plaque: (Burial) Animal Crematorium",
-            "label": "Information Plaque: (Burial) Animal Crematorium"
-          },
-          {
-            "value": "Information Plaque: (Burial) Cremation",
-            "label": "Information Plaque: (Burial) Cremation"
-          },
-          {
-            "value": "Information Plaque: (Burial) Norse Burial Ship",
-            "label": "Information Plaque: (Burial) Norse Burial Ship"
-          },
-          {
-            "value": "Information Plaque: (Burial) Paracas Burial Bundles",
-            "label": "Information Plaque: (Burial) Paracas Burial Bundles"
-          },
-          {
-            "value": "Information Plaque: (Burial) Spectacular Coffins of Ghana",
-            "label": "Information Plaque: (Burial) Spectacular Coffins Of Ghana"
-          },
-          {
-            "value": "Information Plaque: (Egypt) Curse of Anubis",
-            "label": "Information Plaque: (Egypt) Curse Of Anubis"
-          },
-          {
-            "value": "Information Plaque: (Egypt) The Sphinx",
-            "label": "Information Plaque: (Egypt) The Sphinx"
-          },
-          {
-            "value": "Information Plaque: (Egypt) Tomb of the Ixupi",
-            "label": "Information Plaque: (Egypt) Tomb Of The Ixupi"
-          },
-          {
-            "value": "Information Plaque: (Gods) Celtic Janus Sculpture",
-            "label": "Information Plaque: (Gods) Celtic Janus Sculpture"
-          },
-          {
-            "value": "Information Plaque: (Gods) Chuen",
-            "label": "Information Plaque: (Gods) Chuen"
-          },
-          {
-            "value": "Information Plaque: (Gods) Fisherman's Canoe God",
-            "label": "Information Plaque: (Gods) Fisherman'S Canoe God"
-          },
-          {
-            "value": "Information Plaque: (Gods) Mayan Gods",
-            "label": "Information Plaque: (Gods) Mayan Gods"
-          },
-          {
-            "value": "Information Plaque: (Gods) Sumerian Bull God - An",
-            "label": "Information Plaque: (Gods) Sumerian Bull God - An"
-          },
-          {
-            "value": "Information Plaque: (Gods) Sumerian Lyre",
-            "label": "Information Plaque: (Gods) Sumerian Lyre"
-          },
-          {
-            "value": "Information Plaque: (Gods) Thor",
-            "label": "Information Plaque: (Gods) Thor"
-          },
-          {
-            "value": "Information Plaque: (Lobby) Jade Skull",
-            "label": "Information Plaque: (Lobby) Jade Skull"
-          },
-          {
-            "value": "Information Plaque: (Lobby) Transforming Masks",
-            "label": "Information Plaque: (Lobby) Transforming Masks"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Colossus of Rhodes",
-            "label": "Information Plaque: (Ocean) Colossus Of Rhodes"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Poseidon",
-            "label": "Information Plaque: (Ocean) Poseidon"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Poseidon's Temple",
-            "label": "Information Plaque: (Ocean) Poseidon'S Temple"
-          },
-          {
-            "value": "Information Plaque: (Ocean) Quartz Crystal",
-            "label": "Information Plaque: (Ocean) Quartz Crystal"
-          },
-          {
-            "value": "Information Plaque: (Pegasus) Cyclops",
-            "label": "Information Plaque: (Pegasus) Cyclops"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Bronze Unicorn",
-            "label": "Information Plaque: (Prehistoric) Bronze Unicorn"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Eagles Nest",
-            "label": "Information Plaque: (Prehistoric) Eagles Nest"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Griffin",
-            "label": "Information Plaque: (Prehistoric) Griffin"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Large Spider",
-            "label": "Information Plaque: (Prehistoric) Large Spider"
-          },
-          {
-            "value": "Information Plaque: (Prehistoric) Starfish",
-            "label": "Information Plaque: (Prehistoric) Starfish"
-          },
-          {
-            "value": "Information Plaque: (Shaman) Sarombe doctor of Mozambique",
-            "label": "Information Plaque: (Shaman) Sarombe Doctor Of Mozambique"
-          },
-          {
-            "value": "Information Plaque: (Shaman) Witch Doctors of the Congo",
-            "label": "Information Plaque: (Shaman) Witch Doctors Of The Congo"
-          },
-          {
-            "value": "Information Plaque: (Torture) Guillotine",
-            "label": "Information Plaque: (Torture) Guillotine"
-          },
-          {
-            "value": "Information Plaque: (UFO) Aliens",
-            "label": "Information Plaque: (Ufo) Aliens"
-          },
-          {
-            "value": "Information Plaque: (UFO) Astronomical Construction",
-            "label": "Information Plaque: (Ufo) Astronomical Construction"
-          },
-          {
-            "value": "Information Plaque: (UFO) Coincidence or Extraterrestrial Visits?",
-            "label": "Information Plaque: (Ufo) Coincidence Or Extraterrestrial Visits?"
-          },
-          {
-            "value": "Information Plaque: (UFO) Planets",
-            "label": "Information Plaque: (Ufo) Planets"
-          },
-          {
-            "value": "Information Plaque: (Underground Maze Staircase) Subterranean World",
-            "label": "Information Plaque: (Underground Maze Staircase) Subterranean World"
-          },
-          {
-            "value": "Information Plaque: (Underground Maze) Dero",
-            "label": "Information Plaque: (Underground Maze) Dero"
-          },
-          {
-            "value": "Information Plaque: (Werewolf) Lycanthropy",
-            "label": "Information Plaque: (Werewolf) Lycanthropy"
-          },
-          {
-            "value": "Ixupi Captured Ash",
-            "label": "Ixupi Captured Ash"
-          },
-          {
-            "value": "Ixupi Captured Cloth",
-            "label": "Ixupi Captured Cloth"
-          },
-          {
-            "value": "Ixupi Captured Crystal",
-            "label": "Ixupi Captured Crystal"
-          },
-          {
-            "value": "Ixupi Captured Lightning",
-            "label": "Ixupi Captured Lightning"
-          },
-          {
-            "value": "Ixupi Captured Metal",
-            "label": "Ixupi Captured Metal"
-          },
-          {
-            "value": "Ixupi Captured Oil",
-            "label": "Ixupi Captured Oil"
-          },
-          {
-            "value": "Ixupi Captured Sand",
-            "label": "Ixupi Captured Sand"
-          },
-          {
-            "value": "Ixupi Captured Water",
-            "label": "Ixupi Captured Water"
-          },
-          {
-            "value": "Ixupi Captured Wax",
-            "label": "Ixupi Captured Wax"
-          },
-          {
-            "value": "Ixupi Captured Wood",
-            "label": "Ixupi Captured Wood"
-          },
-          {
-            "value": "Puzzle Hint Found: Atlantis Map",
-            "label": "Puzzle Hint Found: Atlantis Map"
-          },
-          {
-            "value": "Puzzle Hint Found: Basilisk Bone Fragments",
-            "label": "Puzzle Hint Found: Basilisk Bone Fragments"
-          },
-          {
-            "value": "Puzzle Hint Found: Beth's Note",
-            "label": "Puzzle Hint Found: Beth'S Note"
-          },
-          {
-            "value": "Puzzle Hint Found: Brown Symbol",
-            "label": "Puzzle Hint Found: Brown Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Egyptian Sphinx Heard",
-            "label": "Puzzle Hint Found: Egyptian Sphinx Heard"
-          },
-          {
-            "value": "Puzzle Hint Found: Elevator Writing",
-            "label": "Puzzle Hint Found: Elevator Writing"
-          },
-          {
-            "value": "Puzzle Hint Found: Gallows Information Plaque",
-            "label": "Puzzle Hint Found: Gallows Information Plaque"
-          },
-          {
-            "value": "Puzzle Hint Found: Green Symbol",
-            "label": "Puzzle Hint Found: Green Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Mailbox",
-            "label": "Puzzle Hint Found: Mailbox"
-          },
-          {
-            "value": "Puzzle Hint Found: Mastermind Information Plaque",
-            "label": "Puzzle Hint Found: Mastermind Information Plaque"
-          },
-          {
-            "value": "Puzzle Hint Found: Orange Symbol",
-            "label": "Puzzle Hint Found: Orange Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Shaman Security Camera",
-            "label": "Puzzle Hint Found: Shaman Security Camera"
-          },
-          {
-            "value": "Puzzle Hint Found: Silver Symbol",
-            "label": "Puzzle Hint Found: Silver Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Sirens Song Heard",
-            "label": "Puzzle Hint Found: Sirens Song Heard"
-          },
-          {
-            "value": "Puzzle Hint Found: Tan Symbol",
-            "label": "Puzzle Hint Found: Tan Symbol"
-          },
-          {
-            "value": "Puzzle Hint Found: Tape Recorder Heard",
-            "label": "Puzzle Hint Found: Tape Recorder Heard"
-          },
-          {
-            "value": "Puzzle Hint Found: White Symbol",
-            "label": "Puzzle Hint Found: White Symbol"
-          },
-          {
-            "value": "Puzzle Solved Alchemy",
-            "label": "Puzzle Solved Alchemy"
-          },
-          {
-            "value": "Puzzle Solved Anansi Music Box",
-            "label": "Puzzle Solved Anansi Music Box"
-          },
-          {
-            "value": "Puzzle Solved Atlantis",
-            "label": "Puzzle Solved Atlantis"
-          },
-          {
-            "value": "Puzzle Solved Bedroom Elevator",
-            "label": "Puzzle Solved Bedroom Elevator"
-          },
-          {
-            "value": "Puzzle Solved Burial Door",
-            "label": "Puzzle Solved Burial Door"
-          },
-          {
-            "value": "Puzzle Solved Chinese Solitaire",
-            "label": "Puzzle Solved Chinese Solitaire"
-          },
-          {
-            "value": "Puzzle Solved Clock Chains",
-            "label": "Puzzle Solved Clock Chains"
-          },
-          {
-            "value": "Puzzle Solved Clock Tower Door",
-            "label": "Puzzle Solved Clock Tower Door"
-          },
-          {
-            "value": "Puzzle Solved Columns of RA",
-            "label": "Puzzle Solved Columns Of Ra"
-          },
-          {
-            "value": "Puzzle Solved Combination Lock",
-            "label": "Puzzle Solved Combination Lock"
-          },
-          {
-            "value": "Puzzle Solved Fortune Teller Door",
-            "label": "Puzzle Solved Fortune Teller Door"
-          },
-          {
-            "value": "Puzzle Solved Gallows",
-            "label": "Puzzle Solved Gallows"
-          },
-          {
-            "value": "Puzzle Solved Gears",
-            "label": "Puzzle Solved Gears"
-          },
-          {
-            "value": "Puzzle Solved Library Statue",
-            "label": "Puzzle Solved Library Statue"
-          },
-          {
-            "value": "Puzzle Solved Lyre",
-            "label": "Puzzle Solved Lyre"
-          },
-          {
-            "value": "Puzzle Solved Marble Flipper",
-            "label": "Puzzle Solved Marble Flipper"
-          },
-          {
-            "value": "Puzzle Solved Mastermind",
-            "label": "Puzzle Solved Mastermind"
-          },
-          {
-            "value": "Puzzle Solved Maze Door",
-            "label": "Puzzle Solved Maze Door"
-          },
-          {
-            "value": "Puzzle Solved Office Elevator",
-            "label": "Puzzle Solved Office Elevator"
-          },
-          {
-            "value": "Puzzle Solved Organ",
-            "label": "Puzzle Solved Organ"
-          },
-          {
-            "value": "Puzzle Solved Red Door",
-            "label": "Puzzle Solved Red Door"
-          },
-          {
-            "value": "Puzzle Solved Shaman Drums",
-            "label": "Puzzle Solved Shaman Drums"
-          },
-          {
-            "value": "Puzzle Solved Skull Dial Door",
-            "label": "Puzzle Solved Skull Dial Door"
-          },
-          {
-            "value": "Puzzle Solved Stone Henge",
-            "label": "Puzzle Solved Stone Henge"
-          },
-          {
-            "value": "Puzzle Solved Theater Door",
-            "label": "Puzzle Solved Theater Door"
-          },
-          {
-            "value": "Puzzle Solved Three Floor Elevator",
-            "label": "Puzzle Solved Three Floor Elevator"
-          },
-          {
-            "value": "Puzzle Solved UFO Symbols",
-            "label": "Puzzle Solved Ufo Symbols"
-          },
-          {
-            "value": "Puzzle Solved Workshop Drawers",
-            "label": "Puzzle Solved Workshop Drawers"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "ixupi_captures_needed",
-      "label": "Ixupi Captures Needed",
-      "description": "Number of Ixupi Captures needed for goal condition.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 10,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lobby_access",
-      "label": "Lobby Access",
-      "description": "Chooses how keys needed to reach the lobby are placed.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "early",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "early",
-            "label": "Early"
-          },
-          {
-            "value": "local",
-            "label": "Local"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "puzzle_hints_required",
-      "label": "Puzzle Hints Required",
-      "description": "If turned on puzzle hints/solutions will be available before the corresponding puzzle is required.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "include_information_plaques",
-      "label": "Include Information Plaques",
-      "description": "Adds Information Plaques as checks.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "front_door_usable",
-      "label": "Front Door Usable",
-      "description": "Adds a key to unlock the front door of the museum.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "elevators_stay_solved",
-      "label": "Elevators Stay Solved",
-      "description": "Adds elevators as checks and will remain open upon solving them.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_beth",
-      "label": "Early Beth",
-      "description": "Beth's body is open at the start of the game.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_lightning",
-      "label": "Early Lightning",
-      "description": "Allows lightning to be captured at any point in the game.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "location_pot_pieces",
-      "label": "Location Pot Pieces",
-      "description": "Chooses where pot pieces will be located within the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "any_world",
-        "choices": [
-          {
-            "value": "own_world",
-            "label": "Own World"
-          },
-          {
-            "value": "different_world",
-            "label": "Different World"
-          },
-          {
-            "value": "any_world",
-            "label": "Any World"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "full_pots",
-      "label": "Full Pots",
-      "description": "Chooses if pots will be in pieces or already completed - Pieces: Only pot pieces will be added to the item pool - Complete: Only completed pots will be added to the item pool - Mixed: Each pot will be randomly chosen to be pieces or already completed.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "pieces",
-        "choices": [
-          {
-            "value": "pieces",
-            "label": "Pieces"
-          },
-          {
-            "value": "complete",
-            "label": "Complete"
-          },
-          {
-            "value": "mixed",
-            "label": "Mixed"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ixupi_captures_priority",
-      "label": "Ixupi Captures Priority",
-      "description": "Ixupi captures are set to priority locations.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "puzzle_collect_behavior",
-      "label": "Puzzle Collect Behavior",
-      "description": "Defines what happens to puzzles on collect.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "prevent_out_of_logic_access",
-        "choices": [
-          {
-            "value": "solve_none",
-            "label": "Solve None"
-          },
-          {
-            "value": "prevent_out_of_logic_access",
-            "label": "Prevent Out Of Logic Access"
-          },
-          {
-            "value": "solve_all",
-            "label": "Solve All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "shivers",
+	"name": "Shivers",
+	"version": "0.1.6",
+	"description": "Shivers is a horror themed point and click adventure.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "local_items",
+			"label": "Local Items",
+			"description": "Forces these items to be in their native world.",
+			"category": "items",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Ash Always Available in Burial Room",
+						"label": "Ash Always Available In Burial Room"
+					},
+					{
+						"value": "Ash Always Available in Office",
+						"label": "Ash Always Available In Office"
+					},
+					{
+						"value": "Ash Pot Bottom",
+						"label": "Ash Pot Bottom"
+					},
+					{
+						"value": "Ash Pot Complete",
+						"label": "Ash Pot Complete"
+					},
+					{
+						"value": "Ash Pot Top",
+						"label": "Ash Pot Top"
+					},
+					{
+						"value": "Cloth Always Available in Burial Room",
+						"label": "Cloth Always Available In Burial Room"
+					},
+					{
+						"value": "Cloth Always Available in Egypt",
+						"label": "Cloth Always Available In Egypt"
+					},
+					{
+						"value": "Cloth Pot Bottom",
+						"label": "Cloth Pot Bottom"
+					},
+					{
+						"value": "Cloth Pot Complete",
+						"label": "Cloth Pot Complete"
+					},
+					{
+						"value": "Cloth Pot Top",
+						"label": "Cloth Pot Top"
+					},
+					{
+						"value": "Crawling",
+						"label": "Crawling"
+					},
+					{
+						"value": "Crystal Always Available in Lobby",
+						"label": "Crystal Always Available In Lobby"
+					},
+					{
+						"value": "Crystal Always Available in Ocean",
+						"label": "Crystal Always Available In Ocean"
+					},
+					{
+						"value": "Crystal Pot Bottom",
+						"label": "Crystal Pot Bottom"
+					},
+					{
+						"value": "Crystal Pot Complete",
+						"label": "Crystal Pot Complete"
+					},
+					{
+						"value": "Crystal Pot Top",
+						"label": "Crystal Pot Top"
+					},
+					{
+						"value": "Easier Lyre",
+						"label": "Easier Lyre"
+					},
+					{
+						"value": "Heal",
+						"label": "Heal"
+					},
+					{
+						"value": "Key for Bedroom",
+						"label": "Key For Bedroom"
+					},
+					{
+						"value": "Key for Bedroom Elevator",
+						"label": "Key For Bedroom Elevator"
+					},
+					{
+						"value": "Key for Egypt Room",
+						"label": "Key For Egypt Room"
+					},
+					{
+						"value": "Key for Front Door",
+						"label": "Key For Front Door"
+					},
+					{
+						"value": "Key for Generator Room",
+						"label": "Key For Generator Room"
+					},
+					{
+						"value": "Key for Greenhouse",
+						"label": "Key For Greenhouse"
+					},
+					{
+						"value": "Key for Janitor Closet",
+						"label": "Key For Janitor Closet"
+					},
+					{
+						"value": "Key for Library",
+						"label": "Key For Library"
+					},
+					{
+						"value": "Key for Ocean Room",
+						"label": "Key For Ocean Room"
+					},
+					{
+						"value": "Key for Office",
+						"label": "Key For Office"
+					},
+					{
+						"value": "Key for Office Elevator",
+						"label": "Key For Office Elevator"
+					},
+					{
+						"value": "Key for Prehistoric Room",
+						"label": "Key For Prehistoric Room"
+					},
+					{
+						"value": "Key for Projector Room",
+						"label": "Key For Projector Room"
+					},
+					{
+						"value": "Key for Puzzle Room",
+						"label": "Key For Puzzle Room"
+					},
+					{
+						"value": "Key for Shaman Room",
+						"label": "Key For Shaman Room"
+					},
+					{
+						"value": "Key for Three Floor Elevator",
+						"label": "Key For Three Floor Elevator"
+					},
+					{
+						"value": "Key for Torture Room",
+						"label": "Key For Torture Room"
+					},
+					{
+						"value": "Key for UFO Room",
+						"label": "Key For Ufo Room"
+					},
+					{
+						"value": "Key for Underground Lake",
+						"label": "Key For Underground Lake"
+					},
+					{
+						"value": "Key for Workshop",
+						"label": "Key For Workshop"
+					},
+					{
+						"value": "Lightning Pot Bottom",
+						"label": "Lightning Pot Bottom"
+					},
+					{
+						"value": "Lightning Pot Complete",
+						"label": "Lightning Pot Complete"
+					},
+					{
+						"value": "Lightning Pot Top",
+						"label": "Lightning Pot Top"
+					},
+					{
+						"value": "Metal Always Available in Bedroom",
+						"label": "Metal Always Available In Bedroom"
+					},
+					{
+						"value": "Metal Always Available in Prehistoric",
+						"label": "Metal Always Available In Prehistoric"
+					},
+					{
+						"value": "Metal Always Available in Projector Room",
+						"label": "Metal Always Available In Projector Room"
+					},
+					{
+						"value": "Metal Pot Bottom",
+						"label": "Metal Pot Bottom"
+					},
+					{
+						"value": "Metal Pot Complete",
+						"label": "Metal Pot Complete"
+					},
+					{
+						"value": "Metal Pot Top",
+						"label": "Metal Pot Top"
+					},
+					{
+						"value": "Oil Always Available in Prehistoric Room",
+						"label": "Oil Always Available In Prehistoric Room"
+					},
+					{
+						"value": "Oil Pot Bottom",
+						"label": "Oil Pot Bottom"
+					},
+					{
+						"value": "Oil Pot Complete",
+						"label": "Oil Pot Complete"
+					},
+					{
+						"value": "Oil Pot Top",
+						"label": "Oil Pot Top"
+					},
+					{
+						"value": "Sand Always Available in Greenhouse",
+						"label": "Sand Always Available In Greenhouse"
+					},
+					{
+						"value": "Sand Always Available in Ocean",
+						"label": "Sand Always Available In Ocean"
+					},
+					{
+						"value": "Sand Pot Bottom",
+						"label": "Sand Pot Bottom"
+					},
+					{
+						"value": "Sand Pot Complete",
+						"label": "Sand Pot Complete"
+					},
+					{
+						"value": "Sand Pot Top",
+						"label": "Sand Pot Top"
+					},
+					{
+						"value": "Water Always Available in Lobby",
+						"label": "Water Always Available In Lobby"
+					},
+					{
+						"value": "Water Pot Bottom",
+						"label": "Water Pot Bottom"
+					},
+					{
+						"value": "Water Pot Complete",
+						"label": "Water Pot Complete"
+					},
+					{
+						"value": "Water Pot Top",
+						"label": "Water Pot Top"
+					},
+					{
+						"value": "Wax Always Available in Anansi Room",
+						"label": "Wax Always Available In Anansi Room"
+					},
+					{
+						"value": "Wax Always Available in Library",
+						"label": "Wax Always Available In Library"
+					},
+					{
+						"value": "Wax Always Available in Shaman Room",
+						"label": "Wax Always Available In Shaman Room"
+					},
+					{
+						"value": "Wax Pot Bottom",
+						"label": "Wax Pot Bottom"
+					},
+					{
+						"value": "Wax Pot Complete",
+						"label": "Wax Pot Complete"
+					},
+					{
+						"value": "Wax Pot Top",
+						"label": "Wax Pot Top"
+					},
+					{
+						"value": "Wood Always Available in Blue Maze",
+						"label": "Wood Always Available In Blue Maze"
+					},
+					{
+						"value": "Wood Always Available in Gods Room",
+						"label": "Wood Always Available In Gods Room"
+					},
+					{
+						"value": "Wood Always Available in Pegasus Room",
+						"label": "Wood Always Available In Pegasus Room"
+					},
+					{
+						"value": "Wood Always Available in Workshop",
+						"label": "Wood Always Available In Workshop"
+					},
+					{
+						"value": "Wood Pot Bottom",
+						"label": "Wood Pot Bottom"
+					},
+					{
+						"value": "Wood Pot Complete",
+						"label": "Wood Pot Complete"
+					},
+					{
+						"value": "Wood Pot Top",
+						"label": "Wood Pot Top"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "non_local_items",
+			"label": "Non Local Items",
+			"description": "Forces these items to be outside their native world.",
+			"category": "items",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Ash Always Available in Burial Room",
+						"label": "Ash Always Available In Burial Room"
+					},
+					{
+						"value": "Ash Always Available in Office",
+						"label": "Ash Always Available In Office"
+					},
+					{
+						"value": "Ash Pot Bottom",
+						"label": "Ash Pot Bottom"
+					},
+					{
+						"value": "Ash Pot Complete",
+						"label": "Ash Pot Complete"
+					},
+					{
+						"value": "Ash Pot Top",
+						"label": "Ash Pot Top"
+					},
+					{
+						"value": "Cloth Always Available in Burial Room",
+						"label": "Cloth Always Available In Burial Room"
+					},
+					{
+						"value": "Cloth Always Available in Egypt",
+						"label": "Cloth Always Available In Egypt"
+					},
+					{
+						"value": "Cloth Pot Bottom",
+						"label": "Cloth Pot Bottom"
+					},
+					{
+						"value": "Cloth Pot Complete",
+						"label": "Cloth Pot Complete"
+					},
+					{
+						"value": "Cloth Pot Top",
+						"label": "Cloth Pot Top"
+					},
+					{
+						"value": "Crawling",
+						"label": "Crawling"
+					},
+					{
+						"value": "Crystal Always Available in Lobby",
+						"label": "Crystal Always Available In Lobby"
+					},
+					{
+						"value": "Crystal Always Available in Ocean",
+						"label": "Crystal Always Available In Ocean"
+					},
+					{
+						"value": "Crystal Pot Bottom",
+						"label": "Crystal Pot Bottom"
+					},
+					{
+						"value": "Crystal Pot Complete",
+						"label": "Crystal Pot Complete"
+					},
+					{
+						"value": "Crystal Pot Top",
+						"label": "Crystal Pot Top"
+					},
+					{
+						"value": "Easier Lyre",
+						"label": "Easier Lyre"
+					},
+					{
+						"value": "Heal",
+						"label": "Heal"
+					},
+					{
+						"value": "Key for Bedroom",
+						"label": "Key For Bedroom"
+					},
+					{
+						"value": "Key for Bedroom Elevator",
+						"label": "Key For Bedroom Elevator"
+					},
+					{
+						"value": "Key for Egypt Room",
+						"label": "Key For Egypt Room"
+					},
+					{
+						"value": "Key for Front Door",
+						"label": "Key For Front Door"
+					},
+					{
+						"value": "Key for Generator Room",
+						"label": "Key For Generator Room"
+					},
+					{
+						"value": "Key for Greenhouse",
+						"label": "Key For Greenhouse"
+					},
+					{
+						"value": "Key for Janitor Closet",
+						"label": "Key For Janitor Closet"
+					},
+					{
+						"value": "Key for Library",
+						"label": "Key For Library"
+					},
+					{
+						"value": "Key for Ocean Room",
+						"label": "Key For Ocean Room"
+					},
+					{
+						"value": "Key for Office",
+						"label": "Key For Office"
+					},
+					{
+						"value": "Key for Office Elevator",
+						"label": "Key For Office Elevator"
+					},
+					{
+						"value": "Key for Prehistoric Room",
+						"label": "Key For Prehistoric Room"
+					},
+					{
+						"value": "Key for Projector Room",
+						"label": "Key For Projector Room"
+					},
+					{
+						"value": "Key for Puzzle Room",
+						"label": "Key For Puzzle Room"
+					},
+					{
+						"value": "Key for Shaman Room",
+						"label": "Key For Shaman Room"
+					},
+					{
+						"value": "Key for Three Floor Elevator",
+						"label": "Key For Three Floor Elevator"
+					},
+					{
+						"value": "Key for Torture Room",
+						"label": "Key For Torture Room"
+					},
+					{
+						"value": "Key for UFO Room",
+						"label": "Key For Ufo Room"
+					},
+					{
+						"value": "Key for Underground Lake",
+						"label": "Key For Underground Lake"
+					},
+					{
+						"value": "Key for Workshop",
+						"label": "Key For Workshop"
+					},
+					{
+						"value": "Lightning Pot Bottom",
+						"label": "Lightning Pot Bottom"
+					},
+					{
+						"value": "Lightning Pot Complete",
+						"label": "Lightning Pot Complete"
+					},
+					{
+						"value": "Lightning Pot Top",
+						"label": "Lightning Pot Top"
+					},
+					{
+						"value": "Metal Always Available in Bedroom",
+						"label": "Metal Always Available In Bedroom"
+					},
+					{
+						"value": "Metal Always Available in Prehistoric",
+						"label": "Metal Always Available In Prehistoric"
+					},
+					{
+						"value": "Metal Always Available in Projector Room",
+						"label": "Metal Always Available In Projector Room"
+					},
+					{
+						"value": "Metal Pot Bottom",
+						"label": "Metal Pot Bottom"
+					},
+					{
+						"value": "Metal Pot Complete",
+						"label": "Metal Pot Complete"
+					},
+					{
+						"value": "Metal Pot Top",
+						"label": "Metal Pot Top"
+					},
+					{
+						"value": "Oil Always Available in Prehistoric Room",
+						"label": "Oil Always Available In Prehistoric Room"
+					},
+					{
+						"value": "Oil Pot Bottom",
+						"label": "Oil Pot Bottom"
+					},
+					{
+						"value": "Oil Pot Complete",
+						"label": "Oil Pot Complete"
+					},
+					{
+						"value": "Oil Pot Top",
+						"label": "Oil Pot Top"
+					},
+					{
+						"value": "Sand Always Available in Greenhouse",
+						"label": "Sand Always Available In Greenhouse"
+					},
+					{
+						"value": "Sand Always Available in Ocean",
+						"label": "Sand Always Available In Ocean"
+					},
+					{
+						"value": "Sand Pot Bottom",
+						"label": "Sand Pot Bottom"
+					},
+					{
+						"value": "Sand Pot Complete",
+						"label": "Sand Pot Complete"
+					},
+					{
+						"value": "Sand Pot Top",
+						"label": "Sand Pot Top"
+					},
+					{
+						"value": "Water Always Available in Lobby",
+						"label": "Water Always Available In Lobby"
+					},
+					{
+						"value": "Water Pot Bottom",
+						"label": "Water Pot Bottom"
+					},
+					{
+						"value": "Water Pot Complete",
+						"label": "Water Pot Complete"
+					},
+					{
+						"value": "Water Pot Top",
+						"label": "Water Pot Top"
+					},
+					{
+						"value": "Wax Always Available in Anansi Room",
+						"label": "Wax Always Available In Anansi Room"
+					},
+					{
+						"value": "Wax Always Available in Library",
+						"label": "Wax Always Available In Library"
+					},
+					{
+						"value": "Wax Always Available in Shaman Room",
+						"label": "Wax Always Available In Shaman Room"
+					},
+					{
+						"value": "Wax Pot Bottom",
+						"label": "Wax Pot Bottom"
+					},
+					{
+						"value": "Wax Pot Complete",
+						"label": "Wax Pot Complete"
+					},
+					{
+						"value": "Wax Pot Top",
+						"label": "Wax Pot Top"
+					},
+					{
+						"value": "Wood Always Available in Blue Maze",
+						"label": "Wood Always Available In Blue Maze"
+					},
+					{
+						"value": "Wood Always Available in Gods Room",
+						"label": "Wood Always Available In Gods Room"
+					},
+					{
+						"value": "Wood Always Available in Pegasus Room",
+						"label": "Wood Always Available In Pegasus Room"
+					},
+					{
+						"value": "Wood Always Available in Workshop",
+						"label": "Wood Always Available In Workshop"
+					},
+					{
+						"value": "Wood Pot Bottom",
+						"label": "Wood Pot Bottom"
+					},
+					{
+						"value": "Wood Pot Complete",
+						"label": "Wood Pot Complete"
+					},
+					{
+						"value": "Wood Pot Top",
+						"label": "Wood Pot Top"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "start_hints",
+			"label": "Start Hints",
+			"description": "Start with these item's locations prefilled into the ``!hint`` command.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Ash Always Available in Burial Room",
+						"label": "Ash Always Available In Burial Room"
+					},
+					{
+						"value": "Ash Always Available in Office",
+						"label": "Ash Always Available In Office"
+					},
+					{
+						"value": "Ash Pot Bottom",
+						"label": "Ash Pot Bottom"
+					},
+					{
+						"value": "Ash Pot Complete",
+						"label": "Ash Pot Complete"
+					},
+					{
+						"value": "Ash Pot Top",
+						"label": "Ash Pot Top"
+					},
+					{
+						"value": "Cloth Always Available in Burial Room",
+						"label": "Cloth Always Available In Burial Room"
+					},
+					{
+						"value": "Cloth Always Available in Egypt",
+						"label": "Cloth Always Available In Egypt"
+					},
+					{
+						"value": "Cloth Pot Bottom",
+						"label": "Cloth Pot Bottom"
+					},
+					{
+						"value": "Cloth Pot Complete",
+						"label": "Cloth Pot Complete"
+					},
+					{
+						"value": "Cloth Pot Top",
+						"label": "Cloth Pot Top"
+					},
+					{
+						"value": "Crawling",
+						"label": "Crawling"
+					},
+					{
+						"value": "Crystal Always Available in Lobby",
+						"label": "Crystal Always Available In Lobby"
+					},
+					{
+						"value": "Crystal Always Available in Ocean",
+						"label": "Crystal Always Available In Ocean"
+					},
+					{
+						"value": "Crystal Pot Bottom",
+						"label": "Crystal Pot Bottom"
+					},
+					{
+						"value": "Crystal Pot Complete",
+						"label": "Crystal Pot Complete"
+					},
+					{
+						"value": "Crystal Pot Top",
+						"label": "Crystal Pot Top"
+					},
+					{
+						"value": "Easier Lyre",
+						"label": "Easier Lyre"
+					},
+					{
+						"value": "Heal",
+						"label": "Heal"
+					},
+					{
+						"value": "Key for Bedroom",
+						"label": "Key For Bedroom"
+					},
+					{
+						"value": "Key for Bedroom Elevator",
+						"label": "Key For Bedroom Elevator"
+					},
+					{
+						"value": "Key for Egypt Room",
+						"label": "Key For Egypt Room"
+					},
+					{
+						"value": "Key for Front Door",
+						"label": "Key For Front Door"
+					},
+					{
+						"value": "Key for Generator Room",
+						"label": "Key For Generator Room"
+					},
+					{
+						"value": "Key for Greenhouse",
+						"label": "Key For Greenhouse"
+					},
+					{
+						"value": "Key for Janitor Closet",
+						"label": "Key For Janitor Closet"
+					},
+					{
+						"value": "Key for Library",
+						"label": "Key For Library"
+					},
+					{
+						"value": "Key for Ocean Room",
+						"label": "Key For Ocean Room"
+					},
+					{
+						"value": "Key for Office",
+						"label": "Key For Office"
+					},
+					{
+						"value": "Key for Office Elevator",
+						"label": "Key For Office Elevator"
+					},
+					{
+						"value": "Key for Prehistoric Room",
+						"label": "Key For Prehistoric Room"
+					},
+					{
+						"value": "Key for Projector Room",
+						"label": "Key For Projector Room"
+					},
+					{
+						"value": "Key for Puzzle Room",
+						"label": "Key For Puzzle Room"
+					},
+					{
+						"value": "Key for Shaman Room",
+						"label": "Key For Shaman Room"
+					},
+					{
+						"value": "Key for Three Floor Elevator",
+						"label": "Key For Three Floor Elevator"
+					},
+					{
+						"value": "Key for Torture Room",
+						"label": "Key For Torture Room"
+					},
+					{
+						"value": "Key for UFO Room",
+						"label": "Key For Ufo Room"
+					},
+					{
+						"value": "Key for Underground Lake",
+						"label": "Key For Underground Lake"
+					},
+					{
+						"value": "Key for Workshop",
+						"label": "Key For Workshop"
+					},
+					{
+						"value": "Lightning Pot Bottom",
+						"label": "Lightning Pot Bottom"
+					},
+					{
+						"value": "Lightning Pot Complete",
+						"label": "Lightning Pot Complete"
+					},
+					{
+						"value": "Lightning Pot Top",
+						"label": "Lightning Pot Top"
+					},
+					{
+						"value": "Metal Always Available in Bedroom",
+						"label": "Metal Always Available In Bedroom"
+					},
+					{
+						"value": "Metal Always Available in Prehistoric",
+						"label": "Metal Always Available In Prehistoric"
+					},
+					{
+						"value": "Metal Always Available in Projector Room",
+						"label": "Metal Always Available In Projector Room"
+					},
+					{
+						"value": "Metal Pot Bottom",
+						"label": "Metal Pot Bottom"
+					},
+					{
+						"value": "Metal Pot Complete",
+						"label": "Metal Pot Complete"
+					},
+					{
+						"value": "Metal Pot Top",
+						"label": "Metal Pot Top"
+					},
+					{
+						"value": "Oil Always Available in Prehistoric Room",
+						"label": "Oil Always Available In Prehistoric Room"
+					},
+					{
+						"value": "Oil Pot Bottom",
+						"label": "Oil Pot Bottom"
+					},
+					{
+						"value": "Oil Pot Complete",
+						"label": "Oil Pot Complete"
+					},
+					{
+						"value": "Oil Pot Top",
+						"label": "Oil Pot Top"
+					},
+					{
+						"value": "Sand Always Available in Greenhouse",
+						"label": "Sand Always Available In Greenhouse"
+					},
+					{
+						"value": "Sand Always Available in Ocean",
+						"label": "Sand Always Available In Ocean"
+					},
+					{
+						"value": "Sand Pot Bottom",
+						"label": "Sand Pot Bottom"
+					},
+					{
+						"value": "Sand Pot Complete",
+						"label": "Sand Pot Complete"
+					},
+					{
+						"value": "Sand Pot Top",
+						"label": "Sand Pot Top"
+					},
+					{
+						"value": "Water Always Available in Lobby",
+						"label": "Water Always Available In Lobby"
+					},
+					{
+						"value": "Water Pot Bottom",
+						"label": "Water Pot Bottom"
+					},
+					{
+						"value": "Water Pot Complete",
+						"label": "Water Pot Complete"
+					},
+					{
+						"value": "Water Pot Top",
+						"label": "Water Pot Top"
+					},
+					{
+						"value": "Wax Always Available in Anansi Room",
+						"label": "Wax Always Available In Anansi Room"
+					},
+					{
+						"value": "Wax Always Available in Library",
+						"label": "Wax Always Available In Library"
+					},
+					{
+						"value": "Wax Always Available in Shaman Room",
+						"label": "Wax Always Available In Shaman Room"
+					},
+					{
+						"value": "Wax Pot Bottom",
+						"label": "Wax Pot Bottom"
+					},
+					{
+						"value": "Wax Pot Complete",
+						"label": "Wax Pot Complete"
+					},
+					{
+						"value": "Wax Pot Top",
+						"label": "Wax Pot Top"
+					},
+					{
+						"value": "Wood Always Available in Blue Maze",
+						"label": "Wood Always Available In Blue Maze"
+					},
+					{
+						"value": "Wood Always Available in Gods Room",
+						"label": "Wood Always Available In Gods Room"
+					},
+					{
+						"value": "Wood Always Available in Pegasus Room",
+						"label": "Wood Always Available In Pegasus Room"
+					},
+					{
+						"value": "Wood Always Available in Workshop",
+						"label": "Wood Always Available In Workshop"
+					},
+					{
+						"value": "Wood Pot Bottom",
+						"label": "Wood Pot Bottom"
+					},
+					{
+						"value": "Wood Pot Complete",
+						"label": "Wood Pot Complete"
+					},
+					{
+						"value": "Wood Pot Top",
+						"label": "Wood Pot Top"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "start_location_hints",
+			"label": "Start Location Hints",
+			"description": "Start with these locations and their item prefilled into the ``!hint`` command.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Final Riddle: Beth's Body Page 17",
+						"label": "Final Riddle: Beth'S Body Page 17"
+					},
+					{
+						"value": "Final Riddle: Fortune Teller",
+						"label": "Final Riddle: Fortune Teller"
+					},
+					{
+						"value": "Final Riddle: Guillotine Dropped",
+						"label": "Final Riddle: Guillotine Dropped"
+					},
+					{
+						"value": "Final Riddle: Norse God Stone Message",
+						"label": "Final Riddle: Norse God Stone Message"
+					},
+					{
+						"value": "Final Riddle: Planets Aligned",
+						"label": "Final Riddle: Planets Aligned"
+					},
+					{
+						"value": "Flashback Memory Obtained Ancient Astrology",
+						"label": "Flashback Memory Obtained Ancient Astrology"
+					},
+					{
+						"value": "Flashback Memory Obtained Beth's Address Book",
+						"label": "Flashback Memory Obtained Beth'S Address Book"
+					},
+					{
+						"value": "Flashback Memory Obtained Beth's Ghost",
+						"label": "Flashback Memory Obtained Beth'S Ghost"
+					},
+					{
+						"value": "Flashback Memory Obtained Black Book",
+						"label": "Flashback Memory Obtained Black Book"
+					},
+					{
+						"value": "Flashback Memory Obtained Egyptian Hieroglyphics Explained",
+						"label": "Flashback Memory Obtained Egyptian Hieroglyphics Explained"
+					},
+					{
+						"value": "Flashback Memory Obtained In Search of the Unexplained",
+						"label": "Flashback Memory Obtained In Search Of The Unexplained"
+					},
+					{
+						"value": "Flashback Memory Obtained Merrick's Ghost",
+						"label": "Flashback Memory Obtained Merrick'S Ghost"
+					},
+					{
+						"value": "Flashback Memory Obtained Merrick's Notebook",
+						"label": "Flashback Memory Obtained Merrick'S Notebook"
+					},
+					{
+						"value": "Flashback Memory Obtained Museum Blueprints",
+						"label": "Flashback Memory Obtained Museum Blueprints"
+					},
+					{
+						"value": "Flashback Memory Obtained Museum Brochure",
+						"label": "Flashback Memory Obtained Museum Brochure"
+					},
+					{
+						"value": "Flashback Memory Obtained Mythology of the Stars",
+						"label": "Flashback Memory Obtained Mythology Of The Stars"
+					},
+					{
+						"value": "Flashback Memory Obtained Professor Windlenot's Diary",
+						"label": "Flashback Memory Obtained Professor Windlenot'S Diary"
+					},
+					{
+						"value": "Flashback Memory Obtained Scrapbook",
+						"label": "Flashback Memory Obtained Scrapbook"
+					},
+					{
+						"value": "Flashback Memory Obtained South American Pictographs",
+						"label": "Flashback Memory Obtained South American Pictographs"
+					},
+					{
+						"value": "Flashback Memory Obtained Theater Movie",
+						"label": "Flashback Memory Obtained Theater Movie"
+					},
+					{
+						"value": "Flashback Memory Obtained Windlenot's Ghost",
+						"label": "Flashback Memory Obtained Windlenot'S Ghost"
+					},
+					{
+						"value": "Information Plaque: (Anansi) African Creation Myth",
+						"label": "Information Plaque: (Anansi) African Creation Myth"
+					},
+					{
+						"value": "Information Plaque: (Anansi) Apophis the Serpent",
+						"label": "Information Plaque: (Anansi) Apophis The Serpent"
+					},
+					{
+						"value": "Information Plaque: (Anansi) Death",
+						"label": "Information Plaque: (Anansi) Death"
+					},
+					{
+						"value": "Information Plaque: (Burial) Animal Crematorium",
+						"label": "Information Plaque: (Burial) Animal Crematorium"
+					},
+					{
+						"value": "Information Plaque: (Burial) Cremation",
+						"label": "Information Plaque: (Burial) Cremation"
+					},
+					{
+						"value": "Information Plaque: (Burial) Norse Burial Ship",
+						"label": "Information Plaque: (Burial) Norse Burial Ship"
+					},
+					{
+						"value": "Information Plaque: (Burial) Paracas Burial Bundles",
+						"label": "Information Plaque: (Burial) Paracas Burial Bundles"
+					},
+					{
+						"value": "Information Plaque: (Burial) Spectacular Coffins of Ghana",
+						"label": "Information Plaque: (Burial) Spectacular Coffins Of Ghana"
+					},
+					{
+						"value": "Information Plaque: (Egypt) Curse of Anubis",
+						"label": "Information Plaque: (Egypt) Curse Of Anubis"
+					},
+					{
+						"value": "Information Plaque: (Egypt) The Sphinx",
+						"label": "Information Plaque: (Egypt) The Sphinx"
+					},
+					{
+						"value": "Information Plaque: (Egypt) Tomb of the Ixupi",
+						"label": "Information Plaque: (Egypt) Tomb Of The Ixupi"
+					},
+					{
+						"value": "Information Plaque: (Gods) Celtic Janus Sculpture",
+						"label": "Information Plaque: (Gods) Celtic Janus Sculpture"
+					},
+					{
+						"value": "Information Plaque: (Gods) Chuen",
+						"label": "Information Plaque: (Gods) Chuen"
+					},
+					{
+						"value": "Information Plaque: (Gods) Fisherman's Canoe God",
+						"label": "Information Plaque: (Gods) Fisherman'S Canoe God"
+					},
+					{
+						"value": "Information Plaque: (Gods) Mayan Gods",
+						"label": "Information Plaque: (Gods) Mayan Gods"
+					},
+					{
+						"value": "Information Plaque: (Gods) Sumerian Bull God - An",
+						"label": "Information Plaque: (Gods) Sumerian Bull God - An"
+					},
+					{
+						"value": "Information Plaque: (Gods) Sumerian Lyre",
+						"label": "Information Plaque: (Gods) Sumerian Lyre"
+					},
+					{
+						"value": "Information Plaque: (Gods) Thor",
+						"label": "Information Plaque: (Gods) Thor"
+					},
+					{
+						"value": "Information Plaque: (Lobby) Jade Skull",
+						"label": "Information Plaque: (Lobby) Jade Skull"
+					},
+					{
+						"value": "Information Plaque: (Lobby) Transforming Masks",
+						"label": "Information Plaque: (Lobby) Transforming Masks"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Colossus of Rhodes",
+						"label": "Information Plaque: (Ocean) Colossus Of Rhodes"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Poseidon",
+						"label": "Information Plaque: (Ocean) Poseidon"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Poseidon's Temple",
+						"label": "Information Plaque: (Ocean) Poseidon'S Temple"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Quartz Crystal",
+						"label": "Information Plaque: (Ocean) Quartz Crystal"
+					},
+					{
+						"value": "Information Plaque: (Pegasus) Cyclops",
+						"label": "Information Plaque: (Pegasus) Cyclops"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Bronze Unicorn",
+						"label": "Information Plaque: (Prehistoric) Bronze Unicorn"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Eagles Nest",
+						"label": "Information Plaque: (Prehistoric) Eagles Nest"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Griffin",
+						"label": "Information Plaque: (Prehistoric) Griffin"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Large Spider",
+						"label": "Information Plaque: (Prehistoric) Large Spider"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Starfish",
+						"label": "Information Plaque: (Prehistoric) Starfish"
+					},
+					{
+						"value": "Information Plaque: (Shaman) Sarombe doctor of Mozambique",
+						"label": "Information Plaque: (Shaman) Sarombe Doctor Of Mozambique"
+					},
+					{
+						"value": "Information Plaque: (Shaman) Witch Doctors of the Congo",
+						"label": "Information Plaque: (Shaman) Witch Doctors Of The Congo"
+					},
+					{
+						"value": "Information Plaque: (Torture) Guillotine",
+						"label": "Information Plaque: (Torture) Guillotine"
+					},
+					{
+						"value": "Information Plaque: (UFO) Aliens",
+						"label": "Information Plaque: (Ufo) Aliens"
+					},
+					{
+						"value": "Information Plaque: (UFO) Astronomical Construction",
+						"label": "Information Plaque: (Ufo) Astronomical Construction"
+					},
+					{
+						"value": "Information Plaque: (UFO) Coincidence or Extraterrestrial Visits?",
+						"label": "Information Plaque: (Ufo) Coincidence Or Extraterrestrial Visits?"
+					},
+					{
+						"value": "Information Plaque: (UFO) Planets",
+						"label": "Information Plaque: (Ufo) Planets"
+					},
+					{
+						"value": "Information Plaque: (Underground Maze Staircase) Subterranean World",
+						"label": "Information Plaque: (Underground Maze Staircase) Subterranean World"
+					},
+					{
+						"value": "Information Plaque: (Underground Maze) Dero",
+						"label": "Information Plaque: (Underground Maze) Dero"
+					},
+					{
+						"value": "Information Plaque: (Werewolf) Lycanthropy",
+						"label": "Information Plaque: (Werewolf) Lycanthropy"
+					},
+					{
+						"value": "Ixupi Captured Ash",
+						"label": "Ixupi Captured Ash"
+					},
+					{
+						"value": "Ixupi Captured Cloth",
+						"label": "Ixupi Captured Cloth"
+					},
+					{
+						"value": "Ixupi Captured Crystal",
+						"label": "Ixupi Captured Crystal"
+					},
+					{
+						"value": "Ixupi Captured Lightning",
+						"label": "Ixupi Captured Lightning"
+					},
+					{
+						"value": "Ixupi Captured Metal",
+						"label": "Ixupi Captured Metal"
+					},
+					{
+						"value": "Ixupi Captured Oil",
+						"label": "Ixupi Captured Oil"
+					},
+					{
+						"value": "Ixupi Captured Sand",
+						"label": "Ixupi Captured Sand"
+					},
+					{
+						"value": "Ixupi Captured Water",
+						"label": "Ixupi Captured Water"
+					},
+					{
+						"value": "Ixupi Captured Wax",
+						"label": "Ixupi Captured Wax"
+					},
+					{
+						"value": "Ixupi Captured Wood",
+						"label": "Ixupi Captured Wood"
+					},
+					{
+						"value": "Puzzle Hint Found: Atlantis Map",
+						"label": "Puzzle Hint Found: Atlantis Map"
+					},
+					{
+						"value": "Puzzle Hint Found: Basilisk Bone Fragments",
+						"label": "Puzzle Hint Found: Basilisk Bone Fragments"
+					},
+					{
+						"value": "Puzzle Hint Found: Beth's Note",
+						"label": "Puzzle Hint Found: Beth'S Note"
+					},
+					{
+						"value": "Puzzle Hint Found: Brown Symbol",
+						"label": "Puzzle Hint Found: Brown Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Egyptian Sphinx Heard",
+						"label": "Puzzle Hint Found: Egyptian Sphinx Heard"
+					},
+					{
+						"value": "Puzzle Hint Found: Elevator Writing",
+						"label": "Puzzle Hint Found: Elevator Writing"
+					},
+					{
+						"value": "Puzzle Hint Found: Gallows Information Plaque",
+						"label": "Puzzle Hint Found: Gallows Information Plaque"
+					},
+					{
+						"value": "Puzzle Hint Found: Green Symbol",
+						"label": "Puzzle Hint Found: Green Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Mailbox",
+						"label": "Puzzle Hint Found: Mailbox"
+					},
+					{
+						"value": "Puzzle Hint Found: Mastermind Information Plaque",
+						"label": "Puzzle Hint Found: Mastermind Information Plaque"
+					},
+					{
+						"value": "Puzzle Hint Found: Orange Symbol",
+						"label": "Puzzle Hint Found: Orange Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Shaman Security Camera",
+						"label": "Puzzle Hint Found: Shaman Security Camera"
+					},
+					{
+						"value": "Puzzle Hint Found: Silver Symbol",
+						"label": "Puzzle Hint Found: Silver Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Sirens Song Heard",
+						"label": "Puzzle Hint Found: Sirens Song Heard"
+					},
+					{
+						"value": "Puzzle Hint Found: Tan Symbol",
+						"label": "Puzzle Hint Found: Tan Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Tape Recorder Heard",
+						"label": "Puzzle Hint Found: Tape Recorder Heard"
+					},
+					{
+						"value": "Puzzle Hint Found: White Symbol",
+						"label": "Puzzle Hint Found: White Symbol"
+					},
+					{
+						"value": "Puzzle Solved Alchemy",
+						"label": "Puzzle Solved Alchemy"
+					},
+					{
+						"value": "Puzzle Solved Anansi Music Box",
+						"label": "Puzzle Solved Anansi Music Box"
+					},
+					{
+						"value": "Puzzle Solved Atlantis",
+						"label": "Puzzle Solved Atlantis"
+					},
+					{
+						"value": "Puzzle Solved Bedroom Elevator",
+						"label": "Puzzle Solved Bedroom Elevator"
+					},
+					{
+						"value": "Puzzle Solved Burial Door",
+						"label": "Puzzle Solved Burial Door"
+					},
+					{
+						"value": "Puzzle Solved Chinese Solitaire",
+						"label": "Puzzle Solved Chinese Solitaire"
+					},
+					{
+						"value": "Puzzle Solved Clock Chains",
+						"label": "Puzzle Solved Clock Chains"
+					},
+					{
+						"value": "Puzzle Solved Clock Tower Door",
+						"label": "Puzzle Solved Clock Tower Door"
+					},
+					{
+						"value": "Puzzle Solved Columns of RA",
+						"label": "Puzzle Solved Columns Of Ra"
+					},
+					{
+						"value": "Puzzle Solved Combination Lock",
+						"label": "Puzzle Solved Combination Lock"
+					},
+					{
+						"value": "Puzzle Solved Fortune Teller Door",
+						"label": "Puzzle Solved Fortune Teller Door"
+					},
+					{
+						"value": "Puzzle Solved Gallows",
+						"label": "Puzzle Solved Gallows"
+					},
+					{
+						"value": "Puzzle Solved Gears",
+						"label": "Puzzle Solved Gears"
+					},
+					{
+						"value": "Puzzle Solved Library Statue",
+						"label": "Puzzle Solved Library Statue"
+					},
+					{
+						"value": "Puzzle Solved Lyre",
+						"label": "Puzzle Solved Lyre"
+					},
+					{
+						"value": "Puzzle Solved Marble Flipper",
+						"label": "Puzzle Solved Marble Flipper"
+					},
+					{
+						"value": "Puzzle Solved Mastermind",
+						"label": "Puzzle Solved Mastermind"
+					},
+					{
+						"value": "Puzzle Solved Maze Door",
+						"label": "Puzzle Solved Maze Door"
+					},
+					{
+						"value": "Puzzle Solved Office Elevator",
+						"label": "Puzzle Solved Office Elevator"
+					},
+					{
+						"value": "Puzzle Solved Organ",
+						"label": "Puzzle Solved Organ"
+					},
+					{
+						"value": "Puzzle Solved Red Door",
+						"label": "Puzzle Solved Red Door"
+					},
+					{
+						"value": "Puzzle Solved Shaman Drums",
+						"label": "Puzzle Solved Shaman Drums"
+					},
+					{
+						"value": "Puzzle Solved Skull Dial Door",
+						"label": "Puzzle Solved Skull Dial Door"
+					},
+					{
+						"value": "Puzzle Solved Stone Henge",
+						"label": "Puzzle Solved Stone Henge"
+					},
+					{
+						"value": "Puzzle Solved Theater Door",
+						"label": "Puzzle Solved Theater Door"
+					},
+					{
+						"value": "Puzzle Solved Three Floor Elevator",
+						"label": "Puzzle Solved Three Floor Elevator"
+					},
+					{
+						"value": "Puzzle Solved UFO Symbols",
+						"label": "Puzzle Solved Ufo Symbols"
+					},
+					{
+						"value": "Puzzle Solved Workshop Drawers",
+						"label": "Puzzle Solved Workshop Drawers"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "exclude_locations",
+			"label": "Exclude Locations",
+			"description": "Prevent these locations from having an important item.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Final Riddle: Beth's Body Page 17",
+						"label": "Final Riddle: Beth'S Body Page 17"
+					},
+					{
+						"value": "Final Riddle: Fortune Teller",
+						"label": "Final Riddle: Fortune Teller"
+					},
+					{
+						"value": "Final Riddle: Guillotine Dropped",
+						"label": "Final Riddle: Guillotine Dropped"
+					},
+					{
+						"value": "Final Riddle: Norse God Stone Message",
+						"label": "Final Riddle: Norse God Stone Message"
+					},
+					{
+						"value": "Final Riddle: Planets Aligned",
+						"label": "Final Riddle: Planets Aligned"
+					},
+					{
+						"value": "Flashback Memory Obtained Ancient Astrology",
+						"label": "Flashback Memory Obtained Ancient Astrology"
+					},
+					{
+						"value": "Flashback Memory Obtained Beth's Address Book",
+						"label": "Flashback Memory Obtained Beth'S Address Book"
+					},
+					{
+						"value": "Flashback Memory Obtained Beth's Ghost",
+						"label": "Flashback Memory Obtained Beth'S Ghost"
+					},
+					{
+						"value": "Flashback Memory Obtained Black Book",
+						"label": "Flashback Memory Obtained Black Book"
+					},
+					{
+						"value": "Flashback Memory Obtained Egyptian Hieroglyphics Explained",
+						"label": "Flashback Memory Obtained Egyptian Hieroglyphics Explained"
+					},
+					{
+						"value": "Flashback Memory Obtained In Search of the Unexplained",
+						"label": "Flashback Memory Obtained In Search Of The Unexplained"
+					},
+					{
+						"value": "Flashback Memory Obtained Merrick's Ghost",
+						"label": "Flashback Memory Obtained Merrick'S Ghost"
+					},
+					{
+						"value": "Flashback Memory Obtained Merrick's Notebook",
+						"label": "Flashback Memory Obtained Merrick'S Notebook"
+					},
+					{
+						"value": "Flashback Memory Obtained Museum Blueprints",
+						"label": "Flashback Memory Obtained Museum Blueprints"
+					},
+					{
+						"value": "Flashback Memory Obtained Museum Brochure",
+						"label": "Flashback Memory Obtained Museum Brochure"
+					},
+					{
+						"value": "Flashback Memory Obtained Mythology of the Stars",
+						"label": "Flashback Memory Obtained Mythology Of The Stars"
+					},
+					{
+						"value": "Flashback Memory Obtained Professor Windlenot's Diary",
+						"label": "Flashback Memory Obtained Professor Windlenot'S Diary"
+					},
+					{
+						"value": "Flashback Memory Obtained Scrapbook",
+						"label": "Flashback Memory Obtained Scrapbook"
+					},
+					{
+						"value": "Flashback Memory Obtained South American Pictographs",
+						"label": "Flashback Memory Obtained South American Pictographs"
+					},
+					{
+						"value": "Flashback Memory Obtained Theater Movie",
+						"label": "Flashback Memory Obtained Theater Movie"
+					},
+					{
+						"value": "Flashback Memory Obtained Windlenot's Ghost",
+						"label": "Flashback Memory Obtained Windlenot'S Ghost"
+					},
+					{
+						"value": "Information Plaque: (Anansi) African Creation Myth",
+						"label": "Information Plaque: (Anansi) African Creation Myth"
+					},
+					{
+						"value": "Information Plaque: (Anansi) Apophis the Serpent",
+						"label": "Information Plaque: (Anansi) Apophis The Serpent"
+					},
+					{
+						"value": "Information Plaque: (Anansi) Death",
+						"label": "Information Plaque: (Anansi) Death"
+					},
+					{
+						"value": "Information Plaque: (Burial) Animal Crematorium",
+						"label": "Information Plaque: (Burial) Animal Crematorium"
+					},
+					{
+						"value": "Information Plaque: (Burial) Cremation",
+						"label": "Information Plaque: (Burial) Cremation"
+					},
+					{
+						"value": "Information Plaque: (Burial) Norse Burial Ship",
+						"label": "Information Plaque: (Burial) Norse Burial Ship"
+					},
+					{
+						"value": "Information Plaque: (Burial) Paracas Burial Bundles",
+						"label": "Information Plaque: (Burial) Paracas Burial Bundles"
+					},
+					{
+						"value": "Information Plaque: (Burial) Spectacular Coffins of Ghana",
+						"label": "Information Plaque: (Burial) Spectacular Coffins Of Ghana"
+					},
+					{
+						"value": "Information Plaque: (Egypt) Curse of Anubis",
+						"label": "Information Plaque: (Egypt) Curse Of Anubis"
+					},
+					{
+						"value": "Information Plaque: (Egypt) The Sphinx",
+						"label": "Information Plaque: (Egypt) The Sphinx"
+					},
+					{
+						"value": "Information Plaque: (Egypt) Tomb of the Ixupi",
+						"label": "Information Plaque: (Egypt) Tomb Of The Ixupi"
+					},
+					{
+						"value": "Information Plaque: (Gods) Celtic Janus Sculpture",
+						"label": "Information Plaque: (Gods) Celtic Janus Sculpture"
+					},
+					{
+						"value": "Information Plaque: (Gods) Chuen",
+						"label": "Information Plaque: (Gods) Chuen"
+					},
+					{
+						"value": "Information Plaque: (Gods) Fisherman's Canoe God",
+						"label": "Information Plaque: (Gods) Fisherman'S Canoe God"
+					},
+					{
+						"value": "Information Plaque: (Gods) Mayan Gods",
+						"label": "Information Plaque: (Gods) Mayan Gods"
+					},
+					{
+						"value": "Information Plaque: (Gods) Sumerian Bull God - An",
+						"label": "Information Plaque: (Gods) Sumerian Bull God - An"
+					},
+					{
+						"value": "Information Plaque: (Gods) Sumerian Lyre",
+						"label": "Information Plaque: (Gods) Sumerian Lyre"
+					},
+					{
+						"value": "Information Plaque: (Gods) Thor",
+						"label": "Information Plaque: (Gods) Thor"
+					},
+					{
+						"value": "Information Plaque: (Lobby) Jade Skull",
+						"label": "Information Plaque: (Lobby) Jade Skull"
+					},
+					{
+						"value": "Information Plaque: (Lobby) Transforming Masks",
+						"label": "Information Plaque: (Lobby) Transforming Masks"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Colossus of Rhodes",
+						"label": "Information Plaque: (Ocean) Colossus Of Rhodes"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Poseidon",
+						"label": "Information Plaque: (Ocean) Poseidon"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Poseidon's Temple",
+						"label": "Information Plaque: (Ocean) Poseidon'S Temple"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Quartz Crystal",
+						"label": "Information Plaque: (Ocean) Quartz Crystal"
+					},
+					{
+						"value": "Information Plaque: (Pegasus) Cyclops",
+						"label": "Information Plaque: (Pegasus) Cyclops"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Bronze Unicorn",
+						"label": "Information Plaque: (Prehistoric) Bronze Unicorn"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Eagles Nest",
+						"label": "Information Plaque: (Prehistoric) Eagles Nest"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Griffin",
+						"label": "Information Plaque: (Prehistoric) Griffin"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Large Spider",
+						"label": "Information Plaque: (Prehistoric) Large Spider"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Starfish",
+						"label": "Information Plaque: (Prehistoric) Starfish"
+					},
+					{
+						"value": "Information Plaque: (Shaman) Sarombe doctor of Mozambique",
+						"label": "Information Plaque: (Shaman) Sarombe Doctor Of Mozambique"
+					},
+					{
+						"value": "Information Plaque: (Shaman) Witch Doctors of the Congo",
+						"label": "Information Plaque: (Shaman) Witch Doctors Of The Congo"
+					},
+					{
+						"value": "Information Plaque: (Torture) Guillotine",
+						"label": "Information Plaque: (Torture) Guillotine"
+					},
+					{
+						"value": "Information Plaque: (UFO) Aliens",
+						"label": "Information Plaque: (Ufo) Aliens"
+					},
+					{
+						"value": "Information Plaque: (UFO) Astronomical Construction",
+						"label": "Information Plaque: (Ufo) Astronomical Construction"
+					},
+					{
+						"value": "Information Plaque: (UFO) Coincidence or Extraterrestrial Visits?",
+						"label": "Information Plaque: (Ufo) Coincidence Or Extraterrestrial Visits?"
+					},
+					{
+						"value": "Information Plaque: (UFO) Planets",
+						"label": "Information Plaque: (Ufo) Planets"
+					},
+					{
+						"value": "Information Plaque: (Underground Maze Staircase) Subterranean World",
+						"label": "Information Plaque: (Underground Maze Staircase) Subterranean World"
+					},
+					{
+						"value": "Information Plaque: (Underground Maze) Dero",
+						"label": "Information Plaque: (Underground Maze) Dero"
+					},
+					{
+						"value": "Information Plaque: (Werewolf) Lycanthropy",
+						"label": "Information Plaque: (Werewolf) Lycanthropy"
+					},
+					{
+						"value": "Ixupi Captured Ash",
+						"label": "Ixupi Captured Ash"
+					},
+					{
+						"value": "Ixupi Captured Cloth",
+						"label": "Ixupi Captured Cloth"
+					},
+					{
+						"value": "Ixupi Captured Crystal",
+						"label": "Ixupi Captured Crystal"
+					},
+					{
+						"value": "Ixupi Captured Lightning",
+						"label": "Ixupi Captured Lightning"
+					},
+					{
+						"value": "Ixupi Captured Metal",
+						"label": "Ixupi Captured Metal"
+					},
+					{
+						"value": "Ixupi Captured Oil",
+						"label": "Ixupi Captured Oil"
+					},
+					{
+						"value": "Ixupi Captured Sand",
+						"label": "Ixupi Captured Sand"
+					},
+					{
+						"value": "Ixupi Captured Water",
+						"label": "Ixupi Captured Water"
+					},
+					{
+						"value": "Ixupi Captured Wax",
+						"label": "Ixupi Captured Wax"
+					},
+					{
+						"value": "Ixupi Captured Wood",
+						"label": "Ixupi Captured Wood"
+					},
+					{
+						"value": "Puzzle Hint Found: Atlantis Map",
+						"label": "Puzzle Hint Found: Atlantis Map"
+					},
+					{
+						"value": "Puzzle Hint Found: Basilisk Bone Fragments",
+						"label": "Puzzle Hint Found: Basilisk Bone Fragments"
+					},
+					{
+						"value": "Puzzle Hint Found: Beth's Note",
+						"label": "Puzzle Hint Found: Beth'S Note"
+					},
+					{
+						"value": "Puzzle Hint Found: Brown Symbol",
+						"label": "Puzzle Hint Found: Brown Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Egyptian Sphinx Heard",
+						"label": "Puzzle Hint Found: Egyptian Sphinx Heard"
+					},
+					{
+						"value": "Puzzle Hint Found: Elevator Writing",
+						"label": "Puzzle Hint Found: Elevator Writing"
+					},
+					{
+						"value": "Puzzle Hint Found: Gallows Information Plaque",
+						"label": "Puzzle Hint Found: Gallows Information Plaque"
+					},
+					{
+						"value": "Puzzle Hint Found: Green Symbol",
+						"label": "Puzzle Hint Found: Green Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Mailbox",
+						"label": "Puzzle Hint Found: Mailbox"
+					},
+					{
+						"value": "Puzzle Hint Found: Mastermind Information Plaque",
+						"label": "Puzzle Hint Found: Mastermind Information Plaque"
+					},
+					{
+						"value": "Puzzle Hint Found: Orange Symbol",
+						"label": "Puzzle Hint Found: Orange Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Shaman Security Camera",
+						"label": "Puzzle Hint Found: Shaman Security Camera"
+					},
+					{
+						"value": "Puzzle Hint Found: Silver Symbol",
+						"label": "Puzzle Hint Found: Silver Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Sirens Song Heard",
+						"label": "Puzzle Hint Found: Sirens Song Heard"
+					},
+					{
+						"value": "Puzzle Hint Found: Tan Symbol",
+						"label": "Puzzle Hint Found: Tan Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Tape Recorder Heard",
+						"label": "Puzzle Hint Found: Tape Recorder Heard"
+					},
+					{
+						"value": "Puzzle Hint Found: White Symbol",
+						"label": "Puzzle Hint Found: White Symbol"
+					},
+					{
+						"value": "Puzzle Solved Alchemy",
+						"label": "Puzzle Solved Alchemy"
+					},
+					{
+						"value": "Puzzle Solved Anansi Music Box",
+						"label": "Puzzle Solved Anansi Music Box"
+					},
+					{
+						"value": "Puzzle Solved Atlantis",
+						"label": "Puzzle Solved Atlantis"
+					},
+					{
+						"value": "Puzzle Solved Bedroom Elevator",
+						"label": "Puzzle Solved Bedroom Elevator"
+					},
+					{
+						"value": "Puzzle Solved Burial Door",
+						"label": "Puzzle Solved Burial Door"
+					},
+					{
+						"value": "Puzzle Solved Chinese Solitaire",
+						"label": "Puzzle Solved Chinese Solitaire"
+					},
+					{
+						"value": "Puzzle Solved Clock Chains",
+						"label": "Puzzle Solved Clock Chains"
+					},
+					{
+						"value": "Puzzle Solved Clock Tower Door",
+						"label": "Puzzle Solved Clock Tower Door"
+					},
+					{
+						"value": "Puzzle Solved Columns of RA",
+						"label": "Puzzle Solved Columns Of Ra"
+					},
+					{
+						"value": "Puzzle Solved Combination Lock",
+						"label": "Puzzle Solved Combination Lock"
+					},
+					{
+						"value": "Puzzle Solved Fortune Teller Door",
+						"label": "Puzzle Solved Fortune Teller Door"
+					},
+					{
+						"value": "Puzzle Solved Gallows",
+						"label": "Puzzle Solved Gallows"
+					},
+					{
+						"value": "Puzzle Solved Gears",
+						"label": "Puzzle Solved Gears"
+					},
+					{
+						"value": "Puzzle Solved Library Statue",
+						"label": "Puzzle Solved Library Statue"
+					},
+					{
+						"value": "Puzzle Solved Lyre",
+						"label": "Puzzle Solved Lyre"
+					},
+					{
+						"value": "Puzzle Solved Marble Flipper",
+						"label": "Puzzle Solved Marble Flipper"
+					},
+					{
+						"value": "Puzzle Solved Mastermind",
+						"label": "Puzzle Solved Mastermind"
+					},
+					{
+						"value": "Puzzle Solved Maze Door",
+						"label": "Puzzle Solved Maze Door"
+					},
+					{
+						"value": "Puzzle Solved Office Elevator",
+						"label": "Puzzle Solved Office Elevator"
+					},
+					{
+						"value": "Puzzle Solved Organ",
+						"label": "Puzzle Solved Organ"
+					},
+					{
+						"value": "Puzzle Solved Red Door",
+						"label": "Puzzle Solved Red Door"
+					},
+					{
+						"value": "Puzzle Solved Shaman Drums",
+						"label": "Puzzle Solved Shaman Drums"
+					},
+					{
+						"value": "Puzzle Solved Skull Dial Door",
+						"label": "Puzzle Solved Skull Dial Door"
+					},
+					{
+						"value": "Puzzle Solved Stone Henge",
+						"label": "Puzzle Solved Stone Henge"
+					},
+					{
+						"value": "Puzzle Solved Theater Door",
+						"label": "Puzzle Solved Theater Door"
+					},
+					{
+						"value": "Puzzle Solved Three Floor Elevator",
+						"label": "Puzzle Solved Three Floor Elevator"
+					},
+					{
+						"value": "Puzzle Solved UFO Symbols",
+						"label": "Puzzle Solved Ufo Symbols"
+					},
+					{
+						"value": "Puzzle Solved Workshop Drawers",
+						"label": "Puzzle Solved Workshop Drawers"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "priority_locations",
+			"label": "Priority Locations",
+			"description": "Prevent these locations from having an unimportant item.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Final Riddle: Beth's Body Page 17",
+						"label": "Final Riddle: Beth'S Body Page 17"
+					},
+					{
+						"value": "Final Riddle: Fortune Teller",
+						"label": "Final Riddle: Fortune Teller"
+					},
+					{
+						"value": "Final Riddle: Guillotine Dropped",
+						"label": "Final Riddle: Guillotine Dropped"
+					},
+					{
+						"value": "Final Riddle: Norse God Stone Message",
+						"label": "Final Riddle: Norse God Stone Message"
+					},
+					{
+						"value": "Final Riddle: Planets Aligned",
+						"label": "Final Riddle: Planets Aligned"
+					},
+					{
+						"value": "Flashback Memory Obtained Ancient Astrology",
+						"label": "Flashback Memory Obtained Ancient Astrology"
+					},
+					{
+						"value": "Flashback Memory Obtained Beth's Address Book",
+						"label": "Flashback Memory Obtained Beth'S Address Book"
+					},
+					{
+						"value": "Flashback Memory Obtained Beth's Ghost",
+						"label": "Flashback Memory Obtained Beth'S Ghost"
+					},
+					{
+						"value": "Flashback Memory Obtained Black Book",
+						"label": "Flashback Memory Obtained Black Book"
+					},
+					{
+						"value": "Flashback Memory Obtained Egyptian Hieroglyphics Explained",
+						"label": "Flashback Memory Obtained Egyptian Hieroglyphics Explained"
+					},
+					{
+						"value": "Flashback Memory Obtained In Search of the Unexplained",
+						"label": "Flashback Memory Obtained In Search Of The Unexplained"
+					},
+					{
+						"value": "Flashback Memory Obtained Merrick's Ghost",
+						"label": "Flashback Memory Obtained Merrick'S Ghost"
+					},
+					{
+						"value": "Flashback Memory Obtained Merrick's Notebook",
+						"label": "Flashback Memory Obtained Merrick'S Notebook"
+					},
+					{
+						"value": "Flashback Memory Obtained Museum Blueprints",
+						"label": "Flashback Memory Obtained Museum Blueprints"
+					},
+					{
+						"value": "Flashback Memory Obtained Museum Brochure",
+						"label": "Flashback Memory Obtained Museum Brochure"
+					},
+					{
+						"value": "Flashback Memory Obtained Mythology of the Stars",
+						"label": "Flashback Memory Obtained Mythology Of The Stars"
+					},
+					{
+						"value": "Flashback Memory Obtained Professor Windlenot's Diary",
+						"label": "Flashback Memory Obtained Professor Windlenot'S Diary"
+					},
+					{
+						"value": "Flashback Memory Obtained Scrapbook",
+						"label": "Flashback Memory Obtained Scrapbook"
+					},
+					{
+						"value": "Flashback Memory Obtained South American Pictographs",
+						"label": "Flashback Memory Obtained South American Pictographs"
+					},
+					{
+						"value": "Flashback Memory Obtained Theater Movie",
+						"label": "Flashback Memory Obtained Theater Movie"
+					},
+					{
+						"value": "Flashback Memory Obtained Windlenot's Ghost",
+						"label": "Flashback Memory Obtained Windlenot'S Ghost"
+					},
+					{
+						"value": "Information Plaque: (Anansi) African Creation Myth",
+						"label": "Information Plaque: (Anansi) African Creation Myth"
+					},
+					{
+						"value": "Information Plaque: (Anansi) Apophis the Serpent",
+						"label": "Information Plaque: (Anansi) Apophis The Serpent"
+					},
+					{
+						"value": "Information Plaque: (Anansi) Death",
+						"label": "Information Plaque: (Anansi) Death"
+					},
+					{
+						"value": "Information Plaque: (Burial) Animal Crematorium",
+						"label": "Information Plaque: (Burial) Animal Crematorium"
+					},
+					{
+						"value": "Information Plaque: (Burial) Cremation",
+						"label": "Information Plaque: (Burial) Cremation"
+					},
+					{
+						"value": "Information Plaque: (Burial) Norse Burial Ship",
+						"label": "Information Plaque: (Burial) Norse Burial Ship"
+					},
+					{
+						"value": "Information Plaque: (Burial) Paracas Burial Bundles",
+						"label": "Information Plaque: (Burial) Paracas Burial Bundles"
+					},
+					{
+						"value": "Information Plaque: (Burial) Spectacular Coffins of Ghana",
+						"label": "Information Plaque: (Burial) Spectacular Coffins Of Ghana"
+					},
+					{
+						"value": "Information Plaque: (Egypt) Curse of Anubis",
+						"label": "Information Plaque: (Egypt) Curse Of Anubis"
+					},
+					{
+						"value": "Information Plaque: (Egypt) The Sphinx",
+						"label": "Information Plaque: (Egypt) The Sphinx"
+					},
+					{
+						"value": "Information Plaque: (Egypt) Tomb of the Ixupi",
+						"label": "Information Plaque: (Egypt) Tomb Of The Ixupi"
+					},
+					{
+						"value": "Information Plaque: (Gods) Celtic Janus Sculpture",
+						"label": "Information Plaque: (Gods) Celtic Janus Sculpture"
+					},
+					{
+						"value": "Information Plaque: (Gods) Chuen",
+						"label": "Information Plaque: (Gods) Chuen"
+					},
+					{
+						"value": "Information Plaque: (Gods) Fisherman's Canoe God",
+						"label": "Information Plaque: (Gods) Fisherman'S Canoe God"
+					},
+					{
+						"value": "Information Plaque: (Gods) Mayan Gods",
+						"label": "Information Plaque: (Gods) Mayan Gods"
+					},
+					{
+						"value": "Information Plaque: (Gods) Sumerian Bull God - An",
+						"label": "Information Plaque: (Gods) Sumerian Bull God - An"
+					},
+					{
+						"value": "Information Plaque: (Gods) Sumerian Lyre",
+						"label": "Information Plaque: (Gods) Sumerian Lyre"
+					},
+					{
+						"value": "Information Plaque: (Gods) Thor",
+						"label": "Information Plaque: (Gods) Thor"
+					},
+					{
+						"value": "Information Plaque: (Lobby) Jade Skull",
+						"label": "Information Plaque: (Lobby) Jade Skull"
+					},
+					{
+						"value": "Information Plaque: (Lobby) Transforming Masks",
+						"label": "Information Plaque: (Lobby) Transforming Masks"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Colossus of Rhodes",
+						"label": "Information Plaque: (Ocean) Colossus Of Rhodes"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Poseidon",
+						"label": "Information Plaque: (Ocean) Poseidon"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Poseidon's Temple",
+						"label": "Information Plaque: (Ocean) Poseidon'S Temple"
+					},
+					{
+						"value": "Information Plaque: (Ocean) Quartz Crystal",
+						"label": "Information Plaque: (Ocean) Quartz Crystal"
+					},
+					{
+						"value": "Information Plaque: (Pegasus) Cyclops",
+						"label": "Information Plaque: (Pegasus) Cyclops"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Bronze Unicorn",
+						"label": "Information Plaque: (Prehistoric) Bronze Unicorn"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Eagles Nest",
+						"label": "Information Plaque: (Prehistoric) Eagles Nest"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Griffin",
+						"label": "Information Plaque: (Prehistoric) Griffin"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Large Spider",
+						"label": "Information Plaque: (Prehistoric) Large Spider"
+					},
+					{
+						"value": "Information Plaque: (Prehistoric) Starfish",
+						"label": "Information Plaque: (Prehistoric) Starfish"
+					},
+					{
+						"value": "Information Plaque: (Shaman) Sarombe doctor of Mozambique",
+						"label": "Information Plaque: (Shaman) Sarombe Doctor Of Mozambique"
+					},
+					{
+						"value": "Information Plaque: (Shaman) Witch Doctors of the Congo",
+						"label": "Information Plaque: (Shaman) Witch Doctors Of The Congo"
+					},
+					{
+						"value": "Information Plaque: (Torture) Guillotine",
+						"label": "Information Plaque: (Torture) Guillotine"
+					},
+					{
+						"value": "Information Plaque: (UFO) Aliens",
+						"label": "Information Plaque: (Ufo) Aliens"
+					},
+					{
+						"value": "Information Plaque: (UFO) Astronomical Construction",
+						"label": "Information Plaque: (Ufo) Astronomical Construction"
+					},
+					{
+						"value": "Information Plaque: (UFO) Coincidence or Extraterrestrial Visits?",
+						"label": "Information Plaque: (Ufo) Coincidence Or Extraterrestrial Visits?"
+					},
+					{
+						"value": "Information Plaque: (UFO) Planets",
+						"label": "Information Plaque: (Ufo) Planets"
+					},
+					{
+						"value": "Information Plaque: (Underground Maze Staircase) Subterranean World",
+						"label": "Information Plaque: (Underground Maze Staircase) Subterranean World"
+					},
+					{
+						"value": "Information Plaque: (Underground Maze) Dero",
+						"label": "Information Plaque: (Underground Maze) Dero"
+					},
+					{
+						"value": "Information Plaque: (Werewolf) Lycanthropy",
+						"label": "Information Plaque: (Werewolf) Lycanthropy"
+					},
+					{
+						"value": "Ixupi Captured Ash",
+						"label": "Ixupi Captured Ash"
+					},
+					{
+						"value": "Ixupi Captured Cloth",
+						"label": "Ixupi Captured Cloth"
+					},
+					{
+						"value": "Ixupi Captured Crystal",
+						"label": "Ixupi Captured Crystal"
+					},
+					{
+						"value": "Ixupi Captured Lightning",
+						"label": "Ixupi Captured Lightning"
+					},
+					{
+						"value": "Ixupi Captured Metal",
+						"label": "Ixupi Captured Metal"
+					},
+					{
+						"value": "Ixupi Captured Oil",
+						"label": "Ixupi Captured Oil"
+					},
+					{
+						"value": "Ixupi Captured Sand",
+						"label": "Ixupi Captured Sand"
+					},
+					{
+						"value": "Ixupi Captured Water",
+						"label": "Ixupi Captured Water"
+					},
+					{
+						"value": "Ixupi Captured Wax",
+						"label": "Ixupi Captured Wax"
+					},
+					{
+						"value": "Ixupi Captured Wood",
+						"label": "Ixupi Captured Wood"
+					},
+					{
+						"value": "Puzzle Hint Found: Atlantis Map",
+						"label": "Puzzle Hint Found: Atlantis Map"
+					},
+					{
+						"value": "Puzzle Hint Found: Basilisk Bone Fragments",
+						"label": "Puzzle Hint Found: Basilisk Bone Fragments"
+					},
+					{
+						"value": "Puzzle Hint Found: Beth's Note",
+						"label": "Puzzle Hint Found: Beth'S Note"
+					},
+					{
+						"value": "Puzzle Hint Found: Brown Symbol",
+						"label": "Puzzle Hint Found: Brown Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Egyptian Sphinx Heard",
+						"label": "Puzzle Hint Found: Egyptian Sphinx Heard"
+					},
+					{
+						"value": "Puzzle Hint Found: Elevator Writing",
+						"label": "Puzzle Hint Found: Elevator Writing"
+					},
+					{
+						"value": "Puzzle Hint Found: Gallows Information Plaque",
+						"label": "Puzzle Hint Found: Gallows Information Plaque"
+					},
+					{
+						"value": "Puzzle Hint Found: Green Symbol",
+						"label": "Puzzle Hint Found: Green Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Mailbox",
+						"label": "Puzzle Hint Found: Mailbox"
+					},
+					{
+						"value": "Puzzle Hint Found: Mastermind Information Plaque",
+						"label": "Puzzle Hint Found: Mastermind Information Plaque"
+					},
+					{
+						"value": "Puzzle Hint Found: Orange Symbol",
+						"label": "Puzzle Hint Found: Orange Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Shaman Security Camera",
+						"label": "Puzzle Hint Found: Shaman Security Camera"
+					},
+					{
+						"value": "Puzzle Hint Found: Silver Symbol",
+						"label": "Puzzle Hint Found: Silver Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Sirens Song Heard",
+						"label": "Puzzle Hint Found: Sirens Song Heard"
+					},
+					{
+						"value": "Puzzle Hint Found: Tan Symbol",
+						"label": "Puzzle Hint Found: Tan Symbol"
+					},
+					{
+						"value": "Puzzle Hint Found: Tape Recorder Heard",
+						"label": "Puzzle Hint Found: Tape Recorder Heard"
+					},
+					{
+						"value": "Puzzle Hint Found: White Symbol",
+						"label": "Puzzle Hint Found: White Symbol"
+					},
+					{
+						"value": "Puzzle Solved Alchemy",
+						"label": "Puzzle Solved Alchemy"
+					},
+					{
+						"value": "Puzzle Solved Anansi Music Box",
+						"label": "Puzzle Solved Anansi Music Box"
+					},
+					{
+						"value": "Puzzle Solved Atlantis",
+						"label": "Puzzle Solved Atlantis"
+					},
+					{
+						"value": "Puzzle Solved Bedroom Elevator",
+						"label": "Puzzle Solved Bedroom Elevator"
+					},
+					{
+						"value": "Puzzle Solved Burial Door",
+						"label": "Puzzle Solved Burial Door"
+					},
+					{
+						"value": "Puzzle Solved Chinese Solitaire",
+						"label": "Puzzle Solved Chinese Solitaire"
+					},
+					{
+						"value": "Puzzle Solved Clock Chains",
+						"label": "Puzzle Solved Clock Chains"
+					},
+					{
+						"value": "Puzzle Solved Clock Tower Door",
+						"label": "Puzzle Solved Clock Tower Door"
+					},
+					{
+						"value": "Puzzle Solved Columns of RA",
+						"label": "Puzzle Solved Columns Of Ra"
+					},
+					{
+						"value": "Puzzle Solved Combination Lock",
+						"label": "Puzzle Solved Combination Lock"
+					},
+					{
+						"value": "Puzzle Solved Fortune Teller Door",
+						"label": "Puzzle Solved Fortune Teller Door"
+					},
+					{
+						"value": "Puzzle Solved Gallows",
+						"label": "Puzzle Solved Gallows"
+					},
+					{
+						"value": "Puzzle Solved Gears",
+						"label": "Puzzle Solved Gears"
+					},
+					{
+						"value": "Puzzle Solved Library Statue",
+						"label": "Puzzle Solved Library Statue"
+					},
+					{
+						"value": "Puzzle Solved Lyre",
+						"label": "Puzzle Solved Lyre"
+					},
+					{
+						"value": "Puzzle Solved Marble Flipper",
+						"label": "Puzzle Solved Marble Flipper"
+					},
+					{
+						"value": "Puzzle Solved Mastermind",
+						"label": "Puzzle Solved Mastermind"
+					},
+					{
+						"value": "Puzzle Solved Maze Door",
+						"label": "Puzzle Solved Maze Door"
+					},
+					{
+						"value": "Puzzle Solved Office Elevator",
+						"label": "Puzzle Solved Office Elevator"
+					},
+					{
+						"value": "Puzzle Solved Organ",
+						"label": "Puzzle Solved Organ"
+					},
+					{
+						"value": "Puzzle Solved Red Door",
+						"label": "Puzzle Solved Red Door"
+					},
+					{
+						"value": "Puzzle Solved Shaman Drums",
+						"label": "Puzzle Solved Shaman Drums"
+					},
+					{
+						"value": "Puzzle Solved Skull Dial Door",
+						"label": "Puzzle Solved Skull Dial Door"
+					},
+					{
+						"value": "Puzzle Solved Stone Henge",
+						"label": "Puzzle Solved Stone Henge"
+					},
+					{
+						"value": "Puzzle Solved Theater Door",
+						"label": "Puzzle Solved Theater Door"
+					},
+					{
+						"value": "Puzzle Solved Three Floor Elevator",
+						"label": "Puzzle Solved Three Floor Elevator"
+					},
+					{
+						"value": "Puzzle Solved UFO Symbols",
+						"label": "Puzzle Solved Ufo Symbols"
+					},
+					{
+						"value": "Puzzle Solved Workshop Drawers",
+						"label": "Puzzle Solved Workshop Drawers"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "ixupi_captures_needed",
+			"label": "Ixupi Captures Needed",
+			"description": "Number of Ixupi Captures needed for goal condition.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 10,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lobby_access",
+			"label": "Lobby Access",
+			"description": "Chooses how keys needed to reach the lobby are placed.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "early",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "early",
+						"label": "Early"
+					},
+					{
+						"value": "local",
+						"label": "Local"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "puzzle_hints_required",
+			"label": "Puzzle Hints Required",
+			"description": "If turned on puzzle hints/solutions will be available before the corresponding puzzle is required.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "include_information_plaques",
+			"label": "Include Information Plaques",
+			"description": "Adds Information Plaques as checks.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "front_door_usable",
+			"label": "Front Door Usable",
+			"description": "Adds a key to unlock the front door of the museum.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "elevators_stay_solved",
+			"label": "Elevators Stay Solved",
+			"description": "Adds elevators as checks and will remain open upon solving them.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_beth",
+			"label": "Early Beth",
+			"description": "Beth's body is open at the start of the game.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_lightning",
+			"label": "Early Lightning",
+			"description": "Allows lightning to be captured at any point in the game.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "location_pot_pieces",
+			"label": "Location Pot Pieces",
+			"description": "Chooses where pot pieces will be located within the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "any_world",
+				"choices": [
+					{
+						"value": "own_world",
+						"label": "Own World"
+					},
+					{
+						"value": "different_world",
+						"label": "Different World"
+					},
+					{
+						"value": "any_world",
+						"label": "Any World"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "full_pots",
+			"label": "Full Pots",
+			"description": "Chooses if pots will be in pieces or already completed - Pieces: Only pot pieces will be added to the item pool - Complete: Only completed pots will be added to the item pool - Mixed: Each pot will be randomly chosen to be pieces or already completed.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "pieces",
+				"choices": [
+					{
+						"value": "pieces",
+						"label": "Pieces"
+					},
+					{
+						"value": "complete",
+						"label": "Complete"
+					},
+					{
+						"value": "mixed",
+						"label": "Mixed"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ixupi_captures_priority",
+			"label": "Ixupi Captures Priority",
+			"description": "Ixupi captures are set to priority locations.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "puzzle_collect_behavior",
+			"label": "Puzzle Collect Behavior",
+			"description": "Defines what happens to puzzles on collect.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "prevent_out_of_logic_access",
+				"choices": [
+					{
+						"value": "solve_none",
+						"label": "Solve None"
+					},
+					{
+						"value": "prevent_out_of_logic_access",
+						"label": "Prevent Out Of Logic Access"
+					},
+					{
+						"value": "solve_all",
+						"label": "Solve All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

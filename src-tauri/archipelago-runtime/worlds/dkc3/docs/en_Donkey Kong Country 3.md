@@ -13,6 +13,7 @@ would in the vanilla game.
 ## What is the goal of Donkey Kong Country 3 when randomized?
 
 There are two goals which can be chosen:
+
 - `Knautilus`: Collect Bonus Coins and Krematoa Cogs to reach K. Rool's submarine in Krematoa
 - `Banana Bird Hunt`: Collect Banana Birds to free the Banana Bird Mother
 

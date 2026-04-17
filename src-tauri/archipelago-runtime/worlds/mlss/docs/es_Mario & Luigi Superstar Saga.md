@@ -21,6 +21,7 @@ También se pueden randomizar otros aspectos del juego, como la música, los son
 Derrotar al Alma de Cackletta en el Castillo de Bowser. Para ello, debes recoger las 4 piezas de la Judía Estelar (Beanstar), restaurarla y llevar el vestido extra de Peach y la Beanstar falsa a Fawful al final de Jokes End.
 
 En total, esto requiere
+
 - Las 4 Piezas de la Beanstar
 - El Vestido extra de Peach
 - La Beanstar falsa
@@ -38,6 +39,7 @@ En total, esto requiere
 ## ¿Qué objetos y ubicaciones se pueden randomizar?
 
 Ubicaciones en las que se pueden encontrar objetos:
+
 - Todos los Bloques de Objetos y Bloques de Monedas
 - Todos los puntos de exavación de Chuckle Beans
 - Todos los objetos de las tiendas
@@ -47,6 +49,7 @@ Ubicaciones en las que se pueden encontrar objetos:
 - Todos los objetos de eventos
 
 Objetos que se pueden randomizar
+
 - Todos los objetos consumibles (champiñones, frutos secos, jarabes, etc.)
 - Todos los Hoo Beans y Chuckle Beans
 - Todas las insignias y pantalones
@@ -61,4 +64,3 @@ Los objetos del mundo de otro jugador que se encuentren en las tiendas se mostra
 ## ¿Qué ocurre cuando el jugador recibe un objeto?
 
 Los objetos se directamente en el inventario del jugador tras unos segundos. A veces, para que ciertos eventos y escenas se activen correctamente después de recibir un objeto, es posible que tengas que salir y volver a entrar en la sala para cargar correctamente todo lo necesario para el evento o escena correspondiente.
-

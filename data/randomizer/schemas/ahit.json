@@ -1,1055 +1,1055 @@
 {
-  "id": "ahit",
-  "name": "A Hat in Time",
-  "version": "0.1.6",
-  "description": "A Hat in Time is a cute-as-peck 3D platformer featuring a little girl who stitches hats for wicked powers!",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "EndGoal",
-      "label": "Endgoal",
-      "description": "The end goal required to beat the game.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "finale",
-        "choices": [
-          {
-            "value": "finale",
-            "label": "Finale"
-          },
-          {
-            "value": "rush_hour",
-            "label": "Rush Hour"
-          },
-          {
-            "value": "seal_the_deal",
-            "label": "Seal The Deal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ActRandomizer",
-      "label": "Actrandomizer",
-      "description": "If enabled, shuffle the game's Acts between each other.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "light",
-        "choices": [
-          {
-            "value": "false",
-            "label": "False"
-          },
-          {
-            "value": "light",
-            "label": "Light"
-          },
-          {
-            "value": "insanity",
-            "label": "Insanity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ShuffleAlpineZiplines",
-      "label": "Shufflealpineziplines",
-      "description": "If enabled, Alpine's zipline paths leading to the peaks will be locked behind items.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "FinaleShuffle",
-      "label": "Finaleshuffle",
-      "description": "If enabled, chapter finales will only be shuffled amongst each other in act shuffle.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "LogicDifficulty",
-      "label": "Logicdifficulty",
-      "description": "Choose the difficulty setting for logic.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "moderate",
-            "label": "Moderate"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          },
-          {
-            "value": "expert",
-            "label": "Expert"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "YarnBalancePercent",
-      "label": "Yarnbalancepercent",
-      "description": "How much (in percentage) of the yarn in the pool that will be progression balanced.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "TimePieceBalancePercent",
-      "label": "Timepiecebalancepercent",
-      "description": "How much (in percentage) of time pieces in the pool that will be progression balanced.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 35
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "RandomizeHatOrder",
-      "label": "Randomizehatorder",
-      "description": "Randomize the order that hats are stitched in.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "true",
-        "choices": [
-          {
-            "value": "false",
-            "label": "False"
-          },
-          {
-            "value": "true",
-            "label": "True"
-          },
-          {
-            "value": "time_stop_last",
-            "label": "Time Stop Last"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "UmbrellaLogic",
-      "label": "Umbrellalogic",
-      "description": "Makes Hat Kid's default punch attack do absolutely nothing, making the Umbrella much more relevant and useful",
-      "category": "logic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "StartWithCompassBadge",
-      "label": "Startwithcompassbadge",
-      "description": "If enabled, start with the Compass Badge.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "CompassBadgeMode",
-      "label": "Compassbadgemode",
-      "description": "closest - Compass Badge points to the closest item regardless of classification important_only - Compass Badge points to progression/useful items only important_first - Compass Badge points to progression/useful items first, then it will point to junk items",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "closest",
-        "choices": [
-          {
-            "value": "closest",
-            "label": "Closest"
-          },
-          {
-            "value": "important_only",
-            "label": "Important Only"
-          },
-          {
-            "value": "important_first",
-            "label": "Important First"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ShuffleStorybookPages",
-      "label": "Shufflestorybookpages",
-      "description": "If enabled, each storybook page in the purple Time Rifts is an item check.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ShuffleDirectorTokens",
-      "label": "Shuffledirectortokens",
-      "description": "If enabled, causes the Conductor/DJ Grooves tokens found in Chapter 2 levels to become item checks.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ShuffleActContracts",
-      "label": "Shuffleactcontracts",
-      "description": "If enabled, shuffle Snatcher's act contracts into the pool as items",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ShuffleSubconPaintings",
-      "label": "Shufflesubconpaintings",
-      "description": "If enabled, shuffle items into the pool that unlock Subcon Forest fire spirit paintings.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "NoPaintingSkips",
-      "label": "Nopaintingskips",
-      "description": "If enabled, prevent Subcon fire wall skips from being in logic on higher difficulty settings.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "StartingChapter",
-      "label": "Startingchapter",
-      "description": "Determines which chapter you will be guaranteed to be able to enter at the beginning of the game.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "1",
-        "choices": [
-          {
-            "value": "1",
-            "label": "1"
-          },
-          {
-            "value": "2",
-            "label": "2"
-          },
-          {
-            "value": "3",
-            "label": "3"
-          },
-          {
-            "value": "4",
-            "label": "4"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "CTRLogic",
-      "label": "Ctrlogic",
-      "description": "Choose how you want to logically clear Cheating the Race.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "time_stop_only",
-        "choices": [
-          {
-            "value": "time_stop_only",
-            "label": "Time Stop Only"
-          },
-          {
-            "value": "scooter",
-            "label": "Scooter"
-          },
-          {
-            "value": "sprint",
-            "label": "Sprint"
-          },
-          {
-            "value": "nothing",
-            "label": "Nothing"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "EnableDLC1",
-      "label": "Enabledlc1",
-      "description": "Shuffle content from The Arctic Cruise (Chapter 6) into the game.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "Tasksanity",
-      "label": "Tasksanity",
-      "description": "If enabled, Ship Shape tasks will become checks.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "TasksanityTaskStep",
-      "label": "Tasksanitytaskstep",
-      "description": "How many tasks the player must complete in Tasksanity to send a check.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 3,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "TasksanityCheckCount",
-      "label": "Tasksanitycheckcount",
-      "description": "How many Tasksanity checks there will be in total.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 30,
-        "step": 1,
-        "default": 18
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ExcludeTour",
-      "label": "Excludetour",
-      "description": "Removes the Tour time rift from the game.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ShipShapeCustomTaskGoal",
-      "label": "Shipshapecustomtaskgoal",
-      "description": "Change the number of tasks required to complete Ship Shape.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 90,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "EnableDeathWish",
-      "label": "Enabledeathwish",
-      "description": "Shuffle Death Wish contracts into the game.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DWShuffle",
-      "label": "Dwshuffle",
-      "description": "An alternative mode for Death Wish where each contract is unlocked one by one, in a random order.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DWShuffleCountMin",
-      "label": "Dwshufflecountmin",
-      "description": "The minimum number of Death Wishes that can be in the Death Wish shuffle sequence.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 5,
-        "max": 38,
-        "step": 1,
-        "default": 18
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DWShuffleCountMax",
-      "label": "Dwshufflecountmax",
-      "description": "The maximum number of Death Wishes that can be in the Death Wish shuffle sequence.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 5,
-        "max": 38,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DeathWishOnly",
-      "label": "Deathwishonly",
-      "description": "An alternative gameplay mode that allows you to exclusively play Death Wish in a seed.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DWEnableBonus",
-      "label": "Dwenablebonus",
-      "description": "In Death Wish, add a location for completing all of a DW contract's bonuses, in addition to the location for completing the DW contract normally.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DWAutoCompleteBonuses",
-      "label": "Dwautocompletebonuses",
-      "description": "If enabled, auto complete all bonus stamps after completing the main objective in a Death Wish.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DWExcludeAnnoyingContracts",
-      "label": "Dwexcludeannoyingcontracts",
-      "description": "Exclude Death Wish contracts from the pool that are particularly tedious or take a long time to reach/clear.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DWExcludeAnnoyingBonuses",
-      "label": "Dwexcludeannoyingbonuses",
-      "description": "If Death Wish full completions are shuffled in, exclude tedious Death Wish full completions from the pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DWExcludeCandles",
-      "label": "Dwexcludecandles",
-      "description": "If enabled, exclude all candle Death Wishes.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "DWTimePieceRequirement",
-      "label": "Dwtimepiecerequirement",
-      "description": "How many Time Pieces that will be required to unlock Death Wish.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 35,
-        "step": 1,
-        "default": 15
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "EnableDLC2",
-      "label": "Enabledlc2",
-      "description": "Shuffle content from Nyakuza Metro (Chapter 7) into the game.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "BaseballBat",
-      "label": "Baseballbat",
-      "description": "Replace the Umbrella with the baseball bat from Nyakuza Metro.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MetroMinPonCost",
-      "label": "Metrominponcost",
-      "description": "The cheapest an item can be in any Nyakuza Metro shop.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 10,
-        "max": 800,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MetroMaxPonCost",
-      "label": "Metromaxponcost",
-      "description": "The most expensive an item can be in any Nyakuza Metro shop.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 10,
-        "max": 800,
-        "step": 1,
-        "default": 200
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "NyakuzaThugMinShopItems",
-      "label": "Nyakuzathugminshopitems",
-      "description": "The smallest number of items that the thugs in Nyakuza Metro can have for sale.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "NyakuzaThugMaxShopItems",
-      "label": "Nyakuzathugmaxshopitems",
-      "description": "The largest number of items that the thugs in Nyakuza Metro can have for sale.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "NoTicketSkips",
-      "label": "Noticketskips",
-      "description": "Prevent metro gate skips from being in logic on higher difficulties.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "false",
-        "choices": [
-          {
-            "value": "false",
-            "label": "False"
-          },
-          {
-            "value": "true",
-            "label": "True"
-          },
-          {
-            "value": "rush_hour",
-            "label": "Rush Hour"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "LowestChapterCost",
-      "label": "Lowestchaptercost",
-      "description": "Value determining the lowest possible cost for a chapter.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "HighestChapterCost",
-      "label": "Highestchaptercost",
-      "description": "Value determining the highest possible cost for a chapter.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 15,
-        "max": 45,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ChapterCostIncrement",
-      "label": "Chaptercostincrement",
-      "description": "Lower values mean chapter costs increase slower.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 8,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ChapterCostMinDifference",
-      "label": "Chaptercostmindifference",
-      "description": "The minimum difference between chapter costs.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 8,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MaxExtraTimePieces",
-      "label": "Maxextratimepieces",
-      "description": "Maximum number of extra Time Pieces from the DLCs.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 16
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "FinalChapterMinCost",
-      "label": "Finalchaptermincost",
-      "description": "Minimum Time Pieces required to enter the final chapter.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 50,
-        "step": 1,
-        "default": 30
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "FinalChapterMaxCost",
-      "label": "Finalchaptermaxcost",
-      "description": "Maximum Time Pieces required to enter the final chapter.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 50,
-        "step": 1,
-        "default": 35
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "YarnCostMin",
-      "label": "Yarncostmin",
-      "description": "The minimum possible yarn needed to stitch a hat.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 12,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "YarnCostMax",
-      "label": "Yarncostmax",
-      "description": "The maximum possible yarn needed to stitch a hat.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 12,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "YarnAvailable",
-      "label": "Yarnavailable",
-      "description": "How much yarn is available to collect in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 30,
-        "max": 80,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MinExtraYarn",
-      "label": "Minextrayarn",
-      "description": "The minimum number of extra yarn in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 5,
-        "max": 15,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "HatItems",
-      "label": "Hatitems",
-      "description": "Removes all yarn from the pool and turns the hats into individual items instead.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MinPonCost",
-      "label": "Minponcost",
-      "description": "The minimum number of Pons that any item in the Badge Seller's shop can cost.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 10,
-        "max": 800,
-        "step": 1,
-        "default": 75
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "MaxPonCost",
-      "label": "Maxponcost",
-      "description": "The maximum number of Pons that any item in the Badge Seller's shop can cost.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 10,
-        "max": 800,
-        "step": 1,
-        "default": 300
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "BadgeSellerMinItems",
-      "label": "Badgesellerminitems",
-      "description": "The smallest number of items that the Badge Seller can have for sale.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "BadgeSellerMaxItems",
-      "label": "Badgesellermaxitems",
-      "description": "The largest number of items that the Badge Seller can have for sale.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "TrapChance",
-      "label": "Trapchance",
-      "description": "The chance for any junk item in the pool to be replaced by a trap.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "BabyTrapWeight",
-      "label": "Babytrapweight",
-      "description": "The weight of Baby Traps in the trap pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 40
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "LaserTrapWeight",
-      "label": "Lasertrapweight",
-      "description": "The weight of Laser Traps in the trap pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 40
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ParadeTrapWeight",
-      "label": "Paradetrapweight",
-      "description": "The weight of Parade Traps in the trap pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link_amnesty",
-      "label": "Death Link Amnesty",
-      "description": "Amount of forgiven deaths before sending a Death Link.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dw_death_link_amnesty",
-      "label": "Dw Death Link Amnesty",
-      "description": "Amount of forgiven deaths before sending a Death Link during Death Wish levels.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 30,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "ahit",
+	"name": "A Hat in Time",
+	"version": "0.1.6",
+	"description": "A Hat in Time is a cute-as-peck 3D platformer featuring a little girl who stitches hats for wicked powers!",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "EndGoal",
+			"label": "Endgoal",
+			"description": "The end goal required to beat the game.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "finale",
+				"choices": [
+					{
+						"value": "finale",
+						"label": "Finale"
+					},
+					{
+						"value": "rush_hour",
+						"label": "Rush Hour"
+					},
+					{
+						"value": "seal_the_deal",
+						"label": "Seal The Deal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ActRandomizer",
+			"label": "Actrandomizer",
+			"description": "If enabled, shuffle the game's Acts between each other.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "light",
+				"choices": [
+					{
+						"value": "false",
+						"label": "False"
+					},
+					{
+						"value": "light",
+						"label": "Light"
+					},
+					{
+						"value": "insanity",
+						"label": "Insanity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ShuffleAlpineZiplines",
+			"label": "Shufflealpineziplines",
+			"description": "If enabled, Alpine's zipline paths leading to the peaks will be locked behind items.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "FinaleShuffle",
+			"label": "Finaleshuffle",
+			"description": "If enabled, chapter finales will only be shuffled amongst each other in act shuffle.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "LogicDifficulty",
+			"label": "Logicdifficulty",
+			"description": "Choose the difficulty setting for logic.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "moderate",
+						"label": "Moderate"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					},
+					{
+						"value": "expert",
+						"label": "Expert"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "YarnBalancePercent",
+			"label": "Yarnbalancepercent",
+			"description": "How much (in percentage) of the yarn in the pool that will be progression balanced.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "TimePieceBalancePercent",
+			"label": "Timepiecebalancepercent",
+			"description": "How much (in percentage) of time pieces in the pool that will be progression balanced.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 35
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "RandomizeHatOrder",
+			"label": "Randomizehatorder",
+			"description": "Randomize the order that hats are stitched in.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "true",
+				"choices": [
+					{
+						"value": "false",
+						"label": "False"
+					},
+					{
+						"value": "true",
+						"label": "True"
+					},
+					{
+						"value": "time_stop_last",
+						"label": "Time Stop Last"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "UmbrellaLogic",
+			"label": "Umbrellalogic",
+			"description": "Makes Hat Kid's default punch attack do absolutely nothing, making the Umbrella much more relevant and useful",
+			"category": "logic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "StartWithCompassBadge",
+			"label": "Startwithcompassbadge",
+			"description": "If enabled, start with the Compass Badge.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "CompassBadgeMode",
+			"label": "Compassbadgemode",
+			"description": "closest - Compass Badge points to the closest item regardless of classification important_only - Compass Badge points to progression/useful items only important_first - Compass Badge points to progression/useful items first, then it will point to junk items",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "closest",
+				"choices": [
+					{
+						"value": "closest",
+						"label": "Closest"
+					},
+					{
+						"value": "important_only",
+						"label": "Important Only"
+					},
+					{
+						"value": "important_first",
+						"label": "Important First"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ShuffleStorybookPages",
+			"label": "Shufflestorybookpages",
+			"description": "If enabled, each storybook page in the purple Time Rifts is an item check.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ShuffleDirectorTokens",
+			"label": "Shuffledirectortokens",
+			"description": "If enabled, causes the Conductor/DJ Grooves tokens found in Chapter 2 levels to become item checks.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ShuffleActContracts",
+			"label": "Shuffleactcontracts",
+			"description": "If enabled, shuffle Snatcher's act contracts into the pool as items",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ShuffleSubconPaintings",
+			"label": "Shufflesubconpaintings",
+			"description": "If enabled, shuffle items into the pool that unlock Subcon Forest fire spirit paintings.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "NoPaintingSkips",
+			"label": "Nopaintingskips",
+			"description": "If enabled, prevent Subcon fire wall skips from being in logic on higher difficulty settings.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "StartingChapter",
+			"label": "Startingchapter",
+			"description": "Determines which chapter you will be guaranteed to be able to enter at the beginning of the game.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "1",
+				"choices": [
+					{
+						"value": "1",
+						"label": "1"
+					},
+					{
+						"value": "2",
+						"label": "2"
+					},
+					{
+						"value": "3",
+						"label": "3"
+					},
+					{
+						"value": "4",
+						"label": "4"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "CTRLogic",
+			"label": "Ctrlogic",
+			"description": "Choose how you want to logically clear Cheating the Race.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "time_stop_only",
+				"choices": [
+					{
+						"value": "time_stop_only",
+						"label": "Time Stop Only"
+					},
+					{
+						"value": "scooter",
+						"label": "Scooter"
+					},
+					{
+						"value": "sprint",
+						"label": "Sprint"
+					},
+					{
+						"value": "nothing",
+						"label": "Nothing"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "EnableDLC1",
+			"label": "Enabledlc1",
+			"description": "Shuffle content from The Arctic Cruise (Chapter 6) into the game.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "Tasksanity",
+			"label": "Tasksanity",
+			"description": "If enabled, Ship Shape tasks will become checks.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "TasksanityTaskStep",
+			"label": "Tasksanitytaskstep",
+			"description": "How many tasks the player must complete in Tasksanity to send a check.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 3,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "TasksanityCheckCount",
+			"label": "Tasksanitycheckcount",
+			"description": "How many Tasksanity checks there will be in total.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 30,
+				"step": 1,
+				"default": 18
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ExcludeTour",
+			"label": "Excludetour",
+			"description": "Removes the Tour time rift from the game.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ShipShapeCustomTaskGoal",
+			"label": "Shipshapecustomtaskgoal",
+			"description": "Change the number of tasks required to complete Ship Shape.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 90,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "EnableDeathWish",
+			"label": "Enabledeathwish",
+			"description": "Shuffle Death Wish contracts into the game.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DWShuffle",
+			"label": "Dwshuffle",
+			"description": "An alternative mode for Death Wish where each contract is unlocked one by one, in a random order.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DWShuffleCountMin",
+			"label": "Dwshufflecountmin",
+			"description": "The minimum number of Death Wishes that can be in the Death Wish shuffle sequence.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 5,
+				"max": 38,
+				"step": 1,
+				"default": 18
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DWShuffleCountMax",
+			"label": "Dwshufflecountmax",
+			"description": "The maximum number of Death Wishes that can be in the Death Wish shuffle sequence.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 5,
+				"max": 38,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DeathWishOnly",
+			"label": "Deathwishonly",
+			"description": "An alternative gameplay mode that allows you to exclusively play Death Wish in a seed.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DWEnableBonus",
+			"label": "Dwenablebonus",
+			"description": "In Death Wish, add a location for completing all of a DW contract's bonuses, in addition to the location for completing the DW contract normally.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DWAutoCompleteBonuses",
+			"label": "Dwautocompletebonuses",
+			"description": "If enabled, auto complete all bonus stamps after completing the main objective in a Death Wish.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DWExcludeAnnoyingContracts",
+			"label": "Dwexcludeannoyingcontracts",
+			"description": "Exclude Death Wish contracts from the pool that are particularly tedious or take a long time to reach/clear.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DWExcludeAnnoyingBonuses",
+			"label": "Dwexcludeannoyingbonuses",
+			"description": "If Death Wish full completions are shuffled in, exclude tedious Death Wish full completions from the pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DWExcludeCandles",
+			"label": "Dwexcludecandles",
+			"description": "If enabled, exclude all candle Death Wishes.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "DWTimePieceRequirement",
+			"label": "Dwtimepiecerequirement",
+			"description": "How many Time Pieces that will be required to unlock Death Wish.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 35,
+				"step": 1,
+				"default": 15
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "EnableDLC2",
+			"label": "Enabledlc2",
+			"description": "Shuffle content from Nyakuza Metro (Chapter 7) into the game.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "BaseballBat",
+			"label": "Baseballbat",
+			"description": "Replace the Umbrella with the baseball bat from Nyakuza Metro.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MetroMinPonCost",
+			"label": "Metrominponcost",
+			"description": "The cheapest an item can be in any Nyakuza Metro shop.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 10,
+				"max": 800,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MetroMaxPonCost",
+			"label": "Metromaxponcost",
+			"description": "The most expensive an item can be in any Nyakuza Metro shop.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 10,
+				"max": 800,
+				"step": 1,
+				"default": 200
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "NyakuzaThugMinShopItems",
+			"label": "Nyakuzathugminshopitems",
+			"description": "The smallest number of items that the thugs in Nyakuza Metro can have for sale.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "NyakuzaThugMaxShopItems",
+			"label": "Nyakuzathugmaxshopitems",
+			"description": "The largest number of items that the thugs in Nyakuza Metro can have for sale.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "NoTicketSkips",
+			"label": "Noticketskips",
+			"description": "Prevent metro gate skips from being in logic on higher difficulties.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "false",
+				"choices": [
+					{
+						"value": "false",
+						"label": "False"
+					},
+					{
+						"value": "true",
+						"label": "True"
+					},
+					{
+						"value": "rush_hour",
+						"label": "Rush Hour"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "LowestChapterCost",
+			"label": "Lowestchaptercost",
+			"description": "Value determining the lowest possible cost for a chapter.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "HighestChapterCost",
+			"label": "Highestchaptercost",
+			"description": "Value determining the highest possible cost for a chapter.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 15,
+				"max": 45,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ChapterCostIncrement",
+			"label": "Chaptercostincrement",
+			"description": "Lower values mean chapter costs increase slower.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 8,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ChapterCostMinDifference",
+			"label": "Chaptercostmindifference",
+			"description": "The minimum difference between chapter costs.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 8,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MaxExtraTimePieces",
+			"label": "Maxextratimepieces",
+			"description": "Maximum number of extra Time Pieces from the DLCs.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 16
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "FinalChapterMinCost",
+			"label": "Finalchaptermincost",
+			"description": "Minimum Time Pieces required to enter the final chapter.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 50,
+				"step": 1,
+				"default": 30
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "FinalChapterMaxCost",
+			"label": "Finalchaptermaxcost",
+			"description": "Maximum Time Pieces required to enter the final chapter.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 50,
+				"step": 1,
+				"default": 35
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "YarnCostMin",
+			"label": "Yarncostmin",
+			"description": "The minimum possible yarn needed to stitch a hat.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 12,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "YarnCostMax",
+			"label": "Yarncostmax",
+			"description": "The maximum possible yarn needed to stitch a hat.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 12,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "YarnAvailable",
+			"label": "Yarnavailable",
+			"description": "How much yarn is available to collect in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 30,
+				"max": 80,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MinExtraYarn",
+			"label": "Minextrayarn",
+			"description": "The minimum number of extra yarn in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 5,
+				"max": 15,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "HatItems",
+			"label": "Hatitems",
+			"description": "Removes all yarn from the pool and turns the hats into individual items instead.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MinPonCost",
+			"label": "Minponcost",
+			"description": "The minimum number of Pons that any item in the Badge Seller's shop can cost.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 10,
+				"max": 800,
+				"step": 1,
+				"default": 75
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "MaxPonCost",
+			"label": "Maxponcost",
+			"description": "The maximum number of Pons that any item in the Badge Seller's shop can cost.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 10,
+				"max": 800,
+				"step": 1,
+				"default": 300
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "BadgeSellerMinItems",
+			"label": "Badgesellerminitems",
+			"description": "The smallest number of items that the Badge Seller can have for sale.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "BadgeSellerMaxItems",
+			"label": "Badgesellermaxitems",
+			"description": "The largest number of items that the Badge Seller can have for sale.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "TrapChance",
+			"label": "Trapchance",
+			"description": "The chance for any junk item in the pool to be replaced by a trap.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "BabyTrapWeight",
+			"label": "Babytrapweight",
+			"description": "The weight of Baby Traps in the trap pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 40
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "LaserTrapWeight",
+			"label": "Lasertrapweight",
+			"description": "The weight of Laser Traps in the trap pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 40
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ParadeTrapWeight",
+			"label": "Paradetrapweight",
+			"description": "The weight of Parade Traps in the trap pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link_amnesty",
+			"label": "Death Link Amnesty",
+			"description": "Amount of forgiven deaths before sending a Death Link.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dw_death_link_amnesty",
+			"label": "Dw Death Link Amnesty",
+			"description": "Amount of forgiven deaths before sending a Death Link during Death Wish levels.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 30,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }
