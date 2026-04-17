@@ -455,6 +455,24 @@ pub fn rename_player_yaml(path: &Path, new_name: &str) -> Result<PathBuf> {
         .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' { c } else { '_' })
         .collect();
     let safe = if safe.is_empty() { "player".to_string() } else { safe };
+
+    // Update the `name:` field inside the YAML content to match the new name
+    let content = std::fs::read_to_string(path)
+        .with_context(|| format!("read {}", path.display()))?;
+    let updated: String = content
+        .lines()
+        .map(|line| {
+            if line.starts_with("name:") {
+                format!("name: {safe}")
+            } else {
+                line.to_string()
+            }
+        })
+        .collect::<Vec<_>>()
+        .join("\n");
+    std::fs::write(path, &updated)
+        .with_context(|| format!("write {}", path.display()))?;
+
     let new_path = path.with_file_name(format!("{safe}.yaml"));
     if new_path != path {
         std::fs::rename(path, &new_path)
