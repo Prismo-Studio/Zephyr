@@ -42,21 +42,37 @@
 		gap: var(--space-md);
 		padding: var(--space-md) var(--space-lg);
 		border-radius: var(--radius-lg);
-		background: var(--bg-elevated);
+		background: var(--bg-surface);
 		border: 1px solid var(--border-default);
 		box-shadow: var(--shadow-lg);
 		animation: slideUp var(--transition-normal) ease;
 		min-width: 300px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.z-toast::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 3px;
+		background: var(--accent-400);
 	}
 
 	.z-toast-error {
-		border-color: rgba(255, 92, 92, 0.3);
-		background: linear-gradient(135deg, var(--bg-elevated), rgba(255, 92, 92, 0.05));
+		border-color: rgba(255, 92, 92, 0.4);
+	}
+	.z-toast-error::before {
+		background: var(--error);
 	}
 
 	.z-toast-info {
 		border-color: var(--border-accent);
-		background: linear-gradient(135deg, var(--bg-elevated), var(--bg-active));
+	}
+	.z-toast-info::before {
+		background: var(--accent-400);
 	}
 
 	:global(.z-toast-icon) {
