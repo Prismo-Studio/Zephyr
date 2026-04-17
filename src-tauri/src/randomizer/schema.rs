@@ -17,21 +17,26 @@ use super::types::{GameSchema, GameSummary};
 /// 3. `<cwd>/../data/randomizer/schemas` (when running from `src-tauri`)
 pub fn schemas_dir(app: &AppHandle) -> PathBuf {
     if let Ok(resource_dir) = app.path().resource_dir() {
-        let candidate = resource_dir.join("data/randomizer/schemas");
-        if candidate.exists() {
-            return candidate;
+        let candidates = [
+            resource_dir.join("schemas"),
+            resource_dir.join("data/randomizer/schemas"),
+        ];
+        for c in &candidates {
+            if c.exists() {
+                return c.clone();
+            }
         }
     }
 
     let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
-    let candidate = cwd.join("data/randomizer/schemas");
-    if candidate.exists() {
-        return candidate;
-    }
-
-    let candidate = cwd.join("../data/randomizer/schemas");
-    if candidate.exists() {
-        return candidate;
+    let candidates = [
+        cwd.join("data/randomizer/schemas"),
+        cwd.join("../data/randomizer/schemas"),
+    ];
+    for c in &candidates {
+        if c.exists() {
+            return c.clone();
+        }
     }
 
     cwd.join("data/randomizer/schemas")
