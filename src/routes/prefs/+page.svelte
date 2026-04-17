@@ -78,10 +78,26 @@
 	let languageOptions = $derived(locales.map((l) => ({ value: l, label: languageTitle[l] })));
 	let appVersion: string = $state('');
 
+	function scrollToActiveTheme() {
+		const track = document.querySelector<HTMLElement>('.z-theme-carousel');
+		if (!track) return;
+		const active = track.querySelector<HTMLElement>('.z-theme-option.active');
+		if (!active) return;
+		const trackRect = track.getBoundingClientRect();
+		const activeRect = active.getBoundingClientRect();
+		// Distance of active item from track's left edge, accounting for current scroll
+		const activeLeftInTrack = activeRect.left - trackRect.left + track.scrollLeft;
+		const targetLeft = activeLeftInTrack - (track.clientWidth - active.offsetWidth) / 2;
+		track.scrollLeft = Math.max(0, targetLeft);
+	}
+
 	onMount(async () => {
 		prefs = await api.prefs.get();
 		systemFonts = await api.prefs.getSystemFonts();
 		getVersion().then((v) => (appVersion = v));
+
+		// Auto-scroll theme carousel to the currently selected theme (instant, not smooth)
+		requestAnimationFrame(() => requestAnimationFrame(scrollToActiveTheme));
 
 		// Check if a gamepad is connected
 		const gp = getConnectedGamepad();

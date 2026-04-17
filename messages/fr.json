@@ -727,7 +727,7 @@
 	"randomizer_copied": "Copié",
 	"randomizer_copy": "Copier",
 	"randomizer_host": "Hébergement",
-	"randomizer_remote": "Distant",
+	"randomizer_remote": "Remote",
 	"randomizer_local": "Local",
 	"randomizer_running": "En cours :",
 	"randomizer_connectAddress": "Adresse de connexion",
@@ -738,7 +738,7 @@
 	"randomizer_uploading": "Upload...",
 	"randomizer_starting": "Démarrage...",
 	"randomizer_uploadAndStart": "Uploader et démarrer",
-	"randomizer_remoteLog": "Log distant",
+	"randomizer_remoteLog": "Log Remote",
 	"randomizer_serverLog": "Log serveur",
 	"randomizer_runningOnPort": "En écoute sur le port {port}",
 	"randomizer_portReachable": "Port accessible",
@@ -786,6 +786,6 @@
 	"randomizer_categoryAdvanced": "Avancé",
 	"randomizer_serverStarted": "Serveur démarré !",
 	"randomizer_serverFailed": "Le serveur n'a pas pu démarrer",
-	"randomizer_startingRemote": "Démarrage du serveur distant...",
+	"randomizer_startingRemote": "Démarrage du serveur Remote...",
 	"randomizer_uploadError": "Erreur :"
 }

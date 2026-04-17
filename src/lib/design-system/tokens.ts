@@ -1,4 +1,12 @@
-export type ThemeId = 'dark' | 'light' | 'zephyr' | 'midnight' | 'crimson' | 'amethyst' | 'hotdog';
+export type ThemeId =
+	| 'dark'
+	| 'light'
+	| 'zephyr'
+	| 'midnight'
+	| 'crimson'
+	| 'amethyst'
+	| 'pinky'
+	| 'hotdog';
 
 export const themes: { id: ThemeId; label: string; hidden?: boolean }[] = [
 	{ id: 'dark', label: 'Dark' },
@@ -7,6 +15,7 @@ export const themes: { id: ThemeId; label: string; hidden?: boolean }[] = [
 	{ id: 'midnight', label: 'Midnight Ocean' },
 	{ id: 'crimson', label: 'Crimson' },
 	{ id: 'amethyst', label: 'Amethyst' },
+	{ id: 'pinky', label: 'Pinky' },
 	{ id: 'hotdog', label: 'Hot Dog Stand', hidden: true }
 ];
 

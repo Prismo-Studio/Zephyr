@@ -289,6 +289,44 @@
 	--shadow-glow-strong: 0 0 40px rgba(139, 108, 239, 0.25);
 }
 
+[data-theme='pinky'] {
+	--bg-base: #0d080b;
+	--bg-surface: #130b10;
+	--bg-elevated: #1a1016;
+	--bg-overlay: #22151c;
+	--bg-hover: rgba(240, 95, 165, 0.06);
+	--bg-active: rgba(240, 95, 165, 0.1);
+
+	--border-subtle: rgba(255, 255, 255, 0.05);
+	--border-default: rgba(255, 255, 255, 0.08);
+	--border-strong: rgba(255, 255, 255, 0.14);
+	--border-accent: rgba(240, 95, 165, 0.5);
+
+	--text-primary: #f5e8ef;
+	--text-secondary: #b08090;
+	--text-muted: #785566;
+	--text-accent: #ff7eb6;
+	--text-inverse: #170d14;
+
+	--accent-300: #ffa4ce;
+	--accent-400: #ff7eb6;
+	--accent-500: #f05fa5;
+	--accent-600: #c94580;
+	--accent-700: #9d305f;
+
+	--success: #44ddaa;
+	--warning: #ffbb55;
+	--error: #ff6666;
+	--info: #ff7eb6;
+
+	--glass-bg: rgba(23, 13, 20, 0.7);
+	--glass-border: rgba(240, 95, 165, 0.1);
+	--glass-blur: 16px;
+
+	--shadow-glow: 0 0 20px rgba(255, 126, 182, 0.15);
+	--shadow-glow-strong: 0 0 40px rgba(255, 126, 182, 0.25);
+}
+
 [data-theme='hotdog'] {
 	--bg-base: #ff0000;
 	--bg-surface: #cc0000;
