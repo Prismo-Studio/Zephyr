@@ -97,13 +97,13 @@
 				(p) => activeSlug && p.community && p.community !== activeSlug
 			);
 
+			if (silent) return;
+
 			if (forCurrentGame.length > 0) {
 				restoreItems = forCurrentGame;
 				restoreOpen = true;
 				return;
 			}
-
-			if (silent) return;
 
 			if (forOtherGames.length > 0) {
 				const countBySlug = new Map<string, number>();
@@ -145,9 +145,6 @@
 			const p = await api.prefs.get();
 			autoSync = p.pullBeforeLaunch;
 		} catch {}
-		if (auth.user) {
-			await checkForRestorable(true);
-		}
 	})();
 
 	function getProfileIndex(id: number): number {
@@ -486,7 +483,6 @@
 								name: m.sync_signedIn(),
 								message: m.sync_welcome({ name: auth.user?.displayName ?? '' })
 							});
-							await checkForRestorable(true);
 						} catch (e: any) {
 							pushToast({
 								type: 'error',
@@ -672,7 +668,7 @@
 		crossGameBuckets = [];
 	}}
 	onPicked={() => {
-		checkForRestorable(true);
+		checkForRestorable(false);
 	}}
 />
 
