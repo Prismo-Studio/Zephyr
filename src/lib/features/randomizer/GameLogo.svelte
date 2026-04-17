@@ -121,7 +121,7 @@
 	{/if}
 	{#if !imageUrl || failed || !loaded}
 		<div class="z-logo-fallback">
-			<Icon icon="mdi:dice-d20-outline" />
+			<img src="/logo.png" alt="Zephyr" class="z-logo-placeholder" />
 		</div>
 	{/if}
 </div>
@@ -171,7 +171,11 @@
 		font-size: calc(var(--logo-size) * 0.45);
 	}
 
-	.z-logo-fallback :global(svg) {
-		filter: drop-shadow(0 0 12px hsla(var(--logo-hue), 100%, 70%, 0.4));
+	.z-logo-placeholder {
+		width: 55%;
+		height: 55%;
+		object-fit: contain;
+		opacity: 0.3;
+		filter: grayscale(1) brightness(2);
 	}
 </style>
