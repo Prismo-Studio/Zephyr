@@ -125,6 +125,15 @@
 					<h1>{schema.name}</h1>
 					<small>v{schema.version}</small>
 				</div>
+				<a
+					class="rdz-setup-link"
+					href={`https://archipelago.gg/games/${encodeURIComponent(schema.name)}/info/en`}
+					target="_blank"
+					rel="noopener"
+				>
+					<Icon icon="mdi:book-open-variant" />
+					Setup guide
+				</a>
 
 				<div class="rdz-config-controls">
 					{#if hasPresets}
@@ -337,6 +346,26 @@
 		font-size: 11px;
 		color: var(--text-muted);
 		font-family: var(--font-mono, monospace);
+	}
+
+	.rdz-setup-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 14px;
+		border-radius: var(--radius-md);
+		background: var(--accent-400);
+		color: var(--text-inverse);
+		font-size: 12px;
+		font-weight: 600;
+		text-decoration: none;
+		transition: all var(--transition-fast);
+		flex-shrink: 0;
+	}
+
+	.rdz-setup-link:hover {
+		filter: brightness(1.15);
+		box-shadow: var(--shadow-glow);
 	}
 
 	.rdz-config-controls {
