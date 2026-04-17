@@ -527,6 +527,7 @@ pub fn detect_local_ip() -> Option<String> {
 /// Update the `server_options.port` line in `host.yaml` in place, preserving all
 /// comments and other keys. Uses a line-based regex replacement because we don't
 /// want `serde_yaml` to strip the heavily-commented file.
+#[allow(dead_code)]
 pub fn update_host_yaml_port(ap_dir: &Path, port: u16) -> Result<()> {
     let path = ap_dir.join("host.yaml");
     if !path.exists() {
