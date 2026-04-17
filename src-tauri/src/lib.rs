@@ -97,6 +97,20 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         }
     });
 
+    #[cfg(debug_assertions)]
+    {
+        use tauri::Manager;
+        let handle = app.handle().to_owned();
+        tauri::async_runtime::spawn(async move {
+            loop {
+                tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+                if let Some(w) = handle.get_webview_window("main") {
+                    w.close_devtools();
+                }
+            }
+        });
+    }
+
     info!("setup done");
 
     Ok(())

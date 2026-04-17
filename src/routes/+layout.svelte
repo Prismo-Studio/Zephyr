@@ -89,6 +89,21 @@
 	let unlistenGames: UnlistenFn | null;
 
 	onMount(() => {
+		document.addEventListener(
+			'keydown',
+			(e) => {
+				if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+				}
+				if (e.key === 'F12') {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+				}
+			},
+			true
+		);
+
 		getCurrentWindow()
 			.isVisible()
 			.then((visible) => {
