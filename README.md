@@ -41,6 +41,12 @@ Edit BepInEx plugin configs directly from the app without digging through files.
 
 ![Config Editor](screenshots/config.png)
 
+### Randomizer
+
+Built-in Archipelago multiworld randomizer with Python runtime bundled. Generate seeds, host local or remote games, and manage player slots without touching the command line.
+
+![Randomizer](screenshots/randomizer.png)
+
 ## Features
 
 - **Multi-game support** -- 198+ games from Thunderstore, including Lethal Company, R.E.P.O., and Risk of Rain 2
