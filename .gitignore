@@ -15,3 +15,6 @@ src-tauri/gen
 ./packages
 src-tauri/archipelago-runtime/venv/
 src-tauri/archipelago-runtime/logs/
+**/__pycache__/
+*.pyc
+*.pyo

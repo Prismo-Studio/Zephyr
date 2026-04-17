@@ -51,15 +51,21 @@
 	let appVersion = $state('');
 
 	let currentDpiScale = 1;
+	const DPI_STEPS = [0.75, 0.85, 0.9, 1, 1.1, 1.15, 1.25, 1.5, 1.75, 2];
 
-	function applyDpiScaleCss(scale: number) {
-		document.documentElement.style.setProperty('zoom', String(scale));
-	}
-
-	async function nudgeDpiScale(delta: number) {
-		const next = Math.round((currentDpiScale + delta) * 100) / 100;
+	async function nudgeDpiScale(direction: number) {
+		const currentIdx = DPI_STEPS.indexOf(currentDpiScale);
+		let nextIdx: number;
+		if (currentIdx === -1) {
+			nextIdx = DPI_STEPS.findIndex((s) => s >= currentDpiScale);
+			if (nextIdx === -1) nextIdx = DPI_STEPS.length - 1;
+		} else {
+			nextIdx = currentIdx + direction;
+		}
+		nextIdx = Math.max(0, Math.min(DPI_STEPS.length - 1, nextIdx));
+		const next = DPI_STEPS[nextIdx];
 		currentDpiScale = await api.prefs.setDpiScale(next);
-		applyDpiScaleCss(currentDpiScale);
+		window.dispatchEvent(new CustomEvent('dpi-scale-changed', { detail: currentDpiScale }));
 	}
 
 	async function installUpdate() {
@@ -107,9 +113,6 @@
 			let lang: string;
 
 			currentDpiScale = prefs.dpiScale;
-			applyDpiScaleCss(currentDpiScale);
-
-			// DPI scale is applied via WebView zoom in the backend and CSS zoom in the DOM
 
 			// Initialize gamepad
 			initGamepad();
@@ -189,7 +192,7 @@
 			const isMinus = evt.key === '-' || evt.key === '_';
 			if (isPlus || isMinus) {
 				evt.preventDefault();
-				nudgeDpiScale(isPlus ? 0.1 : -0.1);
+				nudgeDpiScale(isPlus ? 1 : -1);
 				return;
 			}
 		}

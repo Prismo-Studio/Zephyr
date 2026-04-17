@@ -53,12 +53,10 @@ pub fn set_dpi_scale(value: f32, app: AppHandle) -> Result<f32> {
     let mut prefs = app.lock_prefs();
     let new_dpi = value.clamp(0.5, 2.0);
     prefs.dpi_scale = new_dpi;
-    // Defensively reset webview zoom to zoom_factor so any accumulated
-    // native zoom from Ctrl+/-/0 hotkeys is undone. Frontend applies
-    // dpi_scale via CSS zoom.
+    let effective_zoom = prefs.zoom_factor as f64 * new_dpi as f64;
     if let Some(window) = app.get_webview_window("main") {
         window
-            .zoom(prefs.zoom_factor as f64)
+            .zoom(effective_zoom)
             .map_err(|err| anyhow!(err))?;
     }
     prefs.save(app.db())?;

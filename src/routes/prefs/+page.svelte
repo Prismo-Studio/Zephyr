@@ -118,10 +118,13 @@
 			currentTheme = 'hotdog';
 		});
 
-		// Wingdings easter egg - session only, silently adds to dropdown
 		window.addEventListener('wingdings-unlocked', () => {
 			wingdingsUnlocked = true;
 		});
+
+		window.addEventListener('dpi-scale-changed', ((e: CustomEvent) => {
+			if (prefs) prefs.dpiScale = e.detail;
+		}) as EventListener);
 	});
 
 	$effect(() => {
@@ -140,7 +143,6 @@
 		if (isNaN(scale)) return;
 		const applied = await api.prefs.setDpiScale(scale);
 		prefs.dpiScale = applied;
-		document.documentElement.style.setProperty('zoom', String(applied));
 	}
 
 	function toggleGamepad() {
