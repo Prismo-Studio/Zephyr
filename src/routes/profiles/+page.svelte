@@ -4,17 +4,22 @@
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import Icon from '@iconify/svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 
 	import profiles from '$lib/state/profile.svelte';
 	import auth from '$lib/state/auth.svelte';
+	import games from '$lib/state/game.svelte';
 	import * as api from '$lib/api';
 	import { m } from '$lib/paraglide/messages';
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { pushToast } from '$lib/toast';
+	import RestoreCloudDialog from '$lib/components/dialogs/RestoreCloudDialog.svelte';
+	import type { ListedSyncProfile } from '$lib/types';
+	import { maybeSyncAfterImport } from '$lib/state/autoSync.svelte';
 
 	const MAX_PROFILES = 20;
 
@@ -22,6 +27,98 @@
 	let newName = $state('');
 	let renameId: number | null = $state(null);
 	let renameName = $state('');
+	let autoSync = $state(false);
+
+	let restoreOpen = $state(false);
+	let restoreItems: ListedSyncProfile[] = $state([]);
+
+	let disconnectId: number | null = $state(null);
+	let disconnectName = $state('');
+	let disconnectAlsoDelete = $state(false);
+	let disconnectBusy = $state(false);
+
+	function askDisconnect(id: number, name: string) {
+		disconnectId = id;
+		disconnectName = name;
+		const p = profiles.list.find((pr) => pr.id === id);
+		disconnectAlsoDelete = !!(
+			p?.sync && auth.user && p.sync.owner.discordId === auth.user.discordId
+		);
+	}
+
+	async function confirmDisconnect() {
+		if (disconnectId === null) return;
+		disconnectBusy = true;
+		try {
+			const idx = getProfileIndex(disconnectId);
+			if (idx !== -1 && disconnectId !== profiles.activeId) {
+				await api.profile.setActive(idx);
+			}
+			await api.profile.sync.disconnect(disconnectAlsoDelete);
+			await profiles.refresh();
+			pushToast({
+				type: 'info',
+				name: m.sync_unsynced(),
+				message: disconnectAlsoDelete
+					? m.sync_removedFromCloud({ name: disconnectName })
+					: m.sync_unlinkedFromCloud({ name: disconnectName })
+			});
+			disconnectId = null;
+		} catch (e: any) {
+			pushToast({
+				type: 'error',
+				name: m.sync_unsyncFailed(),
+				message: e?.message ?? String(e)
+			});
+		} finally {
+			disconnectBusy = false;
+		}
+	}
+
+	async function checkForRestorable(silent: boolean = false) {
+		if (!auth.user) return;
+		try {
+			const owned = await api.profile.sync.getOwned();
+			const activeSlug = games.active?.slug;
+			const info = await api.profile.getInfo();
+			const localSyncIds = new Set(
+				info.profiles.map((p) => p.sync?.id).filter((id): id is string => !!id)
+			);
+			const missing = owned.filter((p) => {
+				if (localSyncIds.has(p.id)) return false;
+				if (activeSlug && p.community && p.community !== activeSlug) return false;
+				return true;
+			});
+			if (missing.length > 0) {
+				restoreItems = missing;
+				restoreOpen = true;
+			} else if (!silent) {
+				pushToast({
+					type: 'info',
+					name: m.sync_nothingToRestore(),
+					message: m.sync_nothingToRestoreDesc()
+				});
+			}
+		} catch (e: any) {
+			if (!silent) {
+				pushToast({
+					type: 'error',
+					name: m.sync_restoreCheckFailed(),
+					message: e?.message ?? String(e)
+				});
+			}
+		}
+	}
+
+	(async () => {
+		try {
+			const p = await api.prefs.get();
+			autoSync = p.pullBeforeLaunch;
+		} catch {}
+		if (auth.user) {
+			await checkForRestorable(true);
+		}
+	})();
 
 	function getProfileIndex(id: number): number {
 		return profiles.list.findIndex((p) => p.id === id);
@@ -31,8 +128,8 @@
 		if (profiles.list.length >= MAX_PROFILES) {
 			pushToast({
 				type: 'error',
-				name: 'Limite atteinte',
-				message: `Vous ne pouvez pas avoir plus de ${MAX_PROFILES} profils.`
+				name: m.sync_limitReached(),
+				message: m.sync_limitReachedDesc({ max: MAX_PROFILES.toString() })
 			});
 			return false;
 		}
@@ -44,11 +141,47 @@
 		if (!checkProfileLimit()) return;
 		await api.profile.create(newName.trim(), null);
 		await profiles.refresh();
+		if (autoSync && auth.user) {
+			try {
+				await api.profile.sync.create();
+				await profiles.refresh();
+			} catch (e: any) {
+				pushToast({
+					type: 'error',
+					name: m.sync_autoSyncFailed(),
+					message: e?.message ?? String(e)
+				});
+			}
+		}
 		newName = '';
 		createOpen = false;
 	}
 
 	async function deleteProfile(id: number) {
+		let syncId: string | null = null;
+		try {
+			const info = await api.profile.getInfo();
+			const fresh = info.profiles.find((pr) => pr.id === id);
+			if (
+				fresh?.sync &&
+				auth.user &&
+				fresh.sync.owner.discordId === auth.user.discordId
+			) {
+				syncId = fresh.sync.id;
+			}
+		} catch {}
+
+		if (syncId) {
+			try {
+				await api.profile.sync.deleteProfile(syncId);
+			} catch (e: any) {
+				pushToast({
+					type: 'error',
+					name: m.sync_cloudDeleteFailed(),
+					message: e?.message ?? String(e)
+				});
+			}
+		}
 		await api.profile.deleteProfile(id);
 		await profiles.refresh();
 	}
@@ -74,6 +207,7 @@
 		}
 		await api.profile.duplicate(getUniqueCopyName(name));
 		await profiles.refresh();
+		await maybeSyncAfterImport({ forceFork: true });
 	}
 
 	async function startRename(id: number, name: string) {
@@ -273,6 +407,54 @@
 		subtitle={i18nState.locale && m.profiles_total({ count: profiles.list.length.toString() })}
 	>
 		{#snippet actions()}
+			{#if auth.user}
+				<Tooltip text={(i18nState.locale && m.sync_restoreTooltip()) || ''} position="bottom" delay={200}>
+					<Button variant="secondary" size="sm" onclick={() => checkForRestorable(false)}>
+						{#snippet icon()}<Icon icon="mdi:cloud-download" />{/snippet}
+						{i18nState.locale && m.sync_restore()}
+					</Button>
+				</Tooltip>
+				<div class="z-auth-pill">
+					{#if auth.user.avatar}
+						<img src={auth.user.avatar} alt={auth.user.displayName} />
+					{:else}
+						<Icon icon="mdi:account-circle" />
+					{/if}
+					<span>{auth.user.displayName}</span>
+					<button
+						class="z-auth-logout"
+						onclick={async () => { await auth.logout(); }}
+						title={(i18nState.locale && m.sync_logOut()) || ''}
+					>
+						<Icon icon="mdi:logout" />
+					</button>
+				</div>
+			{:else}
+				<Button
+					variant="secondary"
+					size="sm"
+					onclick={async () => {
+						try {
+							await auth.login();
+							pushToast({
+								type: 'info',
+								name: m.sync_signedIn(),
+								message: m.sync_welcome({ name: auth.user?.displayName ?? '' })
+							});
+							await checkForRestorable(true);
+						} catch (e: any) {
+							pushToast({
+								type: 'error',
+								name: m.sync_signInFailed(),
+								message: e?.message ?? String(e)
+							});
+						}
+					}}
+				>
+					{#snippet icon()}<Icon icon="mdi:discord" />{/snippet}
+					{i18nState.locale && m.sync_signIn()}
+				</Button>
+			{/if}
 			<Button variant="primary" size="sm" onclick={() => (createOpen = true)}>
 				{#snippet icon()}<Icon icon="mdi:plus" />{/snippet}
 				{i18nState.locale && m.profiles_newProfile()}
@@ -347,6 +529,49 @@
 						</div>
 
 						<div class="z-profile-actions">
+							{#if auth.user && !profile.sync}
+								<Tooltip text={(i18nState.locale && m.sync_toCloud()) || ''} position="bottom" delay={200}>
+									<button
+										class="z-profile-action"
+										onclick={async () => {
+											try {
+												if (profile.id !== profiles.activeId) {
+													const idx = getProfileIndex(profile.id);
+													if (idx !== -1) await api.profile.setActive(idx);
+												}
+												const id = await api.profile.sync.create();
+												pushToast({
+													type: 'info',
+													name: m.sync_synced(),
+													message: m.sync_uploaded({
+														name: profile.name,
+														id: id.slice(0, 8) + '…'
+													})
+												});
+												await profiles.refresh();
+											} catch (e: any) {
+												pushToast({
+													type: 'error',
+													name: m.sync_syncFailed(),
+													message: e?.message ?? String(e)
+												});
+											}
+										}}
+									>
+										<Icon icon="mdi:cloud-upload" />
+									</button>
+								</Tooltip>
+							{/if}
+							{#if auth.user && profile.sync}
+								<Tooltip text={(i18nState.locale && m.sync_stopSyncing()) || ''} position="bottom" delay={200}>
+									<button
+										class="z-profile-action"
+										onclick={() => askDisconnect(profile.id, profile.name)}
+									>
+										<Icon icon="mdi:cloud-off-outline" />
+									</button>
+								</Tooltip>
+							{/if}
 							<Tooltip text={i18nState.locale && m.profiles_rename()} position="bottom" delay={200}>
 								<button
 									class="z-profile-action"
@@ -386,6 +611,15 @@
 	</div>
 </div>
 
+<!-- Cloud restore dialog -->
+<RestoreCloudDialog
+	bind:open={restoreOpen}
+	items={restoreItems}
+	onclose={() => {
+		restoreItems = [];
+	}}
+/>
+
 <!-- Create modal -->
 <Modal bind:open={createOpen} title={i18nState.locale && m.profiles_newProfile()}>
 	<div class="z-modal-form">
@@ -405,6 +639,58 @@
 		<Button variant="primary" onclick={createProfile} disabled={!newName.trim()}
 			>{i18nState.locale && m.profiles_create()}</Button
 		>
+	{/snippet}
+</Modal>
+
+<!-- Disconnect / unsync modal -->
+<Modal
+	open={disconnectId !== null}
+	onclose={() => {
+		if (!disconnectBusy) disconnectId = null;
+	}}
+	title={(i18nState.locale && m.sync_unsyncTitle()) || ''}
+>
+	<div class="z-modal-form">
+		<p class="z-unsync-text">
+			{i18nState.locale && m.sync_unsyncText({ name: disconnectName })}
+		</p>
+		<div
+			class="z-unsync-option"
+			role="button"
+			tabindex="0"
+			onclick={() => {
+				if (!disconnectBusy) disconnectAlsoDelete = !disconnectAlsoDelete;
+			}}
+			onkeydown={(e) => {
+				if (e.key === ' ' || e.key === 'Enter') {
+					e.preventDefault();
+					if (!disconnectBusy) disconnectAlsoDelete = !disconnectAlsoDelete;
+				}
+			}}
+		>
+			<Checkbox bind:checked={disconnectAlsoDelete} disabled={disconnectBusy} />
+			<span>
+				{i18nState.locale && m.sync_unsyncAlsoDelete()}
+				<span class="z-unsync-hint">
+					{i18nState.locale && m.sync_unsyncAlsoDeleteHint()}
+				</span>
+			</span>
+		</div>
+	</div>
+
+	{#snippet actions()}
+		<Button variant="ghost" onclick={() => (disconnectId = null)} disabled={disconnectBusy}>
+			{i18nState.locale && m.dialog_cancel()}
+		</Button>
+		<Button
+			variant={disconnectAlsoDelete ? 'danger' : 'primary'}
+			onclick={confirmDisconnect}
+			loading={disconnectBusy}
+			disabled={disconnectBusy}
+		>
+			{i18nState.locale &&
+				(disconnectAlsoDelete ? m.sync_unsyncAndDeleteAction() : m.sync_unsyncAction())}
+		</Button>
 	{/snippet}
 </Modal>
 
@@ -445,6 +731,46 @@
 		flex: 1;
 		overflow-y: auto;
 		padding: var(--space-xl);
+	}
+
+	.z-auth-pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 4px 4px 4px 12px;
+		border-radius: var(--radius-full);
+		background: var(--bg-active);
+		border: 1px solid var(--border-accent);
+		font-size: 12px;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+
+	.z-auth-pill img,
+	.z-auth-pill :global(svg:first-child) {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	.z-auth-logout {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		border: none;
+		border-radius: 50%;
+		background: transparent;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.z-auth-logout:hover {
+		background: var(--bg-hover);
+		color: var(--error);
 	}
 
 	.z-profiles-grid {
@@ -665,5 +991,39 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-md);
+	}
+
+	.z-unsync-text {
+		font-size: 13px;
+		color: var(--text-secondary);
+		margin: 0;
+	}
+
+	.z-unsync-text strong {
+		color: var(--text-primary);
+	}
+
+	.z-unsync-option {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-md);
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		cursor: pointer;
+		font-size: 13px;
+	}
+
+	.z-unsync-option:hover {
+		border-color: var(--border-default);
+	}
+
+	.z-unsync-hint {
+		display: block;
+		font-size: 11px;
+		color: var(--text-muted);
+		margin-top: 2px;
+		line-height: 1.4;
 	}
 </style>

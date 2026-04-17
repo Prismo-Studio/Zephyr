@@ -12,6 +12,7 @@
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { pushToast } from '$lib/toast';
 	import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
+	import { maybeSyncAfterImport } from '$lib/state/autoSync.svelte';
 
 	type Props = {
 		mode: 'export' | 'import';
@@ -141,6 +142,7 @@
 				message:
 					(i18nState.locale && m.share_importSuccess({ name })) || `Profile "${name}" imported!`
 			});
+			await maybeSyncAfterImport({ forceFork: true });
 			onclose();
 		} catch (e) {
 			pushToast({ type: 'error', message: String(e) });
@@ -164,6 +166,7 @@
 					(i18nState.locale && m.share_importOverwriteSuccess()) ||
 					'Mods imported into current profile!'
 			});
+			await maybeSyncAfterImport();
 			onclose();
 		} catch (e) {
 			pushToast({ type: 'error', message: String(e) });

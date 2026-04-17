@@ -6,9 +6,15 @@
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import type { ImportData, LegacyImportData, SyncImportData } from '$lib/types';
 	import * as api from '$lib/api';
+	import profiles from '$lib/state/profile.svelte';
+	import { pushToast } from '$lib/toast';
+	import { maybeSyncAfterImport } from '$lib/state/autoSync.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let open = $state(false);
 	let importData: ImportData | null = $state(null);
+	let busy = $state(false);
 	let unlisten: UnlistenFn | undefined;
 
 	onMount(() => {
@@ -25,22 +31,62 @@
 		return () => unlisten?.();
 	});
 
-	async function doImport() {
+	async function importAsNew() {
 		if (!importData) return;
-
-		if (importData.type === 'legacy') {
-			const { type, ...data } = importData;
-			await api.profile.import.profile(data, true);
-		} else {
-			const { type, ...data } = importData;
-			await api.profile.sync.clone(data.id, data.manifest.profileName);
+		busy = true;
+		try {
+			if (importData.type === 'legacy') {
+				const { type, ...data } = importData;
+				await api.profile.import.profile(data, true);
+				await profiles.refresh();
+			} else {
+				const { type, ...data } = importData;
+				await api.profile.sync.clone(data.id, data.manifest.profileName);
+				await profiles.refresh();
+			}
+			await maybeSyncAfterImport({ forceFork: true });
+			open = false;
+		} catch (e: any) {
+			pushToast({ type: 'error', name: m.import_failed(), message: e?.message ?? String(e) });
+		} finally {
+			busy = false;
 		}
+	}
 
-		open = false;
+	async function replaceActive() {
+		if (!importData || importData.type !== 'sync') return;
+		const active = profiles.active;
+		if (!active) {
+			await importAsNew();
+			return;
+		}
+		busy = true;
+		try {
+			const { type, ...data } = importData;
+			const targetName = active.name;
+			const activeId = active.id;
+			await api.profile.sync.clone(data.id, data.manifest.profileName);
+			await api.profile.deleteProfile(activeId);
+			await profiles.refresh();
+			await maybeSyncAfterImport({ forceFork: true });
+			pushToast({
+				type: 'info',
+				name: m.import_replaced(),
+				message: m.import_replacedDesc({
+					source: targetName,
+					target: data.manifest.profileName
+				})
+			});
+			open = false;
+		} catch (e: any) {
+			pushToast({ type: 'error', name: m.import_failed(), message: e?.message ?? String(e) });
+		} finally {
+			busy = false;
+		}
 	}
 </script>
 
-<Modal bind:open title="Import Profile">
+<Modal bind:open title={(i18nState.locale && m.import_title()) || ''}>
 	{#if importData}
 		<div class="z-import-info">
 			<div class="z-import-name">
@@ -48,22 +94,39 @@
 				<span>{importData.manifest.profileName}</span>
 			</div>
 			<p class="z-import-mods">
-				{importData.manifest.mods.length} mod{importData.manifest.mods.length !== 1 ? 's' : ''}
+				{i18nState.locale && m.profiles_mods({ count: importData.manifest.mods.length.toString() })}
 			</p>
 			{#if importData.type === 'legacy' && importData.missingMods.length > 0}
 				<p class="z-import-warning">
 					<Icon icon="mdi:alert" />
-					{importData.missingMods.length} mod(s) could not be found
+					{i18nState.locale &&
+						m.import_modsNotFound({ count: importData.missingMods.length.toString() })}
+				</p>
+			{/if}
+			{#if importData.type === 'sync'}
+				<p class="z-import-hint">
+					{i18nState.locale &&
+						(profiles.active
+							? m.import_syncHint({ name: profiles.active.name })
+							: m.import_syncHintNoActive())}
 				</p>
 			{/if}
 		</div>
 	{/if}
 
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (open = false)}>Cancel</Button>
-		<Button variant="primary" onclick={doImport}>
+		<Button variant="ghost" onclick={() => (open = false)} disabled={busy}>
+			{i18nState.locale && m.import_cancel()}
+		</Button>
+		{#if importData?.type === 'sync' && profiles.active}
+			<Button variant="secondary" onclick={replaceActive} loading={busy} disabled={busy}>
+				{#snippet icon()}<Icon icon="mdi:swap-horizontal" />{/snippet}
+				{i18nState.locale && m.import_replaceActive()}
+			</Button>
+		{/if}
+		<Button variant="primary" onclick={importAsNew} loading={busy} disabled={busy}>
 			{#snippet icon()}<Icon icon="mdi:import" />{/snippet}
-			Import
+			{i18nState.locale && m.import_newProfile()}
 		</Button>
 	{/snippet}
 </Modal>
@@ -95,5 +158,11 @@
 		gap: var(--space-sm);
 		font-size: 12px;
 		color: var(--warning);
+	}
+
+	.z-import-hint {
+		font-size: 12px;
+		color: var(--text-muted);
+		line-height: 1.5;
 	}
 </style>

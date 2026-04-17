@@ -10,6 +10,13 @@ import type {
 	MarkdownType
 } from '$lib/types';
 
+async function triggerAutoPush() {
+	try {
+		const mod = await import('$lib/state/autoSync.svelte');
+		mod.maybeAutoPush();
+	} catch {}
+}
+
 export * as export from './export';
 export * as import from './import';
 export * as install from './install';
@@ -30,14 +37,41 @@ export const create = (name: string, overridePath: string | null) =>
 export const deleteProfile = (profileId: number) => invoke('delete_profile', { id: profileId });
 export const rename = (name: string) => invoke('rename_profile', { name });
 export const duplicate = (name: string) => invoke('duplicate_profile', { name });
-export const removeMod = (uuid: string) => invoke<ModActionResponse>('remove_mod', { uuid });
-export const toggleMod = (uuid: string) => invoke<ModActionResponse>('toggle_mod', { uuid });
-export const forceRemoveMods = (uuids: string[]) => invoke('force_remove_mods', { uuids });
-export const forceToggleMods = (uuids: string[]) => invoke('force_toggle_mods', { uuids });
-export const reorderMod = (uuid: string, delta: number) => invoke('reorder_mod', { uuid, delta });
-export const setAllModsState = (enable: boolean) =>
-	invoke<number>('set_all_mods_state', { enable });
-export const removeDisabledMods = () => invoke<number>('remove_disabled_mods');
+export const removeMod = async (uuid: string) => {
+	const res = await invoke<ModActionResponse>('remove_mod', { uuid });
+	if (res?.type === 'done') void triggerAutoPush();
+	return res;
+};
+export const toggleMod = async (uuid: string) => {
+	const res = await invoke<ModActionResponse>('toggle_mod', { uuid });
+	if (res?.type === 'done') void triggerAutoPush();
+	return res;
+};
+export const forceRemoveMods = async (uuids: string[]) => {
+	const res = await invoke('force_remove_mods', { uuids });
+	void triggerAutoPush();
+	return res;
+};
+export const forceToggleMods = async (uuids: string[]) => {
+	const res = await invoke('force_toggle_mods', { uuids });
+	void triggerAutoPush();
+	return res;
+};
+export const reorderMod = async (uuid: string, delta: number) => {
+	const res = await invoke('reorder_mod', { uuid, delta });
+	void triggerAutoPush();
+	return res;
+};
+export const setAllModsState = async (enable: boolean) => {
+	const res = await invoke<number>('set_all_mods_state', { enable });
+	void triggerAutoPush();
+	return res;
+};
+export const removeDisabledMods = async () => {
+	const res = await invoke<number>('remove_disabled_mods');
+	void triggerAutoPush();
+	return res;
+};
 export const getDependants = (uuid: string) => invoke<string[]>('get_dependants', { uuid });
 export const openDir = () => invoke('open_profile_dir');
 export const openModDir = (uuid: string) => invoke('open_mod_dir', { uuid });

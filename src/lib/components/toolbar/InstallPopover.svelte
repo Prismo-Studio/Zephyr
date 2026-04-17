@@ -10,6 +10,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { installState } from '$lib/state/misc.svelte';
+	import { maybeAutoPush } from '$lib/state/autoSync.svelte';
 
 	let visible = $state(false);
 	let totalMods = $state(0);
@@ -44,6 +45,9 @@
 					visible = false;
 					installState.active = false;
 					reset();
+					if (e.reason === 'done') {
+						maybeAutoPush();
+					}
 					break;
 				case 'addCount':
 					// If this is the first addCount after a hide, counters
