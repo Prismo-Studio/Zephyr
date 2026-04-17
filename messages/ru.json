@@ -845,5 +845,8 @@
 	"import_syncHintNoActive": "Добавить как новый локальный профиль или заменить текущий активный профиль.",
 	"import_failed": "Ошибка импорта",
 	"import_replaced": "Заменено",
-	"import_replacedDesc": "«{source}» заменён на «{target}»"
+	"import_replacedDesc": "«{source}» заменён на «{target}»",
+	"restore_crossGameTitle": "Нет профилей для этой игры",
+	"restore_crossGameDescription": "Для активной игры нет облачных профилей, но они есть в других играх. Нажмите, чтобы переключиться и восстановить.",
+	"restore_crossGameCount": "{count} облачных профилей"
 }

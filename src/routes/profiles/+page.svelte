@@ -18,7 +18,8 @@
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { pushToast } from '$lib/toast';
 	import RestoreCloudDialog from '$lib/components/dialogs/RestoreCloudDialog.svelte';
-	import type { ListedSyncProfile } from '$lib/types';
+	import RestoreCrossGameDialog from '$lib/components/dialogs/RestoreCrossGameDialog.svelte';
+	import type { ListedSyncProfile, Game } from '$lib/types';
 	import { maybeSyncAfterImport } from '$lib/state/autoSync.svelte';
 
 	const MAX_PROFILES = 20;
@@ -31,6 +32,9 @@
 
 	let restoreOpen = $state(false);
 	let restoreItems: ListedSyncProfile[] = $state([]);
+	let crossGameOpen = $state(false);
+	let crossGameBuckets: { slug: string; name: string; game: Game | null; count: number }[] =
+		$state([]);
 
 	let disconnectId: number | null = $state(null);
 	let disconnectName = $state('');
@@ -84,15 +88,41 @@
 			const localSyncIds = new Set(
 				info.profiles.map((p) => p.sync?.id).filter((id): id is string => !!id)
 			);
-			const missing = owned.filter((p) => {
-				if (localSyncIds.has(p.id)) return false;
-				if (activeSlug && p.community && p.community !== activeSlug) return false;
-				return true;
-			});
-			if (missing.length > 0) {
-				restoreItems = missing;
+
+			const notLocal = owned.filter((p) => !localSyncIds.has(p.id));
+			const forCurrentGame = notLocal.filter(
+				(p) => !activeSlug || !p.community || p.community === activeSlug
+			);
+			const forOtherGames = notLocal.filter(
+				(p) => activeSlug && p.community && p.community !== activeSlug
+			);
+
+			if (forCurrentGame.length > 0) {
+				restoreItems = forCurrentGame;
 				restoreOpen = true;
-			} else if (!silent) {
+				return;
+			}
+
+			if (forOtherGames.length > 0) {
+				const countBySlug = new Map<string, number>();
+				for (const p of forOtherGames) {
+					const slug = p.community ?? 'unknown';
+					countBySlug.set(slug, (countBySlug.get(slug) ?? 0) + 1);
+				}
+				crossGameBuckets = Array.from(countBySlug.entries()).map(([slug, count]) => {
+					const game = games.list.find((g) => g.slug === slug) ?? null;
+					return {
+						slug,
+						name: game?.name ?? slug,
+						game,
+						count
+					};
+				});
+				crossGameOpen = true;
+				return;
+			}
+
+			if (!silent) {
 				pushToast({
 					type: 'info',
 					name: m.sync_nothingToRestore(),
@@ -632,6 +662,17 @@
 	items={restoreItems}
 	onclose={() => {
 		restoreItems = [];
+	}}
+/>
+
+<RestoreCrossGameDialog
+	bind:open={crossGameOpen}
+	buckets={crossGameBuckets}
+	onclose={() => {
+		crossGameBuckets = [];
+	}}
+	onPicked={() => {
+		checkForRestorable(true);
 	}}
 />
 

@@ -860,5 +860,8 @@
 	"import_syncHintNoActive": "Choose whether to add this as a new local profile, or replace your currently active profile.",
 	"import_failed": "Import failed",
 	"import_replaced": "Replaced",
-	"import_replacedDesc": "\"{source}\" was replaced with \"{target}\""
+	"import_replacedDesc": "\"{source}\" was replaced with \"{target}\"",
+	"restore_crossGameTitle": "No profiles for this game",
+	"restore_crossGameDescription": "You don't have cloud profiles for the active game, but you have some on other games. Click one to switch and restore.",
+	"restore_crossGameCount": "{count} cloud profile(s)"
 }

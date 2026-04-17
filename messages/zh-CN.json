@@ -836,5 +836,8 @@
 	"import_syncHintNoActive": "选择将其添加为新的本地配置，或替换当前的活动配置。",
 	"import_failed": "导入失败",
 	"import_replaced": "已替换",
-	"import_replacedDesc": "\"{source}\" 已被替换为 \"{target}\""
+	"import_replacedDesc": "\"{source}\" 已被替换为 \"{target}\"",
+	"restore_crossGameTitle": "此游戏没有可恢复的配置",
+	"restore_crossGameDescription": "当前游戏没有云端配置，但您在其他游戏上有。点击其中一个即可切换并恢复。",
+	"restore_crossGameCount": "{count} 个云端配置"
 }

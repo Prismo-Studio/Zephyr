@@ -775,5 +775,8 @@
 	"import_syncHintNoActive": "Escolha adicionar como um novo perfil local, ou substituir seu perfil ativo.",
 	"import_failed": "Falha ao importar",
 	"import_replaced": "Substituído",
-	"import_replacedDesc": "\"{source}\" foi substituído por \"{target}\""
+	"import_replacedDesc": "\"{source}\" foi substituído por \"{target}\"",
+	"restore_crossGameTitle": "Sem perfis para este jogo",
+	"restore_crossGameDescription": "Você não tem perfis na nuvem para o jogo ativo, mas tem em outros jogos. Clique em um para trocar e restaurar.",
+	"restore_crossGameCount": "{count} perfil(is) na nuvem"
 }

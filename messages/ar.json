@@ -860,5 +860,8 @@
 	"import_syncHintNoActive": "اختر إضافته كملف محلي جديد، أو استبدال ملفك النشط.",
 	"import_failed": "فشل الاستيراد",
 	"import_replaced": "تم الاستبدال",
-	"import_replacedDesc": "تم استبدال \"{source}\" بـ \"{target}\""
+	"import_replacedDesc": "تم استبدال \"{source}\" بـ \"{target}\"",
+	"restore_crossGameTitle": "لا توجد ملفات لهذه اللعبة",
+	"restore_crossGameDescription": "ليس لديك ملفات سحابية للعبة النشطة، لكن لديك ملفات في ألعاب أخرى. انقر على إحداها للتبديل والاستعادة.",
+	"restore_crossGameCount": "{count} ملف سحابي"
 }
