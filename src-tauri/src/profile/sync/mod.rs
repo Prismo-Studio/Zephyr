@@ -60,6 +60,12 @@ pub struct SyncProfileData {
     missing: bool,
 }
 
+impl SyncProfileData {
+    pub fn id(&self) -> &str {
+        &self.id
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 struct FullUserInfo {

@@ -139,7 +139,7 @@ pub fn get_all_sync_ids(app: AppHandle) -> Vec<String> {
         .games
         .values()
         .flat_map(|game| game.profiles.iter())
-        .filter_map(|profile| profile.sync.as_ref().map(|s| s.id.clone()))
+        .filter_map(|profile| profile.sync.as_ref().map(|s| s.id().to_string()))
         .collect()
 }
 
