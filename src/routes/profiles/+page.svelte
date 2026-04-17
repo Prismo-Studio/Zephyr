@@ -84,10 +84,8 @@
 		try {
 			const owned = await api.profile.sync.getOwned();
 			const activeSlug = games.active?.slug;
-			const info = await api.profile.getInfo();
-			const localSyncIds = new Set(
-				info.profiles.map((p) => p.sync?.id).filter((id): id is string => !!id)
-			);
+			const allSyncIds = await api.profile.getAllSyncIds();
+			const localSyncIds = new Set(allSyncIds);
 
 			const notLocal = owned.filter((p) => !localSyncIds.has(p.id));
 			const forCurrentGame = notLocal.filter(

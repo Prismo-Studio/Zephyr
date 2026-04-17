@@ -133,6 +133,17 @@ pub fn get_profile_info(app: AppHandle) -> FrontendManagedGame {
 }
 
 #[command]
+pub fn get_all_sync_ids(app: AppHandle) -> Vec<String> {
+    let manager = app.lock_manager();
+    manager
+        .games
+        .values()
+        .flat_map(|game| game.profiles.iter())
+        .filter_map(|profile| profile.sync.as_ref().map(|s| s.id.clone()))
+        .collect()
+}
+
+#[command]
 pub async fn set_active_profile(index: usize, app: AppHandle) -> Result<()> {
     let mut manager = app.lock_manager();
 

@@ -28,6 +28,7 @@ export const getGameInfo = () => invoke<GameInfo>('get_game_info');
 export const favoriteGame = (slug: string) => invoke('favorite_game', { slug });
 export const setActiveGame = (slug: string) => invoke('set_active_game', { slug });
 export const getInfo = () => invoke<ManagedGameInfo>('get_profile_info');
+export const getAllSyncIds = () => invoke<string[]>('get_all_sync_ids');
 export const setActive = (index: number) => invoke('set_active_profile', { index });
 export const reorderProfile = (from: number, to: number) => invoke('reorder_profile', { from, to });
 export const query = (args: QueryModsArgs) => invoke<ProfileQuery>('query_profile', { args });
