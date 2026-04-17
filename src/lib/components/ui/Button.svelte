@@ -86,10 +86,10 @@
 		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
 		color: var(--text-inverse);
 		border-color: var(--accent-400);
-		box-shadow: 0 0 12px rgba(26, 255, 250, 0.15);
+		box-shadow: 0 0 12px var(--shadow-glow);
 	}
 	.z-btn-primary:hover:not(:disabled) {
-		box-shadow: 0 0 24px rgba(26, 255, 250, 0.3);
+		box-shadow: 0 0 24px var(--accent-400);
 		transform: translateY(-1px);
 	}
 	.z-btn-primary:active:not(:disabled) {

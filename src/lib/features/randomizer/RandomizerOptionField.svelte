@@ -156,7 +156,7 @@
 
 	@keyframes rdz-flash {
 		0% {
-			background: rgba(26, 255, 250, 0.15);
+			background: var(--bg-active);
 		}
 		100% {
 			background: var(--bg-base);
@@ -197,7 +197,7 @@
 	}
 
 	.rdz-field-tag-soft {
-		background: rgba(26, 255, 250, 0.1);
+		background: var(--bg-active);
 		color: var(--accent-400);
 	}
 
@@ -259,7 +259,7 @@
 		gap: 6px;
 		padding: 6px 8px;
 		border-radius: var(--radius-sm);
-		background: rgba(26, 255, 250, 0.06);
+		background: var(--bg-active);
 		border-left: 2px solid var(--accent-400);
 		color: var(--text-secondary);
 		font-size: 11px;

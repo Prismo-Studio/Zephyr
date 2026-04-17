@@ -905,7 +905,7 @@
 
 	.rdz-seed-item.selected {
 		border-color: var(--accent-400);
-		background: rgba(26, 255, 250, 0.04);
+		background: var(--bg-active);
 	}
 
 	.rdz-seed-item.hosted {
@@ -1019,7 +1019,7 @@
 	}
 
 	.rdz-preset-chip.active {
-		background: rgba(26, 255, 250, 0.12);
+		background: var(--bg-active);
 		border-color: var(--accent-400);
 		color: var(--accent-400);
 	}
@@ -1139,8 +1139,8 @@
 	}
 
 	.rdz-conn-recommended {
-		border-color: rgba(26, 255, 250, 0.4);
-		background: rgba(26, 255, 250, 0.04);
+		border-color: var(--accent-400);
+		background: var(--bg-active);
 	}
 
 	.rdz-conn-card small {
@@ -1175,7 +1175,7 @@
 		font-family: var(--font-mono, monospace);
 		font-size: 12px;
 		color: var(--text-accent);
-		background: rgba(26, 255, 250, 0.06);
+		background: var(--bg-active);
 		padding: 2px 6px;
 		border-radius: var(--radius-sm);
 	}
@@ -1199,7 +1199,7 @@
 	}
 
 	.rdz-log::selection {
-		background: rgba(26, 255, 250, 0.3);
+		background: var(--accent-400);
 		color: var(--text-primary);
 	}
 

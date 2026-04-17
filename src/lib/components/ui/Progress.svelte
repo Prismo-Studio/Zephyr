@@ -45,7 +45,7 @@
 
 	.z-progress-accent {
 		background: linear-gradient(90deg, var(--accent-600), var(--accent-400));
-		box-shadow: 0 0 8px rgba(26, 255, 250, 0.3);
+		box-shadow: 0 0 8px var(--accent-400);
 	}
 	.z-progress-default {
 		background: var(--text-muted);

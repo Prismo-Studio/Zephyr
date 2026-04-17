@@ -411,7 +411,7 @@
 		margin: var(--space-md) var(--space-lg) 0;
 		padding: var(--space-sm) var(--space-md);
 		border-radius: var(--radius-md);
-		background: rgba(26, 255, 250, 0.06);
+		background: var(--bg-active);
 		border-left: 3px solid var(--accent-400);
 		color: var(--text-secondary);
 		font-size: 12px;

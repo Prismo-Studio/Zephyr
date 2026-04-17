@@ -622,7 +622,7 @@
 	}
 
 	.z-profile-badge.accent {
-		background: rgba(26, 255, 250, 0.1);
+		background: var(--bg-active);
 		color: var(--accent-400);
 	}
 

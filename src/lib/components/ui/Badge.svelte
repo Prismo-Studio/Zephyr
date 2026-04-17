@@ -34,9 +34,9 @@
 		border: 1px solid var(--border-subtle);
 	}
 	.z-badge-accent {
-		background: rgba(26, 255, 250, 0.1);
+		background: var(--bg-active);
 		color: var(--text-accent);
-		border: 1px solid rgba(26, 255, 250, 0.2);
+		border: 1px solid var(--border-accent);
 	}
 	.z-badge-success {
 		background: rgba(0, 212, 170, 0.1);

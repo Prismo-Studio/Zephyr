@@ -73,7 +73,7 @@
 		width: 500px;
 		height: 500px;
 		border-radius: 50%;
-		background: radial-gradient(circle, rgba(26, 255, 250, 0.07) 0%, transparent 70%);
+		background: radial-gradient(circle, var(--bg-active) 0%, transparent 70%);
 		filter: blur(80px);
 		animation: glowPulse 3s ease-in-out infinite;
 	}
@@ -125,9 +125,9 @@
 		height: 120px;
 		border-radius: 24px;
 		object-fit: cover;
-		border: 2px solid rgba(26, 255, 250, 0.2);
+		border: 2px solid var(--border-accent);
 		box-shadow:
-			0 0 40px rgba(26, 255, 250, 0.2),
+			0 0 40px var(--border-accent),
 			0 12px 40px rgba(0, 0, 0, 0.4);
 		animation: iconPulse 2.5s ease-in-out infinite;
 	}
@@ -145,12 +145,12 @@
 		0%,
 		100% {
 			box-shadow:
-				0 0 40px rgba(26, 255, 250, 0.2),
+				0 0 40px var(--border-accent),
 				0 12px 40px rgba(0, 0, 0, 0.4);
 		}
 		50% {
 			box-shadow:
-				0 0 60px rgba(26, 255, 250, 0.35),
+				0 0 60px var(--accent-400),
 				0 12px 40px rgba(0, 0, 0, 0.4);
 		}
 	}
@@ -189,7 +189,7 @@
 			var(--accent-400)
 		);
 		background-size: 300% 100%;
-		box-shadow: 0 0 12px rgba(26, 255, 250, 0.5);
+		box-shadow: 0 0 12px var(--accent-400);
 		animation:
 			barFill 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
 			barShine 1.5s linear infinite;

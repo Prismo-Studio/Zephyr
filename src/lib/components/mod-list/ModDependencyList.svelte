@@ -135,10 +135,10 @@
 		font-size: 11px;
 		font-weight: 600;
 		color: var(--text-accent);
-		background: rgba(26, 255, 250, 0.08);
+		background: var(--bg-active);
 		padding: 2px 8px;
 		border-radius: var(--radius-full);
-		border: 1px solid rgba(26, 255, 250, 0.15);
+		border: 1px solid var(--shadow-glow);
 		white-space: nowrap;
 		flex-shrink: 0;
 		margin-left: auto;

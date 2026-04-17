@@ -341,7 +341,7 @@
 	}
 
 	.rdz-yaml-code::selection {
-		background: rgba(26, 255, 250, 0.3);
+		background: var(--accent-400);
 		color: var(--text-primary);
 	}
 
@@ -369,8 +369,8 @@
 	}
 
 	.rdz-yaml-code :global(.yh-line.highlighted) {
-		background: rgba(26, 255, 250, 0.1);
+		background: var(--bg-active);
 		border-left-color: var(--accent-400);
-		box-shadow: 0 0 16px rgba(26, 255, 250, 0.05);
+		box-shadow: 0 0 16px var(--bg-active);
 	}
 </style>

@@ -55,8 +55,8 @@
 	}
 
 	.z-toast-info {
-		border-color: rgba(26, 255, 250, 0.2);
-		background: linear-gradient(135deg, var(--bg-elevated), rgba(26, 255, 250, 0.03));
+		border-color: var(--border-accent);
+		background: linear-gradient(135deg, var(--bg-elevated), var(--bg-active));
 	}
 
 	:global(.z-toast-icon) {

@@ -226,7 +226,7 @@
 		inset: 0;
 		background: linear-gradient(
 			135deg,
-			rgba(26, 255, 250, 0.05) 0%,
+			var(--bg-active) 0%,
 			transparent 40%
 		);
 		opacity: 0;
@@ -309,9 +309,9 @@
 		text-transform: uppercase;
 		padding: 3px 8px;
 		border-radius: var(--radius-full);
-		background: rgba(26, 255, 250, 0.1);
+		background: var(--bg-active);
 		color: var(--accent-400);
-		border: 1px solid rgba(26, 255, 250, 0.2);
+		border: 1px solid var(--border-accent);
 	}
 
 	.rdz-badge :global(svg) {

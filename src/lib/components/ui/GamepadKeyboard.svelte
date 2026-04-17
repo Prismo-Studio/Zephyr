@@ -311,7 +311,7 @@
 	.z-kb-key.focused {
 		border-color: var(--accent-400);
 		background: var(--bg-active);
-		box-shadow: 0 0 12px rgba(26, 255, 250, 0.2);
+		box-shadow: 0 0 12px var(--border-accent);
 	}
 
 	.z-kb-special {

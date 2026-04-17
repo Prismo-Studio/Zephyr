@@ -819,7 +819,7 @@
 	}
 
 	.z-external-link-btn:hover {
-		background: rgba(26, 255, 250, 0.12);
+		background: var(--bg-active);
 	}
 
 	.z-external-buttons {
@@ -854,7 +854,7 @@
 		padding: 3px 8px;
 		border-radius: var(--radius-full);
 		border: 1px solid var(--accent-400);
-		background: rgba(26, 255, 250, 0.08);
+		background: var(--bg-active);
 		color: var(--accent-400);
 		font-size: 11px;
 		font-weight: 600;
@@ -863,7 +863,7 @@
 	}
 
 	.z-version-btn:hover {
-		background: rgba(26, 255, 250, 0.15);
+		background: var(--shadow-glow);
 	}
 
 	:global(.z-version-chevron) {

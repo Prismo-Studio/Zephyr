@@ -72,7 +72,7 @@
 
 	.z-input:focus {
 		border-color: var(--accent-400);
-		box-shadow: 0 0 0 3px rgba(26, 255, 250, 0.1);
+		box-shadow: 0 0 0 3px var(--bg-active);
 	}
 
 	.z-input:disabled {

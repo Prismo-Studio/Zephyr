@@ -53,7 +53,7 @@
 
 	.z-checkbox:hover:not(:disabled) {
 		border-color: var(--accent-400);
-		background: rgba(26, 255, 250, 0.05);
+		background: var(--bg-active);
 	}
 
 	.z-checkbox.checked {

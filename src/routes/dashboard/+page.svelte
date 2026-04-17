@@ -362,6 +362,6 @@
 		height: 8px;
 		border-radius: 50%;
 		background: var(--accent-400);
-		box-shadow: 0 0 6px rgba(26, 255, 250, 0.5);
+		box-shadow: 0 0 6px var(--accent-400);
 	}
 </style>

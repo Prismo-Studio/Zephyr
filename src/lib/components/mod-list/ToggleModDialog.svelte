@@ -139,8 +139,8 @@
 	}
 
 	.z-tmd-warning.enabling {
-		background: rgba(26, 255, 250, 0.06);
-		border-color: rgba(26, 255, 250, 0.2);
+		background: var(--bg-active);
+		border-color: var(--border-accent);
 		color: var(--text-accent);
 	}
 

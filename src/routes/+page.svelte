@@ -1242,7 +1242,7 @@
 	}
 
 	.z-empty-action:hover {
-		background: rgba(26, 255, 250, 0.12);
+		background: var(--bg-active);
 		box-shadow: var(--shadow-glow);
 	}
 
@@ -1278,7 +1278,7 @@
 		width: 100%;
 		border: 2px dashed var(--accent-400);
 		border-radius: var(--radius-lg);
-		background: rgba(26, 255, 250, 0.08);
+		background: var(--bg-active);
 		overflow: hidden;
 		position: relative;
 		display: flex;
