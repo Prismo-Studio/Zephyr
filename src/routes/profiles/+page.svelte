@@ -103,6 +103,8 @@
 				return;
 			}
 
+			if (silent) return;
+
 			if (forOtherGames.length > 0) {
 				const countBySlug = new Map<string, number>();
 				for (const p of forOtherGames) {
@@ -122,13 +124,11 @@
 				return;
 			}
 
-			if (!silent) {
-				pushToast({
-					type: 'info',
-					name: m.sync_nothingToRestore(),
-					message: m.sync_nothingToRestoreDesc()
-				});
-			}
+			pushToast({
+				type: 'info',
+				name: m.sync_nothingToRestore(),
+				message: m.sync_nothingToRestoreDesc()
+			});
 		} catch (e: any) {
 			if (!silent) {
 				pushToast({
