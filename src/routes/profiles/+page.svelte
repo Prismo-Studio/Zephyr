@@ -219,6 +219,10 @@
 		if (!renameName.trim() || renameId === null) return;
 		const index = getProfileIndex(renameId);
 		if (index === -1) return;
+		const target = profiles.list.find((pr) => pr.id === renameId);
+		const isOwnedSync = !!(
+			target?.sync && auth.user && target.sync.owner.discordId === auth.user.discordId
+		);
 		const previousActiveIndex =
 			profiles.activeId !== null ? getProfileIndex(profiles.activeId) : -1;
 		const needsSwitch = renameId !== profiles.activeId;
@@ -226,6 +230,17 @@
 			await api.profile.setActive(index);
 		}
 		await api.profile.rename(renameName.trim());
+		if (isOwnedSync) {
+			try {
+				await api.profile.sync.push();
+			} catch (e: any) {
+				pushToast({
+					type: 'error',
+					name: m.sync_syncFailed(),
+					message: e?.message ?? String(e)
+				});
+			}
+		}
 		if (needsSwitch && previousActiveIndex !== -1) {
 			await api.profile.setActive(previousActiveIndex);
 		}
