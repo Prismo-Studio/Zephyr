@@ -48,7 +48,7 @@
 	}
 </script>
 
-<Modal {open} onclose={close} title={(i18nState.locale && m.restore_crossGameTitle()) || ''}>
+<Modal bind:open onclose={close} title={(i18nState.locale && m.restore_crossGameTitle()) || ''}>
 	<div class="z-cross">
 		<p class="z-cross-hint">
 			{i18nState.locale && m.restore_crossGameDescription()}

@@ -120,7 +120,7 @@
 	}
 </script>
 
-<Modal {open} onclose={close} title={(i18nState.locale && m.restore_title()) || ''}>
+<Modal bind:open onclose={close} title={(i18nState.locale && m.restore_title()) || ''}>
 	<div class="z-restore">
 		<p class="z-restore-hint">
 			{i18nState.locale && m.restore_description({ count: items.length.toString() })}
