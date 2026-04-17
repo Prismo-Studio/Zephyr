@@ -466,7 +466,7 @@ pre,
    Selection
    ============================================================ */
 ::selection {
-	background: rgba(26, 255, 250, 0.2);
+	background: color-mix(in srgb, var(--accent-400) 30%, transparent);
 	color: var(--text-primary);
 }
 

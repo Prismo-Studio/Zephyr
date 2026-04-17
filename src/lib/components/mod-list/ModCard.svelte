@@ -561,13 +561,13 @@
 	}
 
 	.z-mod-category-tag:hover {
-		color: #2dd4bf;
-		border-color: #0d9488;
+		color: var(--text-accent);
+		border-color: var(--accent-400, var(--text-accent));
 	}
 
 	.z-mod-category-tag.active {
-		color: #2dd4bf;
-		border-color: #0d9488;
+		color: var(--text-accent);
+		border-color: var(--accent-400, var(--text-accent));
 	}
 
 	/* ── Grid Card ── */
