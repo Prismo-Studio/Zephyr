@@ -99,9 +99,19 @@
 				}
 			}
 			seeds = await api.listSeeds();
+
+			// Auto-upload and restart remote server if in remote mode
+			if (outcome.success && selectedSeed && hostMode === 'remote') {
+				await uploadAndStartRemote();
+			}
 		} finally {
 			generating = false;
 		}
+	}
+
+	async function regenerateAndRestart() {
+		if (players.length === 0) return;
+		await generate();
 	}
 
 	let remoteLog: string[] = $state([]);
@@ -172,20 +182,25 @@
 	async function confirmRename() {
 		const { type, path, value } = renameModal;
 		if (!value.trim()) return;
+		renameModal.open = false;
 		if (type === 'player') {
 			await api.renamePlayerYaml(path, value.trim());
 			players = await api.listPlayerYamls();
+			await regenerateAndRestart();
 		} else {
 			const newPath = await api.renameSeed(path, value.trim());
 			if (selectedSeed === path) selectedSeed = newPath;
 			seeds = await api.listSeeds();
 		}
-		renameModal.open = false;
 	}
 
 	async function deletePlayer(p: PlayerFile) {
 		await api.deletePlayerYaml(p.path);
 		players = await api.listPlayerYamls();
+		// Player removed → regenerate seed and restart server
+		if (players.length > 0) {
+			await regenerateAndRestart();
+		}
 	}
 
 	async function deleteOneSeed(s: SeedFile) {
@@ -417,14 +432,11 @@
 							<Icon icon="mdi:circle" /> Running: {remote.seed}
 						</div>
 					</div>
-					<div class="rdz-conn-card">
+					<button class="rdz-conn-card" onclick={() => copyText('nozomi.proxy.rlwy.net:45465', 'addr')}>
 						<span class="rdz-label"><Icon icon="mdi:cloud" /> Connect address</span>
 						<code>nozomi.proxy.rlwy.net:45465</code>
-					</div>
-					<Button variant="ghost" onclick={stopRemote}>
-						{#snippet icon()}<Icon icon="mdi:stop" />{/snippet}
-						Stop remote server
-					</Button>
+						<small>{copiedKey === 'addr' ? 'Copied!' : 'Click to copy'}</small>
+					</button>
 				{:else}
 					<p class="rdz-muted">
 						{#if !selectedSeed}
@@ -639,7 +651,7 @@
 	<Input
 		bind:value={renameModal.value}
 		placeholder="New name"
-		onkeydown={(e) => { if (e.key === 'Enter') confirmRename(); }}
+		onkeydown={(e) => { if (e.key === 'Enter') { e.preventDefault(); confirmRename(); } }}
 	/>
 	{#snippet actions()}
 		<Button variant="ghost" onclick={() => (renameModal.open = false)}>Cancel</Button>
