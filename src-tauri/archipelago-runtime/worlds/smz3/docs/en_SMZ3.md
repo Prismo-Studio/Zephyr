@@ -13,7 +13,7 @@ would in the vanilla game.
 
 ## What items and locations get shuffled?
 
-All main inventory items, collectables, power-ups and ammunition can be shuffled, and all locations in the game which 
+All main inventory items, collectables, power-ups and ammunition can be shuffled, and all locations in the game which
 could contain any of those items may have their contents changed.
 
 ## Which items can be in another player's world?
@@ -33,4 +33,3 @@ Items belonging to other worlds are represented by a Power Star from Super Mario
 ## When the player receives an item, what happens?
 
 When the player receives an item, a text box will appear to show which item was received, and from whom.
-

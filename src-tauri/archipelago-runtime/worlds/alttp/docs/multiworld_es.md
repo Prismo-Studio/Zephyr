@@ -5,15 +5,13 @@
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases).
 - [SNI](https://github.com/alttpo/sni/releases). Esto está incluido automáticamente en la instalación de Archipelago.
 - SNI no es compatible con (Q)Usb2Snes.
-- Hardware o software capaz de cargar y ejecutar archivos de ROM de SNES, por ejemplo:
-    - Un emulador capaz de conectarse a SNI
-      ([snes9x-nwa](https://github.com/Skarsnik/snes9x-emunwa/releases), [snes9x-rr](https://github.com/gocha/snes9x-rr/releases),
-       [BSNES-plus](https://github.com/black-sliver/bsnes-plus),
-       [BizHawk](https://tasvideos.org/BizHawk), o
-       [RetroArch](https://retroarch.com?page=platforms) 1.10.1 o más nuevo).
-    - Un SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), u otro hardware compatible. **nota:
-Las SNES minis modificadas no tienen soporte de SNI. Algunos usuarios dicen haber tenido éxito con Qusb2Snes para esta consola,
-pero no tiene soporte.**
+- Hardware o software capaz de cargar y ejecutar archivos de ROM de SNES, por ejemplo: - Un emulador capaz de conectarse a SNI
+  ([snes9x-nwa](https://github.com/Skarsnik/snes9x-emunwa/releases), [snes9x-rr](https://github.com/gocha/snes9x-rr/releases),
+  [BSNES-plus](https://github.com/black-sliver/bsnes-plus),
+  [BizHawk](https://tasvideos.org/BizHawk), o
+  [RetroArch](https://retroarch.com?page=platforms) 1.10.1 o más nuevo). - Un SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), u otro hardware compatible. **nota:
+  Las SNES minis modificadas no tienen soporte de SNI. Algunos usuarios dicen haber tenido éxito con Qusb2Snes para esta consola,
+  pero no tiene soporte.**
 - Tu archivo ROM japones v1.0, probablemente se llame `Zelda no Densetsu - Kamigami no Triforce (Japan).sfc`
 
 ## Procedimiento de instalación
@@ -22,15 +20,14 @@ pero no tiene soporte.**
    **El archivo del instalador se encuentra en la sección de assets al final de la información de version**.
 2. La primera vez que realices una generación local o parchees tu juego, se te pedirá que ubiques tu archivo ROM base.
    Este es tu archivo ROM de Link to the Past japonés. Esto sólo debe hacerse una vez.
-   
-4. Si estás usando un emulador, deberías de asignar tu emulador con compatibilidad con Lua como el programa por defecto para abrir archivos 
+3. Si estás usando un emulador, deberías de asignar tu emulador con compatibilidad con Lua como el programa por defecto para abrir archivos
    ROM.
-    1. Extrae la carpeta de tu emulador al Escritorio, o algún otro sitio que vayas a recordar.
-    2. Haz click derecho en un archivo ROM y selecciona **Abrir con...**
-    3. Marca la casilla junto a **Usar siempre este programa para abrir archivos .sfc**
-    4. Baja al final de la lista y haz click en el texto gris **Buscar otro programa en este PC**
-    5. Busca el archivo `.exe` de tu emulador y haz click en **Abrir**. Este archivo debería de encontrarse dentro de la carpeta que
-      extrajiste en el paso uno. 
+   1. Extrae la carpeta de tu emulador al Escritorio, o algún otro sitio que vayas a recordar.
+   2. Haz click derecho en un archivo ROM y selecciona **Abrir con...**
+   3. Marca la casilla junto a **Usar siempre este programa para abrir archivos .sfc**
+   4. Baja al final de la lista y haz click en el texto gris **Buscar otro programa en este PC**
+   5. Busca el archivo `.exe` de tu emulador y haz click en **Abrir**. Este archivo debería de encontrarse dentro de la carpeta que
+      extrajiste en el paso uno.
 
 ### Obtener el fichero de parche y crea tu ROM
 
@@ -45,7 +42,7 @@ automáticamente el cliente, y además creará la rom en el mismo directorio don
 
 #### Con emulador
 
-Cuando el cliente se lance automáticamente, SNI debería de ejecutarse en segundo plano. Si es la 
+Cuando el cliente se lance automáticamente, SNI debería de ejecutarse en segundo plano. Si es la
 primera vez que se ejecuta, tal vez se te pida permitir que se comunique a través del firewall de Windows
 
 #### snes9x-nwa
@@ -60,9 +57,9 @@ primera vez que se ejecuta, tal vez se te pida permitir que se comunique a trav�
 3. Haz click en **New Lua Script Window...**
 4. En la nueva ventana, haz click en **Browse...**
 5. Selecciona el archivo lua conector incluido con tu cliente
-      - Busca en la carpeta de Archipelago `/SNI/lua/`.
+   - Busca en la carpeta de Archipelago `/SNI/lua/`.
 6. Si ves un error mientras carga el script que dice `socket.dll missing` o algo similar, ve a la carpeta de
-el lua que estas usando en tu gestor de archivos y copia el `socket.dll` a la raíz de tu instalación de snes9x.
+   el lua que estas usando en tu gestor de archivos y copia el `socket.dll` a la raíz de tu instalación de snes9x.
 
 ##### BNES-Plus
 
@@ -72,14 +69,14 @@ el lua que estas usando en tu gestor de archivos y copia el `socket.dll` a la ra
 ##### BizHawk
 
 1. Asegurate que se ha cargado el núcleo BSNES. Se hace en la barra de menú principal, bajo:
-    - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
-    - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
+   - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
+   - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
 2. Carga tu fichero de ROM, si no lo has hecho ya.
    Si has cambiado tu preferencia de núcleo tras haber cargado la ROM, no te olvides de volverlo a cargar (atajo por defecto: Ctrl+R).
 3. Arrastra el archivo `Connector.lua` que has descargado a la ventana principal de EmuHawk.
    - Busca en la carpeta de Archipelago `/SNI/lua/`.
    - También podrías abrir la consola de Lua manualmente, hacer click en `Script` 〉 `Open Script`, e ir a `Connector.lua`
-      con el selector de archivos.
+     con el selector de archivos.
 
 ##### RetroArch 1.10.1 o más nuevo
 

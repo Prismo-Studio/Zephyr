@@ -7,7 +7,8 @@
 - [BepInEx 6.0.0-pre.1 (Unity IL2CPP x64)](https://github.com/BepInEx/BepInEx/releases/tag/v6.0.0-pre.1)
 
 ## Optional Software
-- [TUNIC Randomizer Map Tracker](https://github.com/SapphireSapphic/TunicTracker/releases/latest) 
+
+- [TUNIC Randomizer Map Tracker](https://github.com/SapphireSapphic/TunicTracker/releases/latest)
   - Requires [PopTracker](https://github.com/black-sliver/PopTracker/releases)
 - [TUNIC Randomizer Item Auto-tracker](https://github.com/radicoon/tunic-rando-tracker/releases/latest)
 - [Archipelago Text Client](https://github.com/ArchipelagoMW/Archipelago/releases/latest)
@@ -18,10 +19,10 @@
 
 Find your TUNIC game installation directory:
 
-- **Steam**: Right click TUNIC in your Steam Library, then *Manage → Browse local files*.<br>
+- **Steam**: Right click TUNIC in your Steam Library, then _Manage → Browse local files_.<br>
   - **Steam Deck**: Hold down the power button, tap "Switch to Desktop", then launch Steam from Desktop Mode to access the above option.
-- **PC Game Pass**: In the Xbox PC app, go to the TUNIC game page from your library, click the [...] button next to "Play", then 
-*Manage → Files → Browse...*<br>
+- **PC Game Pass**: In the Xbox PC app, go to the TUNIC game page from your library, click the [...] button next to "Play", then
+  _Manage → Files → Browse..._<br>
 - **Other platforms**: Follow a similar pattern of steps as above to locate your specific game directory.
 
 ### Install BepInEx
@@ -35,6 +36,7 @@ If playing on Steam Deck, follow this [guide to set up BepInEx via Proton](https
 If playing on Linux, you may be able to add `WINEDLLOVERRIDES="winhttp=n,b" %command%` to your Steam launch options. If this does not work, follow the guide for Steam Deck above.
 
 Extract the contents of the BepInEx .zip file into your TUNIC game directory:<br>
+
 - **Steam**: Steam\steamapps\common\TUNIC<br>
 - **PC Game Pass**: XboxGames\Tunic\Content<br>
 - **Other platforms**: Place into the same folder that the Tunic_Data or Secret Legend_Data folder is found.
@@ -47,7 +49,7 @@ Download the latest release of the [TUNIC Randomizer Mod](https://github.com/sil
 
 Extract the contents of the downloaded .zip file, and find the folder labeled `Tunic Randomizer`.
 
-Copy the `Tunic Randomizer` folder into `BepInEx/plugins` in your TUNIC game installation directory. 
+Copy the `Tunic Randomizer` folder into `BepInEx/plugins` in your TUNIC game installation directory.
 
 The filepath to the mod should look like `BepInEx/plugins/Tunic Randomizer/TunicRandomizer.dll`<br>
 
@@ -60,9 +62,10 @@ Launch the game, and if everything was installed correctly you should see `Rando
 Visit the [TUNIC options page](/games/TUNIC/player-options) to generate a YAML with your selected options.
 
 ### Configure Your Mod Settings
-Launch the game, and using the menu on the Title Screen select `Archipelago` under `Randomizer Mode`. 
 
-Click the button labeled `Edit AP Config`, and fill in *Player*, *Hostname*, *Port*, and *Password* (if required) with the correct information for your room.
+Launch the game, and using the menu on the Title Screen select `Archipelago` under `Randomizer Mode`.
+
+Click the button labeled `Edit AP Config`, and fill in _Player_, _Hostname_, _Port_, and _Password_ (if required) with the correct information for your room.
 
 Once you've input your information, click the `Close` button. If everything was configured properly, you should see `Status: Connected!` and your chosen game options will be shown under `World Settings`.
 

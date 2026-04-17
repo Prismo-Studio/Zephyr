@@ -5,36 +5,36 @@
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases).
 
 - Hardware or software capable of loading and playing SNES ROM files
-    - An emulator capable of connecting to SNI such as:
-        - snes9x-rr from: [snes9x rr](https://github.com/gocha/snes9x-rr/releases),
-        - BizHawk from: [BizHawk Website](http://tasvideos.org/BizHawk.html)
-        - RetroArch 1.10.1 or newer from: [RetroArch Website](https://retroarch.com?page=platforms). Or,
-    - An SD2SNES, FXPak Pro ([FXPak Pro Store Page](https://krikzz.com/store/home/54-fxpak-pro.html)), or other
-      compatible hardware
+  - An emulator capable of connecting to SNI such as:
+    - snes9x-rr from: [snes9x rr](https://github.com/gocha/snes9x-rr/releases),
+    - BizHawk from: [BizHawk Website](http://tasvideos.org/BizHawk.html)
+    - RetroArch 1.10.1 or newer from: [RetroArch Website](https://retroarch.com?page=platforms). Or,
+  - An SD2SNES, FXPak Pro ([FXPak Pro Store Page](https://krikzz.com/store/home/54-fxpak-pro.html)), or other
+    compatible hardware
 
 - Your legally obtained Final Fantasy Mystic Quest NA 1.0 or 1.1 ROM file, probably named `Final Fantasy - Mystic Quest (U) (V1.0).sfc` or `Final Fantasy - Mystic Quest (U) (V1.1).sfc`
-The Archipelago community cannot supply you with this.
+  The Archipelago community cannot supply you with this.
 
 ## Installation Procedures
 
 ### Linux Setup
 
-1. Download and install [Archipelago](<https://github.com/ArchipelagoMW/Archipelago/releases/latest>). **The installer 
+1. Download and install [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases/latest). **The installer
    file is located in the assets section at the bottom of the version information. You'll likely be looking for the `.AppImage`.**
 2. It is recommended to use either RetroArch or BizHawk if you run on linux, as snes9x-rr isn't compatible.
 
 ### Windows Setup
 
-1. Download and install [Archipelago](<https://github.com/ArchipelagoMW/Archipelago/releases/latest>). **The installer 
+1. Download and install [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases/latest). **The installer
    file is located in the assets section at the bottom of the version information.**
 2. If you are using an emulator, you should assign your Lua capable emulator as your default program for launching ROM
    files.
-    1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
-    2. Right-click on a ROM file and select **Open with...**
-    3. Check the box next to **Always use this app to open .sfc files**
-    4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
-    5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
-       extracted in step one.
+   1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
+   2. Right-click on a ROM file and select **Open with...**
+   3. Check the box next to **Always use this app to open .sfc files**
+   4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
+   5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
+      extracted in step one.
 
 ## Create a Config (.yaml) File
 
@@ -56,13 +56,13 @@ validator page: [YAML Validation page](/mysterycheck)
 ## Generating a Single-Player Game
 
 1. Navigate to the Player Options page, configure your options, and click the "Generate Game" button.
-    - Player Options page: [Final Fantasy Mystic Quest Player Options Page](/games/Final%20Fantasy%20Mystic%20Quest/player-options)
+   - Player Options page: [Final Fantasy Mystic Quest Player Options Page](/games/Final%20Fantasy%20Mystic%20Quest/player-options)
 2. You will be presented with a "Seed Info" page.
 3. Click the "Create New Room" link.
 4. You will be presented with a server page, from which you can download your `.apmq` patch file.
 5. Go to the [FFMQR website](https://ap.ffmqrando.net/Archipelago) and select your Final Fantasy Mystic Quest ROM
-and the .apmq file you received, choose optional preferences, and click `Generate` to get your patched ROM.
-7. Since this is a single-player game, you will no longer need the client, so feel free to close it.
+   and the .apmq file you received, choose optional preferences, and click `Generate` to get your patched ROM.
+6. Since this is a single-player game, you will no longer need the client, so feel free to close it.
 
 ## Joining a MultiWorld Game
 
@@ -90,10 +90,10 @@ If this is the first time SNI launches, you may be prompted to allow it to commu
 3. Click on **New Lua Script Window...**
 4. In the new window, click **Browse...**
 5. Select the connector lua file included with your client
-    - Look in the Archipelago folder for `/SNI/lua/x64` or `/SNI/lua/x86` depending on if the
-      emulator is 64-bit or 32-bit.
-6. If you see an error while loading the script that states `socket.dll missing` or similar, navigate to the folder of 
-the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
+   - Look in the Archipelago folder for `/SNI/lua/x64` or `/SNI/lua/x86` depending on if the
+     emulator is 64-bit or 32-bit.
+6. If you see an error while loading the script that states `socket.dll missing` or similar, navigate to the folder of
+   the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
 
 ##### BizHawk
 
@@ -105,8 +105,8 @@ the lua you are using in your file explorer and copy the `socket.dll` to the bas
 3. Click on the Tools menu and click on **Lua Console**
 4. Click the Open Folder icon that says `Open Script` via the tooltip on mouse hover, or click the Script Menu then `Open Script...`, or press `Ctrl-O`.
 5. Select the `Connector.lua` file included with your client
-    - Look in the Archipelago folder for `/SNI/lua/x64` or `/SNI/lua/x86` depending on if the
-      emulator is 64-bit or 32-bit. Please note the most recent versions of BizHawk are 64-bit only.
+   - Look in the Archipelago folder for `/SNI/lua/x64` or `/SNI/lua/x86` depending on if the
+     emulator is 64-bit or 32-bit. Please note the most recent versions of BizHawk are 64-bit only.
 
 ##### RetroArch 1.10.1 or newer
 
@@ -116,7 +116,7 @@ You only have to do these steps once. Note, RetroArch 1.9.x will not work as it 
 2. Go to Settings --> User Interface. Set "Show Advanced Settings" to ON.
 3. Go to Settings --> Network. Set "Network Commands" to ON. (It is found below Request Device 16.) Leave the default
    Network Command Port at 55355. \
-  ![Screenshot of Network Commands setting](../../generic/docs/retroarch-network-commands-en.png)
+   ![Screenshot of Network Commands setting](../../generic/docs/retroarch-network-commands-en.png)
 4. Go to Main Menu --> Online Updater --> Core Downloader. Scroll down and select "Nintendo - SNES / SFC (bsnes-mercury
    Performance)".
 
@@ -137,7 +137,7 @@ page: [usb2snes Supported Platforms Page](http://usb2snes.com/#supported-platfor
 
 ### Connect to the Archipelago Server
 
-SNI serves as the interface between your emulator and the server. Since you launched it manually, you need to tell it what server to connect to. 
+SNI serves as the interface between your emulator and the server. Since you launched it manually, you need to tell it what server to connect to.
 If the server is hosted on Archipelago.gg, get the port the server hosts your game on at the top of the game room (last line before the worlds are listed).
 In the SNI client, either type `/connect address` (where `address` is the address of the server, for example `/connect archipelago.gg:12345`), or type the address and port on the "Server" input field, then press `Connect`.
 If the server is hosted locally, simply ask the host for the address of the server, and copy/paste it into the "Server" input field then press `Connect`.
@@ -156,7 +156,7 @@ The recommended way to host a game is to use our hosting service. The process is
 1. Collect config files from your players.
 2. Create a zip file containing your players' config files.
 3. Upload that zip file to the Generate page above.
-    - Generate page: [WebHost Seed Generation Page](/generate)
+   - Generate page: [WebHost Seed Generation Page](/generate)
 4. Wait a moment while the seed is generated.
 5. When the seed is generated, you will be redirected to a "Seed Info" page.
 6. Click "Create New Room". This will take you to the server page. Provide the link to this page to your players, so

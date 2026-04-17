@@ -22,7 +22,7 @@
 Pour continuer un jeu multimonde précedemment commencé:
 
 1. Lancez The Witness
-2. Chargez la sauvegarde sur laquelle vous avez dernièrement joué ce monde, si ce n'est pas celle qui a été chargée automatiquement 
+2. Chargez la sauvegarde sur laquelle vous avez dernièrement joué ce monde, si ce n'est pas celle qui a été chargée automatiquement
 3. Lancez [The Witness Archipelago Randomizer](https://github.com/NewSoupVi/The-Witness-Randomizer-for-Archipelago/releases/latest)
 4. Cliquez sur "Load Credentials" (ou tapez les manuellement)
 5. Cliquez sur "Connect"
@@ -39,7 +39,7 @@ Il est recommandé d'utiliser le "Archipelago Text Client" en parallèle afin de
 The Witness a un tracker fonctionnel qui supporte l'auto-tracking.
 
 1. Téléchargez [The Witness Map- and Auto-Tracker](https://github.com/NewSoupVi/witness_archipelago_tracker/releases) et [PopTracker](https://github.com/black-sliver/PopTracker/releases).
-2. Ouvrez Poptracker, puis chargez le pack Witness. 
+2. Ouvrez Poptracker, puis chargez le pack Witness.
 3. Cliquez sur l'icone "AP" qui se situe au dessus de la carte.
 4. Inscrivez l'adresse Archipelago, votre nom de joueur et le mot de passe du jeu multimonde.
 

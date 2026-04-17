@@ -37,7 +37,6 @@ GanonSilversReveal:
       for the arrows
 
 Items:
-
   BigKeyEP: |-
     The big key
     of the east
@@ -259,7 +258,7 @@ Items:
     heavier things
   Flippers: |-
     Fancy a swim?
-  MoonPearl: |-2
+  MoonPearl: |2-
       Bunny Link
           be
          gone!
@@ -450,7 +449,7 @@ Items:
 
   Something: |-
     A small victory!
-    
+
   default: |-
     Don't waste
     your time!

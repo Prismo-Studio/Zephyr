@@ -1,5 +1,15 @@
 {
-	"Raft": ["ResearchTable", "RadioTower", "Vasagatan", "BalboaIsland", "CaravanIsland", "Tangaroa", "Varuna Point", "Temperance", "Utopia"],
+	"Raft": [
+		"ResearchTable",
+		"RadioTower",
+		"Vasagatan",
+		"BalboaIsland",
+		"CaravanIsland",
+		"Tangaroa",
+		"Varuna Point",
+		"Temperance",
+		"Utopia"
+	],
 	"ResearchTable": [],
 	"RadioTower": [],
 	"Vasagatan": [],

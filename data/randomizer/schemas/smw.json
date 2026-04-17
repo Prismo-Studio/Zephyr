@@ -1,800 +1,800 @@
 {
-  "id": "smw",
-  "name": "Super Mario World",
-  "version": "0.4.5",
-  "description": "Super Mario World is an action platforming game.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ring_link",
-      "label": "Ring Link",
-      "description": "Whether your in-level coin gain/loss is linked to other players",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_link",
-      "label": "Trap Link",
-      "description": "Whether your received traps are linked to other players",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "Determines the goal of the seed Bowser: Defeat Koopalings, reach Bowser's Castle and defeat Bowser Yoshi Egg Hunt: Find a certain number of Yoshi Eggs",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "bowser",
-        "choices": [
-          {
-            "value": "bowser",
-            "label": "Bowser"
-          },
-          {
-            "value": "yoshi_egg_hunt",
-            "label": "Yoshi Egg Hunt"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bosses_required",
-      "label": "Bosses Required",
-      "description": "How many Bosses (Koopalings or Reznor) must be defeated in order to defeat Bowser",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 11,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "max_yoshi_egg_cap",
-      "label": "Max Yoshi Egg Cap",
-      "description": "Maximum possible number of Yoshi Eggs that will be in the item pool If fewer available locations exist in the pool than this number, the number of available locations will be used instead.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 255,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "percentage_of_yoshi_eggs",
-      "label": "Percentage Of Yoshi Eggs",
-      "description": "What Percentage of Yoshi Eggs are required to finish Yoshi Egg Hunt",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dragon_coin_checks",
-      "label": "Dragon Coin Checks",
-      "description": "Whether collecting 5 Dragon Coins in each level will grant a check",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "moon_checks",
-      "label": "Moon Checks",
-      "description": "Whether collecting a 3-Up Moon in a level will grant a check",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hidden_1up_checks",
-      "label": "Hidden 1Up Checks",
-      "description": "Whether collecting a hidden 1-Up mushroom in a level will grant a check These checks are considered cryptic as there's no actual indicator that they're in their respective places Enable this option at your own risk",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bonus_block_checks",
-      "label": "Bonus Block Checks",
-      "description": "Whether collecting a 1-Up mushroom from a Bonus Block in a level will grant a check",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "blocksanity",
-      "label": "Blocksanity",
-      "description": "Whether hitting a block with an item or coin inside will grant a check Note that some blocks are excluded due to how the option and the game works!",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bowser_castle_doors",
-      "label": "Bowser Castle Doors",
-      "description": "How the doors of Bowser's Castle behave Vanilla: Front and Back Doors behave as vanilla Fast: Both doors behave as the Back Door Slow: Both doors behave as the Front Door \"Front Door\" rooms depend on the `bowser_castle_rooms` option \"Back Door\" only requires going through the dark hallway to Bowser",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "fast",
-            "label": "Fast"
-          },
-          {
-            "value": "slow",
-            "label": "Slow"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bowser_castle_rooms",
-      "label": "Bowser Castle Rooms",
-      "description": "How the rooms of Bowser's Castle Front Door behave Vanilla: You can choose which rooms to enter, as in vanilla Random Two Room: Two random rooms are chosen Random Five Room: Five random rooms are chosen Gauntlet: All eight rooms must be cleared Labyrinth: Which room leads to Bowser?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random_two_room",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "random_two_room",
-            "label": "Random Two Room"
-          },
-          {
-            "value": "random_five_room",
-            "label": "Random Five Room"
-          },
-          {
-            "value": "gauntlet",
-            "label": "Gauntlet"
-          },
-          {
-            "value": "labyrinth",
-            "label": "Labyrinth"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "level_shuffle",
-      "label": "Level Shuffle",
-      "description": "Whether levels are shuffled",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exclude_special_zone",
-      "label": "Exclude Special Zone",
-      "description": "If active, this option will prevent any progression items from being placed in Special Zone levels.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "boss_shuffle",
-      "label": "Boss Shuffle",
-      "description": "How bosses are shuffled None: Bosses are not shuffled Simple: Four Reznors and the seven Koopalings are shuffled around Full: Each boss location gets a fully random boss Singularity: One or two bosses are chosen and placed at every boss location",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "simple",
-            "label": "Simple"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "singularity",
-            "label": "Singularity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "swap_donut_gh_exits",
-      "label": "Swap Donut Gh Exits",
-      "description": "If enabled, this option will swap which overworld direction the two exits of the level at the Donut Ghost House overworld tile go: False: Normal Exit goes up, Secret Exit goes right.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "display_received_item_popups",
-      "label": "Display Received Item Popups",
-      "description": "What messages to display in-game for items received",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "progression_minus_yoshi_eggs",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          },
-          {
-            "value": "progression",
-            "label": "Progression"
-          },
-          {
-            "value": "progression_minus_yoshi_eggs",
-            "label": "Progression Minus Yoshi Eggs"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "junk_fill_percentage",
-      "label": "Junk Fill Percentage",
-      "description": "Replace a percentage of non-required Yoshi Eggs in the item pool with random junk items (only applicable on Yoshi Egg Hunt goal)",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_fill_percentage",
-      "label": "Trap Fill Percentage",
-      "description": "Replace a percentage of junk items in the item pool with random traps",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ice_trap_weight",
-      "label": "Ice Trap Weight",
-      "description": "Likelihood of a receiving a trap which causes the level to become slippery",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "medium",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "low",
-            "label": "Low"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "high",
-            "label": "High"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "stun_trap_weight",
-      "label": "Stun Trap Weight",
-      "description": "Likelihood of a receiving a trap which briefly stuns Mario",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "medium",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "low",
-            "label": "Low"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "high",
-            "label": "High"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "literature_trap_weight",
-      "label": "Literature Trap Weight",
-      "description": "Likelihood of a receiving a trap which causes the player to read literature",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "medium",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "low",
-            "label": "Low"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "high",
-            "label": "High"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "timer_trap_weight",
-      "label": "Timer Trap Weight",
-      "description": "Likelihood of a receiving a trap which causes the timer to run low",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "medium",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "low",
-            "label": "Low"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "high",
-            "label": "High"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "reverse_trap_weight",
-      "label": "Reverse Trap Weight",
-      "description": "Likelihood of a receiving a trap which causes the controls to be reversed in the current level",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "medium",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "low",
-            "label": "Low"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "high",
-            "label": "High"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "thwimp_trap_weight",
-      "label": "Thwimp Trap Weight",
-      "description": "Likelihood of a receiving a trap which causes a Thwimp to spawn above the player",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "medium",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "low",
-            "label": "Low"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "high",
-            "label": "High"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "autosave",
-      "label": "Autosave",
-      "description": "Whether a save prompt will appear after every level",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_climb",
-      "label": "Early Climb",
-      "description": "Force Climb to appear early in the seed as a local item.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "overworld_speed",
-      "label": "Overworld Speed",
-      "description": "How fast Mario moves on the overworld",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "slow",
-            "label": "Slow"
-          },
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "fast",
-            "label": "Fast"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "music_shuffle",
-      "label": "Music Shuffle",
-      "description": "Music shuffle type None: No Music is shuffled Consistent: Each music track is consistently shuffled throughout the game Full: Each individual level has a random music track Singularity: The entire game uses one song for overworld and one song for levels",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "consistent",
-            "label": "Consistent"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "singularity",
-            "label": "Singularity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "sfx_shuffle",
-      "label": "Sfx Shuffle",
-      "description": "Shuffles almost every instance of sound effect playback Archipelago elements that play sound effects aren't randomized None: No SFX are shuffled Full: Each individual SFX call has a random SFX Singularity: The entire game uses one SFX for every SFX call",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "singularity",
-            "label": "Singularity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mario_palette",
-      "label": "Mario Palette",
-      "description": "Mario palette color",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "mario",
-        "choices": [
-          {
-            "value": "mario",
-            "label": "Mario"
-          },
-          {
-            "value": "luigi",
-            "label": "Luigi"
-          },
-          {
-            "value": "wario",
-            "label": "Wario"
-          },
-          {
-            "value": "waluigi",
-            "label": "Waluigi"
-          },
-          {
-            "value": "geno",
-            "label": "Geno"
-          },
-          {
-            "value": "princess",
-            "label": "Princess"
-          },
-          {
-            "value": "dark",
-            "label": "Dark"
-          },
-          {
-            "value": "sponge",
-            "label": "Sponge"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "level_palette_shuffle",
-      "label": "Level Palette Shuffle",
-      "description": "Whether to shuffle level palettes Off: Do not shuffle palettes On Legacy: Uses only the palette sets from the original game On Curated: Uses custom, hand-crafted palette sets",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on_legacy",
-            "label": "On Legacy"
-          },
-          {
-            "value": "on_curated",
-            "label": "On Curated"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "overworld_palette_shuffle",
-      "label": "Overworld Palette Shuffle",
-      "description": "Whether to shuffle overworld palettes Off: Do not shuffle palettes On Legacy: Uses only the palette sets from the original game On Curated: Uses custom, hand-crafted palette sets",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on_legacy",
-            "label": "On Legacy"
-          },
-          {
-            "value": "on_curated",
-            "label": "On Curated"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_life_count",
-      "label": "Starting Life Count",
-      "description": "How many extra lives to start the game with",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 99,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "smw",
+	"name": "Super Mario World",
+	"version": "0.4.5",
+	"description": "Super Mario World is an action platforming game.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ring_link",
+			"label": "Ring Link",
+			"description": "Whether your in-level coin gain/loss is linked to other players",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_link",
+			"label": "Trap Link",
+			"description": "Whether your received traps are linked to other players",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "Determines the goal of the seed Bowser: Defeat Koopalings, reach Bowser's Castle and defeat Bowser Yoshi Egg Hunt: Find a certain number of Yoshi Eggs",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "bowser",
+				"choices": [
+					{
+						"value": "bowser",
+						"label": "Bowser"
+					},
+					{
+						"value": "yoshi_egg_hunt",
+						"label": "Yoshi Egg Hunt"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bosses_required",
+			"label": "Bosses Required",
+			"description": "How many Bosses (Koopalings or Reznor) must be defeated in order to defeat Bowser",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 11,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "max_yoshi_egg_cap",
+			"label": "Max Yoshi Egg Cap",
+			"description": "Maximum possible number of Yoshi Eggs that will be in the item pool If fewer available locations exist in the pool than this number, the number of available locations will be used instead.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 255,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "percentage_of_yoshi_eggs",
+			"label": "Percentage Of Yoshi Eggs",
+			"description": "What Percentage of Yoshi Eggs are required to finish Yoshi Egg Hunt",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dragon_coin_checks",
+			"label": "Dragon Coin Checks",
+			"description": "Whether collecting 5 Dragon Coins in each level will grant a check",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "moon_checks",
+			"label": "Moon Checks",
+			"description": "Whether collecting a 3-Up Moon in a level will grant a check",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hidden_1up_checks",
+			"label": "Hidden 1Up Checks",
+			"description": "Whether collecting a hidden 1-Up mushroom in a level will grant a check These checks are considered cryptic as there's no actual indicator that they're in their respective places Enable this option at your own risk",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bonus_block_checks",
+			"label": "Bonus Block Checks",
+			"description": "Whether collecting a 1-Up mushroom from a Bonus Block in a level will grant a check",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "blocksanity",
+			"label": "Blocksanity",
+			"description": "Whether hitting a block with an item or coin inside will grant a check Note that some blocks are excluded due to how the option and the game works!",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bowser_castle_doors",
+			"label": "Bowser Castle Doors",
+			"description": "How the doors of Bowser's Castle behave Vanilla: Front and Back Doors behave as vanilla Fast: Both doors behave as the Back Door Slow: Both doors behave as the Front Door \"Front Door\" rooms depend on the `bowser_castle_rooms` option \"Back Door\" only requires going through the dark hallway to Bowser",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "fast",
+						"label": "Fast"
+					},
+					{
+						"value": "slow",
+						"label": "Slow"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bowser_castle_rooms",
+			"label": "Bowser Castle Rooms",
+			"description": "How the rooms of Bowser's Castle Front Door behave Vanilla: You can choose which rooms to enter, as in vanilla Random Two Room: Two random rooms are chosen Random Five Room: Five random rooms are chosen Gauntlet: All eight rooms must be cleared Labyrinth: Which room leads to Bowser?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random_two_room",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "random_two_room",
+						"label": "Random Two Room"
+					},
+					{
+						"value": "random_five_room",
+						"label": "Random Five Room"
+					},
+					{
+						"value": "gauntlet",
+						"label": "Gauntlet"
+					},
+					{
+						"value": "labyrinth",
+						"label": "Labyrinth"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "level_shuffle",
+			"label": "Level Shuffle",
+			"description": "Whether levels are shuffled",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exclude_special_zone",
+			"label": "Exclude Special Zone",
+			"description": "If active, this option will prevent any progression items from being placed in Special Zone levels.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "boss_shuffle",
+			"label": "Boss Shuffle",
+			"description": "How bosses are shuffled None: Bosses are not shuffled Simple: Four Reznors and the seven Koopalings are shuffled around Full: Each boss location gets a fully random boss Singularity: One or two bosses are chosen and placed at every boss location",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "simple",
+						"label": "Simple"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "singularity",
+						"label": "Singularity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "swap_donut_gh_exits",
+			"label": "Swap Donut Gh Exits",
+			"description": "If enabled, this option will swap which overworld direction the two exits of the level at the Donut Ghost House overworld tile go: False: Normal Exit goes up, Secret Exit goes right.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "display_received_item_popups",
+			"label": "Display Received Item Popups",
+			"description": "What messages to display in-game for items received",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "progression_minus_yoshi_eggs",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					},
+					{
+						"value": "progression",
+						"label": "Progression"
+					},
+					{
+						"value": "progression_minus_yoshi_eggs",
+						"label": "Progression Minus Yoshi Eggs"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "junk_fill_percentage",
+			"label": "Junk Fill Percentage",
+			"description": "Replace a percentage of non-required Yoshi Eggs in the item pool with random junk items (only applicable on Yoshi Egg Hunt goal)",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_fill_percentage",
+			"label": "Trap Fill Percentage",
+			"description": "Replace a percentage of junk items in the item pool with random traps",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ice_trap_weight",
+			"label": "Ice Trap Weight",
+			"description": "Likelihood of a receiving a trap which causes the level to become slippery",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "medium",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "low",
+						"label": "Low"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "high",
+						"label": "High"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "stun_trap_weight",
+			"label": "Stun Trap Weight",
+			"description": "Likelihood of a receiving a trap which briefly stuns Mario",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "medium",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "low",
+						"label": "Low"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "high",
+						"label": "High"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "literature_trap_weight",
+			"label": "Literature Trap Weight",
+			"description": "Likelihood of a receiving a trap which causes the player to read literature",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "medium",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "low",
+						"label": "Low"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "high",
+						"label": "High"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "timer_trap_weight",
+			"label": "Timer Trap Weight",
+			"description": "Likelihood of a receiving a trap which causes the timer to run low",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "medium",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "low",
+						"label": "Low"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "high",
+						"label": "High"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "reverse_trap_weight",
+			"label": "Reverse Trap Weight",
+			"description": "Likelihood of a receiving a trap which causes the controls to be reversed in the current level",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "medium",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "low",
+						"label": "Low"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "high",
+						"label": "High"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "thwimp_trap_weight",
+			"label": "Thwimp Trap Weight",
+			"description": "Likelihood of a receiving a trap which causes a Thwimp to spawn above the player",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "medium",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "low",
+						"label": "Low"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "high",
+						"label": "High"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "autosave",
+			"label": "Autosave",
+			"description": "Whether a save prompt will appear after every level",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_climb",
+			"label": "Early Climb",
+			"description": "Force Climb to appear early in the seed as a local item.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "overworld_speed",
+			"label": "Overworld Speed",
+			"description": "How fast Mario moves on the overworld",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "slow",
+						"label": "Slow"
+					},
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "fast",
+						"label": "Fast"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "music_shuffle",
+			"label": "Music Shuffle",
+			"description": "Music shuffle type None: No Music is shuffled Consistent: Each music track is consistently shuffled throughout the game Full: Each individual level has a random music track Singularity: The entire game uses one song for overworld and one song for levels",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "consistent",
+						"label": "Consistent"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "singularity",
+						"label": "Singularity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "sfx_shuffle",
+			"label": "Sfx Shuffle",
+			"description": "Shuffles almost every instance of sound effect playback Archipelago elements that play sound effects aren't randomized None: No SFX are shuffled Full: Each individual SFX call has a random SFX Singularity: The entire game uses one SFX for every SFX call",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "singularity",
+						"label": "Singularity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mario_palette",
+			"label": "Mario Palette",
+			"description": "Mario palette color",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "mario",
+				"choices": [
+					{
+						"value": "mario",
+						"label": "Mario"
+					},
+					{
+						"value": "luigi",
+						"label": "Luigi"
+					},
+					{
+						"value": "wario",
+						"label": "Wario"
+					},
+					{
+						"value": "waluigi",
+						"label": "Waluigi"
+					},
+					{
+						"value": "geno",
+						"label": "Geno"
+					},
+					{
+						"value": "princess",
+						"label": "Princess"
+					},
+					{
+						"value": "dark",
+						"label": "Dark"
+					},
+					{
+						"value": "sponge",
+						"label": "Sponge"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "level_palette_shuffle",
+			"label": "Level Palette Shuffle",
+			"description": "Whether to shuffle level palettes Off: Do not shuffle palettes On Legacy: Uses only the palette sets from the original game On Curated: Uses custom, hand-crafted palette sets",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on_legacy",
+						"label": "On Legacy"
+					},
+					{
+						"value": "on_curated",
+						"label": "On Curated"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "overworld_palette_shuffle",
+			"label": "Overworld Palette Shuffle",
+			"description": "Whether to shuffle overworld palettes Off: Do not shuffle palettes On Legacy: Uses only the palette sets from the original game On Curated: Uses custom, hand-crafted palette sets",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on_legacy",
+						"label": "On Legacy"
+					},
+					{
+						"value": "on_curated",
+						"label": "On Curated"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_life_count",
+			"label": "Starting Life Count",
+			"description": "How many extra lives to start the game with",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 99,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

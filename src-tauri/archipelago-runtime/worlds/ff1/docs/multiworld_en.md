@@ -12,14 +12,14 @@
 ## Installation Procedures
 
 1. Download and install the latest version of Archipelago.
-    1. On Windows, download Setup.Archipelago.<HighestVersion\>.exe and run it
+   1. On Windows, download Setup.Archipelago.<HighestVersion\>.exe and run it
 2. Assign EmuHawk as your default program for launching `.nes` files.
-    1. Extract your BizHawk folder to your Desktop, or somewhere you will remember. Below are optional additional steps
-       for loading ROMs more conveniently
-        1. Right-click on a ROM file and select **Open with...**
-        2. Check the box next to **Always use this app to open .nes files**
-        3. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
-        4. Browse for `EmuHawk.exe` located inside your BizHawk folder (from step 1) and click **Open**.
+   1. Extract your BizHawk folder to your Desktop, or somewhere you will remember. Below are optional additional steps
+      for loading ROMs more conveniently
+      1. Right-click on a ROM file and select **Open with...**
+      2. Check the box next to **Always use this app to open .nes files**
+      3. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
+      4. Browse for `EmuHawk.exe` located inside your BizHawk folder (from step 1) and click **Open**.
 
 ## Obtaining your Archipelago yaml file and randomized ROM
 
@@ -48,7 +48,7 @@ Once the Archipelago server has been hosted:
 
 1. Navigate to your Archipelago install folder and run `ArchipelagoBizhawkClient.exe`
 2. Notice the `/connect command` on the server hosting page (It should look like `/connect archipelago.gg:*****`
-   where ***** are numbers)
+   where **\*** are numbers)
 3. Type the connect command into the client OR add the port to the pre-populated address on the top bar (it should
    already say `archipelago.gg`) and click `connect`
 
@@ -56,9 +56,9 @@ Once the Archipelago server has been hosted:
 
 1. Open EmuHawk and load your ROM OR click your ROM file if it is already associated with the
    extension `*.nes`
-2. Navigate to where you installed Archipelago, then to `data/lua`, and drag+drop the `connector_bizhawk_generic.lua` 
-script onto the main EmuHawk window. You can also instead open the Lua Console manually, click `Script` 〉 `Open Script`,
-and navigate to `connector_bizhawk_generic.lua` with the file picker.
+2. Navigate to where you installed Archipelago, then to `data/lua`, and drag+drop the `connector_bizhawk_generic.lua`
+   script onto the main EmuHawk window. You can also instead open the Lua Console manually, click `Script` 〉 `Open Script`,
+   and navigate to `connector_bizhawk_generic.lua` with the file picker.
 
 ## Play the game
 

@@ -19,8 +19,8 @@ Once Bizhawk has been installed, open Bizhawk and change the following settings:
 
 - Go to Config > Customize. Switch to the Advanced tab, then switch the Lua Core from "NLua+KopiLua" to
   "Lua+LuaInterface". This is required for the Lua script to function correctly.
-  **NOTE: Even if "Lua+LuaInterface" is already selected, toggle between the two options and reselect it. Fresh installs** 
-  **of newer versions of Bizhawk have a tendency to show "Lua+LuaInterface" as the default selected option but still load** 
+  **NOTE: Even if "Lua+LuaInterface" is already selected, toggle between the two options and reselect it. Fresh installs**
+  **of newer versions of Bizhawk have a tendency to show "Lua+LuaInterface" as the default selected option but still load**
   **"NLua+KopiLua" until this step is done.**
 - Under Config > Customize > Advanced, make sure the box for AutoSaveRAM is checked, and click the 5s button.
   This reduces the possibility of losing save data in emulator crashes.
@@ -44,7 +44,7 @@ an experience customized for their taste, and different players in the same mult
 
 ### Where do I get a YAML file?
 
-You can customize your options by visiting the 
+You can customize your options by visiting the
 [Yu-Gi-Oh! 2006 Player Options Page](/games/Yu-Gi-Oh!%202006/player-options)
 
 ## Joining a MultiWorld Game

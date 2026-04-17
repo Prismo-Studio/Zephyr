@@ -1,263 +1,263 @@
 {
-  "id": "noita",
-  "name": "Noita",
-  "version": "0.1.6",
-  "description": "Noita is a magical action roguelite set in a world where every pixel is physically simulated.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bad_effects",
-      "label": "Bad Effects",
-      "description": "Whether negative effects on the Noita world are added to the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "victory_condition",
-      "label": "Victory Condition",
-      "description": "Greed is to get to the bottom, beat the boss, and win the game.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "greed_ending",
-        "choices": [
-          {
-            "value": "greed_ending",
-            "label": "Greed Ending"
-          },
-          {
-            "value": "pure_ending",
-            "label": "Pure Ending"
-          },
-          {
-            "value": "peaceful_ending",
-            "label": "Peaceful Ending"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "path_option",
-      "label": "Path Option",
-      "description": "Choose where you would like Hidden Chest and Pedestal checks to be placed.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "main_path",
-        "choices": [
-          {
-            "value": "main_path",
-            "label": "Main Path"
-          },
-          {
-            "value": "side_path",
-            "label": "Side Path"
-          },
-          {
-            "value": "main_world",
-            "label": "Main World"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hidden_chests",
-      "label": "Hidden Chests",
-      "description": "Number of hidden chest checks added to the applicable biomes.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "pedestal_checks",
-      "label": "Pedestal Checks",
-      "description": "Number of checks that will spawn on pedestals in the applicable biomes.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 6
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "orbs_as_checks",
-      "label": "Orbs As Checks",
-      "description": "Decides whether finding the orbs that naturally spawn in the world count as checks.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "no_orbs",
-        "choices": [
-          {
-            "value": "no_orbs",
-            "label": "No Orbs"
-          },
-          {
-            "value": "main_path",
-            "label": "Main Path"
-          },
-          {
-            "value": "side_path",
-            "label": "Side Path"
-          },
-          {
-            "value": "main_world",
-            "label": "Main World"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bosses_as_checks",
-      "label": "Bosses As Checks",
-      "description": "Makes bosses count as location checks.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "no_bosses",
-        "choices": [
-          {
-            "value": "no_bosses",
-            "label": "No Bosses"
-          },
-          {
-            "value": "main_path",
-            "label": "Main Path"
-          },
-          {
-            "value": "side_path",
-            "label": "Side Path"
-          },
-          {
-            "value": "all_bosses",
-            "label": "All Bosses"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "extra_orbs",
-      "label": "Extra Orbs",
-      "description": "Add extra orbs to your item pool, to prevent you from needing to wait as long for the last orb you need for your victory condition.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shop_price",
-      "label": "Shop Price",
-      "description": "Reduce the costs of Archipelago items in shops.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "full_price",
-        "choices": [
-          {
-            "value": "full_price",
-            "label": "Full Price"
-          },
-          {
-            "value": "25_percent_off",
-            "label": "25 Percent Off"
-          },
-          {
-            "value": "50_percent_off",
-            "label": "50 Percent Off"
-          },
-          {
-            "value": "75_percent_off",
-            "label": "75 Percent Off"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "noita",
+	"name": "Noita",
+	"version": "0.1.6",
+	"description": "Noita is a magical action roguelite set in a world where every pixel is physically simulated.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bad_effects",
+			"label": "Bad Effects",
+			"description": "Whether negative effects on the Noita world are added to the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "victory_condition",
+			"label": "Victory Condition",
+			"description": "Greed is to get to the bottom, beat the boss, and win the game.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "greed_ending",
+				"choices": [
+					{
+						"value": "greed_ending",
+						"label": "Greed Ending"
+					},
+					{
+						"value": "pure_ending",
+						"label": "Pure Ending"
+					},
+					{
+						"value": "peaceful_ending",
+						"label": "Peaceful Ending"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "path_option",
+			"label": "Path Option",
+			"description": "Choose where you would like Hidden Chest and Pedestal checks to be placed.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "main_path",
+				"choices": [
+					{
+						"value": "main_path",
+						"label": "Main Path"
+					},
+					{
+						"value": "side_path",
+						"label": "Side Path"
+					},
+					{
+						"value": "main_world",
+						"label": "Main World"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hidden_chests",
+			"label": "Hidden Chests",
+			"description": "Number of hidden chest checks added to the applicable biomes.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "pedestal_checks",
+			"label": "Pedestal Checks",
+			"description": "Number of checks that will spawn on pedestals in the applicable biomes.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 6
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "orbs_as_checks",
+			"label": "Orbs As Checks",
+			"description": "Decides whether finding the orbs that naturally spawn in the world count as checks.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "no_orbs",
+				"choices": [
+					{
+						"value": "no_orbs",
+						"label": "No Orbs"
+					},
+					{
+						"value": "main_path",
+						"label": "Main Path"
+					},
+					{
+						"value": "side_path",
+						"label": "Side Path"
+					},
+					{
+						"value": "main_world",
+						"label": "Main World"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bosses_as_checks",
+			"label": "Bosses As Checks",
+			"description": "Makes bosses count as location checks.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "no_bosses",
+				"choices": [
+					{
+						"value": "no_bosses",
+						"label": "No Bosses"
+					},
+					{
+						"value": "main_path",
+						"label": "Main Path"
+					},
+					{
+						"value": "side_path",
+						"label": "Side Path"
+					},
+					{
+						"value": "all_bosses",
+						"label": "All Bosses"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "extra_orbs",
+			"label": "Extra Orbs",
+			"description": "Add extra orbs to your item pool, to prevent you from needing to wait as long for the last orb you need for your victory condition.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shop_price",
+			"label": "Shop Price",
+			"description": "Reduce the costs of Archipelago items in shops.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "full_price",
+				"choices": [
+					{
+						"value": "full_price",
+						"label": "Full Price"
+					},
+					{
+						"value": "25_percent_off",
+						"label": "25 Percent Off"
+					},
+					{
+						"value": "50_percent_off",
+						"label": "50 Percent Off"
+					},
+					{
+						"value": "75_percent_off",
+						"label": "75 Percent Off"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

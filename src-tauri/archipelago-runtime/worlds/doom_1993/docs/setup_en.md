@@ -12,6 +12,7 @@
   - [OZone's APDoom tracker pack](https://github.com/Ozone31/doom-ap-tracker/releases)
 
 ## Installing AP Doom
+
 1. Download [APDOOM.zip](https://github.com/Daivuk/apdoom/releases) and extract it.
 2. Copy `DOOM.WAD` from your game's installation directory into the newly extracted folder.
    You can find the folder in steam by finding the game in your library,
@@ -32,12 +33,13 @@ Connecting with a different seed won't erase your progress in other seeds.
 
 1. In your command line, navigate to the directory where APDOOM is installed.
 2. Run `crispy-apdoom -game doom -apserver <server> -applayer <slot name>`, where:
-    - `<server>` is the Archipelago server address, e.g. "`archipelago.gg:38281`"
-    - `<slot name>` is your slot name; if it contains spaces, surround it with double quotes
-    - If the server has a password, add `-password`, followed by the server password
+   - `<server>` is the Archipelago server address, e.g. "`archipelago.gg:38281`"
+   - `<slot name>` is your slot name; if it contains spaces, surround it with double quotes
+   - If the server has a password, add `-password`, followed by the server password
 3. Enjoy!
 
 Optionally, you can override some randomization settings from the command line:
+
 - `-apmonsterrando 0` will disable monster rando.
 - `-apitemrando 0` will disable item rando.
 - `-apmusicrando 0` will disable music rando.
@@ -55,13 +57,17 @@ but they disappear quickly and there's no reasonable way to check your message h
 ### Hinting
 
 To hint from in-game, use the chat (Default key: 'T'). Hinting from DOOM can be difficult because names are rather long and contain special characters. For example:
+
 ```
 !hint Toxin Refinery (E1M3) - Computer area map
 ```
+
 The game has a hint helper implemented, where you can simply type this:
+
 ```
 !hint e1m3 map
 ```
+
 For this to work, include the map short name (`E1M1`), followed by one of the keywords: `map`, `blue`, `yellow`, `red`.
 
 ## Auto-Tracking

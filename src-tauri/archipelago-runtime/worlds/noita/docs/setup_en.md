@@ -14,36 +14,38 @@ Download the Archipelago mod zip from the GitHub page:
 
 Firstly, go to your Noita installation directory.
 
-* **On Steam:** Find **Noita** in your Steam library. Right click, select *Manage* → *Browse local files*.
-* **On GOG Galaxy:** Find **Noita** in your Installed Games library. Right click, select *Manage installation* →
-*Show folder*.
+- **On Steam:** Find **Noita** in your Steam library. Right click, select _Manage_ → _Browse local files_.
+- **On GOG Galaxy:** Find **Noita** in your Installed Games library. Right click, select _Manage installation_ →
+  _Show folder_.
 
 Here you should see your game files and a folder called `mods`. Create a folder called `archipelago` and place all files
-from within the zip folder directly into the `archipelago` folder. After starting Noita, select the *Mods* menu. Here
-you should see the *Archipelago* mod listed.
+from within the zip folder directly into the `archipelago` folder. After starting Noita, select the _Mods_ menu. Here
+you should see the _Archipelago_ mod listed.
 
-In order to enable the mod you will first need to toggle **Unsafe mods** from *Disabled* to *Allowed*. This is required,
+In order to enable the mod you will first need to toggle **Unsafe mods** from _Disabled_ to _Allowed_. This is required,
 as some external libraries are used by the mod in order to communicate with the Archipelago server. Once that is done,
-you can now enable the *Archipelago* mod (it should have an `[x]` next to it).
+you can now enable the _Archipelago_ mod (it should have an `[x]` next to it).
 
 ### Configure Archipelago Mod
 
-In the Options menu, select Mod Settings. Under the Archipelago drop down, you will see the options for *Server*,
-*Port*, *Slot*, and *Password* where you can fill in the relevant information.
+In the Options menu, select Mod Settings. Under the Archipelago drop down, you will see the options for _Server_,
+_Port_, _Slot_, and _Password_ where you can fill in the relevant information.
 
-Once you start a new run in Noita, you should see an Archipelago logo in the bottom right corner of the screen with a 
-checkmark on it. If you do not see this icon, ensure that the mod is enabled and installed per the instructions above, 
+Once you start a new run in Noita, you should see an Archipelago logo in the bottom right corner of the screen with a
+checkmark on it. If you do not see this icon, ensure that the mod is enabled and installed per the instructions above,
 or try restarting your game.
 
 ## Configuring your YAML File
 
 ### What is a YAML and why do I need one?
+
 You can see the [basic multiworld setup guide](/tutorial/Archipelago/setup/en) here on the Archipelago website to learn
 about why Archipelago uses YAML files and what they're for.
 Please note that Noita only allows you to type certain characters for your slot name.
 These characters are: `` !#$%&'()+,-.0123456789;=@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{}~<>|\/``
 
 ### Where do I get a YAML?
+
 You can use the [game options page for Noita](/games/Noita/player-options) here on the Archipelago website to
 generate a YAML using a graphical interface.
 

@@ -10,6 +10,7 @@
 - [ArchipelagoTextClient](https://github.com/ArchipelagoMW/Archipelago/releases)
 
 ## Installing Daxanadu
+
 1. Download [Daxanadu.zip](https://github.com/Daivuk/Daxanadu/releases/) and extract it.
 2. Copy your rom `Faxanadu (U).nes` into the newly extracted folder.
 

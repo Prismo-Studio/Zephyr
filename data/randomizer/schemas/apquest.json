@@ -1,160 +1,160 @@
 {
-  "id": "apquest",
-  "name": "APQuest",
-  "version": "0.1.6",
-  "description": "APQuest is a minimal 8bit-era inspired adventure game with grid-like movement.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hard_mode",
-      "label": "Hard Mode",
-      "description": "In hard mode, the basic enemy and the final boss will have more health.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hammer",
-      "label": "Hammer",
-      "description": "Adds another item to the itempool: The Hammer.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "extra_starting_chest",
-      "label": "Extra Starting Chest",
-      "description": "Adds an extra chest in the bottom left, making room for an extra Confetti Cannon.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "start_with_one_confetti_cannon",
-      "label": "Start With One Confetti Cannon",
-      "description": "Start with a confetti cannon already in your inventory.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_chance",
-      "label": "Trap Chance",
-      "description": "Percentage chance that any given Confetti Cannon will be replaced by a Math Trap.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "confetti_explosiveness",
-      "label": "Confetti Explosiveness",
-      "description": "How much confetti each use of a confetti cannon will fire.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "player_sprite",
-      "label": "Player Sprite",
-      "description": "The sprite that the player will have.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "human",
-        "choices": [
-          {
-            "value": "human",
-            "label": "Human"
-          },
-          {
-            "value": "duck",
-            "label": "Duck"
-          },
-          {
-            "value": "horse",
-            "label": "Horse"
-          },
-          {
-            "value": "cat",
-            "label": "Cat"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "apquest",
+	"name": "APQuest",
+	"version": "0.1.6",
+	"description": "APQuest is a minimal 8bit-era inspired adventure game with grid-like movement.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hard_mode",
+			"label": "Hard Mode",
+			"description": "In hard mode, the basic enemy and the final boss will have more health.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hammer",
+			"label": "Hammer",
+			"description": "Adds another item to the itempool: The Hammer.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "extra_starting_chest",
+			"label": "Extra Starting Chest",
+			"description": "Adds an extra chest in the bottom left, making room for an extra Confetti Cannon.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "start_with_one_confetti_cannon",
+			"label": "Start With One Confetti Cannon",
+			"description": "Start with a confetti cannon already in your inventory.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_chance",
+			"label": "Trap Chance",
+			"description": "Percentage chance that any given Confetti Cannon will be replaced by a Math Trap.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "confetti_explosiveness",
+			"label": "Confetti Explosiveness",
+			"description": "How much confetti each use of a confetti cannon will fire.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "player_sprite",
+			"label": "Player Sprite",
+			"description": "The sprite that the player will have.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "human",
+				"choices": [
+					{
+						"value": "human",
+						"label": "Human"
+					},
+					{
+						"value": "duck",
+						"label": "Duck"
+					},
+					{
+						"value": "horse",
+						"label": "Horse"
+					},
+					{
+						"value": "cat",
+						"label": "Cat"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

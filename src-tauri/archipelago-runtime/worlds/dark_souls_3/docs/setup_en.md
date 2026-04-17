@@ -62,14 +62,14 @@ includes an options template.
 
 ### Does this work with Proton?
 
-The *Dark Souls III* Archipelago randomizer supports running on Linux under Proton. There are a few
+The _Dark Souls III_ Archipelago randomizer supports running on Linux under Proton. There are a few
 things to keep in mind:
 
-* Because `DS3Randomizer.exe` relies on the .NET runtime, you'll need to install
+- Because `DS3Randomizer.exe` relies on the .NET runtime, you'll need to install
   the [.NET Runtime] under **plain [WINE]**, then run `DS3Randomizer.exe` under
   plain WINE as well. It won't work as a Proton app!
 
-* To run the game itself, just run `launchmod_darksouls3.bat` under Proton.
+- To run the game itself, just run `launchmod_darksouls3.bat` under Proton.
 
 [.NET Runtime]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 [WINE]: https://www.winehq.org/
@@ -99,28 +99,28 @@ screen and then terminate without actually starting the game. This is usually
 caused by some issue communicating with Steam either to find `DarkSoulsIII.exe`
 or to launch it properly. If this is happening to you, make sure:
 
-* You have DS3 1.15.2 installed. This is the latest patch as of January 2025.
+- You have DS3 1.15.2 installed. This is the latest patch as of January 2025.
   (Note that older versions of Archipelago required an older patch, but that
   _will not work_ with the current version.)
 
-* You own the DS3 DLC if your randomizer config has DLC enabled. (It's possible,
+- You own the DS3 DLC if your randomizer config has DLC enabled. (It's possible,
   but unconfirmed, that you need the DLC even when it's disabled in your config).
 
-* Steam is not running in administrator mode. To fix this, right-click
+- Steam is not running in administrator mode. To fix this, right-click
   `steam.exe` (by default this is in `C:\Program Files\Steam`), select
   "Properties", open the "Compatiblity" tab, and uncheck "Run this program as an
   administrator".
 
-* There is no `dinput8.dll` file in your DS3 game directory. This is the old way
+- There is no `dinput8.dll` file in your DS3 game directory. This is the old way
   of installing mods, and it can interfere with the new ModEngine2 workflow.
 
 If you've checked all of these, you can also try:
 
-* Running `launchmod_darksouls3.bat` as an administrator.
+- Running `launchmod_darksouls3.bat` as an administrator.
 
-* Reinstalling DS3 or even reinstalling Steam itself.
+- Reinstalling DS3 or even reinstalling Steam itself.
 
-* Making sure DS3 is installed on the same drive as Steam and as the randomizer.
+- Making sure DS3 is installed on the same drive as Steam and as the randomizer.
   (A number of users are able to run these on different drives, but this has
   helped some users.)
 
@@ -132,6 +132,6 @@ it's no longer maintained and its successor, ModEngine3, isn't usable yet.
 
 This is almost always caused by using a version of the randomizer client that's
 not compatible with the version used to generate the multiworld. If you're
-generating your multiworld on archipelago.gg, you *must* use the latest [Dark
-Souls III AP Client]. If you want to use a different client version, you *must*
+generating your multiworld on archipelago.gg, you _must_ use the latest [Dark
+Souls III AP Client]. If you want to use a different client version, you _must_
 generate the multiworld locally using the apworld bundled with the client.

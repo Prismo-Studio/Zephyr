@@ -3,32 +3,32 @@
 ## Required Software
 
 - The Zelda1Client
-    - Bundled with Archipelago: [Archipelago Releases Page](https://github.com/ArchipelagoMW/Archipelago/releases)
+  - Bundled with Archipelago: [Archipelago Releases Page](https://github.com/ArchipelagoMW/Archipelago/releases)
 - The BizHawk emulator. Versions 2.3.1 and higher are supported.
-    - [BizHawk at TASVideos](https://tasvideos.org/BizHawk)
+  - [BizHawk at TASVideos](https://tasvideos.org/BizHawk)
 - Your legally acquired US v1.0 PRG0 ROM file, probably named `Legend of Zelda, The (U) (PRG0) [!].nes`
 
 ## Optional Software
 
 - [Map Tracker](https://github.com/Br00ty/tloz_brooty/releases/latest)
-    - Used alongside [Poptracker](https://github.com/black-sliver/PopTracker) to keep track of what items/checks you've gotten. Uses auto-tracking by connecting to the Archipelago server. 
+  - Used alongside [Poptracker](https://github.com/black-sliver/PopTracker) to keep track of what items/checks you've gotten. Uses auto-tracking by connecting to the Archipelago server.
 
 ## Installation Procedures
 
 1. Download and install the latest version of Archipelago.
-    - On Windows, download Setup.Archipelago.<HighestVersion\>.exe and run it.
+   - On Windows, download Setup.Archipelago.<HighestVersion\>.exe and run it.
 2. Assign EmuHawk version 2.3.1 or higher as your default program for launching `.nes` files.
-    - Extract your BizHawk folder to your Desktop, or somewhere you will remember. Below are optional additional steps
-       for loading ROMs more conveniently.
-        1. Right-click on a ROM file and select **Open with...**
-        2. Check the box next to **Always use this app to open .nes files**.
-        3. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**.
-        4. Browse for `EmuHawk.exe` located inside your BizHawk folder (from step 1) and click **Open**.
+   - Extract your BizHawk folder to your Desktop, or somewhere you will remember. Below are optional additional steps
+     for loading ROMs more conveniently.
+     1. Right-click on a ROM file and select **Open with...**
+     2. Check the box next to **Always use this app to open .nes files**.
+     3. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**.
+     4. Browse for `EmuHawk.exe` located inside your BizHawk folder (from step 1) and click **Open**.
 3. (EmuHawk version ≤ 2.8) Go to Config > Customize. Switch to the Advanced tab, then switch the Lua Core from "NLua+KopiLua" to
-  "Lua+LuaInterface". Then restart EmuHawk. This is required for the Lua script to function correctly.
-  **NOTE: Even if "Lua+LuaInterface" is already selected, toggle between the two options and reselect it. Fresh installs** 
-  **of newer versions of EmuHawk have a tendency to show "Lua+LuaInterface" as the default selected option but still load** 
-  **"NLua+KopiLua" until this step is done.**
+   "Lua+LuaInterface". Then restart EmuHawk. This is required for the Lua script to function correctly.
+   **NOTE: Even if "Lua+LuaInterface" is already selected, toggle between the two options and reselect it. Fresh installs**
+   **of newer versions of EmuHawk have a tendency to show "Lua+LuaInterface" as the default selected option but still load**
+   **"NLua+KopiLua" until this step is done.**
 
 ## Create a Config (.yaml) File
 
@@ -50,7 +50,7 @@ validator page: [YAML Validation page](/check)
 ## Generating a Single-Player Game
 
 1. Navigate to the Player Options page, configure your options, and click the "Generate Game" button.
-    - Player Options page: [The Legend of Zelda Player Options Page](/games/The%20Legend%20of%20Zelda/player-options)
+   - Player Options page: [The Legend of Zelda Player Options Page](/games/The%20Legend%20of%20Zelda/player-options)
 2. You will be presented with a "Seed Info" page.
 3. Click the "Create New Room" link.
 4. You will be presented with a server page, from which you can download your patch file.
@@ -69,14 +69,13 @@ files. Your patch file should have a `.aptloz` extension.
 Put your patch file on your desktop or somewhere convenient, and double click it. This should automatically launch the
 client, and will also create your ROM in the same place as your patch file.
 
-
 ## Running the Client Program and Connecting to the Server
 
 Once the Archipelago server has been hosted:
 
 1. Navigate to your Archipelago install folder and run `ArchipelagoZelda1Client.exe`.
 2. Notice the `/connect command` on the server hosting page. (It should look like `/connect archipelago.gg:*****`
-   where ***** are numbers)
+   where **\*** are numbers)
 3. Type the connect command into the client OR add the port to the pre-populated address on the top bar (it should
    already say `archipelago.gg`) and click `connect`.
 
@@ -86,12 +85,12 @@ Once the Archipelago server has been hosted:
    extension `*.nes`.
 2. Navigate to where you installed Archipelago, then to `data/lua`, and drag+drop the `connector_tloz.lua` script onto
    the main EmuHawk window.
-    1. You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to
-       `connector_tloz.lua` with the file picker.
-    2. If it gives a `NLua.Exceptions.LuaScriptException: .\socket.lua:13: module 'socket.core' not found:` exception
-       close your emulator entirely, restart it and re-run these steps.
-    3. If it says `Must use a version of BizHawk 2.3.1 or higher`, double-check your BizHawk version by clicking **
-       Help** -> **About**.
+   1. You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to
+      `connector_tloz.lua` with the file picker.
+   2. If it gives a `NLua.Exceptions.LuaScriptException: .\socket.lua:13: module 'socket.core' not found:` exception
+      close your emulator entirely, restart it and re-run these steps.
+   3. If it says `Must use a version of BizHawk 2.3.1 or higher`, double-check your BizHawk version by clicking **
+      Help** -> **About**.
 
 ## Play the game
 
@@ -106,11 +105,11 @@ All other commands may be found on the [Archipelago Server and Client Commands G
 ## Known Issues
 
 - Triforce Fragments and Heart Containers may be purchased multiple times. It is up to you if you wish to take advantage
-of this; logic will not account for or require purchasing any slot more than once. Remote items, no matter what they
-are, will always only be sent once.
-- Obtaining a remote item will move the location of any existing item in that room. Should this make an item 
-inaccessible, simply exit and re-enter the room. This can be used to obtain the Ocean Heart Container item without the
-stepladder; logic does not account for this.
+  of this; logic will not account for or require purchasing any slot more than once. Remote items, no matter what they
+  are, will always only be sent once.
+- Obtaining a remote item will move the location of any existing item in that room. Should this make an item
+  inaccessible, simply exit and re-enter the room. This can be used to obtain the Ocean Heart Container item without the
+  stepladder; logic does not account for this.
 - Whether you've purchased from a shop is tracked via Archipelago between sessions: if you revisit a single player game,
-none of your shop pruchase statuses will be remembered. If you want them to be, connect to the client and server like 
-you would in a multiplayer game.
+  none of your shop pruchase statuses will be remembered. If you want them to be, connect to the client and server like
+  you would in a multiplayer game.

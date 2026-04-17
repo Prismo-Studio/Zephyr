@@ -1,186 +1,186 @@
 {
-  "id": "faxanadu",
-  "name": "Faxanadu",
-  "version": "0.1.6",
-  "description": "Faxanadu is an action role-playing platform video game developed by Hudson Soft for the Nintendo Entertainment System",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keep_shop_red_potions",
-      "label": "Keep Shop Red Potions",
-      "description": "Prevents the Shop's Red Potions from being shuffled.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "include_pendant",
-      "label": "Include Pendant",
-      "description": "Pendant is an item that boosts your attack power permanently when picked up.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "include_poisons",
-      "label": "Include Poisons",
-      "description": "Whether or not to include Poison Potions in the pool of items.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "require_dragon_slayer",
-      "label": "Require Dragon Slayer",
-      "description": "Requires the Dragon Slayer to be available before fighting the final boss is required.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_musics",
-      "label": "Random Musics",
-      "description": "All levels' music is shuffled.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_sounds",
-      "label": "Random Sounds",
-      "description": "All sounds are shuffled.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_npcs",
-      "label": "Random Npcs",
-      "description": "NPCs and their portraits are shuffled.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_monsters",
-      "label": "Random Monsters",
-      "description": "Choose how monsters are randomized.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "level_shuffle",
-            "label": "Level Shuffle"
-          },
-          {
-            "value": "level_random",
-            "label": "Level Random"
-          },
-          {
-            "value": "world_shuffle",
-            "label": "World Shuffle"
-          },
-          {
-            "value": "world_random",
-            "label": "World Random"
-          },
-          {
-            "value": "chaotic",
-            "label": "Chaotic"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_rewards",
-      "label": "Random Rewards",
-      "description": "Monsters drops are shuffled.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "faxanadu",
+	"name": "Faxanadu",
+	"version": "0.1.6",
+	"description": "Faxanadu is an action role-playing platform video game developed by Hudson Soft for the Nintendo Entertainment System",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keep_shop_red_potions",
+			"label": "Keep Shop Red Potions",
+			"description": "Prevents the Shop's Red Potions from being shuffled.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "include_pendant",
+			"label": "Include Pendant",
+			"description": "Pendant is an item that boosts your attack power permanently when picked up.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "include_poisons",
+			"label": "Include Poisons",
+			"description": "Whether or not to include Poison Potions in the pool of items.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "require_dragon_slayer",
+			"label": "Require Dragon Slayer",
+			"description": "Requires the Dragon Slayer to be available before fighting the final boss is required.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_musics",
+			"label": "Random Musics",
+			"description": "All levels' music is shuffled.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_sounds",
+			"label": "Random Sounds",
+			"description": "All sounds are shuffled.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_npcs",
+			"label": "Random Npcs",
+			"description": "NPCs and their portraits are shuffled.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_monsters",
+			"label": "Random Monsters",
+			"description": "Choose how monsters are randomized.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "level_shuffle",
+						"label": "Level Shuffle"
+					},
+					{
+						"value": "level_random",
+						"label": "Level Random"
+					},
+					{
+						"value": "world_shuffle",
+						"label": "World Shuffle"
+					},
+					{
+						"value": "world_random",
+						"label": "World Random"
+					},
+					{
+						"value": "chaotic",
+						"label": "Chaotic"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_rewards",
+			"label": "Random Rewards",
+			"description": "Monsters drops are shuffled.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

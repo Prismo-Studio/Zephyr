@@ -7,16 +7,16 @@ config file.
 
 ## What does randomization do to this game?
 
-This randomizer shuffles units, map events, factions and boosts. It features a custom, non-linear campaign where the 
-final level and 3 branching paths are all available to the player from the start. The player cannot beat the final level 
-without specific items scattered throughout the branching paths. Certain levels on these paths may require 
+This randomizer shuffles units, map events, factions and boosts. It features a custom, non-linear campaign where the
+final level and 3 branching paths are all available to the player from the start. The player cannot beat the final level
+without specific items scattered throughout the branching paths. Certain levels on these paths may require
 specific units or items in order to progress.
 
 ## What items and locations get shuffled?
 
 1. Every buildable unit in the game (except for soldiers and dogs, which are free).
 2. Commanders available to certain factions. If the player acquires the Floran Commanders, they can select any commander
-from that faction.
+   from that faction.
 3. Income and Commander Defense boosts that provide the player with extra income or extra commander defense.
 4. Special map events like the Eastern Bridges or the Southern Walls, which unlock certain locations in certain levels.
 

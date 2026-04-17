@@ -23,23 +23,29 @@ In addition, there are other changes to the game that make it better optimized f
 
 ## What has been changed about the side quests?
 
-Tirso: 
+Tirso:
+
 - Tirso's helpers will never die. Herbs can be given to him at any time.
 
-Gemino: 
+Gemino:
+
 - Gemino will never freeze. The thimble can be given to him at any time.
 
-Viridiana: 
+Viridiana:
+
 - Viridiana will never die. The player can ask for her assistance at all 5 boss fights, and she will still appear at the rooftops.
 
-Redento: 
+Redento:
+
 - No changes.
 
-Cleofas: 
-- The choice to end Socorro's suffering has been removed. 
+Cleofas:
+
+- The choice to end Socorro's suffering has been removed.
 - Cleofas will not jump off the rooftops, even after talking to him without the Cord of the True Burying.
 
-Crisanta / Ending C: 
+Crisanta / Ending C:
+
 - The Incomplete Scapular will not skip the fight with Esdras. Instead, it is required to open the door to the church in Brotherhood of the Silent Sorrow.
 - Perpetva's item from The Resting Place of the Sister is always accessible, even after defeating Esdras.
 - Crisanta's gift in Brotherhood of the Silent Sorrow will always be the Holy Wound of Abnegation.
@@ -48,12 +54,14 @@ Crisanta / Ending C:
 ## Which items and enemies are never randomized?
 
 Items:
+
 - Golden Thimble Filled with Burning Oil - from the fountain of burning oil in Convent of Our Lady of the Charred Visage
 - Hatched Egg of Deformity - from the tree in Mountains of the Endless Dusk
 - Chalice of Inverted Verses - from the statue in Desecrated Cistern
 - Holy Wound of Abnegation - given by Crisanta in Brotherhood of the Silent Sorrow
 
 Enemies:
+
 - The Charging Knell in Mountains of the Endless Dusk
 - The bell ringer in lower east Jondo
 - The first Phalaris, Lionheart, and Sleepless Tomb in their respective areas (Chalice of Inverted Verses quest)

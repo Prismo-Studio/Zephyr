@@ -6,3 +6,6 @@ target/
 
 # Auto-generated
 src/lib/paraglide/
+
+# Bundled Archipelago runtime (Python + Jinja templates, not our code)
+src-tauri/archipelago-runtime/

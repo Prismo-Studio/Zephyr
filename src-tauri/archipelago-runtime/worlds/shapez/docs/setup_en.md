@@ -3,8 +3,8 @@
 ## Quick Links
 
 - Game Info Page
-    * [English](/games/shapez/info/en)
-    * [Deutsch](/games/shapez/info/de)
+  - [English](/games/shapez/info/en)
+  - [Deutsch](/games/shapez/info/de)
 - [Player Options Page](/games/shapez/player-options)
 
 ## Required Software
@@ -15,9 +15,9 @@
 ## Optional Software
 
 - Archipelago from the [Archipelago Releases Page](https://github.com/ArchipelagoMW/Archipelago/releases)
-    * (Only for the TextClient)
-    * (You can alternatively use the built-in console by launching the game with the `-dev` parameter and typing 
-      `AP.sendAPMessage("<message>"")`)
+  - (Only for the TextClient)
+  - (You can alternatively use the built-in console by launching the game with the `-dev` parameter and typing
+    `AP.sendAPMessage("<message>"")`)
 - Universal Tracker (check UT's channel in the discord server for more information and instructions)
 
 ## Installation
@@ -25,7 +25,7 @@
 As the game has a built-in mod loader, all you need to do is copy the `shapezipelago@X.X.X.js` mod file into the mods
 folder. If you don't know where that is, open the game, click on `MODS`, and then `OPEN MODS FOLDER`.
 
-It is recommended to go into the settings of the game and disable `HINTS & TUTORIALS` in the `USER INTERFACE` tab, as 
+It is recommended to go into the settings of the game and disable `HINTS & TUTORIALS` in the `USER INTERFACE` tab, as
 this setting will disable the upgrade shop until you complete a few levels.
 
 ## Configuring your YAML file
@@ -38,7 +38,7 @@ an experience customized for their taste, and different players in the same mult
 
 ### Where do I get a YAML file?
 
-You can generate a yaml or download a template by visiting the 
+You can generate a yaml or download a template by visiting the
 [shapez Player Options Page](/games/shapez/player-options)
 
 ## Joining a MultiWorld Game
@@ -50,9 +50,9 @@ You can generate a yaml or download a template by visiting the
    - The status of your connection is shown right next to the button.
 4. Create a new game.
 
-After creating the save file and returning to the main menu, opening the save file again will automatically reconnect. 
+After creating the save file and returning to the main menu, opening the save file again will automatically reconnect.
 
-### The MultiWorld changed its port/address, how do I reconnect correctly with my existing save file? 
+### The MultiWorld changed its port/address, how do I reconnect correctly with my existing save file?
 
-Repeat steps 1-3 and open the existing save file. This will also overwrite the saved connection details, so you will 
-only have to do this once. 
+Repeat steps 1-3 and open the existing save file. This will also overwrite the saved connection details, so you will
+only have to do this once.

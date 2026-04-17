@@ -6,14 +6,14 @@
 - [SNI](https://github.com/alttpo/sni/releases). This is automatically included with your Archipelago installation above.
 - SNI is not compatible with (Q)Usb2Snes.
 - Hardware or software capable of loading and playing SNES ROM files, including:
-    - An emulator capable of connecting to SNI
-      ([snes9x-nwa](https://github.com/Skarsnik/snes9x-emunwa/releases), [snes9x-rr](https://github.com/gocha/snes9x-rr/releases),
-      [BSNES-plus](https://github.com/black-sliver/bsnes-plus),
-      [BizHawk](http://tasvideos.org/BizHawk.html), or
-      [RetroArch](https://retroarch.com?page=platforms) 1.10.1 or newer)
-    - An SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), or other compatible hardware. **note:
-      modded SNES minis are currently not supported by SNI. Some users have claimed success with QUsb2Snes for this system,
-      but it is not supported.**
+  - An emulator capable of connecting to SNI
+    ([snes9x-nwa](https://github.com/Skarsnik/snes9x-emunwa/releases), [snes9x-rr](https://github.com/gocha/snes9x-rr/releases),
+    [BSNES-plus](https://github.com/black-sliver/bsnes-plus),
+    [BizHawk](http://tasvideos.org/BizHawk.html), or
+    [RetroArch](https://retroarch.com?page=platforms) 1.10.1 or newer)
+  - An SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), or other compatible hardware. **note:
+    modded SNES minis are currently not supported by SNI. Some users have claimed success with QUsb2Snes for this system,
+    but it is not supported.**
 - A modern web browser to run the client.
 - Your legally obtained Secret of Evermore US ROM file, probably named `Secret of Evermore (USA).sfc`
 
@@ -40,12 +40,12 @@ Stand-alone "Evermizer" has a way of balancing single-player games, but may not 
 to the [Evermizer Website](https://evermizer.com) if you want to try the official stand-alone, otherwise read below.
 
 1. Navigate to the Player Options page, configure your options, and click the "Generate Game" button.
-    - Player Options page: [Secret of Evermore Player Options Page](/games/Secret%20of%20Evermore/player-options)
+   - Player Options page: [Secret of Evermore Player Options Page](/games/Secret%20of%20Evermore/player-options)
 2. You will be presented with a "Seed Info" page.
 3. Click the "Create New Room" link.
 4. You will be presented with a server page, from which you can download your patch file.
 5. Run your patch file through the apbpatch on evermizer.com and load it in your emulator or console.
-    * apbpatch page: [Evermizer apbpatch Page](https://evermizer.com/apbpatch)
+   - apbpatch page: [Evermizer apbpatch Page](https://evermizer.com/apbpatch)
 
 ## Joining a MultiWorld Game
 
@@ -78,23 +78,23 @@ you may be prompted to allow it to communicate through the Windows Firewall.
 3. Click on **New Lua Script Window...**
 4. In the new window, click **Browse...**
 5. Select the `Connector.lua` file from your SNI installation:
-    * `SNI/lua/x86/Connector.lua` for 32bit snes9x-rr or
-    * `SNI/lua/x64/Connector.lua` for "x64" snes9x-rr
+   - `SNI/lua/x86/Connector.lua` for 32bit snes9x-rr or
+   - `SNI/lua/x64/Connector.lua` for "x64" snes9x-rr
 6. Leave the Lua window open while you are playing.
 
-* If the script window complains about missing `socket.dll` make sure it is in the lua directory.
-* If the script window complains about "Bad EXE format", use the other Connector above (x86 <-> x64)
+- If the script window complains about missing `socket.dll` make sure it is in the lua directory.
+- If the script window complains about "Bad EXE format", use the other Connector above (x86 <-> x64)
 
 ##### BizHawk
 
 1. Ensure you have the BSNES core loaded. This is done with the main menubar, under:
-    - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
-    - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
+   - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
+   - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
 2. Load your ROM file if it hasn't already been loaded.
    If you changed your core preference after loading the ROM, don't forget to reload it (default hotkey: Ctrl+R).
 3. Drag+drop the `Connector.lua` file from your SNI installation onto the main EmuHawk window.
-    - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to `Connector.lua`
-      with the file picker.
+   - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to `Connector.lua`
+     with the file picker.
 
 ##### bsnes-plus-nwa
 

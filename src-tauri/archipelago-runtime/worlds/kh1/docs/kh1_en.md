@@ -31,7 +31,7 @@
 
 ## Obtaining and using the patch
 
-- [Generate an Archipelago game](https://archipelago.gg/generate) using the KH1 yaml generated from the KH1 [options page](https://archipelago.gg/games/Kingdom%20Hearts/player-options). 
+- [Generate an Archipelago game](https://archipelago.gg/generate) using the KH1 yaml generated from the KH1 [options page](https://archipelago.gg/games/Kingdom%20Hearts/player-options).
 - When you generate a game you will see a download link for a KH1 .zip patch on the room page.
 - After downloading this zip, open `mod_generator.exe` in your Kingdom Hearts 1FM Randomizer Software folder.
 - Direct `mod_generator.exe` to both your patch zip and your KH1 data folder extracted during your OpenKH set up.
@@ -41,7 +41,7 @@
 - Click the green plus, choose `Select and install Mod Archive or Lua Script`, and direct the prompt to your new mod zip.
 - You should now see a mod on your list called `KH1 Randomizer Seed XYZ` where XYZ is your seed hex value.
 - Ensure this mod is checked `[x]`.
-- Click `Mod Loader` at the top, then click `Build and Run`.  Your modded game should now open.
+- Click `Mod Loader` at the top, then click `Build and Run`. Your modded game should now open.
 
 ## Connecting to your multiworld via the KH1 Client
 
@@ -93,7 +93,7 @@ After obtaining the item `Destiny Islands`, you can land there as an additional 
 
 ### How do I progress to Destiny Islands Day 2 and 3?
 
-In order to access Day 2 and 3, you need to collect an amount of `Raft Materials` specified in your settings.  When you start Day 3, you'll be immediately warped to Homecoming (Final Bosses).
+In order to access Day 2 and 3, you need to collect an amount of `Raft Materials` specified in your settings. When you start Day 3, you'll be immediately warped to Homecoming (Final Bosses).
 
 ### Why can't I use the summon I obtained?
 

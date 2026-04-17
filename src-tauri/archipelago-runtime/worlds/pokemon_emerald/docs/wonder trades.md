@@ -20,9 +20,9 @@ It should be a dict that looks something like this:
 
 ```json
 {
-  "_lock": 0,
-  "0": [3, "{some json data}"],
-  "3": [2, "{some json data}"]
+	"_lock": 0,
+	"0": [3, "{some json data}"],
+	"3": [2, "{some json data}"]
 }
 ```
 
@@ -37,6 +37,7 @@ unlocked state, or a timestamp represented by time since Epoch in ms (`int(time.
 All other keys are just non-negative integers as strings. You can think of them as wonder trade slots. Pidgeon holes
 with a label. For consistency and ease of use, keep the keys between 0 and 255, and prefer the lowest number you can
 use. They ONLY act as names that can be easily written to and removed from.
+
 - You SHOULD NOT rely on those numbers being contiguous or starting at 0.
 - You SHOULD NOT rely on a "trade" residing at a single slot until it is removed.
 - You SHOULD NOT assume that the number has any significance to a player's slot, or trade order, or anything really.

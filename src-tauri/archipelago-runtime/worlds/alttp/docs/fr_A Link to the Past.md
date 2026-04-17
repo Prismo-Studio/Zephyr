@@ -2,7 +2,7 @@
 
 ## Où se trouve la page des paramètres ?
 
-La [page des paramètres du joueur pour ce jeu](../player-options) contient tous les paramètres dont vous avez besoin 
+La [page des paramètres du joueur pour ce jeu](../player-options) contient tous les paramètres dont vous avez besoin
 pour configurer et exporter le fichier.
 
 ## Quel est l'effet de la randomisation sur ce jeu ?
@@ -29,4 +29,3 @@ Les objets appartenant à d'autres mondes sont représentés par une Étoile de 
 
 Quand le joueur reçoit un objet, Link montrera l'objet au monde en le mettant au-dessus de sa tête. C'est bon pour
 les affaires !
-

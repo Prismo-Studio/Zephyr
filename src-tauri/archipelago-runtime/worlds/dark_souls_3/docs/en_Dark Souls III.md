@@ -51,19 +51,19 @@ transposition items, will _never_ have items required for any game to progress.
 The following types of locations are also guaranteed not to contain progression
 items by default:
 
-* **Hidden:** Locations that are particularly difficult to find, such as behind
+- **Hidden:** Locations that are particularly difficult to find, such as behind
   illusory walls, down hidden drops, and so on. Does not include large locations
   like Untended Graves or Archdragon Peak.
 
-* **Small Crystal Lizards:** Drops from small crystal lizards.
+- **Small Crystal Lizards:** Drops from small crystal lizards.
 
-* **Upgrade:** Locations that contain upgrade items in vanilla, including
+- **Upgrade:** Locations that contain upgrade items in vanilla, including
   titanite, gems, and Shriving Stones.
 
-* **Small Souls:** Locations that contain soul items in vanilla, not including
+- **Small Souls:** Locations that contain soul items in vanilla, not including
   boss souls.
 
-* **Miscellaneous:** Locations that contain generic stackable items in vanilla,
+- **Miscellaneous:** Locations that contain generic stackable items in vanilla,
   such as arrows, firebombs, buffs, and so on.
 
 You can customize which locations are guaranteed not to contain progression
@@ -76,10 +76,10 @@ groups] you want to omit. For example, this is the default setting but without
 ```yaml
 Dark Souls III:
   exclude_locations:
-  - Small Crystal Lizards
-  - Upgrade
-  - Small Souls
-  - Miscellaneous
+    - Small Crystal Lizards
+    - Upgrade
+    - Small Souls
+    - Miscellaneous
 ```
 
 This allows _all_ non-missable locations to have progression items, if you're in
@@ -143,28 +143,28 @@ Check out the [item guide], which explains the named groups available for items.
 Version 3.0.0 of the Dark Souls III Archipelago client has a number of
 substantial differences with the older 2.x.x versions. Improvements include:
 
-* Support for randomizing all item locations, not just unique items.
+- Support for randomizing all item locations, not just unique items.
 
-* Support for randomizing items in shops, starting loadouts, Path of the Dragon,
+- Support for randomizing items in shops, starting loadouts, Path of the Dragon,
   and more.
 
-* Built-in integration with the enemy randomizer, including consistent seeding
+- Built-in integration with the enemy randomizer, including consistent seeding
   for races.
 
-* Support for the latest patch for Dark Souls III, 1.15.2. Older patches are
-  *not* supported.
+- Support for the latest patch for Dark Souls III, 1.15.2. Older patches are
+  _not_ supported.
 
-* Optional smooth distribution for upgrade items, upgraded weapons, and soul
+- Optional smooth distribution for upgrade items, upgraded weapons, and soul
   items so you're more likely to see weaker items earlier and more powerful
   items later.
 
-* More detailed location names that indicate where a location is, not just what
+- More detailed location names that indicate where a location is, not just what
   it replaces.
 
-* Other players' item names are visible in DS3.
+- Other players' item names are visible in DS3.
 
-* If you pick up items while static, they'll still send once you reconnect.
- 
+- If you pick up items while static, they'll still send once you reconnect.
+
 However, 2.x.x YAMLs are not compatible with 3.0.0. You'll need to [generate a
 new YAML configuration] for use with 3.x.x.
 
@@ -172,16 +172,16 @@ new YAML configuration] for use with 3.x.x.
 
 The following options have been removed:
 
-* `enable_boss_locations` is now controlled by the `soul_locations` option.
+- `enable_boss_locations` is now controlled by the `soul_locations` option.
 
-* `enable_progressive_locations` was removed because all locations are now
+- `enable_progressive_locations` was removed because all locations are now
   individually randomized rather than replaced with a progressive list.
 
-* `pool_type` has been removed. Since there are no longer any non-randomized
+- `pool_type` has been removed. Since there are no longer any non-randomized
   items in randomized categories, there's not a meaningful distinction between
   "shuffle" and "various" mode.
 
-* `enable_*_locations` options have all been removed. Instead, you can now add
+- `enable_*_locations` options have all been removed. Instead, you can now add
   [location group names] to the `exclude_locations` option to prevent them from
   containing important items.
 
@@ -192,10 +192,10 @@ The following options have been removed:
   excluded locations, you can set `excluded_locations: unrandomized` to preserve
   the default vanilla item placements for all excluded locations.
 
-* `guaranteed_items`: In almost all cases, all items from the base game are now
+- `guaranteed_items`: In almost all cases, all items from the base game are now
   included somewhere in the multiworld.
 
 In addition, the following options have changed:
 
-* The location names used in options like `exclude_locations` have changed. See
+- The location names used in options like `exclude_locations` have changed. See
   the [location guide] for a full description.

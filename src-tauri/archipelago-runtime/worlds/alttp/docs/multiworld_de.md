@@ -5,10 +5,10 @@
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases)
 - [SNI](https://github.com/alttpo/sni/releases) (Integriert in Archipelago)
 - Hardware oder Software zum Laden und Abspielen von SNES Rom-Dateien fähig zu einer Internetverbindung
-    - Ein Emulator, der mit SNI verbinden kann
-      ([snes9x rr](https://github.com/gocha/snes9x-rr/releases),
-      [BizHawk](https://tasvideos.org/BizHawk))
-    - Ein SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), oder andere kompatible Hardware
+  - Ein Emulator, der mit SNI verbinden kann
+    ([snes9x rr](https://github.com/gocha/snes9x-rr/releases),
+    [BizHawk](https://tasvideos.org/BizHawk))
+  - Ein SD2SNES, [FXPak Pro](https://krikzz.com/store/home/54-fxpak-pro.html), oder andere kompatible Hardware
 - Die Japanische Zelda 1.0 ROM-Datei, mit folgendem Namen: `Zelda no Densetsu - Kamigami no Triforce (Japan).sfc`
 
 ## Installation Schritt für Schritt
@@ -18,19 +18,19 @@
 1. Lade die Multiworld Utilities herunter und führe die Installation aus. Sei sicher, dass du immer die aktuellste
    Version installiert hast.**Die Datei befindet sich im "assets"-Kasten unter der jeweiligen Versionsinfo!**. Für
    normale Multiworld-Spiele lädst du die `Setup.Archipelago.exe` herunter.
-    - Für den Doorrandomizer muss die alternative doors-Variante geladen werden.
-    - Während der Installation fragt dich das Programm nach der japanischen 1.0 ROM-Datei. Wenn du die Software bereits
-      installiert hast und einfach nur updaten willst, wirst du nicht nochmal danach gefragt.
-    - Es kann auch sein,dass der Installer Microsoft Visual C++ installieren möchte. Wenn du das bereits installiert
-      hast (durch Steam oder andere Programme), wirst du nicht nochmal danach gefragt.
+   - Für den Doorrandomizer muss die alternative doors-Variante geladen werden.
+   - Während der Installation fragt dich das Programm nach der japanischen 1.0 ROM-Datei. Wenn du die Software bereits
+     installiert hast und einfach nur updaten willst, wirst du nicht nochmal danach gefragt.
+   - Es kann auch sein,dass der Installer Microsoft Visual C++ installieren möchte. Wenn du das bereits installiert
+     hast (durch Steam oder andere Programme), wirst du nicht nochmal danach gefragt.
 
 2. Wenn du einen Emulator benutzt, so ist es sinnvoll, ihn als Standard zum Abspielen für .sfc-dateien einzustellen.
-    1. Entpacke oder Installiere deinen Emulator(-Ordner) an einen Ort, den du auch wiederfindest
-    2. Rechtsklicke auf eine .sfc-Datei und wähle **Öffnen mit...**
-    3. Mache einen Haken in die Box bei **Immer diese App zum Öffnen von .sfc Dateien benutzen **.
-    4. Scrolle zum Ende und wähle **Weitere Apps** und nochmal am Ende **Andere App auf diesem PC suchen** auswählen.
-    5. Suche nach der .exe-Datei des Emulators deiner Wahl und wähle **Öffnen**. Diese Datei befindet sich dort, wo den
-       Emulator in Schritt 1 enpackt/installiert hast.
+   1. Entpacke oder Installiere deinen Emulator(-Ordner) an einen Ort, den du auch wiederfindest
+   2. Rechtsklicke auf eine .sfc-Datei und wähle **Öffnen mit...**
+   3. Mache einen Haken in die Box bei **Immer diese App zum Öffnen von .sfc Dateien benutzen **.
+   4. Scrolle zum Ende und wähle **Weitere Apps** und nochmal am Ende **Andere App auf diesem PC suchen** auswählen.
+   5. Suche nach der .exe-Datei des Emulators deiner Wahl und wähle **Öffnen**. Diese Datei befindet sich dort, wo den
+      Emulator in Schritt 1 enpackt/installiert hast.
 
 ### Macintosh
 

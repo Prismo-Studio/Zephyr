@@ -22,7 +22,7 @@ The Archipelago implementation maintains the same goals. While creating your YAM
 While the sampo's location is not randomized, orbs are added to the randomizer pool based on the number of orbs
 required for your goal.
 
-Starting a fresh run after death will re-deliver *some* previously delivered items. The standard wand and potion pools
+Starting a fresh run after death will re-deliver _some_ previously delivered items. The standard wand and potion pools
 are unaffected by the multiworld item pools. This will not present an issue with progression, and will make
 progression easier as the multiworld progresses.
 
@@ -30,23 +30,23 @@ progression easier as the multiworld progresses.
 
 Positive rewards can be:
 
-* `Gold (200 or 1000)`
-* `Extra Max HP`
-* `Spell Refresher`
-* `Random Wand (Tier 1 - 6)`
-* `Potion`
-* `Orb`
-* `Immunity Perk`
-* `Extra Life`
-* `Other Helpful Perks`
-* `Miscellaneous Other Items`
+- `Gold (200 or 1000)`
+- `Extra Max HP`
+- `Spell Refresher`
+- `Random Wand (Tier 1 - 6)`
+- `Potion`
+- `Orb`
+- `Immunity Perk`
+- `Extra Life`
+- `Other Helpful Perks`
+- `Miscellaneous Other Items`
 
 Traps consist of all "Bad" and "Awful" events from Noita's native stream integration. Examples include:
 
-* `Slow Player`
-* `Trailing Lava`
-* `Worm Rain`
-* `Giga Black Holes`
+- `Slow Player`
+- `Trailing Lava`
+- `Worm Rain`
+- `Giga Black Holes`
 
 ## How many location checks are there?
 
@@ -60,4 +60,4 @@ Other players' items will look like the Archipelago logo.
 
 ## Is Archipelago compatible with other Noita mods?
 
-Yes, most other Noita mods *should* work. However, most have not been tested.
+Yes, most other Noita mods _should_ work. However, most have not been tested.

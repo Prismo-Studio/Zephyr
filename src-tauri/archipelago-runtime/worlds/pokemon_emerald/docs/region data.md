@@ -47,21 +47,21 @@ randomizer. Any locations or warps in there should be ignored. Data for a single
 ```
 
 - `[key]`: The name of the object, in this case `REGION_ROUTE103/EAST`, should be the value of `parent_map` where the
-`MAP` prefix is replaced with `REGION`. Then there should be a following `/` and a label describing this specific region
-within the `Map`. This is not enforced or required by the code, but it makes things much more clear.
+  `MAP` prefix is replaced with `REGION`. Then there should be a following `/` and a label describing this specific region
+  within the `Map`. This is not enforced or required by the code, but it makes things much more clear.
 - `parent_map`: The name of the `Map` this region exists under. It can relate this region to information like encounter
-tables.
+  tables.
 - `locations`: Locations contained within this region. This can be anything from an item on the ground to a badge to a
-gift from an NPC. Locations themselves are defined in `data/extracted_data.json`, and the names used here should come
-directly from it.
+  gift from an NPC. Locations themselves are defined in `data/extracted_data.json`, and the names used here should come
+  directly from it.
 - `events`: Events that can be completed in this region. Defeating a gym leader or Aqua/Magma team leader, for example,
-can trigger story progression and unblock roads and buildings. Events are defined here and nowhere else, and access
-rules are set in `rules.py`.
+  can trigger story progression and unblock roads and buildings. Events are defined here and nowhere else, and access
+  rules are set in `rules.py`.
 - `exits`: Names of regions that can be directly accessed from this one. Most often regions within the same `Map`,
-neighboring maps in the overworld, or transitions from using HM08 Dive. Most connections between maps/regions come from
-warps. Any region in this list should be defined somewhere in `data/regions/`.
+  neighboring maps in the overworld, or transitions from using HM08 Dive. Most connections between maps/regions come from
+  warps. Any region in this list should be defined somewhere in `data/regions/`.
 - `warps`: Warp events contained within this region. Warps are defined in `data/extracted_data.json`, and must exist
-there to be referenced here. More on warps in [../docs/warps.md](../docs/warps.md).
+  there to be referenced here. More on warps in [../docs/warps.md](../docs/warps.md).
 
 Think of this data as defining which regions are "claiming" a given location, event, or warp. No more than one region
 may claim ownership of a location. Even if some "thing" may happen in two different regions and set the same flag, they

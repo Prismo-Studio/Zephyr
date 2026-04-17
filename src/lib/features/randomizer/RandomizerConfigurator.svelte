@@ -82,8 +82,7 @@
 	});
 
 	function visibleOptionCount(opts: OptionDef[]): number {
-		return opts.filter((o) => dependenciesSatisfied(o.dependencies, randomizerStore.values))
-			.length;
+		return opts.filter((o) => dependenciesSatisfied(o.dependencies, randomizerStore.values)).length;
 	}
 
 	function toggleCat(cat: string) {
@@ -109,9 +108,7 @@
 		const impact = randomizerStore.lastImpact;
 		if (impact.newlyVisible.length === 0 && impact.newlyHidden.length === 0) return null;
 		const named = (ids: string[]) =>
-			ids
-				.map((i) => schema.options.find((o) => o.id === i)?.label ?? i)
-				.join(', ');
+			ids.map((i) => schema.options.find((o) => o.id === i)?.label ?? i).join(', ');
 		return { option: opt, impact, named };
 	});
 </script>
@@ -120,7 +117,11 @@
 	<div class="rdz-config">
 		<div class="rdz-config-main">
 			<header class="rdz-config-header">
-				<button class="rdz-back" onclick={onBack} aria-label={i18nState.locale && m.randomizer_backToCatalog()}>
+				<button
+					class="rdz-back"
+					onclick={onBack}
+					aria-label={i18nState.locale && m.randomizer_backToCatalog()}
+				>
 					<Icon icon="mdi:arrow-left" />
 				</button>
 				<div class="rdz-config-title">
@@ -164,7 +165,10 @@
 					<div class="rdz-inline-field">
 						<span>{i18nState.locale && m.randomizer_seed()}</span>
 						<div class="rdz-inline-control rdz-inline-control-sm">
-							<Input bind:value={randomizerStore.seed} placeholder={i18nState.locale && m.randomizer_random()} />
+							<Input
+								bind:value={randomizerStore.seed}
+								placeholder={i18nState.locale && m.randomizer_random()}
+							/>
 						</div>
 					</div>
 
@@ -187,12 +191,15 @@
 				<div class="rdz-change-banner">
 					<Icon icon="mdi:lightning-bolt" />
 					<div>
-						<strong>{lastChangeBanner.option.label}</strong> {i18nState.locale && m.randomizer_changed()}
+						<strong>{lastChangeBanner.option.label}</strong>
+						{i18nState.locale && m.randomizer_changed()}
 						{#if lastChangeBanner.impact.newlyVisible.length > 0}
-							{i18nState.locale && m.randomizer_nowVisible()} <em>{lastChangeBanner.named(lastChangeBanner.impact.newlyVisible)}</em>.
+							{i18nState.locale && m.randomizer_nowVisible()}
+							<em>{lastChangeBanner.named(lastChangeBanner.impact.newlyVisible)}</em>.
 						{/if}
 						{#if lastChangeBanner.impact.newlyHidden.length > 0}
-							{i18nState.locale && m.randomizer_nowHidden()} <em>{lastChangeBanner.named(lastChangeBanner.impact.newlyHidden)}</em>.
+							{i18nState.locale && m.randomizer_nowHidden()}
+							<em>{lastChangeBanner.named(lastChangeBanner.impact.newlyHidden)}</em>.
 						{/if}
 					</div>
 				</div>

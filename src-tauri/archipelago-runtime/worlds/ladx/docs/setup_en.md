@@ -2,27 +2,27 @@
 
 ## Required Software
 
-- [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases). 
+- [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases).
 - Software capable of loading and playing GBC ROM files
-    - [RetroArch](https://retroarch.com?page=platforms) 1.10.3 or newer.
-    - [BizHawk](https://tasvideos.org/BizHawk) 2.8 or newer.
+  - [RetroArch](https://retroarch.com?page=platforms) 1.10.3 or newer.
+  - [BizHawk](https://tasvideos.org/BizHawk) 2.8 or newer.
 - Your American 1.0 ROM file, probably named `Legend of Zelda, The - Link's Awakening DX (USA, Europe) (SGB Enhanced).gbc`
 
 ## Installation Procedures
 
-1. Download and install [Archipelago](<https://github.com/ArchipelagoMW/Archipelago/releases/latest>). **The installer 
+1. Download and install [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases/latest). **The installer
    file is located in the assets section at the bottom of the version information.**
 2. The first time you do local generation or patch your game, you will be asked to locate your base ROM file.
    This is your Links Awakening DX ROM file. This only needs to be done once..
 
 3. You should assign your emulator as your default program for launching ROM
    files.
-    1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
-    2. Right-click on a ROM file and select **Open with...**
-    3. Check the box next to **Always use this app to open .gbc files**
-    4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
-    5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
-       extracted in step one.
+   1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
+   2. Right-click on a ROM file and select **Open with...**
+   3. Check the box next to **Always use this app to open .gbc files**
+   4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
+   5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
+      extracted in step one.
 
 ## Create a Config (.yaml) File
 
@@ -82,8 +82,8 @@ You only have to do these steps once. Note, RetroArch 1.9.x will not work as it 
 1. Load the ROM.
 2. Navigate to the folder Archipelago is installed in, then `data/lua`, and drag+drop `connector_ladx_bizhawk.lua` onto
    the main EmuHawk window.
-    - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to
-      `connector_ladx_bizhawk.lua` with the file picker.
+   - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to
+     `connector_ladx_bizhawk.lua` with the file picker.
 3. Keep the Lua Console open during gameplay (minimizing it is fine!)
 
 ### Connect to the Archipelago Server

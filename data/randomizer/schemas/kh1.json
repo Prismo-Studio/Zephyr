@@ -1,1283 +1,1283 @@
 {
-  "id": "kh1",
-  "name": "Kingdom Hearts",
-  "version": "0.1.6",
-  "description": "Kingdom Hearts is an action RPG following Sora on his journey through many worlds to find Riku and Kairi.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "final_rest_door_key",
-      "label": "Final Rest Door Key",
-      "description": "Determines what grants the player the Final Rest Door Key.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "lucky_emblems",
-        "choices": [
-          {
-            "value": "sephiroth",
-            "label": "Sephiroth"
-          },
-          {
-            "value": "unknown",
-            "label": "Unknown"
-          },
-          {
-            "value": "postcards",
-            "label": "Postcards"
-          },
-          {
-            "value": "lucky_emblems",
-            "label": "Lucky Emblems"
-          },
-          {
-            "value": "puppies",
-            "label": "Puppies"
-          },
-          {
-            "value": "final_rest",
-            "label": "Final Rest"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "end_of_the_world_unlock",
-      "label": "End Of The World Unlock",
-      "description": "Determines how End of the World is unlocked.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "lucky_emblems",
-        "choices": [
-          {
-            "value": "item",
-            "label": "Item"
-          },
-          {
-            "value": "lucky_emblems",
-            "label": "Lucky Emblems"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "required_lucky_emblems_eotw",
-      "label": "Required Lucky Emblems Eotw",
-      "description": "If End of the World Unlock is set to \"Lucky Emblems\", determines the number of Lucky Emblems required.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "required_lucky_emblems_door",
-      "label": "Required Lucky Emblems Door",
-      "description": "If Final Rest Door Key is set to \"Lucky Emblems\", determines the number of Lucky Emblems required.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lucky_emblems_in_pool",
-      "label": "Lucky Emblems In Pool",
-      "description": "Determines the number of Lucky Emblems in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 13
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "required_postcards",
-      "label": "Required Postcards",
-      "description": "If \"Final Rest Door Key\" is set to \"Postcards\", defines how many postcards are required.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 10,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "required_puppies",
-      "label": "Required Puppies",
-      "description": "If \"Final Rest Door Key\" is set to \"Puppies\", defines how many puppies are required.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "80",
-        "choices": [
-          {
-            "value": "10",
-            "label": "10"
-          },
-          {
-            "value": "20",
-            "label": "20"
-          },
-          {
-            "value": "30",
-            "label": "30"
-          },
-          {
-            "value": "40",
-            "label": "40"
-          },
-          {
-            "value": "50",
-            "label": "50"
-          },
-          {
-            "value": "60",
-            "label": "60"
-          },
-          {
-            "value": "70",
-            "label": "70"
-          },
-          {
-            "value": "80",
-            "label": "80"
-          },
-          {
-            "value": "90",
-            "label": "90"
-          },
-          {
-            "value": "99",
-            "label": "99"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "super_bosses",
-      "label": "Super Bosses",
-      "description": "Toggle whether to include checks behind Super Bosses.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "atlantica",
-      "label": "Atlantica",
-      "description": "Toggle whether to include checks in Atlantica.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hundred_acre_wood",
-      "label": "Hundred Acre Wood",
-      "description": "Toggle whether to include checks in the 100 Acre Wood.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "cups",
-      "label": "Cups",
-      "description": "Determines which cups have their locations added to the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "cups",
-            "label": "Cups"
-          },
-          {
-            "value": "hades_cup",
-            "label": "Hades Cup"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_puppies",
-      "label": "Randomize Puppies",
-      "description": "If OFF, the \"Puppy\" item is worth 3 puppies and puppies are placed in vanilla locations.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "puppy_value",
-      "label": "Puppy Value",
-      "description": "Determines how many dalmatian puppies are given when a puppy item is found.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 99,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_worlds",
-      "label": "Starting Worlds",
-      "description": "Number of random worlds to start with in addition to Traverse Town, which is always available.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblades_unlock_chests",
-      "label": "Keyblades Unlock Chests",
-      "description": "If toggled on, the player is required to have a certain keyblade to open chests in certain worlds.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "interact_in_battle",
-      "label": "Interact In Battle",
-      "description": "Allow Sora to talk to people, examine objects, and open chests in battle.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exp_multiplier",
-      "label": "Exp Multiplier",
-      "description": "Determines the multiplier to apply to EXP gained.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 4,
-        "max": 128,
-        "step": 1,
-        "default": 64
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "logic_difficulty",
-      "label": "Logic Difficulty",
-      "description": "Determines what the randomizer logic may expect you to do to reach certain locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "beginner",
-            "label": "Beginner"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "proud",
-            "label": "Proud"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "extra_shared_abilities",
-      "label": "Extra Shared Abilities",
-      "description": "If on, adds extra shared abilities to the pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exp_zero_in_pool",
-      "label": "Exp Zero In Pool",
-      "description": "If on, adds EXP Zero ability to the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_emblem_pieces",
-      "label": "Randomize Emblem Pieces",
-      "description": "If off, the Hollow Bastion emblem pieces are in their vanilla locations.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_postcards",
-      "label": "Randomize Postcards",
-      "description": "Determines how Postcards are randomized All: All Postcards are randomized Chests: Only the 3 Postcards in chests are randomized Vanilla: Postcards are in their original location",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "all",
-        "choices": [
-          {
-            "value": "all",
-            "label": "All"
-          },
-          {
-            "value": "chests",
-            "label": "Chests"
-          },
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "donald_death_link",
-      "label": "Donald Death Link",
-      "description": "If Donald is KO'ed, so is Sora.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goofy_death_link",
-      "label": "Goofy Death Link",
-      "description": "If Goofy is KO'ed, so is Sora.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_stats",
-      "label": "Keyblade Stats",
-      "description": "Determines whether Keyblade stats should be randomized.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "randomize",
-        "choices": [
-          {
-            "value": "randomize",
-            "label": "Randomize"
-          },
-          {
-            "value": "shuffle",
-            "label": "Shuffle"
-          },
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bad_starting_weapons",
-      "label": "Bad Starting Weapons",
-      "description": "Forces Kingdom Key, Dream Sword, Dream Shield, and Dream Staff to have vanilla stats.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_min_str",
-      "label": "Keyblade Min Str",
-      "description": "Determines the minimum STR bonus a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_max_str",
-      "label": "Keyblade Max Str",
-      "description": "Determines the maximum STR bonus a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 14
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_min_crit_rate",
-      "label": "Keyblade Min Crit Rate",
-      "description": "Determines the minimum Crit Rate bonus a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 200,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_max_crit_rate",
-      "label": "Keyblade Max Crit Rate",
-      "description": "Determines the maximum Crit Rate bonus a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 200,
-        "step": 1,
-        "default": 200
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_min_crit_str",
-      "label": "Keyblade Min Crit Str",
-      "description": "Determines the minimum Crit STR bonus a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_max_crit_str",
-      "label": "Keyblade Max Crit Str",
-      "description": "Determines the maximum Crit STR bonus a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 16
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_min_recoil",
-      "label": "Keyblade Min Recoil",
-      "description": "Determines the minimum recoil a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 90,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_max_recoil",
-      "label": "Keyblade Max Recoil",
-      "description": "Determines the maximum recoil a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 90,
-        "step": 1,
-        "default": 90
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_min_mp",
-      "label": "Keyblade Min Mp",
-      "description": "Determines the minimum MP bonus a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": -2,
-        "max": 5,
-        "step": 1,
-        "default": -2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "keyblade_max_mp",
-      "label": "Keyblade Max Mp",
-      "description": "Determines the maximum MP bonus a keyblade can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": -2,
-        "max": 5,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "level_checks",
-      "label": "Level Checks",
-      "description": "Determines the maximum level for which checks can be obtained.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 99
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "slot_2_level_checks",
-      "label": "Slot 2 Level Checks",
-      "description": "Determines how many levels have an additional item.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 33,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "force_stats_on_levels",
-      "label": "Force Stats On Levels",
-      "description": "If this value is less than the value for Level Checks, this determines the minimum level from which only stat ups are obtained at level up locations.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 2,
-        "max": 101,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "strength_increase",
-      "label": "Strength Increase",
-      "description": "Determines the number of Strength Increases to add to the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 24
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "defense_increase",
-      "label": "Defense Increase",
-      "description": "Determines the number of Defense Increases to add to the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 24
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hp_increase",
-      "label": "Hp Increase",
-      "description": "Determines the number of HP Increases to add to the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 23
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ap_increase",
-      "label": "Ap Increase",
-      "description": "Determines the number of AP Increases to add to the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 18
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mp_increase",
-      "label": "Mp Increase",
-      "description": "Determines the number of MP Increases to add to the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessory_slot_increase",
-      "label": "Accessory Slot Increase",
-      "description": "Determines the number of Accessory Slot Increases to add to the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 6,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_slot_increase",
-      "label": "Item Slot Increase",
-      "description": "Determines the number of Item Slot Increases to add to the multiworld.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "jungle_slider",
-      "label": "Jungle Slider",
-      "description": "Determines whether checks are behind the Jungle Slider minigame.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_tools",
-      "label": "Starting Tools",
-      "description": "Determines whether you start with Scan and Dodge Roll.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "remote_items",
-      "label": "Remote Items",
-      "description": "Determines if items can be placed on locations in your own world in such a way that will force them to be remote items.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "allow",
-            "label": "Allow"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shorten_go_mode",
-      "label": "Shorten Go Mode",
-      "description": "If on, the player warps to the final cutscene after defeating Ansem 1 > Darkside > Ansem 2, skipping World of Chaos.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "If Sora is KO'ed, the other players with \"Death Link\" on will also be KO'ed.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "toggle",
-            "label": "Toggle"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "destiny_islands",
-      "label": "Destiny Islands",
-      "description": "If on, Adds a Destiny Islands item and a number of Raft Materials items to the pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "orichalcum_in_pool",
-      "label": "Orichalcum In Pool",
-      "description": "Determines how much Orichalcum, one of the two synthesis items, is in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 17,
-        "max": 30,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "orichalcum_price",
-      "label": "Orichalcum Price",
-      "description": "Determines the cost of Orichalcum in each shop.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 100,
-        "max": 5000,
-        "step": 1,
-        "default": 500
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mythril_in_pool",
-      "label": "Mythril In Pool",
-      "description": "Determines how much Mythril, one of the two synthesis items, is in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 16,
-        "max": 30,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mythril_price",
-      "label": "Mythril Price",
-      "description": "Determines the cost of Mythril in each shop.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 100,
-        "max": 5000,
-        "step": 1,
-        "default": 500
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "one_hp",
-      "label": "One Hp",
-      "description": "If on, forces Sora's max HP to 1 and removes the low health warning sound.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "four_by_three",
-      "label": "Four By Three",
-      "description": "If on, changes the aspect ratio to 4 by 3.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "auto_attack",
-      "label": "Auto Attack",
-      "description": "If on, you can combo by holding confirm.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "beep_hack",
-      "label": "Beep Hack",
-      "description": "If on, removes low health warning sound.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "consistent_finishers",
-      "label": "Consistent Finishers",
-      "description": "If on, 30% chance finishers are now 100% chance.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "early_skip",
-      "label": "Early Skip",
-      "description": "If on, allows skipping cutscenes immediately that normally take time to be able to skip.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "fast_camera",
-      "label": "Fast Camera",
-      "description": "If on, speeds up camera movement and camera centering.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "faster_animations",
-      "label": "Faster Animations",
-      "description": "If on, speeds up animations during which you can't play.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "unlock_0_volume",
-      "label": "Unlock 0 Volume",
-      "description": "If on, volume 1 mutes the audio channel.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "unskippable",
-      "label": "Unskippable",
-      "description": "If on, makes unskippable cutscenes skippable.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "auto_save",
-      "label": "Auto Save",
-      "description": "If on, enables auto saving.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "warp_anywhere",
-      "label": "Warp Anywhere",
-      "description": "If on, enables the player to warp at any time, even when not at a save point.",
-      "category": "entrances",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_party_member_starting_accessories",
-      "label": "Randomize Party Member Starting Accessories",
-      "description": "If on, the 10 accessories that some party members (Aladdin, Ariel, Jack, Peter Pan, Beast) start with are randomized.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "max_level_for_slot_2_level_checks",
-      "label": "Max Level For Slot 2 Level Checks",
-      "description": "Determines the max level for slot 2 level checks.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 2,
-        "max": 100,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_ap_costs",
-      "label": "Randomize Ap Costs",
-      "description": "Off: No randomization Shuffle: Ability AP Costs will be shuffled amongst themselves.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "shuffle",
-            "label": "Shuffle"
-          },
-          {
-            "value": "randomize",
-            "label": "Randomize"
-          },
-          {
-            "value": "distribute",
-            "label": "Distribute"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "max_ap_cost",
-      "label": "Max Ap Cost",
-      "description": "If Randomize AP Costs is set to Randomize or Distribute, this defined the max AP cost an ability can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 4,
-        "max": 9,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "min_ap_cost",
-      "label": "Min Ap Cost",
-      "description": "If Randomize AP Costs is set to Randomize or Distribute, this defined the min AP cost an ability can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 2,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "day_2_materials",
-      "label": "Day 2 Materials",
-      "description": "The amount of Raft Materials required to access Day 2.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "homecoming_materials",
-      "label": "Homecoming Materials",
-      "description": "The amount of Raft Materials required to access Homecoming (Final Bosses).",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "materials_in_pool",
-      "label": "Materials In Pool",
-      "description": "The amount of Raft Materials required to access Homecoming (Final Bosses).",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 16
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "stacking_world_items",
-      "label": "Stacking World Items",
-      "description": "Multiple world items give you the world's associated key item.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "halloween_town_key_item_bundle",
-      "label": "Halloween Town Key Item Bundle",
-      "description": "Obtaining the Forget-Me-Not automatically gives Jack-in-the-Box as well.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "kh1",
+	"name": "Kingdom Hearts",
+	"version": "0.1.6",
+	"description": "Kingdom Hearts is an action RPG following Sora on his journey through many worlds to find Riku and Kairi.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "final_rest_door_key",
+			"label": "Final Rest Door Key",
+			"description": "Determines what grants the player the Final Rest Door Key.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "lucky_emblems",
+				"choices": [
+					{
+						"value": "sephiroth",
+						"label": "Sephiroth"
+					},
+					{
+						"value": "unknown",
+						"label": "Unknown"
+					},
+					{
+						"value": "postcards",
+						"label": "Postcards"
+					},
+					{
+						"value": "lucky_emblems",
+						"label": "Lucky Emblems"
+					},
+					{
+						"value": "puppies",
+						"label": "Puppies"
+					},
+					{
+						"value": "final_rest",
+						"label": "Final Rest"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "end_of_the_world_unlock",
+			"label": "End Of The World Unlock",
+			"description": "Determines how End of the World is unlocked.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "lucky_emblems",
+				"choices": [
+					{
+						"value": "item",
+						"label": "Item"
+					},
+					{
+						"value": "lucky_emblems",
+						"label": "Lucky Emblems"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "required_lucky_emblems_eotw",
+			"label": "Required Lucky Emblems Eotw",
+			"description": "If End of the World Unlock is set to \"Lucky Emblems\", determines the number of Lucky Emblems required.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "required_lucky_emblems_door",
+			"label": "Required Lucky Emblems Door",
+			"description": "If Final Rest Door Key is set to \"Lucky Emblems\", determines the number of Lucky Emblems required.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lucky_emblems_in_pool",
+			"label": "Lucky Emblems In Pool",
+			"description": "Determines the number of Lucky Emblems in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 13
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "required_postcards",
+			"label": "Required Postcards",
+			"description": "If \"Final Rest Door Key\" is set to \"Postcards\", defines how many postcards are required.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 10,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "required_puppies",
+			"label": "Required Puppies",
+			"description": "If \"Final Rest Door Key\" is set to \"Puppies\", defines how many puppies are required.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "80",
+				"choices": [
+					{
+						"value": "10",
+						"label": "10"
+					},
+					{
+						"value": "20",
+						"label": "20"
+					},
+					{
+						"value": "30",
+						"label": "30"
+					},
+					{
+						"value": "40",
+						"label": "40"
+					},
+					{
+						"value": "50",
+						"label": "50"
+					},
+					{
+						"value": "60",
+						"label": "60"
+					},
+					{
+						"value": "70",
+						"label": "70"
+					},
+					{
+						"value": "80",
+						"label": "80"
+					},
+					{
+						"value": "90",
+						"label": "90"
+					},
+					{
+						"value": "99",
+						"label": "99"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "super_bosses",
+			"label": "Super Bosses",
+			"description": "Toggle whether to include checks behind Super Bosses.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "atlantica",
+			"label": "Atlantica",
+			"description": "Toggle whether to include checks in Atlantica.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hundred_acre_wood",
+			"label": "Hundred Acre Wood",
+			"description": "Toggle whether to include checks in the 100 Acre Wood.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "cups",
+			"label": "Cups",
+			"description": "Determines which cups have their locations added to the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "cups",
+						"label": "Cups"
+					},
+					{
+						"value": "hades_cup",
+						"label": "Hades Cup"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_puppies",
+			"label": "Randomize Puppies",
+			"description": "If OFF, the \"Puppy\" item is worth 3 puppies and puppies are placed in vanilla locations.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "puppy_value",
+			"label": "Puppy Value",
+			"description": "Determines how many dalmatian puppies are given when a puppy item is found.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 99,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_worlds",
+			"label": "Starting Worlds",
+			"description": "Number of random worlds to start with in addition to Traverse Town, which is always available.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblades_unlock_chests",
+			"label": "Keyblades Unlock Chests",
+			"description": "If toggled on, the player is required to have a certain keyblade to open chests in certain worlds.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "interact_in_battle",
+			"label": "Interact In Battle",
+			"description": "Allow Sora to talk to people, examine objects, and open chests in battle.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exp_multiplier",
+			"label": "Exp Multiplier",
+			"description": "Determines the multiplier to apply to EXP gained.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 4,
+				"max": 128,
+				"step": 1,
+				"default": 64
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "logic_difficulty",
+			"label": "Logic Difficulty",
+			"description": "Determines what the randomizer logic may expect you to do to reach certain locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "beginner",
+						"label": "Beginner"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "proud",
+						"label": "Proud"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "extra_shared_abilities",
+			"label": "Extra Shared Abilities",
+			"description": "If on, adds extra shared abilities to the pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exp_zero_in_pool",
+			"label": "Exp Zero In Pool",
+			"description": "If on, adds EXP Zero ability to the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_emblem_pieces",
+			"label": "Randomize Emblem Pieces",
+			"description": "If off, the Hollow Bastion emblem pieces are in their vanilla locations.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_postcards",
+			"label": "Randomize Postcards",
+			"description": "Determines how Postcards are randomized All: All Postcards are randomized Chests: Only the 3 Postcards in chests are randomized Vanilla: Postcards are in their original location",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "all",
+				"choices": [
+					{
+						"value": "all",
+						"label": "All"
+					},
+					{
+						"value": "chests",
+						"label": "Chests"
+					},
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "donald_death_link",
+			"label": "Donald Death Link",
+			"description": "If Donald is KO'ed, so is Sora.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goofy_death_link",
+			"label": "Goofy Death Link",
+			"description": "If Goofy is KO'ed, so is Sora.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_stats",
+			"label": "Keyblade Stats",
+			"description": "Determines whether Keyblade stats should be randomized.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "randomize",
+				"choices": [
+					{
+						"value": "randomize",
+						"label": "Randomize"
+					},
+					{
+						"value": "shuffle",
+						"label": "Shuffle"
+					},
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bad_starting_weapons",
+			"label": "Bad Starting Weapons",
+			"description": "Forces Kingdom Key, Dream Sword, Dream Shield, and Dream Staff to have vanilla stats.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_min_str",
+			"label": "Keyblade Min Str",
+			"description": "Determines the minimum STR bonus a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_max_str",
+			"label": "Keyblade Max Str",
+			"description": "Determines the maximum STR bonus a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 14
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_min_crit_rate",
+			"label": "Keyblade Min Crit Rate",
+			"description": "Determines the minimum Crit Rate bonus a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 200,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_max_crit_rate",
+			"label": "Keyblade Max Crit Rate",
+			"description": "Determines the maximum Crit Rate bonus a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 200,
+				"step": 1,
+				"default": 200
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_min_crit_str",
+			"label": "Keyblade Min Crit Str",
+			"description": "Determines the minimum Crit STR bonus a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_max_crit_str",
+			"label": "Keyblade Max Crit Str",
+			"description": "Determines the maximum Crit STR bonus a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 16
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_min_recoil",
+			"label": "Keyblade Min Recoil",
+			"description": "Determines the minimum recoil a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 90,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_max_recoil",
+			"label": "Keyblade Max Recoil",
+			"description": "Determines the maximum recoil a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 90,
+				"step": 1,
+				"default": 90
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_min_mp",
+			"label": "Keyblade Min Mp",
+			"description": "Determines the minimum MP bonus a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": -2,
+				"max": 5,
+				"step": 1,
+				"default": -2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "keyblade_max_mp",
+			"label": "Keyblade Max Mp",
+			"description": "Determines the maximum MP bonus a keyblade can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": -2,
+				"max": 5,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "level_checks",
+			"label": "Level Checks",
+			"description": "Determines the maximum level for which checks can be obtained.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 99
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "slot_2_level_checks",
+			"label": "Slot 2 Level Checks",
+			"description": "Determines how many levels have an additional item.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 33,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "force_stats_on_levels",
+			"label": "Force Stats On Levels",
+			"description": "If this value is less than the value for Level Checks, this determines the minimum level from which only stat ups are obtained at level up locations.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 2,
+				"max": 101,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "strength_increase",
+			"label": "Strength Increase",
+			"description": "Determines the number of Strength Increases to add to the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 24
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "defense_increase",
+			"label": "Defense Increase",
+			"description": "Determines the number of Defense Increases to add to the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 24
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hp_increase",
+			"label": "Hp Increase",
+			"description": "Determines the number of HP Increases to add to the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 23
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ap_increase",
+			"label": "Ap Increase",
+			"description": "Determines the number of AP Increases to add to the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 18
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mp_increase",
+			"label": "Mp Increase",
+			"description": "Determines the number of MP Increases to add to the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessory_slot_increase",
+			"label": "Accessory Slot Increase",
+			"description": "Determines the number of Accessory Slot Increases to add to the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 6,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_slot_increase",
+			"label": "Item Slot Increase",
+			"description": "Determines the number of Item Slot Increases to add to the multiworld.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "jungle_slider",
+			"label": "Jungle Slider",
+			"description": "Determines whether checks are behind the Jungle Slider minigame.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_tools",
+			"label": "Starting Tools",
+			"description": "Determines whether you start with Scan and Dodge Roll.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "remote_items",
+			"label": "Remote Items",
+			"description": "Determines if items can be placed on locations in your own world in such a way that will force them to be remote items.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "allow",
+						"label": "Allow"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shorten_go_mode",
+			"label": "Shorten Go Mode",
+			"description": "If on, the player warps to the final cutscene after defeating Ansem 1 > Darkside > Ansem 2, skipping World of Chaos.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "If Sora is KO'ed, the other players with \"Death Link\" on will also be KO'ed.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "toggle",
+						"label": "Toggle"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "destiny_islands",
+			"label": "Destiny Islands",
+			"description": "If on, Adds a Destiny Islands item and a number of Raft Materials items to the pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "orichalcum_in_pool",
+			"label": "Orichalcum In Pool",
+			"description": "Determines how much Orichalcum, one of the two synthesis items, is in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 17,
+				"max": 30,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "orichalcum_price",
+			"label": "Orichalcum Price",
+			"description": "Determines the cost of Orichalcum in each shop.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 100,
+				"max": 5000,
+				"step": 1,
+				"default": 500
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mythril_in_pool",
+			"label": "Mythril In Pool",
+			"description": "Determines how much Mythril, one of the two synthesis items, is in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 16,
+				"max": 30,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mythril_price",
+			"label": "Mythril Price",
+			"description": "Determines the cost of Mythril in each shop.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 100,
+				"max": 5000,
+				"step": 1,
+				"default": 500
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "one_hp",
+			"label": "One Hp",
+			"description": "If on, forces Sora's max HP to 1 and removes the low health warning sound.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "four_by_three",
+			"label": "Four By Three",
+			"description": "If on, changes the aspect ratio to 4 by 3.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "auto_attack",
+			"label": "Auto Attack",
+			"description": "If on, you can combo by holding confirm.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "beep_hack",
+			"label": "Beep Hack",
+			"description": "If on, removes low health warning sound.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "consistent_finishers",
+			"label": "Consistent Finishers",
+			"description": "If on, 30% chance finishers are now 100% chance.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "early_skip",
+			"label": "Early Skip",
+			"description": "If on, allows skipping cutscenes immediately that normally take time to be able to skip.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "fast_camera",
+			"label": "Fast Camera",
+			"description": "If on, speeds up camera movement and camera centering.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "faster_animations",
+			"label": "Faster Animations",
+			"description": "If on, speeds up animations during which you can't play.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "unlock_0_volume",
+			"label": "Unlock 0 Volume",
+			"description": "If on, volume 1 mutes the audio channel.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "unskippable",
+			"label": "Unskippable",
+			"description": "If on, makes unskippable cutscenes skippable.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "auto_save",
+			"label": "Auto Save",
+			"description": "If on, enables auto saving.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "warp_anywhere",
+			"label": "Warp Anywhere",
+			"description": "If on, enables the player to warp at any time, even when not at a save point.",
+			"category": "entrances",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_party_member_starting_accessories",
+			"label": "Randomize Party Member Starting Accessories",
+			"description": "If on, the 10 accessories that some party members (Aladdin, Ariel, Jack, Peter Pan, Beast) start with are randomized.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "max_level_for_slot_2_level_checks",
+			"label": "Max Level For Slot 2 Level Checks",
+			"description": "Determines the max level for slot 2 level checks.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 2,
+				"max": 100,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_ap_costs",
+			"label": "Randomize Ap Costs",
+			"description": "Off: No randomization Shuffle: Ability AP Costs will be shuffled amongst themselves.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "shuffle",
+						"label": "Shuffle"
+					},
+					{
+						"value": "randomize",
+						"label": "Randomize"
+					},
+					{
+						"value": "distribute",
+						"label": "Distribute"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "max_ap_cost",
+			"label": "Max Ap Cost",
+			"description": "If Randomize AP Costs is set to Randomize or Distribute, this defined the max AP cost an ability can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 4,
+				"max": 9,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "min_ap_cost",
+			"label": "Min Ap Cost",
+			"description": "If Randomize AP Costs is set to Randomize or Distribute, this defined the min AP cost an ability can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 2,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "day_2_materials",
+			"label": "Day 2 Materials",
+			"description": "The amount of Raft Materials required to access Day 2.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "homecoming_materials",
+			"label": "Homecoming Materials",
+			"description": "The amount of Raft Materials required to access Homecoming (Final Bosses).",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "materials_in_pool",
+			"label": "Materials In Pool",
+			"description": "The amount of Raft Materials required to access Homecoming (Final Bosses).",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 16
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "stacking_world_items",
+			"label": "Stacking World Items",
+			"description": "Multiple world items give you the world's associated key item.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "halloween_town_key_item_bundle",
+			"label": "Halloween Town Key Item Bundle",
+			"description": "Obtaining the Forget-Me-Not automatically gives Jack-in-the-Box as well.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

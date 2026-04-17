@@ -30,15 +30,22 @@
 <div class="rdz-catalog">
 	<header class="rdz-catalog-header">
 		<div class="rdz-catalog-title">
-			<h1>{i18nState.locale && m.randomizer_title()} <span class="rdz-subtitle-inline">{i18nState.locale && m.randomizer_subtitle()}</span></h1>
+			<h1>
+				{i18nState.locale && m.randomizer_title()}
+				<span class="rdz-subtitle-inline">{i18nState.locale && m.randomizer_subtitle()}</span>
+			</h1>
 			<p class="rdz-subtitle">
 				{i18nState.locale && m.randomizer_description()}
-				<strong>{randomizerStore.catalog.length}</strong> {i18nState.locale && m.randomizer_gamesAvailable()}
+				<strong>{randomizerStore.catalog.length}</strong>
+				{i18nState.locale && m.randomizer_gamesAvailable()}
 			</p>
 		</div>
 		<div class="rdz-catalog-actions">
 			<div class="rdz-search">
-				<Input bind:value={search} placeholder={i18nState.locale && m.randomizer_searchPlaceholder()}>
+				<Input
+					bind:value={search}
+					placeholder={i18nState.locale && m.randomizer_searchPlaceholder()}
+				>
 					{#snippet iconLeft()}
 						<Icon icon="mdi:magnify" />
 					{/snippet}
@@ -73,7 +80,9 @@
 		<div class="rdz-empty">
 			<Icon icon="mdi:magnify-close" />
 			<p>{i18nState.locale && m.randomizer_noMatch({ search })}</p>
-			<button class="rdz-link-btn" onclick={() => (search = '')}>{i18nState.locale && m.randomizer_clearSearch()}</button>
+			<button class="rdz-link-btn" onclick={() => (search = '')}
+				>{i18nState.locale && m.randomizer_clearSearch()}</button
+			>
 		</div>
 	{:else}
 		<div class="rdz-grid">
@@ -85,7 +94,9 @@
 							<h3>{game.name}</h3>
 							<span class="rdz-card-version">v{game.version}</span>
 						</div>
-						<p class="rdz-card-desc">{game.description || (i18nState.locale && m.randomizer_noDescription())}</p>
+						<p class="rdz-card-desc">
+							{game.description || (i18nState.locale && m.randomizer_noDescription())}
+						</p>
 						<div class="rdz-card-badges">
 							<span class="rdz-badge">
 								<Icon icon="mdi:tune" />
@@ -224,11 +235,7 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		background: linear-gradient(
-			135deg,
-			var(--bg-active) 0%,
-			transparent 40%
-		);
+		background: linear-gradient(135deg, var(--bg-active) 0%, transparent 40%);
 		opacity: 0;
 		transition: opacity var(--transition-fast);
 		pointer-events: none;

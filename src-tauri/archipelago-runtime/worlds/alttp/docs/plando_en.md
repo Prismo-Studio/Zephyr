@@ -18,22 +18,22 @@
   vanilla.
 - Instructions are separated by a semicolon.
 - Available Instructions:
-    - Direct Placement:
-        - Example: `Eastern Palace-Trinexx`
-        - Takes a particular Arena and particular boss, then places that boss into that arena
-        - Ganons Tower has 3 placements, `Ganons Tower Top`, `Ganons Tower Middle` and `Ganons Tower Bottom`
-    - Boss Placement:
-        - Example: `Trinexx`
-        - Takes a particular boss and places that boss in any remaining slots in which this boss can function.
-        - In this example, it would fill Desert Palace, but not Tower of Hera.
-        - If no other options are provided this will follow normal singularity rules with that boss.
-    - Boss Shuffle:
-        - Example: `basic`
-            - Runs a particular boss shuffle mode to finish construction instead of vanilla placement, typically used as
-              a last instruction.
-            - Supports `random` which will choose a random option from the normal choices.
-            - If one is not supplied any remaining locations will be unshuffled unless a single specific boss is
-              supplied in which case it will use singularity as noted above.
+  - Direct Placement:
+    - Example: `Eastern Palace-Trinexx`
+    - Takes a particular Arena and particular boss, then places that boss into that arena
+    - Ganons Tower has 3 placements, `Ganons Tower Top`, `Ganons Tower Middle` and `Ganons Tower Bottom`
+  - Boss Placement:
+    - Example: `Trinexx`
+    - Takes a particular boss and places that boss in any remaining slots in which this boss can function.
+    - In this example, it would fill Desert Palace, but not Tower of Hera.
+    - If no other options are provided this will follow normal singularity rules with that boss.
+  - Boss Shuffle:
+    - Example: `basic`
+      - Runs a particular boss shuffle mode to finish construction instead of vanilla placement, typically used as
+        a last instruction.
+      - Supports `random` which will choose a random option from the normal choices.
+      - If one is not supplied any remaining locations will be unshuffled unless a single specific boss is
+        supplied in which case it will use singularity as noted above.
 - [Available Bosses](https://github.com/ArchipelagoMW/Archipelago/blob/main/worlds/alttp/Bosses.py#L135)
 - [Available Arenas](https://github.com/ArchipelagoMW/Archipelago/blob/main/worlds/alttp/Bosses.py#L150)
 
@@ -59,30 +59,30 @@ boss_shuffle:
 - Has the options from_pool, world, percentage, force and either item and location or items and locations
 - All of these options support subweights
 - percentage is the percentage chance for this block to trigger
-    - is a number in the range [0, 100], can be omitted entirely for 100%
+  - is a number in the range [0, 100], can be omitted entirely for 100%
 - from_pool denotes if the item should be taken from the item pool, or be an additional item entirely.
-    - can be true or false, defaults to true when omitted
+  - can be true or false, defaults to true when omitted
 - world is the target world to place the item
-    - ignored if only one world is generated
-    - can be a number, to target that slot in the multiworld
-    - can be a name, to target that player's world
-    - can be a list of names, to target those players' worlds
-    - can be true, to target any other player's world
-    - can be false, to target own world and is the default
-    - can be null, to target a random world
+  - ignored if only one world is generated
+  - can be a number, to target that slot in the multiworld
+  - can be a name, to target that player's world
+  - can be a list of names, to target those players' worlds
+  - can be true, to target any other player's world
+  - can be false, to target own world and is the default
+  - can be null, to target a random world
 - force is either `silent`, `true` or `false`.
-    - `true` means the item has to be placed, or the generator aborts with an exception.
-    - `false` means the generator logs a warning if the placement can't be done.
-    - `silent` means that this entry is entirely ignored if the placement fails and is the default.
+  - `true` means the item has to be placed, or the generator aborts with an exception.
+  - `false` means the generator logs a warning if the placement can't be done.
+  - `silent` means that this entry is entirely ignored if the placement fails and is the default.
 - Single Placement
-    - place a single item at a single location
-    - item denotes the Item to place
-    - location denotes the Location to place it into
+  - place a single item at a single location
+  - item denotes the Item to place
+  - location denotes the Location to place it into
 - Multi Placement
-    - place multiple items into multiple locations, until either list is exhausted.
-    - items denotes the items to use, can be given a number to have multiple of that item
-    - locations lists the possible locations those items can be placed in
-    - placements are picked randomly, not sorted in any way
+  - place multiple items into multiple locations, until either list is exhausted.
+  - items denotes the items to use, can be given a number to have multiple of that item
+  - locations lists the possible locations those items can be placed in
+  - placements are picked randomly, not sorted in any way
 - Warning: Placing non-Dungeon Prizes on Prize locations and Prizes on non-Prize locations will break the game in
   various ways.
 - [Available Items](https://github.com/ArchipelagoMW/Archipelago/blob/main/worlds/alttp/Items.py#L52)
@@ -137,12 +137,12 @@ plando_items:
 - All of these options support subweights
 - percentage is the percentage chance for this text to be placed, can be omitted entirely for 100%
 - text is the text to be placed.
-    - `\n` is a newline.
-    - `@` is the entered player's name.
-    - Warning: Text Mapper does not support full unicode.
-    - [Alphabet](https://github.com/ArchipelagoMW/Archipelago/blob/main/worlds/alttp/Text.py#L758)
+  - `\n` is a newline.
+  - `@` is the entered player's name.
+  - Warning: Text Mapper does not support full unicode.
+  - [Alphabet](https://github.com/ArchipelagoMW/Archipelago/blob/main/worlds/alttp/Text.py#L758)
 - at is the location within the game to attach the text to.
-    - [List of targets](https://github.com/ArchipelagoMW/Archipelago/blob/main/worlds/alttp/Text.py#L1499)
+  - [List of targets](https://github.com/ArchipelagoMW/Archipelago/blob/main/worlds/alttp/Text.py#L1499)
 
 #### Example
 

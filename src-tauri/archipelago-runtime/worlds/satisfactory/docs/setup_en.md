@@ -31,7 +31,7 @@ This guide uses the following terms to refer to the software:
 - **Satisfactory Host** - The Satisfactory instance which will be used to host the game.
   This could be a Satisfactory Client using Singleplayer or host-and-play multiplayer, or it could be a Satisfactory dedicated server.
   It must be supplied with the Archipelago Server connection details.
-  *Any number of Satisfactory Clients may connect to this server.*
+  _Any number of Satisfactory Clients may connect to this server._
 - **Satisfactory Client** - The Satisfactory instance (game client) with which additional players can use to connect to the same Satisfactory world.
 
 ### What a Playable State Looks Like
@@ -165,7 +165,7 @@ Next, enter the connection details in the relevant fields.
 - **User Name**: The name you entered as your Player Name when you created your config file. It's also listed in the Name column of your room page.
 - **Password**: The password for your Archipelago room, blank if you did not assign or receive one.
 
-Note that the Satisfactory Host/Client does *not* need a copy of your Archipelago config file.
+Note that the Satisfactory Host/Client does _not_ need a copy of your Archipelago config file.
 The mod communicates with the Archipelago Server, which already has your config file,
 to generate the required content at runtime.
 
@@ -226,5 +226,5 @@ enter the updated Server URI, then save and reload the game.
   - What you were doing when the crash occurred.
   - If you were a Satisfactory multiplayer host or client, and if you were playing on a dedicated server.
   - Use the Mod Manager to generate a debug zip and attach that file.
-   [Satisfactory Modding Documentation FAQ: Generating a debug zip](https://docs.ficsit.app/satisfactory-modding/latest/faq.html#_where_can_i_find_the_games_log_files)
+    [Satisfactory Modding Documentation FAQ: Generating a debug zip](https://docs.ficsit.app/satisfactory-modding/latest/faq.html#_where_can_i_find_the_games_log_files)
   - Attach your Archipelago config file and spoiler to your report.

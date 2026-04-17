@@ -2,7 +2,7 @@
 
 ## Required Software
 
-- A legally purchased copy of *Jak And Daxter: The Precursor Legacy.*
+- A legally purchased copy of _Jak And Daxter: The Precursor Legacy._
 - [The OpenGOAL Launcher](https://opengoal.dev/)
 
 This method of setup works on Windows and Linux.
@@ -11,7 +11,7 @@ This method of setup works on Windows and Linux.
 
 **You must set up a vanilla installation of Jak and Daxter before you can install mods for it.** These instructions will work on both NTSC and PAL versions of the game.
 
-- Follow the installation process for the official OpenGOAL Launcher. See [here](https://opengoal.dev/docs/usage/installation). 
+- Follow the installation process for the official OpenGOAL Launcher. See [here](https://opengoal.dev/docs/usage/installation).
 - Follow the setup process for adding mods to the OpenGOAL Launcher. See [here](https://jakmods.dev/).
 - Run the OpenGOAL Launcher (if you had it open before, close it and reopen it).
 - Click the Jak and Daxter logo on the left sidebar.
@@ -38,35 +38,36 @@ If you are in the middle of an async game, and you do not want to update the mod
 - Run the Archipelago Launcher.
 - From the client list, find and click `Jak and Daxter Client`.
 - 3 new windows should appear:
-    - The OpenGOAL compiler will launch and compile the game. They should take about 30 seconds to compile.
-        - You should hear a musical cue to indicate the compilation was a success. If you do not, see the Troubleshooting section.
-        - You can **MINIMIZE** the Compiler window, **BUT DO NOT CLOSE IT.** It is required for Archipelago and the game to communicate with each other.
-    - The game window itself will launch, and Jak will be standing outside Samos's Hut. 
-        - Once compilation is complete, the title sequence will start.
-    - Finally, the Archipelago text client will open.
-        - If you see **BOTH** `The Compiler is ready!` and `The Memory Reader is ready!` then that should indicate a successful startup. If you do not, see the Troubleshooting section.
+  - The OpenGOAL compiler will launch and compile the game. They should take about 30 seconds to compile.
+    - You should hear a musical cue to indicate the compilation was a success. If you do not, see the Troubleshooting section.
+    - You can **MINIMIZE** the Compiler window, **BUT DO NOT CLOSE IT.** It is required for Archipelago and the game to communicate with each other.
+  - The game window itself will launch, and Jak will be standing outside Samos's Hut.
+    - Once compilation is complete, the title sequence will start.
+  - Finally, the Archipelago text client will open.
+    - If you see **BOTH** `The Compiler is ready!` and `The Memory Reader is ready!` then that should indicate a successful startup. If you do not, see the Troubleshooting section.
 - Once you see `CONNECT TO ARCHIPELAGO NOW` on the title screen, use the text client to connect to the Archipelago server. This will communicate your current settings and slot info to the game.
 - If you see `RECEIVING ITEMS, PLEASE WAIT...`, the game is busy receiving items from your starting inventory, assuming you have some.
 - Once you see `READY! PRESS START TO CONTINUE` on the title screen, you can press Start.
 - Choose `New Game`, choose a save file, and play through the opening cutscenes.
 - Once you reach Geyser Rock, the game has begun!
-    - You can leave Geyser Rock immediately if you so choose - just step on the warp gate button.
+  - You can leave Geyser Rock immediately if you so choose - just step on the warp gate button.
 
 ### Returning / Async Game
-The same steps as New Game apply, with some exceptions: 
 
-- Once you reach the title screen, connect to the Archipelago server **BEFORE** you load your save file. 
-    - This is to allow AP to give the game your current settings and all the items you had previously.
-    - **THESE SETTINGS AFFECT LOADING AND SAVING OF SAVE FILES, SO IT IS IMPORTANT TO DO THIS FIRST.**
-- Once you see `READY! PRESS START TO CONTINUE` on the title screen, you can press Start. 
+The same steps as New Game apply, with some exceptions:
+
+- Once you reach the title screen, connect to the Archipelago server **BEFORE** you load your save file.
+  - This is to allow AP to give the game your current settings and all the items you had previously.
+  - **THESE SETTINGS AFFECT LOADING AND SAVING OF SAVE FILES, SO IT IS IMPORTANT TO DO THIS FIRST.**
+- Once you see `READY! PRESS START TO CONTINUE` on the title screen, you can press Start.
 - Instead of choosing `New Game` in the title menu, choose `Load Game`, then choose the save file **THAT HAS YOUR CURRENT SLOT NAME.**
-    - To help you find the correct save file, highlighting a save will show you that save's slot name and the first 8 digits of the multiworld seed number.
+  - To help you find the correct save file, highlighting a save will show you that save's slot name and the first 8 digits of the multiworld seed number.
 
 ## Troubleshooting
 
 ### The Text Client Says "Unable to locate the OpenGOAL install directory"
 
-Normally, the Archipelago client should be able to find your OpenGOAL installation automatically. 
+Normally, the Archipelago client should be able to find your OpenGOAL installation automatically.
 
 If it cannot, you may have to tell it yourself. Follow these instructions.
 
@@ -77,17 +78,17 @@ If it cannot, you may have to tell it yourself. Follow these instructions.
 - In the File Explorer, go to the parent directory called `archipelagoal`, and you should see the `gk.exe` and `goalc.exe` executables. Copy this path.
 - Run the Archipelago Launcher, then click on `Open host.yaml`. You should see a new text editor open that file.
 - Search for `jakanddaxter_options`, and you will need to make 2 changes here.
-- First, find the `root_directory` entry. Paste the path you noted earlier (the one containing gk.exe and goalc.exe) inside the double quotes. 
+- First, find the `root_directory` entry. Paste the path you noted earlier (the one containing gk.exe and goalc.exe) inside the double quotes.
 - **MAKE SURE YOU CHANGE ALL BACKSLASHES `\ ` TO FORWARD SLASHES `/`.**
 
 ```yaml
-  root_directory: "%programfiles%/OpenGOAL-Launcher/features/jak1/mods/JakMods/archipelagoal"
+root_directory: '%programfiles%/OpenGOAL-Launcher/features/jak1/mods/JakMods/archipelagoal'
 ```
 
 - Second, find the `auto_detect_root_directory` entry. Change this to `false`. You do not need to use double quotes.
 
 ```yaml
-  auto_detect_root_directory: true
+auto_detect_root_directory: true
 ```
 
 - Save the file and close it.

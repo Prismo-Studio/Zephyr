@@ -1,381 +1,381 @@
 {
-  "id": "landstalker",
-  "name": "Landstalker - The Treasures of King Nole",
-  "version": "0.4.4",
-  "description": "Landstalker: The Treasures of King Nole is a classic Action-RPG with an isometric view (also known as \"2.5D\").",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "The goal to accomplish in order to complete the seed.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "beat_gola",
-        "choices": [
-          {
-            "value": "beat_gola",
-            "label": "Beat Gola"
-          },
-          {
-            "value": "reach_kazalt",
-            "label": "Reach Kazalt"
-          },
-          {
-            "value": "beat_dark_nole",
-            "label": "Beat Dark Nole"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spawn_region",
-      "label": "Spawn Region",
-      "description": "List of spawn locations that can be picked by the randomizer.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "massan",
-        "choices": [
-          {
-            "value": "massan",
-            "label": "Massan"
-          },
-          {
-            "value": "gumi",
-            "label": "Gumi"
-          },
-          {
-            "value": "kado",
-            "label": "Kado"
-          },
-          {
-            "value": "waterfall",
-            "label": "Waterfall"
-          },
-          {
-            "value": "ryuma",
-            "label": "Ryuma"
-          },
-          {
-            "value": "mercator",
-            "label": "Mercator"
-          },
-          {
-            "value": "verla",
-            "label": "Verla"
-          },
-          {
-            "value": "greenmaze",
-            "label": "Greenmaze"
-          },
-          {
-            "value": "destel",
-            "label": "Destel"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "jewel_count",
-      "label": "Jewel Count",
-      "description": "Determines the number of jewels to find to be able to reach Kazalt.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 9,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progressive_armors",
-      "label": "Progressive Armors",
-      "description": "When obtaining an armor, you get the next armor tier instead of getting the specific armor tier that was placed here by randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "use_record_book",
-      "label": "Use Record Book",
-      "description": "Gives a Record Book item in starting inventory, allowing to save the game anywhere.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "use_spell_book",
-      "label": "Use Spell Book",
-      "description": "Gives a Spell Book item in starting inventory, allowing to warp back to the starting location at any time.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shop_prices_factor",
-      "label": "Shop Prices Factor",
-      "description": "Applies a percentage factor on all prices in shops.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 50,
-        "max": 200,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "combat_difficulty",
-      "label": "Combat Difficulty",
-      "description": "Determines the overall combat difficulty in the game by modifying both monsters HP & damage.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "peaceful",
-            "label": "Peaceful"
-          },
-          {
-            "value": "easy",
-            "label": "Easy"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          },
-          {
-            "value": "insane",
-            "label": "Insane"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "teleport_tree_requirements",
-      "label": "Teleport Tree Requirements",
-      "description": "Determines the requirements to be able to use a teleport tree pair.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "clear_tibor_and_visit_trees",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "clear_tibor",
-            "label": "Clear Tibor"
-          },
-          {
-            "value": "visit_trees",
-            "label": "Visit Trees"
-          },
-          {
-            "value": "clear_tibor_and_visit_trees",
-            "label": "Clear Tibor And Visit Trees"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_trees",
-      "label": "Shuffle Trees",
-      "description": "If enabled, all teleportation trees will be shuffled into new pairs.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ensure_ekeeke_in_shops",
-      "label": "Ensure Ekeeke In Shops",
-      "description": "Ensures an EkeEke will always be for sale in one shop per region in the game.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "remove_gumi_boulder",
-      "label": "Remove Gumi Boulder",
-      "description": "Removes the boulder between Gumi and Ryuma, which is usually a one-way path.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "allow_whistle_usage_behind_trees",
-      "label": "Allow Whistle Usage Behind Trees",
-      "description": "In Greenmaze, Einstein Whistle can only be used to call Cutter from the intended side by default.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "handle_damage_boosting_in_logic",
-      "label": "Handle Damage Boosting In Logic",
-      "description": "Adds damage boosting as a logical rule, removing any requirements involving Iron Boots or Fireproof Boots.",
-      "category": "logic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "handle_enemy_jumping_in_logic",
-      "label": "Handle Enemy Jumping In Logic",
-      "description": "Adds jumping on enemies' heads as a logical rule.",
-      "category": "logic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "handle_tree_cutting_glitch_in_logic",
-      "label": "Handle Tree Cutting Glitch In Logic",
-      "description": "Adds tree-cutting glitch as a logical rule, enabling access to both chests behind magic trees in Mir Tower Sector without having Axe Magic.",
-      "category": "logic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hint_count",
-      "label": "Hint Count",
-      "description": "Determines the number of Foxy NPCs that will be scattered across the world, giving various types of hints",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 25,
-        "step": 1,
-        "default": 12
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "revive_using_ekeeke",
-      "label": "Revive Using Ekeeke",
-      "description": "In the vanilla game, when you die, you are automatically revived by Friday using an EkeEke.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "landstalker",
+	"name": "Landstalker - The Treasures of King Nole",
+	"version": "0.4.4",
+	"description": "Landstalker: The Treasures of King Nole is a classic Action-RPG with an isometric view (also known as \"2.5D\").",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "The goal to accomplish in order to complete the seed.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "beat_gola",
+				"choices": [
+					{
+						"value": "beat_gola",
+						"label": "Beat Gola"
+					},
+					{
+						"value": "reach_kazalt",
+						"label": "Reach Kazalt"
+					},
+					{
+						"value": "beat_dark_nole",
+						"label": "Beat Dark Nole"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spawn_region",
+			"label": "Spawn Region",
+			"description": "List of spawn locations that can be picked by the randomizer.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "massan",
+				"choices": [
+					{
+						"value": "massan",
+						"label": "Massan"
+					},
+					{
+						"value": "gumi",
+						"label": "Gumi"
+					},
+					{
+						"value": "kado",
+						"label": "Kado"
+					},
+					{
+						"value": "waterfall",
+						"label": "Waterfall"
+					},
+					{
+						"value": "ryuma",
+						"label": "Ryuma"
+					},
+					{
+						"value": "mercator",
+						"label": "Mercator"
+					},
+					{
+						"value": "verla",
+						"label": "Verla"
+					},
+					{
+						"value": "greenmaze",
+						"label": "Greenmaze"
+					},
+					{
+						"value": "destel",
+						"label": "Destel"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "jewel_count",
+			"label": "Jewel Count",
+			"description": "Determines the number of jewels to find to be able to reach Kazalt.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 9,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progressive_armors",
+			"label": "Progressive Armors",
+			"description": "When obtaining an armor, you get the next armor tier instead of getting the specific armor tier that was placed here by randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "use_record_book",
+			"label": "Use Record Book",
+			"description": "Gives a Record Book item in starting inventory, allowing to save the game anywhere.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "use_spell_book",
+			"label": "Use Spell Book",
+			"description": "Gives a Spell Book item in starting inventory, allowing to warp back to the starting location at any time.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shop_prices_factor",
+			"label": "Shop Prices Factor",
+			"description": "Applies a percentage factor on all prices in shops.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 50,
+				"max": 200,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "combat_difficulty",
+			"label": "Combat Difficulty",
+			"description": "Determines the overall combat difficulty in the game by modifying both monsters HP & damage.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "peaceful",
+						"label": "Peaceful"
+					},
+					{
+						"value": "easy",
+						"label": "Easy"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					},
+					{
+						"value": "insane",
+						"label": "Insane"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "teleport_tree_requirements",
+			"label": "Teleport Tree Requirements",
+			"description": "Determines the requirements to be able to use a teleport tree pair.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "clear_tibor_and_visit_trees",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "clear_tibor",
+						"label": "Clear Tibor"
+					},
+					{
+						"value": "visit_trees",
+						"label": "Visit Trees"
+					},
+					{
+						"value": "clear_tibor_and_visit_trees",
+						"label": "Clear Tibor And Visit Trees"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_trees",
+			"label": "Shuffle Trees",
+			"description": "If enabled, all teleportation trees will be shuffled into new pairs.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ensure_ekeeke_in_shops",
+			"label": "Ensure Ekeeke In Shops",
+			"description": "Ensures an EkeEke will always be for sale in one shop per region in the game.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "remove_gumi_boulder",
+			"label": "Remove Gumi Boulder",
+			"description": "Removes the boulder between Gumi and Ryuma, which is usually a one-way path.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "allow_whistle_usage_behind_trees",
+			"label": "Allow Whistle Usage Behind Trees",
+			"description": "In Greenmaze, Einstein Whistle can only be used to call Cutter from the intended side by default.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "handle_damage_boosting_in_logic",
+			"label": "Handle Damage Boosting In Logic",
+			"description": "Adds damage boosting as a logical rule, removing any requirements involving Iron Boots or Fireproof Boots.",
+			"category": "logic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "handle_enemy_jumping_in_logic",
+			"label": "Handle Enemy Jumping In Logic",
+			"description": "Adds jumping on enemies' heads as a logical rule.",
+			"category": "logic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "handle_tree_cutting_glitch_in_logic",
+			"label": "Handle Tree Cutting Glitch In Logic",
+			"description": "Adds tree-cutting glitch as a logical rule, enabling access to both chests behind magic trees in Mir Tower Sector without having Axe Magic.",
+			"category": "logic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hint_count",
+			"label": "Hint Count",
+			"description": "Determines the number of Foxy NPCs that will be scattered across the world, giving various types of hints",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 25,
+				"step": 1,
+				"default": 12
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "revive_using_ekeeke",
+			"label": "Revive Using Ekeeke",
+			"description": "In the vanilla game, when you die, you are automatically revived by Friday using an EkeEke.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

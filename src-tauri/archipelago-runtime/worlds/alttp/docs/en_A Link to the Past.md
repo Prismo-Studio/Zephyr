@@ -29,4 +29,3 @@ Items belonging to other worlds are represented by a Power Star from Super Mario
 
 When the player receives an item, Link will hold the item above his head and display it to the world. It's good for
 business!
-

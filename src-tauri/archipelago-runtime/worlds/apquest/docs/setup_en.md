@@ -3,13 +3,13 @@
 ## Required Software
 
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases/latest)
-- [The APQuest apworld](https://github.com/NewSoupVi/Archipelago/releases), 
+- [The APQuest apworld](https://github.com/NewSoupVi/Archipelago/releases),
   if not bundled with your version of Archipelago
 
 ## Optional Software
 
 - [APQuest AP Tracker](https://github.com/palex00/ap-quest-tracker/releases/latest), for use with
-[PopTracker](https://github.com/black-sliver/PopTracker/releases)
+  [PopTracker](https://github.com/black-sliver/PopTracker/releases)
 
 ## How to play
 
@@ -32,7 +32,7 @@ Choose "APQuest Client". The rest should happen completely automatically and you
 
 ### Locally hosted room
 
-If your room does not have a WebHost room page available, you can launch APQuest manually.  
+If your room does not have a WebHost room page available, you can launch APQuest manually.
 
 Open the Archipelago Launcher, and then select the APQuest Client from the list.  
 After a short while, the APQuest client should open.  
@@ -51,7 +51,7 @@ Simply click the "Disconnect" button, then connect to a different slot/room.
 AP Quest has a fully functional map tracker that supports auto-tracking.
 
 1. Download [APQuest AP Tracker](https://github.com/palex00/ap-quest-tracker/releases/latest) and
-[PopTracker](https://github.com/black-sliver/PopTracker/releases).
+   [PopTracker](https://github.com/black-sliver/PopTracker/releases).
 2. Put the tracker pack into packs/ in your PopTracker install.
 3. Open PopTracker, and load the APQuest pack.
 4. For autotracking, click on the "AP" symbol at the top.

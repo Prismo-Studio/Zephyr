@@ -1,3000 +1,2994 @@
 {
-  "id": "sc2",
-  "name": "Starcraft 2",
-  "version": "0.6.4",
-  "description": "StarCraft II is a science fiction real-time strategy video game developed and published by Blizzard Entertainment.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "game_difficulty",
-      "label": "Game Difficulty",
-      "description": "The difficulty of the campaign, affects enemy AI, starting units, and game speed.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "casual",
-            "label": "Casual"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          },
-          {
-            "value": "brutal",
-            "label": "Brutal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "difficulty_damage_modifier",
-      "label": "Difficulty Damage Modifier",
-      "description": "Enables or disables vanilla difficulty-based damage received modifier Handles the 1.25 Brutal damage modifier in HotS and Prologue and 0.5 Casual damage modifier outside WoL and Prophecy",
-      "category": "logic",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "game_speed",
-      "label": "Game Speed",
-      "description": "Optional setting to override difficulty-based game speed.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "slower",
-            "label": "Slower"
-          },
-          {
-            "value": "slow",
-            "label": "Slow"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "fast",
-            "label": "Fast"
-          },
-          {
-            "value": "faster",
-            "label": "Faster"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "disable_forced_camera",
-      "label": "Disable Forced Camera",
-      "description": "Prevents the game from moving or locking the camera without the player's consent.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_cutscenes",
-      "label": "Skip Cutscenes",
-      "description": "Skips all cutscenes and prevents dialog from blocking progress.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "all_in_map",
-      "label": "All In Map",
-      "description": "Determines what version of All-In (WoL final map) that will be generated for the campaign.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random",
-        "choices": [
-          {
-            "value": "ground",
-            "label": "Ground"
-          },
-          {
-            "value": "air",
-            "label": "Air"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mission_order",
-      "label": "Mission Order",
-      "description": "Determines the order the missions are played in.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "golden_path",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "vanilla_shuffled",
-            "label": "Vanilla Shuffled"
-          },
-          {
-            "value": "mini_campaign",
-            "label": "Mini Campaign"
-          },
-          {
-            "value": "blitz",
-            "label": "Blitz"
-          },
-          {
-            "value": "gauntlet",
-            "label": "Gauntlet"
-          },
-          {
-            "value": "grid",
-            "label": "Grid"
-          },
-          {
-            "value": "golden_path",
-            "label": "Golden Path"
-          },
-          {
-            "value": "hopscotch",
-            "label": "Hopscotch"
-          },
-          {
-            "value": "custom",
-            "label": "Custom"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "maximum_campaign_size",
-      "label": "Maximum Campaign Size",
-      "description": "Sets an upper bound on how many missions to include when a variable-size mission order is selected.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 195,
-        "step": 1,
-        "default": 83
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "two_start_positions",
-      "label": "Two Start Positions",
-      "description": "If turned on and 'grid', 'hopscotch', or 'golden_path' mission orders are selected, removes the first mission and allows both of the next two missions to be played from the start.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "key_mode",
-      "label": "Key Mode",
-      "description": "Optionally creates Key items that must be found in the multiworld to unlock parts of the mission order, in addition to any regular requirements a mission may have.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "disabled",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "questlines",
-            "label": "Questlines"
-          },
-          {
-            "value": "missions",
-            "label": "Missions"
-          },
-          {
-            "value": "progressive_questlines",
-            "label": "Progressive Questlines"
-          },
-          {
-            "value": "progressive_missions",
-            "label": "Progressive Missions"
-          },
-          {
-            "value": "progressive_per_questline",
-            "label": "Progressive Per Questline"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "player_color_terran_raynor",
-      "label": "Player Color Terran Raynor",
-      "description": "Determines in-game player team color in Wings of Liberty missions.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "white",
-            "label": "White"
-          },
-          {
-            "value": "red",
-            "label": "Red"
-          },
-          {
-            "value": "blue",
-            "label": "Blue"
-          },
-          {
-            "value": "teal",
-            "label": "Teal"
-          },
-          {
-            "value": "purple",
-            "label": "Purple"
-          },
-          {
-            "value": "yellow",
-            "label": "Yellow"
-          },
-          {
-            "value": "orange",
-            "label": "Orange"
-          },
-          {
-            "value": "green",
-            "label": "Green"
-          },
-          {
-            "value": "light_pink",
-            "label": "Light Pink"
-          },
-          {
-            "value": "violet",
-            "label": "Violet"
-          },
-          {
-            "value": "light_grey",
-            "label": "Light Grey"
-          },
-          {
-            "value": "dark_green",
-            "label": "Dark Green"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "light_green",
-            "label": "Light Green"
-          },
-          {
-            "value": "dark_grey",
-            "label": "Dark Grey"
-          },
-          {
-            "value": "pink",
-            "label": "Pink"
-          },
-          {
-            "value": "rainbow",
-            "label": "Rainbow"
-          },
-          {
-            "value": "mengsk",
-            "label": "Mengsk"
-          },
-          {
-            "value": "bright_lime",
-            "label": "Bright Lime"
-          },
-          {
-            "value": "arcane",
-            "label": "Arcane"
-          },
-          {
-            "value": "ember",
-            "label": "Ember"
-          },
-          {
-            "value": "hot_pink",
-            "label": "Hot Pink"
-          },
-          {
-            "value": "default",
-            "label": "Default"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "player_color_protoss",
-      "label": "Player Color Protoss",
-      "description": "Determines in-game player team color in Legacy of the Void missions.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "white",
-            "label": "White"
-          },
-          {
-            "value": "red",
-            "label": "Red"
-          },
-          {
-            "value": "blue",
-            "label": "Blue"
-          },
-          {
-            "value": "teal",
-            "label": "Teal"
-          },
-          {
-            "value": "purple",
-            "label": "Purple"
-          },
-          {
-            "value": "yellow",
-            "label": "Yellow"
-          },
-          {
-            "value": "orange",
-            "label": "Orange"
-          },
-          {
-            "value": "green",
-            "label": "Green"
-          },
-          {
-            "value": "light_pink",
-            "label": "Light Pink"
-          },
-          {
-            "value": "violet",
-            "label": "Violet"
-          },
-          {
-            "value": "light_grey",
-            "label": "Light Grey"
-          },
-          {
-            "value": "dark_green",
-            "label": "Dark Green"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "light_green",
-            "label": "Light Green"
-          },
-          {
-            "value": "dark_grey",
-            "label": "Dark Grey"
-          },
-          {
-            "value": "pink",
-            "label": "Pink"
-          },
-          {
-            "value": "rainbow",
-            "label": "Rainbow"
-          },
-          {
-            "value": "mengsk",
-            "label": "Mengsk"
-          },
-          {
-            "value": "bright_lime",
-            "label": "Bright Lime"
-          },
-          {
-            "value": "arcane",
-            "label": "Arcane"
-          },
-          {
-            "value": "ember",
-            "label": "Ember"
-          },
-          {
-            "value": "hot_pink",
-            "label": "Hot Pink"
-          },
-          {
-            "value": "default",
-            "label": "Default"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "player_color_zerg",
-      "label": "Player Color Zerg",
-      "description": "Determines in-game player team color in Heart of the Swarm missions before unlocking Primal Kerrigan.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "white",
-            "label": "White"
-          },
-          {
-            "value": "red",
-            "label": "Red"
-          },
-          {
-            "value": "blue",
-            "label": "Blue"
-          },
-          {
-            "value": "teal",
-            "label": "Teal"
-          },
-          {
-            "value": "purple",
-            "label": "Purple"
-          },
-          {
-            "value": "yellow",
-            "label": "Yellow"
-          },
-          {
-            "value": "orange",
-            "label": "Orange"
-          },
-          {
-            "value": "green",
-            "label": "Green"
-          },
-          {
-            "value": "light_pink",
-            "label": "Light Pink"
-          },
-          {
-            "value": "violet",
-            "label": "Violet"
-          },
-          {
-            "value": "light_grey",
-            "label": "Light Grey"
-          },
-          {
-            "value": "dark_green",
-            "label": "Dark Green"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "light_green",
-            "label": "Light Green"
-          },
-          {
-            "value": "dark_grey",
-            "label": "Dark Grey"
-          },
-          {
-            "value": "pink",
-            "label": "Pink"
-          },
-          {
-            "value": "rainbow",
-            "label": "Rainbow"
-          },
-          {
-            "value": "mengsk",
-            "label": "Mengsk"
-          },
-          {
-            "value": "bright_lime",
-            "label": "Bright Lime"
-          },
-          {
-            "value": "arcane",
-            "label": "Arcane"
-          },
-          {
-            "value": "ember",
-            "label": "Ember"
-          },
-          {
-            "value": "hot_pink",
-            "label": "Hot Pink"
-          },
-          {
-            "value": "default",
-            "label": "Default"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "player_color_zerg_primal",
-      "label": "Player Color Zerg Primal",
-      "description": "Determines in-game player team color in Heart of the Swarm after unlocking Primal Kerrigan.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "white",
-            "label": "White"
-          },
-          {
-            "value": "red",
-            "label": "Red"
-          },
-          {
-            "value": "blue",
-            "label": "Blue"
-          },
-          {
-            "value": "teal",
-            "label": "Teal"
-          },
-          {
-            "value": "purple",
-            "label": "Purple"
-          },
-          {
-            "value": "yellow",
-            "label": "Yellow"
-          },
-          {
-            "value": "orange",
-            "label": "Orange"
-          },
-          {
-            "value": "green",
-            "label": "Green"
-          },
-          {
-            "value": "light_pink",
-            "label": "Light Pink"
-          },
-          {
-            "value": "violet",
-            "label": "Violet"
-          },
-          {
-            "value": "light_grey",
-            "label": "Light Grey"
-          },
-          {
-            "value": "dark_green",
-            "label": "Dark Green"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "light_green",
-            "label": "Light Green"
-          },
-          {
-            "value": "dark_grey",
-            "label": "Dark Grey"
-          },
-          {
-            "value": "pink",
-            "label": "Pink"
-          },
-          {
-            "value": "rainbow",
-            "label": "Rainbow"
-          },
-          {
-            "value": "mengsk",
-            "label": "Mengsk"
-          },
-          {
-            "value": "bright_lime",
-            "label": "Bright Lime"
-          },
-          {
-            "value": "arcane",
-            "label": "Arcane"
-          },
-          {
-            "value": "ember",
-            "label": "Ember"
-          },
-          {
-            "value": "hot_pink",
-            "label": "Hot Pink"
-          },
-          {
-            "value": "default",
-            "label": "Default"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "player_color_nova",
-      "label": "Player Color Nova",
-      "description": "Determines in-game player team color in Nova Covert Ops missions.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "white",
-            "label": "White"
-          },
-          {
-            "value": "red",
-            "label": "Red"
-          },
-          {
-            "value": "blue",
-            "label": "Blue"
-          },
-          {
-            "value": "teal",
-            "label": "Teal"
-          },
-          {
-            "value": "purple",
-            "label": "Purple"
-          },
-          {
-            "value": "yellow",
-            "label": "Yellow"
-          },
-          {
-            "value": "orange",
-            "label": "Orange"
-          },
-          {
-            "value": "green",
-            "label": "Green"
-          },
-          {
-            "value": "light_pink",
-            "label": "Light Pink"
-          },
-          {
-            "value": "violet",
-            "label": "Violet"
-          },
-          {
-            "value": "light_grey",
-            "label": "Light Grey"
-          },
-          {
-            "value": "dark_green",
-            "label": "Dark Green"
-          },
-          {
-            "value": "brown",
-            "label": "Brown"
-          },
-          {
-            "value": "light_green",
-            "label": "Light Green"
-          },
-          {
-            "value": "dark_grey",
-            "label": "Dark Grey"
-          },
-          {
-            "value": "pink",
-            "label": "Pink"
-          },
-          {
-            "value": "rainbow",
-            "label": "Rainbow"
-          },
-          {
-            "value": "mengsk",
-            "label": "Mengsk"
-          },
-          {
-            "value": "bright_lime",
-            "label": "Bright Lime"
-          },
-          {
-            "value": "arcane",
-            "label": "Arcane"
-          },
-          {
-            "value": "ember",
-            "label": "Ember"
-          },
-          {
-            "value": "hot_pink",
-            "label": "Hot Pink"
-          },
-          {
-            "value": "default",
-            "label": "Default"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "selected_races",
-      "label": "Selected Races",
-      "description": "Pick which factions' missions and items can be shuffled into the world.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [
-          "Protoss",
-          "Terran",
-          "Zerg"
-        ],
-        "choices": [
-          {
-            "value": "Protoss",
-            "label": "Protoss"
-          },
-          {
-            "value": "Terran",
-            "label": "Terran"
-          },
-          {
-            "value": "Zerg",
-            "label": "Zerg"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "enabled_campaigns",
-      "label": "Enabled Campaigns",
-      "description": "Determines which campaign's missions will be used.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [
-          "Wings of Liberty"
-        ],
-        "choices": [
-          {
-            "value": "Heart of the Swarm",
-            "label": "Heart Of The Swarm"
-          },
-          {
-            "value": "Into the Void (Legacy of the Void: Epilogue)",
-            "label": "Into The Void (Legacy Of The Void: Epilogue)"
-          },
-          {
-            "value": "Legacy of the Void",
-            "label": "Legacy Of The Void"
-          },
-          {
-            "value": "Nova Covert Ops",
-            "label": "Nova Covert Ops"
-          },
-          {
-            "value": "Prophecy",
-            "label": "Prophecy"
-          },
-          {
-            "value": "Whispers of Oblivion (Legacy of the Void: Prologue)",
-            "label": "Whispers Of Oblivion (Legacy Of The Void: Prologue)"
-          },
-          {
-            "value": "Wings of Liberty",
-            "label": "Wings Of Liberty"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "enable_race_swap",
-      "label": "Enable Race Swap",
-      "description": "Allow mission variants where you play a faction other than the one the map was initially designed for.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "disabled",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "pick_one",
-            "label": "Pick One"
-          },
-          {
-            "value": "pick_one_non_vanilla",
-            "label": "Pick One Non Vanilla"
-          },
-          {
-            "value": "shuffle_all",
-            "label": "Shuffle All"
-          },
-          {
-            "value": "shuffle_all_non_vanilla",
-            "label": "Shuffle All Non Vanilla"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mission_race_balancing",
-      "label": "Mission Race Balancing",
-      "description": "If enabled, picks missions in such a way that the appearance rate of races is roughly equal.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "semi_balanced",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "semi_balanced",
-            "label": "Semi Balanced"
-          },
-          {
-            "value": "fully_balanced",
-            "label": "Fully Balanced"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_campaigns",
-      "label": "Shuffle Campaigns",
-      "description": "Shuffles the missions between campaigns if enabled.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_no_build",
-      "label": "Shuffle No Build",
-      "description": "Determines if the no-build missions are included in the shuffle.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starter_unit",
-      "label": "Starter Unit",
-      "description": "Unlocks a random unit at the start of the game.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "balanced",
-            "label": "Balanced"
-          },
-          {
-            "value": "any_starter_unit",
-            "label": "Any Starter Unit"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "required_tactics",
-      "label": "Required Tactics",
-      "description": "Determines the maximum tactical difficulty of the world (separate from mission difficulty).",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "standard",
-        "choices": [
-          {
-            "value": "standard",
-            "label": "Standard"
-          },
-          {
-            "value": "advanced",
-            "label": "Advanced"
-          },
-          {
-            "value": "any_units",
-            "label": "Any Units"
-          },
-          {
-            "value": "no_logic",
-            "label": "No Logic"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_void_trade",
-      "label": "Enable Void Trade",
-      "description": "Enables the Void Trade Wormhole to be built from the Advanced Construction tab of SCVs, Drones and Probes.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "void_trade_age_limit",
-      "label": "Void Trade Age Limit",
-      "description": "Determines the maximum allowed age for units you can receive from Void Trade.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "30_minutes",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "1_week",
-            "label": "1 Week"
-          },
-          {
-            "value": "1_day",
-            "label": "1 Day"
-          },
-          {
-            "value": "4_hours",
-            "label": "4 Hours"
-          },
-          {
-            "value": "2_hours",
-            "label": "2 Hours"
-          },
-          {
-            "value": "1_hour",
-            "label": "1 Hour"
-          },
-          {
-            "value": "30_minutes",
-            "label": "30 Minutes"
-          },
-          {
-            "value": "5_minutes",
-            "label": "5 Minutes"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "void_trade_workers",
-      "label": "Void Trade Workers",
-      "description": "If enabled, you are able to send and receive workers via Void Trade.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "ensure_generic_items",
-      "label": "Ensure Generic Items",
-      "description": "Specifies a minimum percentage of the generic item pool that will be present for the slot.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "min_number_of_upgrades",
-      "label": "Min Number Of Upgrades",
-      "description": "Set a minimum to the number of upgrade items a unit/structure can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 13,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "max_number_of_upgrades",
-      "label": "Max Number Of Upgrades",
-      "description": "Set a maximum to the number of upgrade items a unit/structure can have.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": -1,
-        "max": 13,
-        "step": 1,
-        "default": -1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mercenary_highlanders",
-      "label": "Mercenary Highlanders",
-      "description": "If enabled, it limits the controllable amount of certain mercenaries to 1, even if you have unlimited mercenaries upgrade.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "max_upgrade_level",
-      "label": "Max Upgrade Level",
-      "description": "Controls the maximum number of weapon/armor upgrades that can be found or unlocked.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 3,
-        "max": 5,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "generic_upgrade_missions",
-      "label": "Generic Upgrade Missions",
-      "description": "Determines the percentage of missions in the mission order that must be completed before level 1 of all weapon and armor upgrades is unlocked.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "generic_upgrade_research",
-      "label": "Generic Upgrade Research",
-      "description": "Determines how weapon and armor upgrades affect missions once unlocked.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "auto_in_no_build",
-            "label": "Auto In No Build"
-          },
-          {
-            "value": "auto_in_build",
-            "label": "Auto In Build"
-          },
-          {
-            "value": "always_auto",
-            "label": "Always Auto"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "generic_upgrade_research_speedup",
-      "label": "Generic Upgrade Research Speedup",
-      "description": "If turned on, the weapon and armor upgrades are researched more quickly if level 4 or higher is unlocked.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "generic_upgrade_items",
-      "label": "Generic Upgrade Items",
-      "description": "Determines how weapon and armor upgrades are split into items.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "individual_items",
-        "choices": [
-          {
-            "value": "individual_items",
-            "label": "Individual Items"
-          },
-          {
-            "value": "bundle_weapon_and_armor",
-            "label": "Bundle Weapon And Armor"
-          },
-          {
-            "value": "bundle_unit_class",
-            "label": "Bundle Unit Class"
-          },
-          {
-            "value": "bundle_all",
-            "label": "Bundle All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kerrigan_presence",
-      "label": "Kerrigan Presence",
-      "description": "Determines whether Kerrigan is playable outside of missions that require her.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "not_present",
-            "label": "Not Present"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kerrigan_levels_per_mission_completed",
-      "label": "Kerrigan Levels Per Mission Completed",
-      "description": "Determines how many levels Kerrigan gains when a mission is beaten.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 20,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kerrigan_levels_per_mission_completed_cap",
-      "label": "Kerrigan Levels Per Mission Completed Cap",
-      "description": "Limits how many total levels Kerrigan can gain from beating missions.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": -1,
-        "max": 140,
-        "step": 1,
-        "default": -1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kerrigan_level_item_sum",
-      "label": "Kerrigan Level Item Sum",
-      "description": "Determines the sum of the level items in the world.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 140,
-        "step": 1,
-        "default": 70
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kerrigan_level_item_distribution",
-      "label": "Kerrigan Level Item Distribution",
-      "description": "Determines the amount and size of Kerrigan level items.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "smooth",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "smooth",
-            "label": "Smooth"
-          },
-          {
-            "value": "size_70",
-            "label": "Size 70"
-          },
-          {
-            "value": "size_35",
-            "label": "Size 35"
-          },
-          {
-            "value": "size_14",
-            "label": "Size 14"
-          },
-          {
-            "value": "size_10",
-            "label": "Size 10"
-          },
-          {
-            "value": "size_7",
-            "label": "Size 7"
-          },
-          {
-            "value": "size_5",
-            "label": "Size 5"
-          },
-          {
-            "value": "size_2",
-            "label": "Size 2"
-          },
-          {
-            "value": "size_1",
-            "label": "Size 1"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kerrigan_total_level_cap",
-      "label": "Kerrigan Total Level Cap",
-      "description": "Limits how many total levels Kerrigan can gain from any source.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": -1,
-        "max": 140,
-        "step": 1,
-        "default": -1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "start_primary_abilities",
-      "label": "Start Primary Abilities",
-      "description": "Number of Primary Abilities (Kerrigan Tier 1, 2, and 4) to start the game with.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 4,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kerrigan_primal_status",
-      "label": "Kerrigan Primal Status",
-      "description": "Determines when Kerrigan appears in her Primal Zerg form.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "always_zerg",
-            "label": "Always Zerg"
-          },
-          {
-            "value": "always_human",
-            "label": "Always Human"
-          },
-          {
-            "value": "level_35",
-            "label": "Level 35"
-          },
-          {
-            "value": "half_completion",
-            "label": "Half Completion"
-          },
-          {
-            "value": "item",
-            "label": "Item"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kerrigan_max_active_abilities",
-      "label": "Kerrigan Max Active Abilities",
-      "description": "Determines the maximum number of Kerrigan active abilities that can be present in the game Additional abilities may spawn if those are required to beat the game.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 12,
-        "step": 1,
-        "default": 12
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kerrigan_max_passive_abilities",
-      "label": "Kerrigan Max Passive Abilities",
-      "description": "Determines the maximum number of Kerrigan passive abilities that can be present in the game Additional abilities may spawn if those are required to beat the game.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_morphling",
-      "label": "Enable Morphling",
-      "description": "Determines whether the player can build Morphlings, which allow for inefficient morphing of advanced units like Ravagers and Lurkers without requiring the base unit to be unlocked first.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "war_council_nerfs",
-      "label": "War Council Nerfs",
-      "description": "Controls whether most Protoss units can initially be found in a nerfed state, with upgrades restoring their stronger power level.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spear_of_adun_presence",
-      "label": "Spear Of Adun Presence",
-      "description": "Determines in which missions Spear of Adun calldowns will be available.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "not_present",
-            "label": "Not Present"
-          },
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "protoss",
-            "label": "Protoss"
-          },
-          {
-            "value": "everywhere",
-            "label": "Everywhere"
-          },
-          {
-            "value": "any_race_lotv",
-            "label": "Any Race Lotv"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spear_of_adun_present_in_no_build",
-      "label": "Spear Of Adun Present In No Build",
-      "description": "Determines if Spear of Adun calldowns are available in no-build missions.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spear_of_adun_passive_ability_presence",
-      "label": "Spear Of Adun Passive Ability Presence",
-      "description": "Determines availability of Spear of Adun passive powers.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "not_present",
-            "label": "Not Present"
-          },
-          {
-            "value": "any_race_lotv",
-            "label": "Any Race Lotv"
-          },
-          {
-            "value": "protoss",
-            "label": "Protoss"
-          },
-          {
-            "value": "everywhere",
-            "label": "Everywhere"
-          },
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spear_of_adun_passive_present_in_no_build",
-      "label": "Spear Of Adun Passive Present In No Build",
-      "description": "Determines if Spear of Adun autocasts are available in no-build missions.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spear_of_adun_max_active_abilities",
-      "label": "Spear Of Adun Max Active Abilities",
-      "description": "Determines the maximum number of Spear of Adun active abilities (top bar) that can be present in the game Additional abilities may spawn if those are required to beat the game.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 13,
-        "step": 1,
-        "default": 13
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spear_of_adun_max_passive_abilities",
-      "label": "Spear Of Adun Max Passive Abilities",
-      "description": "Determines the maximum number of Spear of Adun passive abilities that can be present in the game Additional abilities may spawn if those are required to beat the game.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 3,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "grant_story_tech",
-      "label": "Grant Story Tech",
-      "description": "Controls handling of no-build missions that may require very specific items, such as Kerrigan or Nova abilities.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "no_grant",
-        "choices": [
-          {
-            "value": "no_grant",
-            "label": "No Grant"
-          },
-          {
-            "value": "grant",
-            "label": "Grant"
-          },
-          {
-            "value": "allow_substitutes",
-            "label": "Allow Substitutes"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "grant_story_levels",
-      "label": "Grant Story Levels",
-      "description": "If enabled, grants Kerrigan the required minimum levels for the following missions: Supreme: 35 The Infinite Cycle: 70 The bonus levels only apply during the listed missions, and can exceed the Total Level Cap.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "minimum",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "additive",
-            "label": "Additive"
-          },
-          {
-            "value": "minimum",
-            "label": "Minimum"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "nova_max_weapons",
-      "label": "Nova Max Weapons",
-      "description": "Determines maximum number of Nova weapons that can be present in the game Additional weapons may spawn if those are required to beat the game.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "nova_max_gadgets",
-      "label": "Nova Max Gadgets",
-      "description": "Determines maximum number of Nova gadgets that can be present in the game.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "nova_ghost_of_a_chance_variant",
-      "label": "Nova Ghost Of A Chance Variant",
-      "description": "Determines which variant of Nova should be used in Ghost of a Chance mission.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "wol",
-        "choices": [
-          {
-            "value": "wol",
-            "label": "Wol"
-          },
-          {
-            "value": "nco",
-            "label": "Nco"
-          },
-          {
-            "value": "auto",
-            "label": "Auto"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "take_over_ai_allies",
-      "label": "Take Over Ai Allies",
-      "description": "On maps supporting this feature allows you to take control over an AI Ally.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "excluded_missions",
-      "label": "Excluded Missions",
-      "description": "Guarantees that these missions will not appear in the campaign Doesn't apply to vanilla mission order.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "A Sinister Turn (Protoss)",
-            "label": "A Sinister Turn (Protoss)"
-          },
-          {
-            "value": "A Sinister Turn (Terran)",
-            "label": "A Sinister Turn (Terran)"
-          },
-          {
-            "value": "A Sinister Turn (Zerg)",
-            "label": "A Sinister Turn (Zerg)"
-          },
-          {
-            "value": "All-In (Protoss)",
-            "label": "All-In (Protoss)"
-          },
-          {
-            "value": "All-In (Terran)",
-            "label": "All-In (Terran)"
-          },
-          {
-            "value": "All-In (Zerg)",
-            "label": "All-In (Zerg)"
-          },
-          {
-            "value": "Amon's Fall",
-            "label": "Amon'S Fall"
-          },
-          {
-            "value": "Amon's Reach (Protoss)",
-            "label": "Amon'S Reach (Protoss)"
-          },
-          {
-            "value": "Amon's Reach (Terran)",
-            "label": "Amon'S Reach (Terran)"
-          },
-          {
-            "value": "Amon's Reach (Zerg)",
-            "label": "Amon'S Reach (Zerg)"
-          },
-          {
-            "value": "Back in the Saddle",
-            "label": "Back In The Saddle"
-          },
-          {
-            "value": "Belly of the Beast",
-            "label": "Belly Of The Beast"
-          },
-          {
-            "value": "Breakout",
-            "label": "Breakout"
-          },
-          {
-            "value": "Brothers in Arms (Protoss)",
-            "label": "Brothers In Arms (Protoss)"
-          },
-          {
-            "value": "Brothers in Arms (Terran)",
-            "label": "Brothers In Arms (Terran)"
-          },
-          {
-            "value": "Brothers in Arms (Zerg)",
-            "label": "Brothers In Arms (Zerg)"
-          },
-          {
-            "value": "Conviction",
-            "label": "Conviction"
-          },
-          {
-            "value": "Cutthroat (Protoss)",
-            "label": "Cutthroat (Protoss)"
-          },
-          {
-            "value": "Cutthroat (Terran)",
-            "label": "Cutthroat (Terran)"
-          },
-          {
-            "value": "Cutthroat (Zerg)",
-            "label": "Cutthroat (Zerg)"
-          },
-          {
-            "value": "Dark Skies",
-            "label": "Dark Skies"
-          },
-          {
-            "value": "Dark Whispers (Protoss)",
-            "label": "Dark Whispers (Protoss)"
-          },
-          {
-            "value": "Dark Whispers (Terran)",
-            "label": "Dark Whispers (Terran)"
-          },
-          {
-            "value": "Dark Whispers (Zerg)",
-            "label": "Dark Whispers (Zerg)"
-          },
-          {
-            "value": "Death From Above (Protoss)",
-            "label": "Death From Above (Protoss)"
-          },
-          {
-            "value": "Death From Above (Terran)",
-            "label": "Death From Above (Terran)"
-          },
-          {
-            "value": "Death From Above (Zerg)",
-            "label": "Death From Above (Zerg)"
-          },
-          {
-            "value": "Devil's Playground (Protoss)",
-            "label": "Devil'S Playground (Protoss)"
-          },
-          {
-            "value": "Devil's Playground (Terran)",
-            "label": "Devil'S Playground (Terran)"
-          },
-          {
-            "value": "Devil's Playground (Zerg)",
-            "label": "Devil'S Playground (Zerg)"
-          },
-          {
-            "value": "Domination (Protoss)",
-            "label": "Domination (Protoss)"
-          },
-          {
-            "value": "Domination (Terran)",
-            "label": "Domination (Terran)"
-          },
-          {
-            "value": "Domination (Zerg)",
-            "label": "Domination (Zerg)"
-          },
-          {
-            "value": "Echoes of the Future (Protoss)",
-            "label": "Echoes Of The Future (Protoss)"
-          },
-          {
-            "value": "Echoes of the Future (Terran)",
-            "label": "Echoes Of The Future (Terran)"
-          },
-          {
-            "value": "Echoes of the Future (Zerg)",
-            "label": "Echoes Of The Future (Zerg)"
-          },
-          {
-            "value": "End Game",
-            "label": "End Game"
-          },
-          {
-            "value": "Enemy Intelligence",
-            "label": "Enemy Intelligence"
-          },
-          {
-            "value": "Enemy Within",
-            "label": "Enemy Within"
-          },
-          {
-            "value": "Engine of Destruction (Protoss)",
-            "label": "Engine Of Destruction (Protoss)"
-          },
-          {
-            "value": "Engine of Destruction (Terran)",
-            "label": "Engine Of Destruction (Terran)"
-          },
-          {
-            "value": "Engine of Destruction (Zerg)",
-            "label": "Engine Of Destruction (Zerg)"
-          },
-          {
-            "value": "Evacuation (Protoss)",
-            "label": "Evacuation (Protoss)"
-          },
-          {
-            "value": "Evacuation (Terran)",
-            "label": "Evacuation (Terran)"
-          },
-          {
-            "value": "Evacuation (Zerg)",
-            "label": "Evacuation (Zerg)"
-          },
-          {
-            "value": "Evil Awoken",
-            "label": "Evil Awoken"
-          },
-          {
-            "value": "Fire in the Sky (Protoss)",
-            "label": "Fire In The Sky (Protoss)"
-          },
-          {
-            "value": "Fire in the Sky (Terran)",
-            "label": "Fire In The Sky (Terran)"
-          },
-          {
-            "value": "Fire in the Sky (Zerg)",
-            "label": "Fire In The Sky (Zerg)"
-          },
-          {
-            "value": "Flashpoint",
-            "label": "Flashpoint"
-          },
-          {
-            "value": "For Aiur!",
-            "label": "For Aiur!"
-          },
-          {
-            "value": "Forbidden Weapon (Protoss)",
-            "label": "Forbidden Weapon (Protoss)"
-          },
-          {
-            "value": "Forbidden Weapon (Terran)",
-            "label": "Forbidden Weapon (Terran)"
-          },
-          {
-            "value": "Forbidden Weapon (Zerg)",
-            "label": "Forbidden Weapon (Zerg)"
-          },
-          {
-            "value": "Gates of Hell (Protoss)",
-            "label": "Gates Of Hell (Protoss)"
-          },
-          {
-            "value": "Gates of Hell (Terran)",
-            "label": "Gates Of Hell (Terran)"
-          },
-          {
-            "value": "Gates of Hell (Zerg)",
-            "label": "Gates Of Hell (Zerg)"
-          },
-          {
-            "value": "Ghost of a Chance",
-            "label": "Ghost Of A Chance"
-          },
-          {
-            "value": "Ghosts in the Fog (Protoss)",
-            "label": "Ghosts In The Fog (Protoss)"
-          },
-          {
-            "value": "Ghosts in the Fog (Terran)",
-            "label": "Ghosts In The Fog (Terran)"
-          },
-          {
-            "value": "Ghosts in the Fog (Zerg)",
-            "label": "Ghosts In The Fog (Zerg)"
-          },
-          {
-            "value": "Hand of Darkness (Protoss)",
-            "label": "Hand Of Darkness (Protoss)"
-          },
-          {
-            "value": "Hand of Darkness (Terran)",
-            "label": "Hand Of Darkness (Terran)"
-          },
-          {
-            "value": "Hand of Darkness (Zerg)",
-            "label": "Hand Of Darkness (Zerg)"
-          },
-          {
-            "value": "Harbinger of Oblivion (Protoss)",
-            "label": "Harbinger Of Oblivion (Protoss)"
-          },
-          {
-            "value": "Harbinger of Oblivion (Terran)",
-            "label": "Harbinger Of Oblivion (Terran)"
-          },
-          {
-            "value": "Harbinger of Oblivion (Zerg)",
-            "label": "Harbinger Of Oblivion (Zerg)"
-          },
-          {
-            "value": "Harvest of Screams (Protoss)",
-            "label": "Harvest Of Screams (Protoss)"
-          },
-          {
-            "value": "Harvest of Screams (Terran)",
-            "label": "Harvest Of Screams (Terran)"
-          },
-          {
-            "value": "Harvest of Screams (Zerg)",
-            "label": "Harvest Of Screams (Zerg)"
-          },
-          {
-            "value": "Haven's Fall (Protoss)",
-            "label": "Haven'S Fall (Protoss)"
-          },
-          {
-            "value": "Haven's Fall (Terran)",
-            "label": "Haven'S Fall (Terran)"
-          },
-          {
-            "value": "Haven's Fall (Zerg)",
-            "label": "Haven'S Fall (Zerg)"
-          },
-          {
-            "value": "In Utter Darkness (Protoss)",
-            "label": "In Utter Darkness (Protoss)"
-          },
-          {
-            "value": "In Utter Darkness (Terran)",
-            "label": "In Utter Darkness (Terran)"
-          },
-          {
-            "value": "In Utter Darkness (Zerg)",
-            "label": "In Utter Darkness (Zerg)"
-          },
-          {
-            "value": "In the Enemy's Shadow",
-            "label": "In The Enemy'S Shadow"
-          },
-          {
-            "value": "Infested (Protoss)",
-            "label": "Infested (Protoss)"
-          },
-          {
-            "value": "Infested (Terran)",
-            "label": "Infested (Terran)"
-          },
-          {
-            "value": "Infested (Zerg)",
-            "label": "Infested (Zerg)"
-          },
-          {
-            "value": "Into the Void",
-            "label": "Into The Void"
-          },
-          {
-            "value": "Lab Rat (Protoss)",
-            "label": "Lab Rat (Protoss)"
-          },
-          {
-            "value": "Lab Rat (Terran)",
-            "label": "Lab Rat (Terran)"
-          },
-          {
-            "value": "Lab Rat (Zerg)",
-            "label": "Lab Rat (Zerg)"
-          },
-          {
-            "value": "Last Stand (Protoss)",
-            "label": "Last Stand (Protoss)"
-          },
-          {
-            "value": "Last Stand (Terran)",
-            "label": "Last Stand (Terran)"
-          },
-          {
-            "value": "Last Stand (Zerg)",
-            "label": "Last Stand (Zerg)"
-          },
-          {
-            "value": "Liberation Day",
-            "label": "Liberation Day"
-          },
-          {
-            "value": "Maw of the Void (Protoss)",
-            "label": "Maw Of The Void (Protoss)"
-          },
-          {
-            "value": "Maw of the Void (Terran)",
-            "label": "Maw Of The Void (Terran)"
-          },
-          {
-            "value": "Maw of the Void (Zerg)",
-            "label": "Maw Of The Void (Zerg)"
-          },
-          {
-            "value": "Media Blitz (Protoss)",
-            "label": "Media Blitz (Protoss)"
-          },
-          {
-            "value": "Media Blitz (Terran)",
-            "label": "Media Blitz (Terran)"
-          },
-          {
-            "value": "Media Blitz (Zerg)",
-            "label": "Media Blitz (Zerg)"
-          },
-          {
-            "value": "Night Terrors",
-            "label": "Night Terrors"
-          },
-          {
-            "value": "Old Soldiers (Protoss)",
-            "label": "Old Soldiers (Protoss)"
-          },
-          {
-            "value": "Old Soldiers (Terran)",
-            "label": "Old Soldiers (Terran)"
-          },
-          {
-            "value": "Old Soldiers (Zerg)",
-            "label": "Old Soldiers (Zerg)"
-          },
-          {
-            "value": "Outbreak (Protoss)",
-            "label": "Outbreak (Protoss)"
-          },
-          {
-            "value": "Outbreak (Terran)",
-            "label": "Outbreak (Terran)"
-          },
-          {
-            "value": "Outbreak (Zerg)",
-            "label": "Outbreak (Zerg)"
-          },
-          {
-            "value": "Phantoms of the Void (Protoss)",
-            "label": "Phantoms Of The Void (Protoss)"
-          },
-          {
-            "value": "Phantoms of the Void (Terran)",
-            "label": "Phantoms Of The Void (Terran)"
-          },
-          {
-            "value": "Phantoms of the Void (Zerg)",
-            "label": "Phantoms Of The Void (Zerg)"
-          },
-          {
-            "value": "Piercing the Shroud",
-            "label": "Piercing The Shroud"
-          },
-          {
-            "value": "Planetfall (Protoss)",
-            "label": "Planetfall (Protoss)"
-          },
-          {
-            "value": "Planetfall (Terran)",
-            "label": "Planetfall (Terran)"
-          },
-          {
-            "value": "Planetfall (Zerg)",
-            "label": "Planetfall (Zerg)"
-          },
-          {
-            "value": "Purification (Protoss)",
-            "label": "Purification (Protoss)"
-          },
-          {
-            "value": "Purification (Terran)",
-            "label": "Purification (Terran)"
-          },
-          {
-            "value": "Purification (Zerg)",
-            "label": "Purification (Zerg)"
-          },
-          {
-            "value": "Rak'Shir (Protoss)",
-            "label": "Rak'Shir (Protoss)"
-          },
-          {
-            "value": "Rak'Shir (Terran)",
-            "label": "Rak'Shir (Terran)"
-          },
-          {
-            "value": "Rak'Shir (Zerg)",
-            "label": "Rak'Shir (Zerg)"
-          },
-          {
-            "value": "Rendezvous (Protoss)",
-            "label": "Rendezvous (Protoss)"
-          },
-          {
-            "value": "Rendezvous (Terran)",
-            "label": "Rendezvous (Terran)"
-          },
-          {
-            "value": "Rendezvous (Zerg)",
-            "label": "Rendezvous (Zerg)"
-          },
-          {
-            "value": "Safe Haven (Protoss)",
-            "label": "Safe Haven (Protoss)"
-          },
-          {
-            "value": "Safe Haven (Terran)",
-            "label": "Safe Haven (Terran)"
-          },
-          {
-            "value": "Safe Haven (Zerg)",
-            "label": "Safe Haven (Zerg)"
-          },
-          {
-            "value": "Salvation (Protoss)",
-            "label": "Salvation (Protoss)"
-          },
-          {
-            "value": "Salvation (Terran)",
-            "label": "Salvation (Terran)"
-          },
-          {
-            "value": "Salvation (Zerg)",
-            "label": "Salvation (Zerg)"
-          },
-          {
-            "value": "Shatter the Sky (Protoss)",
-            "label": "Shatter The Sky (Protoss)"
-          },
-          {
-            "value": "Shatter the Sky (Terran)",
-            "label": "Shatter The Sky (Terran)"
-          },
-          {
-            "value": "Shatter the Sky (Zerg)",
-            "label": "Shatter The Sky (Zerg)"
-          },
-          {
-            "value": "Shoot the Messenger (Protoss)",
-            "label": "Shoot The Messenger (Protoss)"
-          },
-          {
-            "value": "Shoot the Messenger (Terran)",
-            "label": "Shoot The Messenger (Terran)"
-          },
-          {
-            "value": "Shoot the Messenger (Zerg)",
-            "label": "Shoot The Messenger (Zerg)"
-          },
-          {
-            "value": "Sky Shield (Protoss)",
-            "label": "Sky Shield (Protoss)"
-          },
-          {
-            "value": "Sky Shield (Terran)",
-            "label": "Sky Shield (Terran)"
-          },
-          {
-            "value": "Sky Shield (Zerg)",
-            "label": "Sky Shield (Zerg)"
-          },
-          {
-            "value": "Smash and Grab (Protoss)",
-            "label": "Smash And Grab (Protoss)"
-          },
-          {
-            "value": "Smash and Grab (Terran)",
-            "label": "Smash And Grab (Terran)"
-          },
-          {
-            "value": "Smash and Grab (Zerg)",
-            "label": "Smash And Grab (Zerg)"
-          },
-          {
-            "value": "Steps of the Rite (Protoss)",
-            "label": "Steps Of The Rite (Protoss)"
-          },
-          {
-            "value": "Steps of the Rite (Terran)",
-            "label": "Steps Of The Rite (Terran)"
-          },
-          {
-            "value": "Steps of the Rite (Zerg)",
-            "label": "Steps Of The Rite (Zerg)"
-          },
-          {
-            "value": "Sudden Strike",
-            "label": "Sudden Strike"
-          },
-          {
-            "value": "Supernova (Protoss)",
-            "label": "Supernova (Protoss)"
-          },
-          {
-            "value": "Supernova (Terran)",
-            "label": "Supernova (Terran)"
-          },
-          {
-            "value": "Supernova (Zerg)",
-            "label": "Supernova (Zerg)"
-          },
-          {
-            "value": "Supreme",
-            "label": "Supreme"
-          },
-          {
-            "value": "Templar's Charge (Protoss)",
-            "label": "Templar'S Charge (Protoss)"
-          },
-          {
-            "value": "Templar's Charge (Terran)",
-            "label": "Templar'S Charge (Terran)"
-          },
-          {
-            "value": "Templar's Charge (Zerg)",
-            "label": "Templar'S Charge (Zerg)"
-          },
-          {
-            "value": "Templar's Return",
-            "label": "Templar'S Return"
-          },
-          {
-            "value": "Temple of Unification (Protoss)",
-            "label": "Temple Of Unification (Protoss)"
-          },
-          {
-            "value": "Temple of Unification (Terran)",
-            "label": "Temple Of Unification (Terran)"
-          },
-          {
-            "value": "Temple of Unification (Zerg)",
-            "label": "Temple Of Unification (Zerg)"
-          },
-          {
-            "value": "The Crucible (Protoss)",
-            "label": "The Crucible (Protoss)"
-          },
-          {
-            "value": "The Crucible (Terran)",
-            "label": "The Crucible (Terran)"
-          },
-          {
-            "value": "The Crucible (Zerg)",
-            "label": "The Crucible (Zerg)"
-          },
-          {
-            "value": "The Dig (Protoss)",
-            "label": "The Dig (Protoss)"
-          },
-          {
-            "value": "The Dig (Terran)",
-            "label": "The Dig (Terran)"
-          },
-          {
-            "value": "The Dig (Zerg)",
-            "label": "The Dig (Zerg)"
-          },
-          {
-            "value": "The Escape",
-            "label": "The Escape"
-          },
-          {
-            "value": "The Essence of Eternity",
-            "label": "The Essence Of Eternity"
-          },
-          {
-            "value": "The Great Train Robbery (Protoss)",
-            "label": "The Great Train Robbery (Protoss)"
-          },
-          {
-            "value": "The Great Train Robbery (Terran)",
-            "label": "The Great Train Robbery (Terran)"
-          },
-          {
-            "value": "The Great Train Robbery (Zerg)",
-            "label": "The Great Train Robbery (Zerg)"
-          },
-          {
-            "value": "The Growing Shadow (Protoss)",
-            "label": "The Growing Shadow (Protoss)"
-          },
-          {
-            "value": "The Growing Shadow (Terran)",
-            "label": "The Growing Shadow (Terran)"
-          },
-          {
-            "value": "The Growing Shadow (Zerg)",
-            "label": "The Growing Shadow (Zerg)"
-          },
-          {
-            "value": "The Host (Protoss)",
-            "label": "The Host (Protoss)"
-          },
-          {
-            "value": "The Host (Terran)",
-            "label": "The Host (Terran)"
-          },
-          {
-            "value": "The Host (Zerg)",
-            "label": "The Host (Zerg)"
-          },
-          {
-            "value": "The Infinite Cycle",
-            "label": "The Infinite Cycle"
-          },
-          {
-            "value": "The Moebius Factor (Protoss)",
-            "label": "The Moebius Factor (Protoss)"
-          },
-          {
-            "value": "The Moebius Factor (Terran)",
-            "label": "The Moebius Factor (Terran)"
-          },
-          {
-            "value": "The Moebius Factor (Zerg)",
-            "label": "The Moebius Factor (Zerg)"
-          },
-          {
-            "value": "The Outlaws (Protoss)",
-            "label": "The Outlaws (Protoss)"
-          },
-          {
-            "value": "The Outlaws (Terran)",
-            "label": "The Outlaws (Terran)"
-          },
-          {
-            "value": "The Outlaws (Zerg)",
-            "label": "The Outlaws (Zerg)"
-          },
-          {
-            "value": "The Reckoning (Protoss)",
-            "label": "The Reckoning (Protoss)"
-          },
-          {
-            "value": "The Reckoning (Terran)",
-            "label": "The Reckoning (Terran)"
-          },
-          {
-            "value": "The Reckoning (Zerg)",
-            "label": "The Reckoning (Zerg)"
-          },
-          {
-            "value": "The Spear of Adun (Protoss)",
-            "label": "The Spear Of Adun (Protoss)"
-          },
-          {
-            "value": "The Spear of Adun (Terran)",
-            "label": "The Spear Of Adun (Terran)"
-          },
-          {
-            "value": "The Spear of Adun (Zerg)",
-            "label": "The Spear Of Adun (Zerg)"
-          },
-          {
-            "value": "Trouble In Paradise",
-            "label": "Trouble In Paradise"
-          },
-          {
-            "value": "Unsealing the Past (Protoss)",
-            "label": "Unsealing The Past (Protoss)"
-          },
-          {
-            "value": "Unsealing the Past (Terran)",
-            "label": "Unsealing The Past (Terran)"
-          },
-          {
-            "value": "Unsealing the Past (Zerg)",
-            "label": "Unsealing The Past (Zerg)"
-          },
-          {
-            "value": "Waking the Ancient (Protoss)",
-            "label": "Waking The Ancient (Protoss)"
-          },
-          {
-            "value": "Waking the Ancient (Terran)",
-            "label": "Waking The Ancient (Terran)"
-          },
-          {
-            "value": "Waking the Ancient (Zerg)",
-            "label": "Waking The Ancient (Zerg)"
-          },
-          {
-            "value": "Welcome to the Jungle (Protoss)",
-            "label": "Welcome To The Jungle (Protoss)"
-          },
-          {
-            "value": "Welcome to the Jungle (Terran)",
-            "label": "Welcome To The Jungle (Terran)"
-          },
-          {
-            "value": "Welcome to the Jungle (Zerg)",
-            "label": "Welcome To The Jungle (Zerg)"
-          },
-          {
-            "value": "Whispers of Doom",
-            "label": "Whispers Of Doom"
-          },
-          {
-            "value": "With Friends Like These",
-            "label": "With Friends Like These"
-          },
-          {
-            "value": "Zero Hour (Protoss)",
-            "label": "Zero Hour (Protoss)"
-          },
-          {
-            "value": "Zero Hour (Terran)",
-            "label": "Zero Hour (Terran)"
-          },
-          {
-            "value": "Zero Hour (Zerg)",
-            "label": "Zero Hour (Zerg)"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "difficulty_curve",
-      "label": "Difficulty Curve",
-      "description": "Determines whether campaign missions will be placed with a smooth difficulty curve.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "standard",
-        "choices": [
-          {
-            "value": "standard",
-            "label": "Standard"
-          },
-          {
-            "value": "uneven",
-            "label": "Uneven"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exclude_very_hard_missions",
-      "label": "Exclude Very Hard Missions",
-      "description": "Excludes Very Hard missions outside of Epilogue campaign (All-In, The Reckoning, Salvation, and all Epilogue missions are considered Very Hard).",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "true",
-            "label": "True"
-          },
-          {
-            "value": "false",
-            "label": "False"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "vanilla_items_only",
-      "label": "Vanilla Items Only",
-      "description": "If turned on, the item pool is limited only to items that appear in the main 3 vanilla campaigns.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exclude_overpowered_items",
-      "label": "Exclude Overpowered Items",
-      "description": "If turned on, a curated list of very strong items are excluded.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "victory_cache",
-      "label": "Victory Cache",
-      "description": "Controls how many additional checks are awarded for completing a mission.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "vanilla_locations",
-      "label": "Vanilla Locations",
-      "description": "Enables or disables checks for completing vanilla objectives.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "enabled",
-        "choices": [
-          {
-            "value": "enabled",
-            "label": "Enabled"
-          },
-          {
-            "value": "half_chance",
-            "label": "Half Chance"
-          },
-          {
-            "value": "filler",
-            "label": "Filler"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "extra_locations",
-      "label": "Extra Locations",
-      "description": "Enables or disables checks for mission progress and minor objectives.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "enabled",
-        "choices": [
-          {
-            "value": "enabled",
-            "label": "Enabled"
-          },
-          {
-            "value": "half_chance",
-            "label": "Half Chance"
-          },
-          {
-            "value": "filler",
-            "label": "Filler"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "challenge_locations",
-      "label": "Challenge Locations",
-      "description": "Enables or disables checks for completing challenge tasks.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "enabled",
-        "choices": [
-          {
-            "value": "enabled",
-            "label": "Enabled"
-          },
-          {
-            "value": "half_chance",
-            "label": "Half Chance"
-          },
-          {
-            "value": "filler",
-            "label": "Filler"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mastery_locations",
-      "label": "Mastery Locations",
-      "description": "Enables or disables checks for overcoming especially difficult challenges.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "enabled",
-        "choices": [
-          {
-            "value": "enabled",
-            "label": "Enabled"
-          },
-          {
-            "value": "half_chance",
-            "label": "Half Chance"
-          },
-          {
-            "value": "filler",
-            "label": "Filler"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "basebust_locations",
-      "label": "Basebust Locations",
-      "description": "Enables or disables checks for killing non-objective bases.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "enabled",
-        "choices": [
-          {
-            "value": "enabled",
-            "label": "Enabled"
-          },
-          {
-            "value": "half_chance",
-            "label": "Half Chance"
-          },
-          {
-            "value": "filler",
-            "label": "Filler"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "speedrun_locations",
-      "label": "Speedrun Locations",
-      "description": "Enables or disables checks for overcoming speedrun challenges.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "enabled",
-        "choices": [
-          {
-            "value": "enabled",
-            "label": "Enabled"
-          },
-          {
-            "value": "half_chance",
-            "label": "Half Chance"
-          },
-          {
-            "value": "filler",
-            "label": "Filler"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "preventative_locations",
-      "label": "Preventative Locations",
-      "description": "Enables or disables checks for overcoming preventative challenges.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "enabled",
-        "choices": [
-          {
-            "value": "enabled",
-            "label": "Enabled"
-          },
-          {
-            "value": "half_chance",
-            "label": "Half Chance"
-          },
-          {
-            "value": "filler",
-            "label": "Filler"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "filler_percentage",
-      "label": "Filler Percentage",
-      "description": "Percentage of the item pool filled with filler items.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 70,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "minerals_per_item",
-      "label": "Minerals Per Item",
-      "description": "Configures how many minerals are given per resource item.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 200,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "vespene_per_item",
-      "label": "Vespene Per Item",
-      "description": "Configures how much vespene gas is given per resource item.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 200,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_supply_per_item",
-      "label": "Starting Supply Per Item",
-      "description": "Configures how much starting supply per is given per item.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 16,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "maximum_supply_per_item",
-      "label": "Maximum Supply Per Item",
-      "description": "Configures how much the maximum supply limit increases per item.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "maximum_supply_reduction_per_item",
-      "label": "Maximum Supply Reduction Per Item",
-      "description": "Configures how much maximum supply is reduced per trap item.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 10,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lowest_maximum_supply",
-      "label": "Lowest Maximum Supply",
-      "description": "Controls how far max supply reduction traps can reduce maximum supply.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 50,
-        "max": 200,
-        "step": 1,
-        "default": 180
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "research_cost_reduction_per_item",
-      "label": "Research Cost Reduction Per Item",
-      "description": "Controls how much weapon/armor research cost is cut per research cost filler item.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mission_order_scouting",
-      "label": "Mission Order Scouting",
-      "description": "Allow the Sc2 mission order client tabs to indicate the type of item (i.e., progression, useful, etc.) available at each location of a mission.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "completed",
-            "label": "Completed"
-          },
-          {
-            "value": "available",
-            "label": "Available"
-          },
-          {
-            "value": "layout",
-            "label": "Layout"
-          },
-          {
-            "value": "campaign",
-            "label": "Campaign"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "sc2",
+	"name": "Starcraft 2",
+	"version": "0.6.4",
+	"description": "StarCraft II is a science fiction real-time strategy video game developed and published by Blizzard Entertainment.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "game_difficulty",
+			"label": "Game Difficulty",
+			"description": "The difficulty of the campaign, affects enemy AI, starting units, and game speed.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "casual",
+						"label": "Casual"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					},
+					{
+						"value": "brutal",
+						"label": "Brutal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "difficulty_damage_modifier",
+			"label": "Difficulty Damage Modifier",
+			"description": "Enables or disables vanilla difficulty-based damage received modifier Handles the 1.25 Brutal damage modifier in HotS and Prologue and 0.5 Casual damage modifier outside WoL and Prophecy",
+			"category": "logic",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "game_speed",
+			"label": "Game Speed",
+			"description": "Optional setting to override difficulty-based game speed.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "slower",
+						"label": "Slower"
+					},
+					{
+						"value": "slow",
+						"label": "Slow"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "fast",
+						"label": "Fast"
+					},
+					{
+						"value": "faster",
+						"label": "Faster"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "disable_forced_camera",
+			"label": "Disable Forced Camera",
+			"description": "Prevents the game from moving or locking the camera without the player's consent.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_cutscenes",
+			"label": "Skip Cutscenes",
+			"description": "Skips all cutscenes and prevents dialog from blocking progress.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "all_in_map",
+			"label": "All In Map",
+			"description": "Determines what version of All-In (WoL final map) that will be generated for the campaign.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random",
+				"choices": [
+					{
+						"value": "ground",
+						"label": "Ground"
+					},
+					{
+						"value": "air",
+						"label": "Air"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mission_order",
+			"label": "Mission Order",
+			"description": "Determines the order the missions are played in.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "golden_path",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "vanilla_shuffled",
+						"label": "Vanilla Shuffled"
+					},
+					{
+						"value": "mini_campaign",
+						"label": "Mini Campaign"
+					},
+					{
+						"value": "blitz",
+						"label": "Blitz"
+					},
+					{
+						"value": "gauntlet",
+						"label": "Gauntlet"
+					},
+					{
+						"value": "grid",
+						"label": "Grid"
+					},
+					{
+						"value": "golden_path",
+						"label": "Golden Path"
+					},
+					{
+						"value": "hopscotch",
+						"label": "Hopscotch"
+					},
+					{
+						"value": "custom",
+						"label": "Custom"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "maximum_campaign_size",
+			"label": "Maximum Campaign Size",
+			"description": "Sets an upper bound on how many missions to include when a variable-size mission order is selected.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 195,
+				"step": 1,
+				"default": 83
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "two_start_positions",
+			"label": "Two Start Positions",
+			"description": "If turned on and 'grid', 'hopscotch', or 'golden_path' mission orders are selected, removes the first mission and allows both of the next two missions to be played from the start.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "key_mode",
+			"label": "Key Mode",
+			"description": "Optionally creates Key items that must be found in the multiworld to unlock parts of the mission order, in addition to any regular requirements a mission may have.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "disabled",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "questlines",
+						"label": "Questlines"
+					},
+					{
+						"value": "missions",
+						"label": "Missions"
+					},
+					{
+						"value": "progressive_questlines",
+						"label": "Progressive Questlines"
+					},
+					{
+						"value": "progressive_missions",
+						"label": "Progressive Missions"
+					},
+					{
+						"value": "progressive_per_questline",
+						"label": "Progressive Per Questline"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "player_color_terran_raynor",
+			"label": "Player Color Terran Raynor",
+			"description": "Determines in-game player team color in Wings of Liberty missions.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "white",
+						"label": "White"
+					},
+					{
+						"value": "red",
+						"label": "Red"
+					},
+					{
+						"value": "blue",
+						"label": "Blue"
+					},
+					{
+						"value": "teal",
+						"label": "Teal"
+					},
+					{
+						"value": "purple",
+						"label": "Purple"
+					},
+					{
+						"value": "yellow",
+						"label": "Yellow"
+					},
+					{
+						"value": "orange",
+						"label": "Orange"
+					},
+					{
+						"value": "green",
+						"label": "Green"
+					},
+					{
+						"value": "light_pink",
+						"label": "Light Pink"
+					},
+					{
+						"value": "violet",
+						"label": "Violet"
+					},
+					{
+						"value": "light_grey",
+						"label": "Light Grey"
+					},
+					{
+						"value": "dark_green",
+						"label": "Dark Green"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "light_green",
+						"label": "Light Green"
+					},
+					{
+						"value": "dark_grey",
+						"label": "Dark Grey"
+					},
+					{
+						"value": "pink",
+						"label": "Pink"
+					},
+					{
+						"value": "rainbow",
+						"label": "Rainbow"
+					},
+					{
+						"value": "mengsk",
+						"label": "Mengsk"
+					},
+					{
+						"value": "bright_lime",
+						"label": "Bright Lime"
+					},
+					{
+						"value": "arcane",
+						"label": "Arcane"
+					},
+					{
+						"value": "ember",
+						"label": "Ember"
+					},
+					{
+						"value": "hot_pink",
+						"label": "Hot Pink"
+					},
+					{
+						"value": "default",
+						"label": "Default"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "player_color_protoss",
+			"label": "Player Color Protoss",
+			"description": "Determines in-game player team color in Legacy of the Void missions.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "white",
+						"label": "White"
+					},
+					{
+						"value": "red",
+						"label": "Red"
+					},
+					{
+						"value": "blue",
+						"label": "Blue"
+					},
+					{
+						"value": "teal",
+						"label": "Teal"
+					},
+					{
+						"value": "purple",
+						"label": "Purple"
+					},
+					{
+						"value": "yellow",
+						"label": "Yellow"
+					},
+					{
+						"value": "orange",
+						"label": "Orange"
+					},
+					{
+						"value": "green",
+						"label": "Green"
+					},
+					{
+						"value": "light_pink",
+						"label": "Light Pink"
+					},
+					{
+						"value": "violet",
+						"label": "Violet"
+					},
+					{
+						"value": "light_grey",
+						"label": "Light Grey"
+					},
+					{
+						"value": "dark_green",
+						"label": "Dark Green"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "light_green",
+						"label": "Light Green"
+					},
+					{
+						"value": "dark_grey",
+						"label": "Dark Grey"
+					},
+					{
+						"value": "pink",
+						"label": "Pink"
+					},
+					{
+						"value": "rainbow",
+						"label": "Rainbow"
+					},
+					{
+						"value": "mengsk",
+						"label": "Mengsk"
+					},
+					{
+						"value": "bright_lime",
+						"label": "Bright Lime"
+					},
+					{
+						"value": "arcane",
+						"label": "Arcane"
+					},
+					{
+						"value": "ember",
+						"label": "Ember"
+					},
+					{
+						"value": "hot_pink",
+						"label": "Hot Pink"
+					},
+					{
+						"value": "default",
+						"label": "Default"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "player_color_zerg",
+			"label": "Player Color Zerg",
+			"description": "Determines in-game player team color in Heart of the Swarm missions before unlocking Primal Kerrigan.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "white",
+						"label": "White"
+					},
+					{
+						"value": "red",
+						"label": "Red"
+					},
+					{
+						"value": "blue",
+						"label": "Blue"
+					},
+					{
+						"value": "teal",
+						"label": "Teal"
+					},
+					{
+						"value": "purple",
+						"label": "Purple"
+					},
+					{
+						"value": "yellow",
+						"label": "Yellow"
+					},
+					{
+						"value": "orange",
+						"label": "Orange"
+					},
+					{
+						"value": "green",
+						"label": "Green"
+					},
+					{
+						"value": "light_pink",
+						"label": "Light Pink"
+					},
+					{
+						"value": "violet",
+						"label": "Violet"
+					},
+					{
+						"value": "light_grey",
+						"label": "Light Grey"
+					},
+					{
+						"value": "dark_green",
+						"label": "Dark Green"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "light_green",
+						"label": "Light Green"
+					},
+					{
+						"value": "dark_grey",
+						"label": "Dark Grey"
+					},
+					{
+						"value": "pink",
+						"label": "Pink"
+					},
+					{
+						"value": "rainbow",
+						"label": "Rainbow"
+					},
+					{
+						"value": "mengsk",
+						"label": "Mengsk"
+					},
+					{
+						"value": "bright_lime",
+						"label": "Bright Lime"
+					},
+					{
+						"value": "arcane",
+						"label": "Arcane"
+					},
+					{
+						"value": "ember",
+						"label": "Ember"
+					},
+					{
+						"value": "hot_pink",
+						"label": "Hot Pink"
+					},
+					{
+						"value": "default",
+						"label": "Default"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "player_color_zerg_primal",
+			"label": "Player Color Zerg Primal",
+			"description": "Determines in-game player team color in Heart of the Swarm after unlocking Primal Kerrigan.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "white",
+						"label": "White"
+					},
+					{
+						"value": "red",
+						"label": "Red"
+					},
+					{
+						"value": "blue",
+						"label": "Blue"
+					},
+					{
+						"value": "teal",
+						"label": "Teal"
+					},
+					{
+						"value": "purple",
+						"label": "Purple"
+					},
+					{
+						"value": "yellow",
+						"label": "Yellow"
+					},
+					{
+						"value": "orange",
+						"label": "Orange"
+					},
+					{
+						"value": "green",
+						"label": "Green"
+					},
+					{
+						"value": "light_pink",
+						"label": "Light Pink"
+					},
+					{
+						"value": "violet",
+						"label": "Violet"
+					},
+					{
+						"value": "light_grey",
+						"label": "Light Grey"
+					},
+					{
+						"value": "dark_green",
+						"label": "Dark Green"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "light_green",
+						"label": "Light Green"
+					},
+					{
+						"value": "dark_grey",
+						"label": "Dark Grey"
+					},
+					{
+						"value": "pink",
+						"label": "Pink"
+					},
+					{
+						"value": "rainbow",
+						"label": "Rainbow"
+					},
+					{
+						"value": "mengsk",
+						"label": "Mengsk"
+					},
+					{
+						"value": "bright_lime",
+						"label": "Bright Lime"
+					},
+					{
+						"value": "arcane",
+						"label": "Arcane"
+					},
+					{
+						"value": "ember",
+						"label": "Ember"
+					},
+					{
+						"value": "hot_pink",
+						"label": "Hot Pink"
+					},
+					{
+						"value": "default",
+						"label": "Default"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "player_color_nova",
+			"label": "Player Color Nova",
+			"description": "Determines in-game player team color in Nova Covert Ops missions.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "white",
+						"label": "White"
+					},
+					{
+						"value": "red",
+						"label": "Red"
+					},
+					{
+						"value": "blue",
+						"label": "Blue"
+					},
+					{
+						"value": "teal",
+						"label": "Teal"
+					},
+					{
+						"value": "purple",
+						"label": "Purple"
+					},
+					{
+						"value": "yellow",
+						"label": "Yellow"
+					},
+					{
+						"value": "orange",
+						"label": "Orange"
+					},
+					{
+						"value": "green",
+						"label": "Green"
+					},
+					{
+						"value": "light_pink",
+						"label": "Light Pink"
+					},
+					{
+						"value": "violet",
+						"label": "Violet"
+					},
+					{
+						"value": "light_grey",
+						"label": "Light Grey"
+					},
+					{
+						"value": "dark_green",
+						"label": "Dark Green"
+					},
+					{
+						"value": "brown",
+						"label": "Brown"
+					},
+					{
+						"value": "light_green",
+						"label": "Light Green"
+					},
+					{
+						"value": "dark_grey",
+						"label": "Dark Grey"
+					},
+					{
+						"value": "pink",
+						"label": "Pink"
+					},
+					{
+						"value": "rainbow",
+						"label": "Rainbow"
+					},
+					{
+						"value": "mengsk",
+						"label": "Mengsk"
+					},
+					{
+						"value": "bright_lime",
+						"label": "Bright Lime"
+					},
+					{
+						"value": "arcane",
+						"label": "Arcane"
+					},
+					{
+						"value": "ember",
+						"label": "Ember"
+					},
+					{
+						"value": "hot_pink",
+						"label": "Hot Pink"
+					},
+					{
+						"value": "default",
+						"label": "Default"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "selected_races",
+			"label": "Selected Races",
+			"description": "Pick which factions' missions and items can be shuffled into the world.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": ["Protoss", "Terran", "Zerg"],
+				"choices": [
+					{
+						"value": "Protoss",
+						"label": "Protoss"
+					},
+					{
+						"value": "Terran",
+						"label": "Terran"
+					},
+					{
+						"value": "Zerg",
+						"label": "Zerg"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "enabled_campaigns",
+			"label": "Enabled Campaigns",
+			"description": "Determines which campaign's missions will be used.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": ["Wings of Liberty"],
+				"choices": [
+					{
+						"value": "Heart of the Swarm",
+						"label": "Heart Of The Swarm"
+					},
+					{
+						"value": "Into the Void (Legacy of the Void: Epilogue)",
+						"label": "Into The Void (Legacy Of The Void: Epilogue)"
+					},
+					{
+						"value": "Legacy of the Void",
+						"label": "Legacy Of The Void"
+					},
+					{
+						"value": "Nova Covert Ops",
+						"label": "Nova Covert Ops"
+					},
+					{
+						"value": "Prophecy",
+						"label": "Prophecy"
+					},
+					{
+						"value": "Whispers of Oblivion (Legacy of the Void: Prologue)",
+						"label": "Whispers Of Oblivion (Legacy Of The Void: Prologue)"
+					},
+					{
+						"value": "Wings of Liberty",
+						"label": "Wings Of Liberty"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "enable_race_swap",
+			"label": "Enable Race Swap",
+			"description": "Allow mission variants where you play a faction other than the one the map was initially designed for.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "disabled",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "pick_one",
+						"label": "Pick One"
+					},
+					{
+						"value": "pick_one_non_vanilla",
+						"label": "Pick One Non Vanilla"
+					},
+					{
+						"value": "shuffle_all",
+						"label": "Shuffle All"
+					},
+					{
+						"value": "shuffle_all_non_vanilla",
+						"label": "Shuffle All Non Vanilla"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mission_race_balancing",
+			"label": "Mission Race Balancing",
+			"description": "If enabled, picks missions in such a way that the appearance rate of races is roughly equal.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "semi_balanced",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "semi_balanced",
+						"label": "Semi Balanced"
+					},
+					{
+						"value": "fully_balanced",
+						"label": "Fully Balanced"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_campaigns",
+			"label": "Shuffle Campaigns",
+			"description": "Shuffles the missions between campaigns if enabled.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_no_build",
+			"label": "Shuffle No Build",
+			"description": "Determines if the no-build missions are included in the shuffle.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starter_unit",
+			"label": "Starter Unit",
+			"description": "Unlocks a random unit at the start of the game.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "balanced",
+						"label": "Balanced"
+					},
+					{
+						"value": "any_starter_unit",
+						"label": "Any Starter Unit"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "required_tactics",
+			"label": "Required Tactics",
+			"description": "Determines the maximum tactical difficulty of the world (separate from mission difficulty).",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "standard",
+				"choices": [
+					{
+						"value": "standard",
+						"label": "Standard"
+					},
+					{
+						"value": "advanced",
+						"label": "Advanced"
+					},
+					{
+						"value": "any_units",
+						"label": "Any Units"
+					},
+					{
+						"value": "no_logic",
+						"label": "No Logic"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_void_trade",
+			"label": "Enable Void Trade",
+			"description": "Enables the Void Trade Wormhole to be built from the Advanced Construction tab of SCVs, Drones and Probes.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "void_trade_age_limit",
+			"label": "Void Trade Age Limit",
+			"description": "Determines the maximum allowed age for units you can receive from Void Trade.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "30_minutes",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "1_week",
+						"label": "1 Week"
+					},
+					{
+						"value": "1_day",
+						"label": "1 Day"
+					},
+					{
+						"value": "4_hours",
+						"label": "4 Hours"
+					},
+					{
+						"value": "2_hours",
+						"label": "2 Hours"
+					},
+					{
+						"value": "1_hour",
+						"label": "1 Hour"
+					},
+					{
+						"value": "30_minutes",
+						"label": "30 Minutes"
+					},
+					{
+						"value": "5_minutes",
+						"label": "5 Minutes"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "void_trade_workers",
+			"label": "Void Trade Workers",
+			"description": "If enabled, you are able to send and receive workers via Void Trade.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "ensure_generic_items",
+			"label": "Ensure Generic Items",
+			"description": "Specifies a minimum percentage of the generic item pool that will be present for the slot.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "min_number_of_upgrades",
+			"label": "Min Number Of Upgrades",
+			"description": "Set a minimum to the number of upgrade items a unit/structure can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 13,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "max_number_of_upgrades",
+			"label": "Max Number Of Upgrades",
+			"description": "Set a maximum to the number of upgrade items a unit/structure can have.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": -1,
+				"max": 13,
+				"step": 1,
+				"default": -1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mercenary_highlanders",
+			"label": "Mercenary Highlanders",
+			"description": "If enabled, it limits the controllable amount of certain mercenaries to 1, even if you have unlimited mercenaries upgrade.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "max_upgrade_level",
+			"label": "Max Upgrade Level",
+			"description": "Controls the maximum number of weapon/armor upgrades that can be found or unlocked.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 3,
+				"max": 5,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "generic_upgrade_missions",
+			"label": "Generic Upgrade Missions",
+			"description": "Determines the percentage of missions in the mission order that must be completed before level 1 of all weapon and armor upgrades is unlocked.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "generic_upgrade_research",
+			"label": "Generic Upgrade Research",
+			"description": "Determines how weapon and armor upgrades affect missions once unlocked.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "auto_in_no_build",
+						"label": "Auto In No Build"
+					},
+					{
+						"value": "auto_in_build",
+						"label": "Auto In Build"
+					},
+					{
+						"value": "always_auto",
+						"label": "Always Auto"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "generic_upgrade_research_speedup",
+			"label": "Generic Upgrade Research Speedup",
+			"description": "If turned on, the weapon and armor upgrades are researched more quickly if level 4 or higher is unlocked.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "generic_upgrade_items",
+			"label": "Generic Upgrade Items",
+			"description": "Determines how weapon and armor upgrades are split into items.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "individual_items",
+				"choices": [
+					{
+						"value": "individual_items",
+						"label": "Individual Items"
+					},
+					{
+						"value": "bundle_weapon_and_armor",
+						"label": "Bundle Weapon And Armor"
+					},
+					{
+						"value": "bundle_unit_class",
+						"label": "Bundle Unit Class"
+					},
+					{
+						"value": "bundle_all",
+						"label": "Bundle All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kerrigan_presence",
+			"label": "Kerrigan Presence",
+			"description": "Determines whether Kerrigan is playable outside of missions that require her.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "not_present",
+						"label": "Not Present"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kerrigan_levels_per_mission_completed",
+			"label": "Kerrigan Levels Per Mission Completed",
+			"description": "Determines how many levels Kerrigan gains when a mission is beaten.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kerrigan_levels_per_mission_completed_cap",
+			"label": "Kerrigan Levels Per Mission Completed Cap",
+			"description": "Limits how many total levels Kerrigan can gain from beating missions.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": -1,
+				"max": 140,
+				"step": 1,
+				"default": -1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kerrigan_level_item_sum",
+			"label": "Kerrigan Level Item Sum",
+			"description": "Determines the sum of the level items in the world.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 140,
+				"step": 1,
+				"default": 70
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kerrigan_level_item_distribution",
+			"label": "Kerrigan Level Item Distribution",
+			"description": "Determines the amount and size of Kerrigan level items.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "smooth",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "smooth",
+						"label": "Smooth"
+					},
+					{
+						"value": "size_70",
+						"label": "Size 70"
+					},
+					{
+						"value": "size_35",
+						"label": "Size 35"
+					},
+					{
+						"value": "size_14",
+						"label": "Size 14"
+					},
+					{
+						"value": "size_10",
+						"label": "Size 10"
+					},
+					{
+						"value": "size_7",
+						"label": "Size 7"
+					},
+					{
+						"value": "size_5",
+						"label": "Size 5"
+					},
+					{
+						"value": "size_2",
+						"label": "Size 2"
+					},
+					{
+						"value": "size_1",
+						"label": "Size 1"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kerrigan_total_level_cap",
+			"label": "Kerrigan Total Level Cap",
+			"description": "Limits how many total levels Kerrigan can gain from any source.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": -1,
+				"max": 140,
+				"step": 1,
+				"default": -1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "start_primary_abilities",
+			"label": "Start Primary Abilities",
+			"description": "Number of Primary Abilities (Kerrigan Tier 1, 2, and 4) to start the game with.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 4,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kerrigan_primal_status",
+			"label": "Kerrigan Primal Status",
+			"description": "Determines when Kerrigan appears in her Primal Zerg form.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "always_zerg",
+						"label": "Always Zerg"
+					},
+					{
+						"value": "always_human",
+						"label": "Always Human"
+					},
+					{
+						"value": "level_35",
+						"label": "Level 35"
+					},
+					{
+						"value": "half_completion",
+						"label": "Half Completion"
+					},
+					{
+						"value": "item",
+						"label": "Item"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kerrigan_max_active_abilities",
+			"label": "Kerrigan Max Active Abilities",
+			"description": "Determines the maximum number of Kerrigan active abilities that can be present in the game Additional abilities may spawn if those are required to beat the game.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 12,
+				"step": 1,
+				"default": 12
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kerrigan_max_passive_abilities",
+			"label": "Kerrigan Max Passive Abilities",
+			"description": "Determines the maximum number of Kerrigan passive abilities that can be present in the game Additional abilities may spawn if those are required to beat the game.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_morphling",
+			"label": "Enable Morphling",
+			"description": "Determines whether the player can build Morphlings, which allow for inefficient morphing of advanced units like Ravagers and Lurkers without requiring the base unit to be unlocked first.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "war_council_nerfs",
+			"label": "War Council Nerfs",
+			"description": "Controls whether most Protoss units can initially be found in a nerfed state, with upgrades restoring their stronger power level.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spear_of_adun_presence",
+			"label": "Spear Of Adun Presence",
+			"description": "Determines in which missions Spear of Adun calldowns will be available.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "not_present",
+						"label": "Not Present"
+					},
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "protoss",
+						"label": "Protoss"
+					},
+					{
+						"value": "everywhere",
+						"label": "Everywhere"
+					},
+					{
+						"value": "any_race_lotv",
+						"label": "Any Race Lotv"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spear_of_adun_present_in_no_build",
+			"label": "Spear Of Adun Present In No Build",
+			"description": "Determines if Spear of Adun calldowns are available in no-build missions.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spear_of_adun_passive_ability_presence",
+			"label": "Spear Of Adun Passive Ability Presence",
+			"description": "Determines availability of Spear of Adun passive powers.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "not_present",
+						"label": "Not Present"
+					},
+					{
+						"value": "any_race_lotv",
+						"label": "Any Race Lotv"
+					},
+					{
+						"value": "protoss",
+						"label": "Protoss"
+					},
+					{
+						"value": "everywhere",
+						"label": "Everywhere"
+					},
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spear_of_adun_passive_present_in_no_build",
+			"label": "Spear Of Adun Passive Present In No Build",
+			"description": "Determines if Spear of Adun autocasts are available in no-build missions.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spear_of_adun_max_active_abilities",
+			"label": "Spear Of Adun Max Active Abilities",
+			"description": "Determines the maximum number of Spear of Adun active abilities (top bar) that can be present in the game Additional abilities may spawn if those are required to beat the game.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 13,
+				"step": 1,
+				"default": 13
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spear_of_adun_max_passive_abilities",
+			"label": "Spear Of Adun Max Passive Abilities",
+			"description": "Determines the maximum number of Spear of Adun passive abilities that can be present in the game Additional abilities may spawn if those are required to beat the game.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 3,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "grant_story_tech",
+			"label": "Grant Story Tech",
+			"description": "Controls handling of no-build missions that may require very specific items, such as Kerrigan or Nova abilities.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "no_grant",
+				"choices": [
+					{
+						"value": "no_grant",
+						"label": "No Grant"
+					},
+					{
+						"value": "grant",
+						"label": "Grant"
+					},
+					{
+						"value": "allow_substitutes",
+						"label": "Allow Substitutes"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "grant_story_levels",
+			"label": "Grant Story Levels",
+			"description": "If enabled, grants Kerrigan the required minimum levels for the following missions: Supreme: 35 The Infinite Cycle: 70 The bonus levels only apply during the listed missions, and can exceed the Total Level Cap.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "minimum",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "additive",
+						"label": "Additive"
+					},
+					{
+						"value": "minimum",
+						"label": "Minimum"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "nova_max_weapons",
+			"label": "Nova Max Weapons",
+			"description": "Determines maximum number of Nova weapons that can be present in the game Additional weapons may spawn if those are required to beat the game.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "nova_max_gadgets",
+			"label": "Nova Max Gadgets",
+			"description": "Determines maximum number of Nova gadgets that can be present in the game.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "nova_ghost_of_a_chance_variant",
+			"label": "Nova Ghost Of A Chance Variant",
+			"description": "Determines which variant of Nova should be used in Ghost of a Chance mission.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "wol",
+				"choices": [
+					{
+						"value": "wol",
+						"label": "Wol"
+					},
+					{
+						"value": "nco",
+						"label": "Nco"
+					},
+					{
+						"value": "auto",
+						"label": "Auto"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "take_over_ai_allies",
+			"label": "Take Over Ai Allies",
+			"description": "On maps supporting this feature allows you to take control over an AI Ally.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "excluded_missions",
+			"label": "Excluded Missions",
+			"description": "Guarantees that these missions will not appear in the campaign Doesn't apply to vanilla mission order.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "A Sinister Turn (Protoss)",
+						"label": "A Sinister Turn (Protoss)"
+					},
+					{
+						"value": "A Sinister Turn (Terran)",
+						"label": "A Sinister Turn (Terran)"
+					},
+					{
+						"value": "A Sinister Turn (Zerg)",
+						"label": "A Sinister Turn (Zerg)"
+					},
+					{
+						"value": "All-In (Protoss)",
+						"label": "All-In (Protoss)"
+					},
+					{
+						"value": "All-In (Terran)",
+						"label": "All-In (Terran)"
+					},
+					{
+						"value": "All-In (Zerg)",
+						"label": "All-In (Zerg)"
+					},
+					{
+						"value": "Amon's Fall",
+						"label": "Amon'S Fall"
+					},
+					{
+						"value": "Amon's Reach (Protoss)",
+						"label": "Amon'S Reach (Protoss)"
+					},
+					{
+						"value": "Amon's Reach (Terran)",
+						"label": "Amon'S Reach (Terran)"
+					},
+					{
+						"value": "Amon's Reach (Zerg)",
+						"label": "Amon'S Reach (Zerg)"
+					},
+					{
+						"value": "Back in the Saddle",
+						"label": "Back In The Saddle"
+					},
+					{
+						"value": "Belly of the Beast",
+						"label": "Belly Of The Beast"
+					},
+					{
+						"value": "Breakout",
+						"label": "Breakout"
+					},
+					{
+						"value": "Brothers in Arms (Protoss)",
+						"label": "Brothers In Arms (Protoss)"
+					},
+					{
+						"value": "Brothers in Arms (Terran)",
+						"label": "Brothers In Arms (Terran)"
+					},
+					{
+						"value": "Brothers in Arms (Zerg)",
+						"label": "Brothers In Arms (Zerg)"
+					},
+					{
+						"value": "Conviction",
+						"label": "Conviction"
+					},
+					{
+						"value": "Cutthroat (Protoss)",
+						"label": "Cutthroat (Protoss)"
+					},
+					{
+						"value": "Cutthroat (Terran)",
+						"label": "Cutthroat (Terran)"
+					},
+					{
+						"value": "Cutthroat (Zerg)",
+						"label": "Cutthroat (Zerg)"
+					},
+					{
+						"value": "Dark Skies",
+						"label": "Dark Skies"
+					},
+					{
+						"value": "Dark Whispers (Protoss)",
+						"label": "Dark Whispers (Protoss)"
+					},
+					{
+						"value": "Dark Whispers (Terran)",
+						"label": "Dark Whispers (Terran)"
+					},
+					{
+						"value": "Dark Whispers (Zerg)",
+						"label": "Dark Whispers (Zerg)"
+					},
+					{
+						"value": "Death From Above (Protoss)",
+						"label": "Death From Above (Protoss)"
+					},
+					{
+						"value": "Death From Above (Terran)",
+						"label": "Death From Above (Terran)"
+					},
+					{
+						"value": "Death From Above (Zerg)",
+						"label": "Death From Above (Zerg)"
+					},
+					{
+						"value": "Devil's Playground (Protoss)",
+						"label": "Devil'S Playground (Protoss)"
+					},
+					{
+						"value": "Devil's Playground (Terran)",
+						"label": "Devil'S Playground (Terran)"
+					},
+					{
+						"value": "Devil's Playground (Zerg)",
+						"label": "Devil'S Playground (Zerg)"
+					},
+					{
+						"value": "Domination (Protoss)",
+						"label": "Domination (Protoss)"
+					},
+					{
+						"value": "Domination (Terran)",
+						"label": "Domination (Terran)"
+					},
+					{
+						"value": "Domination (Zerg)",
+						"label": "Domination (Zerg)"
+					},
+					{
+						"value": "Echoes of the Future (Protoss)",
+						"label": "Echoes Of The Future (Protoss)"
+					},
+					{
+						"value": "Echoes of the Future (Terran)",
+						"label": "Echoes Of The Future (Terran)"
+					},
+					{
+						"value": "Echoes of the Future (Zerg)",
+						"label": "Echoes Of The Future (Zerg)"
+					},
+					{
+						"value": "End Game",
+						"label": "End Game"
+					},
+					{
+						"value": "Enemy Intelligence",
+						"label": "Enemy Intelligence"
+					},
+					{
+						"value": "Enemy Within",
+						"label": "Enemy Within"
+					},
+					{
+						"value": "Engine of Destruction (Protoss)",
+						"label": "Engine Of Destruction (Protoss)"
+					},
+					{
+						"value": "Engine of Destruction (Terran)",
+						"label": "Engine Of Destruction (Terran)"
+					},
+					{
+						"value": "Engine of Destruction (Zerg)",
+						"label": "Engine Of Destruction (Zerg)"
+					},
+					{
+						"value": "Evacuation (Protoss)",
+						"label": "Evacuation (Protoss)"
+					},
+					{
+						"value": "Evacuation (Terran)",
+						"label": "Evacuation (Terran)"
+					},
+					{
+						"value": "Evacuation (Zerg)",
+						"label": "Evacuation (Zerg)"
+					},
+					{
+						"value": "Evil Awoken",
+						"label": "Evil Awoken"
+					},
+					{
+						"value": "Fire in the Sky (Protoss)",
+						"label": "Fire In The Sky (Protoss)"
+					},
+					{
+						"value": "Fire in the Sky (Terran)",
+						"label": "Fire In The Sky (Terran)"
+					},
+					{
+						"value": "Fire in the Sky (Zerg)",
+						"label": "Fire In The Sky (Zerg)"
+					},
+					{
+						"value": "Flashpoint",
+						"label": "Flashpoint"
+					},
+					{
+						"value": "For Aiur!",
+						"label": "For Aiur!"
+					},
+					{
+						"value": "Forbidden Weapon (Protoss)",
+						"label": "Forbidden Weapon (Protoss)"
+					},
+					{
+						"value": "Forbidden Weapon (Terran)",
+						"label": "Forbidden Weapon (Terran)"
+					},
+					{
+						"value": "Forbidden Weapon (Zerg)",
+						"label": "Forbidden Weapon (Zerg)"
+					},
+					{
+						"value": "Gates of Hell (Protoss)",
+						"label": "Gates Of Hell (Protoss)"
+					},
+					{
+						"value": "Gates of Hell (Terran)",
+						"label": "Gates Of Hell (Terran)"
+					},
+					{
+						"value": "Gates of Hell (Zerg)",
+						"label": "Gates Of Hell (Zerg)"
+					},
+					{
+						"value": "Ghost of a Chance",
+						"label": "Ghost Of A Chance"
+					},
+					{
+						"value": "Ghosts in the Fog (Protoss)",
+						"label": "Ghosts In The Fog (Protoss)"
+					},
+					{
+						"value": "Ghosts in the Fog (Terran)",
+						"label": "Ghosts In The Fog (Terran)"
+					},
+					{
+						"value": "Ghosts in the Fog (Zerg)",
+						"label": "Ghosts In The Fog (Zerg)"
+					},
+					{
+						"value": "Hand of Darkness (Protoss)",
+						"label": "Hand Of Darkness (Protoss)"
+					},
+					{
+						"value": "Hand of Darkness (Terran)",
+						"label": "Hand Of Darkness (Terran)"
+					},
+					{
+						"value": "Hand of Darkness (Zerg)",
+						"label": "Hand Of Darkness (Zerg)"
+					},
+					{
+						"value": "Harbinger of Oblivion (Protoss)",
+						"label": "Harbinger Of Oblivion (Protoss)"
+					},
+					{
+						"value": "Harbinger of Oblivion (Terran)",
+						"label": "Harbinger Of Oblivion (Terran)"
+					},
+					{
+						"value": "Harbinger of Oblivion (Zerg)",
+						"label": "Harbinger Of Oblivion (Zerg)"
+					},
+					{
+						"value": "Harvest of Screams (Protoss)",
+						"label": "Harvest Of Screams (Protoss)"
+					},
+					{
+						"value": "Harvest of Screams (Terran)",
+						"label": "Harvest Of Screams (Terran)"
+					},
+					{
+						"value": "Harvest of Screams (Zerg)",
+						"label": "Harvest Of Screams (Zerg)"
+					},
+					{
+						"value": "Haven's Fall (Protoss)",
+						"label": "Haven'S Fall (Protoss)"
+					},
+					{
+						"value": "Haven's Fall (Terran)",
+						"label": "Haven'S Fall (Terran)"
+					},
+					{
+						"value": "Haven's Fall (Zerg)",
+						"label": "Haven'S Fall (Zerg)"
+					},
+					{
+						"value": "In Utter Darkness (Protoss)",
+						"label": "In Utter Darkness (Protoss)"
+					},
+					{
+						"value": "In Utter Darkness (Terran)",
+						"label": "In Utter Darkness (Terran)"
+					},
+					{
+						"value": "In Utter Darkness (Zerg)",
+						"label": "In Utter Darkness (Zerg)"
+					},
+					{
+						"value": "In the Enemy's Shadow",
+						"label": "In The Enemy'S Shadow"
+					},
+					{
+						"value": "Infested (Protoss)",
+						"label": "Infested (Protoss)"
+					},
+					{
+						"value": "Infested (Terran)",
+						"label": "Infested (Terran)"
+					},
+					{
+						"value": "Infested (Zerg)",
+						"label": "Infested (Zerg)"
+					},
+					{
+						"value": "Into the Void",
+						"label": "Into The Void"
+					},
+					{
+						"value": "Lab Rat (Protoss)",
+						"label": "Lab Rat (Protoss)"
+					},
+					{
+						"value": "Lab Rat (Terran)",
+						"label": "Lab Rat (Terran)"
+					},
+					{
+						"value": "Lab Rat (Zerg)",
+						"label": "Lab Rat (Zerg)"
+					},
+					{
+						"value": "Last Stand (Protoss)",
+						"label": "Last Stand (Protoss)"
+					},
+					{
+						"value": "Last Stand (Terran)",
+						"label": "Last Stand (Terran)"
+					},
+					{
+						"value": "Last Stand (Zerg)",
+						"label": "Last Stand (Zerg)"
+					},
+					{
+						"value": "Liberation Day",
+						"label": "Liberation Day"
+					},
+					{
+						"value": "Maw of the Void (Protoss)",
+						"label": "Maw Of The Void (Protoss)"
+					},
+					{
+						"value": "Maw of the Void (Terran)",
+						"label": "Maw Of The Void (Terran)"
+					},
+					{
+						"value": "Maw of the Void (Zerg)",
+						"label": "Maw Of The Void (Zerg)"
+					},
+					{
+						"value": "Media Blitz (Protoss)",
+						"label": "Media Blitz (Protoss)"
+					},
+					{
+						"value": "Media Blitz (Terran)",
+						"label": "Media Blitz (Terran)"
+					},
+					{
+						"value": "Media Blitz (Zerg)",
+						"label": "Media Blitz (Zerg)"
+					},
+					{
+						"value": "Night Terrors",
+						"label": "Night Terrors"
+					},
+					{
+						"value": "Old Soldiers (Protoss)",
+						"label": "Old Soldiers (Protoss)"
+					},
+					{
+						"value": "Old Soldiers (Terran)",
+						"label": "Old Soldiers (Terran)"
+					},
+					{
+						"value": "Old Soldiers (Zerg)",
+						"label": "Old Soldiers (Zerg)"
+					},
+					{
+						"value": "Outbreak (Protoss)",
+						"label": "Outbreak (Protoss)"
+					},
+					{
+						"value": "Outbreak (Terran)",
+						"label": "Outbreak (Terran)"
+					},
+					{
+						"value": "Outbreak (Zerg)",
+						"label": "Outbreak (Zerg)"
+					},
+					{
+						"value": "Phantoms of the Void (Protoss)",
+						"label": "Phantoms Of The Void (Protoss)"
+					},
+					{
+						"value": "Phantoms of the Void (Terran)",
+						"label": "Phantoms Of The Void (Terran)"
+					},
+					{
+						"value": "Phantoms of the Void (Zerg)",
+						"label": "Phantoms Of The Void (Zerg)"
+					},
+					{
+						"value": "Piercing the Shroud",
+						"label": "Piercing The Shroud"
+					},
+					{
+						"value": "Planetfall (Protoss)",
+						"label": "Planetfall (Protoss)"
+					},
+					{
+						"value": "Planetfall (Terran)",
+						"label": "Planetfall (Terran)"
+					},
+					{
+						"value": "Planetfall (Zerg)",
+						"label": "Planetfall (Zerg)"
+					},
+					{
+						"value": "Purification (Protoss)",
+						"label": "Purification (Protoss)"
+					},
+					{
+						"value": "Purification (Terran)",
+						"label": "Purification (Terran)"
+					},
+					{
+						"value": "Purification (Zerg)",
+						"label": "Purification (Zerg)"
+					},
+					{
+						"value": "Rak'Shir (Protoss)",
+						"label": "Rak'Shir (Protoss)"
+					},
+					{
+						"value": "Rak'Shir (Terran)",
+						"label": "Rak'Shir (Terran)"
+					},
+					{
+						"value": "Rak'Shir (Zerg)",
+						"label": "Rak'Shir (Zerg)"
+					},
+					{
+						"value": "Rendezvous (Protoss)",
+						"label": "Rendezvous (Protoss)"
+					},
+					{
+						"value": "Rendezvous (Terran)",
+						"label": "Rendezvous (Terran)"
+					},
+					{
+						"value": "Rendezvous (Zerg)",
+						"label": "Rendezvous (Zerg)"
+					},
+					{
+						"value": "Safe Haven (Protoss)",
+						"label": "Safe Haven (Protoss)"
+					},
+					{
+						"value": "Safe Haven (Terran)",
+						"label": "Safe Haven (Terran)"
+					},
+					{
+						"value": "Safe Haven (Zerg)",
+						"label": "Safe Haven (Zerg)"
+					},
+					{
+						"value": "Salvation (Protoss)",
+						"label": "Salvation (Protoss)"
+					},
+					{
+						"value": "Salvation (Terran)",
+						"label": "Salvation (Terran)"
+					},
+					{
+						"value": "Salvation (Zerg)",
+						"label": "Salvation (Zerg)"
+					},
+					{
+						"value": "Shatter the Sky (Protoss)",
+						"label": "Shatter The Sky (Protoss)"
+					},
+					{
+						"value": "Shatter the Sky (Terran)",
+						"label": "Shatter The Sky (Terran)"
+					},
+					{
+						"value": "Shatter the Sky (Zerg)",
+						"label": "Shatter The Sky (Zerg)"
+					},
+					{
+						"value": "Shoot the Messenger (Protoss)",
+						"label": "Shoot The Messenger (Protoss)"
+					},
+					{
+						"value": "Shoot the Messenger (Terran)",
+						"label": "Shoot The Messenger (Terran)"
+					},
+					{
+						"value": "Shoot the Messenger (Zerg)",
+						"label": "Shoot The Messenger (Zerg)"
+					},
+					{
+						"value": "Sky Shield (Protoss)",
+						"label": "Sky Shield (Protoss)"
+					},
+					{
+						"value": "Sky Shield (Terran)",
+						"label": "Sky Shield (Terran)"
+					},
+					{
+						"value": "Sky Shield (Zerg)",
+						"label": "Sky Shield (Zerg)"
+					},
+					{
+						"value": "Smash and Grab (Protoss)",
+						"label": "Smash And Grab (Protoss)"
+					},
+					{
+						"value": "Smash and Grab (Terran)",
+						"label": "Smash And Grab (Terran)"
+					},
+					{
+						"value": "Smash and Grab (Zerg)",
+						"label": "Smash And Grab (Zerg)"
+					},
+					{
+						"value": "Steps of the Rite (Protoss)",
+						"label": "Steps Of The Rite (Protoss)"
+					},
+					{
+						"value": "Steps of the Rite (Terran)",
+						"label": "Steps Of The Rite (Terran)"
+					},
+					{
+						"value": "Steps of the Rite (Zerg)",
+						"label": "Steps Of The Rite (Zerg)"
+					},
+					{
+						"value": "Sudden Strike",
+						"label": "Sudden Strike"
+					},
+					{
+						"value": "Supernova (Protoss)",
+						"label": "Supernova (Protoss)"
+					},
+					{
+						"value": "Supernova (Terran)",
+						"label": "Supernova (Terran)"
+					},
+					{
+						"value": "Supernova (Zerg)",
+						"label": "Supernova (Zerg)"
+					},
+					{
+						"value": "Supreme",
+						"label": "Supreme"
+					},
+					{
+						"value": "Templar's Charge (Protoss)",
+						"label": "Templar'S Charge (Protoss)"
+					},
+					{
+						"value": "Templar's Charge (Terran)",
+						"label": "Templar'S Charge (Terran)"
+					},
+					{
+						"value": "Templar's Charge (Zerg)",
+						"label": "Templar'S Charge (Zerg)"
+					},
+					{
+						"value": "Templar's Return",
+						"label": "Templar'S Return"
+					},
+					{
+						"value": "Temple of Unification (Protoss)",
+						"label": "Temple Of Unification (Protoss)"
+					},
+					{
+						"value": "Temple of Unification (Terran)",
+						"label": "Temple Of Unification (Terran)"
+					},
+					{
+						"value": "Temple of Unification (Zerg)",
+						"label": "Temple Of Unification (Zerg)"
+					},
+					{
+						"value": "The Crucible (Protoss)",
+						"label": "The Crucible (Protoss)"
+					},
+					{
+						"value": "The Crucible (Terran)",
+						"label": "The Crucible (Terran)"
+					},
+					{
+						"value": "The Crucible (Zerg)",
+						"label": "The Crucible (Zerg)"
+					},
+					{
+						"value": "The Dig (Protoss)",
+						"label": "The Dig (Protoss)"
+					},
+					{
+						"value": "The Dig (Terran)",
+						"label": "The Dig (Terran)"
+					},
+					{
+						"value": "The Dig (Zerg)",
+						"label": "The Dig (Zerg)"
+					},
+					{
+						"value": "The Escape",
+						"label": "The Escape"
+					},
+					{
+						"value": "The Essence of Eternity",
+						"label": "The Essence Of Eternity"
+					},
+					{
+						"value": "The Great Train Robbery (Protoss)",
+						"label": "The Great Train Robbery (Protoss)"
+					},
+					{
+						"value": "The Great Train Robbery (Terran)",
+						"label": "The Great Train Robbery (Terran)"
+					},
+					{
+						"value": "The Great Train Robbery (Zerg)",
+						"label": "The Great Train Robbery (Zerg)"
+					},
+					{
+						"value": "The Growing Shadow (Protoss)",
+						"label": "The Growing Shadow (Protoss)"
+					},
+					{
+						"value": "The Growing Shadow (Terran)",
+						"label": "The Growing Shadow (Terran)"
+					},
+					{
+						"value": "The Growing Shadow (Zerg)",
+						"label": "The Growing Shadow (Zerg)"
+					},
+					{
+						"value": "The Host (Protoss)",
+						"label": "The Host (Protoss)"
+					},
+					{
+						"value": "The Host (Terran)",
+						"label": "The Host (Terran)"
+					},
+					{
+						"value": "The Host (Zerg)",
+						"label": "The Host (Zerg)"
+					},
+					{
+						"value": "The Infinite Cycle",
+						"label": "The Infinite Cycle"
+					},
+					{
+						"value": "The Moebius Factor (Protoss)",
+						"label": "The Moebius Factor (Protoss)"
+					},
+					{
+						"value": "The Moebius Factor (Terran)",
+						"label": "The Moebius Factor (Terran)"
+					},
+					{
+						"value": "The Moebius Factor (Zerg)",
+						"label": "The Moebius Factor (Zerg)"
+					},
+					{
+						"value": "The Outlaws (Protoss)",
+						"label": "The Outlaws (Protoss)"
+					},
+					{
+						"value": "The Outlaws (Terran)",
+						"label": "The Outlaws (Terran)"
+					},
+					{
+						"value": "The Outlaws (Zerg)",
+						"label": "The Outlaws (Zerg)"
+					},
+					{
+						"value": "The Reckoning (Protoss)",
+						"label": "The Reckoning (Protoss)"
+					},
+					{
+						"value": "The Reckoning (Terran)",
+						"label": "The Reckoning (Terran)"
+					},
+					{
+						"value": "The Reckoning (Zerg)",
+						"label": "The Reckoning (Zerg)"
+					},
+					{
+						"value": "The Spear of Adun (Protoss)",
+						"label": "The Spear Of Adun (Protoss)"
+					},
+					{
+						"value": "The Spear of Adun (Terran)",
+						"label": "The Spear Of Adun (Terran)"
+					},
+					{
+						"value": "The Spear of Adun (Zerg)",
+						"label": "The Spear Of Adun (Zerg)"
+					},
+					{
+						"value": "Trouble In Paradise",
+						"label": "Trouble In Paradise"
+					},
+					{
+						"value": "Unsealing the Past (Protoss)",
+						"label": "Unsealing The Past (Protoss)"
+					},
+					{
+						"value": "Unsealing the Past (Terran)",
+						"label": "Unsealing The Past (Terran)"
+					},
+					{
+						"value": "Unsealing the Past (Zerg)",
+						"label": "Unsealing The Past (Zerg)"
+					},
+					{
+						"value": "Waking the Ancient (Protoss)",
+						"label": "Waking The Ancient (Protoss)"
+					},
+					{
+						"value": "Waking the Ancient (Terran)",
+						"label": "Waking The Ancient (Terran)"
+					},
+					{
+						"value": "Waking the Ancient (Zerg)",
+						"label": "Waking The Ancient (Zerg)"
+					},
+					{
+						"value": "Welcome to the Jungle (Protoss)",
+						"label": "Welcome To The Jungle (Protoss)"
+					},
+					{
+						"value": "Welcome to the Jungle (Terran)",
+						"label": "Welcome To The Jungle (Terran)"
+					},
+					{
+						"value": "Welcome to the Jungle (Zerg)",
+						"label": "Welcome To The Jungle (Zerg)"
+					},
+					{
+						"value": "Whispers of Doom",
+						"label": "Whispers Of Doom"
+					},
+					{
+						"value": "With Friends Like These",
+						"label": "With Friends Like These"
+					},
+					{
+						"value": "Zero Hour (Protoss)",
+						"label": "Zero Hour (Protoss)"
+					},
+					{
+						"value": "Zero Hour (Terran)",
+						"label": "Zero Hour (Terran)"
+					},
+					{
+						"value": "Zero Hour (Zerg)",
+						"label": "Zero Hour (Zerg)"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "difficulty_curve",
+			"label": "Difficulty Curve",
+			"description": "Determines whether campaign missions will be placed with a smooth difficulty curve.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "standard",
+				"choices": [
+					{
+						"value": "standard",
+						"label": "Standard"
+					},
+					{
+						"value": "uneven",
+						"label": "Uneven"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exclude_very_hard_missions",
+			"label": "Exclude Very Hard Missions",
+			"description": "Excludes Very Hard missions outside of Epilogue campaign (All-In, The Reckoning, Salvation, and all Epilogue missions are considered Very Hard).",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "true",
+						"label": "True"
+					},
+					{
+						"value": "false",
+						"label": "False"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "vanilla_items_only",
+			"label": "Vanilla Items Only",
+			"description": "If turned on, the item pool is limited only to items that appear in the main 3 vanilla campaigns.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exclude_overpowered_items",
+			"label": "Exclude Overpowered Items",
+			"description": "If turned on, a curated list of very strong items are excluded.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "victory_cache",
+			"label": "Victory Cache",
+			"description": "Controls how many additional checks are awarded for completing a mission.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "vanilla_locations",
+			"label": "Vanilla Locations",
+			"description": "Enables or disables checks for completing vanilla objectives.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "enabled",
+				"choices": [
+					{
+						"value": "enabled",
+						"label": "Enabled"
+					},
+					{
+						"value": "half_chance",
+						"label": "Half Chance"
+					},
+					{
+						"value": "filler",
+						"label": "Filler"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "extra_locations",
+			"label": "Extra Locations",
+			"description": "Enables or disables checks for mission progress and minor objectives.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "enabled",
+				"choices": [
+					{
+						"value": "enabled",
+						"label": "Enabled"
+					},
+					{
+						"value": "half_chance",
+						"label": "Half Chance"
+					},
+					{
+						"value": "filler",
+						"label": "Filler"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "challenge_locations",
+			"label": "Challenge Locations",
+			"description": "Enables or disables checks for completing challenge tasks.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "enabled",
+				"choices": [
+					{
+						"value": "enabled",
+						"label": "Enabled"
+					},
+					{
+						"value": "half_chance",
+						"label": "Half Chance"
+					},
+					{
+						"value": "filler",
+						"label": "Filler"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mastery_locations",
+			"label": "Mastery Locations",
+			"description": "Enables or disables checks for overcoming especially difficult challenges.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "enabled",
+				"choices": [
+					{
+						"value": "enabled",
+						"label": "Enabled"
+					},
+					{
+						"value": "half_chance",
+						"label": "Half Chance"
+					},
+					{
+						"value": "filler",
+						"label": "Filler"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "basebust_locations",
+			"label": "Basebust Locations",
+			"description": "Enables or disables checks for killing non-objective bases.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "enabled",
+				"choices": [
+					{
+						"value": "enabled",
+						"label": "Enabled"
+					},
+					{
+						"value": "half_chance",
+						"label": "Half Chance"
+					},
+					{
+						"value": "filler",
+						"label": "Filler"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "speedrun_locations",
+			"label": "Speedrun Locations",
+			"description": "Enables or disables checks for overcoming speedrun challenges.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "enabled",
+				"choices": [
+					{
+						"value": "enabled",
+						"label": "Enabled"
+					},
+					{
+						"value": "half_chance",
+						"label": "Half Chance"
+					},
+					{
+						"value": "filler",
+						"label": "Filler"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "preventative_locations",
+			"label": "Preventative Locations",
+			"description": "Enables or disables checks for overcoming preventative challenges.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "enabled",
+				"choices": [
+					{
+						"value": "enabled",
+						"label": "Enabled"
+					},
+					{
+						"value": "half_chance",
+						"label": "Half Chance"
+					},
+					{
+						"value": "filler",
+						"label": "Filler"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "filler_percentage",
+			"label": "Filler Percentage",
+			"description": "Percentage of the item pool filled with filler items.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 70,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "minerals_per_item",
+			"label": "Minerals Per Item",
+			"description": "Configures how many minerals are given per resource item.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 200,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "vespene_per_item",
+			"label": "Vespene Per Item",
+			"description": "Configures how much vespene gas is given per resource item.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 200,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_supply_per_item",
+			"label": "Starting Supply Per Item",
+			"description": "Configures how much starting supply per is given per item.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "maximum_supply_per_item",
+			"label": "Maximum Supply Per Item",
+			"description": "Configures how much the maximum supply limit increases per item.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "maximum_supply_reduction_per_item",
+			"label": "Maximum Supply Reduction Per Item",
+			"description": "Configures how much maximum supply is reduced per trap item.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 10,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lowest_maximum_supply",
+			"label": "Lowest Maximum Supply",
+			"description": "Controls how far max supply reduction traps can reduce maximum supply.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 50,
+				"max": 200,
+				"step": 1,
+				"default": 180
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "research_cost_reduction_per_item",
+			"label": "Research Cost Reduction Per Item",
+			"description": "Controls how much weapon/armor research cost is cut per research cost filler item.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mission_order_scouting",
+			"label": "Mission Order Scouting",
+			"description": "Allow the Sc2 mission order client tabs to indicate the type of item (i.e., progression, useful, etc.) available at each location of a mission.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "completed",
+						"label": "Completed"
+					},
+					{
+						"value": "available",
+						"label": "Available"
+					},
+					{
+						"value": "layout",
+						"label": "Layout"
+					},
+					{
+						"value": "campaign",
+						"label": "Campaign"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -4,8 +4,8 @@
 
 - Super Mario 64 US or JP Rom (Europe and Shindou not supported)
 - Either of
-    - [SM64AP-Launcher](https://github.com/N00byKing/SM64AP-Launcher/releases) or
-    - Cloning and building [sm64ex](https://github.com/N00byKing/sm64ex) manually
+  - [SM64AP-Launcher](https://github.com/N00byKing/SM64AP-Launcher/releases) or
+  - Cloning and building [sm64ex](https://github.com/N00byKing/sm64ex) manually
 - Optional, for sending [commands](/tutorial/Archipelago/commands/en) like `!hint`: the TextClient from [the most recent Archipelago release](https://github.com/ArchipelagoMW/Archipelago/releases)
 
 NOTE: The above linked launcher is a special version designed to work with the Archipelago build of sm64ex.
@@ -15,39 +15,39 @@ You can use other sm64-port based builds with it, but you can't use a different 
 
 ### Installation via SM64AP-Launcher
 
-*Windows Preparations*
+_Windows Preparations_
 
 First, install [MSYS](https://www.msys2.org/) as described on the page. DO NOT INSTALL INTO A FOLDER PATH WITH SPACES.
 It is extremely encouraged to use the default install directory!
 Then continue to `Using the Launcher`
 
-*Linux Preparations*
+_Linux Preparations_
 
 You will need to install some dependencies before using the launcher.
 The launcher itself needs `qt6`, `patch` and `git`, and building the game requires `sdl2 glew cmake python make` (If you install `jsoncpp` as well, it will be linked dynamically).
 Then continue to `Using the Launcher`
 
-*Using the Launcher*
+_Using the Launcher_
 
 1. Go to the page linked for SM64AP-Launcher, and press on the topmost entry.
 2. Scroll down, and download the zip file for your OS.
 3. Unpack the zip file in an empty folder.
 4. Run the Launcher. On first start, press `Check Requirements`, which will guide you through the rest of the needed steps.
-    - Windows: If you did not use the default install directory for MSYS, close this window, check `Show advanced options` and reopen using `Re-check Requirements`. You can then set the path manually.
+   - Windows: If you did not use the default install directory for MSYS, close this window, check `Show advanced options` and reopen using `Re-check Requirements`. You can then set the path manually.
 5. When finished, use `Compile default SM64AP build` to continue.
-    - **Advanced configuration:** If you want to use additional build options such as Better Camera, No Drawing Distance, etc or apply game patches such as 60FPS, Enhanced Moveset, etc, then use the `Compile custom build` option:
-      - Set a name for your build, e.g. "archipelago" or whatever you like.
-      - Press the `Download Files` button.
-      - Set Make Flags, e.g. `-j8 BETTERCAMERA=1 NODRAWINGDISTANCE=1` to enable Better Camera and No Drawing Distance.
-      - Press `Apply Patches` to select patches to apply. Example patches include:
-        - 60FPS: Improves frame rate.
-        - Enhanced Moveset: Gives Mario new abilities. [Details here](https://github.com/TheGag96/sm64-port).
-        - Nonstop Mode: Makes it possible to fetch multiple stars in a level without exiting the level first.
-      - Press `Create Build`. This will take several minutes.
-      - You can also use the Repository and Branch fields to build with different repos or branches if you want to build using a fork or development version of SM64AP.
-      - For more details, see:
-        - [Available Makeflags](https://github.com/sm64pc/sm64ex/wiki/Build-options)
-        - [Included Game Patches](https://github.com/N00byKing/sm64ex/blob/archipelago/enhancements/README.md)
+   - **Advanced configuration:** If you want to use additional build options such as Better Camera, No Drawing Distance, etc or apply game patches such as 60FPS, Enhanced Moveset, etc, then use the `Compile custom build` option:
+     - Set a name for your build, e.g. "archipelago" or whatever you like.
+     - Press the `Download Files` button.
+     - Set Make Flags, e.g. `-j8 BETTERCAMERA=1 NODRAWINGDISTANCE=1` to enable Better Camera and No Drawing Distance.
+     - Press `Apply Patches` to select patches to apply. Example patches include:
+       - 60FPS: Improves frame rate.
+       - Enhanced Moveset: Gives Mario new abilities. [Details here](https://github.com/TheGag96/sm64-port).
+       - Nonstop Mode: Makes it possible to fetch multiple stars in a level without exiting the level first.
+     - Press `Create Build`. This will take several minutes.
+     - You can also use the Repository and Branch fields to build with different repos or branches if you want to build using a fork or development version of SM64AP.
+     - For more details, see:
+       - [Available Makeflags](https://github.com/sm64pc/sm64ex/wiki/Build-options)
+       - [Included Game Patches](https://github.com/N00byKing/sm64ex/blob/archipelago/enhancements/README.md)
 6. Press `Download Files` to prepare the build, afterwards `Create Build`.
 7. SM64EX will now be compiled. This can take a while.
 
@@ -57,7 +57,7 @@ NOTE: If it does not start when pressing `Play selected build`, recheck if you t
 
 ### Manual Compilation (Linux/Windows)
 
-*Windows Preparations*
+_Windows Preparations_
 
 First, install [MSYS](https://www.msys2.org/) as described on the page. DO NOT INSTALL INTO A FOLDER PATH WITH SPACES.
 
@@ -65,13 +65,13 @@ After launching msys2 using a MinGW x64 shell (there should be a start menu entr
 
 Continue to `Compiling`.
 
-*Linux Preparations*
+_Linux Preparations_
 
 Install the relevant dependencies `sdl2 glew cmake python make patch git`. SM64EX will link `jsoncpp` dynamic if installed. If not, it will compile and link statically.
 
 Continue to `Compiling`.
 
-*Compiling*
+_Compiling_
 
 Obtain the code base by cloning the relevant repository via `git clone --recursive https://github.com/N00byKing/sm64ex`. Copy your legally dumped rom into your sm64ex folder (if you are not sure where your folder is located, do a quick Windows search for sm64ex). The name of the ROM needs to be `baserom.REGION.z64` where `REGION` is either `us` or `jp` respectively.
 
@@ -106,12 +106,13 @@ Open Notepad. Paste in the following text: `start sm64.us.f3dex2e.exe --sm64ap_f
 
 Go to File > Save As...
 
-Navigate to the folder you selected for your SM64 build when you followed the Build guide for SM64AP-Launcher earlier. Once there, navigate further into `build` and then `us_pc`. This folder should be the same folder that `sm64.us.f3dex2e.exe` resides in. 
+Navigate to the folder you selected for your SM64 build when you followed the Build guide for SM64AP-Launcher earlier. Once there, navigate further into `build` and then `us_pc`. This folder should be the same folder that `sm64.us.f3dex2e.exe` resides in.
 
 Make the file name `"offline.bat"` . THE QUOTE MARKS ARE IMPORTANT! Otherwise, it will create a text file instead ("offline.bat.txt"), which won't work as a batch file.
 
 Now you should have a file called `offline.bat` with a gear icon in the same folder as your "sm64.us.f3dex2e.exe". Right click `offline.bat` and choose `Send To > Desktop (Create Shortcut)`.
--  If the icon for this file is a notepad rather than a gear, you saved it as a .txt file on accident. To fix this, change the file extension to .bat.
+
+- If the icon for this file is a notepad rather than a gear, you saved it as a .txt file on accident. To fix this, change the file extension to .bat.
 
 From now on, whenever you start an offline, single-player game, just download the `.apsm64ex` patch file from the Generator, then drag-and-drop that onto `offline.bat` to open the game and start playing.
 
@@ -129,13 +130,15 @@ Use the same steps as before to open Notepad and paste in the following:
 
 `start sm64.us.f3dex2e.exe --sm64ap_name "%slot%" --sm64ap_ip archipelago.gg:%port%`
 
-Save this file as `"online.bat"`, then create a shortcut by following the same steps as before. 
+Save this file as `"online.bat"`, then create a shortcut by following the same steps as before.
 
-To use this batch file,  double-click it. A window will open. Type the five-digit port number of the room you wish to join, then type your slot name.
+To use this batch file, double-click it. A window will open. Type the five-digit port number of the room you wish to join, then type your slot name.
+
 - The port number is provided on the room page. The game host should share this page with all players.
 - The slot name is whatever you typed in the "Name" field when creating a config file. All slot names are visible on the room page.
 
-Once you provide those two bits of information, the game will open. 
+Once you provide those two bits of information, the game will open.
+
 - If the game only says `Connecting`, try again. Double-check the port number and slot name; even a single typo will cause your connection to fail.
 
 ## Installation Troubleshooting

@@ -1,18 +1,18 @@
 # Pokémon Gen 3 Adjuster for Pokémon Emerald
 
-1) [Introduction](#introduction)
-2) [Quickstart](#quickstart)
-3) [Sprite Pack](#sprite-pack)
-    1) [Extracting Resources from the ROM](#extracting-resources-from-the-rom)
-    2) [Pokémon Folder Specifications](#pokemon-folder-specifications)
-        1) [Pokémon Folder Sprites](#pokemon-folder-sprites)
-        2) [Pokémon Folder Exceptions](#pokemon-folder-exceptions)
-    3) [Player Folder Specifications](#player-folder-specifications)
-        1) [Player Folder Palettes](#player-folder-palettes)
-        2) [Player Folder Sprites](#player-folder-sprites)
-        3) [Player Folder Sprite Size Override](#player-folder-sprite-size-override)
-4) [Pokémon Data Edition](#pokemon-data-edition)
-5) [Applying the Sprite Pack](#applying-the-sprite-pack)
+1. [Introduction](#introduction)
+2. [Quickstart](#quickstart)
+3. [Sprite Pack](#sprite-pack)
+   1. [Extracting Resources from the ROM](#extracting-resources-from-the-rom)
+   2. [Pokémon Folder Specifications](#pokemon-folder-specifications)
+      1. [Pokémon Folder Sprites](#pokemon-folder-sprites)
+      2. [Pokémon Folder Exceptions](#pokemon-folder-exceptions)
+   3. [Player Folder Specifications](#player-folder-specifications)
+      1. [Player Folder Palettes](#player-folder-palettes)
+      2. [Player Folder Sprites](#player-folder-sprites)
+      3. [Player Folder Sprite Size Override](#player-folder-sprite-size-override)
+4. [Pokémon Data Edition](#pokemon-data-edition)
+5. [Applying the Sprite Pack](#applying-the-sprite-pack)
 
 ## Introduction
 
@@ -89,71 +89,67 @@ extras and exceptions. Here is a list of them:
 Generally, Pokémon folders will handle these sprites:
 
 - `front_anim.png`: This sprite replaces the animation used when displaying the enemy's Pokémon sprite in battle,
-and the Pokémon sprite used when looking at a Pokémon's status in your team menu
-    - Required sprite size: `64x64px` sprite with `2` frames (`64x128px`)
-    - Required palette size: `16` colors max
+  and the Pokémon sprite used when looking at a Pokémon's status in your team menu - Required sprite size: `64x64px` sprite with `2` frames (`64x128px`) - Required palette size: `16` colors max
 - `sfront_anim.png`: Shiny variant of the animation used when displaying the enemy's Pokémon sprite in battle, and
-the Pokémon sprite used when looking at a Pokémon's status in your team menu
-    - Same requirements as `front_anim.png`
-    - Make sure that the sprite's pixel data matches the one from `front_anim.png`, as only the sprite's palette
-    is used by the adjuster
+  the Pokémon sprite used when looking at a Pokémon's status in your team menu - Same requirements as `front_anim.png` - Make sure that the sprite's pixel data matches the one from `front_anim.png`, as only the sprite's palette
+  is used by the adjuster
 - `back.png`: This sprite replaces the sprite used when displaying your Pokémon sprite in battle
-    - Required sprite size: `64x64px` sprite
-    - Required palette size: `16` colors max
+  - Required sprite size: `64x64px` sprite
+  - Required palette size: `16` colors max
 - `sback.png`: Shiny variant of the sprite used when displaying your Pokémon sprite in battle
-    - Optional if `sfront_anim.png` is given
-    - Same requirements as `back.png`
-    - Make sure that the sprite's pixel data matches the one from `back.png`, as only the sprite's palette
+  - Optional if `sfront_anim.png` is given
+  - Same requirements as `back.png`
+  - Make sure that the sprite's pixel data matches the one from `back.png`, as only the sprite's palette
     is used by the adjuster
 - `icon-X.png`: Icon used for the Pokémon in the team menu
-    - Required sprite size: `32x32px` sprite with `2` frames (`32x64px`)
-    - X must be a value between 0 and 2: This number will choose which icon palette to use
-    - Icon palettes: [Palette 0](./icon_palette_0.pal), [Palette 1](./icon_palette_1.pal),
+  - Required sprite size: `32x32px` sprite with `2` frames (`32x64px`)
+  - X must be a value between 0 and 2: This number will choose which icon palette to use
+  - Icon palettes: [Palette 0](./icon_palette_0.pal), [Palette 1](./icon_palette_1.pal),
     [Palette 2](./icon_palette_2.pal)
-    - Alternatively, `Venusaur` uses Palette 1, `Charizard` uses Palette 0, and `Blastoise` uses Palette 2. You can
+  - Alternatively, `Venusaur` uses Palette 1, `Charizard` uses Palette 0, and `Blastoise` uses Palette 2. You can
     extract those objects to get icon sprites with the right palettes.
 - `footprint.png`: Pokémon's footprint in the Pokédex
-    - Required sprite size: `16x16px` sprite
-    - Required palette: Exactly 2 colors: black (0, 0, 0) and white (255, 255, 255)
+  - Required sprite size: `16x16px` sprite
+  - Required palette: Exactly 2 colors: black (0, 0, 0) and white (255, 255, 255)
 
 #### Pokémon Folder Exceptions
 
 While most Pokémon follow the rules above, some of them have different requirements:
 
 - Castform:
-    - `front_anim.png` & `sfront_anim.png`:
-        - Required sprite size: `64x64px` sprite with `4` frames (`64x256px`)
-        - Required palette size: Exactly `64` colors
-        - Each frame uses colors from its 16-color palette: Frame 1 uses colors 1-16 from the palette, Frame 2
-        uses colors 17-32 from the palette, etc...
-    - `back.png` & `sback.png`:
-        - Required sprite size: `64x64px` sprite with `4` frames (`64x256px`)
-        - Required palette size: Exactly `64` colors
-        - Each frame uses colors from its 16-color palette: Frame 1 uses colors 1-16 from the palette, Frame 2
-        uses colors 17-32 from the palette, etc...
+  - `front_anim.png` & `sfront_anim.png`:
+    - Required sprite size: `64x64px` sprite with `4` frames (`64x256px`)
+    - Required palette size: Exactly `64` colors
+    - Each frame uses colors from its 16-color palette: Frame 1 uses colors 1-16 from the palette, Frame 2
+      uses colors 17-32 from the palette, etc...
+  - `back.png` & `sback.png`:
+    - Required sprite size: `64x64px` sprite with `4` frames (`64x256px`)
+    - Required palette size: Exactly `64` colors
+    - Each frame uses colors from its 16-color palette: Frame 1 uses colors 1-16 from the palette, Frame 2
+      uses colors 17-32 from the palette, etc...
 - Deoxys:
-    - `back.png` & `sback.png`:
-        - Required sprite size: `64x64px` sprite with `2` frames (`64x128px`)
-        - First frame for the Normal Deoxys form, second frame for the Speed Deoxys form
-    - `icon-X.png`:
-        - Required sprite size: `32x32` sprite with `4` frames (`32x128px`)
-        - First two frames for the Normal Deoxys form, last two frames for the Speed Deoxys form
+  - `back.png` & `sback.png`:
+    - Required sprite size: `64x64px` sprite with `2` frames (`64x128px`)
+    - First frame for the Normal Deoxys form, second frame for the Speed Deoxys form
+  - `icon-X.png`:
+    - Required sprite size: `32x32` sprite with `4` frames (`32x128px`)
+    - First two frames for the Normal Deoxys form, last two frames for the Speed Deoxys form
 - All Unowns:
-    - `front_anim.png` & `back.png`:
-        - Palette: Only Unown A's palette is used for all Unowns, so the existing colors of the palette must be
-        kept. Extract Unown A's sprites to get its palette, and only edit the pink colors in it
-    - `sfront_anim.png` & `sback.png`:
-        - Palette: Only Unown A's shiny palette is used for all Unowns, so the existing colors of the palette must
-        be kept. Extract Unown A's sprites to get its shiny palette, and only edit the pink colors in it
-    - `footprint.png`:
-        - Only Unown A's footprint is used for all Unowns, thus this sprite doesn't exist within the ROM, and will
-        be ignored by the adjuster
+  - `front_anim.png` & `back.png`:
+    - Palette: Only Unown A's palette is used for all Unowns, so the existing colors of the palette must be
+      kept. Extract Unown A's sprites to get its palette, and only edit the pink colors in it
+  - `sfront_anim.png` & `sback.png`:
+    - Palette: Only Unown A's shiny palette is used for all Unowns, so the existing colors of the palette must
+      be kept. Extract Unown A's sprites to get its shiny palette, and only edit the pink colors in it
+  - `footprint.png`:
+    - Only Unown A's footprint is used for all Unowns, thus this sprite doesn't exist within the ROM, and will
+      be ignored by the adjuster
 - Egg:
-    - `hatch_anim.png`:
-        - Required sprite size: `32x32px` sprite with `4` frames + `8x8px` sprite with `4` frames (`32x136px`)
-        - Required palette size: `16` colors max
-        - Extract the Egg sprite from the ROM to see this sprite's shape. It contains 4 frames for the hatching
-        animation, and 4 frames for eggshells shards flying around after hatching
+  - `hatch_anim.png`:
+    - Required sprite size: `32x32px` sprite with `4` frames + `8x8px` sprite with `4` frames (`32x136px`)
+    - Required palette size: `16` colors max
+    - Extract the Egg sprite from the ROM to see this sprite's shape. It contains 4 frames for the hatching
+      animation, and 4 frames for eggshells shards flying around after hatching
 
 ### Player Folder Specifications
 
@@ -166,13 +162,14 @@ the same between battle sprites, and between overworld sprites, unless stated ot
 #### Player Folder Palettes
 
 The palettes used for overworld sprites has some restrictions, as elements other than the player uses said palette:
+
 - The arrow displayed when next to an exit from a sub-area (cave, dungeon) uses the color #10 from the palette,
 - The exclamation mark displayed above trainers when they notice you before battling uses colors #15 and #16 from
-the palette,
+  the palette,
 - The Pokémon you surf on in the overworld uses color #6 for its light shade, color #7 for its medium shade, and
-color #16 for its dark shade,
+  color #16 for its dark shade,
 - The Pokémon you fly on in the overworld uses color #6 for its light shade, color #7 for its medium shade, and
-color #16 for its dark shade,
+  color #16 for its dark shade,
 
 For this reason, color #15 of the player's overworld palette must be white (255, 255, 255), and color #16 must be
 black (0, 0, 0).
@@ -180,57 +177,39 @@ black (0, 0, 0).
 #### Player Folder Sprites
 
 - `battle_back.png`: `Battle` sprite. This sprite replaces the animation used when the player is throwing a ball,
-whether it's at the beginning of a battle, or in the Safari Zone
-    - Required sprite size: `64x64px` sprite with `4` OR `5` frames (`64x256px` OR `64x320px`)
-    - Required palette size: Exactly `16` colors
-    - If `4` frames are given, the player will use the `Emerald-style` ball throwing animation, and if `5` frames
-    are given, the player will use the `Firered/Leafgreen-style` ball thowing animation
-    - `Emerald-style` ball throwing animation: The last frame is the idle frame, the rest is the animation
-    - `Firered/Leafgreen-style` ball throwing animation: The first frame is the idle frame, the rest is the
-    animation
+  whether it's at the beginning of a battle, or in the Safari Zone - Required sprite size: `64x64px` sprite with `4` OR `5` frames (`64x256px` OR `64x320px`) - Required palette size: Exactly `16` colors - If `4` frames are given, the player will use the `Emerald-style` ball throwing animation, and if `5` frames
+  are given, the player will use the `Firered/Leafgreen-style` ball thowing animation - `Emerald-style` ball throwing animation: The last frame is the idle frame, the rest is the animation - `Firered/Leafgreen-style` ball throwing animation: The first frame is the idle frame, the rest is the
+  animation
 - `battle_front.png`: `Battle` sprite. This sprite replaces the sprite used when fighting your rival, at the
-beginning and end of a battle, and the sprite used in the Trainer card.
-    - Required sprite size: `64x64px` sprite
-    - Required palette size: Exactly `16` colors
+  beginning and end of a battle, and the sprite used in the Trainer card. - Required sprite size: `64x64px` sprite - Required palette size: Exactly `16` colors
 - `walking_running.png`: `Overworld` sprite. This sprite replaces the walking and running animations of the player
-in the overworld.
-    - Required sprite size: `16x32px` sprite with `18` frames (`16x576px`)
-    - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
+  in the overworld. - Required sprite size: `16x32px` sprite with `18` frames (`16x576px`) - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
 - `reflection.png`: `Overworld` sprite. This sprite's palette is shown whenever the player stands in front of clear
-water, in their reflection.
-    - Required sprite size: `16x32px` sprite with `18` frames (`16x576px`)
-    - Required palette size: Exactly `16` colors
-    - The palette must be a faded version of the overworld palette, to look like a reflection of the player in the
-    water
+  water, in their reflection. - Required sprite size: `16x32px` sprite with `18` frames (`16x576px`) - Required palette size: Exactly `16` colors - The palette must be a faded version of the overworld palette, to look like a reflection of the player in the
+  water
 - `acro_bike.png`: `Overworld` sprite. This sprite replaces the Acro Bike animations of the player in the overworld.
-    - Required sprite size: `32x32px` sprite with `27` frames (`32x864px`)
-    - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
+  - Required sprite size: `32x32px` sprite with `27` frames (`32x864px`)
+  - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
 - `mach_bike.png`: `Overworld` sprite. This sprite replaces the Mach Bike animations of the player in the overworld.
-    - Required sprite size: `32x32px` sprite with `9` frames (`32x288px`)
-    - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
+  - Required sprite size: `32x32px` sprite with `9` frames (`32x288px`)
+  - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
 - `surfing.png`: `Overworld` sprite. This sprite replaces the surfing animations of the player in the overworld.
-    - Required sprite size: `32x32px` sprite with `12` frames (`32x384px`)
-    - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
+  - Required sprite size: `32x32px` sprite with `12` frames (`32x384px`)
+  - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
 - `field_move.png`: `Overworld` sprite. This sprite replaces the animation used when the player uses an HM move in
-the overworld such as Cut, Rock Smash or Strength.
-    - Required sprite size: `32x32px` sprite with `5` frames (`32x160px`)
-    - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
+  the overworld such as Cut, Rock Smash or Strength. - Required sprite size: `32x32px` sprite with `5` frames (`32x160px`) - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
 - `underwater.png`: `Overworld` sprite. This sprite replaces the animation used when the player is swimming on a
-Pokémon's back underwater.
-    - Required sprite size: `32x32px` sprite with `9` frames (`32x288px`)
-    - Required palette size: Exactly `16` colors. Since this palette is shared among both players, the existing
-    colors of the palette must be kept. Extract the player's sprites to get its palette, and only edit colors #2
-    to #5, and colors #11 to #16
+  Pokémon's back underwater. - Required sprite size: `32x32px` sprite with `9` frames (`32x288px`) - Required palette size: Exactly `16` colors. Since this palette is shared among both players, the existing
+  colors of the palette must be kept. Extract the player's sprites to get its palette, and only edit colors #2
+  to #5, and colors #11 to #16
 - `fishing.png`: `Overworld` sprite. This sprite replaces the animation used when the player is fishing.
-    - Required sprite size: `32x32px` sprite with `12` frames (`32x384px`)
-    - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
+  - Required sprite size: `32x32px` sprite with `12` frames (`32x384px`)
+  - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
 - `watering.png`: `Overworld` sprite. This sprite replaces the animation used when the player is watering berries.
-    - Required sprite size: `32x32px` sprite with `9` frames (`32x288px`)
-    - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
+  - Required sprite size: `32x32px` sprite with `9` frames (`32x288px`)
+  - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
 - `decorating.png`: `Overworld` sprite. This sprite replaces the sprite used when the player is decorating their
-secret base.
-    - Required sprite size: `16x32px` sprite
-    - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
+  secret base. - Required sprite size: `16x32px` sprite - Required palette size: Exactly `16` colors, see [Player Folder Palettes](#player-folder-palettes)
 
 #### Player Folder Sprite Size Override
 
@@ -261,16 +240,16 @@ Here is a list of the values and their specifications:
 - Speed: The Pokémon's base speed. Must be a number between 1 and 255.
 - Type 1: The Pokémon's first type. Select a value within the given list.
 - Type 2: The Pokémon's second type. Select a value within the given list. Make it match the first type if you want
-the Pokémon to only have one type.
+  the Pokémon to only have one type.
 - Ability 1: The Pokémon's first ability. Select a value within the given list.
 - Ability 2: The Pokémon's second ability. Select a value within the given list. Make it match the first ability if
-you want the Pokémon to only have one ability.
+  you want the Pokémon to only have one ability.
 - Gender Ratio: The Pokémon's gender ratio. Select a value within the given list.
 - Forbid Flip: Dictates whether the Pokémon's sprite can be flipped or not when looking at the Pokémon's status
-screen in your team. The sprite can't be flipped if the option is ticked, otherwise it can be flipped.
+  screen in your team. The sprite can't be flipped if the option is ticked, otherwise it can be flipped.
 - Move Pool: The Pokémon's level up learnset. Each line must contain a move. Each move must be written in the
-format `<move>: <level>`, with `<move>` a known Pokémon move from this generation, and `<level>` a number between 1
-and 100.
+  format `<move>: <level>`, with `<move>` a known Pokémon move from this generation, and `<level>` a number between 1
+  and 100.
 
 <u>**Warning:**</u> Some of these values may overwrite randomization options selected in Archipelago: if the
 Pokémon's base stats or level up move pool have been randomized, the adjuster will replace the randomized values

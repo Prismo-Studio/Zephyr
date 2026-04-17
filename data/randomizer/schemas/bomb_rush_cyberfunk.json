@@ -1,282 +1,282 @@
 {
-  "id": "bomb_rush_cyberfunk",
-  "name": "Bomb Rush Cyberfunk",
-  "version": "0.1.6",
-  "description": "Bomb Rush Cyberfunk is 1 second per second of advanced funkstyle.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "logic",
-      "label": "Logic",
-      "description": "Choose the logic used by the randomizer.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "glitchless",
-        "choices": [
-          {
-            "value": "glitchless",
-            "label": "Glitchless"
-          },
-          {
-            "value": "glitched",
-            "label": "Glitched"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_intro",
-      "label": "Skip Intro",
-      "description": "Skips escaping the police station.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_dreams",
-      "label": "Skip Dreams",
-      "description": "Skips the dream sequences at the end of each chapter.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_statue_hands",
-      "label": "Skip Statue Hands",
-      "description": "Skips spraying the lion statue hands after the dream in Chapter 5.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "total_rep",
-      "label": "Total Rep",
-      "description": "Change the total amount of REP in your world.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1000,
-        "max": 2000,
-        "step": 1,
-        "default": 1400
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "extra_rep_required",
-      "label": "Extra Rep Required",
-      "description": "Changes the final boss to require 1000 REP instead of 960 REP to start.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_movestyle",
-      "label": "Starting Movestyle",
-      "description": "Choose which movestyle to start with.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "skateboard",
-        "choices": [
-          {
-            "value": "skateboard",
-            "label": "Skateboard"
-          },
-          {
-            "value": "inline_skates",
-            "label": "Inline Skates"
-          },
-          {
-            "value": "bmx",
-            "label": "Bmx"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "limited_graffiti",
-      "label": "Limited Graffiti",
-      "description": "Each graffiti design can only be used a limited number of times before being removed from your inventory.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "small_graffiti_uses",
-      "label": "Small Graffiti Uses",
-      "description": "Choose if small graffiti should be separate, meaning that you will need to switch characters every time you run out, or combined, meaning that unlocking new characters will add 5 uses that any character can use.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "separate",
-        "choices": [
-          {
-            "value": "separate",
-            "label": "Separate"
-          },
-          {
-            "value": "combined",
-            "label": "Combined"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_polo_photos",
-      "label": "Skip Polo Photos",
-      "description": "Skip taking pictures of Polo for items.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dont_save_photos",
-      "label": "Dont Save Photos",
-      "description": "Photos taken with the Camera app will not be saved.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "score_difficulty",
-      "label": "Score Difficulty",
-      "description": "Alters the score required to win score challenges and crew battles.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          },
-          {
-            "value": "very_hard",
-            "label": "Very Hard"
-          },
-          {
-            "value": "extreme",
-            "label": "Extreme"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "damage_multiplier",
-      "label": "Damage Multiplier",
-      "description": "Multiplies all damage received.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 6,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "bomb_rush_cyberfunk",
+	"name": "Bomb Rush Cyberfunk",
+	"version": "0.1.6",
+	"description": "Bomb Rush Cyberfunk is 1 second per second of advanced funkstyle.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "logic",
+			"label": "Logic",
+			"description": "Choose the logic used by the randomizer.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "glitchless",
+				"choices": [
+					{
+						"value": "glitchless",
+						"label": "Glitchless"
+					},
+					{
+						"value": "glitched",
+						"label": "Glitched"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_intro",
+			"label": "Skip Intro",
+			"description": "Skips escaping the police station.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_dreams",
+			"label": "Skip Dreams",
+			"description": "Skips the dream sequences at the end of each chapter.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_statue_hands",
+			"label": "Skip Statue Hands",
+			"description": "Skips spraying the lion statue hands after the dream in Chapter 5.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "total_rep",
+			"label": "Total Rep",
+			"description": "Change the total amount of REP in your world.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1000,
+				"max": 2000,
+				"step": 1,
+				"default": 1400
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "extra_rep_required",
+			"label": "Extra Rep Required",
+			"description": "Changes the final boss to require 1000 REP instead of 960 REP to start.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_movestyle",
+			"label": "Starting Movestyle",
+			"description": "Choose which movestyle to start with.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "skateboard",
+				"choices": [
+					{
+						"value": "skateboard",
+						"label": "Skateboard"
+					},
+					{
+						"value": "inline_skates",
+						"label": "Inline Skates"
+					},
+					{
+						"value": "bmx",
+						"label": "Bmx"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "limited_graffiti",
+			"label": "Limited Graffiti",
+			"description": "Each graffiti design can only be used a limited number of times before being removed from your inventory.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "small_graffiti_uses",
+			"label": "Small Graffiti Uses",
+			"description": "Choose if small graffiti should be separate, meaning that you will need to switch characters every time you run out, or combined, meaning that unlocking new characters will add 5 uses that any character can use.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "separate",
+				"choices": [
+					{
+						"value": "separate",
+						"label": "Separate"
+					},
+					{
+						"value": "combined",
+						"label": "Combined"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_polo_photos",
+			"label": "Skip Polo Photos",
+			"description": "Skip taking pictures of Polo for items.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dont_save_photos",
+			"label": "Dont Save Photos",
+			"description": "Photos taken with the Camera app will not be saved.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "score_difficulty",
+			"label": "Score Difficulty",
+			"description": "Alters the score required to win score challenges and crew battles.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					},
+					{
+						"value": "very_hard",
+						"label": "Very Hard"
+					},
+					{
+						"value": "extreme",
+						"label": "Extreme"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "damage_multiplier",
+			"label": "Damage Multiplier",
+			"description": "Multiplies all damage received.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 6,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -20,7 +20,7 @@ Once BizHawk has been installed, open EmuHawk and change the following settings:
 - Under Config > Customize > Advanced, make sure the box for AutoSaveRAM is checked, and click the 5s button.
   This reduces the possibility of losing save data in emulator crashes.
 - Under Config > Customize, check the "Run in background" box. This will prevent disconnecting from the client while
-EmuHawk is running in the background.
+  EmuHawk is running in the background.
 
 It is strongly recommended to associate Game Boy ROM extensions (\*.gb) to the EmuHawk we've just installed.
 To do so, we simply have to search any Game Boy ROM we happened to own, right click and select "Open with...", unfold
@@ -45,13 +45,13 @@ You can generate a yaml or download a template by visiting the [Super Mario Land
 
 1. Create your options file (YAML).
 2. Follow the general Archipelago instructions for [generating a game](/tutorial/Archipelago/setup_en#generating-a-game).
-This will generate an output file for you. Your patch file will have a `.apsml2` file extension.
+   This will generate an output file for you. Your patch file will have a `.apsml2` file extension.
 3. Open `ArchipelagoLauncher.exe`
 4. Select "Open Patch" on the left side and select your patch file.
 5. If this is your first time patching, you will be prompted to locate your vanilla ROM.
 6. A patched `.gb` file will be created in the same place as the patch file.
 7. On your first time opening a patch with BizHawk Client, you will also be asked to locate `EmuHawk.exe` in your
-BizHawk install.
+   BizHawk install.
 
 You must connect Super Mario Land 2 to a server, even for a single player game, or progress cannot be made.
 
@@ -61,15 +61,15 @@ By default, opening a patch file will do steps 1-5 below for you automatically. 
 in case you have to close and reopen a window mid-game for some reason.
 
 1. Super Mario Land 2 uses Archipelago's BizHawk Client. If the client isn't still open from when you patched your
-game, you can re-open it from the launcher.
+   game, you can re-open it from the launcher.
 2. Ensure EmuHawk is running the patched ROM.
 3. In EmuHawk, go to `Tools > Lua Console`. This window must stay open while playing.
 4. In the Lua Console window, go to `Script > Open Script…`.
 5. Navigate to your Archipelago install folder and open `data/lua/connector_bizhawk_generic.lua`.
 6. The emulator may freeze every few seconds until it manages to connect to the client. This is expected. The BizHawk
-Client window should indicate that it connected and recognized Super Mario Land 2.
+   Client window should indicate that it connected and recognized Super Mario Land 2.
 7. To connect the client to the server, enter your room's address and port (e.g. `archipelago.gg:38281`) into the
-top text field of the client and click Connect.
+   top text field of the client and click Connect.
 
 To connect the client to the multiserver simply put `<address>:<port>` on the textfield on top and press enter (if the
 server uses password, type in the bottom textfield `/connect <address>:<port> [password]`)

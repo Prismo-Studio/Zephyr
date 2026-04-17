@@ -1,226 +1,224 @@
 {
-  "id": "civ_6",
-  "name": "Civilization VI",
-  "version": "0.4.5",
-  "description": "Civilization VI is a turn-based strategy video game in which one or more players compete alongside computer-controlled opponents to grow their individual civilization from a small tribe to control the entire planet across several periods of development.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progression_style",
-      "label": "Progression Style",
-      "description": "**Districts Only**: Each tech/civic that would normally unlock a district or building now has a logical progression.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "districts_only",
-        "choices": [
-          {
-            "value": "districts_only",
-            "label": "Districts Only"
-          },
-          {
-            "value": "eras_and_districts",
-            "label": "Eras And Districts"
-          },
-          {
-            "value": "none",
-            "label": "None"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_goody_hut_rewards",
-      "label": "Shuffle Goody Hut Rewards",
-      "description": "Shuffles the goody hut rewards.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "boostsanity",
-      "label": "Boostsanity",
-      "description": "Boosts for Civics/Techs are location checks.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "research_cost_multiplier",
-      "label": "Research Cost Multiplier",
-      "description": "Multiplier for research cost of techs and civics, higher values make research more expensive.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 50,
-        "max": 150,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "pre_hint_items",
-      "label": "Pre Hint Items",
-      "description": "Controls what items from the tech/civics trees are pre-hinted for the multiworld.",
-      "category": "items",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Filler",
-            "label": "Filler"
-          },
-          {
-            "value": "Progression",
-            "label": "Progression"
-          },
-          {
-            "value": "Useful",
-            "label": "Useful"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "hide_item_names",
-      "label": "Hide Item Names",
-      "description": "Each Tech and Civic Location will have a title of 'Unrevealed' until its prereqs have been researched.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "advisor_show_progression_items",
-      "label": "Advisor Show Progression Items",
-      "description": "If enabled, an advisor icon will be added to any location that contains a progression item.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "If enabled, losing a unit will trigger a death link effect on other players in the multiworld.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link_effect",
-      "label": "Death Link Effect",
-      "description": "What happens when a unit dies.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [
-          "Unit Killed"
-        ],
-        "choices": [
-          {
-            "value": "Era Score",
-            "label": "Era Score"
-          },
-          {
-            "value": "Faith",
-            "label": "Faith"
-          },
-          {
-            "value": "Gold",
-            "label": "Gold"
-          },
-          {
-            "value": "Unit Killed",
-            "label": "Unit Killed"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "death_link_effect_percent",
-      "label": "Death Link Effect Percent",
-      "description": "The percentage of the effect that will be applied.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "civ_6",
+	"name": "Civilization VI",
+	"version": "0.4.5",
+	"description": "Civilization VI is a turn-based strategy video game in which one or more players compete alongside computer-controlled opponents to grow their individual civilization from a small tribe to control the entire planet across several periods of development.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progression_style",
+			"label": "Progression Style",
+			"description": "**Districts Only**: Each tech/civic that would normally unlock a district or building now has a logical progression.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "districts_only",
+				"choices": [
+					{
+						"value": "districts_only",
+						"label": "Districts Only"
+					},
+					{
+						"value": "eras_and_districts",
+						"label": "Eras And Districts"
+					},
+					{
+						"value": "none",
+						"label": "None"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_goody_hut_rewards",
+			"label": "Shuffle Goody Hut Rewards",
+			"description": "Shuffles the goody hut rewards.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "boostsanity",
+			"label": "Boostsanity",
+			"description": "Boosts for Civics/Techs are location checks.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "research_cost_multiplier",
+			"label": "Research Cost Multiplier",
+			"description": "Multiplier for research cost of techs and civics, higher values make research more expensive.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 50,
+				"max": 150,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "pre_hint_items",
+			"label": "Pre Hint Items",
+			"description": "Controls what items from the tech/civics trees are pre-hinted for the multiworld.",
+			"category": "items",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Filler",
+						"label": "Filler"
+					},
+					{
+						"value": "Progression",
+						"label": "Progression"
+					},
+					{
+						"value": "Useful",
+						"label": "Useful"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "hide_item_names",
+			"label": "Hide Item Names",
+			"description": "Each Tech and Civic Location will have a title of 'Unrevealed' until its prereqs have been researched.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "advisor_show_progression_items",
+			"label": "Advisor Show Progression Items",
+			"description": "If enabled, an advisor icon will be added to any location that contains a progression item.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "If enabled, losing a unit will trigger a death link effect on other players in the multiworld.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link_effect",
+			"label": "Death Link Effect",
+			"description": "What happens when a unit dies.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": ["Unit Killed"],
+				"choices": [
+					{
+						"value": "Era Score",
+						"label": "Era Score"
+					},
+					{
+						"value": "Faith",
+						"label": "Faith"
+					},
+					{
+						"value": "Gold",
+						"label": "Gold"
+					},
+					{
+						"value": "Unit Killed",
+						"label": "Unit Killed"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "death_link_effect_percent",
+			"label": "Death Link Effect Percent",
+			"description": "The percentage of the effect that will be applied.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

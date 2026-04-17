@@ -12,6 +12,7 @@ Items will appear with the Archipelago logo next to them when obtained.
 ## Which characters need to be helped for the Help Everyone goal?
 
 To achieve the Help Everyone goal, the following characters will need to be helped:
+
 - Pay Tough Bird Salesman's Tuition Fee
 - Give Frog a Toy Shovel
 - Return the Camper's Camping Permit

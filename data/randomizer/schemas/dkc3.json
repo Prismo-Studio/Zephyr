@@ -1,300 +1,300 @@
 {
-  "id": "dkc3",
-  "name": "Donkey Kong Country 3",
-  "version": "0.1.6",
-  "description": "Donkey Kong Country 3 is an action platforming game.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "Determines the goal of the seed Knautilus: Scuttle the Knautilus in Krematoa and defeat Baron K.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "knautilus",
-        "choices": [
-          {
-            "value": "knautilus",
-            "label": "Knautilus"
-          },
-          {
-            "value": "banana_bird_hunt",
-            "label": "Banana Bird Hunt"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "krematoa_bonus_coin_cost",
-      "label": "Krematoa Bonus Coin Cost",
-      "description": "How many Bonus Coins are needed to unlock each level in Krematoa",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 17,
-        "step": 1,
-        "default": 15
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "percentage_of_extra_bonus_coins",
-      "label": "Percentage Of Extra Bonus Coins",
-      "description": "What Percentage of unneeded Bonus Coins are included in the item pool",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "number_of_banana_birds",
-      "label": "Number Of Banana Birds",
-      "description": "How many Banana Birds are put into the item pool",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 5,
-        "max": 15,
-        "step": 1,
-        "default": 15
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "percentage_of_banana_birds",
-      "label": "Percentage Of Banana Birds",
-      "description": "What Percentage of Banana Birds in the item pool are required for Banana Bird Hunt",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 20,
-        "max": 100,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dk_coins_for_gyrocopter",
-      "label": "Dk Coins For Gyrocopter",
-      "description": "How many DK Coins are needed to unlock the Gyrocopter Note: Achieving this number before unlocking the Turbo Ski will cause the game to grant you a one-time upgrade to the next non-unlocked boat, until you return to Funky.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 10,
-        "max": 41,
-        "step": 1,
-        "default": 30
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kongsanity",
-      "label": "Kongsanity",
-      "description": "Whether collecting all four KONG letters in each level grants a check",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "level_shuffle",
-      "label": "Level Shuffle",
-      "description": "Whether levels are shuffled",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "difficulty",
-      "label": "Difficulty",
-      "description": "Which Difficulty Level to use NORML: The Normal Difficulty HARDR: Many DK Barrels are removed TUFST: Most DK Barrels and all Midway Barrels are removed",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "norml",
-        "choices": [
-          {
-            "value": "norml",
-            "label": "Norml"
-          },
-          {
-            "value": "hardr",
-            "label": "Hardr"
-          },
-          {
-            "value": "tufst",
-            "label": "Tufst"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "autosave",
-      "label": "Autosave",
-      "description": "Whether the game should autosave after each level",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "merry",
-      "label": "Merry",
-      "description": "Whether the Bonus Barrels will be Christmas-themed",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "music_shuffle",
-      "label": "Music Shuffle",
-      "description": "Whether music is shuffled",
-      "category": "cosmetic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "kong_palette_swap",
-      "label": "Kong Palette Swap",
-      "description": "Which Palette to use for the Kongs",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "purple",
-            "label": "Purple"
-          },
-          {
-            "value": "spooky",
-            "label": "Spooky"
-          },
-          {
-            "value": "dark",
-            "label": "Dark"
-          },
-          {
-            "value": "chocolate",
-            "label": "Chocolate"
-          },
-          {
-            "value": "shadow",
-            "label": "Shadow"
-          },
-          {
-            "value": "red_gold",
-            "label": "Red Gold"
-          },
-          {
-            "value": "gbc",
-            "label": "Gbc"
-          },
-          {
-            "value": "halloween",
-            "label": "Halloween"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_life_count",
-      "label": "Starting Life Count",
-      "description": "How many extra lives to start the game with",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 99,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "dkc3",
+	"name": "Donkey Kong Country 3",
+	"version": "0.1.6",
+	"description": "Donkey Kong Country 3 is an action platforming game.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "Determines the goal of the seed Knautilus: Scuttle the Knautilus in Krematoa and defeat Baron K.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "knautilus",
+				"choices": [
+					{
+						"value": "knautilus",
+						"label": "Knautilus"
+					},
+					{
+						"value": "banana_bird_hunt",
+						"label": "Banana Bird Hunt"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "krematoa_bonus_coin_cost",
+			"label": "Krematoa Bonus Coin Cost",
+			"description": "How many Bonus Coins are needed to unlock each level in Krematoa",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 17,
+				"step": 1,
+				"default": 15
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "percentage_of_extra_bonus_coins",
+			"label": "Percentage Of Extra Bonus Coins",
+			"description": "What Percentage of unneeded Bonus Coins are included in the item pool",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "number_of_banana_birds",
+			"label": "Number Of Banana Birds",
+			"description": "How many Banana Birds are put into the item pool",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 5,
+				"max": 15,
+				"step": 1,
+				"default": 15
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "percentage_of_banana_birds",
+			"label": "Percentage Of Banana Birds",
+			"description": "What Percentage of Banana Birds in the item pool are required for Banana Bird Hunt",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 20,
+				"max": 100,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dk_coins_for_gyrocopter",
+			"label": "Dk Coins For Gyrocopter",
+			"description": "How many DK Coins are needed to unlock the Gyrocopter Note: Achieving this number before unlocking the Turbo Ski will cause the game to grant you a one-time upgrade to the next non-unlocked boat, until you return to Funky.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 10,
+				"max": 41,
+				"step": 1,
+				"default": 30
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kongsanity",
+			"label": "Kongsanity",
+			"description": "Whether collecting all four KONG letters in each level grants a check",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "level_shuffle",
+			"label": "Level Shuffle",
+			"description": "Whether levels are shuffled",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "difficulty",
+			"label": "Difficulty",
+			"description": "Which Difficulty Level to use NORML: The Normal Difficulty HARDR: Many DK Barrels are removed TUFST: Most DK Barrels and all Midway Barrels are removed",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "norml",
+				"choices": [
+					{
+						"value": "norml",
+						"label": "Norml"
+					},
+					{
+						"value": "hardr",
+						"label": "Hardr"
+					},
+					{
+						"value": "tufst",
+						"label": "Tufst"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "autosave",
+			"label": "Autosave",
+			"description": "Whether the game should autosave after each level",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "merry",
+			"label": "Merry",
+			"description": "Whether the Bonus Barrels will be Christmas-themed",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "music_shuffle",
+			"label": "Music Shuffle",
+			"description": "Whether music is shuffled",
+			"category": "cosmetic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "kong_palette_swap",
+			"label": "Kong Palette Swap",
+			"description": "Which Palette to use for the Kongs",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "purple",
+						"label": "Purple"
+					},
+					{
+						"value": "spooky",
+						"label": "Spooky"
+					},
+					{
+						"value": "dark",
+						"label": "Dark"
+					},
+					{
+						"value": "chocolate",
+						"label": "Chocolate"
+					},
+					{
+						"value": "shadow",
+						"label": "Shadow"
+					},
+					{
+						"value": "red_gold",
+						"label": "Red Gold"
+					},
+					{
+						"value": "gbc",
+						"label": "Gbc"
+					},
+					{
+						"value": "halloween",
+						"label": "Halloween"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_life_count",
+			"label": "Starting Life Count",
+			"description": "How many extra lives to start the game with",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 99,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

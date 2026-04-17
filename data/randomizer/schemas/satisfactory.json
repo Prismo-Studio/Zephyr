@@ -1,630 +1,628 @@
 {
-  "id": "satisfactory",
-  "name": "Satisfactory",
-  "version": "0.6.0",
-  "description": "Satisfactory is a first-person open-world factory building game with a dash of exploration and combat.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal_selection",
-      "label": "Goal Selection",
-      "description": "What will be your goal(s)?",
-      "category": "goals",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [
-          "Space Elevator Phase"
-        ],
-        "choices": [
-          {
-            "value": "AWESOME Sink Points (per minute)",
-            "label": "Awesome Sink Points (Per Minute)"
-          },
-          {
-            "value": "AWESOME Sink Points (total)",
-            "label": "Awesome Sink Points (Total)"
-          },
-          {
-            "value": "Exploration Collectables",
-            "label": "Exploration Collectables"
-          },
-          {
-            "value": "Space Elevator Phase",
-            "label": "Space Elevator Phase"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "goal_requirement",
-      "label": "Goal Requirement",
-      "description": "Of the goals selected in *Select your Goals*, how many must be reached to complete your slot?",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "require_any_one_goal",
-        "choices": [
-          {
-            "value": "require_any_one_goal",
-            "label": "Require Any One Goal"
-          },
-          {
-            "value": "require_all_goals",
-            "label": "Require All Goals"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "final_elevator_phase",
-      "label": "Final Elevator Phase",
-      "description": "Put the milestones accessible BEFORE this Space Elevator Phase in logic.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 5,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal_awesome_sink_points_total",
-      "label": "Goal Awesome Sink Points Total",
-      "description": "Does nothing if *AWESOME Sink Points (total)* goal is not enabled.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 2166000,
-        "max": 18436379500,
-        "step": 1,
-        "default": 2166000
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal_awesome_sink_points_per_minute",
-      "label": "Goal Awesome Sink Points Per Minute",
-      "description": "Does nothing if *AWESOME Sink Points (per minute)* goal is not enabled.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 1000,
-        "max": 10000000,
-        "step": 1,
-        "default": 50000
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal_exploration_collectables_amount",
-      "label": "Goal Exploration Collectables Amount",
-      "description": "Does nothing if *Exploration Collectables* goal is not enabled.",
-      "category": "goals",
-      "type": {
-        "kind": "range",
-        "min": 5,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hard_drive_progression_limit",
-      "label": "Hard Drive Progression Limit",
-      "description": "How many Hard Drives can contain progression items.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "free_sample_equipment",
-      "label": "Free Sample Equipment",
-      "description": "How many free sample Equipment items are given when they are unlocked.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "free_sample_buildings",
-      "label": "Free Sample Buildings",
-      "description": "How many copies of a Building's construction cost are given as a free sample when they are unlocked.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "free_sample_parts",
-      "label": "Free Sample Parts",
-      "description": "How many general crafting component free samples are given when their recipe is unlocked.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": -5,
-        "max": 500,
-        "step": 1,
-        "default": -2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "free_sample_radioactive",
-      "label": "Free Sample Radioactive",
-      "description": "Allow free samples to include radioactive parts.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_inventory_preset",
-      "label": "Starting Inventory Preset",
-      "description": "What resources (and buildings) the player should start with in their inventory.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "archipelago",
-        "choices": [
-          {
-            "value": "barebones",
-            "label": "Barebones"
-          },
-          {
-            "value": "skip_tutorial_inspired",
-            "label": "Skip Tutorial Inspired"
-          },
-          {
-            "value": "archipelago",
-            "label": "Archipelago"
-          },
-          {
-            "value": "foundations",
-            "label": "Foundations"
-          },
-          {
-            "value": "foundation_lover",
-            "label": "Foundation Lover"
-          },
-          {
-            "value": "explorer",
-            "label": "Explorer"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mam_logic_placement",
-      "label": "Mam Logic Placement",
-      "description": "Where to place the MAM building in logic.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "early_game",
-        "choices": [
-          {
-            "value": "unlocked_from_start",
-            "label": "Unlocked From Start"
-          },
-          {
-            "value": "early_game",
-            "label": "Early Game"
-          },
-          {
-            "value": "somewhere",
-            "label": "Somewhere"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "awesome_logic_placement",
-      "label": "Awesome Logic Placement",
-      "description": "Where to place the AWESOME Shop and Sink buildings in logic.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "early_game",
-        "choices": [
-          {
-            "value": "unlocked_from_start",
-            "label": "Unlocked From Start"
-          },
-          {
-            "value": "early_game",
-            "label": "Early Game"
-          },
-          {
-            "value": "somewhere",
-            "label": "Somewhere"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "energy_link_logic_placement",
-      "label": "Energy Link Logic Placement",
-      "description": "Where to place the EnergyLink building (or Power Storage if EnergyLink is disabled) in logic.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "early_game",
-        "choices": [
-          {
-            "value": "unlocked_from_start",
-            "label": "Unlocked From Start"
-          },
-          {
-            "value": "early_game",
-            "label": "Early Game"
-          },
-          {
-            "value": "somewhere",
-            "label": "Somewhere"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "splitter_placement",
-      "label": "Splitter Placement",
-      "description": "Where to place the Conveyor Splitter and Merger buildings in logic.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "unlocked_from_start",
-        "choices": [
-          {
-            "value": "unlocked_from_start",
-            "label": "Unlocked From Start"
-          },
-          {
-            "value": "early_game",
-            "label": "Early Game"
-          },
-          {
-            "value": "somewhere",
-            "label": "Somewhere"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "milestone_cost_multiplier",
-      "label": "Milestone Cost Multiplier",
-      "description": "Multiplies the amount of resources needed to unlock a Milestone by this factor.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 500,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_chance",
-      "label": "Trap Chance",
-      "description": "Chance of traps in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_selection_preset",
-      "label": "Trap Selection Preset",
-      "description": "Themed presets of trap types to enable.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "gentle",
-            "label": "Gentle"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "harder",
-            "label": "Harder"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          },
-          {
-            "value": "ruthless",
-            "label": "Ruthless"
-          },
-          {
-            "value": "all_arachnids_all_the_time",
-            "label": "All Arachnids All The Time"
-          },
-          {
-            "value": "whole_hog",
-            "label": "Whole Hog"
-          },
-          {
-            "value": "nicholas_cage",
-            "label": "Nicholas Cage"
-          },
-          {
-            "value": "fallout",
-            "label": "Fallout"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_selection_override",
-      "label": "Trap Selection Override",
-      "description": "Precise list of traps that may be in the item pool to find.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Bundle: Ficsonium",
-            "label": "Bundle: Ficsonium"
-          },
-          {
-            "value": "Bundle: Ficsonium Fuel Rod",
-            "label": "Bundle: Ficsonium Fuel Rod"
-          },
-          {
-            "value": "Bundle: Non-fissile Uranium",
-            "label": "Bundle: Non-Fissile Uranium"
-          },
-          {
-            "value": "Bundle: Plutonium Fuel Rod",
-            "label": "Bundle: Plutonium Fuel Rod"
-          },
-          {
-            "value": "Bundle: Plutonium Pellet",
-            "label": "Bundle: Plutonium Pellet"
-          },
-          {
-            "value": "Bundle: Plutonium Waste",
-            "label": "Bundle: Plutonium Waste"
-          },
-          {
-            "value": "Bundle: Uranium",
-            "label": "Bundle: Uranium"
-          },
-          {
-            "value": "Bundle: Uranium Fuel Rod",
-            "label": "Bundle: Uranium Fuel Rod"
-          },
-          {
-            "value": "Bundle: Uranium Waste",
-            "label": "Bundle: Uranium Waste"
-          },
-          {
-            "value": "Trap: Alpha Hog",
-            "label": "Trap: Alpha Hog"
-          },
-          {
-            "value": "Trap: Alpha Spitter",
-            "label": "Trap: Alpha Spitter"
-          },
-          {
-            "value": "Trap: Can of Beans",
-            "label": "Trap: Can Of Beans"
-          },
-          {
-            "value": "Trap: Cliff Hog",
-            "label": "Trap: Cliff Hog"
-          },
-          {
-            "value": "Trap: Doggo with Gas Nobelisk",
-            "label": "Trap: Doggo With Gas Nobelisk"
-          },
-          {
-            "value": "Trap: Doggo with Nuke Nobelisk",
-            "label": "Trap: Doggo With Nuke Nobelisk"
-          },
-          {
-            "value": "Trap: Doggo with Pulse Nobelisk",
-            "label": "Trap: Doggo With Pulse Nobelisk"
-          },
-          {
-            "value": "Trap: Elite Hatcher",
-            "label": "Trap: Elite Hatcher"
-          },
-          {
-            "value": "Trap: Fart Cloud",
-            "label": "Trap: Fart Cloud"
-          },
-          {
-            "value": "Trap: Gas Stinger",
-            "label": "Trap: Gas Stinger"
-          },
-          {
-            "value": "Trap: Hatcher",
-            "label": "Trap: Hatcher"
-          },
-          {
-            "value": "Trap: Hog",
-            "label": "Trap: Hog"
-          },
-          {
-            "value": "Trap: Johnny",
-            "label": "Trap: Johnny"
-          },
-          {
-            "value": "Trap: Not the Bees",
-            "label": "Trap: Not The Bees"
-          },
-          {
-            "value": "Trap: Nuclear Hog",
-            "label": "Trap: Nuclear Hog"
-          },
-          {
-            "value": "Trap: Nuclear Waste Drop",
-            "label": "Trap: Nuclear Waste Drop"
-          },
-          {
-            "value": "Trap: Plutonium Waste Drop",
-            "label": "Trap: Plutonium Waste Drop"
-          },
-          {
-            "value": "Trap: Small Stinger",
-            "label": "Trap: Small Stinger"
-          },
-          {
-            "value": "Trap: Spitter",
-            "label": "Trap: Spitter"
-          },
-          {
-            "value": "Trap: Spore Flower",
-            "label": "Trap: Spore Flower"
-          },
-          {
-            "value": "Trap: Stinger",
-            "label": "Trap: Stinger"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "energy_link",
-      "label": "Energy Link",
-      "description": "Allow transferring energy to and from other worlds using the Power Storage building.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_starter_recipes",
-      "label": "Randomize Starter Recipes",
-      "description": "Randomizes what recipes you use to craft the default unlocked parts: Iron Ingot, Iron Plate, Iron Rod, Copper Ingot, Wire, Concrete, Screw, Reinforced Iron Plate * Could require usage of Foundries or Assemblers (which get unlocked by default if needed, at reduced build costs) * Could require other ores to be mixed in via alt recipes (which will become hand-craftable if needed)",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "satisfactory",
+	"name": "Satisfactory",
+	"version": "0.6.0",
+	"description": "Satisfactory is a first-person open-world factory building game with a dash of exploration and combat.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal_selection",
+			"label": "Goal Selection",
+			"description": "What will be your goal(s)?",
+			"category": "goals",
+			"type": {
+				"kind": "multi_select",
+				"defaults": ["Space Elevator Phase"],
+				"choices": [
+					{
+						"value": "AWESOME Sink Points (per minute)",
+						"label": "Awesome Sink Points (Per Minute)"
+					},
+					{
+						"value": "AWESOME Sink Points (total)",
+						"label": "Awesome Sink Points (Total)"
+					},
+					{
+						"value": "Exploration Collectables",
+						"label": "Exploration Collectables"
+					},
+					{
+						"value": "Space Elevator Phase",
+						"label": "Space Elevator Phase"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "goal_requirement",
+			"label": "Goal Requirement",
+			"description": "Of the goals selected in *Select your Goals*, how many must be reached to complete your slot?",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "require_any_one_goal",
+				"choices": [
+					{
+						"value": "require_any_one_goal",
+						"label": "Require Any One Goal"
+					},
+					{
+						"value": "require_all_goals",
+						"label": "Require All Goals"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "final_elevator_phase",
+			"label": "Final Elevator Phase",
+			"description": "Put the milestones accessible BEFORE this Space Elevator Phase in logic.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 5,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal_awesome_sink_points_total",
+			"label": "Goal Awesome Sink Points Total",
+			"description": "Does nothing if *AWESOME Sink Points (total)* goal is not enabled.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 2166000,
+				"max": 18436379500,
+				"step": 1,
+				"default": 2166000
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal_awesome_sink_points_per_minute",
+			"label": "Goal Awesome Sink Points Per Minute",
+			"description": "Does nothing if *AWESOME Sink Points (per minute)* goal is not enabled.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 1000,
+				"max": 10000000,
+				"step": 1,
+				"default": 50000
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal_exploration_collectables_amount",
+			"label": "Goal Exploration Collectables Amount",
+			"description": "Does nothing if *Exploration Collectables* goal is not enabled.",
+			"category": "goals",
+			"type": {
+				"kind": "range",
+				"min": 5,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hard_drive_progression_limit",
+			"label": "Hard Drive Progression Limit",
+			"description": "How many Hard Drives can contain progression items.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "free_sample_equipment",
+			"label": "Free Sample Equipment",
+			"description": "How many free sample Equipment items are given when they are unlocked.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "free_sample_buildings",
+			"label": "Free Sample Buildings",
+			"description": "How many copies of a Building's construction cost are given as a free sample when they are unlocked.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "free_sample_parts",
+			"label": "Free Sample Parts",
+			"description": "How many general crafting component free samples are given when their recipe is unlocked.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": -5,
+				"max": 500,
+				"step": 1,
+				"default": -2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "free_sample_radioactive",
+			"label": "Free Sample Radioactive",
+			"description": "Allow free samples to include radioactive parts.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_inventory_preset",
+			"label": "Starting Inventory Preset",
+			"description": "What resources (and buildings) the player should start with in their inventory.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "archipelago",
+				"choices": [
+					{
+						"value": "barebones",
+						"label": "Barebones"
+					},
+					{
+						"value": "skip_tutorial_inspired",
+						"label": "Skip Tutorial Inspired"
+					},
+					{
+						"value": "archipelago",
+						"label": "Archipelago"
+					},
+					{
+						"value": "foundations",
+						"label": "Foundations"
+					},
+					{
+						"value": "foundation_lover",
+						"label": "Foundation Lover"
+					},
+					{
+						"value": "explorer",
+						"label": "Explorer"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mam_logic_placement",
+			"label": "Mam Logic Placement",
+			"description": "Where to place the MAM building in logic.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "early_game",
+				"choices": [
+					{
+						"value": "unlocked_from_start",
+						"label": "Unlocked From Start"
+					},
+					{
+						"value": "early_game",
+						"label": "Early Game"
+					},
+					{
+						"value": "somewhere",
+						"label": "Somewhere"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "awesome_logic_placement",
+			"label": "Awesome Logic Placement",
+			"description": "Where to place the AWESOME Shop and Sink buildings in logic.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "early_game",
+				"choices": [
+					{
+						"value": "unlocked_from_start",
+						"label": "Unlocked From Start"
+					},
+					{
+						"value": "early_game",
+						"label": "Early Game"
+					},
+					{
+						"value": "somewhere",
+						"label": "Somewhere"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "energy_link_logic_placement",
+			"label": "Energy Link Logic Placement",
+			"description": "Where to place the EnergyLink building (or Power Storage if EnergyLink is disabled) in logic.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "early_game",
+				"choices": [
+					{
+						"value": "unlocked_from_start",
+						"label": "Unlocked From Start"
+					},
+					{
+						"value": "early_game",
+						"label": "Early Game"
+					},
+					{
+						"value": "somewhere",
+						"label": "Somewhere"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "splitter_placement",
+			"label": "Splitter Placement",
+			"description": "Where to place the Conveyor Splitter and Merger buildings in logic.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "unlocked_from_start",
+				"choices": [
+					{
+						"value": "unlocked_from_start",
+						"label": "Unlocked From Start"
+					},
+					{
+						"value": "early_game",
+						"label": "Early Game"
+					},
+					{
+						"value": "somewhere",
+						"label": "Somewhere"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "milestone_cost_multiplier",
+			"label": "Milestone Cost Multiplier",
+			"description": "Multiplies the amount of resources needed to unlock a Milestone by this factor.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 500,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_chance",
+			"label": "Trap Chance",
+			"description": "Chance of traps in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_selection_preset",
+			"label": "Trap Selection Preset",
+			"description": "Themed presets of trap types to enable.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "gentle",
+						"label": "Gentle"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "harder",
+						"label": "Harder"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					},
+					{
+						"value": "ruthless",
+						"label": "Ruthless"
+					},
+					{
+						"value": "all_arachnids_all_the_time",
+						"label": "All Arachnids All The Time"
+					},
+					{
+						"value": "whole_hog",
+						"label": "Whole Hog"
+					},
+					{
+						"value": "nicholas_cage",
+						"label": "Nicholas Cage"
+					},
+					{
+						"value": "fallout",
+						"label": "Fallout"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_selection_override",
+			"label": "Trap Selection Override",
+			"description": "Precise list of traps that may be in the item pool to find.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Bundle: Ficsonium",
+						"label": "Bundle: Ficsonium"
+					},
+					{
+						"value": "Bundle: Ficsonium Fuel Rod",
+						"label": "Bundle: Ficsonium Fuel Rod"
+					},
+					{
+						"value": "Bundle: Non-fissile Uranium",
+						"label": "Bundle: Non-Fissile Uranium"
+					},
+					{
+						"value": "Bundle: Plutonium Fuel Rod",
+						"label": "Bundle: Plutonium Fuel Rod"
+					},
+					{
+						"value": "Bundle: Plutonium Pellet",
+						"label": "Bundle: Plutonium Pellet"
+					},
+					{
+						"value": "Bundle: Plutonium Waste",
+						"label": "Bundle: Plutonium Waste"
+					},
+					{
+						"value": "Bundle: Uranium",
+						"label": "Bundle: Uranium"
+					},
+					{
+						"value": "Bundle: Uranium Fuel Rod",
+						"label": "Bundle: Uranium Fuel Rod"
+					},
+					{
+						"value": "Bundle: Uranium Waste",
+						"label": "Bundle: Uranium Waste"
+					},
+					{
+						"value": "Trap: Alpha Hog",
+						"label": "Trap: Alpha Hog"
+					},
+					{
+						"value": "Trap: Alpha Spitter",
+						"label": "Trap: Alpha Spitter"
+					},
+					{
+						"value": "Trap: Can of Beans",
+						"label": "Trap: Can Of Beans"
+					},
+					{
+						"value": "Trap: Cliff Hog",
+						"label": "Trap: Cliff Hog"
+					},
+					{
+						"value": "Trap: Doggo with Gas Nobelisk",
+						"label": "Trap: Doggo With Gas Nobelisk"
+					},
+					{
+						"value": "Trap: Doggo with Nuke Nobelisk",
+						"label": "Trap: Doggo With Nuke Nobelisk"
+					},
+					{
+						"value": "Trap: Doggo with Pulse Nobelisk",
+						"label": "Trap: Doggo With Pulse Nobelisk"
+					},
+					{
+						"value": "Trap: Elite Hatcher",
+						"label": "Trap: Elite Hatcher"
+					},
+					{
+						"value": "Trap: Fart Cloud",
+						"label": "Trap: Fart Cloud"
+					},
+					{
+						"value": "Trap: Gas Stinger",
+						"label": "Trap: Gas Stinger"
+					},
+					{
+						"value": "Trap: Hatcher",
+						"label": "Trap: Hatcher"
+					},
+					{
+						"value": "Trap: Hog",
+						"label": "Trap: Hog"
+					},
+					{
+						"value": "Trap: Johnny",
+						"label": "Trap: Johnny"
+					},
+					{
+						"value": "Trap: Not the Bees",
+						"label": "Trap: Not The Bees"
+					},
+					{
+						"value": "Trap: Nuclear Hog",
+						"label": "Trap: Nuclear Hog"
+					},
+					{
+						"value": "Trap: Nuclear Waste Drop",
+						"label": "Trap: Nuclear Waste Drop"
+					},
+					{
+						"value": "Trap: Plutonium Waste Drop",
+						"label": "Trap: Plutonium Waste Drop"
+					},
+					{
+						"value": "Trap: Small Stinger",
+						"label": "Trap: Small Stinger"
+					},
+					{
+						"value": "Trap: Spitter",
+						"label": "Trap: Spitter"
+					},
+					{
+						"value": "Trap: Spore Flower",
+						"label": "Trap: Spore Flower"
+					},
+					{
+						"value": "Trap: Stinger",
+						"label": "Trap: Stinger"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "energy_link",
+			"label": "Energy Link",
+			"description": "Allow transferring energy to and from other worlds using the Power Storage building.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_starter_recipes",
+			"label": "Randomize Starter Recipes",
+			"description": "Randomizes what recipes you use to craft the default unlocked parts: Iron Ingot, Iron Plate, Iron Rod, Copper Ingot, Wire, Concrete, Screw, Reinforced Iron Plate * Could require usage of Foundries or Assemblers (which get unlocked by default if needed, at reduced build costs) * Could require other ores to be mixed in via alt recipes (which will become hand-craftable if needed)",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

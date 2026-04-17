@@ -22,12 +22,12 @@ players to rely upon each other to complete their game.
 
 While a multiworld game traditionally requires all players to be playing the same game, a multi-game multiworld allows
 players to randomize any of the supported games, and send items between them. This allows players of different
-games to interact with one another in a single multiplayer environment.  Archipelago supports multi-game multiworlds.
+games to interact with one another in a single multiplayer environment. Archipelago supports multi-game multiworlds.
 Here is a list of our [Supported Games](/games).
 
 ## Can I generate a single-player game with Archipelago?
 
-Yes. All of our supported games can be generated as single-player experiences both on the website and by installing 
+Yes. All of our supported games can be generated as single-player experiences both on the website and by installing
 the Archipelago generator software. The fastest way to do this is on the website. Find the Supported Game you wish to
 play, open the Settings Page, pick your settings, and click Generate Game.
 
@@ -77,5 +77,5 @@ There, you will find examples of games in the `worlds` folder:
 You may also find developer documentation in the `docs` folder:  
 [/docs Folder in Archipelago Code](https://github.com/ArchipelagoMW/Archipelago/tree/main/docs).
 
-If you have more questions regarding development of a game implementation, feel free to ask in the **#ap-world-dev** 
+If you have more questions regarding development of a game implementation, feel free to ask in the **#ap-world-dev**
 channel on our Discord.

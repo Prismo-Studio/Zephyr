@@ -1,3493 +1,3489 @@
 {
-  "id": "stardew_valley",
-  "name": "Stardew Valley",
-  "version": "0.4.0",
-  "description": "Stardew Valley is an open-ended country-life RPG.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "Goal for this playthrough Community Center: Complete the Community Center Grandpa's Evaluation: 4 lit candles in Grandpa's evaluation Bottom of the Mines: Reach level 120 in the mines Cryptic Note: Complete the quest \"Cryptic Note\" (Skull Cavern Floor 100) Master Angler: Catch every fish.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "community_center",
-        "choices": [
-          {
-            "value": "community_center",
-            "label": "Community Center"
-          },
-          {
-            "value": "grandpa_evaluation",
-            "label": "Grandpa Evaluation"
-          },
-          {
-            "value": "bottom_of_the_mines",
-            "label": "Bottom Of The Mines"
-          },
-          {
-            "value": "cryptic_note",
-            "label": "Cryptic Note"
-          },
-          {
-            "value": "master_angler",
-            "label": "Master Angler"
-          },
-          {
-            "value": "complete_collection",
-            "label": "Complete Collection"
-          },
-          {
-            "value": "full_house",
-            "label": "Full House"
-          },
-          {
-            "value": "greatest_walnut_hunter",
-            "label": "Greatest Walnut Hunter"
-          },
-          {
-            "value": "protector_of_the_valley",
-            "label": "Protector Of The Valley"
-          },
-          {
-            "value": "full_shipment",
-            "label": "Full Shipment"
-          },
-          {
-            "value": "gourmet_chef",
-            "label": "Gourmet Chef"
-          },
-          {
-            "value": "craft_master",
-            "label": "Craft Master"
-          },
-          {
-            "value": "legend",
-            "label": "Legend"
-          },
-          {
-            "value": "mystery_of_the_stardrops",
-            "label": "Mystery Of The Stardrops"
-          },
-          {
-            "value": "mad_hatter",
-            "label": "Mad Hatter"
-          },
-          {
-            "value": "ultimate_foodie",
-            "label": "Ultimate Foodie"
-          },
-          {
-            "value": "allsanity",
-            "label": "Allsanity"
-          },
-          {
-            "value": "perfection",
-            "label": "Perfection"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "farm_type",
-      "label": "Farm Type",
-      "description": "What farm to play on?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random",
-        "choices": [
-          {
-            "value": "standard",
-            "label": "Standard"
-          },
-          {
-            "value": "riverland",
-            "label": "Riverland"
-          },
-          {
-            "value": "forest",
-            "label": "Forest"
-          },
-          {
-            "value": "hill_top",
-            "label": "Hill Top"
-          },
-          {
-            "value": "wilderness",
-            "label": "Wilderness"
-          },
-          {
-            "value": "four_corners",
-            "label": "Four Corners"
-          },
-          {
-            "value": "beach",
-            "label": "Beach"
-          },
-          {
-            "value": "meadowlands",
-            "label": "Meadowlands"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bundle_randomization",
-      "label": "Bundle Randomization",
-      "description": "What items are needed for the community center bundles?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "remixed",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "thematic",
-            "label": "Thematic"
-          },
-          {
-            "value": "remixed",
-            "label": "Remixed"
-          },
-          {
-            "value": "remixed_anywhere",
-            "label": "Remixed Anywhere"
-          },
-          {
-            "value": "shuffled",
-            "label": "Shuffled"
-          },
-          {
-            "value": "meme",
-            "label": "Meme"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bundle_price",
-      "label": "Bundle Price",
-      "description": "How many items are needed for the community center bundles?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "minimum",
-            "label": "Minimum"
-          },
-          {
-            "value": "very_cheap",
-            "label": "Very Cheap"
-          },
-          {
-            "value": "cheap",
-            "label": "Cheap"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "expensive",
-            "label": "Expensive"
-          },
-          {
-            "value": "very_expensive",
-            "label": "Very Expensive"
-          },
-          {
-            "value": "maximum",
-            "label": "Maximum"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bundle_per_room",
-      "label": "Bundle Per Room",
-      "description": "How many bundles are in each room of the community center?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "two_fewer",
-            "label": "Two Fewer"
-          },
-          {
-            "value": "one_fewer",
-            "label": "One Fewer"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "one_extra",
-            "label": "One Extra"
-          },
-          {
-            "value": "two_extra",
-            "label": "Two Extra"
-          },
-          {
-            "value": "three_extra",
-            "label": "Three Extra"
-          },
-          {
-            "value": "four_extra",
-            "label": "Four Extra"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "entrance_randomization",
-      "label": "Entrance Randomization",
-      "description": "Should area entrances be randomized?",
-      "category": "entrances",
-      "type": {
-        "kind": "select",
-        "default": "disabled",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "pelican_town",
-            "label": "Pelican Town"
-          },
-          {
-            "value": "non_progression",
-            "label": "Non Progression"
-          },
-          {
-            "value": "buildings_without_house",
-            "label": "Buildings Without House"
-          },
-          {
-            "value": "buildings",
-            "label": "Buildings"
-          },
-          {
-            "value": "chaos",
-            "label": "Chaos"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "start_without",
-      "label": "Start Without",
-      "description": "Items that, in vanilla, you generally start with (or get very quickly), but in Archipelago, you would rather start without them.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Backpack",
-            "label": "Backpack"
-          },
-          {
-            "value": "Buildings",
-            "label": "Buildings"
-          },
-          {
-            "value": "Community Center",
-            "label": "Community Center"
-          },
-          {
-            "value": "Landslide",
-            "label": "Landslide"
-          },
-          {
-            "value": "Tools",
-            "label": "Tools"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "season_randomization",
-      "label": "Season Randomization",
-      "description": "Should seasons be randomized?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "randomized",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          },
-          {
-            "value": "randomized_not_winter",
-            "label": "Randomized Not Winter"
-          },
-          {
-            "value": "progressive",
-            "label": "Progressive"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "cropsanity",
-      "label": "Cropsanity",
-      "description": "Pierre now sells a random amount of seasonal seeds and Joja sells them without season requirements, but only in huge packs.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "enabled",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "enabled",
-            "label": "Enabled"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "backpack_progression",
-      "label": "Backpack Progression",
-      "description": "Shuffle the backpack?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "early_progressive",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "progressive",
-            "label": "Progressive"
-          },
-          {
-            "value": "early_progressive",
-            "label": "Early Progressive"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "backpack_size",
-      "label": "Backpack Size",
-      "description": "Customize the granularity of the backpack upgrades This works with vanilla and progressive backpack.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "12",
-        "choices": [
-          {
-            "value": "1",
-            "label": "1"
-          },
-          {
-            "value": "2",
-            "label": "2"
-          },
-          {
-            "value": "3",
-            "label": "3"
-          },
-          {
-            "value": "4",
-            "label": "4"
-          },
-          {
-            "value": "6",
-            "label": "6"
-          },
-          {
-            "value": "12",
-            "label": "12"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "tool_progression",
-      "label": "Tool Progression",
-      "description": "Shuffle the tool upgrades?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "progressive",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "progressive",
-            "label": "Progressive"
-          },
-          {
-            "value": "vanilla_cheap",
-            "label": "Vanilla Cheap"
-          },
-          {
-            "value": "vanilla_very_cheap",
-            "label": "Vanilla Very Cheap"
-          },
-          {
-            "value": "progressive_cheap",
-            "label": "Progressive Cheap"
-          },
-          {
-            "value": "progressive_very_cheap",
-            "label": "Progressive Very Cheap"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skill_progression",
-      "label": "Skill Progression",
-      "description": "Shuffle skill levels?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "progressive",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "progressive",
-            "label": "Progressive"
-          },
-          {
-            "value": "progressive_with_masteries",
-            "label": "Progressive With Masteries"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "building_progression",
-      "label": "Building Progression",
-      "description": "Shuffle Carpenter Buildings?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "progressive_cheap",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "vanilla_cheap",
-            "label": "Vanilla Cheap"
-          },
-          {
-            "value": "vanilla_very_cheap",
-            "label": "Vanilla Very Cheap"
-          },
-          {
-            "value": "progressive",
-            "label": "Progressive"
-          },
-          {
-            "value": "progressive_cheap",
-            "label": "Progressive Cheap"
-          },
-          {
-            "value": "progressive_very_cheap",
-            "label": "Progressive Very Cheap"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "festival_locations",
-      "label": "Festival Locations",
-      "description": "Shuffle Festival Activities?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "easy",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "easy",
-            "label": "Easy"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "elevator_progression",
-      "label": "Elevator Progression",
-      "description": "Shuffle the elevator?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "progressive_from_previous_floor",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "progressive",
-            "label": "Progressive"
-          },
-          {
-            "value": "progressive_from_previous_floor",
-            "label": "Progressive From Previous Floor"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "arcade_machine_locations",
-      "label": "Arcade Machine Locations",
-      "description": "Shuffle the arcade machines?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "full_shuffling",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "victories",
-            "label": "Victories"
-          },
-          {
-            "value": "victories_easy",
-            "label": "Victories Easy"
-          },
-          {
-            "value": "full_shuffling",
-            "label": "Full Shuffling"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "special_order_locations",
-      "label": "Special Order Locations",
-      "description": "Shuffle Special Orders?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "board_short",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "board",
-            "label": "Board"
-          },
-          {
-            "value": "board_qi",
-            "label": "Board Qi"
-          },
-          {
-            "value": "vanilla_short",
-            "label": "Vanilla Short"
-          },
-          {
-            "value": "board_short",
-            "label": "Board Short"
-          },
-          {
-            "value": "board_qi_short",
-            "label": "Board Qi Short"
-          },
-          {
-            "value": "vanilla_very_short",
-            "label": "Vanilla Very Short"
-          },
-          {
-            "value": "board_very_short",
-            "label": "Board Very Short"
-          },
-          {
-            "value": "board_qi_very_short",
-            "label": "Board Qi Very Short"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "quest_locations",
-      "label": "Quest Locations",
-      "description": "Include location checks for quests None: No quests are checks Story: Only story quests are checks Number: Story quests and help wanted quests are checks up to the specified amount.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 56,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "fishsanity",
-      "label": "Fishsanity",
-      "description": "Locations for catching each fish the first time?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "legendaries",
-            "label": "Legendaries"
-          },
-          {
-            "value": "special",
-            "label": "Special"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          },
-          {
-            "value": "exclude_legendaries",
-            "label": "Exclude Legendaries"
-          },
-          {
-            "value": "exclude_hard_fish",
-            "label": "Exclude Hard Fish"
-          },
-          {
-            "value": "only_easy_fish",
-            "label": "Only Easy Fish"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "museumsanity",
-      "label": "Museumsanity",
-      "description": "Locations for museum donations?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "milestones",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "milestones",
-            "label": "Milestones"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "monstersanity",
-      "label": "Monstersanity",
-      "description": "Locations for slaying monsters?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "one_per_category",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "one_per_category",
-            "label": "One Per Category"
-          },
-          {
-            "value": "one_per_monster",
-            "label": "One Per Monster"
-          },
-          {
-            "value": "goals",
-            "label": "Goals"
-          },
-          {
-            "value": "short_goals",
-            "label": "Short Goals"
-          },
-          {
-            "value": "very_short_goals",
-            "label": "Very Short Goals"
-          },
-          {
-            "value": "progressive_goals",
-            "label": "Progressive Goals"
-          },
-          {
-            "value": "split_goals",
-            "label": "Split Goals"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shipsanity",
-      "label": "Shipsanity",
-      "description": "Locations for shipping items?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "crops",
-            "label": "Crops"
-          },
-          {
-            "value": "fish",
-            "label": "Fish"
-          },
-          {
-            "value": "crops_and_fish",
-            "label": "Crops And Fish"
-          },
-          {
-            "value": "full_shipment",
-            "label": "Full Shipment"
-          },
-          {
-            "value": "full_shipment_with_fish",
-            "label": "Full Shipment With Fish"
-          },
-          {
-            "value": "everything",
-            "label": "Everything"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "cooksanity",
-      "label": "Cooksanity",
-      "description": "Locations for cooking food?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "queen_of_sauce",
-            "label": "Queen Of Sauce"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "chefsanity",
-      "label": "Chefsanity",
-      "description": "Locations for learning cooking recipes?",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Friendship",
-            "label": "Friendship"
-          },
-          {
-            "value": "Purchases",
-            "label": "Purchases"
-          },
-          {
-            "value": "Queen of Sauce",
-            "label": "Queen Of Sauce"
-          },
-          {
-            "value": "Skills",
-            "label": "Skills"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "craftsanity",
-      "label": "Craftsanity",
-      "description": "Checks for crafting items?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "friendsanity",
-      "label": "Friendsanity",
-      "description": "Shuffle Friendships?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "bachelors",
-            "label": "Bachelors"
-          },
-          {
-            "value": "starting_npcs",
-            "label": "Starting Npcs"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          },
-          {
-            "value": "all_with_marriage",
-            "label": "All With Marriage"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "friendsanity_heart_size",
-      "label": "Friendsanity Heart Size",
-      "description": "If using friendsanity, how many hearts are received per heart item, and how many hearts must be earned to send a check A higher value will lead to fewer heart items in the item pool, reducing bloat",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 8,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "eatsanity",
-      "label": "Eatsanity",
-      "description": "Locations for eating various items?",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Artisan",
-            "label": "Artisan"
-          },
-          {
-            "value": "Cooking",
-            "label": "Cooking"
-          },
-          {
-            "value": "Crops",
-            "label": "Crops"
-          },
-          {
-            "value": "Fish",
-            "label": "Fish"
-          },
-          {
-            "value": "Lock Effects",
-            "label": "Lock Effects"
-          },
-          {
-            "value": "Poisonous",
-            "label": "Poisonous"
-          },
-          {
-            "value": "Shop",
-            "label": "Shop"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "booksanity",
-      "label": "Booksanity",
-      "description": "Shuffle Books?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "power_skill",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "power",
-            "label": "Power"
-          },
-          {
-            "value": "power_skill",
-            "label": "Power Skill"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "walnutsanity",
-      "label": "Walnutsanity",
-      "description": "Shuffle Walnuts?",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Bushes",
-            "label": "Bushes"
-          },
-          {
-            "value": "Dig Spots",
-            "label": "Dig Spots"
-          },
-          {
-            "value": "Puzzles",
-            "label": "Puzzles"
-          },
-          {
-            "value": "Repeatables",
-            "label": "Repeatables"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "moviesanity",
-      "label": "Moviesanity",
-      "description": "Add checks for watching movies?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "one",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "one",
-            "label": "One"
-          },
-          {
-            "value": "all_movies",
-            "label": "All Movies"
-          },
-          {
-            "value": "all_movies_loved",
-            "label": "All Movies Loved"
-          },
-          {
-            "value": "all_movies_with_loved_snack",
-            "label": "All Movies With Loved Snack"
-          },
-          {
-            "value": "all_movies_and_all_snacks",
-            "label": "All Movies And All Snacks"
-          },
-          {
-            "value": "all_movies_and_all_loved_snacks",
-            "label": "All Movies And All Loved Snacks"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "secretsanity",
-      "label": "Secretsanity",
-      "description": "Add checks for the various secrets and easter eggs present in Stardew Valley.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Difficult",
-            "label": "Difficult"
-          },
-          {
-            "value": "Easy",
-            "label": "Easy"
-          },
-          {
-            "value": "Fishing",
-            "label": "Fishing"
-          },
-          {
-            "value": "Secret Notes",
-            "label": "Secret Notes"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "hatsanity",
-      "label": "Hatsanity",
-      "description": "Add checks for wearing hats?",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Difficult",
-            "label": "Difficult"
-          },
-          {
-            "value": "Easy",
-            "label": "Easy"
-          },
-          {
-            "value": "Medium",
-            "label": "Medium"
-          },
-          {
-            "value": "Near Perfection",
-            "label": "Near Perfection"
-          },
-          {
-            "value": "Post Perfection",
-            "label": "Post Perfection"
-          },
-          {
-            "value": "RNG",
-            "label": "Rng"
-          },
-          {
-            "value": "Tailoring",
-            "label": "Tailoring"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "include_endgame_locations",
-      "label": "Include Endgame Locations",
-      "description": "Whether to include, as locations, several very expensive things that are usually purchased during the end-game in vanilla.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exclude_ginger_island",
-      "label": "Exclude Ginger Island",
-      "description": "Exclude Ginger Island?",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "quick_start",
-      "label": "Quick Start",
-      "description": "Do you want the quick start package?",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_money",
-      "label": "Starting Money",
-      "description": "Amount of gold when arriving at the farm.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 50000,
-        "step": 1,
-        "default": 5000
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "profit_margin",
-      "label": "Profit Margin",
-      "description": "Multiplier over all gold earned in-game by the player.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 25,
-        "max": 400,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "experience_multiplier",
-      "label": "Experience Multiplier",
-      "description": "How fast you want to earn skill experience.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 25,
-        "max": 800,
-        "step": 1,
-        "default": 200
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "friendship_multiplier",
-      "label": "Friendship Multiplier",
-      "description": "How fast you want to earn friendship points with villagers.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 25,
-        "max": 800,
-        "step": 1,
-        "default": 200
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "debris_multiplier",
-      "label": "Debris Multiplier",
-      "description": "How much debris will spawn on the player's farm?",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "half",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "half",
-            "label": "Half"
-          },
-          {
-            "value": "quarter",
-            "label": "Quarter"
-          },
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "start_clear",
-            "label": "Start Clear"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "movement_buff_number",
-      "label": "Movement Buff Number",
-      "description": "Number of movement speed buffs to the player that exist as items in the pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 12,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enabled_filler_buffs",
-      "label": "Enabled Filler Buffs",
-      "description": "Enable various permanent player buffs to roll as filler items Luck: Increased daily luck Damage: Increased Damage % Defense: Increased Defense Immunity: Increased Immunity Health: Increased Max Health Energy: Increased Max Energy Bite Rate: Shorter delay to get a bite when fishing Fish Trap: Effect similar to the Trap Bobber, but weaker Fishing Bar Size: Increased Fishing Bar Size",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [
-          "Bite Rate",
-          "Defense",
-          "Luck"
-        ],
-        "choices": [
-          {
-            "value": "Bite Rate",
-            "label": "Bite Rate"
-          },
-          {
-            "value": "Damage",
-            "label": "Damage"
-          },
-          {
-            "value": "Defense",
-            "label": "Defense"
-          },
-          {
-            "value": "Energy",
-            "label": "Energy"
-          },
-          {
-            "value": "Fish Trap",
-            "label": "Fish Trap"
-          },
-          {
-            "value": "Fishing Bar Size",
-            "label": "Fishing Bar Size"
-          },
-          {
-            "value": "Health",
-            "label": "Health"
-          },
-          {
-            "value": "Immunity",
-            "label": "Immunity"
-          },
-          {
-            "value": "Luck",
-            "label": "Luck"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "trap_difficulty",
-      "label": "Trap Difficulty",
-      "description": "When rolling filler items, including resource packs, the game can also roll trap items.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "medium",
-        "choices": [
-          {
-            "value": "no_traps",
-            "label": "No Traps"
-          },
-          {
-            "value": "easy",
-            "label": "Easy"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          },
-          {
-            "value": "hell",
-            "label": "Hell"
-          },
-          {
-            "value": "nightmare",
-            "label": "Nightmare"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "custom_logic",
-      "label": "Custom Logic",
-      "description": "Enable various customizations to the logic of the generator.",
-      "category": "logic",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "Bomb Hoeing",
-            "label": "Bomb Hoeing"
-          },
-          {
-            "value": "Chair Skips",
-            "label": "Chair Skips"
-          },
-          {
-            "value": "Critical Free Samples",
-            "label": "Critical Free Samples"
-          },
-          {
-            "value": "Deep Mining",
-            "label": "Deep Mining"
-          },
-          {
-            "value": "Easy Combat",
-            "label": "Easy Combat"
-          },
-          {
-            "value": "Easy Fishing",
-            "label": "Easy Fishing"
-          },
-          {
-            "value": "Easy Mining",
-            "label": "Easy Mining"
-          },
-          {
-            "value": "Easy Money",
-            "label": "Easy Money"
-          },
-          {
-            "value": "Extreme Combat",
-            "label": "Extreme Combat"
-          },
-          {
-            "value": "Extreme Fishing",
-            "label": "Extreme Fishing"
-          },
-          {
-            "value": "Extreme Mining",
-            "label": "Extreme Mining"
-          },
-          {
-            "value": "Extreme Money",
-            "label": "Extreme Money"
-          },
-          {
-            "value": "Hard Combat",
-            "label": "Hard Combat"
-          },
-          {
-            "value": "Hard Fishing",
-            "label": "Hard Fishing"
-          },
-          {
-            "value": "Hard Mining",
-            "label": "Hard Mining"
-          },
-          {
-            "value": "Hard Money",
-            "label": "Hard Money"
-          },
-          {
-            "value": "Ignore Birthdays",
-            "label": "Ignore Birthdays"
-          },
-          {
-            "value": "Nightmare Money",
-            "label": "Nightmare Money"
-          },
-          {
-            "value": "Rain Watering",
-            "label": "Rain Watering"
-          },
-          {
-            "value": "Very Deep Mining",
-            "label": "Very Deep Mining"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "multiple_day_sleep_enabled",
-      "label": "Multiple Day Sleep Enabled",
-      "description": "Enable the ability to sleep automatically for multiple days straight?",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "multiple_day_sleep_cost",
-      "label": "Multiple Day Sleep Cost",
-      "description": "How much gold it will cost to use MultiSleep.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 200,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "gifting",
-      "label": "Gifting",
-      "description": "Do you want to enable gifting items to and from other Archipelago slots?",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "mods",
-      "label": "Mods",
-      "description": "List of mods that will be included in the shuffling.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "'Prophet' Wellwick",
-            "label": "'Prophet' Wellwick"
-          },
-          {
-            "value": "Alec Revisited",
-            "label": "Alec Revisited"
-          },
-          {
-            "value": "Alecto the Witch",
-            "label": "Alecto The Witch"
-          },
-          {
-            "value": "Archaeology",
-            "label": "Archaeology"
-          },
-          {
-            "value": "Ayeisha - The Postal Worker (Custom NPC)",
-            "label": "Ayeisha - The Postal Worker (Custom Npc)"
-          },
-          {
-            "value": "Bigger Backpack",
-            "label": "Bigger Backpack"
-          },
-          {
-            "value": "Binning Skill",
-            "label": "Binning Skill"
-          },
-          {
-            "value": "Boarding House and Bus Stop Extension",
-            "label": "Boarding House And Bus Stop Extension"
-          },
-          {
-            "value": "Cooking Skill",
-            "label": "Cooking Skill"
-          },
-          {
-            "value": "Custom NPC - Riley",
-            "label": "Custom Npc - Riley"
-          },
-          {
-            "value": "Custom NPC - Yoba",
-            "label": "Custom Npc - Yoba"
-          },
-          {
-            "value": "Custom NPC Eugene",
-            "label": "Custom Npc Eugene"
-          },
-          {
-            "value": "DeepWoods",
-            "label": "Deepwoods"
-          },
-          {
-            "value": "Delores - Custom NPC",
-            "label": "Delores - Custom Npc"
-          },
-          {
-            "value": "Distant Lands - Witch Swamp Overhaul",
-            "label": "Distant Lands - Witch Swamp Overhaul"
-          },
-          {
-            "value": "Hat Mouse Lacey",
-            "label": "Hat Mouse Lacey"
-          },
-          {
-            "value": "Juna - Roommate NPC",
-            "label": "Juna - Roommate Npc"
-          },
-          {
-            "value": "Luck Skill",
-            "label": "Luck Skill"
-          },
-          {
-            "value": "Magic",
-            "label": "Magic"
-          },
-          {
-            "value": "Mister Ginger (cat npc)",
-            "label": "Mister Ginger (Cat Npc)"
-          },
-          {
-            "value": "Professor Jasper Thomas",
-            "label": "Professor Jasper Thomas"
-          },
-          {
-            "value": "Shiko - New Custom NPC",
-            "label": "Shiko - New Custom Npc"
-          },
-          {
-            "value": "Skull Cavern Elevator",
-            "label": "Skull Cavern Elevator"
-          },
-          {
-            "value": "Socializing Skill",
-            "label": "Socializing Skill"
-          },
-          {
-            "value": "Stardew Valley Expanded",
-            "label": "Stardew Valley Expanded"
-          },
-          {
-            "value": "Tractor Mod",
-            "label": "Tractor Mod"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "bundle_whitelist",
-      "label": "Bundle Whitelist",
-      "description": "If using Remixed or Meme bundles, this guarantees some of them will show up in your community center.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "'Fruit' Bundle",
-            "label": "'Fruit' Bundle"
-          },
-          {
-            "value": "10,000g Bundle",
-            "label": "10,000G Bundle"
-          },
-          {
-            "value": "2,500g Bundle",
-            "label": "2,500G Bundle"
-          },
-          {
-            "value": "25,000g Bundle",
-            "label": "25,000G Bundle"
-          },
-          {
-            "value": "5,000g Bundle",
-            "label": "5,000G Bundle"
-          },
-          {
-            "value": "AAAA Bundle",
-            "label": "Aaaa Bundle"
-          },
-          {
-            "value": "ANIMAL WELL Bundle",
-            "label": "Animal Well Bundle"
-          },
-          {
-            "value": "ASMR Bundle",
-            "label": "Asmr Bundle"
-          },
-          {
-            "value": "Adventurer's Bundle",
-            "label": "Adventurer'S Bundle"
-          },
-          {
-            "value": "Agronomist's Bundle",
-            "label": "Agronomist'S Bundle"
-          },
-          {
-            "value": "Amon's Fall Bundle",
-            "label": "Amon'S Fall Bundle"
-          },
-          {
-            "value": "Animal Bundle",
-            "label": "Animal Bundle"
-          },
-          {
-            "value": "Anything For Beyonce Bundle",
-            "label": "Anything For Beyonce Bundle"
-          },
-          {
-            "value": "Archaeologist's Bundle",
-            "label": "Archaeologist'S Bundle"
-          },
-          {
-            "value": "Archipela-Go! Bundle",
-            "label": "Archipela-Go! Bundle"
-          },
-          {
-            "value": "ArgonMatrix Bundle",
-            "label": "Argonmatrix Bundle"
-          },
-          {
-            "value": "Artisan Bundle",
-            "label": "Artisan Bundle"
-          },
-          {
-            "value": "Automation Bundle",
-            "label": "Automation Bundle"
-          },
-          {
-            "value": "Bad Farmer Bundle",
-            "label": "Bad Farmer Bundle"
-          },
-          {
-            "value": "Bad Fisherman Bundle",
-            "label": "Bad Fisherman Bundle"
-          },
-          {
-            "value": "Balls Bundle",
-            "label": "Balls Bundle"
-          },
-          {
-            "value": "Bartender's Bundle",
-            "label": "Bartender'S Bundle"
-          },
-          {
-            "value": "Beach Foraging Bundle",
-            "label": "Beach Foraging Bundle"
-          },
-          {
-            "value": "Big Grapes Bundle",
-            "label": "Big Grapes Bundle"
-          },
-          {
-            "value": "Blacksmith's Bundle",
-            "label": "Blacksmith'S Bundle"
-          },
-          {
-            "value": "Blossom Garden Bundle",
-            "label": "Blossom Garden Bundle"
-          },
-          {
-            "value": "Brewer's Bundle",
-            "label": "Brewer'S Bundle"
-          },
-          {
-            "value": "Bun-dle",
-            "label": "Bun-Dle"
-          },
-          {
-            "value": "Bundle Bundle",
-            "label": "Bundle Bundle"
-          },
-          {
-            "value": "Burger King Bundle",
-            "label": "Burger King Bundle"
-          },
-          {
-            "value": "Burger King's Revenge Bundle",
-            "label": "Burger King'S Revenge Bundle"
-          },
-          {
-            "value": "Caffeinated Bundle",
-            "label": "Caffeinated Bundle"
-          },
-          {
-            "value": "Calico Bundle",
-            "label": "Calico Bundle"
-          },
-          {
-            "value": "Cap Bundle",
-            "label": "Cap Bundle"
-          },
-          {
-            "value": "Capitalist's Bundle",
-            "label": "Capitalist'S Bundle"
-          },
-          {
-            "value": "Carnival Bundle",
-            "label": "Carnival Bundle"
-          },
-          {
-            "value": "Catch And Release Bundle",
-            "label": "Catch And Release Bundle"
-          },
-          {
-            "value": "Celeste Bundle",
-            "label": "Celeste Bundle"
-          },
-          {
-            "value": "Chaos Emerald Bundle",
-            "label": "Chaos Emerald Bundle"
-          },
-          {
-            "value": "Chef's Bundle",
-            "label": "Chef'S Bundle"
-          },
-          {
-            "value": "Children's Bundle",
-            "label": "Children'S Bundle"
-          },
-          {
-            "value": "Clickbait Bundle",
-            "label": "Clickbait Bundle"
-          },
-          {
-            "value": "Clique Bundle",
-            "label": "Clique Bundle"
-          },
-          {
-            "value": "Commitment Bundle",
-            "label": "Commitment Bundle"
-          },
-          {
-            "value": "Communism Bundle",
-            "label": "Communism Bundle"
-          },
-          {
-            "value": "Connection Bundle",
-            "label": "Connection Bundle"
-          },
-          {
-            "value": "Construction Bundle",
-            "label": "Construction Bundle"
-          },
-          {
-            "value": "Cookie Clicker Bundle",
-            "label": "Cookie Clicker Bundle"
-          },
-          {
-            "value": "Cooperation Bundle",
-            "label": "Cooperation Bundle"
-          },
-          {
-            "value": "Crab Pot Bundle",
-            "label": "Crab Pot Bundle"
-          },
-          {
-            "value": "Crab Rave Bundle",
-            "label": "Crab Rave Bundle"
-          },
-          {
-            "value": "Crap Pot Bundle",
-            "label": "Crap Pot Bundle"
-          },
-          {
-            "value": "Crowdfunding Bundle",
-            "label": "Crowdfunding Bundle"
-          },
-          {
-            "value": "Death Bundle",
-            "label": "Death Bundle"
-          },
-          {
-            "value": "DeathLink Bundle",
-            "label": "Deathlink Bundle"
-          },
-          {
-            "value": "Deep Fishing Bundle",
-            "label": "Deep Fishing Bundle"
-          },
-          {
-            "value": "Demolition Bundle",
-            "label": "Demolition Bundle"
-          },
-          {
-            "value": "Desert Foraging Bundle",
-            "label": "Desert Foraging Bundle"
-          },
-          {
-            "value": "Distracted Bundle",
-            "label": "Distracted Bundle"
-          },
-          {
-            "value": "Doctor Angler Bundle",
-            "label": "Doctor Angler Bundle"
-          },
-          {
-            "value": "Doctor Bundle",
-            "label": "Doctor Bundle"
-          },
-          {
-            "value": "Dr Seuss Bundle",
-            "label": "Dr Seuss Bundle"
-          },
-          {
-            "value": "Dry Bundle",
-            "label": "Dry Bundle"
-          },
-          {
-            "value": "Dye Bundle",
-            "label": "Dye Bundle"
-          },
-          {
-            "value": "Eg Bundle",
-            "label": "Eg Bundle"
-          },
-          {
-            "value": "Emmalution Bundle",
-            "label": "Emmalution Bundle"
-          },
-          {
-            "value": "Enchanter's Bundle",
-            "label": "Enchanter'S Bundle"
-          },
-          {
-            "value": "Engineer's Bundle",
-            "label": "Engineer'S Bundle"
-          },
-          {
-            "value": "Exhaustion Bundle",
-            "label": "Exhaustion Bundle"
-          },
-          {
-            "value": "Exotic Foraging Bundle",
-            "label": "Exotic Foraging Bundle"
-          },
-          {
-            "value": "Fall Crops Bundle",
-            "label": "Fall Crops Bundle"
-          },
-          {
-            "value": "Fall Fishing Bundle",
-            "label": "Fall Fishing Bundle"
-          },
-          {
-            "value": "Fall Foraging Bundle",
-            "label": "Fall Foraging Bundle"
-          },
-          {
-            "value": "Fast Bundle",
-            "label": "Fast Bundle"
-          },
-          {
-            "value": "Field Research Bundle",
-            "label": "Field Research Bundle"
-          },
-          {
-            "value": "Firstborn Bundle",
-            "label": "Firstborn Bundle"
-          },
-          {
-            "value": "Fish Farmer's Bundle",
-            "label": "Fish Farmer'S Bundle"
-          },
-          {
-            "value": "Fish Smoker Bundle",
-            "label": "Fish Smoker Bundle"
-          },
-          {
-            "value": "Flashbang Bundle",
-            "label": "Flashbang Bundle"
-          },
-          {
-            "value": "Fodder Bundle",
-            "label": "Fodder Bundle"
-          },
-          {
-            "value": "Forager's Bundle",
-            "label": "Forager'S Bundle"
-          },
-          {
-            "value": "Forest Bundle",
-            "label": "Forest Bundle"
-          },
-          {
-            "value": "Frazzleduck Bundle",
-            "label": "Frazzleduck Bundle"
-          },
-          {
-            "value": "Gacha Bundle",
-            "label": "Gacha Bundle"
-          },
-          {
-            "value": "Gambler's Bundle",
-            "label": "Gambler'S Bundle"
-          },
-          {
-            "value": "Garden Bundle",
-            "label": "Garden Bundle"
-          },
-          {
-            "value": "Geologist's Bundle",
-            "label": "Geologist'S Bundle"
-          },
-          {
-            "value": "Green Rain Bundle",
-            "label": "Green Rain Bundle"
-          },
-          {
-            "value": "Hairy Bundle",
-            "label": "Hairy Bundle"
-          },
-          {
-            "value": "Hats Off To You Bundle",
-            "label": "Hats Off To You Bundle"
-          },
-          {
-            "value": "Helper's Bundle",
-            "label": "Helper'S Bundle"
-          },
-          {
-            "value": "Hibernation Bundle",
-            "label": "Hibernation Bundle"
-          },
-          {
-            "value": "Hint Bundle",
-            "label": "Hint Bundle"
-          },
-          {
-            "value": "Home Cook's Bundle",
-            "label": "Home Cook'S Bundle"
-          },
-          {
-            "value": "Honeywell Bundle",
-            "label": "Honeywell Bundle"
-          },
-          {
-            "value": "Honorable Bundle",
-            "label": "Honorable Bundle"
-          },
-          {
-            "value": "Humble Bundle",
-            "label": "Humble Bundle"
-          },
-          {
-            "value": "Hurricane Tortilla Bundle",
-            "label": "Hurricane Tortilla Bundle"
-          },
-          {
-            "value": "IKEA Bundle",
-            "label": "Ikea Bundle"
-          },
-          {
-            "value": "Investment Bundle",
-            "label": "Investment Bundle"
-          },
-          {
-            "value": "Island Crops Bundle",
-            "label": "Island Crops Bundle"
-          },
-          {
-            "value": "Island Fish Bundle",
-            "label": "Island Fish Bundle"
-          },
-          {
-            "value": "Island Foraging Bundle",
-            "label": "Island Foraging Bundle"
-          },
-          {
-            "value": "Joetg Bundle",
-            "label": "Joetg Bundle"
-          },
-          {
-            "value": "Journalist's Bundle",
-            "label": "Journalist'S Bundle"
-          },
-          {
-            "value": "Kent C. Bundle",
-            "label": "Kent C. Bundle"
-          },
-          {
-            "value": "Lake Fish Bundle",
-            "label": "Lake Fish Bundle"
-          },
-          {
-            "value": "Legendairy Bundle",
-            "label": "Legendairy Bundle"
-          },
-          {
-            "value": "Legendary Fish Bundle",
-            "label": "Legendary Fish Bundle"
-          },
-          {
-            "value": "Lemonade Stand Bundle",
-            "label": "Lemonade Stand Bundle"
-          },
-          {
-            "value": "Look At These Chickens Bundle",
-            "label": "Look At These Chickens Bundle"
-          },
-          {
-            "value": "Loser Club Bundle",
-            "label": "Loser Club Bundle"
-          },
-          {
-            "value": "Master Baiter Bundle",
-            "label": "Master Baiter Bundle"
-          },
-          {
-            "value": "Master Fisher's Bundle",
-            "label": "Master Fisher'S Bundle"
-          },
-          {
-            "value": "Mermaid Bundle",
-            "label": "Mermaid Bundle"
-          },
-          {
-            "value": "Minecraft Bundle",
-            "label": "Minecraft Bundle"
-          },
-          {
-            "value": "Mines Foraging Bundle",
-            "label": "Mines Foraging Bundle"
-          },
-          {
-            "value": "Ministry of Madness Bundle",
-            "label": "Ministry Of Madness Bundle"
-          },
-          {
-            "value": "NFT Bundle",
-            "label": "Nft Bundle"
-          },
-          {
-            "value": "Night Fishing Bundle",
-            "label": "Night Fishing Bundle"
-          },
-          {
-            "value": "Not The Bees Bundle",
-            "label": "Not The Bees Bundle"
-          },
-          {
-            "value": "Obelisks Bundle",
-            "label": "Obelisks Bundle"
-          },
-          {
-            "value": "Ocean Fish Bundle",
-            "label": "Ocean Fish Bundle"
-          },
-          {
-            "value": "Off Your Back Bundle",
-            "label": "Off Your Back Bundle"
-          },
-          {
-            "value": "Orchard Bundle",
-            "label": "Orchard Bundle"
-          },
-          {
-            "value": "Paleontologist's Bundle",
-            "label": "Paleontologist'S Bundle"
-          },
-          {
-            "value": "Permit A38 Bundle",
-            "label": "Permit A38 Bundle"
-          },
-          {
-            "value": "Pollution Bundle",
-            "label": "Pollution Bundle"
-          },
-          {
-            "value": "Pomnut Bundle",
-            "label": "Pomnut Bundle"
-          },
-          {
-            "value": "Pool Bundle",
-            "label": "Pool Bundle"
-          },
-          {
-            "value": "Potato Bundle",
-            "label": "Potato Bundle"
-          },
-          {
-            "value": "Puzzle Bundle",
-            "label": "Puzzle Bundle"
-          },
-          {
-            "value": "Qi's Helper Bundle",
-            "label": "Qi'S Helper Bundle"
-          },
-          {
-            "value": "Quality Crops Bundle",
-            "label": "Quality Crops Bundle"
-          },
-          {
-            "value": "Quality Fish Bundle",
-            "label": "Quality Fish Bundle"
-          },
-          {
-            "value": "Quality Foraging Bundle",
-            "label": "Quality Foraging Bundle"
-          },
-          {
-            "value": "Raccoon Bundle",
-            "label": "Raccoon Bundle"
-          },
-          {
-            "value": "Rain Fishing Bundle",
-            "label": "Rain Fishing Bundle"
-          },
-          {
-            "value": "Rare Crops Bundle",
-            "label": "Rare Crops Bundle"
-          },
-          {
-            "value": "Reconnection Bundle",
-            "label": "Reconnection Bundle"
-          },
-          {
-            "value": "Recycling Bundle",
-            "label": "Recycling Bundle"
-          },
-          {
-            "value": "Restraint Bundle",
-            "label": "Restraint Bundle"
-          },
-          {
-            "value": "Reverse Bundle",
-            "label": "Reverse Bundle"
-          },
-          {
-            "value": "Rick Bundle",
-            "label": "Rick Bundle"
-          },
-          {
-            "value": "River Fish Bundle",
-            "label": "River Fish Bundle"
-          },
-          {
-            "value": "Romance Bundle",
-            "label": "Romance Bundle"
-          },
-          {
-            "value": "SMAPI Bundle",
-            "label": "Smapi Bundle"
-          },
-          {
-            "value": "Sacrifice Bundle",
-            "label": "Sacrifice Bundle"
-          },
-          {
-            "value": "Sappy Bundle",
-            "label": "Sappy Bundle"
-          },
-          {
-            "value": "Scam Bundle",
-            "label": "Scam Bundle"
-          },
-          {
-            "value": "Schrodinger's Bundle",
-            "label": "Schrodinger'S Bundle"
-          },
-          {
-            "value": "Screw You Bundle",
-            "label": "Screw You Bundle"
-          },
-          {
-            "value": "Sisyphus Bundle",
-            "label": "Sisyphus Bundle"
-          },
-          {
-            "value": "Slime Farmer Bundle",
-            "label": "Slime Farmer Bundle"
-          },
-          {
-            "value": "Snitch Bundle",
-            "label": "Snitch Bundle"
-          },
-          {
-            "value": "Sommelier Bundle",
-            "label": "Sommelier Bundle"
-          },
-          {
-            "value": "Specialty Fish Bundle",
-            "label": "Specialty Fish Bundle"
-          },
-          {
-            "value": "Specific Fishing Bundle",
-            "label": "Specific Fishing Bundle"
-          },
-          {
-            "value": "Speedrunner's Bundle",
-            "label": "Speedrunner'S Bundle"
-          },
-          {
-            "value": "Spirit's Eve Bundle",
-            "label": "Spirit'S Eve Bundle"
-          },
-          {
-            "value": "Spring Crops Bundle",
-            "label": "Spring Crops Bundle"
-          },
-          {
-            "value": "Spring Fishing Bundle",
-            "label": "Spring Fishing Bundle"
-          },
-          {
-            "value": "Spring Foraging Bundle",
-            "label": "Spring Foraging Bundle"
-          },
-          {
-            "value": "Square Hole Bundle",
-            "label": "Square Hole Bundle"
-          },
-          {
-            "value": "Stanley Bundle",
-            "label": "Stanley Bundle"
-          },
-          {
-            "value": "Sticky Bundle",
-            "label": "Sticky Bundle"
-          },
-          {
-            "value": "Summer Crops Bundle",
-            "label": "Summer Crops Bundle"
-          },
-          {
-            "value": "Summer Fishing Bundle",
-            "label": "Summer Fishing Bundle"
-          },
-          {
-            "value": "Summer Foraging Bundle",
-            "label": "Summer Foraging Bundle"
-          },
-          {
-            "value": "Sunmaid Bundle",
-            "label": "Sunmaid Bundle"
-          },
-          {
-            "value": "Tackle Bundle",
-            "label": "Tackle Bundle"
-          },
-          {
-            "value": "The Floor Is Lava Bundle",
-            "label": "The Floor Is Lava Bundle"
-          },
-          {
-            "value": "TheAlGoreRhythm Bundle",
-            "label": "Thealgorerhythm Bundle"
-          },
-          {
-            "value": "This Is Fine Bundle",
-            "label": "This Is Fine Bundle"
-          },
-          {
-            "value": "Tick Tock Bundle",
-            "label": "Tick Tock Bundle"
-          },
-          {
-            "value": "Tilesanity Bundle",
-            "label": "Tilesanity Bundle"
-          },
-          {
-            "value": "Totems Bundle",
-            "label": "Totems Bundle"
-          },
-          {
-            "value": "Trap Bundle",
-            "label": "Trap Bundle"
-          },
-          {
-            "value": "Trash Bundle",
-            "label": "Trash Bundle"
-          },
-          {
-            "value": "Treasure Hunter's Bundle",
-            "label": "Treasure Hunter'S Bundle"
-          },
-          {
-            "value": "Trout Bundle",
-            "label": "Trout Bundle"
-          },
-          {
-            "value": "Vampire Bundle",
-            "label": "Vampire Bundle"
-          },
-          {
-            "value": "Very Sticky Bundle",
-            "label": "Very Sticky Bundle"
-          },
-          {
-            "value": "Vocaloid Bundle",
-            "label": "Vocaloid Bundle"
-          },
-          {
-            "value": "Walnut Hunter Bundle",
-            "label": "Walnut Hunter Bundle"
-          },
-          {
-            "value": "What The Rock Is Cooking Bundle",
-            "label": "What The Rock Is Cooking Bundle"
-          },
-          {
-            "value": "Wild Medicine Bundle",
-            "label": "Wild Medicine Bundle"
-          },
-          {
-            "value": "Winter Fishing Bundle",
-            "label": "Winter Fishing Bundle"
-          },
-          {
-            "value": "Winter Foraging Bundle",
-            "label": "Winter Foraging Bundle"
-          },
-          {
-            "value": "Winter Star Bundle",
-            "label": "Winter Star Bundle"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "bundle_blacklist",
-      "label": "Bundle Blacklist",
-      "description": "If using Remixed or Meme bundles, this guarantees some of them will not show up in your community center.",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [],
-        "choices": [
-          {
-            "value": "'Fruit' Bundle",
-            "label": "'Fruit' Bundle"
-          },
-          {
-            "value": "10,000g Bundle",
-            "label": "10,000G Bundle"
-          },
-          {
-            "value": "2,500g Bundle",
-            "label": "2,500G Bundle"
-          },
-          {
-            "value": "25,000g Bundle",
-            "label": "25,000G Bundle"
-          },
-          {
-            "value": "5,000g Bundle",
-            "label": "5,000G Bundle"
-          },
-          {
-            "value": "AAAA Bundle",
-            "label": "Aaaa Bundle"
-          },
-          {
-            "value": "ANIMAL WELL Bundle",
-            "label": "Animal Well Bundle"
-          },
-          {
-            "value": "ASMR Bundle",
-            "label": "Asmr Bundle"
-          },
-          {
-            "value": "Adventurer's Bundle",
-            "label": "Adventurer'S Bundle"
-          },
-          {
-            "value": "Agronomist's Bundle",
-            "label": "Agronomist'S Bundle"
-          },
-          {
-            "value": "Amon's Fall Bundle",
-            "label": "Amon'S Fall Bundle"
-          },
-          {
-            "value": "Animal Bundle",
-            "label": "Animal Bundle"
-          },
-          {
-            "value": "Anything For Beyonce Bundle",
-            "label": "Anything For Beyonce Bundle"
-          },
-          {
-            "value": "Archaeologist's Bundle",
-            "label": "Archaeologist'S Bundle"
-          },
-          {
-            "value": "Archipela-Go! Bundle",
-            "label": "Archipela-Go! Bundle"
-          },
-          {
-            "value": "ArgonMatrix Bundle",
-            "label": "Argonmatrix Bundle"
-          },
-          {
-            "value": "Artisan Bundle",
-            "label": "Artisan Bundle"
-          },
-          {
-            "value": "Automation Bundle",
-            "label": "Automation Bundle"
-          },
-          {
-            "value": "Bad Farmer Bundle",
-            "label": "Bad Farmer Bundle"
-          },
-          {
-            "value": "Bad Fisherman Bundle",
-            "label": "Bad Fisherman Bundle"
-          },
-          {
-            "value": "Balls Bundle",
-            "label": "Balls Bundle"
-          },
-          {
-            "value": "Bartender's Bundle",
-            "label": "Bartender'S Bundle"
-          },
-          {
-            "value": "Beach Foraging Bundle",
-            "label": "Beach Foraging Bundle"
-          },
-          {
-            "value": "Big Grapes Bundle",
-            "label": "Big Grapes Bundle"
-          },
-          {
-            "value": "Blacksmith's Bundle",
-            "label": "Blacksmith'S Bundle"
-          },
-          {
-            "value": "Blossom Garden Bundle",
-            "label": "Blossom Garden Bundle"
-          },
-          {
-            "value": "Brewer's Bundle",
-            "label": "Brewer'S Bundle"
-          },
-          {
-            "value": "Bun-dle",
-            "label": "Bun-Dle"
-          },
-          {
-            "value": "Bundle Bundle",
-            "label": "Bundle Bundle"
-          },
-          {
-            "value": "Burger King Bundle",
-            "label": "Burger King Bundle"
-          },
-          {
-            "value": "Burger King's Revenge Bundle",
-            "label": "Burger King'S Revenge Bundle"
-          },
-          {
-            "value": "Caffeinated Bundle",
-            "label": "Caffeinated Bundle"
-          },
-          {
-            "value": "Calico Bundle",
-            "label": "Calico Bundle"
-          },
-          {
-            "value": "Cap Bundle",
-            "label": "Cap Bundle"
-          },
-          {
-            "value": "Capitalist's Bundle",
-            "label": "Capitalist'S Bundle"
-          },
-          {
-            "value": "Carnival Bundle",
-            "label": "Carnival Bundle"
-          },
-          {
-            "value": "Catch And Release Bundle",
-            "label": "Catch And Release Bundle"
-          },
-          {
-            "value": "Celeste Bundle",
-            "label": "Celeste Bundle"
-          },
-          {
-            "value": "Chaos Emerald Bundle",
-            "label": "Chaos Emerald Bundle"
-          },
-          {
-            "value": "Chef's Bundle",
-            "label": "Chef'S Bundle"
-          },
-          {
-            "value": "Children's Bundle",
-            "label": "Children'S Bundle"
-          },
-          {
-            "value": "Clickbait Bundle",
-            "label": "Clickbait Bundle"
-          },
-          {
-            "value": "Clique Bundle",
-            "label": "Clique Bundle"
-          },
-          {
-            "value": "Commitment Bundle",
-            "label": "Commitment Bundle"
-          },
-          {
-            "value": "Communism Bundle",
-            "label": "Communism Bundle"
-          },
-          {
-            "value": "Connection Bundle",
-            "label": "Connection Bundle"
-          },
-          {
-            "value": "Construction Bundle",
-            "label": "Construction Bundle"
-          },
-          {
-            "value": "Cookie Clicker Bundle",
-            "label": "Cookie Clicker Bundle"
-          },
-          {
-            "value": "Cooperation Bundle",
-            "label": "Cooperation Bundle"
-          },
-          {
-            "value": "Crab Pot Bundle",
-            "label": "Crab Pot Bundle"
-          },
-          {
-            "value": "Crab Rave Bundle",
-            "label": "Crab Rave Bundle"
-          },
-          {
-            "value": "Crap Pot Bundle",
-            "label": "Crap Pot Bundle"
-          },
-          {
-            "value": "Crowdfunding Bundle",
-            "label": "Crowdfunding Bundle"
-          },
-          {
-            "value": "Death Bundle",
-            "label": "Death Bundle"
-          },
-          {
-            "value": "DeathLink Bundle",
-            "label": "Deathlink Bundle"
-          },
-          {
-            "value": "Deep Fishing Bundle",
-            "label": "Deep Fishing Bundle"
-          },
-          {
-            "value": "Demolition Bundle",
-            "label": "Demolition Bundle"
-          },
-          {
-            "value": "Desert Foraging Bundle",
-            "label": "Desert Foraging Bundle"
-          },
-          {
-            "value": "Distracted Bundle",
-            "label": "Distracted Bundle"
-          },
-          {
-            "value": "Doctor Angler Bundle",
-            "label": "Doctor Angler Bundle"
-          },
-          {
-            "value": "Doctor Bundle",
-            "label": "Doctor Bundle"
-          },
-          {
-            "value": "Dr Seuss Bundle",
-            "label": "Dr Seuss Bundle"
-          },
-          {
-            "value": "Dry Bundle",
-            "label": "Dry Bundle"
-          },
-          {
-            "value": "Dye Bundle",
-            "label": "Dye Bundle"
-          },
-          {
-            "value": "Eg Bundle",
-            "label": "Eg Bundle"
-          },
-          {
-            "value": "Emmalution Bundle",
-            "label": "Emmalution Bundle"
-          },
-          {
-            "value": "Enchanter's Bundle",
-            "label": "Enchanter'S Bundle"
-          },
-          {
-            "value": "Engineer's Bundle",
-            "label": "Engineer'S Bundle"
-          },
-          {
-            "value": "Exhaustion Bundle",
-            "label": "Exhaustion Bundle"
-          },
-          {
-            "value": "Exotic Foraging Bundle",
-            "label": "Exotic Foraging Bundle"
-          },
-          {
-            "value": "Fall Crops Bundle",
-            "label": "Fall Crops Bundle"
-          },
-          {
-            "value": "Fall Fishing Bundle",
-            "label": "Fall Fishing Bundle"
-          },
-          {
-            "value": "Fall Foraging Bundle",
-            "label": "Fall Foraging Bundle"
-          },
-          {
-            "value": "Fast Bundle",
-            "label": "Fast Bundle"
-          },
-          {
-            "value": "Field Research Bundle",
-            "label": "Field Research Bundle"
-          },
-          {
-            "value": "Firstborn Bundle",
-            "label": "Firstborn Bundle"
-          },
-          {
-            "value": "Fish Farmer's Bundle",
-            "label": "Fish Farmer'S Bundle"
-          },
-          {
-            "value": "Fish Smoker Bundle",
-            "label": "Fish Smoker Bundle"
-          },
-          {
-            "value": "Flashbang Bundle",
-            "label": "Flashbang Bundle"
-          },
-          {
-            "value": "Fodder Bundle",
-            "label": "Fodder Bundle"
-          },
-          {
-            "value": "Forager's Bundle",
-            "label": "Forager'S Bundle"
-          },
-          {
-            "value": "Forest Bundle",
-            "label": "Forest Bundle"
-          },
-          {
-            "value": "Frazzleduck Bundle",
-            "label": "Frazzleduck Bundle"
-          },
-          {
-            "value": "Gacha Bundle",
-            "label": "Gacha Bundle"
-          },
-          {
-            "value": "Gambler's Bundle",
-            "label": "Gambler'S Bundle"
-          },
-          {
-            "value": "Garden Bundle",
-            "label": "Garden Bundle"
-          },
-          {
-            "value": "Geologist's Bundle",
-            "label": "Geologist'S Bundle"
-          },
-          {
-            "value": "Green Rain Bundle",
-            "label": "Green Rain Bundle"
-          },
-          {
-            "value": "Hairy Bundle",
-            "label": "Hairy Bundle"
-          },
-          {
-            "value": "Hats Off To You Bundle",
-            "label": "Hats Off To You Bundle"
-          },
-          {
-            "value": "Helper's Bundle",
-            "label": "Helper'S Bundle"
-          },
-          {
-            "value": "Hibernation Bundle",
-            "label": "Hibernation Bundle"
-          },
-          {
-            "value": "Hint Bundle",
-            "label": "Hint Bundle"
-          },
-          {
-            "value": "Home Cook's Bundle",
-            "label": "Home Cook'S Bundle"
-          },
-          {
-            "value": "Honeywell Bundle",
-            "label": "Honeywell Bundle"
-          },
-          {
-            "value": "Honorable Bundle",
-            "label": "Honorable Bundle"
-          },
-          {
-            "value": "Humble Bundle",
-            "label": "Humble Bundle"
-          },
-          {
-            "value": "Hurricane Tortilla Bundle",
-            "label": "Hurricane Tortilla Bundle"
-          },
-          {
-            "value": "IKEA Bundle",
-            "label": "Ikea Bundle"
-          },
-          {
-            "value": "Investment Bundle",
-            "label": "Investment Bundle"
-          },
-          {
-            "value": "Island Crops Bundle",
-            "label": "Island Crops Bundle"
-          },
-          {
-            "value": "Island Fish Bundle",
-            "label": "Island Fish Bundle"
-          },
-          {
-            "value": "Island Foraging Bundle",
-            "label": "Island Foraging Bundle"
-          },
-          {
-            "value": "Joetg Bundle",
-            "label": "Joetg Bundle"
-          },
-          {
-            "value": "Journalist's Bundle",
-            "label": "Journalist'S Bundle"
-          },
-          {
-            "value": "Kent C. Bundle",
-            "label": "Kent C. Bundle"
-          },
-          {
-            "value": "Lake Fish Bundle",
-            "label": "Lake Fish Bundle"
-          },
-          {
-            "value": "Legendairy Bundle",
-            "label": "Legendairy Bundle"
-          },
-          {
-            "value": "Legendary Fish Bundle",
-            "label": "Legendary Fish Bundle"
-          },
-          {
-            "value": "Lemonade Stand Bundle",
-            "label": "Lemonade Stand Bundle"
-          },
-          {
-            "value": "Look At These Chickens Bundle",
-            "label": "Look At These Chickens Bundle"
-          },
-          {
-            "value": "Loser Club Bundle",
-            "label": "Loser Club Bundle"
-          },
-          {
-            "value": "Master Baiter Bundle",
-            "label": "Master Baiter Bundle"
-          },
-          {
-            "value": "Master Fisher's Bundle",
-            "label": "Master Fisher'S Bundle"
-          },
-          {
-            "value": "Mermaid Bundle",
-            "label": "Mermaid Bundle"
-          },
-          {
-            "value": "Minecraft Bundle",
-            "label": "Minecraft Bundle"
-          },
-          {
-            "value": "Mines Foraging Bundle",
-            "label": "Mines Foraging Bundle"
-          },
-          {
-            "value": "Ministry of Madness Bundle",
-            "label": "Ministry Of Madness Bundle"
-          },
-          {
-            "value": "NFT Bundle",
-            "label": "Nft Bundle"
-          },
-          {
-            "value": "Night Fishing Bundle",
-            "label": "Night Fishing Bundle"
-          },
-          {
-            "value": "Not The Bees Bundle",
-            "label": "Not The Bees Bundle"
-          },
-          {
-            "value": "Obelisks Bundle",
-            "label": "Obelisks Bundle"
-          },
-          {
-            "value": "Ocean Fish Bundle",
-            "label": "Ocean Fish Bundle"
-          },
-          {
-            "value": "Off Your Back Bundle",
-            "label": "Off Your Back Bundle"
-          },
-          {
-            "value": "Orchard Bundle",
-            "label": "Orchard Bundle"
-          },
-          {
-            "value": "Paleontologist's Bundle",
-            "label": "Paleontologist'S Bundle"
-          },
-          {
-            "value": "Permit A38 Bundle",
-            "label": "Permit A38 Bundle"
-          },
-          {
-            "value": "Pollution Bundle",
-            "label": "Pollution Bundle"
-          },
-          {
-            "value": "Pomnut Bundle",
-            "label": "Pomnut Bundle"
-          },
-          {
-            "value": "Pool Bundle",
-            "label": "Pool Bundle"
-          },
-          {
-            "value": "Potato Bundle",
-            "label": "Potato Bundle"
-          },
-          {
-            "value": "Puzzle Bundle",
-            "label": "Puzzle Bundle"
-          },
-          {
-            "value": "Qi's Helper Bundle",
-            "label": "Qi'S Helper Bundle"
-          },
-          {
-            "value": "Quality Crops Bundle",
-            "label": "Quality Crops Bundle"
-          },
-          {
-            "value": "Quality Fish Bundle",
-            "label": "Quality Fish Bundle"
-          },
-          {
-            "value": "Quality Foraging Bundle",
-            "label": "Quality Foraging Bundle"
-          },
-          {
-            "value": "Raccoon Bundle",
-            "label": "Raccoon Bundle"
-          },
-          {
-            "value": "Rain Fishing Bundle",
-            "label": "Rain Fishing Bundle"
-          },
-          {
-            "value": "Rare Crops Bundle",
-            "label": "Rare Crops Bundle"
-          },
-          {
-            "value": "Reconnection Bundle",
-            "label": "Reconnection Bundle"
-          },
-          {
-            "value": "Recycling Bundle",
-            "label": "Recycling Bundle"
-          },
-          {
-            "value": "Restraint Bundle",
-            "label": "Restraint Bundle"
-          },
-          {
-            "value": "Reverse Bundle",
-            "label": "Reverse Bundle"
-          },
-          {
-            "value": "Rick Bundle",
-            "label": "Rick Bundle"
-          },
-          {
-            "value": "River Fish Bundle",
-            "label": "River Fish Bundle"
-          },
-          {
-            "value": "Romance Bundle",
-            "label": "Romance Bundle"
-          },
-          {
-            "value": "SMAPI Bundle",
-            "label": "Smapi Bundle"
-          },
-          {
-            "value": "Sacrifice Bundle",
-            "label": "Sacrifice Bundle"
-          },
-          {
-            "value": "Sappy Bundle",
-            "label": "Sappy Bundle"
-          },
-          {
-            "value": "Scam Bundle",
-            "label": "Scam Bundle"
-          },
-          {
-            "value": "Schrodinger's Bundle",
-            "label": "Schrodinger'S Bundle"
-          },
-          {
-            "value": "Screw You Bundle",
-            "label": "Screw You Bundle"
-          },
-          {
-            "value": "Sisyphus Bundle",
-            "label": "Sisyphus Bundle"
-          },
-          {
-            "value": "Slime Farmer Bundle",
-            "label": "Slime Farmer Bundle"
-          },
-          {
-            "value": "Snitch Bundle",
-            "label": "Snitch Bundle"
-          },
-          {
-            "value": "Sommelier Bundle",
-            "label": "Sommelier Bundle"
-          },
-          {
-            "value": "Specialty Fish Bundle",
-            "label": "Specialty Fish Bundle"
-          },
-          {
-            "value": "Specific Fishing Bundle",
-            "label": "Specific Fishing Bundle"
-          },
-          {
-            "value": "Speedrunner's Bundle",
-            "label": "Speedrunner'S Bundle"
-          },
-          {
-            "value": "Spirit's Eve Bundle",
-            "label": "Spirit'S Eve Bundle"
-          },
-          {
-            "value": "Spring Crops Bundle",
-            "label": "Spring Crops Bundle"
-          },
-          {
-            "value": "Spring Fishing Bundle",
-            "label": "Spring Fishing Bundle"
-          },
-          {
-            "value": "Spring Foraging Bundle",
-            "label": "Spring Foraging Bundle"
-          },
-          {
-            "value": "Square Hole Bundle",
-            "label": "Square Hole Bundle"
-          },
-          {
-            "value": "Stanley Bundle",
-            "label": "Stanley Bundle"
-          },
-          {
-            "value": "Sticky Bundle",
-            "label": "Sticky Bundle"
-          },
-          {
-            "value": "Summer Crops Bundle",
-            "label": "Summer Crops Bundle"
-          },
-          {
-            "value": "Summer Fishing Bundle",
-            "label": "Summer Fishing Bundle"
-          },
-          {
-            "value": "Summer Foraging Bundle",
-            "label": "Summer Foraging Bundle"
-          },
-          {
-            "value": "Sunmaid Bundle",
-            "label": "Sunmaid Bundle"
-          },
-          {
-            "value": "Tackle Bundle",
-            "label": "Tackle Bundle"
-          },
-          {
-            "value": "The Floor Is Lava Bundle",
-            "label": "The Floor Is Lava Bundle"
-          },
-          {
-            "value": "TheAlGoreRhythm Bundle",
-            "label": "Thealgorerhythm Bundle"
-          },
-          {
-            "value": "This Is Fine Bundle",
-            "label": "This Is Fine Bundle"
-          },
-          {
-            "value": "Tick Tock Bundle",
-            "label": "Tick Tock Bundle"
-          },
-          {
-            "value": "Tilesanity Bundle",
-            "label": "Tilesanity Bundle"
-          },
-          {
-            "value": "Totems Bundle",
-            "label": "Totems Bundle"
-          },
-          {
-            "value": "Trap Bundle",
-            "label": "Trap Bundle"
-          },
-          {
-            "value": "Trash Bundle",
-            "label": "Trash Bundle"
-          },
-          {
-            "value": "Treasure Hunter's Bundle",
-            "label": "Treasure Hunter'S Bundle"
-          },
-          {
-            "value": "Trout Bundle",
-            "label": "Trout Bundle"
-          },
-          {
-            "value": "Vampire Bundle",
-            "label": "Vampire Bundle"
-          },
-          {
-            "value": "Very Sticky Bundle",
-            "label": "Very Sticky Bundle"
-          },
-          {
-            "value": "Vocaloid Bundle",
-            "label": "Vocaloid Bundle"
-          },
-          {
-            "value": "Walnut Hunter Bundle",
-            "label": "Walnut Hunter Bundle"
-          },
-          {
-            "value": "What The Rock Is Cooking Bundle",
-            "label": "What The Rock Is Cooking Bundle"
-          },
-          {
-            "value": "Wild Medicine Bundle",
-            "label": "Wild Medicine Bundle"
-          },
-          {
-            "value": "Winter Fishing Bundle",
-            "label": "Winter Fishing Bundle"
-          },
-          {
-            "value": "Winter Foraging Bundle",
-            "label": "Winter Foraging Bundle"
-          },
-          {
-            "value": "Winter Star Bundle",
-            "label": "Winter Star Bundle"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "allowed_filler_items",
-      "label": "Allowed Filler Items",
-      "description": "Types of filler items that can be generated for this slot.",
-      "category": "items",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [
-          "Buff Food",
-          "Consumables",
-          "Currencies",
-          "Decorations",
-          "Farming Items",
-          "Fishing Items",
-          "Food",
-          "Fruit Trees",
-          "Hats",
-          "Machines",
-          "Materials",
-          "Money",
-          "Quality Of Life",
-          "Rings",
-          "Storage"
-        ],
-        "choices": [
-          {
-            "value": "Buff Food",
-            "label": "Buff Food"
-          },
-          {
-            "value": "Consumables",
-            "label": "Consumables"
-          },
-          {
-            "value": "Currencies",
-            "label": "Currencies"
-          },
-          {
-            "value": "Decorations",
-            "label": "Decorations"
-          },
-          {
-            "value": "Farming Items",
-            "label": "Farming Items"
-          },
-          {
-            "value": "Fishing Items",
-            "label": "Fishing Items"
-          },
-          {
-            "value": "Food",
-            "label": "Food"
-          },
-          {
-            "value": "Fruit Trees",
-            "label": "Fruit Trees"
-          },
-          {
-            "value": "Hats",
-            "label": "Hats"
-          },
-          {
-            "value": "Machines",
-            "label": "Machines"
-          },
-          {
-            "value": "Materials",
-            "label": "Materials"
-          },
-          {
-            "value": "Money",
-            "label": "Money"
-          },
-          {
-            "value": "Quality Of Life",
-            "label": "Quality Of Life"
-          },
-          {
-            "value": "Rings",
-            "label": "Rings"
-          },
-          {
-            "value": "Storage",
-            "label": "Storage"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "jojapocalypse",
-      "label": "Jojapocalypse",
-      "description": "Joja Co opens a new Archipelago branch, selling you any and all location checks you might want or need, in exchange for money.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "disabled",
-        "choices": [
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "allowed",
-            "label": "Allowed"
-          },
-          {
-            "value": "forced",
-            "label": "Forced"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "joja_start_price",
-      "label": "Joja Start Price",
-      "description": "The price of Jojapocalypse items at the very beginning of the game.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 10000,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "joja_end_price",
-      "label": "Joja End Price",
-      "description": "The price of the very last Jojapocalypse item you will buy.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100000,
-        "step": 1,
-        "default": 10000
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "joja_pricing_pattern",
-      "label": "Joja Pricing Pattern",
-      "description": "Chooses the pricing strategy of Jojapocalypse sold location checks.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "exponential",
-        "choices": [
-          {
-            "value": "linear",
-            "label": "Linear"
-          },
-          {
-            "value": "exponential",
-            "label": "Exponential"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "joja_purchases_for_membership",
-      "label": "Joja Purchases For Membership",
-      "description": "After buying this number of location checks for Joja, you will earn your very own Joja Membership!",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "joja_are_you_sure",
-      "label": "Joja Are You Sure",
-      "description": "Jojapocalypse will be an extremely unfulfilling experience.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "stardew_valley",
+	"name": "Stardew Valley",
+	"version": "0.4.0",
+	"description": "Stardew Valley is an open-ended country-life RPG.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "Goal for this playthrough Community Center: Complete the Community Center Grandpa's Evaluation: 4 lit candles in Grandpa's evaluation Bottom of the Mines: Reach level 120 in the mines Cryptic Note: Complete the quest \"Cryptic Note\" (Skull Cavern Floor 100) Master Angler: Catch every fish.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "community_center",
+				"choices": [
+					{
+						"value": "community_center",
+						"label": "Community Center"
+					},
+					{
+						"value": "grandpa_evaluation",
+						"label": "Grandpa Evaluation"
+					},
+					{
+						"value": "bottom_of_the_mines",
+						"label": "Bottom Of The Mines"
+					},
+					{
+						"value": "cryptic_note",
+						"label": "Cryptic Note"
+					},
+					{
+						"value": "master_angler",
+						"label": "Master Angler"
+					},
+					{
+						"value": "complete_collection",
+						"label": "Complete Collection"
+					},
+					{
+						"value": "full_house",
+						"label": "Full House"
+					},
+					{
+						"value": "greatest_walnut_hunter",
+						"label": "Greatest Walnut Hunter"
+					},
+					{
+						"value": "protector_of_the_valley",
+						"label": "Protector Of The Valley"
+					},
+					{
+						"value": "full_shipment",
+						"label": "Full Shipment"
+					},
+					{
+						"value": "gourmet_chef",
+						"label": "Gourmet Chef"
+					},
+					{
+						"value": "craft_master",
+						"label": "Craft Master"
+					},
+					{
+						"value": "legend",
+						"label": "Legend"
+					},
+					{
+						"value": "mystery_of_the_stardrops",
+						"label": "Mystery Of The Stardrops"
+					},
+					{
+						"value": "mad_hatter",
+						"label": "Mad Hatter"
+					},
+					{
+						"value": "ultimate_foodie",
+						"label": "Ultimate Foodie"
+					},
+					{
+						"value": "allsanity",
+						"label": "Allsanity"
+					},
+					{
+						"value": "perfection",
+						"label": "Perfection"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "farm_type",
+			"label": "Farm Type",
+			"description": "What farm to play on?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random",
+				"choices": [
+					{
+						"value": "standard",
+						"label": "Standard"
+					},
+					{
+						"value": "riverland",
+						"label": "Riverland"
+					},
+					{
+						"value": "forest",
+						"label": "Forest"
+					},
+					{
+						"value": "hill_top",
+						"label": "Hill Top"
+					},
+					{
+						"value": "wilderness",
+						"label": "Wilderness"
+					},
+					{
+						"value": "four_corners",
+						"label": "Four Corners"
+					},
+					{
+						"value": "beach",
+						"label": "Beach"
+					},
+					{
+						"value": "meadowlands",
+						"label": "Meadowlands"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bundle_randomization",
+			"label": "Bundle Randomization",
+			"description": "What items are needed for the community center bundles?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "remixed",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "thematic",
+						"label": "Thematic"
+					},
+					{
+						"value": "remixed",
+						"label": "Remixed"
+					},
+					{
+						"value": "remixed_anywhere",
+						"label": "Remixed Anywhere"
+					},
+					{
+						"value": "shuffled",
+						"label": "Shuffled"
+					},
+					{
+						"value": "meme",
+						"label": "Meme"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bundle_price",
+			"label": "Bundle Price",
+			"description": "How many items are needed for the community center bundles?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "minimum",
+						"label": "Minimum"
+					},
+					{
+						"value": "very_cheap",
+						"label": "Very Cheap"
+					},
+					{
+						"value": "cheap",
+						"label": "Cheap"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "expensive",
+						"label": "Expensive"
+					},
+					{
+						"value": "very_expensive",
+						"label": "Very Expensive"
+					},
+					{
+						"value": "maximum",
+						"label": "Maximum"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bundle_per_room",
+			"label": "Bundle Per Room",
+			"description": "How many bundles are in each room of the community center?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "two_fewer",
+						"label": "Two Fewer"
+					},
+					{
+						"value": "one_fewer",
+						"label": "One Fewer"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "one_extra",
+						"label": "One Extra"
+					},
+					{
+						"value": "two_extra",
+						"label": "Two Extra"
+					},
+					{
+						"value": "three_extra",
+						"label": "Three Extra"
+					},
+					{
+						"value": "four_extra",
+						"label": "Four Extra"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "entrance_randomization",
+			"label": "Entrance Randomization",
+			"description": "Should area entrances be randomized?",
+			"category": "entrances",
+			"type": {
+				"kind": "select",
+				"default": "disabled",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "pelican_town",
+						"label": "Pelican Town"
+					},
+					{
+						"value": "non_progression",
+						"label": "Non Progression"
+					},
+					{
+						"value": "buildings_without_house",
+						"label": "Buildings Without House"
+					},
+					{
+						"value": "buildings",
+						"label": "Buildings"
+					},
+					{
+						"value": "chaos",
+						"label": "Chaos"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "start_without",
+			"label": "Start Without",
+			"description": "Items that, in vanilla, you generally start with (or get very quickly), but in Archipelago, you would rather start without them.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Backpack",
+						"label": "Backpack"
+					},
+					{
+						"value": "Buildings",
+						"label": "Buildings"
+					},
+					{
+						"value": "Community Center",
+						"label": "Community Center"
+					},
+					{
+						"value": "Landslide",
+						"label": "Landslide"
+					},
+					{
+						"value": "Tools",
+						"label": "Tools"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "season_randomization",
+			"label": "Season Randomization",
+			"description": "Should seasons be randomized?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "randomized",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					},
+					{
+						"value": "randomized_not_winter",
+						"label": "Randomized Not Winter"
+					},
+					{
+						"value": "progressive",
+						"label": "Progressive"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "cropsanity",
+			"label": "Cropsanity",
+			"description": "Pierre now sells a random amount of seasonal seeds and Joja sells them without season requirements, but only in huge packs.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "enabled",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "enabled",
+						"label": "Enabled"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "backpack_progression",
+			"label": "Backpack Progression",
+			"description": "Shuffle the backpack?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "early_progressive",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "progressive",
+						"label": "Progressive"
+					},
+					{
+						"value": "early_progressive",
+						"label": "Early Progressive"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "backpack_size",
+			"label": "Backpack Size",
+			"description": "Customize the granularity of the backpack upgrades This works with vanilla and progressive backpack.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "12",
+				"choices": [
+					{
+						"value": "1",
+						"label": "1"
+					},
+					{
+						"value": "2",
+						"label": "2"
+					},
+					{
+						"value": "3",
+						"label": "3"
+					},
+					{
+						"value": "4",
+						"label": "4"
+					},
+					{
+						"value": "6",
+						"label": "6"
+					},
+					{
+						"value": "12",
+						"label": "12"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "tool_progression",
+			"label": "Tool Progression",
+			"description": "Shuffle the tool upgrades?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "progressive",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "progressive",
+						"label": "Progressive"
+					},
+					{
+						"value": "vanilla_cheap",
+						"label": "Vanilla Cheap"
+					},
+					{
+						"value": "vanilla_very_cheap",
+						"label": "Vanilla Very Cheap"
+					},
+					{
+						"value": "progressive_cheap",
+						"label": "Progressive Cheap"
+					},
+					{
+						"value": "progressive_very_cheap",
+						"label": "Progressive Very Cheap"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skill_progression",
+			"label": "Skill Progression",
+			"description": "Shuffle skill levels?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "progressive",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "progressive",
+						"label": "Progressive"
+					},
+					{
+						"value": "progressive_with_masteries",
+						"label": "Progressive With Masteries"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "building_progression",
+			"label": "Building Progression",
+			"description": "Shuffle Carpenter Buildings?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "progressive_cheap",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "vanilla_cheap",
+						"label": "Vanilla Cheap"
+					},
+					{
+						"value": "vanilla_very_cheap",
+						"label": "Vanilla Very Cheap"
+					},
+					{
+						"value": "progressive",
+						"label": "Progressive"
+					},
+					{
+						"value": "progressive_cheap",
+						"label": "Progressive Cheap"
+					},
+					{
+						"value": "progressive_very_cheap",
+						"label": "Progressive Very Cheap"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "festival_locations",
+			"label": "Festival Locations",
+			"description": "Shuffle Festival Activities?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "easy",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "easy",
+						"label": "Easy"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "elevator_progression",
+			"label": "Elevator Progression",
+			"description": "Shuffle the elevator?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "progressive_from_previous_floor",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "progressive",
+						"label": "Progressive"
+					},
+					{
+						"value": "progressive_from_previous_floor",
+						"label": "Progressive From Previous Floor"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "arcade_machine_locations",
+			"label": "Arcade Machine Locations",
+			"description": "Shuffle the arcade machines?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "full_shuffling",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "victories",
+						"label": "Victories"
+					},
+					{
+						"value": "victories_easy",
+						"label": "Victories Easy"
+					},
+					{
+						"value": "full_shuffling",
+						"label": "Full Shuffling"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "special_order_locations",
+			"label": "Special Order Locations",
+			"description": "Shuffle Special Orders?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "board_short",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "board",
+						"label": "Board"
+					},
+					{
+						"value": "board_qi",
+						"label": "Board Qi"
+					},
+					{
+						"value": "vanilla_short",
+						"label": "Vanilla Short"
+					},
+					{
+						"value": "board_short",
+						"label": "Board Short"
+					},
+					{
+						"value": "board_qi_short",
+						"label": "Board Qi Short"
+					},
+					{
+						"value": "vanilla_very_short",
+						"label": "Vanilla Very Short"
+					},
+					{
+						"value": "board_very_short",
+						"label": "Board Very Short"
+					},
+					{
+						"value": "board_qi_very_short",
+						"label": "Board Qi Very Short"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "quest_locations",
+			"label": "Quest Locations",
+			"description": "Include location checks for quests None: No quests are checks Story: Only story quests are checks Number: Story quests and help wanted quests are checks up to the specified amount.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 56,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "fishsanity",
+			"label": "Fishsanity",
+			"description": "Locations for catching each fish the first time?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "legendaries",
+						"label": "Legendaries"
+					},
+					{
+						"value": "special",
+						"label": "Special"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					},
+					{
+						"value": "exclude_legendaries",
+						"label": "Exclude Legendaries"
+					},
+					{
+						"value": "exclude_hard_fish",
+						"label": "Exclude Hard Fish"
+					},
+					{
+						"value": "only_easy_fish",
+						"label": "Only Easy Fish"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "museumsanity",
+			"label": "Museumsanity",
+			"description": "Locations for museum donations?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "milestones",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "milestones",
+						"label": "Milestones"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "monstersanity",
+			"label": "Monstersanity",
+			"description": "Locations for slaying monsters?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "one_per_category",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "one_per_category",
+						"label": "One Per Category"
+					},
+					{
+						"value": "one_per_monster",
+						"label": "One Per Monster"
+					},
+					{
+						"value": "goals",
+						"label": "Goals"
+					},
+					{
+						"value": "short_goals",
+						"label": "Short Goals"
+					},
+					{
+						"value": "very_short_goals",
+						"label": "Very Short Goals"
+					},
+					{
+						"value": "progressive_goals",
+						"label": "Progressive Goals"
+					},
+					{
+						"value": "split_goals",
+						"label": "Split Goals"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shipsanity",
+			"label": "Shipsanity",
+			"description": "Locations for shipping items?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "crops",
+						"label": "Crops"
+					},
+					{
+						"value": "fish",
+						"label": "Fish"
+					},
+					{
+						"value": "crops_and_fish",
+						"label": "Crops And Fish"
+					},
+					{
+						"value": "full_shipment",
+						"label": "Full Shipment"
+					},
+					{
+						"value": "full_shipment_with_fish",
+						"label": "Full Shipment With Fish"
+					},
+					{
+						"value": "everything",
+						"label": "Everything"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "cooksanity",
+			"label": "Cooksanity",
+			"description": "Locations for cooking food?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "queen_of_sauce",
+						"label": "Queen Of Sauce"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "chefsanity",
+			"label": "Chefsanity",
+			"description": "Locations for learning cooking recipes?",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Friendship",
+						"label": "Friendship"
+					},
+					{
+						"value": "Purchases",
+						"label": "Purchases"
+					},
+					{
+						"value": "Queen of Sauce",
+						"label": "Queen Of Sauce"
+					},
+					{
+						"value": "Skills",
+						"label": "Skills"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "craftsanity",
+			"label": "Craftsanity",
+			"description": "Checks for crafting items?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "friendsanity",
+			"label": "Friendsanity",
+			"description": "Shuffle Friendships?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "bachelors",
+						"label": "Bachelors"
+					},
+					{
+						"value": "starting_npcs",
+						"label": "Starting Npcs"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					},
+					{
+						"value": "all_with_marriage",
+						"label": "All With Marriage"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "friendsanity_heart_size",
+			"label": "Friendsanity Heart Size",
+			"description": "If using friendsanity, how many hearts are received per heart item, and how many hearts must be earned to send a check A higher value will lead to fewer heart items in the item pool, reducing bloat",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 8,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "eatsanity",
+			"label": "Eatsanity",
+			"description": "Locations for eating various items?",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Artisan",
+						"label": "Artisan"
+					},
+					{
+						"value": "Cooking",
+						"label": "Cooking"
+					},
+					{
+						"value": "Crops",
+						"label": "Crops"
+					},
+					{
+						"value": "Fish",
+						"label": "Fish"
+					},
+					{
+						"value": "Lock Effects",
+						"label": "Lock Effects"
+					},
+					{
+						"value": "Poisonous",
+						"label": "Poisonous"
+					},
+					{
+						"value": "Shop",
+						"label": "Shop"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "booksanity",
+			"label": "Booksanity",
+			"description": "Shuffle Books?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "power_skill",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "power",
+						"label": "Power"
+					},
+					{
+						"value": "power_skill",
+						"label": "Power Skill"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "walnutsanity",
+			"label": "Walnutsanity",
+			"description": "Shuffle Walnuts?",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Bushes",
+						"label": "Bushes"
+					},
+					{
+						"value": "Dig Spots",
+						"label": "Dig Spots"
+					},
+					{
+						"value": "Puzzles",
+						"label": "Puzzles"
+					},
+					{
+						"value": "Repeatables",
+						"label": "Repeatables"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "moviesanity",
+			"label": "Moviesanity",
+			"description": "Add checks for watching movies?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "one",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "one",
+						"label": "One"
+					},
+					{
+						"value": "all_movies",
+						"label": "All Movies"
+					},
+					{
+						"value": "all_movies_loved",
+						"label": "All Movies Loved"
+					},
+					{
+						"value": "all_movies_with_loved_snack",
+						"label": "All Movies With Loved Snack"
+					},
+					{
+						"value": "all_movies_and_all_snacks",
+						"label": "All Movies And All Snacks"
+					},
+					{
+						"value": "all_movies_and_all_loved_snacks",
+						"label": "All Movies And All Loved Snacks"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "secretsanity",
+			"label": "Secretsanity",
+			"description": "Add checks for the various secrets and easter eggs present in Stardew Valley.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Difficult",
+						"label": "Difficult"
+					},
+					{
+						"value": "Easy",
+						"label": "Easy"
+					},
+					{
+						"value": "Fishing",
+						"label": "Fishing"
+					},
+					{
+						"value": "Secret Notes",
+						"label": "Secret Notes"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "hatsanity",
+			"label": "Hatsanity",
+			"description": "Add checks for wearing hats?",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Difficult",
+						"label": "Difficult"
+					},
+					{
+						"value": "Easy",
+						"label": "Easy"
+					},
+					{
+						"value": "Medium",
+						"label": "Medium"
+					},
+					{
+						"value": "Near Perfection",
+						"label": "Near Perfection"
+					},
+					{
+						"value": "Post Perfection",
+						"label": "Post Perfection"
+					},
+					{
+						"value": "RNG",
+						"label": "Rng"
+					},
+					{
+						"value": "Tailoring",
+						"label": "Tailoring"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "include_endgame_locations",
+			"label": "Include Endgame Locations",
+			"description": "Whether to include, as locations, several very expensive things that are usually purchased during the end-game in vanilla.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exclude_ginger_island",
+			"label": "Exclude Ginger Island",
+			"description": "Exclude Ginger Island?",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "quick_start",
+			"label": "Quick Start",
+			"description": "Do you want the quick start package?",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_money",
+			"label": "Starting Money",
+			"description": "Amount of gold when arriving at the farm.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 50000,
+				"step": 1,
+				"default": 5000
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "profit_margin",
+			"label": "Profit Margin",
+			"description": "Multiplier over all gold earned in-game by the player.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 25,
+				"max": 400,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "experience_multiplier",
+			"label": "Experience Multiplier",
+			"description": "How fast you want to earn skill experience.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 25,
+				"max": 800,
+				"step": 1,
+				"default": 200
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "friendship_multiplier",
+			"label": "Friendship Multiplier",
+			"description": "How fast you want to earn friendship points with villagers.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 25,
+				"max": 800,
+				"step": 1,
+				"default": 200
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "debris_multiplier",
+			"label": "Debris Multiplier",
+			"description": "How much debris will spawn on the player's farm?",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "half",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "half",
+						"label": "Half"
+					},
+					{
+						"value": "quarter",
+						"label": "Quarter"
+					},
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "start_clear",
+						"label": "Start Clear"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "movement_buff_number",
+			"label": "Movement Buff Number",
+			"description": "Number of movement speed buffs to the player that exist as items in the pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 12,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enabled_filler_buffs",
+			"label": "Enabled Filler Buffs",
+			"description": "Enable various permanent player buffs to roll as filler items Luck: Increased daily luck Damage: Increased Damage % Defense: Increased Defense Immunity: Increased Immunity Health: Increased Max Health Energy: Increased Max Energy Bite Rate: Shorter delay to get a bite when fishing Fish Trap: Effect similar to the Trap Bobber, but weaker Fishing Bar Size: Increased Fishing Bar Size",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": ["Bite Rate", "Defense", "Luck"],
+				"choices": [
+					{
+						"value": "Bite Rate",
+						"label": "Bite Rate"
+					},
+					{
+						"value": "Damage",
+						"label": "Damage"
+					},
+					{
+						"value": "Defense",
+						"label": "Defense"
+					},
+					{
+						"value": "Energy",
+						"label": "Energy"
+					},
+					{
+						"value": "Fish Trap",
+						"label": "Fish Trap"
+					},
+					{
+						"value": "Fishing Bar Size",
+						"label": "Fishing Bar Size"
+					},
+					{
+						"value": "Health",
+						"label": "Health"
+					},
+					{
+						"value": "Immunity",
+						"label": "Immunity"
+					},
+					{
+						"value": "Luck",
+						"label": "Luck"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "trap_difficulty",
+			"label": "Trap Difficulty",
+			"description": "When rolling filler items, including resource packs, the game can also roll trap items.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "medium",
+				"choices": [
+					{
+						"value": "no_traps",
+						"label": "No Traps"
+					},
+					{
+						"value": "easy",
+						"label": "Easy"
+					},
+					{
+						"value": "medium",
+						"label": "Medium"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					},
+					{
+						"value": "hell",
+						"label": "Hell"
+					},
+					{
+						"value": "nightmare",
+						"label": "Nightmare"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "custom_logic",
+			"label": "Custom Logic",
+			"description": "Enable various customizations to the logic of the generator.",
+			"category": "logic",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "Bomb Hoeing",
+						"label": "Bomb Hoeing"
+					},
+					{
+						"value": "Chair Skips",
+						"label": "Chair Skips"
+					},
+					{
+						"value": "Critical Free Samples",
+						"label": "Critical Free Samples"
+					},
+					{
+						"value": "Deep Mining",
+						"label": "Deep Mining"
+					},
+					{
+						"value": "Easy Combat",
+						"label": "Easy Combat"
+					},
+					{
+						"value": "Easy Fishing",
+						"label": "Easy Fishing"
+					},
+					{
+						"value": "Easy Mining",
+						"label": "Easy Mining"
+					},
+					{
+						"value": "Easy Money",
+						"label": "Easy Money"
+					},
+					{
+						"value": "Extreme Combat",
+						"label": "Extreme Combat"
+					},
+					{
+						"value": "Extreme Fishing",
+						"label": "Extreme Fishing"
+					},
+					{
+						"value": "Extreme Mining",
+						"label": "Extreme Mining"
+					},
+					{
+						"value": "Extreme Money",
+						"label": "Extreme Money"
+					},
+					{
+						"value": "Hard Combat",
+						"label": "Hard Combat"
+					},
+					{
+						"value": "Hard Fishing",
+						"label": "Hard Fishing"
+					},
+					{
+						"value": "Hard Mining",
+						"label": "Hard Mining"
+					},
+					{
+						"value": "Hard Money",
+						"label": "Hard Money"
+					},
+					{
+						"value": "Ignore Birthdays",
+						"label": "Ignore Birthdays"
+					},
+					{
+						"value": "Nightmare Money",
+						"label": "Nightmare Money"
+					},
+					{
+						"value": "Rain Watering",
+						"label": "Rain Watering"
+					},
+					{
+						"value": "Very Deep Mining",
+						"label": "Very Deep Mining"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "multiple_day_sleep_enabled",
+			"label": "Multiple Day Sleep Enabled",
+			"description": "Enable the ability to sleep automatically for multiple days straight?",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "multiple_day_sleep_cost",
+			"label": "Multiple Day Sleep Cost",
+			"description": "How much gold it will cost to use MultiSleep.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 200,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "gifting",
+			"label": "Gifting",
+			"description": "Do you want to enable gifting items to and from other Archipelago slots?",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "mods",
+			"label": "Mods",
+			"description": "List of mods that will be included in the shuffling.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "'Prophet' Wellwick",
+						"label": "'Prophet' Wellwick"
+					},
+					{
+						"value": "Alec Revisited",
+						"label": "Alec Revisited"
+					},
+					{
+						"value": "Alecto the Witch",
+						"label": "Alecto The Witch"
+					},
+					{
+						"value": "Archaeology",
+						"label": "Archaeology"
+					},
+					{
+						"value": "Ayeisha - The Postal Worker (Custom NPC)",
+						"label": "Ayeisha - The Postal Worker (Custom Npc)"
+					},
+					{
+						"value": "Bigger Backpack",
+						"label": "Bigger Backpack"
+					},
+					{
+						"value": "Binning Skill",
+						"label": "Binning Skill"
+					},
+					{
+						"value": "Boarding House and Bus Stop Extension",
+						"label": "Boarding House And Bus Stop Extension"
+					},
+					{
+						"value": "Cooking Skill",
+						"label": "Cooking Skill"
+					},
+					{
+						"value": "Custom NPC - Riley",
+						"label": "Custom Npc - Riley"
+					},
+					{
+						"value": "Custom NPC - Yoba",
+						"label": "Custom Npc - Yoba"
+					},
+					{
+						"value": "Custom NPC Eugene",
+						"label": "Custom Npc Eugene"
+					},
+					{
+						"value": "DeepWoods",
+						"label": "Deepwoods"
+					},
+					{
+						"value": "Delores - Custom NPC",
+						"label": "Delores - Custom Npc"
+					},
+					{
+						"value": "Distant Lands - Witch Swamp Overhaul",
+						"label": "Distant Lands - Witch Swamp Overhaul"
+					},
+					{
+						"value": "Hat Mouse Lacey",
+						"label": "Hat Mouse Lacey"
+					},
+					{
+						"value": "Juna - Roommate NPC",
+						"label": "Juna - Roommate Npc"
+					},
+					{
+						"value": "Luck Skill",
+						"label": "Luck Skill"
+					},
+					{
+						"value": "Magic",
+						"label": "Magic"
+					},
+					{
+						"value": "Mister Ginger (cat npc)",
+						"label": "Mister Ginger (Cat Npc)"
+					},
+					{
+						"value": "Professor Jasper Thomas",
+						"label": "Professor Jasper Thomas"
+					},
+					{
+						"value": "Shiko - New Custom NPC",
+						"label": "Shiko - New Custom Npc"
+					},
+					{
+						"value": "Skull Cavern Elevator",
+						"label": "Skull Cavern Elevator"
+					},
+					{
+						"value": "Socializing Skill",
+						"label": "Socializing Skill"
+					},
+					{
+						"value": "Stardew Valley Expanded",
+						"label": "Stardew Valley Expanded"
+					},
+					{
+						"value": "Tractor Mod",
+						"label": "Tractor Mod"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "bundle_whitelist",
+			"label": "Bundle Whitelist",
+			"description": "If using Remixed or Meme bundles, this guarantees some of them will show up in your community center.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "'Fruit' Bundle",
+						"label": "'Fruit' Bundle"
+					},
+					{
+						"value": "10,000g Bundle",
+						"label": "10,000G Bundle"
+					},
+					{
+						"value": "2,500g Bundle",
+						"label": "2,500G Bundle"
+					},
+					{
+						"value": "25,000g Bundle",
+						"label": "25,000G Bundle"
+					},
+					{
+						"value": "5,000g Bundle",
+						"label": "5,000G Bundle"
+					},
+					{
+						"value": "AAAA Bundle",
+						"label": "Aaaa Bundle"
+					},
+					{
+						"value": "ANIMAL WELL Bundle",
+						"label": "Animal Well Bundle"
+					},
+					{
+						"value": "ASMR Bundle",
+						"label": "Asmr Bundle"
+					},
+					{
+						"value": "Adventurer's Bundle",
+						"label": "Adventurer'S Bundle"
+					},
+					{
+						"value": "Agronomist's Bundle",
+						"label": "Agronomist'S Bundle"
+					},
+					{
+						"value": "Amon's Fall Bundle",
+						"label": "Amon'S Fall Bundle"
+					},
+					{
+						"value": "Animal Bundle",
+						"label": "Animal Bundle"
+					},
+					{
+						"value": "Anything For Beyonce Bundle",
+						"label": "Anything For Beyonce Bundle"
+					},
+					{
+						"value": "Archaeologist's Bundle",
+						"label": "Archaeologist'S Bundle"
+					},
+					{
+						"value": "Archipela-Go! Bundle",
+						"label": "Archipela-Go! Bundle"
+					},
+					{
+						"value": "ArgonMatrix Bundle",
+						"label": "Argonmatrix Bundle"
+					},
+					{
+						"value": "Artisan Bundle",
+						"label": "Artisan Bundle"
+					},
+					{
+						"value": "Automation Bundle",
+						"label": "Automation Bundle"
+					},
+					{
+						"value": "Bad Farmer Bundle",
+						"label": "Bad Farmer Bundle"
+					},
+					{
+						"value": "Bad Fisherman Bundle",
+						"label": "Bad Fisherman Bundle"
+					},
+					{
+						"value": "Balls Bundle",
+						"label": "Balls Bundle"
+					},
+					{
+						"value": "Bartender's Bundle",
+						"label": "Bartender'S Bundle"
+					},
+					{
+						"value": "Beach Foraging Bundle",
+						"label": "Beach Foraging Bundle"
+					},
+					{
+						"value": "Big Grapes Bundle",
+						"label": "Big Grapes Bundle"
+					},
+					{
+						"value": "Blacksmith's Bundle",
+						"label": "Blacksmith'S Bundle"
+					},
+					{
+						"value": "Blossom Garden Bundle",
+						"label": "Blossom Garden Bundle"
+					},
+					{
+						"value": "Brewer's Bundle",
+						"label": "Brewer'S Bundle"
+					},
+					{
+						"value": "Bun-dle",
+						"label": "Bun-Dle"
+					},
+					{
+						"value": "Bundle Bundle",
+						"label": "Bundle Bundle"
+					},
+					{
+						"value": "Burger King Bundle",
+						"label": "Burger King Bundle"
+					},
+					{
+						"value": "Burger King's Revenge Bundle",
+						"label": "Burger King'S Revenge Bundle"
+					},
+					{
+						"value": "Caffeinated Bundle",
+						"label": "Caffeinated Bundle"
+					},
+					{
+						"value": "Calico Bundle",
+						"label": "Calico Bundle"
+					},
+					{
+						"value": "Cap Bundle",
+						"label": "Cap Bundle"
+					},
+					{
+						"value": "Capitalist's Bundle",
+						"label": "Capitalist'S Bundle"
+					},
+					{
+						"value": "Carnival Bundle",
+						"label": "Carnival Bundle"
+					},
+					{
+						"value": "Catch And Release Bundle",
+						"label": "Catch And Release Bundle"
+					},
+					{
+						"value": "Celeste Bundle",
+						"label": "Celeste Bundle"
+					},
+					{
+						"value": "Chaos Emerald Bundle",
+						"label": "Chaos Emerald Bundle"
+					},
+					{
+						"value": "Chef's Bundle",
+						"label": "Chef'S Bundle"
+					},
+					{
+						"value": "Children's Bundle",
+						"label": "Children'S Bundle"
+					},
+					{
+						"value": "Clickbait Bundle",
+						"label": "Clickbait Bundle"
+					},
+					{
+						"value": "Clique Bundle",
+						"label": "Clique Bundle"
+					},
+					{
+						"value": "Commitment Bundle",
+						"label": "Commitment Bundle"
+					},
+					{
+						"value": "Communism Bundle",
+						"label": "Communism Bundle"
+					},
+					{
+						"value": "Connection Bundle",
+						"label": "Connection Bundle"
+					},
+					{
+						"value": "Construction Bundle",
+						"label": "Construction Bundle"
+					},
+					{
+						"value": "Cookie Clicker Bundle",
+						"label": "Cookie Clicker Bundle"
+					},
+					{
+						"value": "Cooperation Bundle",
+						"label": "Cooperation Bundle"
+					},
+					{
+						"value": "Crab Pot Bundle",
+						"label": "Crab Pot Bundle"
+					},
+					{
+						"value": "Crab Rave Bundle",
+						"label": "Crab Rave Bundle"
+					},
+					{
+						"value": "Crap Pot Bundle",
+						"label": "Crap Pot Bundle"
+					},
+					{
+						"value": "Crowdfunding Bundle",
+						"label": "Crowdfunding Bundle"
+					},
+					{
+						"value": "Death Bundle",
+						"label": "Death Bundle"
+					},
+					{
+						"value": "DeathLink Bundle",
+						"label": "Deathlink Bundle"
+					},
+					{
+						"value": "Deep Fishing Bundle",
+						"label": "Deep Fishing Bundle"
+					},
+					{
+						"value": "Demolition Bundle",
+						"label": "Demolition Bundle"
+					},
+					{
+						"value": "Desert Foraging Bundle",
+						"label": "Desert Foraging Bundle"
+					},
+					{
+						"value": "Distracted Bundle",
+						"label": "Distracted Bundle"
+					},
+					{
+						"value": "Doctor Angler Bundle",
+						"label": "Doctor Angler Bundle"
+					},
+					{
+						"value": "Doctor Bundle",
+						"label": "Doctor Bundle"
+					},
+					{
+						"value": "Dr Seuss Bundle",
+						"label": "Dr Seuss Bundle"
+					},
+					{
+						"value": "Dry Bundle",
+						"label": "Dry Bundle"
+					},
+					{
+						"value": "Dye Bundle",
+						"label": "Dye Bundle"
+					},
+					{
+						"value": "Eg Bundle",
+						"label": "Eg Bundle"
+					},
+					{
+						"value": "Emmalution Bundle",
+						"label": "Emmalution Bundle"
+					},
+					{
+						"value": "Enchanter's Bundle",
+						"label": "Enchanter'S Bundle"
+					},
+					{
+						"value": "Engineer's Bundle",
+						"label": "Engineer'S Bundle"
+					},
+					{
+						"value": "Exhaustion Bundle",
+						"label": "Exhaustion Bundle"
+					},
+					{
+						"value": "Exotic Foraging Bundle",
+						"label": "Exotic Foraging Bundle"
+					},
+					{
+						"value": "Fall Crops Bundle",
+						"label": "Fall Crops Bundle"
+					},
+					{
+						"value": "Fall Fishing Bundle",
+						"label": "Fall Fishing Bundle"
+					},
+					{
+						"value": "Fall Foraging Bundle",
+						"label": "Fall Foraging Bundle"
+					},
+					{
+						"value": "Fast Bundle",
+						"label": "Fast Bundle"
+					},
+					{
+						"value": "Field Research Bundle",
+						"label": "Field Research Bundle"
+					},
+					{
+						"value": "Firstborn Bundle",
+						"label": "Firstborn Bundle"
+					},
+					{
+						"value": "Fish Farmer's Bundle",
+						"label": "Fish Farmer'S Bundle"
+					},
+					{
+						"value": "Fish Smoker Bundle",
+						"label": "Fish Smoker Bundle"
+					},
+					{
+						"value": "Flashbang Bundle",
+						"label": "Flashbang Bundle"
+					},
+					{
+						"value": "Fodder Bundle",
+						"label": "Fodder Bundle"
+					},
+					{
+						"value": "Forager's Bundle",
+						"label": "Forager'S Bundle"
+					},
+					{
+						"value": "Forest Bundle",
+						"label": "Forest Bundle"
+					},
+					{
+						"value": "Frazzleduck Bundle",
+						"label": "Frazzleduck Bundle"
+					},
+					{
+						"value": "Gacha Bundle",
+						"label": "Gacha Bundle"
+					},
+					{
+						"value": "Gambler's Bundle",
+						"label": "Gambler'S Bundle"
+					},
+					{
+						"value": "Garden Bundle",
+						"label": "Garden Bundle"
+					},
+					{
+						"value": "Geologist's Bundle",
+						"label": "Geologist'S Bundle"
+					},
+					{
+						"value": "Green Rain Bundle",
+						"label": "Green Rain Bundle"
+					},
+					{
+						"value": "Hairy Bundle",
+						"label": "Hairy Bundle"
+					},
+					{
+						"value": "Hats Off To You Bundle",
+						"label": "Hats Off To You Bundle"
+					},
+					{
+						"value": "Helper's Bundle",
+						"label": "Helper'S Bundle"
+					},
+					{
+						"value": "Hibernation Bundle",
+						"label": "Hibernation Bundle"
+					},
+					{
+						"value": "Hint Bundle",
+						"label": "Hint Bundle"
+					},
+					{
+						"value": "Home Cook's Bundle",
+						"label": "Home Cook'S Bundle"
+					},
+					{
+						"value": "Honeywell Bundle",
+						"label": "Honeywell Bundle"
+					},
+					{
+						"value": "Honorable Bundle",
+						"label": "Honorable Bundle"
+					},
+					{
+						"value": "Humble Bundle",
+						"label": "Humble Bundle"
+					},
+					{
+						"value": "Hurricane Tortilla Bundle",
+						"label": "Hurricane Tortilla Bundle"
+					},
+					{
+						"value": "IKEA Bundle",
+						"label": "Ikea Bundle"
+					},
+					{
+						"value": "Investment Bundle",
+						"label": "Investment Bundle"
+					},
+					{
+						"value": "Island Crops Bundle",
+						"label": "Island Crops Bundle"
+					},
+					{
+						"value": "Island Fish Bundle",
+						"label": "Island Fish Bundle"
+					},
+					{
+						"value": "Island Foraging Bundle",
+						"label": "Island Foraging Bundle"
+					},
+					{
+						"value": "Joetg Bundle",
+						"label": "Joetg Bundle"
+					},
+					{
+						"value": "Journalist's Bundle",
+						"label": "Journalist'S Bundle"
+					},
+					{
+						"value": "Kent C. Bundle",
+						"label": "Kent C. Bundle"
+					},
+					{
+						"value": "Lake Fish Bundle",
+						"label": "Lake Fish Bundle"
+					},
+					{
+						"value": "Legendairy Bundle",
+						"label": "Legendairy Bundle"
+					},
+					{
+						"value": "Legendary Fish Bundle",
+						"label": "Legendary Fish Bundle"
+					},
+					{
+						"value": "Lemonade Stand Bundle",
+						"label": "Lemonade Stand Bundle"
+					},
+					{
+						"value": "Look At These Chickens Bundle",
+						"label": "Look At These Chickens Bundle"
+					},
+					{
+						"value": "Loser Club Bundle",
+						"label": "Loser Club Bundle"
+					},
+					{
+						"value": "Master Baiter Bundle",
+						"label": "Master Baiter Bundle"
+					},
+					{
+						"value": "Master Fisher's Bundle",
+						"label": "Master Fisher'S Bundle"
+					},
+					{
+						"value": "Mermaid Bundle",
+						"label": "Mermaid Bundle"
+					},
+					{
+						"value": "Minecraft Bundle",
+						"label": "Minecraft Bundle"
+					},
+					{
+						"value": "Mines Foraging Bundle",
+						"label": "Mines Foraging Bundle"
+					},
+					{
+						"value": "Ministry of Madness Bundle",
+						"label": "Ministry Of Madness Bundle"
+					},
+					{
+						"value": "NFT Bundle",
+						"label": "Nft Bundle"
+					},
+					{
+						"value": "Night Fishing Bundle",
+						"label": "Night Fishing Bundle"
+					},
+					{
+						"value": "Not The Bees Bundle",
+						"label": "Not The Bees Bundle"
+					},
+					{
+						"value": "Obelisks Bundle",
+						"label": "Obelisks Bundle"
+					},
+					{
+						"value": "Ocean Fish Bundle",
+						"label": "Ocean Fish Bundle"
+					},
+					{
+						"value": "Off Your Back Bundle",
+						"label": "Off Your Back Bundle"
+					},
+					{
+						"value": "Orchard Bundle",
+						"label": "Orchard Bundle"
+					},
+					{
+						"value": "Paleontologist's Bundle",
+						"label": "Paleontologist'S Bundle"
+					},
+					{
+						"value": "Permit A38 Bundle",
+						"label": "Permit A38 Bundle"
+					},
+					{
+						"value": "Pollution Bundle",
+						"label": "Pollution Bundle"
+					},
+					{
+						"value": "Pomnut Bundle",
+						"label": "Pomnut Bundle"
+					},
+					{
+						"value": "Pool Bundle",
+						"label": "Pool Bundle"
+					},
+					{
+						"value": "Potato Bundle",
+						"label": "Potato Bundle"
+					},
+					{
+						"value": "Puzzle Bundle",
+						"label": "Puzzle Bundle"
+					},
+					{
+						"value": "Qi's Helper Bundle",
+						"label": "Qi'S Helper Bundle"
+					},
+					{
+						"value": "Quality Crops Bundle",
+						"label": "Quality Crops Bundle"
+					},
+					{
+						"value": "Quality Fish Bundle",
+						"label": "Quality Fish Bundle"
+					},
+					{
+						"value": "Quality Foraging Bundle",
+						"label": "Quality Foraging Bundle"
+					},
+					{
+						"value": "Raccoon Bundle",
+						"label": "Raccoon Bundle"
+					},
+					{
+						"value": "Rain Fishing Bundle",
+						"label": "Rain Fishing Bundle"
+					},
+					{
+						"value": "Rare Crops Bundle",
+						"label": "Rare Crops Bundle"
+					},
+					{
+						"value": "Reconnection Bundle",
+						"label": "Reconnection Bundle"
+					},
+					{
+						"value": "Recycling Bundle",
+						"label": "Recycling Bundle"
+					},
+					{
+						"value": "Restraint Bundle",
+						"label": "Restraint Bundle"
+					},
+					{
+						"value": "Reverse Bundle",
+						"label": "Reverse Bundle"
+					},
+					{
+						"value": "Rick Bundle",
+						"label": "Rick Bundle"
+					},
+					{
+						"value": "River Fish Bundle",
+						"label": "River Fish Bundle"
+					},
+					{
+						"value": "Romance Bundle",
+						"label": "Romance Bundle"
+					},
+					{
+						"value": "SMAPI Bundle",
+						"label": "Smapi Bundle"
+					},
+					{
+						"value": "Sacrifice Bundle",
+						"label": "Sacrifice Bundle"
+					},
+					{
+						"value": "Sappy Bundle",
+						"label": "Sappy Bundle"
+					},
+					{
+						"value": "Scam Bundle",
+						"label": "Scam Bundle"
+					},
+					{
+						"value": "Schrodinger's Bundle",
+						"label": "Schrodinger'S Bundle"
+					},
+					{
+						"value": "Screw You Bundle",
+						"label": "Screw You Bundle"
+					},
+					{
+						"value": "Sisyphus Bundle",
+						"label": "Sisyphus Bundle"
+					},
+					{
+						"value": "Slime Farmer Bundle",
+						"label": "Slime Farmer Bundle"
+					},
+					{
+						"value": "Snitch Bundle",
+						"label": "Snitch Bundle"
+					},
+					{
+						"value": "Sommelier Bundle",
+						"label": "Sommelier Bundle"
+					},
+					{
+						"value": "Specialty Fish Bundle",
+						"label": "Specialty Fish Bundle"
+					},
+					{
+						"value": "Specific Fishing Bundle",
+						"label": "Specific Fishing Bundle"
+					},
+					{
+						"value": "Speedrunner's Bundle",
+						"label": "Speedrunner'S Bundle"
+					},
+					{
+						"value": "Spirit's Eve Bundle",
+						"label": "Spirit'S Eve Bundle"
+					},
+					{
+						"value": "Spring Crops Bundle",
+						"label": "Spring Crops Bundle"
+					},
+					{
+						"value": "Spring Fishing Bundle",
+						"label": "Spring Fishing Bundle"
+					},
+					{
+						"value": "Spring Foraging Bundle",
+						"label": "Spring Foraging Bundle"
+					},
+					{
+						"value": "Square Hole Bundle",
+						"label": "Square Hole Bundle"
+					},
+					{
+						"value": "Stanley Bundle",
+						"label": "Stanley Bundle"
+					},
+					{
+						"value": "Sticky Bundle",
+						"label": "Sticky Bundle"
+					},
+					{
+						"value": "Summer Crops Bundle",
+						"label": "Summer Crops Bundle"
+					},
+					{
+						"value": "Summer Fishing Bundle",
+						"label": "Summer Fishing Bundle"
+					},
+					{
+						"value": "Summer Foraging Bundle",
+						"label": "Summer Foraging Bundle"
+					},
+					{
+						"value": "Sunmaid Bundle",
+						"label": "Sunmaid Bundle"
+					},
+					{
+						"value": "Tackle Bundle",
+						"label": "Tackle Bundle"
+					},
+					{
+						"value": "The Floor Is Lava Bundle",
+						"label": "The Floor Is Lava Bundle"
+					},
+					{
+						"value": "TheAlGoreRhythm Bundle",
+						"label": "Thealgorerhythm Bundle"
+					},
+					{
+						"value": "This Is Fine Bundle",
+						"label": "This Is Fine Bundle"
+					},
+					{
+						"value": "Tick Tock Bundle",
+						"label": "Tick Tock Bundle"
+					},
+					{
+						"value": "Tilesanity Bundle",
+						"label": "Tilesanity Bundle"
+					},
+					{
+						"value": "Totems Bundle",
+						"label": "Totems Bundle"
+					},
+					{
+						"value": "Trap Bundle",
+						"label": "Trap Bundle"
+					},
+					{
+						"value": "Trash Bundle",
+						"label": "Trash Bundle"
+					},
+					{
+						"value": "Treasure Hunter's Bundle",
+						"label": "Treasure Hunter'S Bundle"
+					},
+					{
+						"value": "Trout Bundle",
+						"label": "Trout Bundle"
+					},
+					{
+						"value": "Vampire Bundle",
+						"label": "Vampire Bundle"
+					},
+					{
+						"value": "Very Sticky Bundle",
+						"label": "Very Sticky Bundle"
+					},
+					{
+						"value": "Vocaloid Bundle",
+						"label": "Vocaloid Bundle"
+					},
+					{
+						"value": "Walnut Hunter Bundle",
+						"label": "Walnut Hunter Bundle"
+					},
+					{
+						"value": "What The Rock Is Cooking Bundle",
+						"label": "What The Rock Is Cooking Bundle"
+					},
+					{
+						"value": "Wild Medicine Bundle",
+						"label": "Wild Medicine Bundle"
+					},
+					{
+						"value": "Winter Fishing Bundle",
+						"label": "Winter Fishing Bundle"
+					},
+					{
+						"value": "Winter Foraging Bundle",
+						"label": "Winter Foraging Bundle"
+					},
+					{
+						"value": "Winter Star Bundle",
+						"label": "Winter Star Bundle"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "bundle_blacklist",
+			"label": "Bundle Blacklist",
+			"description": "If using Remixed or Meme bundles, this guarantees some of them will not show up in your community center.",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [],
+				"choices": [
+					{
+						"value": "'Fruit' Bundle",
+						"label": "'Fruit' Bundle"
+					},
+					{
+						"value": "10,000g Bundle",
+						"label": "10,000G Bundle"
+					},
+					{
+						"value": "2,500g Bundle",
+						"label": "2,500G Bundle"
+					},
+					{
+						"value": "25,000g Bundle",
+						"label": "25,000G Bundle"
+					},
+					{
+						"value": "5,000g Bundle",
+						"label": "5,000G Bundle"
+					},
+					{
+						"value": "AAAA Bundle",
+						"label": "Aaaa Bundle"
+					},
+					{
+						"value": "ANIMAL WELL Bundle",
+						"label": "Animal Well Bundle"
+					},
+					{
+						"value": "ASMR Bundle",
+						"label": "Asmr Bundle"
+					},
+					{
+						"value": "Adventurer's Bundle",
+						"label": "Adventurer'S Bundle"
+					},
+					{
+						"value": "Agronomist's Bundle",
+						"label": "Agronomist'S Bundle"
+					},
+					{
+						"value": "Amon's Fall Bundle",
+						"label": "Amon'S Fall Bundle"
+					},
+					{
+						"value": "Animal Bundle",
+						"label": "Animal Bundle"
+					},
+					{
+						"value": "Anything For Beyonce Bundle",
+						"label": "Anything For Beyonce Bundle"
+					},
+					{
+						"value": "Archaeologist's Bundle",
+						"label": "Archaeologist'S Bundle"
+					},
+					{
+						"value": "Archipela-Go! Bundle",
+						"label": "Archipela-Go! Bundle"
+					},
+					{
+						"value": "ArgonMatrix Bundle",
+						"label": "Argonmatrix Bundle"
+					},
+					{
+						"value": "Artisan Bundle",
+						"label": "Artisan Bundle"
+					},
+					{
+						"value": "Automation Bundle",
+						"label": "Automation Bundle"
+					},
+					{
+						"value": "Bad Farmer Bundle",
+						"label": "Bad Farmer Bundle"
+					},
+					{
+						"value": "Bad Fisherman Bundle",
+						"label": "Bad Fisherman Bundle"
+					},
+					{
+						"value": "Balls Bundle",
+						"label": "Balls Bundle"
+					},
+					{
+						"value": "Bartender's Bundle",
+						"label": "Bartender'S Bundle"
+					},
+					{
+						"value": "Beach Foraging Bundle",
+						"label": "Beach Foraging Bundle"
+					},
+					{
+						"value": "Big Grapes Bundle",
+						"label": "Big Grapes Bundle"
+					},
+					{
+						"value": "Blacksmith's Bundle",
+						"label": "Blacksmith'S Bundle"
+					},
+					{
+						"value": "Blossom Garden Bundle",
+						"label": "Blossom Garden Bundle"
+					},
+					{
+						"value": "Brewer's Bundle",
+						"label": "Brewer'S Bundle"
+					},
+					{
+						"value": "Bun-dle",
+						"label": "Bun-Dle"
+					},
+					{
+						"value": "Bundle Bundle",
+						"label": "Bundle Bundle"
+					},
+					{
+						"value": "Burger King Bundle",
+						"label": "Burger King Bundle"
+					},
+					{
+						"value": "Burger King's Revenge Bundle",
+						"label": "Burger King'S Revenge Bundle"
+					},
+					{
+						"value": "Caffeinated Bundle",
+						"label": "Caffeinated Bundle"
+					},
+					{
+						"value": "Calico Bundle",
+						"label": "Calico Bundle"
+					},
+					{
+						"value": "Cap Bundle",
+						"label": "Cap Bundle"
+					},
+					{
+						"value": "Capitalist's Bundle",
+						"label": "Capitalist'S Bundle"
+					},
+					{
+						"value": "Carnival Bundle",
+						"label": "Carnival Bundle"
+					},
+					{
+						"value": "Catch And Release Bundle",
+						"label": "Catch And Release Bundle"
+					},
+					{
+						"value": "Celeste Bundle",
+						"label": "Celeste Bundle"
+					},
+					{
+						"value": "Chaos Emerald Bundle",
+						"label": "Chaos Emerald Bundle"
+					},
+					{
+						"value": "Chef's Bundle",
+						"label": "Chef'S Bundle"
+					},
+					{
+						"value": "Children's Bundle",
+						"label": "Children'S Bundle"
+					},
+					{
+						"value": "Clickbait Bundle",
+						"label": "Clickbait Bundle"
+					},
+					{
+						"value": "Clique Bundle",
+						"label": "Clique Bundle"
+					},
+					{
+						"value": "Commitment Bundle",
+						"label": "Commitment Bundle"
+					},
+					{
+						"value": "Communism Bundle",
+						"label": "Communism Bundle"
+					},
+					{
+						"value": "Connection Bundle",
+						"label": "Connection Bundle"
+					},
+					{
+						"value": "Construction Bundle",
+						"label": "Construction Bundle"
+					},
+					{
+						"value": "Cookie Clicker Bundle",
+						"label": "Cookie Clicker Bundle"
+					},
+					{
+						"value": "Cooperation Bundle",
+						"label": "Cooperation Bundle"
+					},
+					{
+						"value": "Crab Pot Bundle",
+						"label": "Crab Pot Bundle"
+					},
+					{
+						"value": "Crab Rave Bundle",
+						"label": "Crab Rave Bundle"
+					},
+					{
+						"value": "Crap Pot Bundle",
+						"label": "Crap Pot Bundle"
+					},
+					{
+						"value": "Crowdfunding Bundle",
+						"label": "Crowdfunding Bundle"
+					},
+					{
+						"value": "Death Bundle",
+						"label": "Death Bundle"
+					},
+					{
+						"value": "DeathLink Bundle",
+						"label": "Deathlink Bundle"
+					},
+					{
+						"value": "Deep Fishing Bundle",
+						"label": "Deep Fishing Bundle"
+					},
+					{
+						"value": "Demolition Bundle",
+						"label": "Demolition Bundle"
+					},
+					{
+						"value": "Desert Foraging Bundle",
+						"label": "Desert Foraging Bundle"
+					},
+					{
+						"value": "Distracted Bundle",
+						"label": "Distracted Bundle"
+					},
+					{
+						"value": "Doctor Angler Bundle",
+						"label": "Doctor Angler Bundle"
+					},
+					{
+						"value": "Doctor Bundle",
+						"label": "Doctor Bundle"
+					},
+					{
+						"value": "Dr Seuss Bundle",
+						"label": "Dr Seuss Bundle"
+					},
+					{
+						"value": "Dry Bundle",
+						"label": "Dry Bundle"
+					},
+					{
+						"value": "Dye Bundle",
+						"label": "Dye Bundle"
+					},
+					{
+						"value": "Eg Bundle",
+						"label": "Eg Bundle"
+					},
+					{
+						"value": "Emmalution Bundle",
+						"label": "Emmalution Bundle"
+					},
+					{
+						"value": "Enchanter's Bundle",
+						"label": "Enchanter'S Bundle"
+					},
+					{
+						"value": "Engineer's Bundle",
+						"label": "Engineer'S Bundle"
+					},
+					{
+						"value": "Exhaustion Bundle",
+						"label": "Exhaustion Bundle"
+					},
+					{
+						"value": "Exotic Foraging Bundle",
+						"label": "Exotic Foraging Bundle"
+					},
+					{
+						"value": "Fall Crops Bundle",
+						"label": "Fall Crops Bundle"
+					},
+					{
+						"value": "Fall Fishing Bundle",
+						"label": "Fall Fishing Bundle"
+					},
+					{
+						"value": "Fall Foraging Bundle",
+						"label": "Fall Foraging Bundle"
+					},
+					{
+						"value": "Fast Bundle",
+						"label": "Fast Bundle"
+					},
+					{
+						"value": "Field Research Bundle",
+						"label": "Field Research Bundle"
+					},
+					{
+						"value": "Firstborn Bundle",
+						"label": "Firstborn Bundle"
+					},
+					{
+						"value": "Fish Farmer's Bundle",
+						"label": "Fish Farmer'S Bundle"
+					},
+					{
+						"value": "Fish Smoker Bundle",
+						"label": "Fish Smoker Bundle"
+					},
+					{
+						"value": "Flashbang Bundle",
+						"label": "Flashbang Bundle"
+					},
+					{
+						"value": "Fodder Bundle",
+						"label": "Fodder Bundle"
+					},
+					{
+						"value": "Forager's Bundle",
+						"label": "Forager'S Bundle"
+					},
+					{
+						"value": "Forest Bundle",
+						"label": "Forest Bundle"
+					},
+					{
+						"value": "Frazzleduck Bundle",
+						"label": "Frazzleduck Bundle"
+					},
+					{
+						"value": "Gacha Bundle",
+						"label": "Gacha Bundle"
+					},
+					{
+						"value": "Gambler's Bundle",
+						"label": "Gambler'S Bundle"
+					},
+					{
+						"value": "Garden Bundle",
+						"label": "Garden Bundle"
+					},
+					{
+						"value": "Geologist's Bundle",
+						"label": "Geologist'S Bundle"
+					},
+					{
+						"value": "Green Rain Bundle",
+						"label": "Green Rain Bundle"
+					},
+					{
+						"value": "Hairy Bundle",
+						"label": "Hairy Bundle"
+					},
+					{
+						"value": "Hats Off To You Bundle",
+						"label": "Hats Off To You Bundle"
+					},
+					{
+						"value": "Helper's Bundle",
+						"label": "Helper'S Bundle"
+					},
+					{
+						"value": "Hibernation Bundle",
+						"label": "Hibernation Bundle"
+					},
+					{
+						"value": "Hint Bundle",
+						"label": "Hint Bundle"
+					},
+					{
+						"value": "Home Cook's Bundle",
+						"label": "Home Cook'S Bundle"
+					},
+					{
+						"value": "Honeywell Bundle",
+						"label": "Honeywell Bundle"
+					},
+					{
+						"value": "Honorable Bundle",
+						"label": "Honorable Bundle"
+					},
+					{
+						"value": "Humble Bundle",
+						"label": "Humble Bundle"
+					},
+					{
+						"value": "Hurricane Tortilla Bundle",
+						"label": "Hurricane Tortilla Bundle"
+					},
+					{
+						"value": "IKEA Bundle",
+						"label": "Ikea Bundle"
+					},
+					{
+						"value": "Investment Bundle",
+						"label": "Investment Bundle"
+					},
+					{
+						"value": "Island Crops Bundle",
+						"label": "Island Crops Bundle"
+					},
+					{
+						"value": "Island Fish Bundle",
+						"label": "Island Fish Bundle"
+					},
+					{
+						"value": "Island Foraging Bundle",
+						"label": "Island Foraging Bundle"
+					},
+					{
+						"value": "Joetg Bundle",
+						"label": "Joetg Bundle"
+					},
+					{
+						"value": "Journalist's Bundle",
+						"label": "Journalist'S Bundle"
+					},
+					{
+						"value": "Kent C. Bundle",
+						"label": "Kent C. Bundle"
+					},
+					{
+						"value": "Lake Fish Bundle",
+						"label": "Lake Fish Bundle"
+					},
+					{
+						"value": "Legendairy Bundle",
+						"label": "Legendairy Bundle"
+					},
+					{
+						"value": "Legendary Fish Bundle",
+						"label": "Legendary Fish Bundle"
+					},
+					{
+						"value": "Lemonade Stand Bundle",
+						"label": "Lemonade Stand Bundle"
+					},
+					{
+						"value": "Look At These Chickens Bundle",
+						"label": "Look At These Chickens Bundle"
+					},
+					{
+						"value": "Loser Club Bundle",
+						"label": "Loser Club Bundle"
+					},
+					{
+						"value": "Master Baiter Bundle",
+						"label": "Master Baiter Bundle"
+					},
+					{
+						"value": "Master Fisher's Bundle",
+						"label": "Master Fisher'S Bundle"
+					},
+					{
+						"value": "Mermaid Bundle",
+						"label": "Mermaid Bundle"
+					},
+					{
+						"value": "Minecraft Bundle",
+						"label": "Minecraft Bundle"
+					},
+					{
+						"value": "Mines Foraging Bundle",
+						"label": "Mines Foraging Bundle"
+					},
+					{
+						"value": "Ministry of Madness Bundle",
+						"label": "Ministry Of Madness Bundle"
+					},
+					{
+						"value": "NFT Bundle",
+						"label": "Nft Bundle"
+					},
+					{
+						"value": "Night Fishing Bundle",
+						"label": "Night Fishing Bundle"
+					},
+					{
+						"value": "Not The Bees Bundle",
+						"label": "Not The Bees Bundle"
+					},
+					{
+						"value": "Obelisks Bundle",
+						"label": "Obelisks Bundle"
+					},
+					{
+						"value": "Ocean Fish Bundle",
+						"label": "Ocean Fish Bundle"
+					},
+					{
+						"value": "Off Your Back Bundle",
+						"label": "Off Your Back Bundle"
+					},
+					{
+						"value": "Orchard Bundle",
+						"label": "Orchard Bundle"
+					},
+					{
+						"value": "Paleontologist's Bundle",
+						"label": "Paleontologist'S Bundle"
+					},
+					{
+						"value": "Permit A38 Bundle",
+						"label": "Permit A38 Bundle"
+					},
+					{
+						"value": "Pollution Bundle",
+						"label": "Pollution Bundle"
+					},
+					{
+						"value": "Pomnut Bundle",
+						"label": "Pomnut Bundle"
+					},
+					{
+						"value": "Pool Bundle",
+						"label": "Pool Bundle"
+					},
+					{
+						"value": "Potato Bundle",
+						"label": "Potato Bundle"
+					},
+					{
+						"value": "Puzzle Bundle",
+						"label": "Puzzle Bundle"
+					},
+					{
+						"value": "Qi's Helper Bundle",
+						"label": "Qi'S Helper Bundle"
+					},
+					{
+						"value": "Quality Crops Bundle",
+						"label": "Quality Crops Bundle"
+					},
+					{
+						"value": "Quality Fish Bundle",
+						"label": "Quality Fish Bundle"
+					},
+					{
+						"value": "Quality Foraging Bundle",
+						"label": "Quality Foraging Bundle"
+					},
+					{
+						"value": "Raccoon Bundle",
+						"label": "Raccoon Bundle"
+					},
+					{
+						"value": "Rain Fishing Bundle",
+						"label": "Rain Fishing Bundle"
+					},
+					{
+						"value": "Rare Crops Bundle",
+						"label": "Rare Crops Bundle"
+					},
+					{
+						"value": "Reconnection Bundle",
+						"label": "Reconnection Bundle"
+					},
+					{
+						"value": "Recycling Bundle",
+						"label": "Recycling Bundle"
+					},
+					{
+						"value": "Restraint Bundle",
+						"label": "Restraint Bundle"
+					},
+					{
+						"value": "Reverse Bundle",
+						"label": "Reverse Bundle"
+					},
+					{
+						"value": "Rick Bundle",
+						"label": "Rick Bundle"
+					},
+					{
+						"value": "River Fish Bundle",
+						"label": "River Fish Bundle"
+					},
+					{
+						"value": "Romance Bundle",
+						"label": "Romance Bundle"
+					},
+					{
+						"value": "SMAPI Bundle",
+						"label": "Smapi Bundle"
+					},
+					{
+						"value": "Sacrifice Bundle",
+						"label": "Sacrifice Bundle"
+					},
+					{
+						"value": "Sappy Bundle",
+						"label": "Sappy Bundle"
+					},
+					{
+						"value": "Scam Bundle",
+						"label": "Scam Bundle"
+					},
+					{
+						"value": "Schrodinger's Bundle",
+						"label": "Schrodinger'S Bundle"
+					},
+					{
+						"value": "Screw You Bundle",
+						"label": "Screw You Bundle"
+					},
+					{
+						"value": "Sisyphus Bundle",
+						"label": "Sisyphus Bundle"
+					},
+					{
+						"value": "Slime Farmer Bundle",
+						"label": "Slime Farmer Bundle"
+					},
+					{
+						"value": "Snitch Bundle",
+						"label": "Snitch Bundle"
+					},
+					{
+						"value": "Sommelier Bundle",
+						"label": "Sommelier Bundle"
+					},
+					{
+						"value": "Specialty Fish Bundle",
+						"label": "Specialty Fish Bundle"
+					},
+					{
+						"value": "Specific Fishing Bundle",
+						"label": "Specific Fishing Bundle"
+					},
+					{
+						"value": "Speedrunner's Bundle",
+						"label": "Speedrunner'S Bundle"
+					},
+					{
+						"value": "Spirit's Eve Bundle",
+						"label": "Spirit'S Eve Bundle"
+					},
+					{
+						"value": "Spring Crops Bundle",
+						"label": "Spring Crops Bundle"
+					},
+					{
+						"value": "Spring Fishing Bundle",
+						"label": "Spring Fishing Bundle"
+					},
+					{
+						"value": "Spring Foraging Bundle",
+						"label": "Spring Foraging Bundle"
+					},
+					{
+						"value": "Square Hole Bundle",
+						"label": "Square Hole Bundle"
+					},
+					{
+						"value": "Stanley Bundle",
+						"label": "Stanley Bundle"
+					},
+					{
+						"value": "Sticky Bundle",
+						"label": "Sticky Bundle"
+					},
+					{
+						"value": "Summer Crops Bundle",
+						"label": "Summer Crops Bundle"
+					},
+					{
+						"value": "Summer Fishing Bundle",
+						"label": "Summer Fishing Bundle"
+					},
+					{
+						"value": "Summer Foraging Bundle",
+						"label": "Summer Foraging Bundle"
+					},
+					{
+						"value": "Sunmaid Bundle",
+						"label": "Sunmaid Bundle"
+					},
+					{
+						"value": "Tackle Bundle",
+						"label": "Tackle Bundle"
+					},
+					{
+						"value": "The Floor Is Lava Bundle",
+						"label": "The Floor Is Lava Bundle"
+					},
+					{
+						"value": "TheAlGoreRhythm Bundle",
+						"label": "Thealgorerhythm Bundle"
+					},
+					{
+						"value": "This Is Fine Bundle",
+						"label": "This Is Fine Bundle"
+					},
+					{
+						"value": "Tick Tock Bundle",
+						"label": "Tick Tock Bundle"
+					},
+					{
+						"value": "Tilesanity Bundle",
+						"label": "Tilesanity Bundle"
+					},
+					{
+						"value": "Totems Bundle",
+						"label": "Totems Bundle"
+					},
+					{
+						"value": "Trap Bundle",
+						"label": "Trap Bundle"
+					},
+					{
+						"value": "Trash Bundle",
+						"label": "Trash Bundle"
+					},
+					{
+						"value": "Treasure Hunter's Bundle",
+						"label": "Treasure Hunter'S Bundle"
+					},
+					{
+						"value": "Trout Bundle",
+						"label": "Trout Bundle"
+					},
+					{
+						"value": "Vampire Bundle",
+						"label": "Vampire Bundle"
+					},
+					{
+						"value": "Very Sticky Bundle",
+						"label": "Very Sticky Bundle"
+					},
+					{
+						"value": "Vocaloid Bundle",
+						"label": "Vocaloid Bundle"
+					},
+					{
+						"value": "Walnut Hunter Bundle",
+						"label": "Walnut Hunter Bundle"
+					},
+					{
+						"value": "What The Rock Is Cooking Bundle",
+						"label": "What The Rock Is Cooking Bundle"
+					},
+					{
+						"value": "Wild Medicine Bundle",
+						"label": "Wild Medicine Bundle"
+					},
+					{
+						"value": "Winter Fishing Bundle",
+						"label": "Winter Fishing Bundle"
+					},
+					{
+						"value": "Winter Foraging Bundle",
+						"label": "Winter Foraging Bundle"
+					},
+					{
+						"value": "Winter Star Bundle",
+						"label": "Winter Star Bundle"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "allowed_filler_items",
+			"label": "Allowed Filler Items",
+			"description": "Types of filler items that can be generated for this slot.",
+			"category": "items",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [
+					"Buff Food",
+					"Consumables",
+					"Currencies",
+					"Decorations",
+					"Farming Items",
+					"Fishing Items",
+					"Food",
+					"Fruit Trees",
+					"Hats",
+					"Machines",
+					"Materials",
+					"Money",
+					"Quality Of Life",
+					"Rings",
+					"Storage"
+				],
+				"choices": [
+					{
+						"value": "Buff Food",
+						"label": "Buff Food"
+					},
+					{
+						"value": "Consumables",
+						"label": "Consumables"
+					},
+					{
+						"value": "Currencies",
+						"label": "Currencies"
+					},
+					{
+						"value": "Decorations",
+						"label": "Decorations"
+					},
+					{
+						"value": "Farming Items",
+						"label": "Farming Items"
+					},
+					{
+						"value": "Fishing Items",
+						"label": "Fishing Items"
+					},
+					{
+						"value": "Food",
+						"label": "Food"
+					},
+					{
+						"value": "Fruit Trees",
+						"label": "Fruit Trees"
+					},
+					{
+						"value": "Hats",
+						"label": "Hats"
+					},
+					{
+						"value": "Machines",
+						"label": "Machines"
+					},
+					{
+						"value": "Materials",
+						"label": "Materials"
+					},
+					{
+						"value": "Money",
+						"label": "Money"
+					},
+					{
+						"value": "Quality Of Life",
+						"label": "Quality Of Life"
+					},
+					{
+						"value": "Rings",
+						"label": "Rings"
+					},
+					{
+						"value": "Storage",
+						"label": "Storage"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "jojapocalypse",
+			"label": "Jojapocalypse",
+			"description": "Joja Co opens a new Archipelago branch, selling you any and all location checks you might want or need, in exchange for money.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "disabled",
+				"choices": [
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "allowed",
+						"label": "Allowed"
+					},
+					{
+						"value": "forced",
+						"label": "Forced"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "joja_start_price",
+			"label": "Joja Start Price",
+			"description": "The price of Jojapocalypse items at the very beginning of the game.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 10000,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "joja_end_price",
+			"label": "Joja End Price",
+			"description": "The price of the very last Jojapocalypse item you will buy.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100000,
+				"step": 1,
+				"default": 10000
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "joja_pricing_pattern",
+			"label": "Joja Pricing Pattern",
+			"description": "Chooses the pricing strategy of Jojapocalypse sold location checks.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "exponential",
+				"choices": [
+					{
+						"value": "linear",
+						"label": "Linear"
+					},
+					{
+						"value": "exponential",
+						"label": "Exponential"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "joja_purchases_for_membership",
+			"label": "Joja Purchases For Membership",
+			"description": "After buying this number of location checks for Joja, you will earn your very own Joja Membership!",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "joja_are_you_sure",
+			"label": "Joja Are You Sure",
+			"description": "Jojapocalypse will be an extremely unfulfilling experience.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -1,400 +1,400 @@
 {
-  "id": "yugioh06",
-  "name": "Yu-Gi-Oh! 2006",
-  "version": "0.1.6",
-  "description": "Yu-Gi-Oh!",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "structure_deck",
-      "label": "Structure Deck",
-      "description": "Which Structure Deck you start with",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random_deck",
-        "choices": [
-          {
-            "value": "dragons_roar",
-            "label": "Dragons Roar"
-          },
-          {
-            "value": "zombie_madness",
-            "label": "Zombie Madness"
-          },
-          {
-            "value": "blazing_destruction",
-            "label": "Blazing Destruction"
-          },
-          {
-            "value": "fury_from_the_deep",
-            "label": "Fury From The Deep"
-          },
-          {
-            "value": "warriors_triumph",
-            "label": "Warriors Triumph"
-          },
-          {
-            "value": "spellcasters_judgement",
-            "label": "Spellcasters Judgement"
-          },
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "random_deck",
-            "label": "Random Deck"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "banlist",
-      "label": "Banlist",
-      "description": "Which Banlist you start with",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "september_2005",
-        "choices": [
-          {
-            "value": "no_banlist",
-            "label": "No Banlist"
-          },
-          {
-            "value": "september_2003",
-            "label": "September 2003"
-          },
-          {
-            "value": "march_2004",
-            "label": "March 2004"
-          },
-          {
-            "value": "september_2004",
-            "label": "September 2004"
-          },
-          {
-            "value": "march_2005",
-            "label": "March 2005"
-          },
-          {
-            "value": "september_2005",
-            "label": "September 2005"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "final_campaign_boss_unlock_condition",
-      "label": "Final Campaign Boss Unlock Condition",
-      "description": "How to unlock the final campaign boss and goal for the world",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "campaign_opponents",
-        "choices": [
-          {
-            "value": "campaign_opponents",
-            "label": "Campaign Opponents"
-          },
-          {
-            "value": "challenges",
-            "label": "Challenges"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "fourth_tier_5_campaign_boss_unlock_condition",
-      "label": "Fourth Tier 5 Campaign Boss Unlock Condition",
-      "description": "How to unlock the fourth campaign boss",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "campaign_opponents",
-        "choices": [
-          {
-            "value": "campaign_opponents",
-            "label": "Campaign Opponents"
-          },
-          {
-            "value": "challenges",
-            "label": "Challenges"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "third_tier_5_campaign_boss_unlock_condition",
-      "label": "Third Tier 5 Campaign Boss Unlock Condition",
-      "description": "How to unlock the third campaign boss",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "campaign_opponents",
-        "choices": [
-          {
-            "value": "campaign_opponents",
-            "label": "Campaign Opponents"
-          },
-          {
-            "value": "challenges",
-            "label": "Challenges"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "final_campaign_boss_challenges",
-      "label": "Final Campaign Boss Challenges",
-      "description": "Number of Limited/Theme Duels completed for the Final Campaign Boss to appear",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 91,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "fourth_tier_5_campaign_boss_challenges",
-      "label": "Fourth Tier 5 Campaign Boss Challenges",
-      "description": "Number of Limited/Theme Duels completed for the Fourth Level 5 Campaign Opponent to appear",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 91,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "third_tier_5_campaign_boss_challenges",
-      "label": "Third Tier 5 Campaign Boss Challenges",
-      "description": "Number of Limited/Theme Duels completed for the Third Level 5 Campaign Opponent to appear",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 91,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "final_campaign_boss_campaign_opponents",
-      "label": "Final Campaign Boss Campaign Opponents",
-      "description": "Number of Campaign Opponents Duels defeated for the Final Campaign Boss to appear",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 24,
-        "step": 1,
-        "default": 12
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "fourth_tier_5_campaign_boss_campaign_opponents",
-      "label": "Fourth Tier 5 Campaign Boss Campaign Opponents",
-      "description": "Number of Campaign Opponents Duels defeated for the Fourth Level 5 Campaign Opponent to appear",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 23,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "third_tier_5_campaign_boss_campaign_opponents",
-      "label": "Third Tier 5 Campaign Boss Campaign Opponents",
-      "description": "Number of Campaign Opponents Duels defeated for the Third Level 5 Campaign Opponent to appear",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 22,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "number_of_challenges",
-      "label": "Number Of Challenges",
-      "description": "Number of random Limited/Theme Duels that are included.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 91,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_money",
-      "label": "Starting Money",
-      "description": "The amount of money you start with",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100000,
-        "step": 1,
-        "default": 3000
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "money_reward_multiplier",
-      "label": "Money Reward Multiplier",
-      "description": "By which amount the campaign reward money is multiplied",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 255,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "normalize_boosters_packs",
-      "label": "Normalize Boosters Packs",
-      "description": "If enabled every booster pack costs the same otherwise vanilla cost is used",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "booster_pack_prices",
-      "label": "Booster Pack Prices",
-      "description": "Only Works if normalize booster packs is enabled.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 3000,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "add_empty_banlist",
-      "label": "Add Empty Banlist",
-      "description": "Adds a Ban List where everything is at 3 to the item pool",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "campaign_opponents_shuffle",
-      "label": "Campaign Opponents Shuffle",
-      "description": "Replaces the campaign with random opponents from the entire game",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ocg_arts",
-      "label": "Ocg Arts",
-      "description": "Always use the OCG artworks for cards",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "yugioh06",
+	"name": "Yu-Gi-Oh! 2006",
+	"version": "0.1.6",
+	"description": "Yu-Gi-Oh!",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "structure_deck",
+			"label": "Structure Deck",
+			"description": "Which Structure Deck you start with",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random_deck",
+				"choices": [
+					{
+						"value": "dragons_roar",
+						"label": "Dragons Roar"
+					},
+					{
+						"value": "zombie_madness",
+						"label": "Zombie Madness"
+					},
+					{
+						"value": "blazing_destruction",
+						"label": "Blazing Destruction"
+					},
+					{
+						"value": "fury_from_the_deep",
+						"label": "Fury From The Deep"
+					},
+					{
+						"value": "warriors_triumph",
+						"label": "Warriors Triumph"
+					},
+					{
+						"value": "spellcasters_judgement",
+						"label": "Spellcasters Judgement"
+					},
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "random_deck",
+						"label": "Random Deck"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "banlist",
+			"label": "Banlist",
+			"description": "Which Banlist you start with",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "september_2005",
+				"choices": [
+					{
+						"value": "no_banlist",
+						"label": "No Banlist"
+					},
+					{
+						"value": "september_2003",
+						"label": "September 2003"
+					},
+					{
+						"value": "march_2004",
+						"label": "March 2004"
+					},
+					{
+						"value": "september_2004",
+						"label": "September 2004"
+					},
+					{
+						"value": "march_2005",
+						"label": "March 2005"
+					},
+					{
+						"value": "september_2005",
+						"label": "September 2005"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "final_campaign_boss_unlock_condition",
+			"label": "Final Campaign Boss Unlock Condition",
+			"description": "How to unlock the final campaign boss and goal for the world",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "campaign_opponents",
+				"choices": [
+					{
+						"value": "campaign_opponents",
+						"label": "Campaign Opponents"
+					},
+					{
+						"value": "challenges",
+						"label": "Challenges"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "fourth_tier_5_campaign_boss_unlock_condition",
+			"label": "Fourth Tier 5 Campaign Boss Unlock Condition",
+			"description": "How to unlock the fourth campaign boss",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "campaign_opponents",
+				"choices": [
+					{
+						"value": "campaign_opponents",
+						"label": "Campaign Opponents"
+					},
+					{
+						"value": "challenges",
+						"label": "Challenges"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "third_tier_5_campaign_boss_unlock_condition",
+			"label": "Third Tier 5 Campaign Boss Unlock Condition",
+			"description": "How to unlock the third campaign boss",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "campaign_opponents",
+				"choices": [
+					{
+						"value": "campaign_opponents",
+						"label": "Campaign Opponents"
+					},
+					{
+						"value": "challenges",
+						"label": "Challenges"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "final_campaign_boss_challenges",
+			"label": "Final Campaign Boss Challenges",
+			"description": "Number of Limited/Theme Duels completed for the Final Campaign Boss to appear",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 91,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "fourth_tier_5_campaign_boss_challenges",
+			"label": "Fourth Tier 5 Campaign Boss Challenges",
+			"description": "Number of Limited/Theme Duels completed for the Fourth Level 5 Campaign Opponent to appear",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 91,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "third_tier_5_campaign_boss_challenges",
+			"label": "Third Tier 5 Campaign Boss Challenges",
+			"description": "Number of Limited/Theme Duels completed for the Third Level 5 Campaign Opponent to appear",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 91,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "final_campaign_boss_campaign_opponents",
+			"label": "Final Campaign Boss Campaign Opponents",
+			"description": "Number of Campaign Opponents Duels defeated for the Final Campaign Boss to appear",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 24,
+				"step": 1,
+				"default": 12
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "fourth_tier_5_campaign_boss_campaign_opponents",
+			"label": "Fourth Tier 5 Campaign Boss Campaign Opponents",
+			"description": "Number of Campaign Opponents Duels defeated for the Fourth Level 5 Campaign Opponent to appear",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 23,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "third_tier_5_campaign_boss_campaign_opponents",
+			"label": "Third Tier 5 Campaign Boss Campaign Opponents",
+			"description": "Number of Campaign Opponents Duels defeated for the Third Level 5 Campaign Opponent to appear",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 22,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "number_of_challenges",
+			"label": "Number Of Challenges",
+			"description": "Number of random Limited/Theme Duels that are included.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 91,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_money",
+			"label": "Starting Money",
+			"description": "The amount of money you start with",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100000,
+				"step": 1,
+				"default": 3000
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "money_reward_multiplier",
+			"label": "Money Reward Multiplier",
+			"description": "By which amount the campaign reward money is multiplied",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 255,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "normalize_boosters_packs",
+			"label": "Normalize Boosters Packs",
+			"description": "If enabled every booster pack costs the same otherwise vanilla cost is used",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "booster_pack_prices",
+			"label": "Booster Pack Prices",
+			"description": "Only Works if normalize booster packs is enabled.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 3000,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "add_empty_banlist",
+			"label": "Add Empty Banlist",
+			"description": "Adds a Ban List where everything is at 3 to the item pool",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "campaign_opponents_shuffle",
+			"label": "Campaign Opponents Shuffle",
+			"description": "Replaces the campaign with random opponents from the entire game",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ocg_arts",
+			"label": "Ocg Arts",
+			"description": "Always use the OCG artworks for cards",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

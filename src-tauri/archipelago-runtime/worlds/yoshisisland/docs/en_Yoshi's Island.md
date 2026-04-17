@@ -7,8 +7,9 @@ The [player options page for this game](../player-options) contains all the opti
 ## What does randomization do to this game?
 
 Certain interactable objects within levels will be unable to be used until the corresponding item is found. If the item is not in the player's posession, the object will flash and will not function. Objects include:
+
 - Spring Ball
-- Large Spring Ball 
+- Large Spring Ball
 - ! Switch
 - Dashed Platform
 - Dashed Stairs
@@ -42,12 +43,14 @@ the world they start in, the starting amount of lives, route through 6-8, and th
 ## What is the goal of Yoshi's Island when randomized?
 
 The player can choose one of two goals:
+
 - Bowser: Defeat a pre-defined number of bosses, and defeat Bowser at the end of 6-8.
 - Luigi Hunt: Collect a pre-defined number of 'Pieces of Luigi' within levels.
 
 ## What items and locations get shuffled?
 
 Locations consist of 'level objectives', that being:
+
 - Beating the stage
 - Collecting 20 red coins.
 - Collecting 5 flowers.
@@ -55,7 +58,6 @@ Locations consist of 'level objectives', that being:
 
 Checks will be sent immediately upon achieving that objective, regardless of if the stage is cleared or not.
 Additional checks can be placed on Bandit mini-battles, or overworld minigames.
-
 
 ## Which items can be in another player's world?
 

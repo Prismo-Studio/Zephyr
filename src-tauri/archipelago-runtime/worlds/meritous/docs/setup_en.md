@@ -22,11 +22,11 @@ The format of `meritous-ap.json` should be as follows:
 
 ```json
 {
-    "ap-enable": true,
-    "server": "archipelago.gg",
-    "port": 38281,
-    "password": null,
-    "slotname": "YourName"
+	"ap-enable": true,
+	"server": "archipelago.gg",
+	"port": 38281,
+	"password": null,
+	"slotname": "YourName"
 }
 ```
 
@@ -53,9 +53,10 @@ Once the goal has been completed, you may press F to send a release, sending out
 More in-depth information about the game can be found in the game's help file, accessed by pressing H while playing.
 
 ## Commands
-While playing the multiworld you can interact with the server using various commands listed in the 
+
+While playing the multiworld you can interact with the server using various commands listed in the
 [commands guide](/tutorial/Archipelago/commands/en). As this game does not have an in-game text client at the moment,
-You can optionally connect to the multiworld using the text client, which can be found in the 
+You can optionally connect to the multiworld using the text client, which can be found in the
 [main Archipelago installation](https://github.com/ArchipelagoMW/Archipelago/releases) as Archipelago Text Client to
 enter these commands.
 

@@ -1,180 +1,180 @@
 {
-  "id": "wargroove",
-  "name": "Wargroove",
-  "version": "0.1.6",
-  "description": "Command an army, in this retro style turn based strategy game!",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "income_boost",
-      "label": "Income Boost",
-      "description": "How much extra income the player gets per turn per boost received.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "commander_defense_boost",
-      "label": "Commander Defense Boost",
-      "description": "How much extra defense the player's commander gets per boost received.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 8,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "commander_choice",
-      "label": "Commander Choice",
-      "description": "How the player's commander is selected for missions.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "locked_random",
-        "choices": [
-          {
-            "value": "locked_random",
-            "label": "Locked Random"
-          },
-          {
-            "value": "unlockable_factions",
-            "label": "Unlockable Factions"
-          },
-          {
-            "value": "random_starting_faction",
-            "label": "Random Starting Faction"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "player_sacrifice_limit",
-      "label": "Player Sacrifice Limit",
-      "description": "How many times the player can sacrifice a unit at the Stronghold per level attempt.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "player_summon_limit",
-      "label": "Player Summon Limit",
-      "description": "How many times the player can summon a unit at the Stronghold per level attempt.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ai_sacrifice_limit",
-      "label": "Ai Sacrifice Limit",
-      "description": "How many times the AI can sacrifice a unit at the Stronghold per level attempt.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ai_summon_limit",
-      "label": "Ai Summon Limit",
-      "description": "How many times the AI can summon a unit at the Stronghold per level attempt.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "wargroove",
+	"name": "Wargroove",
+	"version": "0.1.6",
+	"description": "Command an army, in this retro style turn based strategy game!",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "income_boost",
+			"label": "Income Boost",
+			"description": "How much extra income the player gets per turn per boost received.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "commander_defense_boost",
+			"label": "Commander Defense Boost",
+			"description": "How much extra defense the player's commander gets per boost received.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 8,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "commander_choice",
+			"label": "Commander Choice",
+			"description": "How the player's commander is selected for missions.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "locked_random",
+				"choices": [
+					{
+						"value": "locked_random",
+						"label": "Locked Random"
+					},
+					{
+						"value": "unlockable_factions",
+						"label": "Unlockable Factions"
+					},
+					{
+						"value": "random_starting_faction",
+						"label": "Random Starting Faction"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "player_sacrifice_limit",
+			"label": "Player Sacrifice Limit",
+			"description": "How many times the player can sacrifice a unit at the Stronghold per level attempt.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "player_summon_limit",
+			"label": "Player Summon Limit",
+			"description": "How many times the player can summon a unit at the Stronghold per level attempt.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ai_sacrifice_limit",
+			"label": "Ai Sacrifice Limit",
+			"description": "How many times the AI can sacrifice a unit at the Stronghold per level attempt.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ai_summon_limit",
+			"label": "Ai Summon Limit",
+			"description": "How many times the AI can summon a unit at the Stronghold per level attempt.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

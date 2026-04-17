@@ -11,14 +11,16 @@ The [player options page for this game](../player-options) contains all the opti
 ## What changes are made to this game?
 
 The way the original game lets the player choose who to level up has a few drawbacks in a multiworld randomizer:
- - Possible softlock from making bad choices (example: nobody has jump 3 when it's required)
- - In multiworld, you won't be able to choose because you won't know it's coming beforehand.
+
+- Possible softlock from making bad choices (example: nobody has jump 3 when it's required)
+- In multiworld, you won't be able to choose because you won't know it's coming beforehand.
 
 So this randomizer uses a new level-up system:
- - Everyone levels up together (even if they're not rescued yet).
- - You can choose how many opa-opas are required for a level up.
- - You can set a max level from 1 to 8.
- - The currently active character is still the only one that gets the health refill.
+
+- Everyone levels up together (even if they're not rescued yet).
+- You can choose how many opa-opas are required for a level up.
+- You can set a max level from 1 to 8.
+- The currently active character is still the only one that gets the health refill.
 
 ---
 

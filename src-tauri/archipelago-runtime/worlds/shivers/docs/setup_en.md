@@ -1,6 +1,5 @@
 # Shivers Randomizer Setup Guide
 
-
 ## Required Software
 
 - [Shivers (GOG version)](https://www.gog.com/en/game/shivers) or original disc

@@ -26,7 +26,7 @@ randomized mode. For more info see the [ReadMe](https://github.com/Jarno458/TsRa
 2. Select "New Game"
 3. Switch "<< Select Seed >>" to "<< Archipelago >>" by pressing left on your controller or keyboard
 4. Select "<< Archipelago >>" to open a new menu where you can enter your Archipelago login credentials
-    * NOTE: the input fields support Ctrl + V pasting of values
+   - NOTE: the input fields support Ctrl + V pasting of values
 5. Select "Connect"
 6. If all went well you will be taken back to the difficulty selection menu and the game will start as soon as you
    select a difficulty
@@ -36,6 +36,6 @@ randomized mode. For more info see the [ReadMe](https://github.com/Jarno458/TsRa
 The [Player Options](/games/Timespinner/player-options) page on the website allows you to
 configure your personal options and export them into a config file
 
-* The Timespinner Randomizer option "StinkyMaw" is currently always enabled for Archipelago generated seeds
-* The Timespinner Randomizer options "ProgressiveVerticalMovement" & "ProgressiveKeycards" are currently not supported
+- The Timespinner Randomizer option "StinkyMaw" is currently always enabled for Archipelago generated seeds
+- The Timespinner Randomizer options "ProgressiveVerticalMovement" & "ProgressiveKeycards" are currently not supported
   on Archipelago generated seeds

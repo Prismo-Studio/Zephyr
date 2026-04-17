@@ -10,11 +10,11 @@ config file.
 As you may or may not know, randomization was already a core feature of the Ancient Cave in Lufia II, basically being a
 whole game within a game. The Ancient Cave has 99 floors with increasingly hard enemies, red chests and blue chests. At
 the end of the Ancient Cave you get to fight the Royal Jelly... if you make it that far. You cannot lose the Royal
-Jelly fight as it kills itself after giving you three rounds to try and kill it (or manage to vanquish your own party, 
+Jelly fight as it kills itself after giving you three rounds to try and kill it (or manage to vanquish your own party,
 whichever one you can manage).
 
 The Randomizer allows you to set different goals and modify the game in several other ways
-([see below](#changes-from-the-vanilla-game)). 
+([see below](#changes-from-the-vanilla-game)).
 
 ## What items and locations get shuffled?
 
@@ -32,14 +32,14 @@ Items belonging to other worlds are represented by an AP icon and are called AP 
 
 ## When the player receives an item, what happens?
 
-Your Party Leader will hold up the item they received when not in a fight or in a menu. 
+Your Party Leader will hold up the item they received when not in a fight or in a menu.
 
 ## Changes from the vanilla game
 
 ###### Customization options:
 
 - Choose a goal for your world. Possible goals are: 1) Reach the final floor; 2) Defeat the boss on the final floor; 3)
-  Retrieve a (customizable) number of Iris treasures from the cave; 4) Retrieve the Iris treasures *and* defeat the boss
+  Retrieve a (customizable) number of Iris treasures from the cave; 4) Retrieve the Iris treasures _and_ defeat the boss
 - You can also randomize the goal; The blue-haired NPC in front of the cafe can tell you about the selected objective
 - Customize the chances of encountering blue chests, healing tiles, Iris treasures, etc.
 - Customize the default party lineup and capsule monster

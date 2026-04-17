@@ -1,7 +1,8 @@
 # Final Fantasy Mystic Quest
 
 ## Game page in other languages:
-* [Français](/games/Final%20Fantasy%20Mystic%20Quest/info/fr)
+
+- [Français](/games/Final%20Fantasy%20Mystic%20Quest/info/fr)
 
 ## Where is the options page?
 
@@ -33,4 +34,3 @@ found an "Archipelago Item"
 
 A dialogue box will open to show you the item you've received. You will not receive items while you are in battle,
 menus, or the overworld (except sometimes when closing the menu).
-

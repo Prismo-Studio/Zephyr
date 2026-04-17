@@ -1,40 +1,41 @@
 # StarCraft 2 Randomizer Setup Guide
 
-This guide contains instructions on how to install and troubleshoot the StarCraft 2 Archipelago client, as well as 
+This guide contains instructions on how to install and troubleshoot the StarCraft 2 Archipelago client, as well as
 where to obtain a config file for StarCraft 2.
 
 ## Required Software
 
 - [StarCraft 2](https://starcraft2.com/en-us/)
-   - While StarCraft 2 Archipelago supports all four campaigns, they are not mandatory to play the randomizer. 
-   If you do not own certain campaigns, you only need to exclude them in the configuration file of your world.
+  - While StarCraft 2 Archipelago supports all four campaigns, they are not mandatory to play the randomizer.
+    If you do not own certain campaigns, you only need to exclude them in the configuration file of your world.
 - [The most recent Archipelago release](https://github.com/ArchipelagoMW/Archipelago/releases)
 
 ## How do I install this randomizer?
 
-1. Install StarCraft 2 and Archipelago using the links above. The StarCraft 2 Archipelago client is downloaded by the 
-Archipelago installer.
-   - Linux users should also follow the instructions found at the bottom of this page 
+1. Install StarCraft 2 and Archipelago using the links above. The StarCraft 2 Archipelago client is downloaded by the
+   Archipelago installer.
+   - Linux users should also follow the instructions found at the bottom of this page
      (["Running in Linux"](#running-in-linux)).
 2. Run ArchipelagoStarcraft2Client.exe.
-   - macOS users should instead follow the instructions found at ["Running in macOS"](#running-in-macos) for this step 
-   only.
-3. Type the command `/download_data`. 
-This will automatically install the Maps and Data files needed to play StarCraft 2 Archipelago.
+   - macOS users should instead follow the instructions found at ["Running in macOS"](#running-in-macos) for this step
+     only.
+3. Type the command `/download_data`.
+   This will automatically install the Maps and Data files needed to play StarCraft 2 Archipelago.
 
 ## Where do I get a config file (aka "YAML") for this game?
 
-Yaml files are configuration files that tell Archipelago how you'd like your game to be randomized, even if you're only 
+Yaml files are configuration files that tell Archipelago how you'd like your game to be randomized, even if you're only
 using default options.
 When you're setting up a multiworld, every world needs its own yaml file.
 
 There are three basic ways to get a yaml:
-* You can go to the [Player Options](/games/Starcraft%202/player-options) page, set your options in the GUI, and export 
-the yaml.
-* You can generate a template, either by downloading it from the [Player Options](/games/Starcraft%202/player-options) 
-page or by generating it from the Launcher (`ArchipelagoLauncher.exe`). 
-The template includes descriptions of each option, you just have to edit it in your text editor of choice.
-* You can ask someone else to share their yaml to use it for yourself or adjust it as you wish.
+
+- You can go to the [Player Options](/games/Starcraft%202/player-options) page, set your options in the GUI, and export
+  the yaml.
+- You can generate a template, either by downloading it from the [Player Options](/games/Starcraft%202/player-options)
+  page or by generating it from the Launcher (`ArchipelagoLauncher.exe`).
+  The template includes descriptions of each option, you just have to edit it in your text editor of choice.
+- You can ask someone else to share their yaml to use it for yourself or adjust it as you wish.
 
 Remember the name you enter in the options page or in the yaml file, you'll need it to connect later!
 
@@ -44,25 +45,25 @@ Check out [Creating a YAML](/tutorial/Archipelago/setup/en#creating-a-yaml) for 
 
 #### How do I know I set my yaml up correctly?
 
-The simplest way to check is to use the website [validator](/check). 
+The simplest way to check is to use the website [validator](/check).
 
-You can also test it by attempting to generate a multiworld with your yaml. Save your yaml to the `Players/` folder 
-within your Archipelago installation and run `ArchipelagoGenerate.exe`. 
-You should see a new `.zip` file within the `output/` folder of your Archipelago installation if things worked 
-correctly. 
-It's advisable to run `ArchipelagoGenerate.exe` through a terminal so that you can see the printout, which will include 
-any errors and the precise output file name if it's successful. 
+You can also test it by attempting to generate a multiworld with your yaml. Save your yaml to the `Players/` folder
+within your Archipelago installation and run `ArchipelagoGenerate.exe`.
+You should see a new `.zip` file within the `output/` folder of your Archipelago installation if things worked
+correctly.
+It's advisable to run `ArchipelagoGenerate.exe` through a terminal so that you can see the printout, which will include
+any errors and the precise output file name if it's successful.
 If you don't like terminals, you can also check the log file in the `logs/` folder.
 
 #### What does Progression Balancing do?
 
-For StarCraft 2, this option doesn't have much impact. 
-It is an Archipelago option designed to balance world progression by swapping items in spheres. 
-If the Progression Balancing of one world is greater than that of others, items in that world are more likely to be 
-obtained early, and vice versa if its value is smaller. 
-However, StarCraft 2 is more permissive regarding the items that can be used to progress, so this option has little 
-influence on progression in a StarCraft 2 world. 
-Since this option increases the time required to generate a MultiWorld, we recommend deactivating it (i.e., setting it 
+For StarCraft 2, this option doesn't have much impact.
+It is an Archipelago option designed to balance world progression by swapping items in spheres.
+If the Progression Balancing of one world is greater than that of others, items in that world are more likely to be
+obtained early, and vice versa if its value is smaller.
+However, StarCraft 2 is more permissive regarding the items that can be used to progress, so this option has little
+influence on progression in a StarCraft 2 world.
+Since this option increases the time required to generate a MultiWorld, we recommend deactivating it (i.e., setting it
 to zero) for a StarCraft 2 world.
 
 #### What does Tactics Level do?
@@ -87,30 +88,30 @@ Safeguards exist so that other games' items placed in the StarCraft 2 world are 
 
 #### How do I specify items in a list, like in enabled campaigns?
 
-You can look up the syntax for yaml collections in the 
-[YAML specification](https://yaml.org/spec/1.2.2/#21-collections). 
+You can look up the syntax for yaml collections in the
+[YAML specification](https://yaml.org/spec/1.2.2/#21-collections).
 For lists, every item goes on its own line, started with a hyphen.
 Putting each element on its own line makes it easy to toggle elements by commenting
 (ie adding a `#` character at the start of the line).
 
 ```yaml
-  enabled_campaigns:
-    - Wings of Liberty
-    # - Heart of the Swarm
-    - Legacy of the Void
-    - Nova Covert Ops
-    - Prophecy
-    - 'Whispers of Oblivion (Legacy of the Void: Prologue)'
-    # - 'Into the Void (Legacy of the Void: Epilogue)'
+enabled_campaigns:
+  - Wings of Liberty
+  # - Heart of the Swarm
+  - Legacy of the Void
+  - Nova Covert Ops
+  - Prophecy
+  - 'Whispers of Oblivion (Legacy of the Void: Prologue)'
+  # - 'Into the Void (Legacy of the Void: Epilogue)'
 ```
 
 An inline syntax may also be used for short lists:
 
 ```yaml
-  enabled_campaigns: ['Wings of Liberty', 'Nova Covert Ops']
+enabled_campaigns: ['Wings of Liberty', 'Nova Covert Ops']
 ```
 
-An empty list is just a matching pair of square brackets: `[]`. 
+An empty list is just a matching pair of square brackets: `[]`.
 That's often the default value in the template, which should let you know to use this syntax.
 
 #### How do I specify items for key-value mappings, like starting inventory or filler item distribution?
@@ -119,46 +120,46 @@ Many options pertaining to the item pool are yaml mappings.
 These are several lines, where each line looks like a name, followed by a colon, then a space, then a value.
 
 ```yaml
-  start_inventory:
-    Micro-Filtering: 1
-    Additional Starting Vespene: 5
+start_inventory:
+  Micro-Filtering: 1
+  Additional Starting Vespene: 5
 
-  locked_items:
-    MULE (Command Center): 1
+locked_items:
+  MULE (Command Center): 1
 ```
 
-For options like `start_inventory`, `locked_items`, `excluded_items`, and `unexcluded_items`, the value 
+For options like `start_inventory`, `locked_items`, `excluded_items`, and `unexcluded_items`, the value
 is a number specifying how many copies of an item to start with/exclude/lock.
 Note the name can also be an item group, and the value will then be added to the values for all the items
 within the group. A value of `0` will exclude all copies of an item, but will add +0 if the value
 is also specified by another name.
 
-For options like `filler_items_distribution`, the value is a number specifying the relative weight of 
+For options like `filler_items_distribution`, the value is a number specifying the relative weight of
 a filler item being that particular item.
 
-For the `custom_mission_order` option, the value is a nested structure of other mapppings to specify the structure 
+For the `custom_mission_order` option, the value is a nested structure of other mapppings to specify the structure
 of the mission order. See the [Custom Mission Order documentation](/tutorial/Starcraft%202/custom_mission_orders_en)
 
-An empty mapping is just a matching pair of curly braces: `{}`. 
+An empty mapping is just a matching pair of curly braces: `{}`.
 That's the default value in the template, which should let you know to use this syntax.
 
 #### How do I know the exact names of items and locations?
 
-You can look up a complete list of the item names in the 
+You can look up a complete list of the item names in the
 [APSC2 Item Docs](https://archipelago-sc2.github.io/content-docs/) page.
 This page also contains supplementary information of each item.
 
 Locations are of the format `<mission name>: <location name>`. Names are most easily looked up by hovering
 your mouse over a mission in the launcher tab of a client. Note this requires already generating a game connect to.
 
-This information can also be found in the [*datapackage*](/datapackage) page of the Archipelago website.
+This information can also be found in the [_datapackage_](/datapackage) page of the Archipelago website.
 This page includes all data associated with all games.
 
 ## How do I join a MultiWorld game?
 
 1. Run ArchipelagoLauncher.exe.
-   - macOS users should instead follow the instructions found at ["Running in macOS"](#running-in-macos) for this step 
-   only.
+   - macOS users should instead follow the instructions found at ["Running in macOS"](#running-in-macos) for this step
+     only.
 2. Search for the Starcraft 2 Client in the launcher to open the game-specific client
    - Alternatively, steps 1 and 2 can be combined by providing the `"Starcraft 2 Client"` launch argument to the launcher.
 3. In the Archipelago tab, type `/connect [server IP]`.
@@ -166,8 +167,8 @@ This page includes all data associated with all games.
    - The server IP may also be typed into the top bar, and then clicking "Connect"
 4. Type your slot name from your YAML when prompted.
 5. If the server has a password, enter that when prompted.
-6. Once connected, switch to the 'StarCraft 2 Launcher' tab in the client. There, you can see all the missions in your 
-world.
+6. Once connected, switch to the 'StarCraft 2 Launcher' tab in the client. There, you can see all the missions in your
+   world.
 
 Unreachable missions will have greyed-out text. Completed missions (all locations collected) will have white text.
 Accessible but incomplete missions will have blue text. Goal missions will have a gold border.
@@ -201,17 +202,18 @@ Check the [Archipelago Releases Page](https://github.com/ArchipelagoMW/Archipela
 look up what the latest version is (RC releases are not necessary; that stands for "Release Candidate").
 
 If these things are in order, check the log file for issues (stored at `[Archipelago Directory]/logs/SC2Client_<date>.txt`).
-If you can't figure out the log file, visit our [Discord's](https://discord.com/invite/8Z65BR2) tech-support channel 
-for help. 
+If you can't figure out the log file, visit our [Discord's](https://discord.com/invite/8Z65BR2) tech-support channel
+for help.
 Please include a specific description of what's going wrong and attach your log file to your message.
 
-### My keyboard shortcuts profile is not available when I play *StarCraft 2 Archipelago*.
+### My keyboard shortcuts profile is not available when I play _StarCraft 2 Archipelago_.
 
-For your keyboard shortcuts profile to work in Archipelago, you need to copy your shortcuts file from 
-`Documents/StarCraft II/Accounts/######/Hotkeys` to `Documents/StarCraft II/Hotkeys`. 
+For your keyboard shortcuts profile to work in Archipelago, you need to copy your shortcuts file from
+`Documents/StarCraft II/Accounts/######/Hotkeys` to `Documents/StarCraft II/Hotkeys`.
 If the folder doesn't exist, create it.
 
 To enable StarCraft 2 Archipelago to use your profile, follow these steps:
+
 1. Launch StarCraft 2 via the Battle.net application.
 2. Change your hotkey profile to the standard mode and accept.
 3. Select your custom profile and accept.
@@ -220,8 +222,8 @@ You will only need to do this once.
 
 ## Running in macOS
 
-To run StarCraft 2 through Archipelago in macOS, you will need to run the client via source as seen here: 
-[macOS Guide](/tutorial/Archipelago/mac/en). 
+To run StarCraft 2 through Archipelago in macOS, you will need to run the client via source as seen here:
+[macOS Guide](/tutorial/Archipelago/mac/en).
 Note: to launch the client, you will need to run the command `python3 Starcraft2Client.py`.
 
 ## Running in Linux
@@ -273,7 +275,7 @@ below, replacing **${ID}** with the numerical ID.
     lutris lutris:rungameid/${ID} --output-script sc2.sh
 
 This will get all of the relevant environment variables Lutris sets to run StarCraft 2 in a script, including the path
-to the Wine binary that Lutris uses. 
+to the Wine binary that Lutris uses.
 You can then remove the line that runs the Battle.Net launcher and copy the code above into the existing script.
 
 Finally, you can run the script to start your Archipelago client,

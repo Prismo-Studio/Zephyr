@@ -1,352 +1,352 @@
 {
-  "id": "jakanddaxter",
-  "name": "Jak and Daxter: The Precursor Legacy",
-  "version": "0.5.0",
-  "description": "Jak and Daxter: The Precursor Legacy is a 2001 action platformer developed by Naughty Dog for the PlayStation 2.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_move_randomizer",
-      "label": "Enable Move Randomizer",
-      "description": "Include movement options as items in the randomizer.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_orbsanity",
-      "label": "Enable Orbsanity",
-      "description": "Include bundles of Precursor Orbs as checks.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "per_level",
-            "label": "Per Level"
-          },
-          {
-            "value": "global",
-            "label": "Global"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "global_orbsanity_bundle_size",
-      "label": "Global Orbsanity Bundle Size",
-      "description": "The orb bundle size for Global Orbsanity.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "20_orbs",
-        "choices": [
-          {
-            "value": "10_orbs",
-            "label": "10 Orbs"
-          },
-          {
-            "value": "16_orbs",
-            "label": "16 Orbs"
-          },
-          {
-            "value": "20_orbs",
-            "label": "20 Orbs"
-          },
-          {
-            "value": "25_orbs",
-            "label": "25 Orbs"
-          },
-          {
-            "value": "40_orbs",
-            "label": "40 Orbs"
-          },
-          {
-            "value": "50_orbs",
-            "label": "50 Orbs"
-          },
-          {
-            "value": "80_orbs",
-            "label": "80 Orbs"
-          },
-          {
-            "value": "100_orbs",
-            "label": "100 Orbs"
-          },
-          {
-            "value": "125_orbs",
-            "label": "125 Orbs"
-          },
-          {
-            "value": "200_orbs",
-            "label": "200 Orbs"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "level_orbsanity_bundle_size",
-      "label": "Level Orbsanity Bundle Size",
-      "description": "The orb bundle size for Per Level Orbsanity.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "25_orbs",
-        "choices": [
-          {
-            "value": "10_orbs",
-            "label": "10 Orbs"
-          },
-          {
-            "value": "25_orbs",
-            "label": "25 Orbs"
-          },
-          {
-            "value": "50_orbs",
-            "label": "50 Orbs"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "fire_canyon_cell_count",
-      "label": "Fire Canyon Cell Count",
-      "description": "The number of power cells you need to cross Fire Canyon.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 30,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mountain_pass_cell_count",
-      "label": "Mountain Pass Cell Count",
-      "description": "The number of power cells you need to reach Klaww and cross Mountain Pass.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 60,
-        "step": 1,
-        "default": 45
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lava_tube_cell_count",
-      "label": "Lava Tube Cell Count",
-      "description": "The number of power cells you need to cross Lava Tube.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 90,
-        "step": 1,
-        "default": 72
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_ordered_cell_counts",
-      "label": "Enable Ordered Cell Counts",
-      "description": "Reorder the Cell Count requirements for vehicle sections to be in ascending order.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "require_punch_for_klaww",
-      "label": "Require Punch For Klaww",
-      "description": "Force the Punch move to come before Klaww.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "citizen_orb_trade_amount",
-      "label": "Citizen Orb Trade Amount",
-      "description": "The number of orbs you need to trade to citizens for a power cell (Mayor, Uncle, etc.).",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 120,
-        "step": 1,
-        "default": 90
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "oracle_orb_trade_amount",
-      "label": "Oracle Orb Trade Amount",
-      "description": "The number of orbs you need to trade to the Oracles for a power cell.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 150,
-        "step": 1,
-        "default": 120
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "filler_power_cells_replaced_with_traps",
-      "label": "Filler Power Cells Replaced With Traps",
-      "description": "The number of filler power cells that will be replaced with traps.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "filler_orb_bundles_replaced_with_traps",
-      "label": "Filler Orb Bundles Replaced With Traps",
-      "description": "The number of filler orb bundles that will be replaced with traps.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 2000,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_effect_duration",
-      "label": "Trap Effect Duration",
-      "description": "The length of time, in seconds, that a trap effect lasts.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 5,
-        "max": 60,
-        "step": 1,
-        "default": 30
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "jak_completion_condition",
-      "label": "Jak Completion Condition",
-      "description": "Set the goal for completing the game.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "defeat_gol_and_maia",
-        "choices": [
-          {
-            "value": "cross_fire_canyon",
-            "label": "Cross Fire Canyon"
-          },
-          {
-            "value": "cross_mountain_pass",
-            "label": "Cross Mountain Pass"
-          },
-          {
-            "value": "cross_lava_tube",
-            "label": "Cross Lava Tube"
-          },
-          {
-            "value": "defeat_klaww",
-            "label": "Defeat Klaww"
-          },
-          {
-            "value": "defeat_gol_and_maia",
-            "label": "Defeat Gol And Maia"
-          },
-          {
-            "value": "open_100_cell_door",
-            "label": "Open 100 Cell Door"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "jakanddaxter",
+	"name": "Jak and Daxter: The Precursor Legacy",
+	"version": "0.5.0",
+	"description": "Jak and Daxter: The Precursor Legacy is a 2001 action platformer developed by Naughty Dog for the PlayStation 2.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_move_randomizer",
+			"label": "Enable Move Randomizer",
+			"description": "Include movement options as items in the randomizer.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_orbsanity",
+			"label": "Enable Orbsanity",
+			"description": "Include bundles of Precursor Orbs as checks.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "per_level",
+						"label": "Per Level"
+					},
+					{
+						"value": "global",
+						"label": "Global"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "global_orbsanity_bundle_size",
+			"label": "Global Orbsanity Bundle Size",
+			"description": "The orb bundle size for Global Orbsanity.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "20_orbs",
+				"choices": [
+					{
+						"value": "10_orbs",
+						"label": "10 Orbs"
+					},
+					{
+						"value": "16_orbs",
+						"label": "16 Orbs"
+					},
+					{
+						"value": "20_orbs",
+						"label": "20 Orbs"
+					},
+					{
+						"value": "25_orbs",
+						"label": "25 Orbs"
+					},
+					{
+						"value": "40_orbs",
+						"label": "40 Orbs"
+					},
+					{
+						"value": "50_orbs",
+						"label": "50 Orbs"
+					},
+					{
+						"value": "80_orbs",
+						"label": "80 Orbs"
+					},
+					{
+						"value": "100_orbs",
+						"label": "100 Orbs"
+					},
+					{
+						"value": "125_orbs",
+						"label": "125 Orbs"
+					},
+					{
+						"value": "200_orbs",
+						"label": "200 Orbs"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "level_orbsanity_bundle_size",
+			"label": "Level Orbsanity Bundle Size",
+			"description": "The orb bundle size for Per Level Orbsanity.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "25_orbs",
+				"choices": [
+					{
+						"value": "10_orbs",
+						"label": "10 Orbs"
+					},
+					{
+						"value": "25_orbs",
+						"label": "25 Orbs"
+					},
+					{
+						"value": "50_orbs",
+						"label": "50 Orbs"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "fire_canyon_cell_count",
+			"label": "Fire Canyon Cell Count",
+			"description": "The number of power cells you need to cross Fire Canyon.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 30,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mountain_pass_cell_count",
+			"label": "Mountain Pass Cell Count",
+			"description": "The number of power cells you need to reach Klaww and cross Mountain Pass.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 60,
+				"step": 1,
+				"default": 45
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lava_tube_cell_count",
+			"label": "Lava Tube Cell Count",
+			"description": "The number of power cells you need to cross Lava Tube.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 90,
+				"step": 1,
+				"default": 72
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_ordered_cell_counts",
+			"label": "Enable Ordered Cell Counts",
+			"description": "Reorder the Cell Count requirements for vehicle sections to be in ascending order.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "require_punch_for_klaww",
+			"label": "Require Punch For Klaww",
+			"description": "Force the Punch move to come before Klaww.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "citizen_orb_trade_amount",
+			"label": "Citizen Orb Trade Amount",
+			"description": "The number of orbs you need to trade to citizens for a power cell (Mayor, Uncle, etc.).",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 120,
+				"step": 1,
+				"default": 90
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "oracle_orb_trade_amount",
+			"label": "Oracle Orb Trade Amount",
+			"description": "The number of orbs you need to trade to the Oracles for a power cell.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 150,
+				"step": 1,
+				"default": 120
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "filler_power_cells_replaced_with_traps",
+			"label": "Filler Power Cells Replaced With Traps",
+			"description": "The number of filler power cells that will be replaced with traps.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "filler_orb_bundles_replaced_with_traps",
+			"label": "Filler Orb Bundles Replaced With Traps",
+			"description": "The number of filler orb bundles that will be replaced with traps.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 2000,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_effect_duration",
+			"label": "Trap Effect Duration",
+			"description": "The length of time, in seconds, that a trap effect lasts.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 5,
+				"max": 60,
+				"step": 1,
+				"default": 30
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "jak_completion_condition",
+			"label": "Jak Completion Condition",
+			"description": "Set the goal for completing the game.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "defeat_gol_and_maia",
+				"choices": [
+					{
+						"value": "cross_fire_canyon",
+						"label": "Cross Fire Canyon"
+					},
+					{
+						"value": "cross_mountain_pass",
+						"label": "Cross Mountain Pass"
+					},
+					{
+						"value": "cross_lava_tube",
+						"label": "Cross Lava Tube"
+					},
+					{
+						"value": "defeat_klaww",
+						"label": "Defeat Klaww"
+					},
+					{
+						"value": "defeat_gol_and_maia",
+						"label": "Defeat Gol And Maia"
+					},
+					{
+						"value": "open_100_cell_door",
+						"label": "Open 100 Cell Door"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -1,6 +1,7 @@
 # The Messenger Randomizer Setup Guide
 
 ## Quick Links
+
 - [Game Info](/games/The%20Messenger/info/en)
 - [Options Page](/games/The%20Messenger/player-options)
 - [Courier Github](https://github.com/Brokemia/Courier)
@@ -23,12 +24,12 @@ These steps can also be followed to launch the game and check for mod updates af
 ### Manual Installation
 
 1. Download and install Courier Mod Loader using the instructions on the release page
-    * [Latest release is currently 0.7.1](https://github.com/Brokemia/Courier/releases)
+   - [Latest release is currently 0.7.1](https://github.com/Brokemia/Courier/releases)
 2. Download and install the randomizer mod
-    1. Download the latest TheMessengerRandomizerAP.zip from
-       [The Messenger Randomizer Mod AP releases page](https://github.com/alwaysintreble/TheMessengerRandomizerModAP/releases)
-    2. Extract the zip file to `TheMessenger/Mods/` of your game's install location
-        * You cannot have both the non-AP randomizer and the AP randomizer installed at the same time
+   1. Download the latest TheMessengerRandomizerAP.zip from
+      [The Messenger Randomizer Mod AP releases page](https://github.com/alwaysintreble/TheMessengerRandomizerModAP/releases)
+   2. Extract the zip file to `TheMessenger/Mods/` of your game's install location
+      - You cannot have both the non-AP randomizer and the AP randomizer installed at the same time
 
 ## Joining a MultiWorld Game
 
@@ -48,15 +49,15 @@ These steps can also be followed to launch the game and check for mod updates af
 1. Launch the game
 2. Navigate to `Options > Archipelago Options`
 3. Enter connection info using the relevant option buttons
-    * **The game is limited to alphanumerical characters, `.`, and `-`.**
-    * This defaults to `archipelago.gg` and does not need to be manually changed if connecting to a game hosted on the
-      website.
-    * If using a name that cannot be entered in the in game menus, there is a config file (APConfig.toml) in the game
-      directory. When using this, all connection information must be entered in the file. 
+   - **The game is limited to alphanumerical characters, `.`, and `-`.**
+   - This defaults to `archipelago.gg` and does not need to be manually changed if connecting to a game hosted on the
+     website.
+   - If using a name that cannot be entered in the in game menus, there is a config file (APConfig.toml) in the game
+     directory. When using this, all connection information must be entered in the file.
 4. Select the `Connect to Archipelago` button
 5. Navigate to save file selection
 6. Start a new game
-    * If you're already connected, deleting an existing save will not disconnect you and is completely safe. 
+   - If you're already connected, deleting an existing save will not disconnect you and is completely safe.
 
 ## Continuing a MultiWorld Game
 

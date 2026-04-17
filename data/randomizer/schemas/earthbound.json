@@ -1,1012 +1,1012 @@
 {
-  "id": "earthbound",
-  "name": "EarthBound",
-  "version": "0.5.0",
-  "description": "EarthBound is a contemporary-themed JRPG.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "giygas_required",
-      "label": "Giygas Required",
-      "description": "If enabled, your goal will be to defeat Giygas at the Cave of the Past.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "sanctuaries_required",
-      "label": "Sanctuaries Required",
-      "description": "How many of the eight \"Your Sanctuary\" locations are required to be cleared.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 8,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_prayer_sequences",
-      "label": "Skip Prayer Sequences",
-      "description": "If enabled, the Prayer cutscenes while fighting Giygas will be skipped, excluding the final one.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_start_location",
-      "label": "Random Start Location",
-      "description": "If disabled, you will always start at Ness's house with no teleports unlocked.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "alternate_sanctuary_goal",
-      "label": "Alternate Sanctuary Goal",
-      "description": "If enabled, you will be able to win by completing 2 more Sanctuaries than are required.",
-      "category": "goals",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "magicant_mode",
-      "label": "Magicant Mode",
-      "description": "PSI Location: You will be able to find a Magicant teleport item.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "psi_location",
-        "choices": [
-          {
-            "value": "psi_location",
-            "label": "Psi Location"
-          },
-          {
-            "value": "required",
-            "label": "Required"
-          },
-          {
-            "value": "alternate_goal",
-            "label": "Alternate Goal"
-          },
-          {
-            "value": "optional_boost",
-            "label": "Optional Boost"
-          },
-          {
-            "value": "removed",
-            "label": "Removed"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "monkey_caves_mode",
-      "label": "Monkey Caves Mode",
-      "description": "Chests: Items required to finish the Monkey Caves will be forcibly placed on the chests that can be found in-between rooms of the monkey caves.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "hunt",
-        "choices": [
-          {
-            "value": "chests",
-            "label": "Chests"
-          },
-          {
-            "value": "hunt",
-            "label": "Hunt"
-          },
-          {
-            "value": "shop",
-            "label": "Shop"
-          },
-          {
-            "value": "solved",
-            "label": "Solved"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "local_teleports",
-      "label": "Local Teleports",
-      "description": "Forces all teleports and Poo PSI to be placed locally in your world.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "character_shuffle",
-      "label": "Character Shuffle",
-      "description": "Shuffled: Characters will be shuffled amongst Character Locations.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "shuffled",
-        "choices": [
-          {
-            "value": "shuffled",
-            "label": "Shuffled"
-          },
-          {
-            "value": "anywhere",
-            "label": "Anywhere"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_character",
-      "label": "Starting Character",
-      "description": "Sets which character you start as.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "ness",
-        "choices": [
-          {
-            "value": "ness",
-            "label": "Ness"
-          },
-          {
-            "value": "paula",
-            "label": "Paula"
-          },
-          {
-            "value": "jeff",
-            "label": "Jeff"
-          },
-          {
-            "value": "poo",
-            "label": "Poo"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "psi_shuffle",
-      "label": "Psi Shuffle",
-      "description": "None: Characters will learn their normal PSI skills.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "basic",
-            "label": "Basic"
-          },
-          {
-            "value": "extended",
-            "label": "Extended"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "allow_flash_as_favorite_thing",
-      "label": "Allow Flash As Favorite Thing",
-      "description": "If enabled, allows PSI Flash to be shuffled onto the Favorite Thing PSI slot.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enemy_shuffle",
-      "label": "Enemy Shuffle",
-      "description": "Shuffles Non-boss enemies amongst each other.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "boss_shuffle",
-      "label": "Boss Shuffle",
-      "description": "Shuffles boss encounters amongst each other.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "false",
-        "choices": [
-          {
-            "value": "false",
-            "label": "False"
-          },
-          {
-            "value": "true",
-            "label": "True"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "decouple_diamond_dog",
-      "label": "Decouple Diamond Dog",
-      "description": "Shuffles Diamond Dog as a boss separate from Carbon Dog.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "boss_shuffle_add_giygas",
-      "label": "Boss Shuffle Add Giygas",
-      "description": "Adds the standalone Giygas fight to the shuffled boss pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "safe_final_boss",
-      "label": "Safe Final Boss",
-      "description": "Prevents specific difficult bosses from being randomized onto Heavily Armed Pokey's boss slot.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_enemy_attributes",
-      "label": "Randomize Enemy Attributes",
-      "description": "Randomizes most attributes of non-boss enemies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_enemy_stats",
-      "label": "Randomize Enemy Stats",
-      "description": "Randomizes base stats and level of non-boss enemies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_enemy_attacks",
-      "label": "Randomize Enemy Attacks",
-      "description": "Randomizes attacks of non-boss enemies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "experience_modifier",
-      "label": "Experience Modifier",
-      "description": "Percentage of EXP enemies give you.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 100,
-        "max": 300,
-        "step": 1,
-        "default": 150
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "money_drop_multiplier",
-      "label": "Money Drop Multiplier",
-      "description": "Multiplies money dropped by enemies by the chosen value.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_money",
-      "label": "Starting Money",
-      "description": "How much money you start with.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99999,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "easy_deaths",
-      "label": "Easy Deaths",
-      "description": "Fully revives and heals all party members after death.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "easy_combat",
-      "label": "Easy Combat",
-      "description": "Automatically halves all scaled enemy levels.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progressive_weapons",
-      "label": "Progressive Weapons",
-      "description": "If enabled, Bats, Fry Pans, and Guns will be progressive.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progressive_armor",
-      "label": "Progressive Armor",
-      "description": "If enabled, Bracelets and items for the Other slot besides Ribbons will be progressive.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "armorizer",
-      "label": "Armorizer",
-      "description": "All equippable armor will have randomly generated attributes.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "keep_type",
-            "label": "Keep Type"
-          },
-          {
-            "value": "chaos",
-            "label": "Chaos"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "weaponizer",
-      "label": "Weaponizer",
-      "description": "All weapons will have randomly generated attributes.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "keep_type",
-            "label": "Keep Type"
-          },
-          {
-            "value": "chaos",
-            "label": "Chaos"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "armorizer_resistance_chance",
-      "label": "Armorizer Resistance Chance",
-      "description": "Percent chance for any given Body/Other equipment to have elemental protection.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 50,
-        "step": 1,
-        "default": 15
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "equipamizer_cap_stats",
-      "label": "Equipamizer Cap Stats",
-      "description": "If enabled, the highest value that Equipamizer can roll for a piece of equipment's main stat will be capped.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "auto_scale_party_members",
-      "label": "Auto Scale Party Members",
-      "description": "If enabled, joining party members will be scaled to roughly the level of the sphere they were obtained in.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "remote_items",
-      "label": "Remote Items",
-      "description": "If enabled, you will receive your own items from the server upon collecting them, rather than locally.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_flavors",
-      "label": "Random Flavors",
-      "description": "Randomizes the non-plain window color options.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_battle_backgrounds",
-      "label": "Random Battle Backgrounds",
-      "description": "Generates random battle backgrounds.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "random_swirl_colors",
-      "label": "Random Swirl Colors",
-      "description": "Generates random colors for pre-battle swirls.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "presents_match_contents",
-      "label": "Presents Match Contents",
-      "description": "If enabled, Presents, Trash cans, and chests will have their appearance modified to be indicative of the item they contain.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "nonlocal_items_use_local_presents",
-      "label": "Nonlocal Items Use Local Presents",
-      "description": "If enabled, present that contain items for other players will appear as EarthBound presents (trashcan, present, and chest) instead of Archipelago boxes.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "prefixed_items",
-      "label": "Prefixed Items",
-      "description": "If enabled, broken items in the multiworld pool will be replaced with their fixed versions.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "total_photos",
-      "label": "Total Photos",
-      "description": "How many Photograph traps are placed in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 32,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_franklinbadge_protection",
-      "label": "Randomize Franklinbadge Protection",
-      "description": "If enabled, the Franklin Badge will reflect a randomly selected attack type.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_enemy_drops",
-      "label": "Shuffle Enemy Drops",
-      "description": "If enabled, enemies will drop random filler items.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "common_filler_weight",
-      "label": "Common Filler Weight",
-      "description": "Weight for placing a common filler item.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 80
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "uncommon_filler_weight",
-      "label": "Uncommon Filler Weight",
-      "description": "Weight for placing an uncommon filler item.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 30
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "rare_filler_weight",
-      "label": "Rare Filler Weight",
-      "description": "Weight for placing a rare filler item.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "money_weight",
-      "label": "Money Weight",
-      "description": "Weight for placing money in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_free_sanctuaries",
-      "label": "No Free Sanctuaries",
-      "description": "If enabled, the entrance to Lilliput Steps and Fire Spring will be locked and require extra key items to access.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_overworld_music",
-      "label": "Randomize Overworld Music",
-      "description": "Randomizes music on the overworld.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "match_type",
-            "label": "Match Type"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_battle_music",
-      "label": "Randomize Battle Music",
-      "description": "Randomizes in-battle songs.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_fanfares",
-      "label": "Randomize Fanfares",
-      "description": "Randomizes fanfares.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "on_no_sound_stone_fanfares",
-            "label": "On No Sound Stone Fanfares"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_psi_palettes",
-      "label": "Randomize Psi Palettes",
-      "description": "Randomizes the colors of PSI spells.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "shuffled",
-            "label": "Shuffled"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "map_palette_shuffle",
-      "label": "Map Palette Shuffle",
-      "description": "Randomizes map colors.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "nice",
-            "label": "Nice"
-          },
-          {
-            "value": "ugly",
-            "label": "Ugly"
-          },
-          {
-            "value": "nonsense",
-            "label": "Nonsense"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shop_randomizer",
-      "label": "Shop Randomizer",
-      "description": "Randomizes items in shops.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "local_filler",
-            "label": "Local Filler"
-          },
-          {
-            "value": "shopsanity",
-            "label": "Shopsanity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "scout_shop_checks",
-      "label": "Scout Shop Checks",
-      "description": "Scouts Shop checks when you open a shop.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "progression_only",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "progression_only",
-            "label": "Progression Only"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dungeon_shuffle",
-      "label": "Dungeon Shuffle",
-      "description": "Shuffles Dungeon entrances amongst each other.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_epilogue",
-      "label": "Skip Epilogue",
-      "description": "If enabled, the choice to play the epilogue after beating Giygas will be removed, and you will go directly to the credits.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link_mode",
-      "label": "Death Link Mode",
-      "description": "Controls how receiving a Deathlink functions in battle.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "mortal",
-        "choices": [
-          {
-            "value": "instant",
-            "label": "Instant"
-          },
-          {
-            "value": "mortal",
-            "label": "Mortal"
-          },
-          {
-            "value": "mortal_mercy",
-            "label": "Mortal Mercy"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "energy_link",
-      "label": "Energy Link",
-      "description": "If enabled, the money in the ATM will be linked across the Archipelago Server.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "earthbound",
+	"name": "EarthBound",
+	"version": "0.5.0",
+	"description": "EarthBound is a contemporary-themed JRPG.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "giygas_required",
+			"label": "Giygas Required",
+			"description": "If enabled, your goal will be to defeat Giygas at the Cave of the Past.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "sanctuaries_required",
+			"label": "Sanctuaries Required",
+			"description": "How many of the eight \"Your Sanctuary\" locations are required to be cleared.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 8,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_prayer_sequences",
+			"label": "Skip Prayer Sequences",
+			"description": "If enabled, the Prayer cutscenes while fighting Giygas will be skipped, excluding the final one.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_start_location",
+			"label": "Random Start Location",
+			"description": "If disabled, you will always start at Ness's house with no teleports unlocked.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "alternate_sanctuary_goal",
+			"label": "Alternate Sanctuary Goal",
+			"description": "If enabled, you will be able to win by completing 2 more Sanctuaries than are required.",
+			"category": "goals",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "magicant_mode",
+			"label": "Magicant Mode",
+			"description": "PSI Location: You will be able to find a Magicant teleport item.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "psi_location",
+				"choices": [
+					{
+						"value": "psi_location",
+						"label": "Psi Location"
+					},
+					{
+						"value": "required",
+						"label": "Required"
+					},
+					{
+						"value": "alternate_goal",
+						"label": "Alternate Goal"
+					},
+					{
+						"value": "optional_boost",
+						"label": "Optional Boost"
+					},
+					{
+						"value": "removed",
+						"label": "Removed"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "monkey_caves_mode",
+			"label": "Monkey Caves Mode",
+			"description": "Chests: Items required to finish the Monkey Caves will be forcibly placed on the chests that can be found in-between rooms of the monkey caves.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "hunt",
+				"choices": [
+					{
+						"value": "chests",
+						"label": "Chests"
+					},
+					{
+						"value": "hunt",
+						"label": "Hunt"
+					},
+					{
+						"value": "shop",
+						"label": "Shop"
+					},
+					{
+						"value": "solved",
+						"label": "Solved"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "local_teleports",
+			"label": "Local Teleports",
+			"description": "Forces all teleports and Poo PSI to be placed locally in your world.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "character_shuffle",
+			"label": "Character Shuffle",
+			"description": "Shuffled: Characters will be shuffled amongst Character Locations.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "shuffled",
+				"choices": [
+					{
+						"value": "shuffled",
+						"label": "Shuffled"
+					},
+					{
+						"value": "anywhere",
+						"label": "Anywhere"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_character",
+			"label": "Starting Character",
+			"description": "Sets which character you start as.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "ness",
+				"choices": [
+					{
+						"value": "ness",
+						"label": "Ness"
+					},
+					{
+						"value": "paula",
+						"label": "Paula"
+					},
+					{
+						"value": "jeff",
+						"label": "Jeff"
+					},
+					{
+						"value": "poo",
+						"label": "Poo"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "psi_shuffle",
+			"label": "Psi Shuffle",
+			"description": "None: Characters will learn their normal PSI skills.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "basic",
+						"label": "Basic"
+					},
+					{
+						"value": "extended",
+						"label": "Extended"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "allow_flash_as_favorite_thing",
+			"label": "Allow Flash As Favorite Thing",
+			"description": "If enabled, allows PSI Flash to be shuffled onto the Favorite Thing PSI slot.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enemy_shuffle",
+			"label": "Enemy Shuffle",
+			"description": "Shuffles Non-boss enemies amongst each other.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "boss_shuffle",
+			"label": "Boss Shuffle",
+			"description": "Shuffles boss encounters amongst each other.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "false",
+				"choices": [
+					{
+						"value": "false",
+						"label": "False"
+					},
+					{
+						"value": "true",
+						"label": "True"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "decouple_diamond_dog",
+			"label": "Decouple Diamond Dog",
+			"description": "Shuffles Diamond Dog as a boss separate from Carbon Dog.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "boss_shuffle_add_giygas",
+			"label": "Boss Shuffle Add Giygas",
+			"description": "Adds the standalone Giygas fight to the shuffled boss pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "safe_final_boss",
+			"label": "Safe Final Boss",
+			"description": "Prevents specific difficult bosses from being randomized onto Heavily Armed Pokey's boss slot.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_enemy_attributes",
+			"label": "Randomize Enemy Attributes",
+			"description": "Randomizes most attributes of non-boss enemies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_enemy_stats",
+			"label": "Randomize Enemy Stats",
+			"description": "Randomizes base stats and level of non-boss enemies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_enemy_attacks",
+			"label": "Randomize Enemy Attacks",
+			"description": "Randomizes attacks of non-boss enemies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "experience_modifier",
+			"label": "Experience Modifier",
+			"description": "Percentage of EXP enemies give you.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 100,
+				"max": 300,
+				"step": 1,
+				"default": 150
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "money_drop_multiplier",
+			"label": "Money Drop Multiplier",
+			"description": "Multiplies money dropped by enemies by the chosen value.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_money",
+			"label": "Starting Money",
+			"description": "How much money you start with.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99999,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "easy_deaths",
+			"label": "Easy Deaths",
+			"description": "Fully revives and heals all party members after death.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "easy_combat",
+			"label": "Easy Combat",
+			"description": "Automatically halves all scaled enemy levels.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progressive_weapons",
+			"label": "Progressive Weapons",
+			"description": "If enabled, Bats, Fry Pans, and Guns will be progressive.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progressive_armor",
+			"label": "Progressive Armor",
+			"description": "If enabled, Bracelets and items for the Other slot besides Ribbons will be progressive.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "armorizer",
+			"label": "Armorizer",
+			"description": "All equippable armor will have randomly generated attributes.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "keep_type",
+						"label": "Keep Type"
+					},
+					{
+						"value": "chaos",
+						"label": "Chaos"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "weaponizer",
+			"label": "Weaponizer",
+			"description": "All weapons will have randomly generated attributes.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "keep_type",
+						"label": "Keep Type"
+					},
+					{
+						"value": "chaos",
+						"label": "Chaos"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "armorizer_resistance_chance",
+			"label": "Armorizer Resistance Chance",
+			"description": "Percent chance for any given Body/Other equipment to have elemental protection.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 50,
+				"step": 1,
+				"default": 15
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "equipamizer_cap_stats",
+			"label": "Equipamizer Cap Stats",
+			"description": "If enabled, the highest value that Equipamizer can roll for a piece of equipment's main stat will be capped.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "auto_scale_party_members",
+			"label": "Auto Scale Party Members",
+			"description": "If enabled, joining party members will be scaled to roughly the level of the sphere they were obtained in.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "remote_items",
+			"label": "Remote Items",
+			"description": "If enabled, you will receive your own items from the server upon collecting them, rather than locally.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_flavors",
+			"label": "Random Flavors",
+			"description": "Randomizes the non-plain window color options.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_battle_backgrounds",
+			"label": "Random Battle Backgrounds",
+			"description": "Generates random battle backgrounds.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "random_swirl_colors",
+			"label": "Random Swirl Colors",
+			"description": "Generates random colors for pre-battle swirls.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "presents_match_contents",
+			"label": "Presents Match Contents",
+			"description": "If enabled, Presents, Trash cans, and chests will have their appearance modified to be indicative of the item they contain.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "nonlocal_items_use_local_presents",
+			"label": "Nonlocal Items Use Local Presents",
+			"description": "If enabled, present that contain items for other players will appear as EarthBound presents (trashcan, present, and chest) instead of Archipelago boxes.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "prefixed_items",
+			"label": "Prefixed Items",
+			"description": "If enabled, broken items in the multiworld pool will be replaced with their fixed versions.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "total_photos",
+			"label": "Total Photos",
+			"description": "How many Photograph traps are placed in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 32,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_franklinbadge_protection",
+			"label": "Randomize Franklinbadge Protection",
+			"description": "If enabled, the Franklin Badge will reflect a randomly selected attack type.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_enemy_drops",
+			"label": "Shuffle Enemy Drops",
+			"description": "If enabled, enemies will drop random filler items.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "common_filler_weight",
+			"label": "Common Filler Weight",
+			"description": "Weight for placing a common filler item.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 80
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "uncommon_filler_weight",
+			"label": "Uncommon Filler Weight",
+			"description": "Weight for placing an uncommon filler item.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 30
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "rare_filler_weight",
+			"label": "Rare Filler Weight",
+			"description": "Weight for placing a rare filler item.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "money_weight",
+			"label": "Money Weight",
+			"description": "Weight for placing money in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_free_sanctuaries",
+			"label": "No Free Sanctuaries",
+			"description": "If enabled, the entrance to Lilliput Steps and Fire Spring will be locked and require extra key items to access.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_overworld_music",
+			"label": "Randomize Overworld Music",
+			"description": "Randomizes music on the overworld.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "match_type",
+						"label": "Match Type"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_battle_music",
+			"label": "Randomize Battle Music",
+			"description": "Randomizes in-battle songs.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_fanfares",
+			"label": "Randomize Fanfares",
+			"description": "Randomizes fanfares.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "on_no_sound_stone_fanfares",
+						"label": "On No Sound Stone Fanfares"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_psi_palettes",
+			"label": "Randomize Psi Palettes",
+			"description": "Randomizes the colors of PSI spells.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "shuffled",
+						"label": "Shuffled"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "map_palette_shuffle",
+			"label": "Map Palette Shuffle",
+			"description": "Randomizes map colors.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "nice",
+						"label": "Nice"
+					},
+					{
+						"value": "ugly",
+						"label": "Ugly"
+					},
+					{
+						"value": "nonsense",
+						"label": "Nonsense"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shop_randomizer",
+			"label": "Shop Randomizer",
+			"description": "Randomizes items in shops.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "local_filler",
+						"label": "Local Filler"
+					},
+					{
+						"value": "shopsanity",
+						"label": "Shopsanity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "scout_shop_checks",
+			"label": "Scout Shop Checks",
+			"description": "Scouts Shop checks when you open a shop.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "progression_only",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "progression_only",
+						"label": "Progression Only"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dungeon_shuffle",
+			"label": "Dungeon Shuffle",
+			"description": "Shuffles Dungeon entrances amongst each other.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_epilogue",
+			"label": "Skip Epilogue",
+			"description": "If enabled, the choice to play the epilogue after beating Giygas will be removed, and you will go directly to the credits.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link_mode",
+			"label": "Death Link Mode",
+			"description": "Controls how receiving a Deathlink functions in battle.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "mortal",
+				"choices": [
+					{
+						"value": "instant",
+						"label": "Instant"
+					},
+					{
+						"value": "mortal",
+						"label": "Mortal"
+					},
+					{
+						"value": "mortal_mercy",
+						"label": "Mortal Mercy"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "energy_link",
+			"label": "Energy Link",
+			"description": "If enabled, the money in the ATM will be linked across the Archipelago Server.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

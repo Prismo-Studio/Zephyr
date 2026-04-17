@@ -1,239 +1,239 @@
 {
-  "id": "undertale",
-  "name": "Undertale",
-  "version": "0.1.6",
-  "description": "Undertale is an RPG where every choice you make matters.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "route_required",
-      "label": "Route Required",
-      "description": "Main route of the game required to win.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "neutral",
-        "choices": [
-          {
-            "value": "neutral",
-            "label": "Neutral"
-          },
-          {
-            "value": "pacifist",
-            "label": "Pacifist"
-          },
-          {
-            "value": "genocide",
-            "label": "Genocide"
-          },
-          {
-            "value": "all_routes",
-            "label": "All Routes"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_area",
-      "label": "Starting Area",
-      "description": "Which area to start with access to.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "ruins",
-        "choices": [
-          {
-            "value": "ruins",
-            "label": "Ruins"
-          },
-          {
-            "value": "snowdin",
-            "label": "Snowdin"
-          },
-          {
-            "value": "waterfall",
-            "label": "Waterfall"
-          },
-          {
-            "value": "hotland",
-            "label": "Hotland"
-          },
-          {
-            "value": "core",
-            "label": "Core"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "key_hunt",
-      "label": "Key Hunt",
-      "description": "Adds Key Pieces to the item pool, you need all of them to enter the last corridor.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "key_pieces",
-      "label": "Key Pieces",
-      "description": "How many Key Pieces are added to the pool, only matters with Key Piece Hunt enabled.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 10,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "rando_love",
-      "label": "Rando Love",
-      "description": "Adds LOVE to the pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "rando_stats",
-      "label": "Rando Stats",
-      "description": "Makes each stat increase from LV a separate item.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "temy_include",
-      "label": "Temy Include",
-      "description": "Adds Temmy Armor to the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "no_equips",
-      "label": "No Equips",
-      "description": "Removes all equippable items.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "only_flakes",
-      "label": "Only Flakes",
-      "description": "Replaces all non-required items, except equipment, with Temmie Flakes.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "prog_armor",
-      "label": "Prog Armor",
-      "description": "Makes the armor progressive.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "prog_weapons",
-      "label": "Prog Weapons",
-      "description": "Makes the weapons progressive.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "rando_item_button",
-      "label": "Rando Item Button",
-      "description": "Turns the ITEM button in battle into an item you have to receive.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "undertale",
+	"name": "Undertale",
+	"version": "0.1.6",
+	"description": "Undertale is an RPG where every choice you make matters.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "route_required",
+			"label": "Route Required",
+			"description": "Main route of the game required to win.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "neutral",
+				"choices": [
+					{
+						"value": "neutral",
+						"label": "Neutral"
+					},
+					{
+						"value": "pacifist",
+						"label": "Pacifist"
+					},
+					{
+						"value": "genocide",
+						"label": "Genocide"
+					},
+					{
+						"value": "all_routes",
+						"label": "All Routes"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_area",
+			"label": "Starting Area",
+			"description": "Which area to start with access to.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "ruins",
+				"choices": [
+					{
+						"value": "ruins",
+						"label": "Ruins"
+					},
+					{
+						"value": "snowdin",
+						"label": "Snowdin"
+					},
+					{
+						"value": "waterfall",
+						"label": "Waterfall"
+					},
+					{
+						"value": "hotland",
+						"label": "Hotland"
+					},
+					{
+						"value": "core",
+						"label": "Core"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "key_hunt",
+			"label": "Key Hunt",
+			"description": "Adds Key Pieces to the item pool, you need all of them to enter the last corridor.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "key_pieces",
+			"label": "Key Pieces",
+			"description": "How many Key Pieces are added to the pool, only matters with Key Piece Hunt enabled.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 10,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "rando_love",
+			"label": "Rando Love",
+			"description": "Adds LOVE to the pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "rando_stats",
+			"label": "Rando Stats",
+			"description": "Makes each stat increase from LV a separate item.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "temy_include",
+			"label": "Temy Include",
+			"description": "Adds Temmy Armor to the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "no_equips",
+			"label": "No Equips",
+			"description": "Removes all equippable items.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "only_flakes",
+			"label": "Only Flakes",
+			"description": "Replaces all non-required items, except equipment, with Temmie Flakes.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "prog_armor",
+			"label": "Prog Armor",
+			"description": "Makes the armor progressive.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "prog_weapons",
+			"label": "Prog Weapons",
+			"description": "Makes the weapons progressive.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "rando_item_button",
+			"label": "Rando Item Button",
+			"description": "Turns the ITEM button in battle into an item you have to receive.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

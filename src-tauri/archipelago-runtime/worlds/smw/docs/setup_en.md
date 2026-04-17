@@ -2,38 +2,39 @@
 
 ## Required Software
 
-- [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases). 
+- [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases).
 
 - Hardware or software capable of loading and playing SNES ROM files
-    - An emulator capable of connecting to SNI such as:
-        - snes9x-rr from: [snes9x rr](https://github.com/gocha/snes9x-rr/releases),
-        - BizHawk from: [TASVideos](https://tasvideos.org/BizHawk)
-        - RetroArch 1.10.3 or newer from: [RetroArch Website](https://retroarch.com?page=platforms). Or,
-    - An SD2SNES, FXPak Pro ([FXPak Pro Store Page](https://krikzz.com/store/home/54-fxpak-pro.html)), or other
-      compatible hardware
+  - An emulator capable of connecting to SNI such as:
+    - snes9x-rr from: [snes9x rr](https://github.com/gocha/snes9x-rr/releases),
+    - BizHawk from: [TASVideos](https://tasvideos.org/BizHawk)
+    - RetroArch 1.10.3 or newer from: [RetroArch Website](https://retroarch.com?page=platforms). Or,
+  - An SD2SNES, FXPak Pro ([FXPak Pro Store Page](https://krikzz.com/store/home/54-fxpak-pro.html)), or other
+    compatible hardware
 - Your legally obtained Super Mario World ROM file, probably named `Super Mario World (USA).sfc`
 
 ## Optional Software
+
 - Super Mario World Tracker
-	- PopTracker from: [PopTracker Releases Page](https://github.com/black-sliver/PopTracker/releases/)
-	- Super Mario World Archipelago PopTracker pack from: [SMW AP Tracker Releases Page](https://github.com/PoryGone/SMW_AP_Tracker/releases/)
+  - PopTracker from: [PopTracker Releases Page](https://github.com/black-sliver/PopTracker/releases/)
+  - Super Mario World Archipelago PopTracker pack from: [SMW AP Tracker Releases Page](https://github.com/PoryGone/SMW_AP_Tracker/releases/)
 
 ## Installation Procedures
 
 ### Windows Setup
 
-1. Download and install [Archipelago](<https://github.com/ArchipelagoMW/Archipelago/releases/latest>). **The installer 
+1. Download and install [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases/latest). **The installer
    file is located in the assets section at the bottom of the version information.**
-2. The first time you do local generation or patch your game, you will be asked to locate your base ROM file. 
+2. The first time you do local generation or patch your game, you will be asked to locate your base ROM file.
    This is your Super Mario World ROM file. This only needs to be done once.
 3. If you are using an emulator, you should assign your Lua capable emulator as your default program for launching ROM
    files.
-    1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
-    2. Right-click on a ROM file and select **Open with...**
-    3. Check the box next to **Always use this app to open .sfc files**
-    4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
-    5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
-       extracted in step one.
+   1. Extract your emulator's folder to your Desktop, or somewhere you will remember.
+   2. Right-click on a ROM file and select **Open with...**
+   3. Check the box next to **Always use this app to open .sfc files**
+   4. Scroll to the bottom of the list and click the grey text **Look for another App on this PC**
+   5. Browse for your emulator's `.exe` file and click **Open**. This file should be located inside the folder you
+      extracted in step one.
 
 ## Create a Config (.yaml) File
 
@@ -77,21 +78,21 @@ first time launching, you may be prompted to allow it to communicate through the
 3. Click on **New Lua Script Window...**
 4. In the new window, click **Browse...**
 5. Select the connector lua file included with your client
-    - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
+   - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
 6. If you see an error while loading the script that states `socket.dll missing` or similar, navigate to the folder of
-the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
+   the lua you are using in your file explorer and copy the `socket.dll` to the base folder of your snes9x install.
 
 ##### BizHawk
 
 1. Ensure you have the BSNES core loaded. This is done with the main menubar, under:
-    - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
-    - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
+   - (≤ 2.8) `Config` 〉 `Cores` 〉 `SNES` 〉 `BSNES`
+   - (≥ 2.9) `Config` 〉 `Preferred Cores` 〉 `SNES` 〉 `BSNESv115+`
 2. Load your ROM file if it hasn't already been loaded.
    If you changed your core preference after loading the ROM, don't forget to reload it (default hotkey: Ctrl+R).
 3. Drag+drop the `Connector.lua` file included with your client onto the main EmuHawk window.
-    - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
-    - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to `Connector.lua`
-      with the file picker.
+   - Look in the Archipelago folder for `/SNI/lua/Connector.lua`.
+   - You could instead open the Lua Console manually, click `Script` 〉 `Open Script`, and navigate to `Connector.lua`
+     with the file picker.
 
 ##### RetroArch 1.10.3 or newer
 
@@ -141,7 +142,7 @@ The recommended way to host a game is to use our hosting service. The process is
 1. Collect config files from your players.
 2. Create a zip file containing your players' config files.
 3. Upload that zip file to the Generate page above.
-    - Generate page: [WebHost Seed Generation Page](/generate)
+   - Generate page: [WebHost Seed Generation Page](/generate)
 4. Wait a moment while the seed is generated.
 5. When the seed is generated, you will be redirected to a "Seed Info" page.
 6. Click "Create New Room". This will take you to the server page. Provide the link to this page to your players, so

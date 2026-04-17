@@ -1,157 +1,157 @@
 {
-  "id": "bumpstik",
-  "name": "Bumper Stickers",
-  "version": "0.3.8",
-  "description": "Bumper Stickers is a match-three puzzle game unlike any you've seen.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "task_advances",
-      "label": "Task Advances",
-      "description": "Task Advances allow you to skip one step of a level task.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "turners",
-      "label": "Turners",
-      "description": "Turners allow you to change the direction of a Bumper.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "paint_cans",
-      "label": "Paint Cans",
-      "description": "Paint Cans allow you to change the color of a Bumper.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 3
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "trap_count",
-      "label": "Trap Count",
-      "description": "Traps affect the board in various ways.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 15,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "rainbow_trap_weight",
-      "label": "Rainbow Trap Weight",
-      "description": "Rainbow Traps change the color of every bumper on the field.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spinner_trap_weight",
-      "label": "Spinner Trap Weight",
-      "description": "Spinner Traps change the direction of every bumper on the field.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "killer_trap_weight",
-      "label": "Killer Trap Weight",
-      "description": "Killer Traps end the current board immediately.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "bumpstik",
+	"name": "Bumper Stickers",
+	"version": "0.3.8",
+	"description": "Bumper Stickers is a match-three puzzle game unlike any you've seen.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "task_advances",
+			"label": "Task Advances",
+			"description": "Task Advances allow you to skip one step of a level task.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "turners",
+			"label": "Turners",
+			"description": "Turners allow you to change the direction of a Bumper.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "paint_cans",
+			"label": "Paint Cans",
+			"description": "Paint Cans allow you to change the color of a Bumper.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 3
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "trap_count",
+			"label": "Trap Count",
+			"description": "Traps affect the board in various ways.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 15,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "rainbow_trap_weight",
+			"label": "Rainbow Trap Weight",
+			"description": "Rainbow Traps change the color of every bumper on the field.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spinner_trap_weight",
+			"label": "Spinner Trap Weight",
+			"description": "Spinner Traps change the direction of every bumper on the field.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "killer_trap_weight",
+			"label": "Killer Trap Weight",
+			"description": "Killer Traps end the current board immediately.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

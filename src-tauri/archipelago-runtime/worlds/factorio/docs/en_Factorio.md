@@ -44,6 +44,7 @@ is lost during depositing. The amount of energy currently in the shared storage 
 It can also be queried by typing `/energy-link` in-game.
 
 ## Unique Local Commands
+
 The following commands are only available when using the FactorioClient to play Factorio with Archipelago.
 
 - `/factorio <command text>` Sends the command argument to the Factorio server as a command.

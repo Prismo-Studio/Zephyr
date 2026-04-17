@@ -1,1745 +1,1745 @@
 {
-  "id": "alttp",
-  "name": "A Link to the Past",
-  "version": "0.4.1",
-  "description": "The Legend of Zelda: A Link to the Past is an action/adventure game.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "items",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          },
-          {
-            "value": "items",
-            "label": "Items"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "Ganon: Climb GT, defeat Agahnim 2, and then kill Ganon Crystals: Only killing Ganon is required.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "ganon",
-        "choices": [
-          {
-            "value": "ganon",
-            "label": "Ganon"
-          },
-          {
-            "value": "crystals",
-            "label": "Crystals"
-          },
-          {
-            "value": "bosses",
-            "label": "Bosses"
-          },
-          {
-            "value": "pedestal",
-            "label": "Pedestal"
-          },
-          {
-            "value": "ganon_pedestal",
-            "label": "Ganon Pedestal"
-          },
-          {
-            "value": "triforce_hunt",
-            "label": "Triforce Hunt"
-          },
-          {
-            "value": "local_triforce_hunt",
-            "label": "Local Triforce Hunt"
-          },
-          {
-            "value": "ganon_triforce_hunt",
-            "label": "Ganon Triforce Hunt"
-          },
-          {
-            "value": "local_ganon_triforce_hunt",
-            "label": "Local Ganon Triforce Hunt"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mode",
-      "label": "Mode",
-      "description": "Standard: Begin the game by rescuing Zelda from her cell and escorting her to the Sanctuary Open: Begin the game from your choice of Link's House or the Sanctuary Inverted: Begin in the Dark World.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "open",
-        "choices": [
-          {
-            "value": "standard",
-            "label": "Standard"
-          },
-          {
-            "value": "open",
-            "label": "Open"
-          },
-          {
-            "value": "inverted",
-            "label": "Inverted"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "glitches_required",
-      "label": "Glitches Required",
-      "description": "Determine the logic required to complete the seed None: No glitches required Minor Glitches: Puts fake flipper, waterwalk, super bunny shenanigans, and etc into logic Overworld Glitches: Assumes the player has knowledge of both overworld major glitches (boots clips, mirror clips) and minor glitches Hybrid Major Glitches: In addition to overworld glitches, also requires underworld clips between dungeons.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "no_glitches",
-        "choices": [
-          {
-            "value": "no_glitches",
-            "label": "No Glitches"
-          },
-          {
-            "value": "minor_glitches",
-            "label": "Minor Glitches"
-          },
-          {
-            "value": "overworld_glitches",
-            "label": "Overworld Glitches"
-          },
-          {
-            "value": "hybrid_major_glitches",
-            "label": "Hybrid Major Glitches"
-          },
-          {
-            "value": "no_logic",
-            "label": "No Logic"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dark_room_logic",
-      "label": "Dark Room Logic",
-      "description": "Logic for unlit dark rooms.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "lamp",
-        "choices": [
-          {
-            "value": "lamp",
-            "label": "Lamp"
-          },
-          {
-            "value": "torches",
-            "label": "Torches"
-          },
-          {
-            "value": "none",
-            "label": "None"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "open_pyramid",
-      "label": "Open Pyramid",
-      "description": "Determines whether the hole at the top of pyramid is open.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "goal",
-        "choices": [
-          {
-            "value": "closed",
-            "label": "Closed"
-          },
-          {
-            "value": "open",
-            "label": "Open"
-          },
-          {
-            "value": "goal",
-            "label": "Goal"
-          },
-          {
-            "value": "auto",
-            "label": "Auto"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "crystals_needed_for_gt",
-      "label": "Crystals Needed For Gt",
-      "description": "Number of crystals needed to open Ganon's Tower",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 7,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "crystals_needed_for_ganon",
-      "label": "Crystals Needed For Ganon",
-      "description": "Number of crystals needed to damage Ganon",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 7,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "triforce_pieces_mode",
-      "label": "Triforce Pieces Mode",
-      "description": "Determine how to calculate the extra available triforce pieces.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "available",
-        "choices": [
-          {
-            "value": "extra",
-            "label": "Extra"
-          },
-          {
-            "value": "percentage",
-            "label": "Percentage"
-          },
-          {
-            "value": "available",
-            "label": "Available"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "triforce_pieces_percentage",
-      "label": "Triforce Pieces Percentage",
-      "description": "Set to how many triforce pieces according to a percentage of the required ones, are available to collect in the world.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 100,
-        "max": 1000,
-        "step": 1,
-        "default": 150
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "triforce_pieces_required",
-      "label": "Triforce Pieces Required",
-      "description": "Set to how many out of X triforce pieces you need to win the game in a triforce hunt.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 90,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "triforce_pieces_available",
-      "label": "Triforce Pieces Available",
-      "description": "Set to how many triforces pieces are available to collect in the world.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 90,
-        "step": 1,
-        "default": 30
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "triforce_pieces_extra",
-      "label": "Triforce Pieces Extra",
-      "description": "Set to how many extra triforces pieces are available to collect in the world.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 89,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "entrance_shuffle",
-      "label": "Entrance Shuffle",
-      "description": "Dungeons Simple: Shuffle just dungeons amongst each other, swapping dungeons entirely, so Hyrule Castle is always 1 dungeon.",
-      "category": "entrances",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "dungeons_simple",
-            "label": "Dungeons Simple"
-          },
-          {
-            "value": "dungeons_full",
-            "label": "Dungeons Full"
-          },
-          {
-            "value": "dungeons_crossed",
-            "label": "Dungeons Crossed"
-          },
-          {
-            "value": "simple",
-            "label": "Simple"
-          },
-          {
-            "value": "restricted",
-            "label": "Restricted"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "crossed",
-            "label": "Crossed"
-          },
-          {
-            "value": "insanity",
-            "label": "Insanity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "entrance_shuffle_seed",
-      "label": "Entrance Shuffle Seed",
-      "description": "You can specify a number to use as an entrance shuffle seed, or a group name.",
-      "category": "entrances",
-      "type": {
-        "kind": "text",
-        "default": "random",
-        "placeholder": null
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "big_key_shuffle",
-      "label": "Big Key Shuffle",
-      "description": "Big Key Placement",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "original_dungeon",
-        "choices": [
-          {
-            "value": "original_dungeon",
-            "label": "Original Dungeon"
-          },
-          {
-            "value": "own_dungeons",
-            "label": "Own Dungeons"
-          },
-          {
-            "value": "own_world",
-            "label": "Own World"
-          },
-          {
-            "value": "any_world",
-            "label": "Any World"
-          },
-          {
-            "value": "different_world",
-            "label": "Different World"
-          },
-          {
-            "value": "start_with",
-            "label": "Start With"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "small_key_shuffle",
-      "label": "Small Key Shuffle",
-      "description": "Small Key Placement",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "original_dungeon",
-        "choices": [
-          {
-            "value": "original_dungeon",
-            "label": "Original Dungeon"
-          },
-          {
-            "value": "own_dungeons",
-            "label": "Own Dungeons"
-          },
-          {
-            "value": "own_world",
-            "label": "Own World"
-          },
-          {
-            "value": "any_world",
-            "label": "Any World"
-          },
-          {
-            "value": "different_world",
-            "label": "Different World"
-          },
-          {
-            "value": "start_with",
-            "label": "Start With"
-          },
-          {
-            "value": "universal",
-            "label": "Universal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "key_drop_shuffle",
-      "label": "Key Drop Shuffle",
-      "description": "Shuffle keys found in pots and dropped from killed enemies, respects the small key and big key shuffle options.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "compass_shuffle",
-      "label": "Compass Shuffle",
-      "description": "Compass Placement",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "original_dungeon",
-        "choices": [
-          {
-            "value": "original_dungeon",
-            "label": "Original Dungeon"
-          },
-          {
-            "value": "own_dungeons",
-            "label": "Own Dungeons"
-          },
-          {
-            "value": "own_world",
-            "label": "Own World"
-          },
-          {
-            "value": "any_world",
-            "label": "Any World"
-          },
-          {
-            "value": "different_world",
-            "label": "Different World"
-          },
-          {
-            "value": "start_with",
-            "label": "Start With"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "map_shuffle",
-      "label": "Map Shuffle",
-      "description": "Map Placement",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "original_dungeon",
-        "choices": [
-          {
-            "value": "original_dungeon",
-            "label": "Original Dungeon"
-          },
-          {
-            "value": "own_dungeons",
-            "label": "Own Dungeons"
-          },
-          {
-            "value": "own_world",
-            "label": "Own World"
-          },
-          {
-            "value": "any_world",
-            "label": "Any World"
-          },
-          {
-            "value": "different_world",
-            "label": "Different World"
-          },
-          {
-            "value": "start_with",
-            "label": "Start With"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "restrict_dungeon_item_on_boss",
-      "label": "Restrict Dungeon Item On Boss",
-      "description": "Don't place dungeon-native items on the dungeon's boss.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_pool",
-      "label": "Item Pool",
-      "description": "Easy: Doubled upgrades, progressives, and etc.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "easy",
-            "label": "Easy"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          },
-          {
-            "value": "expert",
-            "label": "Expert"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_functionality",
-      "label": "Item Functionality",
-      "description": "Easy: Allow Hammer to damage ganon, Allow Hammer tablet collection, Allow swordless medallion use everywhere.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "easy",
-            "label": "Easy"
-          },
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          },
-          {
-            "value": "expert",
-            "label": "Expert"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enemy_health",
-      "label": "Enemy Health",
-      "description": "Default: Vanilla enemy HP.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "easy",
-            "label": "Easy"
-          },
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "hard",
-            "label": "Hard"
-          },
-          {
-            "value": "expert",
-            "label": "Expert"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enemy_damage",
-      "label": "Enemy Damage",
-      "description": "Default: Vanilla enemy damage.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "shuffled",
-            "label": "Shuffled"
-          },
-          {
-            "value": "chaos",
-            "label": "Chaos"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progressive",
-      "label": "Progressive",
-      "description": "How item types that have multiple tiers (armor, bows, gloves, shields, and swords) should be rewarded",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "on",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "grouped_random",
-            "label": "Grouped Random"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "swordless",
-      "label": "Swordless",
-      "description": "No swords.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dungeon_counters",
-      "label": "Dungeon Counters",
-      "description": "On: Always display amount of items checked in a dungeon.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "pickup",
-        "choices": [
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "pickup",
-            "label": "Pickup"
-          },
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "off",
-            "label": "Off"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "retro_bow",
-      "label": "Retro Bow",
-      "description": "Zelda-1 like mode.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "retro_caves",
-      "label": "Retro Caves",
-      "description": "Zelda-1 like mode.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hints",
-      "label": "Hints",
-      "description": "On/Full: Put item and entrance placement hints on telepathic tiles and some NPCs, Full removes joke hints.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "on",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "scams",
-      "label": "Scams",
-      "description": "If on, these Merchants will no longer tell you what they're selling.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "king_zora",
-            "label": "King Zora"
-          },
-          {
-            "value": "bottle_merchant",
-            "label": "Bottle Merchant"
-          },
-          {
-            "value": "all",
-            "label": "All"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "boss_shuffle",
-      "label": "Boss Shuffle",
-      "description": "Shuffles bosses around to different locations.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "basic",
-            "label": "Basic"
-          },
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "chaos",
-            "label": "Chaos"
-          },
-          {
-            "value": "singularity",
-            "label": "Singularity"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "pot_shuffle",
-      "label": "Pot Shuffle",
-      "description": "Shuffle contents of pots within \"supertiles\" (item will still be nearby original placement).",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enemy_shuffle",
-      "label": "Enemy Shuffle",
-      "description": "Randomize every enemy spawn.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "killable_thieves",
-      "label": "Killable Thieves",
-      "description": "Makes Thieves killable.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bush_shuffle",
-      "label": "Bush Shuffle",
-      "description": "Randomize chance that a bush contains an enemy as well as which enemy may spawn.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shop_item_slots",
-      "label": "Shop Item Slots",
-      "description": "Number of slots in all shops available to have items from the multiworld",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 30,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_shop_inventories",
-      "label": "Randomize Shop Inventories",
-      "description": "Generate new default inventories for overworld/underworld shops, and unique shops; or each shop independently",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "randomize_by_shop_type",
-            "label": "Randomize By Shop Type"
-          },
-          {
-            "value": "randomize_each",
-            "label": "Randomize Each"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_shop_inventories",
-      "label": "Shuffle Shop Inventories",
-      "description": "Shuffle default inventories of the shops around",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "include_witch_hut",
-      "label": "Include Witch Hut",
-      "description": "Consider witch's hut like any other shop and shuffle/randomize it too",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_shop_prices",
-      "label": "Randomize Shop Prices",
-      "description": "Randomize the prices of the items in shop inventories",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "randomize_cost_types",
-      "label": "Randomize Cost Types",
-      "description": "Prices of the items in shop inventories may cost hearts, arrow, or bombs instead of rupees",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shop_price_modifier",
-      "label": "Shop Price Modifier",
-      "description": "Percentage modifier for shuffled item prices in shops",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 400,
-        "step": 1,
-        "default": 100
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_capacity_upgrades",
-      "label": "Shuffle Capacity Upgrades",
-      "description": "Shuffle capacity upgrades into the item pool (and allow them to traverse the multiworld).",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "on_combined",
-            "label": "On Combined"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bombless_start",
-      "label": "Bombless Start",
-      "description": "Start with a max of 0 bombs available, requiring Bomb Upgrade items in order to use bombs",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shuffle_prizes",
-      "label": "Shuffle Prizes",
-      "description": "Shuffle \"general\" prize packs, as in enemy, tree pull, dig etc.; \"bonk\" prizes; or both.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "general",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "general",
-            "label": "General"
-          },
-          {
-            "value": "bonk",
-            "label": "Bonk"
-          },
-          {
-            "value": "both",
-            "label": "Both"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "tile_shuffle",
-      "label": "Tile Shuffle",
-      "description": "Randomize flying tiles floor patterns.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "misery_mire_medallion",
-      "label": "Misery Mire Medallion",
-      "description": "Required medallion to open Misery Mire front entrance.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random",
-        "choices": [
-          {
-            "value": "ether",
-            "label": "Ether"
-          },
-          {
-            "value": "bombos",
-            "label": "Bombos"
-          },
-          {
-            "value": "quake",
-            "label": "Quake"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "turtle_rock_medallion",
-      "label": "Turtle Rock Medallion",
-      "description": "Required medallion to open Turtle Rock front entrance.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random",
-        "choices": [
-          {
-            "value": "ether",
-            "label": "Ether"
-          },
-          {
-            "value": "bombos",
-            "label": "Bombos"
-          },
-          {
-            "value": "quake",
-            "label": "Quake"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "glitch_boots",
-      "label": "Glitch Boots",
-      "description": "If this is enabled, the player will start with Pegasus Boots when playing with overworld glitches or harder logic.",
-      "category": "logic",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "beemizer_total_chance",
-      "label": "Beemizer Total Chance",
-      "description": "Percentage chance for each junk-fill item (rupees, bombs, arrows) to be replaced with either a bee swarm trap or a single bottle-filling bee.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "beemizer_trap_chance",
-      "label": "Beemizer Trap Chance",
-      "description": "Percentage chance for each replaced junk-fill item to be a bee swarm trap; all other replaced items are single bottle-filling bees.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 60
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "timer",
-      "label": "Timer",
-      "description": "None: No timer will be displayed.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "timed",
-            "label": "Timed"
-          },
-          {
-            "value": "timed_ohko",
-            "label": "Timed Ohko"
-          },
-          {
-            "value": "ohko",
-            "label": "Ohko"
-          },
-          {
-            "value": "timed_countdown",
-            "label": "Timed Countdown"
-          },
-          {
-            "value": "display",
-            "label": "Display"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "countdown_start_time",
-      "label": "Countdown Start Time",
-      "description": "For Timed OHKO and Timed Countdown timer modes, the amount of time in minutes to start with.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 480,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "red_clock_time",
-      "label": "Red Clock Time",
-      "description": "For all timer modes, the amount of time in minutes to gain or lose when picking up a red clock.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": -60,
-        "max": 60,
-        "step": 1,
-        "default": -2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "blue_clock_time",
-      "label": "Blue Clock Time",
-      "description": "For all timer modes, the amount of time in minutes to gain or lose when picking up a blue clock.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": -60,
-        "max": 60,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "green_clock_time",
-      "label": "Green Clock Time",
-      "description": "For all timer modes, the amount of time in minutes to gain or lose when picking up a green clock.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": -60,
-        "max": 60,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "allow_collect",
-      "label": "Allow Collect",
-      "description": "Allows for !collect / co-op to auto-open chests containing items for other players.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ow_palettes",
-      "label": "Ow Palettes",
-      "description": "The type of palette shuffle to use for the overworld",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "good",
-            "label": "Good"
-          },
-          {
-            "value": "blackout",
-            "label": "Blackout"
-          },
-          {
-            "value": "puke",
-            "label": "Puke"
-          },
-          {
-            "value": "classic",
-            "label": "Classic"
-          },
-          {
-            "value": "grayscale",
-            "label": "Grayscale"
-          },
-          {
-            "value": "negative",
-            "label": "Negative"
-          },
-          {
-            "value": "dizzy",
-            "label": "Dizzy"
-          },
-          {
-            "value": "sick",
-            "label": "Sick"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "uw_palettes",
-      "label": "Uw Palettes",
-      "description": "The type of palette shuffle to use for the underworld (caves, dungeons, etc.)",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "good",
-            "label": "Good"
-          },
-          {
-            "value": "blackout",
-            "label": "Blackout"
-          },
-          {
-            "value": "puke",
-            "label": "Puke"
-          },
-          {
-            "value": "classic",
-            "label": "Classic"
-          },
-          {
-            "value": "grayscale",
-            "label": "Grayscale"
-          },
-          {
-            "value": "negative",
-            "label": "Negative"
-          },
-          {
-            "value": "dizzy",
-            "label": "Dizzy"
-          },
-          {
-            "value": "sick",
-            "label": "Sick"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hud_palettes",
-      "label": "Hud Palettes",
-      "description": "The type of palette shuffle to use for the HUD",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "good",
-            "label": "Good"
-          },
-          {
-            "value": "blackout",
-            "label": "Blackout"
-          },
-          {
-            "value": "puke",
-            "label": "Puke"
-          },
-          {
-            "value": "classic",
-            "label": "Classic"
-          },
-          {
-            "value": "grayscale",
-            "label": "Grayscale"
-          },
-          {
-            "value": "negative",
-            "label": "Negative"
-          },
-          {
-            "value": "dizzy",
-            "label": "Dizzy"
-          },
-          {
-            "value": "sick",
-            "label": "Sick"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "sword_palettes",
-      "label": "Sword Palettes",
-      "description": "The type of palette shuffle to use for the sword",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "good",
-            "label": "Good"
-          },
-          {
-            "value": "blackout",
-            "label": "Blackout"
-          },
-          {
-            "value": "puke",
-            "label": "Puke"
-          },
-          {
-            "value": "classic",
-            "label": "Classic"
-          },
-          {
-            "value": "grayscale",
-            "label": "Grayscale"
-          },
-          {
-            "value": "negative",
-            "label": "Negative"
-          },
-          {
-            "value": "dizzy",
-            "label": "Dizzy"
-          },
-          {
-            "value": "sick",
-            "label": "Sick"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shield_palettes",
-      "label": "Shield Palettes",
-      "description": "The type of palette shuffle to use for the shield",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "good",
-            "label": "Good"
-          },
-          {
-            "value": "blackout",
-            "label": "Blackout"
-          },
-          {
-            "value": "puke",
-            "label": "Puke"
-          },
-          {
-            "value": "classic",
-            "label": "Classic"
-          },
-          {
-            "value": "grayscale",
-            "label": "Grayscale"
-          },
-          {
-            "value": "negative",
-            "label": "Negative"
-          },
-          {
-            "value": "dizzy",
-            "label": "Dizzy"
-          },
-          {
-            "value": "sick",
-            "label": "Sick"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "heartbeep",
-      "label": "Heartbeep",
-      "description": "How quickly the heart beep sound effect will play",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "half",
-            "label": "Half"
-          },
-          {
-            "value": "quarter",
-            "label": "Quarter"
-          },
-          {
-            "value": "off",
-            "label": "Off"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "heartcolor",
-      "label": "Heartcolor",
-      "description": "The color of hearts in the HUD",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "red",
-        "choices": [
-          {
-            "value": "red",
-            "label": "Red"
-          },
-          {
-            "value": "blue",
-            "label": "Blue"
-          },
-          {
-            "value": "green",
-            "label": "Green"
-          },
-          {
-            "value": "yellow",
-            "label": "Yellow"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "quickswap",
-      "label": "Quickswap",
-      "description": "Allows you to quickly swap items while playing with L/R",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "menuspeed",
-      "label": "Menuspeed",
-      "description": "How quickly the menu appears/disappears",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "instant",
-            "label": "Instant"
-          },
-          {
-            "value": "double",
-            "label": "Double"
-          },
-          {
-            "value": "triple",
-            "label": "Triple"
-          },
-          {
-            "value": "quadruple",
-            "label": "Quadruple"
-          },
-          {
-            "value": "half",
-            "label": "Half"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "music",
-      "label": "Music",
-      "description": "Whether background music will play in game",
-      "category": "cosmetic",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "reduceflashing",
-      "label": "Reduceflashing",
-      "description": "Reduces flashing for certain scenes such as the Misery Mire and Ganon's Tower opening cutscenes",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "triforcehud",
-      "label": "Triforcehud",
-      "description": "When and how the triforce hunt HUD should display",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "hide_goal",
-            "label": "Hide Goal"
-          },
-          {
-            "value": "hide_required",
-            "label": "Hide Required"
-          },
-          {
-            "value": "hide_both",
-            "label": "Hide Both"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "alttp",
+	"name": "A Link to the Past",
+	"version": "0.4.1",
+	"description": "The Legend of Zelda: A Link to the Past is an action/adventure game.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "items",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					},
+					{
+						"value": "items",
+						"label": "Items"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "Ganon: Climb GT, defeat Agahnim 2, and then kill Ganon Crystals: Only killing Ganon is required.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "ganon",
+				"choices": [
+					{
+						"value": "ganon",
+						"label": "Ganon"
+					},
+					{
+						"value": "crystals",
+						"label": "Crystals"
+					},
+					{
+						"value": "bosses",
+						"label": "Bosses"
+					},
+					{
+						"value": "pedestal",
+						"label": "Pedestal"
+					},
+					{
+						"value": "ganon_pedestal",
+						"label": "Ganon Pedestal"
+					},
+					{
+						"value": "triforce_hunt",
+						"label": "Triforce Hunt"
+					},
+					{
+						"value": "local_triforce_hunt",
+						"label": "Local Triforce Hunt"
+					},
+					{
+						"value": "ganon_triforce_hunt",
+						"label": "Ganon Triforce Hunt"
+					},
+					{
+						"value": "local_ganon_triforce_hunt",
+						"label": "Local Ganon Triforce Hunt"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mode",
+			"label": "Mode",
+			"description": "Standard: Begin the game by rescuing Zelda from her cell and escorting her to the Sanctuary Open: Begin the game from your choice of Link's House or the Sanctuary Inverted: Begin in the Dark World.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "open",
+				"choices": [
+					{
+						"value": "standard",
+						"label": "Standard"
+					},
+					{
+						"value": "open",
+						"label": "Open"
+					},
+					{
+						"value": "inverted",
+						"label": "Inverted"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "glitches_required",
+			"label": "Glitches Required",
+			"description": "Determine the logic required to complete the seed None: No glitches required Minor Glitches: Puts fake flipper, waterwalk, super bunny shenanigans, and etc into logic Overworld Glitches: Assumes the player has knowledge of both overworld major glitches (boots clips, mirror clips) and minor glitches Hybrid Major Glitches: In addition to overworld glitches, also requires underworld clips between dungeons.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "no_glitches",
+				"choices": [
+					{
+						"value": "no_glitches",
+						"label": "No Glitches"
+					},
+					{
+						"value": "minor_glitches",
+						"label": "Minor Glitches"
+					},
+					{
+						"value": "overworld_glitches",
+						"label": "Overworld Glitches"
+					},
+					{
+						"value": "hybrid_major_glitches",
+						"label": "Hybrid Major Glitches"
+					},
+					{
+						"value": "no_logic",
+						"label": "No Logic"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dark_room_logic",
+			"label": "Dark Room Logic",
+			"description": "Logic for unlit dark rooms.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "lamp",
+				"choices": [
+					{
+						"value": "lamp",
+						"label": "Lamp"
+					},
+					{
+						"value": "torches",
+						"label": "Torches"
+					},
+					{
+						"value": "none",
+						"label": "None"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "open_pyramid",
+			"label": "Open Pyramid",
+			"description": "Determines whether the hole at the top of pyramid is open.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "goal",
+				"choices": [
+					{
+						"value": "closed",
+						"label": "Closed"
+					},
+					{
+						"value": "open",
+						"label": "Open"
+					},
+					{
+						"value": "goal",
+						"label": "Goal"
+					},
+					{
+						"value": "auto",
+						"label": "Auto"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "crystals_needed_for_gt",
+			"label": "Crystals Needed For Gt",
+			"description": "Number of crystals needed to open Ganon's Tower",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 7,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "crystals_needed_for_ganon",
+			"label": "Crystals Needed For Ganon",
+			"description": "Number of crystals needed to damage Ganon",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 7,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "triforce_pieces_mode",
+			"label": "Triforce Pieces Mode",
+			"description": "Determine how to calculate the extra available triforce pieces.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "available",
+				"choices": [
+					{
+						"value": "extra",
+						"label": "Extra"
+					},
+					{
+						"value": "percentage",
+						"label": "Percentage"
+					},
+					{
+						"value": "available",
+						"label": "Available"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "triforce_pieces_percentage",
+			"label": "Triforce Pieces Percentage",
+			"description": "Set to how many triforce pieces according to a percentage of the required ones, are available to collect in the world.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 100,
+				"max": 1000,
+				"step": 1,
+				"default": 150
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "triforce_pieces_required",
+			"label": "Triforce Pieces Required",
+			"description": "Set to how many out of X triforce pieces you need to win the game in a triforce hunt.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 90,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "triforce_pieces_available",
+			"label": "Triforce Pieces Available",
+			"description": "Set to how many triforces pieces are available to collect in the world.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 90,
+				"step": 1,
+				"default": 30
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "triforce_pieces_extra",
+			"label": "Triforce Pieces Extra",
+			"description": "Set to how many extra triforces pieces are available to collect in the world.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 89,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "entrance_shuffle",
+			"label": "Entrance Shuffle",
+			"description": "Dungeons Simple: Shuffle just dungeons amongst each other, swapping dungeons entirely, so Hyrule Castle is always 1 dungeon.",
+			"category": "entrances",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "dungeons_simple",
+						"label": "Dungeons Simple"
+					},
+					{
+						"value": "dungeons_full",
+						"label": "Dungeons Full"
+					},
+					{
+						"value": "dungeons_crossed",
+						"label": "Dungeons Crossed"
+					},
+					{
+						"value": "simple",
+						"label": "Simple"
+					},
+					{
+						"value": "restricted",
+						"label": "Restricted"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "crossed",
+						"label": "Crossed"
+					},
+					{
+						"value": "insanity",
+						"label": "Insanity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "entrance_shuffle_seed",
+			"label": "Entrance Shuffle Seed",
+			"description": "You can specify a number to use as an entrance shuffle seed, or a group name.",
+			"category": "entrances",
+			"type": {
+				"kind": "text",
+				"default": "random",
+				"placeholder": null
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "big_key_shuffle",
+			"label": "Big Key Shuffle",
+			"description": "Big Key Placement",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "original_dungeon",
+				"choices": [
+					{
+						"value": "original_dungeon",
+						"label": "Original Dungeon"
+					},
+					{
+						"value": "own_dungeons",
+						"label": "Own Dungeons"
+					},
+					{
+						"value": "own_world",
+						"label": "Own World"
+					},
+					{
+						"value": "any_world",
+						"label": "Any World"
+					},
+					{
+						"value": "different_world",
+						"label": "Different World"
+					},
+					{
+						"value": "start_with",
+						"label": "Start With"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "small_key_shuffle",
+			"label": "Small Key Shuffle",
+			"description": "Small Key Placement",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "original_dungeon",
+				"choices": [
+					{
+						"value": "original_dungeon",
+						"label": "Original Dungeon"
+					},
+					{
+						"value": "own_dungeons",
+						"label": "Own Dungeons"
+					},
+					{
+						"value": "own_world",
+						"label": "Own World"
+					},
+					{
+						"value": "any_world",
+						"label": "Any World"
+					},
+					{
+						"value": "different_world",
+						"label": "Different World"
+					},
+					{
+						"value": "start_with",
+						"label": "Start With"
+					},
+					{
+						"value": "universal",
+						"label": "Universal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "key_drop_shuffle",
+			"label": "Key Drop Shuffle",
+			"description": "Shuffle keys found in pots and dropped from killed enemies, respects the small key and big key shuffle options.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "compass_shuffle",
+			"label": "Compass Shuffle",
+			"description": "Compass Placement",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "original_dungeon",
+				"choices": [
+					{
+						"value": "original_dungeon",
+						"label": "Original Dungeon"
+					},
+					{
+						"value": "own_dungeons",
+						"label": "Own Dungeons"
+					},
+					{
+						"value": "own_world",
+						"label": "Own World"
+					},
+					{
+						"value": "any_world",
+						"label": "Any World"
+					},
+					{
+						"value": "different_world",
+						"label": "Different World"
+					},
+					{
+						"value": "start_with",
+						"label": "Start With"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "map_shuffle",
+			"label": "Map Shuffle",
+			"description": "Map Placement",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "original_dungeon",
+				"choices": [
+					{
+						"value": "original_dungeon",
+						"label": "Original Dungeon"
+					},
+					{
+						"value": "own_dungeons",
+						"label": "Own Dungeons"
+					},
+					{
+						"value": "own_world",
+						"label": "Own World"
+					},
+					{
+						"value": "any_world",
+						"label": "Any World"
+					},
+					{
+						"value": "different_world",
+						"label": "Different World"
+					},
+					{
+						"value": "start_with",
+						"label": "Start With"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "restrict_dungeon_item_on_boss",
+			"label": "Restrict Dungeon Item On Boss",
+			"description": "Don't place dungeon-native items on the dungeon's boss.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_pool",
+			"label": "Item Pool",
+			"description": "Easy: Doubled upgrades, progressives, and etc.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "easy",
+						"label": "Easy"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					},
+					{
+						"value": "expert",
+						"label": "Expert"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_functionality",
+			"label": "Item Functionality",
+			"description": "Easy: Allow Hammer to damage ganon, Allow Hammer tablet collection, Allow swordless medallion use everywhere.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "easy",
+						"label": "Easy"
+					},
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					},
+					{
+						"value": "expert",
+						"label": "Expert"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enemy_health",
+			"label": "Enemy Health",
+			"description": "Default: Vanilla enemy HP.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "easy",
+						"label": "Easy"
+					},
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "hard",
+						"label": "Hard"
+					},
+					{
+						"value": "expert",
+						"label": "Expert"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enemy_damage",
+			"label": "Enemy Damage",
+			"description": "Default: Vanilla enemy damage.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "shuffled",
+						"label": "Shuffled"
+					},
+					{
+						"value": "chaos",
+						"label": "Chaos"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progressive",
+			"label": "Progressive",
+			"description": "How item types that have multiple tiers (armor, bows, gloves, shields, and swords) should be rewarded",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "on",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "grouped_random",
+						"label": "Grouped Random"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "swordless",
+			"label": "Swordless",
+			"description": "No swords.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dungeon_counters",
+			"label": "Dungeon Counters",
+			"description": "On: Always display amount of items checked in a dungeon.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "pickup",
+				"choices": [
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "pickup",
+						"label": "Pickup"
+					},
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "off",
+						"label": "Off"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "retro_bow",
+			"label": "Retro Bow",
+			"description": "Zelda-1 like mode.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "retro_caves",
+			"label": "Retro Caves",
+			"description": "Zelda-1 like mode.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hints",
+			"label": "Hints",
+			"description": "On/Full: Put item and entrance placement hints on telepathic tiles and some NPCs, Full removes joke hints.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "on",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "scams",
+			"label": "Scams",
+			"description": "If on, these Merchants will no longer tell you what they're selling.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "king_zora",
+						"label": "King Zora"
+					},
+					{
+						"value": "bottle_merchant",
+						"label": "Bottle Merchant"
+					},
+					{
+						"value": "all",
+						"label": "All"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "boss_shuffle",
+			"label": "Boss Shuffle",
+			"description": "Shuffles bosses around to different locations.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "basic",
+						"label": "Basic"
+					},
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "chaos",
+						"label": "Chaos"
+					},
+					{
+						"value": "singularity",
+						"label": "Singularity"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "pot_shuffle",
+			"label": "Pot Shuffle",
+			"description": "Shuffle contents of pots within \"supertiles\" (item will still be nearby original placement).",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enemy_shuffle",
+			"label": "Enemy Shuffle",
+			"description": "Randomize every enemy spawn.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "killable_thieves",
+			"label": "Killable Thieves",
+			"description": "Makes Thieves killable.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bush_shuffle",
+			"label": "Bush Shuffle",
+			"description": "Randomize chance that a bush contains an enemy as well as which enemy may spawn.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shop_item_slots",
+			"label": "Shop Item Slots",
+			"description": "Number of slots in all shops available to have items from the multiworld",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 30,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_shop_inventories",
+			"label": "Randomize Shop Inventories",
+			"description": "Generate new default inventories for overworld/underworld shops, and unique shops; or each shop independently",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "randomize_by_shop_type",
+						"label": "Randomize By Shop Type"
+					},
+					{
+						"value": "randomize_each",
+						"label": "Randomize Each"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_shop_inventories",
+			"label": "Shuffle Shop Inventories",
+			"description": "Shuffle default inventories of the shops around",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "include_witch_hut",
+			"label": "Include Witch Hut",
+			"description": "Consider witch's hut like any other shop and shuffle/randomize it too",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_shop_prices",
+			"label": "Randomize Shop Prices",
+			"description": "Randomize the prices of the items in shop inventories",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "randomize_cost_types",
+			"label": "Randomize Cost Types",
+			"description": "Prices of the items in shop inventories may cost hearts, arrow, or bombs instead of rupees",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shop_price_modifier",
+			"label": "Shop Price Modifier",
+			"description": "Percentage modifier for shuffled item prices in shops",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 400,
+				"step": 1,
+				"default": 100
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_capacity_upgrades",
+			"label": "Shuffle Capacity Upgrades",
+			"description": "Shuffle capacity upgrades into the item pool (and allow them to traverse the multiworld).",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "on_combined",
+						"label": "On Combined"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bombless_start",
+			"label": "Bombless Start",
+			"description": "Start with a max of 0 bombs available, requiring Bomb Upgrade items in order to use bombs",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shuffle_prizes",
+			"label": "Shuffle Prizes",
+			"description": "Shuffle \"general\" prize packs, as in enemy, tree pull, dig etc.; \"bonk\" prizes; or both.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "general",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "general",
+						"label": "General"
+					},
+					{
+						"value": "bonk",
+						"label": "Bonk"
+					},
+					{
+						"value": "both",
+						"label": "Both"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "tile_shuffle",
+			"label": "Tile Shuffle",
+			"description": "Randomize flying tiles floor patterns.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "misery_mire_medallion",
+			"label": "Misery Mire Medallion",
+			"description": "Required medallion to open Misery Mire front entrance.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random",
+				"choices": [
+					{
+						"value": "ether",
+						"label": "Ether"
+					},
+					{
+						"value": "bombos",
+						"label": "Bombos"
+					},
+					{
+						"value": "quake",
+						"label": "Quake"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "turtle_rock_medallion",
+			"label": "Turtle Rock Medallion",
+			"description": "Required medallion to open Turtle Rock front entrance.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random",
+				"choices": [
+					{
+						"value": "ether",
+						"label": "Ether"
+					},
+					{
+						"value": "bombos",
+						"label": "Bombos"
+					},
+					{
+						"value": "quake",
+						"label": "Quake"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "glitch_boots",
+			"label": "Glitch Boots",
+			"description": "If this is enabled, the player will start with Pegasus Boots when playing with overworld glitches or harder logic.",
+			"category": "logic",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "beemizer_total_chance",
+			"label": "Beemizer Total Chance",
+			"description": "Percentage chance for each junk-fill item (rupees, bombs, arrows) to be replaced with either a bee swarm trap or a single bottle-filling bee.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "beemizer_trap_chance",
+			"label": "Beemizer Trap Chance",
+			"description": "Percentage chance for each replaced junk-fill item to be a bee swarm trap; all other replaced items are single bottle-filling bees.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 60
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "timer",
+			"label": "Timer",
+			"description": "None: No timer will be displayed.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "timed",
+						"label": "Timed"
+					},
+					{
+						"value": "timed_ohko",
+						"label": "Timed Ohko"
+					},
+					{
+						"value": "ohko",
+						"label": "Ohko"
+					},
+					{
+						"value": "timed_countdown",
+						"label": "Timed Countdown"
+					},
+					{
+						"value": "display",
+						"label": "Display"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "countdown_start_time",
+			"label": "Countdown Start Time",
+			"description": "For Timed OHKO and Timed Countdown timer modes, the amount of time in minutes to start with.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 480,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "red_clock_time",
+			"label": "Red Clock Time",
+			"description": "For all timer modes, the amount of time in minutes to gain or lose when picking up a red clock.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": -60,
+				"max": 60,
+				"step": 1,
+				"default": -2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "blue_clock_time",
+			"label": "Blue Clock Time",
+			"description": "For all timer modes, the amount of time in minutes to gain or lose when picking up a blue clock.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": -60,
+				"max": 60,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "green_clock_time",
+			"label": "Green Clock Time",
+			"description": "For all timer modes, the amount of time in minutes to gain or lose when picking up a green clock.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": -60,
+				"max": 60,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "allow_collect",
+			"label": "Allow Collect",
+			"description": "Allows for !collect / co-op to auto-open chests containing items for other players.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ow_palettes",
+			"label": "Ow Palettes",
+			"description": "The type of palette shuffle to use for the overworld",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "good",
+						"label": "Good"
+					},
+					{
+						"value": "blackout",
+						"label": "Blackout"
+					},
+					{
+						"value": "puke",
+						"label": "Puke"
+					},
+					{
+						"value": "classic",
+						"label": "Classic"
+					},
+					{
+						"value": "grayscale",
+						"label": "Grayscale"
+					},
+					{
+						"value": "negative",
+						"label": "Negative"
+					},
+					{
+						"value": "dizzy",
+						"label": "Dizzy"
+					},
+					{
+						"value": "sick",
+						"label": "Sick"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "uw_palettes",
+			"label": "Uw Palettes",
+			"description": "The type of palette shuffle to use for the underworld (caves, dungeons, etc.)",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "good",
+						"label": "Good"
+					},
+					{
+						"value": "blackout",
+						"label": "Blackout"
+					},
+					{
+						"value": "puke",
+						"label": "Puke"
+					},
+					{
+						"value": "classic",
+						"label": "Classic"
+					},
+					{
+						"value": "grayscale",
+						"label": "Grayscale"
+					},
+					{
+						"value": "negative",
+						"label": "Negative"
+					},
+					{
+						"value": "dizzy",
+						"label": "Dizzy"
+					},
+					{
+						"value": "sick",
+						"label": "Sick"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hud_palettes",
+			"label": "Hud Palettes",
+			"description": "The type of palette shuffle to use for the HUD",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "good",
+						"label": "Good"
+					},
+					{
+						"value": "blackout",
+						"label": "Blackout"
+					},
+					{
+						"value": "puke",
+						"label": "Puke"
+					},
+					{
+						"value": "classic",
+						"label": "Classic"
+					},
+					{
+						"value": "grayscale",
+						"label": "Grayscale"
+					},
+					{
+						"value": "negative",
+						"label": "Negative"
+					},
+					{
+						"value": "dizzy",
+						"label": "Dizzy"
+					},
+					{
+						"value": "sick",
+						"label": "Sick"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "sword_palettes",
+			"label": "Sword Palettes",
+			"description": "The type of palette shuffle to use for the sword",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "good",
+						"label": "Good"
+					},
+					{
+						"value": "blackout",
+						"label": "Blackout"
+					},
+					{
+						"value": "puke",
+						"label": "Puke"
+					},
+					{
+						"value": "classic",
+						"label": "Classic"
+					},
+					{
+						"value": "grayscale",
+						"label": "Grayscale"
+					},
+					{
+						"value": "negative",
+						"label": "Negative"
+					},
+					{
+						"value": "dizzy",
+						"label": "Dizzy"
+					},
+					{
+						"value": "sick",
+						"label": "Sick"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shield_palettes",
+			"label": "Shield Palettes",
+			"description": "The type of palette shuffle to use for the shield",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "good",
+						"label": "Good"
+					},
+					{
+						"value": "blackout",
+						"label": "Blackout"
+					},
+					{
+						"value": "puke",
+						"label": "Puke"
+					},
+					{
+						"value": "classic",
+						"label": "Classic"
+					},
+					{
+						"value": "grayscale",
+						"label": "Grayscale"
+					},
+					{
+						"value": "negative",
+						"label": "Negative"
+					},
+					{
+						"value": "dizzy",
+						"label": "Dizzy"
+					},
+					{
+						"value": "sick",
+						"label": "Sick"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "heartbeep",
+			"label": "Heartbeep",
+			"description": "How quickly the heart beep sound effect will play",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "half",
+						"label": "Half"
+					},
+					{
+						"value": "quarter",
+						"label": "Quarter"
+					},
+					{
+						"value": "off",
+						"label": "Off"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "heartcolor",
+			"label": "Heartcolor",
+			"description": "The color of hearts in the HUD",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "red",
+				"choices": [
+					{
+						"value": "red",
+						"label": "Red"
+					},
+					{
+						"value": "blue",
+						"label": "Blue"
+					},
+					{
+						"value": "green",
+						"label": "Green"
+					},
+					{
+						"value": "yellow",
+						"label": "Yellow"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "quickswap",
+			"label": "Quickswap",
+			"description": "Allows you to quickly swap items while playing with L/R",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "menuspeed",
+			"label": "Menuspeed",
+			"description": "How quickly the menu appears/disappears",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "instant",
+						"label": "Instant"
+					},
+					{
+						"value": "double",
+						"label": "Double"
+					},
+					{
+						"value": "triple",
+						"label": "Triple"
+					},
+					{
+						"value": "quadruple",
+						"label": "Quadruple"
+					},
+					{
+						"value": "half",
+						"label": "Half"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "music",
+			"label": "Music",
+			"description": "Whether background music will play in game",
+			"category": "cosmetic",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "reduceflashing",
+			"label": "Reduceflashing",
+			"description": "Reduces flashing for certain scenes such as the Misery Mire and Ganon's Tower opening cutscenes",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "triforcehud",
+			"label": "Triforcehud",
+			"description": "When and how the triforce hunt HUD should display",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "hide_goal",
+						"label": "Hide Goal"
+					},
+					{
+						"value": "hide_required",
+						"label": "Hide Required"
+					},
+					{
+						"value": "hide_both",
+						"label": "Hide Both"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

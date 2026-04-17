@@ -1,408 +1,408 @@
 {
-  "id": "sm64ex",
-  "name": "Super Mario 64",
-  "version": "0.3.5",
-  "description": "The first Super Mario game to feature 3D gameplay, it features freedom of movement within a large open world based on polygons, combined with traditional Mario gameplay, visual style, and characters.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "area_rando",
-      "label": "Area Rando",
-      "description": "Randomize Entrances",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "courses_only",
-            "label": "Courses Only"
-          },
-          {
-            "value": "courses_and_secrets_separate",
-            "label": "Courses And Secrets Separate"
-          },
-          {
-            "value": "courses_and_secrets",
-            "label": "Courses And Secrets"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "buddy_checks",
-      "label": "Buddy Checks",
-      "description": "Bob-omb Buddies are checks, Cannon Unlocks are items",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "exclamation_boxes",
-      "label": "Exclamation Boxes",
-      "description": "Include 1Up Exclamation Boxes during randomization.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progressive_keys",
-      "label": "Progressive Keys",
-      "description": "Keys will first grant you access to the Basement, then to the Second Floor",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_coin_stars",
-      "label": "Enable Coin Stars",
-      "description": "Determine logic for 100 Coin Stars.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_locked_paintings",
-      "label": "Enable Locked Paintings",
-      "description": "Determine how paintings are treated.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_move_rando",
-      "label": "Enable Move Rando",
-      "description": "Mario is unable to perform some actions until a corresponding item is picked up.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "move_rando_actions",
-      "label": "Move Rando Actions",
-      "description": "Which actions to randomize when Move Randomizer is enabled",
-      "category": "general",
-      "type": {
-        "kind": "multi_select",
-        "defaults": [
-          "Backflip",
-          "Climb",
-          "Dive",
-          "Ground Pound",
-          "Kick",
-          "Ledge Grab",
-          "Long Jump",
-          "Side Flip",
-          "Triple Jump",
-          "Wall Kick"
-        ],
-        "choices": [
-          {
-            "value": "Backflip",
-            "label": "Backflip"
-          },
-          {
-            "value": "Climb",
-            "label": "Climb"
-          },
-          {
-            "value": "Dive",
-            "label": "Dive"
-          },
-          {
-            "value": "Ground Pound",
-            "label": "Ground Pound"
-          },
-          {
-            "value": "Kick",
-            "label": "Kick"
-          },
-          {
-            "value": "Ledge Grab",
-            "label": "Ledge Grab"
-          },
-          {
-            "value": "Long Jump",
-            "label": "Long Jump"
-          },
-          {
-            "value": "Side Flip",
-            "label": "Side Flip"
-          },
-          {
-            "value": "Triple Jump",
-            "label": "Triple Jump"
-          },
-          {
-            "value": "Wall Kick",
-            "label": "Wall Kick"
-          }
-        ]
-      },
-      "advanced": true,
-      "dependencies": null
-    },
-    {
-      "id": "strict_cap_requirements",
-      "label": "Strict Cap Requirements",
-      "description": "If disabled, Stars that expect special caps may have to be acquired without the caps",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "strict_cannon_requirements",
-      "label": "Strict Cannon Requirements",
-      "description": "If disabled, Stars that expect cannons may have to be acquired without them.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "strict_move_requirements",
-      "label": "Strict Move Requirements",
-      "description": "If disabled, Stars that expect certain moves may have to be acquired without them.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "amount_of_stars",
-      "label": "Amount Of Stars",
-      "description": "How many stars exist.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 35,
-        "max": 120,
-        "step": 1,
-        "default": 120
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "first_bowser_star_door_cost",
-      "label": "First Bowser Star Door Cost",
-      "description": "What percent of the total stars are required at the Star Door to Bowser in the Dark World",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 40,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "basement_star_door_cost",
-      "label": "Basement Star Door Cost",
-      "description": "What percent of the total stars are required at the Star Door in the Basement",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 50,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "second_floor_star_door_cost",
-      "label": "Second Floor Star Door Cost",
-      "description": "What percent of the total stars are required to access the third floor",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 70,
-        "step": 1,
-        "default": 42
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mips1_cost",
-      "label": "Mips1 Cost",
-      "description": "What percent of the total stars are required to spawn MIPS the first time",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 35,
-        "step": 1,
-        "default": 12
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mips2_cost",
-      "label": "Mips2 Cost",
-      "description": "What percent of the total stars are required to spawn MIPS the second time.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 70,
-        "step": 1,
-        "default": 42
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "stars_to_finish",
-      "label": "Stars To Finish",
-      "description": "What percent of the total stars are required at the infinite stairs",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 90,
-        "step": 1,
-        "default": 58
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "completion_type",
-      "label": "Completion Type",
-      "description": "Set goal for game completion",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "last_bowser_stage",
-        "choices": [
-          {
-            "value": "last_bowser_stage",
-            "label": "Last Bowser Stage"
-          },
-          {
-            "value": "all_bowser_stages",
-            "label": "All Bowser Stages"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "sm64ex",
+	"name": "Super Mario 64",
+	"version": "0.3.5",
+	"description": "The first Super Mario game to feature 3D gameplay, it features freedom of movement within a large open world based on polygons, combined with traditional Mario gameplay, visual style, and characters.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "area_rando",
+			"label": "Area Rando",
+			"description": "Randomize Entrances",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "courses_only",
+						"label": "Courses Only"
+					},
+					{
+						"value": "courses_and_secrets_separate",
+						"label": "Courses And Secrets Separate"
+					},
+					{
+						"value": "courses_and_secrets",
+						"label": "Courses And Secrets"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "buddy_checks",
+			"label": "Buddy Checks",
+			"description": "Bob-omb Buddies are checks, Cannon Unlocks are items",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "exclamation_boxes",
+			"label": "Exclamation Boxes",
+			"description": "Include 1Up Exclamation Boxes during randomization.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progressive_keys",
+			"label": "Progressive Keys",
+			"description": "Keys will first grant you access to the Basement, then to the Second Floor",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_coin_stars",
+			"label": "Enable Coin Stars",
+			"description": "Determine logic for 100 Coin Stars.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_locked_paintings",
+			"label": "Enable Locked Paintings",
+			"description": "Determine how paintings are treated.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_move_rando",
+			"label": "Enable Move Rando",
+			"description": "Mario is unable to perform some actions until a corresponding item is picked up.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "move_rando_actions",
+			"label": "Move Rando Actions",
+			"description": "Which actions to randomize when Move Randomizer is enabled",
+			"category": "general",
+			"type": {
+				"kind": "multi_select",
+				"defaults": [
+					"Backflip",
+					"Climb",
+					"Dive",
+					"Ground Pound",
+					"Kick",
+					"Ledge Grab",
+					"Long Jump",
+					"Side Flip",
+					"Triple Jump",
+					"Wall Kick"
+				],
+				"choices": [
+					{
+						"value": "Backflip",
+						"label": "Backflip"
+					},
+					{
+						"value": "Climb",
+						"label": "Climb"
+					},
+					{
+						"value": "Dive",
+						"label": "Dive"
+					},
+					{
+						"value": "Ground Pound",
+						"label": "Ground Pound"
+					},
+					{
+						"value": "Kick",
+						"label": "Kick"
+					},
+					{
+						"value": "Ledge Grab",
+						"label": "Ledge Grab"
+					},
+					{
+						"value": "Long Jump",
+						"label": "Long Jump"
+					},
+					{
+						"value": "Side Flip",
+						"label": "Side Flip"
+					},
+					{
+						"value": "Triple Jump",
+						"label": "Triple Jump"
+					},
+					{
+						"value": "Wall Kick",
+						"label": "Wall Kick"
+					}
+				]
+			},
+			"advanced": true,
+			"dependencies": null
+		},
+		{
+			"id": "strict_cap_requirements",
+			"label": "Strict Cap Requirements",
+			"description": "If disabled, Stars that expect special caps may have to be acquired without the caps",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "strict_cannon_requirements",
+			"label": "Strict Cannon Requirements",
+			"description": "If disabled, Stars that expect cannons may have to be acquired without them.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "strict_move_requirements",
+			"label": "Strict Move Requirements",
+			"description": "If disabled, Stars that expect certain moves may have to be acquired without them.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "amount_of_stars",
+			"label": "Amount Of Stars",
+			"description": "How many stars exist.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 35,
+				"max": 120,
+				"step": 1,
+				"default": 120
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "first_bowser_star_door_cost",
+			"label": "First Bowser Star Door Cost",
+			"description": "What percent of the total stars are required at the Star Door to Bowser in the Dark World",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 40,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "basement_star_door_cost",
+			"label": "Basement Star Door Cost",
+			"description": "What percent of the total stars are required at the Star Door in the Basement",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 50,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "second_floor_star_door_cost",
+			"label": "Second Floor Star Door Cost",
+			"description": "What percent of the total stars are required to access the third floor",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 70,
+				"step": 1,
+				"default": 42
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mips1_cost",
+			"label": "Mips1 Cost",
+			"description": "What percent of the total stars are required to spawn MIPS the first time",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 35,
+				"step": 1,
+				"default": 12
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mips2_cost",
+			"label": "Mips2 Cost",
+			"description": "What percent of the total stars are required to spawn MIPS the second time.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 70,
+				"step": 1,
+				"default": 42
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "stars_to_finish",
+			"label": "Stars To Finish",
+			"description": "What percent of the total stars are required at the infinite stairs",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 90,
+				"step": 1,
+				"default": 58
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "completion_type",
+			"label": "Completion Type",
+			"description": "Set goal for game completion",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "last_bowser_stage",
+				"choices": [
+					{
+						"value": "last_bowser_stage",
+						"label": "Last Bowser Stage"
+					},
+					{
+						"value": "all_bowser_stages",
+						"label": "All Bowser Stages"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -1,1018 +1,1018 @@
 {
-  "id": "cv64",
-  "name": "Castlevania 64",
-  "version": "0.1.6",
-  "description": "Castlevania for the Nintendo 64 is the first 3D game in the Castlevania franchise.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "items",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          },
-          {
-            "value": "items",
-            "label": "Items"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "character_stages",
-      "label": "Character Stages",
-      "description": "Whether to include Reinhardt-only stages, Carrie-only stages, or both with or without branching paths at the end of Villa and Castle Center.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "both",
-        "choices": [
-          {
-            "value": "both",
-            "label": "Both"
-          },
-          {
-            "value": "branchless_both",
-            "label": "Branchless Both"
-          },
-          {
-            "value": "reinhardt_only",
-            "label": "Reinhardt Only"
-          },
-          {
-            "value": "carrie_only",
-            "label": "Carrie Only"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "stage_shuffle",
-      "label": "Stage Shuffle",
-      "description": "Shuffles which stages appear in which stage slots.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "starting_stage",
-      "label": "Starting Stage",
-      "description": "Which stage to start at if Stage Shuffle is turned on.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "random",
-        "choices": [
-          {
-            "value": "forest_of_silence",
-            "label": "Forest Of Silence"
-          },
-          {
-            "value": "castle_wall",
-            "label": "Castle Wall"
-          },
-          {
-            "value": "villa",
-            "label": "Villa"
-          },
-          {
-            "value": "tunnel",
-            "label": "Tunnel"
-          },
-          {
-            "value": "underground_waterway",
-            "label": "Underground Waterway"
-          },
-          {
-            "value": "castle_center",
-            "label": "Castle Center"
-          },
-          {
-            "value": "duel_tower",
-            "label": "Duel Tower"
-          },
-          {
-            "value": "tower_of_execution",
-            "label": "Tower Of Execution"
-          },
-          {
-            "value": "tower_of_science",
-            "label": "Tower Of Science"
-          },
-          {
-            "value": "tower_of_sorcery",
-            "label": "Tower Of Sorcery"
-          },
-          {
-            "value": "room_of_clocks",
-            "label": "Room Of Clocks"
-          },
-          {
-            "value": "clock_tower",
-            "label": "Clock Tower"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "warp_order",
-      "label": "Warp Order",
-      "description": "Arranges the warps in the warp menu in whichever stage order chosen, thereby changing the order they are unlocked in.",
-      "category": "entrances",
-      "type": {
-        "kind": "select",
-        "default": "seed_stage_order",
-        "choices": [
-          {
-            "value": "seed_stage_order",
-            "label": "Seed Stage Order"
-          },
-          {
-            "value": "vanilla_stage_order",
-            "label": "Vanilla Stage Order"
-          },
-          {
-            "value": "randomized_order",
-            "label": "Randomized Order"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "sub_weapon_shuffle",
-      "label": "Sub Weapon Shuffle",
-      "description": "Shuffles all sub-weapons in the game within each other in their own pool or in the main item pool.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "own_pool",
-            "label": "Own Pool"
-          },
-          {
-            "value": "anywhere",
-            "label": "Anywhere"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "spare_keys",
-      "label": "Spare Keys",
-      "description": "Puts an additional copy of every non-Special key item in the pool for every key item that there is.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "chance",
-            "label": "Chance"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hard_item_pool",
-      "label": "Hard Item Pool",
-      "description": "Replaces some items in the item pool with less valuable ones, to make the item pool sort of resemble Hard Mode in the PAL version.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "special1s_per_warp",
-      "label": "Special1S Per Warp",
-      "description": "Sets how many Special1 jewels are needed per warp menu option unlock.",
-      "category": "entrances",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 10,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "total_special1s",
-      "label": "Total Special1S",
-      "description": "Sets how many Speical1 jewels are in the pool in total.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 7,
-        "max": 70,
-        "step": 1,
-        "default": 7
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "draculas_condition",
-      "label": "Draculas Condition",
-      "description": "Sets the requirement for unlocking and opening the door to Dracula's chamber.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "crystal",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "crystal",
-            "label": "Crystal"
-          },
-          {
-            "value": "bosses",
-            "label": "Bosses"
-          },
-          {
-            "value": "specials",
-            "label": "Specials"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "percent_special2s_required",
-      "label": "Percent Special2S Required",
-      "description": "Percentage of Special2s required to enter Dracula's chamber when Dracula's Condition is Special2s.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "default": 80
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "total_special2s",
-      "label": "Total Special2S",
-      "description": "How many Speical2 jewels are in the pool in total when Dracula's Condition is Special2s.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 70,
-        "step": 1,
-        "default": 25
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bosses_required",
-      "label": "Bosses Required",
-      "description": "How many bosses need to be defeated to enter Dracula's chamber when Dracula's Condition is set to Bosses.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 16,
-        "step": 1,
-        "default": 12
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "carrie_logic",
-      "label": "Carrie Logic",
-      "description": "Adds the 2 checks inside Underground Waterway's crawlspace to the pool.",
-      "category": "logic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "hard_logic",
-      "label": "Hard Logic",
-      "description": "Properly considers sequence break tricks in logic (i.e.",
-      "category": "logic",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "multi_hit_breakables",
-      "label": "Multi Hit Breakables",
-      "description": "Adds the items that drop from the objects that break in three hits to the pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "empty_breakables",
-      "label": "Empty Breakables",
-      "description": "Adds 9 check locations in the form of breakables that normally have nothing (all empty Forest coffins, etc.) and some additional Red Jewels and/or moneybags into the item pool to compensate.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lizard_locker_items",
-      "label": "Lizard Locker Items",
-      "description": "Adds the 6 items inside Castle Center 2F's Lizard-man generators to the pool.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shopsanity",
-      "label": "Shopsanity",
-      "description": "Adds 7 one-time purchases from Renon's shop into the location pool.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shop_prices",
-      "label": "Shop Prices",
-      "description": "Randomizes the amount of gold each item costs in Renon's shop.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "minimum_gold_price",
-      "label": "Minimum Gold Price",
-      "description": "The lowest amount of gold an item can cost in Renon's shop, divided by 100.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 50,
-        "step": 1,
-        "default": 2
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "maximum_gold_price",
-      "label": "Maximum Gold Price",
-      "description": "The highest amount of gold an item can cost in Renon's shop, divided by 100.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 1,
-        "max": 50,
-        "step": 1,
-        "default": 30
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "post_behemoth_boss",
-      "label": "Post Behemoth Boss",
-      "description": "Sets which boss is fought in the vampire triplets' room in Castle Center by which characters after defeating Behemoth.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "inverted",
-            "label": "Inverted"
-          },
-          {
-            "value": "always_rosa",
-            "label": "Always Rosa"
-          },
-          {
-            "value": "always_camilla",
-            "label": "Always Camilla"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "room_of_clocks_boss",
-      "label": "Room Of Clocks Boss",
-      "description": "Sets which boss is fought at Room of Clocks by which characters.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "inverted",
-            "label": "Inverted"
-          },
-          {
-            "value": "always_death",
-            "label": "Always Death"
-          },
-          {
-            "value": "always_actrise",
-            "label": "Always Actrise"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "renon_fight_condition",
-      "label": "Renon Fight Condition",
-      "description": "Sets the condition on which the Renon fight will trigger.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "spend_30k",
-        "choices": [
-          {
-            "value": "never",
-            "label": "Never"
-          },
-          {
-            "value": "spend_30k",
-            "label": "Spend 30K"
-          },
-          {
-            "value": "always",
-            "label": "Always"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "vincent_fight_condition",
-      "label": "Vincent Fight Condition",
-      "description": "Sets the condition on which the vampire Vincent fight will trigger.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "wait_16_days",
-        "choices": [
-          {
-            "value": "never",
-            "label": "Never"
-          },
-          {
-            "value": "wait_16_days",
-            "label": "Wait 16 Days"
-          },
-          {
-            "value": "always",
-            "label": "Always"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "bad_ending_condition",
-      "label": "Bad Ending Condition",
-      "description": "Sets the condition on which the currently-controlled character's Bad Ending will trigger.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "kill_vincent",
-        "choices": [
-          {
-            "value": "never",
-            "label": "Never"
-          },
-          {
-            "value": "kill_vincent",
-            "label": "Kill Vincent"
-          },
-          {
-            "value": "always",
-            "label": "Always"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "increase_item_limit",
-      "label": "Increase Item Limit",
-      "description": "Increases the holding limit of usable items from 10 to 99 of each item.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "nerf_healing_items",
-      "label": "Nerf Healing Items",
-      "description": "Decreases the amount of health healed by Roast Chickens to 25%, Roast Beefs to 50%, and Healing Kits to 80%.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "loading_zone_heals",
-      "label": "Loading Zone Heals",
-      "description": "Whether end-of-level loading zones restore health and cure status aliments or not.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "invisible_items",
-      "label": "Invisible Items",
-      "description": "Sets which items are visible in their locations and which are invisible until picked up.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "vanilla",
-        "choices": [
-          {
-            "value": "vanilla",
-            "label": "Vanilla"
-          },
-          {
-            "value": "reveal_all",
-            "label": "Reveal All"
-          },
-          {
-            "value": "hide_all",
-            "label": "Hide All"
-          },
-          {
-            "value": "chance",
-            "label": "Chance"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "drop_previous_sub_weapon",
-      "label": "Drop Previous Sub Weapon",
-      "description": "When receiving a sub-weapon, the one you had before will drop behind you, so it can be taken back if desired.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "permanent_powerups",
-      "label": "Permanent Powerups",
-      "description": "Replaces PowerUps with PermaUps, which upgrade your B weapon level permanently and will stay even after dying and/or continuing.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ice_trap_percentage",
-      "label": "Ice Trap Percentage",
-      "description": "Replaces a percentage of junk items with Ice Traps.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "ice_trap_appearance",
-      "label": "Ice Trap Appearance",
-      "description": "What items Ice Traps can possibly be disguised as.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "major_only",
-        "choices": [
-          {
-            "value": "major_only",
-            "label": "Major Only"
-          },
-          {
-            "value": "junk_only",
-            "label": "Junk Only"
-          },
-          {
-            "value": "anything",
-            "label": "Anything"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "disable_time_restrictions",
-      "label": "Disable Time Restrictions",
-      "description": "Disables the restriction on every event and door that requires the current time to be within a specific range, so they can be triggered at any time.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_gondolas",
-      "label": "Skip Gondolas",
-      "description": "Makes jumping on and activating a gondola in Tunnel instantly teleport you to the other station, thereby skipping the entire three-minute ride.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "skip_waterway_blocks",
-      "label": "Skip Waterway Blocks",
-      "description": "Opens the door to the third switch in Underground Waterway from the start so that the jumping across floating brick platforms won't have to be done.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "countdown",
-      "label": "Countdown",
-      "description": "Displays, near the HUD clock and below the health bar, the number of unobtained progression-marked items or the total check locations remaining in the stage you are currently in.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "none",
-        "choices": [
-          {
-            "value": "none",
-            "label": "None"
-          },
-          {
-            "value": "majors",
-            "label": "Majors"
-          },
-          {
-            "value": "all_locations",
-            "label": "All Locations"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "big_toss",
-      "label": "Big Toss",
-      "description": "Makes every non-immobilizing damage source launch you as if you got hit by Behemoth's charge.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "panther_dash",
-      "label": "Panther Dash",
-      "description": "Hold C-right at any time to sprint way faster.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "jumpless",
-            "label": "Jumpless"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "increase_shimmy_speed",
-      "label": "Increase Shimmy Speed",
-      "description": "Increases the speed at which characters shimmy left and right while hanging on ledges.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "window_color_r",
-      "label": "Window Color R",
-      "description": "The red value for the background color of the text windows during gameplay.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 15,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "window_color_g",
-      "label": "Window Color G",
-      "description": "The green value for the background color of the text windows during gameplay.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 15,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "window_color_b",
-      "label": "Window Color B",
-      "description": "The blue value for the background color of the text windows during gameplay.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 15,
-        "step": 1,
-        "default": 15
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "window_color_a",
-      "label": "Window Color A",
-      "description": "The alpha value for the background color of the text windows during gameplay.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 15,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "background_music",
-      "label": "Background Music",
-      "description": "Randomizes or disables the music heard throughout the game.",
-      "category": "cosmetic",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "disabled",
-            "label": "Disabled"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "map_lighting",
-      "label": "Map Lighting",
-      "description": "Randomizes the lighting color RGB values on every map during every time of day to be literally anything.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "normal",
-        "choices": [
-          {
-            "value": "normal",
-            "label": "Normal"
-          },
-          {
-            "value": "randomized",
-            "label": "Randomized"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "fall_guard",
-      "label": "Fall Guard",
-      "description": "Removes fall damage from landing too hard.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "cinematic_experience",
-      "label": "Cinematic Experience",
-      "description": "Enables an unused film reel effect on every cutscene in the game.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "select",
-        "default": "off",
-        "choices": [
-          {
-            "value": "off",
-            "label": "Off"
-          },
-          {
-            "value": "on",
-            "label": "On"
-          },
-          {
-            "value": "explosive",
-            "label": "Explosive"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "cv64",
+	"name": "Castlevania 64",
+	"version": "0.1.6",
+	"description": "Castlevania for the Nintendo 64 is the first 3D game in the Castlevania franchise.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "items",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					},
+					{
+						"value": "items",
+						"label": "Items"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "character_stages",
+			"label": "Character Stages",
+			"description": "Whether to include Reinhardt-only stages, Carrie-only stages, or both with or without branching paths at the end of Villa and Castle Center.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "both",
+				"choices": [
+					{
+						"value": "both",
+						"label": "Both"
+					},
+					{
+						"value": "branchless_both",
+						"label": "Branchless Both"
+					},
+					{
+						"value": "reinhardt_only",
+						"label": "Reinhardt Only"
+					},
+					{
+						"value": "carrie_only",
+						"label": "Carrie Only"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "stage_shuffle",
+			"label": "Stage Shuffle",
+			"description": "Shuffles which stages appear in which stage slots.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "starting_stage",
+			"label": "Starting Stage",
+			"description": "Which stage to start at if Stage Shuffle is turned on.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "random",
+				"choices": [
+					{
+						"value": "forest_of_silence",
+						"label": "Forest Of Silence"
+					},
+					{
+						"value": "castle_wall",
+						"label": "Castle Wall"
+					},
+					{
+						"value": "villa",
+						"label": "Villa"
+					},
+					{
+						"value": "tunnel",
+						"label": "Tunnel"
+					},
+					{
+						"value": "underground_waterway",
+						"label": "Underground Waterway"
+					},
+					{
+						"value": "castle_center",
+						"label": "Castle Center"
+					},
+					{
+						"value": "duel_tower",
+						"label": "Duel Tower"
+					},
+					{
+						"value": "tower_of_execution",
+						"label": "Tower Of Execution"
+					},
+					{
+						"value": "tower_of_science",
+						"label": "Tower Of Science"
+					},
+					{
+						"value": "tower_of_sorcery",
+						"label": "Tower Of Sorcery"
+					},
+					{
+						"value": "room_of_clocks",
+						"label": "Room Of Clocks"
+					},
+					{
+						"value": "clock_tower",
+						"label": "Clock Tower"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "warp_order",
+			"label": "Warp Order",
+			"description": "Arranges the warps in the warp menu in whichever stage order chosen, thereby changing the order they are unlocked in.",
+			"category": "entrances",
+			"type": {
+				"kind": "select",
+				"default": "seed_stage_order",
+				"choices": [
+					{
+						"value": "seed_stage_order",
+						"label": "Seed Stage Order"
+					},
+					{
+						"value": "vanilla_stage_order",
+						"label": "Vanilla Stage Order"
+					},
+					{
+						"value": "randomized_order",
+						"label": "Randomized Order"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "sub_weapon_shuffle",
+			"label": "Sub Weapon Shuffle",
+			"description": "Shuffles all sub-weapons in the game within each other in their own pool or in the main item pool.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "own_pool",
+						"label": "Own Pool"
+					},
+					{
+						"value": "anywhere",
+						"label": "Anywhere"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "spare_keys",
+			"label": "Spare Keys",
+			"description": "Puts an additional copy of every non-Special key item in the pool for every key item that there is.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "chance",
+						"label": "Chance"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hard_item_pool",
+			"label": "Hard Item Pool",
+			"description": "Replaces some items in the item pool with less valuable ones, to make the item pool sort of resemble Hard Mode in the PAL version.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "special1s_per_warp",
+			"label": "Special1S Per Warp",
+			"description": "Sets how many Special1 jewels are needed per warp menu option unlock.",
+			"category": "entrances",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 10,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "total_special1s",
+			"label": "Total Special1S",
+			"description": "Sets how many Speical1 jewels are in the pool in total.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 7,
+				"max": 70,
+				"step": 1,
+				"default": 7
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "draculas_condition",
+			"label": "Draculas Condition",
+			"description": "Sets the requirement for unlocking and opening the door to Dracula's chamber.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "crystal",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "crystal",
+						"label": "Crystal"
+					},
+					{
+						"value": "bosses",
+						"label": "Bosses"
+					},
+					{
+						"value": "specials",
+						"label": "Specials"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "percent_special2s_required",
+			"label": "Percent Special2S Required",
+			"description": "Percentage of Special2s required to enter Dracula's chamber when Dracula's Condition is Special2s.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 100,
+				"step": 1,
+				"default": 80
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "total_special2s",
+			"label": "Total Special2S",
+			"description": "How many Speical2 jewels are in the pool in total when Dracula's Condition is Special2s.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 70,
+				"step": 1,
+				"default": 25
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bosses_required",
+			"label": "Bosses Required",
+			"description": "How many bosses need to be defeated to enter Dracula's chamber when Dracula's Condition is set to Bosses.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 16,
+				"step": 1,
+				"default": 12
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "carrie_logic",
+			"label": "Carrie Logic",
+			"description": "Adds the 2 checks inside Underground Waterway's crawlspace to the pool.",
+			"category": "logic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "hard_logic",
+			"label": "Hard Logic",
+			"description": "Properly considers sequence break tricks in logic (i.e.",
+			"category": "logic",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "multi_hit_breakables",
+			"label": "Multi Hit Breakables",
+			"description": "Adds the items that drop from the objects that break in three hits to the pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "empty_breakables",
+			"label": "Empty Breakables",
+			"description": "Adds 9 check locations in the form of breakables that normally have nothing (all empty Forest coffins, etc.) and some additional Red Jewels and/or moneybags into the item pool to compensate.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lizard_locker_items",
+			"label": "Lizard Locker Items",
+			"description": "Adds the 6 items inside Castle Center 2F's Lizard-man generators to the pool.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shopsanity",
+			"label": "Shopsanity",
+			"description": "Adds 7 one-time purchases from Renon's shop into the location pool.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shop_prices",
+			"label": "Shop Prices",
+			"description": "Randomizes the amount of gold each item costs in Renon's shop.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "minimum_gold_price",
+			"label": "Minimum Gold Price",
+			"description": "The lowest amount of gold an item can cost in Renon's shop, divided by 100.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 50,
+				"step": 1,
+				"default": 2
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "maximum_gold_price",
+			"label": "Maximum Gold Price",
+			"description": "The highest amount of gold an item can cost in Renon's shop, divided by 100.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 1,
+				"max": 50,
+				"step": 1,
+				"default": 30
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "post_behemoth_boss",
+			"label": "Post Behemoth Boss",
+			"description": "Sets which boss is fought in the vampire triplets' room in Castle Center by which characters after defeating Behemoth.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "inverted",
+						"label": "Inverted"
+					},
+					{
+						"value": "always_rosa",
+						"label": "Always Rosa"
+					},
+					{
+						"value": "always_camilla",
+						"label": "Always Camilla"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "room_of_clocks_boss",
+			"label": "Room Of Clocks Boss",
+			"description": "Sets which boss is fought at Room of Clocks by which characters.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "inverted",
+						"label": "Inverted"
+					},
+					{
+						"value": "always_death",
+						"label": "Always Death"
+					},
+					{
+						"value": "always_actrise",
+						"label": "Always Actrise"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "renon_fight_condition",
+			"label": "Renon Fight Condition",
+			"description": "Sets the condition on which the Renon fight will trigger.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "spend_30k",
+				"choices": [
+					{
+						"value": "never",
+						"label": "Never"
+					},
+					{
+						"value": "spend_30k",
+						"label": "Spend 30K"
+					},
+					{
+						"value": "always",
+						"label": "Always"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "vincent_fight_condition",
+			"label": "Vincent Fight Condition",
+			"description": "Sets the condition on which the vampire Vincent fight will trigger.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "wait_16_days",
+				"choices": [
+					{
+						"value": "never",
+						"label": "Never"
+					},
+					{
+						"value": "wait_16_days",
+						"label": "Wait 16 Days"
+					},
+					{
+						"value": "always",
+						"label": "Always"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "bad_ending_condition",
+			"label": "Bad Ending Condition",
+			"description": "Sets the condition on which the currently-controlled character's Bad Ending will trigger.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "kill_vincent",
+				"choices": [
+					{
+						"value": "never",
+						"label": "Never"
+					},
+					{
+						"value": "kill_vincent",
+						"label": "Kill Vincent"
+					},
+					{
+						"value": "always",
+						"label": "Always"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "increase_item_limit",
+			"label": "Increase Item Limit",
+			"description": "Increases the holding limit of usable items from 10 to 99 of each item.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "nerf_healing_items",
+			"label": "Nerf Healing Items",
+			"description": "Decreases the amount of health healed by Roast Chickens to 25%, Roast Beefs to 50%, and Healing Kits to 80%.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "loading_zone_heals",
+			"label": "Loading Zone Heals",
+			"description": "Whether end-of-level loading zones restore health and cure status aliments or not.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "invisible_items",
+			"label": "Invisible Items",
+			"description": "Sets which items are visible in their locations and which are invisible until picked up.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "vanilla",
+				"choices": [
+					{
+						"value": "vanilla",
+						"label": "Vanilla"
+					},
+					{
+						"value": "reveal_all",
+						"label": "Reveal All"
+					},
+					{
+						"value": "hide_all",
+						"label": "Hide All"
+					},
+					{
+						"value": "chance",
+						"label": "Chance"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "drop_previous_sub_weapon",
+			"label": "Drop Previous Sub Weapon",
+			"description": "When receiving a sub-weapon, the one you had before will drop behind you, so it can be taken back if desired.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "permanent_powerups",
+			"label": "Permanent Powerups",
+			"description": "Replaces PowerUps with PermaUps, which upgrade your B weapon level permanently and will stay even after dying and/or continuing.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ice_trap_percentage",
+			"label": "Ice Trap Percentage",
+			"description": "Replaces a percentage of junk items with Ice Traps.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "ice_trap_appearance",
+			"label": "Ice Trap Appearance",
+			"description": "What items Ice Traps can possibly be disguised as.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "major_only",
+				"choices": [
+					{
+						"value": "major_only",
+						"label": "Major Only"
+					},
+					{
+						"value": "junk_only",
+						"label": "Junk Only"
+					},
+					{
+						"value": "anything",
+						"label": "Anything"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "disable_time_restrictions",
+			"label": "Disable Time Restrictions",
+			"description": "Disables the restriction on every event and door that requires the current time to be within a specific range, so they can be triggered at any time.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_gondolas",
+			"label": "Skip Gondolas",
+			"description": "Makes jumping on and activating a gondola in Tunnel instantly teleport you to the other station, thereby skipping the entire three-minute ride.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "skip_waterway_blocks",
+			"label": "Skip Waterway Blocks",
+			"description": "Opens the door to the third switch in Underground Waterway from the start so that the jumping across floating brick platforms won't have to be done.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "countdown",
+			"label": "Countdown",
+			"description": "Displays, near the HUD clock and below the health bar, the number of unobtained progression-marked items or the total check locations remaining in the stage you are currently in.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "none",
+				"choices": [
+					{
+						"value": "none",
+						"label": "None"
+					},
+					{
+						"value": "majors",
+						"label": "Majors"
+					},
+					{
+						"value": "all_locations",
+						"label": "All Locations"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "big_toss",
+			"label": "Big Toss",
+			"description": "Makes every non-immobilizing damage source launch you as if you got hit by Behemoth's charge.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "panther_dash",
+			"label": "Panther Dash",
+			"description": "Hold C-right at any time to sprint way faster.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "jumpless",
+						"label": "Jumpless"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "increase_shimmy_speed",
+			"label": "Increase Shimmy Speed",
+			"description": "Increases the speed at which characters shimmy left and right while hanging on ledges.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "window_color_r",
+			"label": "Window Color R",
+			"description": "The red value for the background color of the text windows during gameplay.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 15,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "window_color_g",
+			"label": "Window Color G",
+			"description": "The green value for the background color of the text windows during gameplay.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 15,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "window_color_b",
+			"label": "Window Color B",
+			"description": "The blue value for the background color of the text windows during gameplay.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 15,
+				"step": 1,
+				"default": 15
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "window_color_a",
+			"label": "Window Color A",
+			"description": "The alpha value for the background color of the text windows during gameplay.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 15,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "background_music",
+			"label": "Background Music",
+			"description": "Randomizes or disables the music heard throughout the game.",
+			"category": "cosmetic",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "disabled",
+						"label": "Disabled"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "map_lighting",
+			"label": "Map Lighting",
+			"description": "Randomizes the lighting color RGB values on every map during every time of day to be literally anything.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "normal",
+				"choices": [
+					{
+						"value": "normal",
+						"label": "Normal"
+					},
+					{
+						"value": "randomized",
+						"label": "Randomized"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "fall_guard",
+			"label": "Fall Guard",
+			"description": "Removes fall damage from landing too hard.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "cinematic_experience",
+			"label": "Cinematic Experience",
+			"description": "Enables an unused film reel effect on every cutscene in the game.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "select",
+				"default": "off",
+				"choices": [
+					{
+						"value": "off",
+						"label": "Off"
+					},
+					{
+						"value": "on",
+						"label": "On"
+					},
+					{
+						"value": "explosive",
+						"label": "Explosive"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }

@@ -21,64 +21,64 @@ Triggers may be defined in either the root or in the relevant game sections. Gen
 bottom of the YAML for clear organization.
 
 Each trigger consists of four parts:
+
 - `option_category` specifies the section which the triggering option is defined in.
-    - Example: `A Link to the Past`
-    - This is the category the option is located in. If the option you're triggering off of is in root then you
-      would use `null`, otherwise this is the game for which you want this option trigger to activate.
+  - Example: `A Link to the Past`
+  - This is the category the option is located in. If the option you're triggering off of is in root then you
+    would use `null`, otherwise this is the game for which you want this option trigger to activate.
 - `option_name` specifies the name of the triggering option.
-    - Example: `shop_item_slots`
-    - This can be any option from any category defined in the YAML file in either root or a game section.
+  - Example: `shop_item_slots`
+  - This can be any option from any category defined in the YAML file in either root or a game section.
 - `option_result` specifies the value of the option that activates this trigger.
-    - Example: `15`
-    - Each trigger must be used for exactly one option result. If you would like the same thing to occur with multiple
-      results, you would need multiple triggers for this.
+  - Example: `15`
+  - Each trigger must be used for exactly one option result. If you would like the same thing to occur with multiple
+    results, you would need multiple triggers for this.
 - `options` is where you define what will happen when the trigger activates. This can be something as simple as ensuring
   another option also gets selected or placing an item in a certain location. It is possible to have multiple things
   happen in this section.
-    - Example:
+  - Example:
   ```yaml
   A Link to the Past:
-    start_inventory: 
+    start_inventory:
       Rupees (300): 2
   ```
 
 The general format is:
 
-  ```yaml
-  category:
-    option to change:
-      desired result
-  ```
+```yaml
+category:
+  option to change: desired result
+```
 
 ### Examples
 
 The above examples all together will end up looking like this:
 
-  ```yaml
-  triggers:
-    - option_category: A Link to the Past
-      option_name: shop_item_slots
-      option_result: 15
-      options:
-        A Link to the Past:
-          start_inventory:
-            Rupees(300): 2
-  ```
+```yaml
+triggers:
+  - option_category: A Link to the Past
+    option_name: shop_item_slots
+    option_result: 15
+    options:
+      A Link to the Past:
+        start_inventory:
+          Rupees(300): 2
+```
 
 For this example, if the generator happens to roll 15 shuffled in shop item slots for your game, you'll be granted 600
 rupees at the beginning. Triggers can also be used to change other options.
 
 For example:
 
-  ```yaml
-  triggers:
-    - option_category: Timespinner
-      option_name: SpecificKeycards
-      option_result: true
-      options:
-        Timespinner:
-          Inverted: true
-  ```
+```yaml
+triggers:
+  - option_category: Timespinner
+    option_name: SpecificKeycards
+    option_result: true
+    options:
+      Timespinner:
+        Inverted: true
+```
 
 In this example, if your world happens to roll SpecificKeycards, then your game will also start in inverted.
 
@@ -88,35 +88,35 @@ AND setting 2".
 
 For example:
 
-  ```yaml
-  triggers:
-    - option_category: Secret of Evermore
-      option_name: doggomizer
-      option_result: pupdunk
-      options:
-        Secret of Evermore:
-          difficulty:
-            normal: 50
-            pupdunk_hard: 25
-            pupdunk_mystery: 25
-          exp_modifier:
-            150: 50
-            200: 50
-    - option_category: Secret of Evermore
-      option_name: difficulty
-      option_result: pupdunk_hard
-      options:
-        Secret of Evermore:
-          fix_wings_glitch: false
-          difficulty: hard
-    - option_category: Secret of Evermore
-      option_name: difficulty
-      option_result: pupdunk_mystery
-      options:
-        Secret of Evermore:
-          fix_wings_glitch: false
-          difficulty: mystery
-  ```
+```yaml
+triggers:
+  - option_category: Secret of Evermore
+    option_name: doggomizer
+    option_result: pupdunk
+    options:
+      Secret of Evermore:
+        difficulty:
+          normal: 50
+          pupdunk_hard: 25
+          pupdunk_mystery: 25
+        exp_modifier:
+          150: 50
+          200: 50
+  - option_category: Secret of Evermore
+    option_name: difficulty
+    option_result: pupdunk_hard
+    options:
+      Secret of Evermore:
+        fix_wings_glitch: false
+        difficulty: hard
+  - option_category: Secret of Evermore
+    option_name: difficulty
+    option_result: pupdunk_mystery
+    options:
+      Secret of Evermore:
+        fix_wings_glitch: false
+        difficulty: mystery
+```
 
 In this example (thanks to @Black-Sliver), if the `pupdunk` option is rolled, then the difficulty values will be rolled
 again using the new options `normal`, `pupdunk_hard`, and `pupdunk_mystery`, and the exp modifier will be rerolled using
@@ -126,12 +126,12 @@ and `pupdunk_mystery` options so that they will only be triggered on "pupdunk AN
 ## Adding or Removing from a List, Set, or Dict Option
 
 List, set, and dict options can additionally have values added to or removed from itself without overriding the existing
-option value by prefixing the option name in the trigger block with `+` (add) or `-` (remove). The exact behavior for 
+option value by prefixing the option name in the trigger block with `+` (add) or `-` (remove). The exact behavior for
 each will depend on the option type.
 
-- For sets, `+` will add the value(s) to the set and `-` will remove the value(s) from the set. Sets do not allow 
+- For sets, `+` will add the value(s) to the set and `-` will remove the value(s) from the set. Sets do not allow
   duplicates.
-- For lists, `+` will add new values(s) to the list and `-` will remove the first matching values(s) it comes across. 
+- For lists, `+` will add new values(s) to the list and `-` will remove the first matching values(s) it comes across.
   Lists allow duplicate values.
 - For dicts, `+` will add the value(s) to the given key(s) inside the dict if it exists, or add it otherwise. `-` is the
   inverse operation of addition (and negative values are allowed).
@@ -140,7 +140,7 @@ For example:
 
 ```yaml
 Super Metroid:
-  start_location: 
+  start_location:
     landing_site: 50
     aqueduct: 50
   start_hints:
@@ -157,6 +157,6 @@ Super Metroid:
             - Gravity Suit
 ```
 
-In this example, if the `start_location` option rolls `landing_site`, only a starting hint for Morph Ball will be 
-created. If `aqueduct` is rolled, a starting hint for Gravity Suit will also be created alongside the hint for Morph 
+In this example, if the `start_location` option rolls `landing_site`, only a starting hint for Morph Ball will be
+created. If `aqueduct` is rolled, a starting hint for Gravity Suit will also be created alongside the hint for Morph
 Ball.

@@ -16,8 +16,8 @@ There are four goals currently available. The Launch goal has you leave the plan
 
 ## What items and locations get shuffled?
 
-Most of the technologies the player will need throughout the game will be shuffled. 
-Location checks in Subnautica are data pads and technology lockers. 
+Most of the technologies the player will need throughout the game will be shuffled.
+Location checks in Subnautica are data pads and technology lockers.
 
 Optionally up to 50 Creatures to scan can be included as well, for each one added a random duplicate item is created.
 
@@ -35,4 +35,3 @@ player's world.
 ## When the player receives a technology, what happens?
 
 When the player receives a technology, the chat log displays a notification that the technology has been received.
-

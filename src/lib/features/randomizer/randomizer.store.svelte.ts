@@ -185,10 +185,7 @@ class RandomizerStore {
 			return;
 		}
 		try {
-			const [yaml, errors] = await Promise.all([
-				api.generateYaml(cfg),
-				api.validateConfig(cfg)
-			]);
+			const [yaml, errors] = await Promise.all([api.generateYaml(cfg), api.validateConfig(cfg)]);
 			this.generatedYaml = yaml;
 			this.validationErrors = errors;
 			// lint depends on the generated yaml, run after

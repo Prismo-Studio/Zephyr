@@ -6,10 +6,10 @@
 - The [Aquaria randomizer](https://github.com/tioui/Aquaria_Randomizer/releases/latest)
 
 ## Optional Software
- 
+
 - For sending [commands](/tutorial/Archipelago/commands/en) like `!hint`: the TextClient from [the most recent Archipelago release](https://github.com/ArchipelagoMW/Archipelago/releases/latest)
 - [Aquaria AP Tracker](https://github.com/palex00/aquaria-ap-tracker/releases/latest), for use with
-[PopTracker](https://github.com/black-sliver/PopTracker/releases/latest)
+  [PopTracker](https://github.com/black-sliver/PopTracker/releases/latest)
 
 ## Installation and execution Procedures
 
@@ -21,6 +21,7 @@ Also, in Windows, the save files are stored in the Aquaria folder. So copying th
 game you play will make sure that every game has its own save game.
 
 Unzip the Aquaria randomizer release and copy all unzipped files in the Aquaria game folder. The unzipped files are:
+
 - aquaria_randomizer.exe
 - OpenAL32.dll
 - randomizer_files (directory)
@@ -83,6 +84,7 @@ First, you should copy the original Aquaria folder game. The randomizer will pos
 the original game will stop working. Copying the folder will guarantee that the original game keeps on working.
 
 Untar the Aquaria randomizer release and copy all extracted files in the Aquaria game folder. The extracted files are:
+
 - aquaria_randomizer
 - randomizer_files (directory)
 - usersettings.xml
@@ -122,10 +124,10 @@ sure that your executable has executable permission:
 ```bash
 chmod +x aquaria_randomizer
 ```
+
 ### Steam deck
 
 On the Steamdeck, go in desktop mode and follow the same procedure as the Linux Appimage.
-
 
 ### No sound on Linux/Steam deck
 
@@ -142,7 +144,7 @@ ALSOFT_DRIVERS=pulse ./Aquaria_Randomizer-*.AppImage --name YourName --server th
 Aquaria has a fully functional map tracker that supports auto-tracking.
 
 1. Download [Aquaria AP Tracker](https://github.com/palex00/aquaria-ap-tracker/releases/latest) and
-[PopTracker](https://github.com/black-sliver/PopTracker/releases/latest).
+   [PopTracker](https://github.com/black-sliver/PopTracker/releases/latest).
 2. Put the tracker pack into /packs/ in your PopTracker install.
 3. Open PopTracker, and load the Aquaria pack.
 4. For autotracking, click on the "AP" symbol at the top.

@@ -3,7 +3,7 @@
 ## Required Software
 
 - [Raft](https://store.steampowered.com/app/648800/Raft/)
-- [Raft Mod Loader](https://www.raftmodding.com/loader) ("*RML*")
+- [Raft Mod Loader](https://www.raftmodding.com/loader) ("_RML_")
 - [ModUtils mod](https://www.raftmodding.com/mods/modutils)
 - [Raftipelago mod](https://www.raftmodding.com/mods/raftipelago)
 
@@ -23,7 +23,7 @@
 
 7. Click on the plug icon for ModUtils to load the mod. You can also click on the (i) next to the plug icon, then check the "Load this mod at startup" button. This will make the mod always load at startup.
 
-8. Click on the plug icon for Raftipelago to load the mod. While it's possible to also make this mod load at startup, it's recommended *not* to do so; if this mod loads before ModUtils, the mod will fail to load properly.
+8. Click on the plug icon for Raftipelago to load the mod. While it's possible to also make this mod load at startup, it's recommended _not_ to do so; if this mod loads before ModUtils, the mod will fail to load properly.
 
 ## Joining a MultiWorld Game
 
@@ -31,22 +31,23 @@
 
 2. Open the Debug Console by pressing F10.
 
-3. Type */connect {serverAddress} {username} {password}* into the console and hit Enter.
-    - Example: */connect archipelago.gg:12345 SunnyBat*
-    - If there is no password, the password argument may be omitted (as is the case in the above example).
-    - serverAddress must not contain spaces.
-    - If your username or password contains spaces, surround that value with quotation marks ("). Adding quotation marks even when not necessary (eg "SunnyBat") is fine.
-    - If your username or password starts with a quotation mark, surround the value with an additional set of quotation marks (eg the value *"myP@s$w0rD* would be entered as *""myP@s$w0rD"*).
+3. Type _/connect {serverAddress} {username} {password}_ into the console and hit Enter.
+   - Example: _/connect archipelago.gg:12345 SunnyBat_
+   - If there is no password, the password argument may be omitted (as is the case in the above example).
+   - serverAddress must not contain spaces.
+   - If your username or password contains spaces, surround that value with quotation marks ("). Adding quotation marks even when not necessary (eg "SunnyBat") is fine.
+   - If your username or password starts with a quotation mark, surround the value with an additional set of quotation marks (eg the value _"myP@s$w0rD_ would be entered as _""myP@s$w0rD"_).
 
 4. Start a new game or load an existing one. It's recommended to avoid using an existing game that was not created with your current run of Raftipelago (either vanilla or a different Raftipelago run). It will work, but if anything is unlocked, it will be automatically registered with Archipelago once the world is loaded. This is irreversible.
 
-5. You can disconnect from an Archipelago server by typing */disconnect confirmDisconnect* into the console and hitting Enter.
+5. You can disconnect from an Archipelago server by typing _/disconnect confirmDisconnect_ into the console and hitting Enter.
 
 ## Multiplayer Raft
 
 You're able to have multiple Raft players on a single Raftipelago world. This will work, with a few notes:
+
 - Every player that joins the Raft world must have the Raftipelago mod loaded.
-- Only the player that creates/loads the world can connect to Archipelago (this is the "host" of the Raft world). Other players do not need to run */connect*; everything will be routed through the the host.
+- Only the player that creates/loads the world can connect to Archipelago (this is the "host" of the Raft world). Other players do not need to run _/connect_; everything will be routed through the the host.
 - Players other than the host will be labeled as a "Raft Player (Steam name)" when using ingame chat, which will be routed through Archipelago chat.
 - Ingame chat will only work when the host is connected to the Archipelago server.
 
@@ -63,6 +64,7 @@ Restart Raft and try again. These should be ephemeral errors.
 If this happens, then RML is configured to only inject into an existing instance of Raft, rather than try and start a new one.
 
 You can either:
+
 - Click "Play" after Raft has loaded into the main menu
 - Uncheck the box next to the "Disable Automatic Game Start" setting in the Settings menu then click Play.
 
@@ -71,6 +73,7 @@ You can either:
 If this happens, then RML is configured to only start a new instance of Raft, then inject into that specific instance. This also means that RML has detected an instance of Raft is already running, and will not start a new one.
 
 You can either:
+
 - Close the existing instance of Raft then click Play
 - Check the box next to the "Disable Automatic Game Start" setting in the Settings menu then click Play.
 
@@ -88,4 +91,4 @@ In the future, be sure that when you save the game, the Raftipelago mod is loade
 
 ### I disconnected from the server! What do I do to reconnect?
 
-Open the console with F10 and type the */connect* command with your server/username/password in again. You do not need to save+quit to the main menu beforehand.
+Open the console with F10 and type the _/connect_ command with your server/username/password in again. You do not need to save+quit to the main menu beforehand.

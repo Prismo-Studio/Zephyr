@@ -1,711 +1,711 @@
 {
-  "id": "ror2",
-  "name": "Risk of Rain 2",
-  "version": "0.6.4",
-  "description": "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own.",
-  "meta": {
-    "rom_required": false,
-    "supported_versions": [],
-    "wiki_url": null,
-    "icon": "mdi:gamepad-variant"
-  },
-  "options": [
-    {
-      "id": "progression_balancing",
-      "label": "Progression Balancing",
-      "description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 99,
-        "step": 1,
-        "default": 50
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "accessibility",
-      "label": "Accessibility",
-      "description": "Set rules for reachability of your items/locations.",
-      "category": "logic",
-      "type": {
-        "kind": "select",
-        "default": "full",
-        "choices": [
-          {
-            "value": "full",
-            "label": "Full"
-          },
-          {
-            "value": "minimal",
-            "label": "Minimal"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "goal",
-      "label": "Goal",
-      "description": "Classic Mode: Every Item pickup increases fills a progress bar which gives location checks.",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "explore",
-        "choices": [
-          {
-            "value": "classic",
-            "label": "Classic"
-          },
-          {
-            "value": "explore",
-            "label": "Explore"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "victory",
-      "label": "Victory",
-      "description": "Mithrix: Defeat Mithrix in Commencement Voidling: Defeat the Voidling in The Planetarium (SOTV DLC required!",
-      "category": "goals",
-      "type": {
-        "kind": "select",
-        "default": "any",
-        "choices": [
-          {
-            "value": "any",
-            "label": "Any"
-          },
-          {
-            "value": "mithrix",
-            "label": "Mithrix"
-          },
-          {
-            "value": "voidling",
-            "label": "Voidling"
-          },
-          {
-            "value": "limbo",
-            "label": "Limbo"
-          },
-          {
-            "value": "falseson",
-            "label": "Falseson"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "total_locations",
-      "label": "Total Locations",
-      "description": "Classic Mode: Number of location checks which are added to the Risk of Rain playthrough.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 40,
-        "max": 250,
-        "step": 1,
-        "default": 40
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "chests_per_stage",
-      "label": "Chests Per Stage",
-      "description": "Explore Mode: The number of chest locations per environment.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 2,
-        "max": 20,
-        "step": 1,
-        "default": 10
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shrines_per_stage",
-      "label": "Shrines Per Stage",
-      "description": "Explore Mode: The number of shrine locations per environment.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 2,
-        "max": 20,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "scavengers_per_stage",
-      "label": "Scavengers Per Stage",
-      "description": "Explore Mode: The number of scavenger locations per environment.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 1,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "scanner_per_stage",
-      "label": "Scanner Per Stage",
-      "description": "Explore Mode: The number of scanners locations per environment.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 1,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "altars_per_stage",
-      "label": "Altars Per Stage",
-      "description": "Explore Mode: The number of altars locations per environment.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 2,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "total_revivals",
-      "label": "Total Revivals",
-      "description": "Total Percentage of `Dio's Best Friend` item put in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "start_with_revive",
-      "label": "Start With Revive",
-      "description": "Start the game with a `Dio's Best Friend` item.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "final_stage_death",
-      "label": "Final Stage Death",
-      "description": "The following will count as a win if set to \"true\", and victory is set to \"any\": Dying in Commencement.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dlc_sotv",
-      "label": "Dlc Sotv",
-      "description": "Enable if you are using Survivors of the Void DLC.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "dlc_sots",
-      "label": "Dlc Sots",
-      "description": "Enable if you are using Seekers of the Storm DLC.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "require_stages",
-      "label": "Require Stages",
-      "description": "Add Stage items to the pool to block access to the next set of environments.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "progressive_stages",
-      "label": "Progressive Stages",
-      "description": "This will convert Stage items to be a progressive item.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "stage_variants",
-      "label": "Stage Variants",
-      "description": "Enable if you want to include stage variants in the environment pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "show_seer_portals",
-      "label": "Show Seer Portals",
-      "description": "Shows Seer Portals at the teleporter to allow choosing the next environment.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "death_link",
-      "label": "Death Link",
-      "description": "When you die, everyone who enabled death link dies.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_pickup_step",
-      "label": "Item Pickup Step",
-      "description": "Number of items to pick up before an AP Check is completed.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 5,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "shrine_use_step",
-      "label": "Shrine Use Step",
-      "description": "Explore Mode: Number of shrines to use up before an AP Check is completed.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 3,
-        "step": 1,
-        "default": 0
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_trap",
-      "label": "Enable Trap",
-      "description": "Allows Trap items in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "enable_lunar",
-      "label": "Enable Lunar",
-      "description": "Allows Lunar items in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "toggle",
-        "default": true
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_weights",
-      "label": "Item Weights",
-      "description": "Set Use Item Weight Presets to yes if you want to use one of these presets.",
-      "category": "items",
-      "type": {
-        "kind": "select",
-        "default": "default",
-        "choices": [
-          {
-            "value": "default",
-            "label": "Default"
-          },
-          {
-            "value": "new",
-            "label": "New"
-          },
-          {
-            "value": "uncommon",
-            "label": "Uncommon"
-          },
-          {
-            "value": "legendary",
-            "label": "Legendary"
-          },
-          {
-            "value": "chaos",
-            "label": "Chaos"
-          },
-          {
-            "value": "no_scraps",
-            "label": "No Scraps"
-          },
-          {
-            "value": "even",
-            "label": "Even"
-          },
-          {
-            "value": "scraps_only",
-            "label": "Scraps Only"
-          },
-          {
-            "value": "lunartic",
-            "label": "Lunartic"
-          },
-          {
-            "value": "void",
-            "label": "Void"
-          }
-        ]
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "item_pool_presets",
-      "label": "Item Pool Presets",
-      "description": "Will use the item weight presets when set to true, otherwise will use the custom set item pool weights.",
-      "category": "items",
-      "type": {
-        "kind": "toggle",
-        "default": false
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "white_scrap",
-      "label": "White Scrap",
-      "description": "Weight of white scraps in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 32
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "green_scrap",
-      "label": "Green Scrap",
-      "description": "Weight of Green Scraps in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 16
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "yellow_scrap",
-      "label": "Yellow Scrap",
-      "description": "Weight of yellow scraps in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 1
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "red_scrap",
-      "label": "Red Scrap",
-      "description": "Weight of Red Scraps in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "common_item",
-      "label": "Common Item",
-      "description": "Weight of common items in the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 64
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "uncommon_item",
-      "label": "Uncommon Item",
-      "description": "Weight of uncommon items in the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 32
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "legendary_item",
-      "label": "Legendary Item",
-      "description": "Weight of legendary items in the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 8
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "boss_item",
-      "label": "Boss Item",
-      "description": "Weight of boss items in the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 4
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lunar_item",
-      "label": "Lunar Item",
-      "description": "Weight of lunar items in the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 16
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "void_item",
-      "label": "Void Item",
-      "description": "Weight of void items in the item pool.",
-      "category": "items",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 16
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "equipment",
-      "label": "Equipment",
-      "description": "Weight of equipment items in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 32
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "money",
-      "label": "Money",
-      "description": "Weight of money items in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 64
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "lunar_coin",
-      "label": "Lunar Coin",
-      "description": "Weight of lunar coin items in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "experience",
-      "label": "Experience",
-      "description": "Weight of 1000 exp items in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 40
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "mountain_trap",
-      "label": "Mountain Trap",
-      "description": "Weight of mountain trap items in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 5
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "time_warp_trap",
-      "label": "Time Warp Trap",
-      "description": "Weight of time warp trap items in the item pool.",
-      "category": "entrances",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "combat_trap",
-      "label": "Combat Trap",
-      "description": "Weight of combat trap items in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    },
-    {
-      "id": "teleport_trap",
-      "label": "Teleport Trap",
-      "description": "Weight of teleport trap items in the item pool.",
-      "category": "general",
-      "type": {
-        "kind": "range",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "default": 20
-      },
-      "advanced": false,
-      "dependencies": null
-    }
-  ],
-  "presets": []
+	"id": "ror2",
+	"name": "Risk of Rain 2",
+	"version": "0.6.4",
+	"description": "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own.",
+	"meta": {
+		"rom_required": false,
+		"supported_versions": [],
+		"wiki_url": null,
+		"icon": "mdi:gamepad-variant"
+	},
+	"options": [
+		{
+			"id": "progression_balancing",
+			"label": "Progression Balancing",
+			"description": "A system that can move progression earlier, to try and prevent the player from getting stuck and bored early.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 99,
+				"step": 1,
+				"default": 50
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "accessibility",
+			"label": "Accessibility",
+			"description": "Set rules for reachability of your items/locations.",
+			"category": "logic",
+			"type": {
+				"kind": "select",
+				"default": "full",
+				"choices": [
+					{
+						"value": "full",
+						"label": "Full"
+					},
+					{
+						"value": "minimal",
+						"label": "Minimal"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "goal",
+			"label": "Goal",
+			"description": "Classic Mode: Every Item pickup increases fills a progress bar which gives location checks.",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "explore",
+				"choices": [
+					{
+						"value": "classic",
+						"label": "Classic"
+					},
+					{
+						"value": "explore",
+						"label": "Explore"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "victory",
+			"label": "Victory",
+			"description": "Mithrix: Defeat Mithrix in Commencement Voidling: Defeat the Voidling in The Planetarium (SOTV DLC required!",
+			"category": "goals",
+			"type": {
+				"kind": "select",
+				"default": "any",
+				"choices": [
+					{
+						"value": "any",
+						"label": "Any"
+					},
+					{
+						"value": "mithrix",
+						"label": "Mithrix"
+					},
+					{
+						"value": "voidling",
+						"label": "Voidling"
+					},
+					{
+						"value": "limbo",
+						"label": "Limbo"
+					},
+					{
+						"value": "falseson",
+						"label": "Falseson"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "total_locations",
+			"label": "Total Locations",
+			"description": "Classic Mode: Number of location checks which are added to the Risk of Rain playthrough.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 40,
+				"max": 250,
+				"step": 1,
+				"default": 40
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "chests_per_stage",
+			"label": "Chests Per Stage",
+			"description": "Explore Mode: The number of chest locations per environment.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 2,
+				"max": 20,
+				"step": 1,
+				"default": 10
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shrines_per_stage",
+			"label": "Shrines Per Stage",
+			"description": "Explore Mode: The number of shrine locations per environment.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 2,
+				"max": 20,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "scavengers_per_stage",
+			"label": "Scavengers Per Stage",
+			"description": "Explore Mode: The number of scavenger locations per environment.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 1,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "scanner_per_stage",
+			"label": "Scanner Per Stage",
+			"description": "Explore Mode: The number of scanners locations per environment.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 1,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "altars_per_stage",
+			"label": "Altars Per Stage",
+			"description": "Explore Mode: The number of altars locations per environment.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 2,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "total_revivals",
+			"label": "Total Revivals",
+			"description": "Total Percentage of `Dio's Best Friend` item put in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "start_with_revive",
+			"label": "Start With Revive",
+			"description": "Start the game with a `Dio's Best Friend` item.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "final_stage_death",
+			"label": "Final Stage Death",
+			"description": "The following will count as a win if set to \"true\", and victory is set to \"any\": Dying in Commencement.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dlc_sotv",
+			"label": "Dlc Sotv",
+			"description": "Enable if you are using Survivors of the Void DLC.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "dlc_sots",
+			"label": "Dlc Sots",
+			"description": "Enable if you are using Seekers of the Storm DLC.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "require_stages",
+			"label": "Require Stages",
+			"description": "Add Stage items to the pool to block access to the next set of environments.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "progressive_stages",
+			"label": "Progressive Stages",
+			"description": "This will convert Stage items to be a progressive item.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "stage_variants",
+			"label": "Stage Variants",
+			"description": "Enable if you want to include stage variants in the environment pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "show_seer_portals",
+			"label": "Show Seer Portals",
+			"description": "Shows Seer Portals at the teleporter to allow choosing the next environment.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "death_link",
+			"label": "Death Link",
+			"description": "When you die, everyone who enabled death link dies.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_pickup_step",
+			"label": "Item Pickup Step",
+			"description": "Number of items to pick up before an AP Check is completed.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 5,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "shrine_use_step",
+			"label": "Shrine Use Step",
+			"description": "Explore Mode: Number of shrines to use up before an AP Check is completed.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 3,
+				"step": 1,
+				"default": 0
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_trap",
+			"label": "Enable Trap",
+			"description": "Allows Trap items in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "enable_lunar",
+			"label": "Enable Lunar",
+			"description": "Allows Lunar items in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "toggle",
+				"default": true
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_weights",
+			"label": "Item Weights",
+			"description": "Set Use Item Weight Presets to yes if you want to use one of these presets.",
+			"category": "items",
+			"type": {
+				"kind": "select",
+				"default": "default",
+				"choices": [
+					{
+						"value": "default",
+						"label": "Default"
+					},
+					{
+						"value": "new",
+						"label": "New"
+					},
+					{
+						"value": "uncommon",
+						"label": "Uncommon"
+					},
+					{
+						"value": "legendary",
+						"label": "Legendary"
+					},
+					{
+						"value": "chaos",
+						"label": "Chaos"
+					},
+					{
+						"value": "no_scraps",
+						"label": "No Scraps"
+					},
+					{
+						"value": "even",
+						"label": "Even"
+					},
+					{
+						"value": "scraps_only",
+						"label": "Scraps Only"
+					},
+					{
+						"value": "lunartic",
+						"label": "Lunartic"
+					},
+					{
+						"value": "void",
+						"label": "Void"
+					}
+				]
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "item_pool_presets",
+			"label": "Item Pool Presets",
+			"description": "Will use the item weight presets when set to true, otherwise will use the custom set item pool weights.",
+			"category": "items",
+			"type": {
+				"kind": "toggle",
+				"default": false
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "white_scrap",
+			"label": "White Scrap",
+			"description": "Weight of white scraps in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 32
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "green_scrap",
+			"label": "Green Scrap",
+			"description": "Weight of Green Scraps in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 16
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "yellow_scrap",
+			"label": "Yellow Scrap",
+			"description": "Weight of yellow scraps in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 1
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "red_scrap",
+			"label": "Red Scrap",
+			"description": "Weight of Red Scraps in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "common_item",
+			"label": "Common Item",
+			"description": "Weight of common items in the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 64
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "uncommon_item",
+			"label": "Uncommon Item",
+			"description": "Weight of uncommon items in the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 32
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "legendary_item",
+			"label": "Legendary Item",
+			"description": "Weight of legendary items in the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 8
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "boss_item",
+			"label": "Boss Item",
+			"description": "Weight of boss items in the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 4
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lunar_item",
+			"label": "Lunar Item",
+			"description": "Weight of lunar items in the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 16
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "void_item",
+			"label": "Void Item",
+			"description": "Weight of void items in the item pool.",
+			"category": "items",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 16
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "equipment",
+			"label": "Equipment",
+			"description": "Weight of equipment items in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 32
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "money",
+			"label": "Money",
+			"description": "Weight of money items in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 64
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "lunar_coin",
+			"label": "Lunar Coin",
+			"description": "Weight of lunar coin items in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "experience",
+			"label": "Experience",
+			"description": "Weight of 1000 exp items in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 40
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "mountain_trap",
+			"label": "Mountain Trap",
+			"description": "Weight of mountain trap items in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 5
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "time_warp_trap",
+			"label": "Time Warp Trap",
+			"description": "Weight of time warp trap items in the item pool.",
+			"category": "entrances",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "combat_trap",
+			"label": "Combat Trap",
+			"description": "Weight of combat trap items in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		},
+		{
+			"id": "teleport_trap",
+			"label": "Teleport Trap",
+			"description": "Weight of teleport trap items in the item pool.",
+			"category": "general",
+			"type": {
+				"kind": "range",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"default": 20
+			},
+			"advanced": false,
+			"dependencies": null
+		}
+	],
+	"presets": []
 }
