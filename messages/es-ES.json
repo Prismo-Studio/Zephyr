@@ -679,7 +679,7 @@
 	"randomizer_title": "Randomizer",
 	"randomizer_subtitle": "(Archipelago)",
 	"randomizer_description": "Configura tu seed sin escribir una sola línea de YAML.",
-	"randomizer_gamesAvailable": "{count} juegos disponibles.",
+	"randomizer_gamesAvailable": "juegos disponibles.",
 	"randomizer_searchPlaceholder": "Buscar juegos...",
 	"randomizer_refresh": "Actualizar",
 	"randomizer_loading": "Cargando catálogo...",

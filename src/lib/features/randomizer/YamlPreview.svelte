@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { randomizerStore } from './randomizer.store.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let codeEl: HTMLPreElement | null = $state(null);
 
@@ -69,21 +71,21 @@
 	<header class="rdz-yaml-header">
 		<div class="rdz-yaml-title">
 			<Icon icon="mdi:code-braces" />
-			<span>Generated YAML</span>
+			<span>{i18nState.locale && m.randomizer_generatedYaml()}</span>
 		</div>
 		<div class="rdz-yaml-actions">
 			<span class="rdz-lint-pill rdz-lint-{lintStatus}">
 				{#if lintStatus === 'ok'}
-					<Icon icon="mdi:check-circle" /> Lint OK
+					<Icon icon="mdi:check-circle" /> {i18nState.locale && m.randomizer_lintOk()}
 				{:else if lintStatus === 'warning'}
 					<Icon icon="mdi:alert" /> {lintWarnings.length} warning{lintWarnings.length > 1 ? 's' : ''}
 				{:else if lintStatus === 'error'}
 					<Icon icon="mdi:close-circle" /> {lintErrors.length} error{lintErrors.length > 1 ? 's' : ''}
 				{:else}
-					<Icon icon="mdi:dots-horizontal" /> Idle
+					<Icon icon="mdi:dots-horizontal" /> {i18nState.locale && m.randomizer_idle()}
 				{/if}
 			</span>
-			<button class="rdz-yaml-copy" onclick={copy} disabled={!randomizerStore.generatedYaml} aria-label="Copy YAML">
+			<button class="rdz-yaml-copy" onclick={copy} disabled={!randomizerStore.generatedYaml} aria-label={i18nState.locale && m.randomizer_copyYaml()}>
 				<Icon icon="mdi:content-copy" />
 			</button>
 		</div>
@@ -107,7 +109,7 @@
 		<div class="rdz-yaml-lint">
 			<div class="rdz-yaml-lint-title">
 				<Icon icon="mdi:format-list-checks" />
-				YAML lint
+				{i18nState.locale && m.randomizer_yamlLint()}
 			</div>
 			<ul>
 				{#each randomizerStore.lintIssues as issue}

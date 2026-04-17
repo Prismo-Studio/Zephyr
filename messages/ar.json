@@ -701,7 +701,7 @@
 	"randomizer_title": "المُعشوِئ",
 	"randomizer_subtitle": "(Archipelago)",
 	"randomizer_description": "قم بتكوين البذرة بدون كتابة أي سطر YAML.",
-	"randomizer_gamesAvailable": "{count} لعبة متاحة.",
+	"randomizer_gamesAvailable": "لعبة متاحة.",
 	"randomizer_searchPlaceholder": "البحث عن ألعاب...",
 	"randomizer_refresh": "تحديث",
 	"randomizer_loading": "جاري تحميل الكتالوج...",

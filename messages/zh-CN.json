@@ -677,7 +677,7 @@
 	"randomizer_title": "随机器",
 	"randomizer_subtitle": "(Archipelago)",
 	"randomizer_description": "无需编写任何 YAML 即可配置您的种子。",
-	"randomizer_gamesAvailable": "{count} 个游戏可用。",
+	"randomizer_gamesAvailable": "个游戏可用。",
 	"randomizer_searchPlaceholder": "搜索游戏...",
 	"randomizer_refresh": "刷新",
 	"randomizer_loading": "正在加载目录...",

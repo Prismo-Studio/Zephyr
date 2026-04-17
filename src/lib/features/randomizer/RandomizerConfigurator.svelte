@@ -10,6 +10,8 @@
 	import RandomizerOptionField from './RandomizerOptionField.svelte';
 	import RandomizerServerPanel from './RandomizerServerPanel.svelte';
 	import YamlPreview from './YamlPreview.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let rightTab: 'yaml' | 'server' = $state('yaml');
 	let serverPanelRef: RandomizerServerPanel | undefined = $state();
@@ -23,7 +25,7 @@
 			const path = await api.savePlayerYaml(slot, randomizerStore.generatedYaml);
 			pushToast({
 				type: 'info',
-				name: 'Slot saved',
+				name: m.randomizer_slotSaved(),
 				message: `${slot} -> ${path.split(/[/\\]/).pop()}`
 			});
 			rightTab = 'server';
@@ -91,7 +93,7 @@
 	const presetOptions = $derived.by(() => {
 		if (!schema) return [];
 		return [
-			{ value: '', label: 'Custom' },
+			{ value: '', label: m.randomizer_custom() },
 			...schema.presets.map((p) => ({ value: p.id, label: p.name }))
 		];
 	});
@@ -118,7 +120,7 @@
 	<div class="rdz-config">
 		<div class="rdz-config-main">
 			<header class="rdz-config-header">
-				<button class="rdz-back" onclick={onBack} aria-label="Back to catalog">
+				<button class="rdz-back" onclick={onBack} aria-label={i18nState.locale && m.randomizer_backToCatalog()}>
 					<Icon icon="mdi:arrow-left" />
 				</button>
 				<div class="rdz-config-title">
@@ -132,13 +134,13 @@
 					rel="noopener"
 				>
 					<Icon icon="mdi:book-open-variant" />
-					Setup guide
+					{i18nState.locale && m.randomizer_setupGuide()}
 				</a>
 
 				<div class="rdz-config-controls">
 					{#if hasPresets}
 						<div class="rdz-inline-field">
-							<span>Preset</span>
+							<span>{i18nState.locale && m.randomizer_preset()}</span>
 							<div class="rdz-inline-control rdz-inline-control-md">
 								<Dropdown
 									options={presetOptions}
@@ -153,16 +155,16 @@
 					{/if}
 
 					<div class="rdz-inline-field">
-						<span>Player</span>
+						<span>{i18nState.locale && m.randomizer_player()}</span>
 						<div class="rdz-inline-control rdz-inline-control-sm">
 							<Input bind:value={randomizerStore.playerName} placeholder="Player1" />
 						</div>
 					</div>
 
 					<div class="rdz-inline-field">
-						<span>Seed</span>
+						<span>{i18nState.locale && m.randomizer_seed()}</span>
 						<div class="rdz-inline-control rdz-inline-control-sm">
-							<Input bind:value={randomizerStore.seed} placeholder="(random)" />
+							<Input bind:value={randomizerStore.seed} placeholder={i18nState.locale && m.randomizer_random()} />
 						</div>
 					</div>
 
@@ -175,7 +177,7 @@
 							{#snippet icon()}
 								<Icon icon="mdi:tune-variant" />
 							{/snippet}
-							Advanced
+							{i18nState.locale && m.randomizer_advanced()}
 						</Button>
 					{/if}
 				</div>
@@ -185,12 +187,12 @@
 				<div class="rdz-change-banner">
 					<Icon icon="mdi:lightning-bolt" />
 					<div>
-						<strong>{lastChangeBanner.option.label}</strong> changed.
+						<strong>{lastChangeBanner.option.label}</strong> {i18nState.locale && m.randomizer_changed()}
 						{#if lastChangeBanner.impact.newlyVisible.length > 0}
-							Now visible: <em>{lastChangeBanner.named(lastChangeBanner.impact.newlyVisible)}</em>.
+							{i18nState.locale && m.randomizer_nowVisible()} <em>{lastChangeBanner.named(lastChangeBanner.impact.newlyVisible)}</em>.
 						{/if}
 						{#if lastChangeBanner.impact.newlyHidden.length > 0}
-							Now hidden: <em>{lastChangeBanner.named(lastChangeBanner.impact.newlyHidden)}</em>.
+							{i18nState.locale && m.randomizer_nowHidden()} <em>{lastChangeBanner.named(lastChangeBanner.impact.newlyHidden)}</em>.
 						{/if}
 					</div>
 				</div>
@@ -231,19 +233,19 @@
 					{#snippet icon()}
 						<Icon icon="mdi:restore" />
 					{/snippet}
-					Reset
+					{i18nState.locale && m.randomizer_reset()}
 				</Button>
 				<Button variant="secondary" onclick={() => randomizerStore.refreshGenerated()}>
 					{#snippet icon()}
 						<Icon icon="mdi:refresh" />
 					{/snippet}
-					Refresh YAML
+					{i18nState.locale && m.randomizer_refreshYaml()}
 				</Button>
 				<Button variant="primary" onclick={saveSlot}>
 					{#snippet icon()}
 						<Icon icon="mdi:account-plus" />
 					{/snippet}
-					Save player slot
+					{i18nState.locale && m.randomizer_savePlayerSlot()}
 				</Button>
 			</footer>
 		</div>
@@ -256,7 +258,7 @@
 					onclick={() => (rightTab = 'yaml')}
 				>
 					<Icon icon="mdi:code-braces" />
-					YAML
+					{i18nState.locale && m.randomizer_yaml()}
 				</button>
 				<button
 					class="rdz-tab"
@@ -264,7 +266,7 @@
 					onclick={() => (rightTab = 'server')}
 				>
 					<Icon icon="mdi:server-network" />
-					Multiplayer
+					{i18nState.locale && m.randomizer_multiplayer()}
 				</button>
 			</div>
 			<div class="rdz-right-body">
@@ -281,7 +283,7 @@
 {:else if randomizerStore.loadingSchema}
 	<div class="rdz-loading">
 		<Icon icon="mdi:loading" class="rdz-spin" />
-		<p>Loading schema…</p>
+		<p>{i18nState.locale && m.randomizer_loadingSchema()}</p>
 	</div>
 {/if}
 

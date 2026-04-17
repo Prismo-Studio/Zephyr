@@ -686,7 +686,7 @@
 	"randomizer_title": "Рандомайзер",
 	"randomizer_subtitle": "(Archipelago)",
 	"randomizer_description": "Настройте сид без единой строки YAML.",
-	"randomizer_gamesAvailable": "{count} игр доступно.",
+	"randomizer_gamesAvailable": "игр доступно.",
 	"randomizer_searchPlaceholder": "Поиск игр...",
 	"randomizer_refresh": "Обновить",
 	"randomizer_loading": "Загрузка каталога...",

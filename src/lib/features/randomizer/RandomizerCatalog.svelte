@@ -5,6 +5,8 @@
 	import { onMount } from 'svelte';
 	import { randomizerStore } from './randomizer.store.svelte';
 	import GameLogo from './GameLogo.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	const { onSelect }: { onSelect: (gameId: string) => void } = $props();
 
@@ -28,15 +30,15 @@
 <div class="rdz-catalog">
 	<header class="rdz-catalog-header">
 		<div class="rdz-catalog-title">
-			<h1>Randomizer <span class="rdz-subtitle-inline">(Archipelago)</span></h1>
+			<h1>{i18nState.locale && m.randomizer_title()} <span class="rdz-subtitle-inline">{i18nState.locale && m.randomizer_subtitle()}</span></h1>
 			<p class="rdz-subtitle">
-				Configure your seed without writing a single line of YAML.
-				<strong>{randomizerStore.catalog.length}</strong> games available.
+				{i18nState.locale && m.randomizer_description()}
+				<strong>{randomizerStore.catalog.length}</strong> {i18nState.locale && m.randomizer_gamesAvailable()}
 			</p>
 		</div>
 		<div class="rdz-catalog-actions">
 			<div class="rdz-search">
-				<Input bind:value={search} placeholder="Search games...">
+				<Input bind:value={search} placeholder={i18nState.locale && m.randomizer_searchPlaceholder()}>
 					{#snippet iconLeft()}
 						<Icon icon="mdi:magnify" />
 					{/snippet}
@@ -51,7 +53,7 @@
 				{#snippet icon()}
 					<Icon icon="mdi:refresh" />
 				{/snippet}
-				Refresh
+				{i18nState.locale && m.randomizer_refresh()}
 			</Button>
 		</div>
 	</header>
@@ -59,19 +61,19 @@
 	{#if randomizerStore.catalogLoading && randomizerStore.catalog.length === 0}
 		<div class="rdz-empty">
 			<Icon icon="mdi:loading" class="rdz-spin" />
-			<p>Loading catalog...</p>
+			<p>{i18nState.locale && m.randomizer_loading()}</p>
 		</div>
 	{:else if randomizerStore.catalog.length === 0}
 		<div class="rdz-empty">
 			<Icon icon="mdi:dice-multiple-outline" />
-			<p>No randomizer schemas found.</p>
+			<p>{i18nState.locale && m.randomizer_noSchemas()}</p>
 			<small>Drop a JSON schema in <code>data/randomizer/schemas/</code></small>
 		</div>
 	{:else if filtered.length === 0}
 		<div class="rdz-empty">
 			<Icon icon="mdi:magnify-close" />
-			<p>No game matches "{search}"</p>
-			<button class="rdz-link-btn" onclick={() => (search = '')}>Clear search</button>
+			<p>{i18nState.locale && m.randomizer_noMatch({ search })}</p>
+			<button class="rdz-link-btn" onclick={() => (search = '')}>{i18nState.locale && m.randomizer_clearSearch()}</button>
 		</div>
 	{:else}
 		<div class="rdz-grid">
@@ -83,7 +85,7 @@
 							<h3>{game.name}</h3>
 							<span class="rdz-card-version">v{game.version}</span>
 						</div>
-						<p class="rdz-card-desc">{game.description || 'No description.'}</p>
+						<p class="rdz-card-desc">{game.description || (i18nState.locale && m.randomizer_noDescription())}</p>
 						<div class="rdz-card-badges">
 							<span class="rdz-badge">
 								<Icon icon="mdi:tune" />

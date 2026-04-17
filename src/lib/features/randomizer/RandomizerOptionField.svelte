@@ -7,6 +7,8 @@
 	import Slider from '$lib/components/ui/Slider.svelte';
 	import type { OptionDef, Value } from './types';
 	import { randomizerStore, dependenciesSatisfied } from './randomizer.store.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	const { option }: { option: OptionDef } = $props();
 
@@ -49,7 +51,7 @@
 			<div class="rdz-field-label-row">
 				<label for={`opt-${option.id}`}>{option.label}</label>
 				{#if option.advanced}
-					<span class="rdz-field-tag">advanced</span>
+					<span class="rdz-field-tag">{i18nState.locale && m.randomizer_advanced()}</span>
 				{/if}
 				{#if dependents.length > 0}
 					<span class="rdz-field-tag rdz-field-tag-soft" title={`Affects ${dependents.length} option(s)`}>
@@ -70,7 +72,7 @@
 						checked={value === true}
 						onchange={(checked) => set(checked)}
 					/>
-					<span class="rdz-toggle-state">{value === true ? 'On' : 'Off'}</span>
+					<span class="rdz-toggle-state">{value === true ? (i18nState.locale && m.randomizer_on()) : (i18nState.locale && m.randomizer_off())}</span>
 				</div>
 			{:else if option.type.kind === 'range'}
 				{@const t = option.type}
