@@ -28,7 +28,7 @@
 <div class="rdz-catalog">
 	<header class="rdz-catalog-header">
 		<div class="rdz-catalog-title">
-			<h1>Randomizer</h1>
+			<h1>Randomizer <span class="rdz-subtitle-inline">(Archipelago)</span></h1>
 			<p class="rdz-subtitle">
 				Configure your seed without writing a single line of YAML.
 				<strong>{randomizerStore.catalog.length}</strong> games available.
@@ -113,8 +113,6 @@
 		gap: var(--space-lg);
 		padding: var(--space-xl);
 		padding-bottom: var(--space-3xl);
-		max-width: 1400px;
-		margin: 0 auto;
 		width: 100%;
 		flex: 1 1 0;
 		min-height: 0;
@@ -135,6 +133,12 @@
 		font-size: 28px;
 		color: var(--text-primary);
 		letter-spacing: 0.01em;
+	}
+
+	.rdz-subtitle-inline {
+		font-size: 0.6em;
+		font-weight: 400;
+		color: var(--text-muted);
 	}
 
 	.rdz-subtitle {
