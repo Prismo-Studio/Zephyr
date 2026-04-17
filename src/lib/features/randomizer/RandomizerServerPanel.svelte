@@ -469,18 +469,6 @@
 						<pre class="rdz-log">{remoteLog.join('\n')}</pre>
 					</details>
 				{/if}
-				{#if remote?.recent_log && remote.recent_log.length > 0}
-					<details class="rdz-log-details">
-						<summary>
-							<span>{i18nState.locale && m.randomizer_serverLog()}</span>
-							<button class="rdz-log-copy" onclick={(e) => { e.preventDefault(); copyText(remote?.recent_log.join('\n') ?? '', 'rsrv'); }}>
-								<Icon icon={copiedKey === 'rsrv' ? 'mdi:check' : 'mdi:content-copy'} />
-								{copiedKey === 'rsrv' ? (i18nState.locale && m.randomizer_copied()) : (i18nState.locale && m.randomizer_copy())}
-							</button>
-						</summary>
-						<pre class="rdz-log">{remote.recent_log.join('\n')}</pre>
-					</details>
-				{/if}
 			</div>
 		{:else}
 

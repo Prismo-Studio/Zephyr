@@ -5,9 +5,13 @@
 	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let codeEl: HTMLPreElement | null = $state(null);
+	let copied = $state(false);
 
 	function copy() {
-		navigator.clipboard.writeText(randomizerStore.generatedYaml).catch(() => {});
+		navigator.clipboard.writeText(randomizerStore.generatedYaml).then(() => {
+			copied = true;
+			setTimeout(() => (copied = false), 1500);
+		}).catch(() => {});
 	}
 
 	const lintErrors = $derived(randomizerStore.lintIssues.filter((i) => i.level === 'error'));
@@ -86,7 +90,7 @@
 				{/if}
 			</span>
 			<button class="rdz-yaml-copy" onclick={copy} disabled={!randomizerStore.generatedYaml} aria-label={i18nState.locale && m.randomizer_copyYaml()}>
-				<Icon icon="mdi:content-copy" />
+				<Icon icon={copied ? 'mdi:check' : 'mdi:content-copy'} />
 			</button>
 		</div>
 	</header>

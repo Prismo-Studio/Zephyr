@@ -61,8 +61,6 @@ export const renameSeed = (path: string, newName: string) =>
 
 export const clearSeeds = () => invoke<number>('clear_seeds');
 
-// --- Remote server (Fly.io) ---
-
 const REMOTE_URL = 'https://randomizer-server-production.up.railway.app';
 
 export type RemoteStatus = {
