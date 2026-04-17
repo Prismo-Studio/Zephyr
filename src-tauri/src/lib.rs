@@ -67,6 +67,13 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         warn!("failed to register zephyr deep link protocol: {:#}", err);
     }
 
+    let handle = app.handle().to_owned();
+    app.deep_link().on_open_url(move |event| {
+        for url in event.urls() {
+            deep_link::handle(&handle, vec![String::from("zephyr"), url.to_string()]);
+        }
+    });
+
     let args = env::args().collect_vec();
     if !args.is_empty() && !deep_link::handle(app.handle(), args.clone()) {
         cli::run(args, app.handle());
