@@ -20,12 +20,16 @@ pub fn schemas_dir(app: &AppHandle) -> PathBuf {
         let candidates = [
             resource_dir.join("schemas"),
             resource_dir.join("data/randomizer/schemas"),
+            resource_dir.join("randomizer/schemas"),
         ];
         for c in &candidates {
+            tracing::debug!("schemas_dir: trying resource path {}", c.display());
             if c.exists() {
+                tracing::info!("schemas_dir: found at {}", c.display());
                 return c.clone();
             }
         }
+        tracing::warn!("schemas_dir: no resource path found, resource_dir={}", resource_dir.display());
     }
 
     let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
@@ -35,10 +39,12 @@ pub fn schemas_dir(app: &AppHandle) -> PathBuf {
     ];
     for c in &candidates {
         if c.exists() {
+            tracing::info!("schemas_dir: found at cwd path {}", c.display());
             return c.clone();
         }
     }
 
+    tracing::warn!("schemas_dir: no path found, falling back to cwd");
     cwd.join("data/randomizer/schemas")
 }
 
