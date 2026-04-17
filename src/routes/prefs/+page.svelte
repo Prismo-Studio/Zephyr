@@ -429,16 +429,14 @@
 					<Toggle bind:checked={prefs.fetchModsAutomatically} onchange={savePrefs} />
 				</div>
 
-				<div class="z-settings-row z-settings-disabled">
+				<div class="z-settings-row">
 					<div class="z-settings-label">
 						<span>{i18nState.locale && m.prefs_miscellaneous_pullBeforeLaunch_title()}</span>
 						<span class="z-settings-desc"
 							>{i18nState.locale && m.prefs_miscellaneous_pullBeforeLaunch_content()}</span
 						>
 					</div>
-					<Tooltip text={i18nState.locale && m.prefs_syncComingSoon()} position="left" delay={200}>
-						<Toggle checked={false} disabled />
-					</Tooltip>
+					<Toggle bind:checked={prefs.pullBeforeLaunch} onchange={savePrefs} />
 				</div>
 			</section>
 

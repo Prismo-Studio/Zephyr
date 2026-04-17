@@ -17,7 +17,7 @@ pub mod socket;
 
 static API_URL: LazyLock<Cow<'static, str>> = LazyLock::new(|| match env::var("ZEPHYR_SYNC_URL") {
     Ok(var) => var.into(),
-    Err(_) => "https://zephyr.prismostudio.com/api".into(),
+    Err(_) => "https://api.zephyr.prismo-studios.dev".into(),
 });
 
 async fn request(method: Method, path: impl Display, app: &AppHandle) -> reqwest::RequestBuilder {
