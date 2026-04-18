@@ -1,6 +1,8 @@
 import { invoke } from '$lib/invoke';
 import { invoke as tauriInvoke } from '@tauri-apps/api/core';
 import type {
+	ApworldRefreshResult,
+	CustomApworld,
 	GameSchema,
 	GameSummary,
 	GenerateOutcome,
@@ -8,6 +10,7 @@ import type {
 	PlayerFile,
 	PythonStatus,
 	RandomizerConfig,
+	RuntimeStatus,
 	SeedFile,
 	ServerStatus,
 	ValidationError
@@ -59,6 +62,33 @@ export const renameSeed = (path: string, newName: string) =>
 	invoke<string>('rename_seed', { path, newName });
 
 export const clearSeeds = () => invoke<number>('clear_seeds');
+
+// --- Custom apworlds ---
+
+export const listCustomApworlds = () => invoke<CustomApworld[]>('list_custom_apworlds');
+
+export const installApworldFromPath = (srcPath: string) =>
+	invoke<CustomApworld>('install_apworld_from_path', { srcPath });
+
+export const installApworldFromBytes = (fileName: string, bytesBase64: string) =>
+	invoke<CustomApworld>('install_apworld_from_bytes', { fileName, bytesBase64 });
+
+export const removeCustomApworld = (fileName: string) =>
+	invoke('remove_custom_apworld', { fileName });
+
+export const refreshApworldSchemas = () =>
+	invoke<ApworldRefreshResult>('refresh_apworld_schemas');
+
+export const openCustomWorldsDir = () => invoke('open_custom_worlds_dir');
+
+// --- Archipelago runtime install ---
+
+export const runtimeStatus = () => invoke<RuntimeStatus>('runtime_status');
+
+export const installRuntime = (url?: string) =>
+	invoke<RuntimeStatus>('install_runtime', { url });
+
+export const removeRuntime = () => invoke('remove_runtime');
 
 const REMOTE_URL = 'https://randomizer-server-production.up.railway.app';
 

@@ -302,6 +302,15 @@ pub fn run() {
             randomizer::commands::read_file_base64,
             randomizer::commands::remote_upload_seed,
             randomizer::commands::remote_request,
+            randomizer::commands::list_custom_apworlds,
+            randomizer::commands::install_apworld_from_path,
+            randomizer::commands::install_apworld_from_bytes,
+            randomizer::commands::remove_custom_apworld,
+            randomizer::commands::refresh_apworld_schemas,
+            randomizer::commands::open_custom_worlds_dir,
+            randomizer::commands::runtime_status,
+            randomizer::commands::install_runtime,
+            randomizer::commands::remove_runtime,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())
