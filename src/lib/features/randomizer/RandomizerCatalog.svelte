@@ -106,13 +106,13 @@
 				{#snippet icon()}
 					<Icon icon={installing ? 'mdi:loading' : 'mdi:package-variant-plus'} />
 				{/snippet}
-				Install APWorld
+				{i18nState.locale && m.randomizer_installApworld()}
 			</Button>
 			<Button size="md" variant="ghost" onclick={() => (showCustom = !showCustom)}>
 				{#snippet icon()}
 					<Icon icon={showCustom ? 'mdi:chevron-up' : 'mdi:chevron-down'} />
 				{/snippet}
-				Manage
+				{i18nState.locale && m.randomizer_manage()}
 			</Button>
 			<Button
 				size="md"

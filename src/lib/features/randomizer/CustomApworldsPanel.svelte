@@ -3,6 +3,8 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import { onMount, onDestroy } from 'svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 	import { getCurrentWebview } from '@tauri-apps/api/webview';
 	import { pushInfoToast, pushToast } from '$lib/toast';
 	import {
@@ -71,15 +73,17 @@
 				pushInfoToast({
 					message:
 						ok === 1
-							? `Installed ${paths[0].split(/[\\/]/).pop()}`
-							: `Installed ${ok} apworld(s)`
+							? m.randomizer_customApworlds_installedSingle({
+									name: paths[0].split(/[\\/]/).pop() ?? ''
+								})
+							: m.randomizer_customApworlds_installedMulti({ count: String(ok) })
 				});
 			}
 			if (failed > 0) {
 				pushToast({
 					type: 'error',
-					name: 'Install failed',
-					message: `${failed} file(s) could not be installed.`
+					name: m.randomizer_customApworlds_installFailed(),
+					message: m.randomizer_customApworlds_installFailedMsg({ count: String(failed) })
 				});
 			}
 			await refreshList();
@@ -112,15 +116,19 @@
 		refreshLog = null;
 		try {
 			const res = await refreshApworldSchemas();
-			refreshLog = res.stdout || res.stderr || 'Done.';
+			refreshLog = res.stdout || res.stderr || m.randomizer_runtime_done();
 			if (!res.success) {
 				pushToast({
 					type: 'error',
-					name: 'Schema refresh failed',
-					message: (res.stderr || res.stdout || 'Unknown error').slice(0, 300)
+					name: m.randomizer_customApworlds_refreshFailed(),
+					message: (
+						res.stderr ||
+						res.stdout ||
+						m.randomizer_customApworlds_unknownError()
+					).slice(0, 300)
 				});
 			} else {
-				pushInfoToast({ message: 'Schemas refreshed.' });
+				pushInfoToast({ message: m.randomizer_customApworlds_refreshed() });
 				await randomizerStore.loadCatalog();
 			}
 			await refreshList();
@@ -171,21 +179,20 @@
 		<div>
 			<h2>
 				<Icon icon="mdi:package-variant-plus" />
-				Custom APWorlds
+				{i18nState.locale && m.randomizer_customApworlds_title()}
 			</h2>
 			<p class="apw-subtitle">
-				Drop <code>.apworld</code> files here or pick them from disk. They'll be installed into
-				Archipelago's <code>custom_worlds/</code> folder.
+				{i18nState.locale && m.randomizer_customApworlds_intro()}
 			</p>
 		</div>
 		<div class="apw-actions">
 			<Button size="sm" variant="ghost" onclick={openCustomWorldsDir}>
 				{#snippet icon()}<Icon icon="mdi:folder-open" />{/snippet}
-				Open folder
+				{i18nState.locale && m.randomizer_customApworlds_openFolder()}
 			</Button>
 			<Button size="sm" variant="ghost" onclick={refreshList} disabled={loading}>
 				{#snippet icon()}<Icon icon="mdi:refresh" />{/snippet}
-				Reload
+				{i18nState.locale && m.randomizer_customApworlds_reload()}
 			</Button>
 		</div>
 	</header>
@@ -195,12 +202,12 @@
 		class:is-active={dragActive}
 		class:is-busy={busy}
 		role="region"
-		aria-label="Drop .apworld files here"
+		aria-label={i18nState.locale && m.randomizer_customApworlds_dropTitle()}
 	>
 		<Icon icon={busy ? 'mdi:loading' : 'mdi:tray-arrow-down'} class={busy ? 'apw-spin' : ''} />
 		<div class="apw-drop-body">
-			<strong>Drop <code>.apworld</code> files anywhere on this window</strong>
-			<small>they'll land in <code>custom_worlds/</code> automatically</small>
+			<strong>{i18nState.locale && m.randomizer_customApworlds_dropTitle()}</strong>
+			<small>{i18nState.locale && m.randomizer_customApworlds_dropSub()}</small>
 		</div>
 	</div>
 
@@ -221,11 +228,13 @@
 							<span>{formatSize(file.size)}</span>
 							{#if file.has_schema}
 								<span class="apw-chip apw-chip-ok">
-									<Icon icon="mdi:check-circle" /> schema
+									<Icon icon="mdi:check-circle" />
+									{i18nState.locale && m.randomizer_customApworlds_hasSchema()}
 								</span>
 							{:else}
 								<span class="apw-chip apw-chip-warn">
-									<Icon icon="mdi:alert-circle" /> no schema — refresh required
+									<Icon icon="mdi:alert-circle" />
+									{i18nState.locale && m.randomizer_customApworlds_noSchema()}
 								</span>
 							{/if}
 						</div>
@@ -245,38 +254,43 @@
 		<div class="apw-footer">
 			<Button size="md" variant="primary" onclick={refreshSchemas} disabled={busy}>
 				{#snippet icon()}<Icon icon="mdi:database-refresh" />{/snippet}
-				Refresh schemas
+				{i18nState.locale && m.randomizer_customApworlds_refreshSchemas()}
 			</Button>
 			<small class="apw-hint">
-				Runs the Python extractor so newly added worlds show up in the catalog.
+				{i18nState.locale && m.randomizer_customApworlds_refreshHint()}
 			</small>
 		</div>
 
 		{#if refreshLog}
 			<details class="apw-log">
-				<summary>Last refresh output</summary>
+				<summary>{i18nState.locale && m.randomizer_customApworlds_lastOutput()}</summary>
 				<pre>{refreshLog}</pre>
 			</details>
 		{/if}
 	{:else if !loading}
 		<div class="apw-empty">
 			<Icon icon="mdi:package-variant-closed" />
-			<span>No custom apworlds installed yet.</span>
+			<span>{i18nState.locale && m.randomizer_customApworlds_empty()}</span>
 		</div>
 	{/if}
 </section>
 
 <Modal
 	open={pendingRemove !== null}
-	title="Remove apworld"
+	title={i18nState.locale && m.randomizer_customApworlds_removeTitle()}
 	onclose={() => (pendingRemove = null)}
 >
 	<p>
-		Remove <code>{pendingRemove?.file_name}</code>?
+		{i18nState.locale &&
+			m.randomizer_customApworlds_removeConfirm({ name: pendingRemove?.file_name ?? '' })}
 	</p>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (pendingRemove = null)}>Cancel</Button>
-		<Button variant="danger" onclick={confirmRemove}>Remove</Button>
+		<Button variant="ghost" onclick={() => (pendingRemove = null)}>
+			{i18nState.locale && m.randomizer_customApworlds_cancel()}
+		</Button>
+		<Button variant="danger" onclick={confirmRemove}>
+			{i18nState.locale && m.randomizer_customApworlds_remove()}
+		</Button>
 	{/snippet}
 </Modal>
 

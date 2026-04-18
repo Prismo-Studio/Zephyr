@@ -16,6 +16,8 @@
 	} from './api';
 	import type { PatchFile } from './types';
 	import { pushInfoToast, pushToast } from '$lib/toast';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	type Props = {
 		/** Path to the currently-selected .archipelago seed. When set, the
@@ -67,27 +69,20 @@
 
 	async function play(patch: PatchFile) {
 		try {
-			// Apply + spawn the custom Python client. The Python client is kept
-			// for its emulator bridge (Lua connector / memory I/O) only — chat
-			// is handled by Zephyr Console, which we open right after so both
-			// windows are live side-by-side.
 			await applyPatch(patch.path);
-			pushInfoToast({ message: `Launching ${patch.file_name}…` });
+			pushInfoToast({
+				message: m.randomizer_patches_launching({ name: patch.file_name })
+			});
 			try {
 				await openConsoleWindow();
-			} catch (err) {
-				// Non-fatal — the patch is already applying. Surface as a warning
-				// toast so the user knows chat won't open automatically.
-				pushToast({
-					type: 'error',
-					name: 'Console failed to open',
-					message: (err as any)?.message ?? String(err)
-				});
+			} catch {
+				// Non-fatal — the patch is already applying. The console just
+				// didn't pop up, user can open it manually.
 			}
 		} catch (err) {
 			pushToast({
 				type: 'error',
-				name: 'Apply failed',
+				name: m.randomizer_patches_applyFailed(),
 				message: (err as any)?.message ?? String(err)
 			});
 		}
@@ -134,18 +129,6 @@
 		await refresh();
 	}
 
-	async function launchTextClient() {
-		try {
-			await openConsoleWindow();
-		} catch (err) {
-			pushToast({
-				type: 'error',
-				name: 'Console failed to open',
-				message: (err as any)?.message ?? String(err)
-			});
-		}
-	}
-
 	// Unique extensions seen in the current patch list — these are the games
 	// for which the user might want to register a base ROM.
 	const extensionsSeen = $derived.by(() => {
@@ -157,29 +140,20 @@
 
 <section class="sp-panel">
 	<header class="sp-header">
-		<div>
+		<div class="sp-header-info">
 			<h3>
 				<Icon icon="mdi:puzzle-check" />
-				Patches & clients
+				{i18nState.locale && m.randomizer_patches_title()}
 				{#if selectedSeedPath && visible.length !== all.length}
-					<small class="sp-filter">filtered to current seed</small>
+					<small class="sp-filter">{i18nState.locale && m.randomizer_patches_filtered()}</small>
 				{/if}
 			</h3>
-			<p class="sp-sub">
-				Per-player patch files extracted from the generated seed. Click <strong>Play</strong>
-				to apply a patch and launch its custom client.
-			</p>
+			<p class="sp-sub">{i18nState.locale && m.randomizer_patches_intro()}</p>
 		</div>
 		<div class="sp-actions">
-			<Tooltip text="Open the Zephyr Console for this server" position="top" delay={200}>
-				<Button size="sm" variant="ghost" onclick={launchTextClient}>
-					{#snippet icon()}<Icon icon="mdi:console" />{/snippet}
-					Zephyr Console
-				</Button>
-			</Tooltip>
 			<Button size="sm" variant="ghost" onclick={refresh} disabled={loading}>
 				{#snippet icon()}<Icon icon="mdi:refresh" />{/snippet}
-				Reload
+				{i18nState.locale && m.randomizer_patches_reload()}
 			</Button>
 		</div>
 	</header>
@@ -196,7 +170,7 @@
 						</span>
 						<button
 							class="sp-rom-clear"
-							aria-label="Forget base ROM"
+							aria-label={i18nState.locale && m.randomizer_patches_forgetRom()}
 							onclick={() => forgetRom(ext)}
 							disabled={busyExt === ext}
 						>
@@ -209,7 +183,7 @@
 							disabled={busyExt === ext}
 						>
 							<Icon icon="mdi:disc-alert" />
-							Set base ROM
+							{i18nState.locale && m.randomizer_patches_setBaseRom()}
 						</button>
 					{/if}
 				</div>
@@ -222,8 +196,8 @@
 			<Icon icon="mdi:puzzle-outline" />
 			<span>
 				{selectedSeedPath
-					? 'This seed has no patch files — game is server-only.'
-					: 'No patches yet. Generate a seed for a game that requires patching.'}
+					? i18nState.locale && m.randomizer_patches_emptyThisSeed()
+					: i18nState.locale && m.randomizer_patches_emptyAll()}
 			</span>
 		</div>
 	{:else}
@@ -233,28 +207,37 @@
 					<Icon icon="mdi:package-variant" class="sp-item-icon" />
 					<div class="sp-item-body">
 						<div class="sp-item-title">
-							{patch.player_label ?? patch.file_name}
+							<span class="sp-item-name">{patch.player_label ?? patch.file_name}</span>
 							<span class="sp-item-ext">.{patch.extension}</span>
 							{#if patch.output_rom_path}
 								<span class="sp-chip sp-chip-ok">
-									<Icon icon="mdi:check" /> applied
+									<Icon icon="mdi:check" />
+									{i18nState.locale && m.randomizer_patches_applied()}
 								</span>
 							{/if}
 						</div>
 						<div class="sp-item-meta">
-							<code>{patch.file_name}</code>
-							<span>{fmtSize(patch.size)}</span>
+							<div class="sp-filename-wrap">
+								<Tooltip text={patch.file_name} position="top" delay={300} block>
+									<code class="sp-filename">{patch.file_name}</code>
+								</Tooltip>
+							</div>
+							<span class="sp-item-size">{fmtSize(patch.size)}</span>
 						</div>
 					</div>
 					<div class="sp-item-actions">
 						<Button size="sm" variant="primary" onclick={() => play(patch)}>
 							{#snippet icon()}<Icon icon="mdi:play" />{/snippet}
-							Play
+							{i18nState.locale && m.randomizer_patches_play()}
 						</Button>
-						<Tooltip text="Delete patch" position="top" delay={200}>
+						<Tooltip
+							text={i18nState.locale && m.randomizer_patches_deletePatch()}
+							position="top"
+							delay={200}
+						>
 							<button
 								class="sp-icon-btn"
-								aria-label="Delete patch"
+								aria-label={i18nState.locale && m.randomizer_patches_deletePatch()}
 								onclick={() => askDelete(patch)}
 							>
 								<Icon icon="mdi:trash-can-outline" />
@@ -270,21 +253,22 @@
 <Modal
 	open={pendingDelete !== null}
 	onclose={() => (pendingDelete = null)}
-	title="Delete patch?"
+	title={i18nState.locale && m.randomizer_patches_deleteTitle()}
 >
 	{#if pendingDelete}
 		<p class="sp-modal-text">
-			Permanently delete <code>{pendingDelete.file_name}</code>?
+			{i18nState.locale &&
+				m.randomizer_patches_deleteConfirm({ name: pendingDelete.file_name })}
 		</p>
-		<p class="sp-modal-hint">
-			This removes the patch file only. The applied ROM (if any) and the seed itself stay in place.
-		</p>
+		<p class="sp-modal-hint">{i18nState.locale && m.randomizer_patches_deleteHint()}</p>
 	{/if}
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (pendingDelete = null)}>Cancel</Button>
+		<Button variant="ghost" onclick={() => (pendingDelete = null)}>
+			{i18nState.locale && m.randomizer_cancel()}
+		</Button>
 		<Button variant="danger" onclick={confirmDelete}>
 			{#snippet icon()}<Icon icon="mdi:trash-can-outline" />{/snippet}
-			Delete
+			{i18nState.locale && m.randomizer_patches_delete()}
 		</Button>
 	{/snippet}
 </Modal>
@@ -306,6 +290,11 @@
 		justify-content: space-between;
 		gap: var(--space-md);
 		flex-wrap: wrap;
+	}
+
+	.sp-header-info {
+		flex: 1;
+		min-width: 0;
 	}
 
 	.sp-header h3 {
@@ -460,6 +449,7 @@
 		gap: var(--space-sm);
 		font-size: 11px;
 		color: var(--text-muted);
+		min-width: 0;
 	}
 
 	.sp-item-meta code {
@@ -467,6 +457,37 @@
 		padding: 1px 6px;
 		border-radius: var(--radius-sm);
 		font-size: 11px;
+	}
+
+	.sp-filename-wrap {
+		flex: 1 1 0;
+		min-width: 0;
+		overflow: hidden;
+	}
+
+	.sp-filename {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		min-width: 0;
+	}
+
+	.sp-item-size {
+		flex-shrink: 0;
+	}
+
+	.sp-item-name {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		min-width: 0;
+	}
+
+	.sp-item-actions {
+		flex-shrink: 0;
 	}
 
 	.sp-chip {

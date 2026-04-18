@@ -710,7 +710,7 @@
 					<div class="rdz-server-actions">
 						<Button variant="primary" onclick={() => api.openConsoleWindow()}>
 							{#snippet icon()}<Icon icon="mdi:console" />{/snippet}
-							Open console
+							{i18nState.locale && m.randomizer_openConsole()}
 						</Button>
 						<Button variant="danger" onclick={stop}>
 							{#snippet icon()}<Icon icon="mdi:stop" />{/snippet}
@@ -1064,11 +1064,21 @@
 
 	.rdz-running-line {
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		gap: 8px;
 		font-size: 12px;
 		color: var(--text-secondary);
 		padding: 2px 2px 6px;
+		flex-wrap: wrap;
+	}
+
+	.rdz-running-line > .rdz-live-dot {
+		margin-top: 4px;
+		flex-shrink: 0;
+	}
+
+	.rdz-running-line > span:not(.rdz-live-dot) {
+		flex-shrink: 0;
 	}
 
 	.rdz-running-line code {
@@ -1077,6 +1087,11 @@
 		background: transparent;
 		padding: 0;
 		font-size: 12px;
+		flex: 1 1 100%;
+		min-width: 0;
+		overflow-wrap: anywhere;
+		word-break: break-all;
+		line-height: 1.4;
 	}
 
 	.rdz-live-dot {

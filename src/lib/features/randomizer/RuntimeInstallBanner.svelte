@@ -7,6 +7,8 @@
 	import type { RuntimeProgress, RuntimeStatus } from './types';
 	import { randomizerStore } from './randomizer.store.svelte';
 	import { pushToast } from '$lib/toast';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	let status: RuntimeStatus | null = $state(null);
 	let loading = $state(true);
@@ -39,18 +41,21 @@
 			case 'downloading': {
 				const got = formatSize(progress.received);
 				const total = progress.total ? ` / ${formatSize(progress.total)}` : '';
-				return `Downloading ${got}${total}`;
+				return m.randomizer_runtime_progress_downloading({ got, total });
 			}
 			case 'extracting':
-				return `Extracting ${progress.done}/${progress.total}`;
+				return m.randomizer_runtime_progress_extracting({
+					done: String(progress.done),
+					total: String(progress.total)
+				});
 			case 'provisioning_venv':
 				return progress.message;
 			case 'installing_deps':
 				return progress.message;
 			case 'installed':
-				return 'Installed';
+				return m.randomizer_runtime_progress_installed();
 			case 'failed':
-				return `Failed: ${progress.error}`;
+				return m.randomizer_runtime_progress_failed({ error: progress.error });
 		}
 	});
 
@@ -79,7 +84,7 @@
 			console.error(err);
 			pushToast({
 				type: 'error',
-				name: 'Runtime install failed',
+				name: m.randomizer_runtime_installFailed(),
 				message: (err as any)?.message ?? String(err)
 			});
 		} finally {
@@ -98,7 +103,7 @@
 			console.error(err);
 			pushToast({
 				type: 'error',
-				name: 'Dependency install failed',
+				name: m.randomizer_runtime_depsInstallFailed(),
 				message: (err as any)?.message ?? String(err)
 			});
 		} finally {
@@ -140,14 +145,15 @@
 {/snippet}
 
 {#if !loading && status && !status.installed}
-	<div class="rim-banner" role="region" aria-label="Archipelago runtime not installed">
+	<div
+		class="rim-banner"
+		role="region"
+		aria-label={i18nState.locale && m.randomizer_runtime_notInstalled_title()}
+	>
 		<Icon icon="mdi:cloud-download-outline" />
 		<div class="rim-body">
-			<strong>Archipelago runtime not installed</strong>
-			<small>
-				Zephyr can generate seeds locally, but it needs the Archipelago Python runtime. Releases
-				ship without it to keep downloads small.
-			</small>
+			<strong>{i18nState.locale && m.randomizer_runtime_notInstalled_title()}</strong>
+			<small>{i18nState.locale && m.randomizer_runtime_notInstalled_desc()}</small>
 			{@render progressBlock()}
 		</div>
 		<div class="rim-actions">
@@ -156,21 +162,22 @@
 						icon={installing ? 'mdi:loading' : 'mdi:download'}
 						class={installing ? 'rim-spin' : ''}
 					/>{/snippet}
-				{installing ? 'Installing…' : 'Download & install'}
+				{installing
+					? i18nState.locale && m.randomizer_runtime_installing()
+					: i18nState.locale && m.randomizer_runtime_download()}
 			</Button>
 		</div>
 	</div>
 {:else if !loading && status && status.installed && !status.venv_ready}
-	<div class="rim-banner rim-warn" role="region" aria-label="Python dependencies missing">
+	<div
+		class="rim-banner rim-warn"
+		role="region"
+		aria-label={i18nState.locale && m.randomizer_runtime_venvMissing_title()}
+	>
 		<Icon icon="mdi:alert-circle-outline" />
 		<div class="rim-body">
-			<strong>Python dependencies not installed</strong>
-			<small>
-				The Archipelago runtime is on disk, but its Python venv isn't set up yet. Generation
-				will fail for games whose worlds need extra modules (Pokémon Emerald needs
-				<code>setuptools</code>, SoE needs <code>pyevermizer</code>, Zillion needs
-				<code>zilliandomizer</code>, etc.).
-			</small>
+			<strong>{i18nState.locale && m.randomizer_runtime_venvMissing_title()}</strong>
+			<small>{i18nState.locale && m.randomizer_runtime_venvMissing_desc()}</small>
 			{@render progressBlock()}
 		</div>
 		<div class="rim-actions">
@@ -179,18 +186,22 @@
 						icon={installing ? 'mdi:loading' : 'mdi:language-python'}
 						class={installing ? 'rim-spin' : ''}
 					/>{/snippet}
-				{installing ? 'Installing…' : 'Install Python dependencies'}
+				{installing
+					? i18nState.locale && m.randomizer_runtime_installing()
+					: i18nState.locale && m.randomizer_runtime_installDeps()}
 			</Button>
 		</div>
 	</div>
 {:else if !loading && status && status.installed}
-	<!-- show a compact chip so the user knows where the runtime lives -->
 	<div class="rim-ok">
 		<Icon icon="mdi:check-circle-outline" />
-		<span>Archipelago runtime installed ·</span>
+		<span>{i18nState.locale && m.randomizer_runtime_installed()} ·</span>
 		<code>{status.path}</code>
 		<span class="rim-ok-meta">
-			{status.world_count} worlds · {formatSize(status.bytes_on_disk)}
+			{i18nState.locale &&
+				m.randomizer_runtime_worlds({ count: String(status.world_count) })} · {formatSize(
+				status.bytes_on_disk
+			)}
 		</span>
 	</div>
 {/if}
