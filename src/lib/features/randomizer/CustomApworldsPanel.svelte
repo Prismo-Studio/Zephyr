@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
 	import { onMount, onDestroy } from 'svelte';
 	import { getCurrentWebview } from '@tauri-apps/api/webview';
 	import { pushInfoToast, pushToast } from '$lib/toast';
@@ -88,8 +89,16 @@
 	}
 
 
-	async function remove(file: CustomApworld) {
-		if (!confirm(`Remove ${file.file_name}?`)) return;
+	let pendingRemove: CustomApworld | null = $state(null);
+
+	function remove(file: CustomApworld) {
+		pendingRemove = file;
+	}
+
+	async function confirmRemove() {
+		const file = pendingRemove;
+		pendingRemove = null;
+		if (!file) return;
 		try {
 			await removeCustomApworld(file.file_name);
 			await refreshList();
@@ -256,6 +265,20 @@
 		</div>
 	{/if}
 </section>
+
+<Modal
+	open={pendingRemove !== null}
+	title="Remove apworld"
+	onclose={() => (pendingRemove = null)}
+>
+	<p>
+		Remove <code>{pendingRemove?.file_name}</code>?
+	</p>
+	{#snippet actions()}
+		<Button variant="ghost" onclick={() => (pendingRemove = null)}>Cancel</Button>
+		<Button variant="danger" onclick={confirmRemove}>Remove</Button>
+	{/snippet}
+</Modal>
 
 <style>
 	.apw-panel {

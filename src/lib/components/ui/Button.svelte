@@ -83,29 +83,14 @@
 
 	/* Primary */
 	.z-btn-primary {
-		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
+		background: var(--accent-400);
 		color: var(--text-inverse);
 		border-color: var(--accent-400);
 	}
-	.z-btn-primary::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(135deg, var(--accent-300), var(--accent-500));
-		opacity: 0;
-		transition: opacity var(--transition-fast);
-		pointer-events: none;
-	}
 	.z-btn-primary:hover:not(:disabled) {
+		background: var(--accent-300);
 		border-color: var(--accent-300);
 		box-shadow: var(--shadow-glow);
-	}
-	.z-btn-primary:hover:not(:disabled)::before {
-		opacity: 1;
-	}
-	.z-btn-primary > * {
-		position: relative;
-		z-index: 1;
 	}
 
 	/* Accent */

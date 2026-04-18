@@ -8,13 +8,8 @@
 	import { randomizerStore, dependenciesSatisfied } from './randomizer.store.svelte';
 	import { CATEGORY_ICONS, CATEGORY_LABELS, CATEGORY_ORDER, type OptionDef } from './types';
 	import RandomizerOptionField from './RandomizerOptionField.svelte';
-	import RandomizerServerPanel from './RandomizerServerPanel.svelte';
-	import YamlPreview from './YamlPreview.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-
-	let rightTab: 'yaml' | 'server' = $state('yaml');
-	let serverPanelRef: RandomizerServerPanel | undefined = $state();
 
 	// Maps game id (schema.id, matches the world folder) to the English tutorial
 	// URL path on archipelago.gg. Defaults to "setup/en" for games not listed.
@@ -50,9 +45,8 @@
 				name: m.randomizer_slotSaved(),
 				message: `${slot} -> ${path.split(/[/\\]/).pop()}`
 			});
-			rightTab = 'server';
-			// Refresh the server panel's player list so the new slot appears
-			serverPanelRef?.refresh();
+			// Tell the page to switch to the server tab and refresh the player list.
+			window.dispatchEvent(new CustomEvent('rdz-player-saved'));
 		} catch {
 			// invoke() already toasted
 		}
@@ -136,9 +130,8 @@
 </script>
 
 {#if schema}
-	<div class="rdz-config">
-		<div class="rdz-config-main">
-			<header class="rdz-config-header">
+	<div class="rdz-config-main">
+		<header class="rdz-config-header">
 				<button
 					class="rdz-back"
 					onclick={onBack}
@@ -276,38 +269,7 @@
 					{/snippet}
 					{i18nState.locale && m.randomizer_savePlayerSlot()}
 				</Button>
-			</footer>
-		</div>
-
-		<aside class="rdz-right-pane">
-			<div class="rdz-right-tabs">
-				<button
-					class="rdz-tab"
-					class:active={rightTab === 'yaml'}
-					onclick={() => (rightTab = 'yaml')}
-				>
-					<Icon icon="mdi:code-braces" />
-					{i18nState.locale && m.randomizer_yaml()}
-				</button>
-				<button
-					class="rdz-tab"
-					class:active={rightTab === 'server'}
-					onclick={() => (rightTab = 'server')}
-				>
-					<Icon icon="mdi:server-network" />
-					{i18nState.locale && m.randomizer_multiplayer()}
-				</button>
-			</div>
-			<div class="rdz-right-body">
-				{#if rightTab === 'yaml'}
-					<YamlPreview />
-				{:else}
-					<div class="rdz-right-scroll">
-						<RandomizerServerPanel bind:this={serverPanelRef} />
-					</div>
-				{/if}
-			</div>
-		</aside>
+		</footer>
 	</div>
 {:else if randomizerStore.loadingSchema}
 	<div class="rdz-loading">
@@ -317,14 +279,6 @@
 {/if}
 
 <style>
-	.rdz-config {
-		display: flex;
-		flex: 1;
-		min-height: 0;
-		width: 100%;
-		overflow: hidden;
-	}
-
 	.rdz-config-main {
 		flex: 1;
 		display: flex;
@@ -559,75 +513,6 @@
 		padding: var(--space-md) var(--space-lg);
 		border-top: 1px solid var(--border-subtle);
 		background: var(--bg-surface);
-	}
-
-	.rdz-right-pane {
-		display: flex;
-		flex-direction: column;
-		flex: 0 0 420px;
-		background: var(--bg-surface);
-		border-left: 1px solid var(--border-subtle);
-		min-height: 0;
-		max-height: 100%;
-		overflow: hidden;
-	}
-
-	.rdz-right-tabs {
-		display: flex;
-		gap: 0;
-		background: var(--bg-elevated);
-		border-bottom: 1px solid var(--border-subtle);
-		flex-shrink: 0;
-	}
-
-	.rdz-tab {
-		flex: 1;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
-		padding: 10px;
-		border: none;
-		background: transparent;
-		color: var(--text-muted);
-		font-size: 12px;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		cursor: pointer;
-		border-bottom: 2px solid transparent;
-		transition: all var(--transition-fast);
-	}
-
-	.rdz-tab :global(svg) {
-		font-size: 14px;
-	}
-
-	.rdz-tab:hover {
-		color: var(--text-secondary);
-	}
-
-	.rdz-tab.active {
-		color: var(--accent-400);
-		border-bottom-color: var(--accent-400);
-		background: var(--bg-surface);
-	}
-
-	.rdz-right-body {
-		flex: 1;
-		min-height: 0;
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
-	}
-
-	.rdz-right-scroll {
-		flex: 1 1 0;
-		min-height: 0;
-		overflow-y: auto;
-		overflow-x: hidden;
-		padding: var(--space-md);
-		padding-bottom: var(--space-3xl);
 	}
 
 	.rdz-loading {
