@@ -22,23 +22,38 @@ use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Manager};
 use tracing::{info, warn};
 
-/// Resolve the directory of the bundled Archipelago runtime.
-/// In dev: `src-tauri/archipelago-runtime` (relative to CWD or one level up).
-/// In prod: could be the Tauri resource dir in the future.
-pub fn ap_dir(_app: &AppHandle) -> PathBuf {
+/// Persistent install location for the Archipelago runtime in packaged builds.
+/// On Linux that's `~/.local/share/<bundle-id>/randomizer/archipelago-runtime`;
+/// Tauri's `app_data_dir` maps to the platform-appropriate equivalents on macOS
+/// (`~/Library/Application Support/...`) and Windows (`%APPDATA%/...`).
+pub fn ap_install_dir(app: &AppHandle) -> PathBuf {
+    let base = app
+        .path()
+        .app_data_dir()
+        .unwrap_or_else(|_| std::env::temp_dir());
+    base.join("randomizer").join("archipelago-runtime")
+}
+
+/// Resolve the directory of the Archipelago runtime.
+///
+/// Priority:
+/// 1. A checked-out runtime at a dev-relative path (so `cargo tauri dev`
+///    still uses the in-tree copy).
+/// 2. The user-install dir under `app_data_dir`. Releases ship without the
+///    runtime to keep the binary small; the user downloads it on demand.
+pub fn ap_dir(app: &AppHandle) -> PathBuf {
     let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
-    let candidates = [
+    let dev_candidates = [
         cwd.join("archipelago-runtime"),
         cwd.join("../src-tauri/archipelago-runtime"),
         cwd.join("src-tauri/archipelago-runtime"),
     ];
-    for c in &candidates {
-        if c.exists() {
+    for c in &dev_candidates {
+        if c.join("Generate.py").exists() {
             return c.clone();
         }
     }
-    // Fallback — first candidate
-    candidates[0].clone()
+    ap_install_dir(app)
 }
 
 /// Path to the Python venv inside the Archipelago runtime directory.

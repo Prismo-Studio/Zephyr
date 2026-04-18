@@ -127,6 +127,37 @@ export type ServerStatus = {
 	port_reachable: boolean;
 };
 
+export type CustomApworld = {
+	file_name: string;
+	path: string;
+	size: number;
+	world_id: string | null;
+	display_name: string | null;
+	world_version: string | null;
+	has_schema: boolean;
+};
+
+export type ApworldRefreshResult = {
+	success: boolean;
+	stdout: string;
+	stderr: string;
+	out_dir: string;
+};
+
+export type RuntimeStatus = {
+	installed: boolean;
+	path: string;
+	bytes_on_disk: number;
+	world_count: number;
+	default_download_url: string;
+};
+
+export type RuntimeProgress =
+	| { stage: 'downloading'; received: number; total: number | null }
+	| { stage: 'extracting'; entry: string; done: number; total: number }
+	| { stage: 'installed'; path: string }
+	| { stage: 'failed'; error: string };
+
 export const CATEGORY_ORDER = [
 	'general',
 	'goals',

@@ -3,14 +3,65 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { onMount } from 'svelte';
+	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import { randomizerStore } from './randomizer.store.svelte';
 	import GameLogo from './GameLogo.svelte';
+	import CustomApworldsPanel from './CustomApworldsPanel.svelte';
+	import RuntimeInstallBanner from './RuntimeInstallBanner.svelte';
+	import { installApworldFromPath } from './api';
+	import { pushInfoToast, pushToast } from '$lib/toast';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
 	const { onSelect }: { onSelect: (gameId: string) => void } = $props();
 
 	let search = $state('');
+	let showCustom = $state(false);
+	/** Bumped by the header install button so the panel refreshes its list. */
+	let panelReloadToken = $state(0);
+	let installing = $state(false);
+
+	async function installApworld() {
+		if (installing) return;
+		const picked = await openDialog({
+			filters: [{ name: 'Archipelago world', extensions: ['apworld'] }],
+			multiple: true
+		});
+		if (!picked) return;
+		const paths = Array.isArray(picked) ? picked : [picked];
+		installing = true;
+		let ok = 0;
+		let failed = 0;
+		try {
+			for (const p of paths) {
+				try {
+					await installApworldFromPath(p);
+					ok++;
+				} catch {
+					failed++;
+				}
+			}
+			if (ok > 0) {
+				pushInfoToast({
+					message:
+						ok === 1
+							? `Installed ${paths[0].split(/[\\/]/).pop()}`
+							: `Installed ${ok} apworld(s)`
+				});
+				showCustom = true;
+				panelReloadToken++;
+			}
+			if (failed > 0) {
+				pushToast({
+					type: 'error',
+					name: 'Install failed',
+					message: `${failed} file(s) could not be installed.`
+				});
+			}
+		} finally {
+			installing = false;
+		}
+	}
 
 	const filtered = $derived.by(() => {
 		const q = search.trim().toLowerCase();
@@ -51,6 +102,18 @@
 					{/snippet}
 				</Input>
 			</div>
+			<Button size="md" variant="primary" onclick={installApworld} disabled={installing}>
+				{#snippet icon()}
+					<Icon icon={installing ? 'mdi:loading' : 'mdi:package-variant-plus'} />
+				{/snippet}
+				Install APWorld
+			</Button>
+			<Button size="md" variant="ghost" onclick={() => (showCustom = !showCustom)}>
+				{#snippet icon()}
+					<Icon icon={showCustom ? 'mdi:chevron-up' : 'mdi:chevron-down'} />
+				{/snippet}
+				Manage
+			</Button>
 			<Button
 				size="md"
 				variant="ghost"
@@ -64,6 +127,14 @@
 			</Button>
 		</div>
 	</header>
+
+	<RuntimeInstallBanner />
+
+	<CustomApworldsPanel
+		visible={showCustom}
+		reloadToken={panelReloadToken}
+		onAutoOpen={() => (showCustom = true)}
+	/>
 
 	{#if randomizerStore.catalogLoading && randomizerStore.catalog.length === 0}
 		<div class="rdz-empty">

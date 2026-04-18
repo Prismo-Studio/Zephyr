@@ -1,4 +1,5 @@
 use std::{
+    collections::HashMap,
     fs,
     path::{Path, PathBuf},
 };
@@ -8,6 +9,16 @@ use tauri::{AppHandle, Manager};
 use tracing::warn;
 
 use super::types::{GameSchema, GameSummary};
+
+/// Directory where the schema extractor writes schemas for user-installed
+/// `.apworld` files. Overlays (and takes precedence over) the bundled dir.
+pub fn user_schemas_dir(app: &AppHandle) -> PathBuf {
+    let base = app
+        .path()
+        .app_data_dir()
+        .unwrap_or_else(|_| std::env::temp_dir());
+    base.join("randomizer").join("schemas")
+}
 
 /// Resolve the directory containing schema JSON files.
 ///
@@ -82,6 +93,40 @@ pub fn load_all_schemas(dir: &Path) -> Result<Vec<GameSchema>> {
 pub fn load_schema_by_id(dir: &Path, game_id: &str) -> Result<GameSchema> {
     let path = dir.join(format!("{game_id}.json"));
     load_schema_file(&path)
+}
+
+/// Load schemas from the bundled dir AND the user overlay, with user entries
+/// taking precedence by id. Used by the catalog + configurator commands so
+/// freshly refreshed custom apworlds show up without touching bundled files.
+pub fn load_all_schemas_merged(app: &AppHandle) -> Result<Vec<GameSchema>> {
+    let primary = schemas_dir(app);
+    let overlay = user_schemas_dir(app);
+
+    let mut by_id: HashMap<String, GameSchema> = HashMap::new();
+    // Bundled first, overlay overwrites.
+    for schema in load_all_schemas(&primary)? {
+        by_id.insert(schema.id.clone(), schema);
+    }
+    if overlay.exists() {
+        for schema in load_all_schemas(&overlay)? {
+            by_id.insert(schema.id.clone(), schema);
+        }
+    }
+
+    let mut out: Vec<GameSchema> = by_id.into_values().collect();
+    out.sort_by(|a, b| a.name.cmp(&b.name));
+    Ok(out)
+}
+
+/// Try the user overlay first (newer / custom worlds), then fall back to
+/// the bundled schemas dir.
+pub fn load_schema_by_id_merged(app: &AppHandle, game_id: &str) -> Result<GameSchema> {
+    let overlay = user_schemas_dir(app);
+    let overlay_path = overlay.join(format!("{game_id}.json"));
+    if overlay_path.exists() {
+        return load_schema_file(&overlay_path);
+    }
+    load_schema_by_id(&schemas_dir(app), game_id)
 }
 
 pub fn summarize(schema: &GameSchema) -> GameSummary {
