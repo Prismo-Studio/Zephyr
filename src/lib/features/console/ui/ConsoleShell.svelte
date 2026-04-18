@@ -74,12 +74,18 @@
 		</div>
 	</header>
 
+	<!-- Keep both views mounted at all times so switching tabs doesn't unmount
+	     the inactive session — which would fire onDestroy → dispose() and
+	     drop its live WebSocket. We just hide the background view with CSS;
+	     its log keeps accumulating in the background and bridge-log events
+	     stay subscribed. -->
 	<main class="zc-body">
-		{#if mode === 'server'}
+		<div class="zc-pane" class:zc-hidden={mode !== 'server'}>
 			<ServerView />
-		{:else}
+		</div>
+		<div class="zc-pane" class:zc-hidden={mode !== 'client'}>
 			<ClientView />
-		{/if}
+		</div>
 	</main>
 
 	<footer class="zc-footer">
@@ -195,6 +201,18 @@
 		flex-direction: column;
 		min-height: 0;
 		overflow: hidden;
+	}
+
+	.zc-pane {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	.zc-hidden {
+		display: none;
 	}
 
 	.zc-footer {

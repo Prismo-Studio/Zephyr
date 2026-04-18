@@ -17,19 +17,32 @@
 
 use std::{
     fs,
+    io::{BufRead, BufReader},
     path::{Path, PathBuf},
     process::{Command, Stdio},
 };
 
 use eyre::{bail, Context, Result};
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 
 use super::ap_runner::{ap_dir, detect_python, output_dir};
 
-/// Extensions we know are NOT a patch and should be excluded from the list.
-/// Everything else that ends up next to the .archipelago is fair game.
-const NON_PATCH_EXTENSIONS: &[&str] = &["archipelago", "zip"];
+/// Archipelago patch-applying helper, embedded into the binary at build time
+/// so we can drop it next to any runtime (dev tree, user install dir, or a
+/// remote one) without relying on `scripts/` being co-located with the app.
+const APPLY_PATCH_PY: &str = include_str!("../../../scripts/apply_patch.py");
+
+/// Extensions that sit next to a generated seed but are NOT per-player patch
+/// files. They share the `.ap…` prefix so the regex-style filter below would
+/// catch them otherwise.
+///
+/// * `archipelago` — multidata, handled by the seeds panel.
+/// * `apsave` — MultiServer's periodic save snapshot (server-side state).
+/// * `apbp` / `apmc` — internal patch-format intermediates that occasionally
+///   leak out in certain worlds; they aren't playable on their own.
+/// * `zip` — the raw generate output, stripped after extraction.
+const NON_PATCH_EXTENSIONS: &[&str] = &["archipelago", "zip", "apsave", "apbp", "apmc"];
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct PatchFile {
@@ -121,10 +134,53 @@ pub fn delete_patch(path: &Path) -> Result<()> {
     Ok(())
 }
 
-/// Shell out to Archipelago's Launcher with the patch file. Launcher.py reads
-/// the patch metadata, applies it against the base ROM (prompting for one via
-/// its own tkinter dialog on first run), then spawns the matching custom
-/// client. Non-blocking: we only wait long enough to detect early failures.
+/// Extensions handled by Archipelago's external SNI Client (SNES/SFC games).
+/// This runtime doesn't bundle `SNIClient.py`, so Launcher.py can't spawn a
+/// client for these — we apply the patch directly and skip step 2 with a
+/// friendly message instead of letting the user see a confusing
+/// `can't open 'SNIClient.py'` error in the Console.
+const SNI_EXTENSIONS: &[&str] = &[
+    ".aplttp",
+    ".apz3",
+    ".apdkc3",
+    ".apeb",
+    ".apkdl3",
+    ".apl2ac",
+    ".aplufia2ac",
+    ".apmlss",
+    ".apsm",
+    ".apm3",
+    ".apsmw",
+    ".apsmz3",
+    ".apyi",
+    ".apsoe",
+    ".apcv64",
+];
+
+fn is_sni_patch(path: &Path) -> bool {
+    let name = path
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or("")
+        .to_ascii_lowercase();
+    SNI_EXTENSIONS.iter().any(|ext| name.ends_with(ext))
+}
+
+/// Apply a patch + fire up its custom client.
+///
+/// Two-step flow so games whose client isn't bundled still get patched:
+///
+/// 1. **Direct patch** via `scripts/apply_patch.py`. This walks Archipelago's
+///    `AutoPatchRegister`, finds the class for the patch's extension, and
+///    writes the output ROM next to the patch. Works for every game whose
+///    world is installed — including SNI-based ones (ALttP, SMW, SM, etc.)
+///    that don't ship a launchable `SNIClient.py` in this runtime.
+/// 2. **Launcher.py** with `--nogui` to spawn the per-game client for its
+///    emulator bridge (BizHawk connector, LADX bridge, …). If the Launcher
+///    can't resolve a client (SNI games with no bundled SNIClient), the
+///    patch is already on disk so the user can load it manually.
+///
+/// Step 1 is blocking + surfaces its error. Step 2 is fire-and-forget.
 pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
     let (python, _) = detect_python(app).ok_or_else(|| {
         eyre::eyre!("Python is not installed; install Python 3.11+ to apply patches")
@@ -141,18 +197,240 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
         bail!("patch not found: {}", patch_path.display());
     }
 
-    Command::new(&python)
+    // --- Step 1: produce the output ROM. ----------------------------------
+    // We surface the helper's output through the same `randomizer://bridge-log`
+    // channel the Console listens on, so the user sees "applying ... -> X.sfc"
+    // in the feed instead of silent success.
+    let emit_log = |text: String| {
+        let _ = app.emit(
+            "randomizer://bridge-log",
+            BridgeLog {
+                stream: "stdout",
+                text,
+            },
+        );
+    };
+    emit_log(format!(
+        "[zephyr] Play -> {}",
+        patch_path
+            .file_name()
+            .and_then(|s| s.to_str())
+            .unwrap_or("patch")
+    ));
+    emit_log(format!("[zephyr]   python: {python}"));
+    emit_log(format!("[zephyr]   runtime: {}", dir.display()));
+
+    // Always materialise the embedded helper next to the runtime so it works
+    // regardless of whether the runtime is the in-tree dev copy or a freshly
+    // downloaded one under `app_data_dir`. Overwrites on every Play so a
+    // Zephyr update with a newer helper always wins.
+    let helper = dir.join(".zephyr_apply_patch.py");
+    if let Err(err) = fs::write(&helper, APPLY_PATCH_PY) {
+        emit_log(format!(
+            "[zephyr] failed to write helper at {}: {err}",
+            helper.display()
+        ));
+    }
+
+    if helper.exists() {
+        emit_log(format!("[zephyr]   applying via {}", helper.display()));
+        let out = Command::new(&python)
+            .current_dir(&dir)
+            .env("PYTHONIOENCODING", "utf-8")
+            .env("PYTHONDONTWRITEBYTECODE", "1")
+            .arg(&helper)
+            .arg(patch_path)
+            .arg("--runtime")
+            .arg(&dir)
+            .stdin(Stdio::null())
+            .output()
+            .with_context(|| format!("run apply_patch.py for {}", patch_path.display()))?;
+
+        for line in String::from_utf8_lossy(&out.stdout).lines() {
+            if !line.trim().is_empty() {
+                let _ = app.emit(
+                    "randomizer://bridge-log",
+                    BridgeLog {
+                        stream: "stdout",
+                        text: line.to_string(),
+                    },
+                );
+            }
+        }
+        for line in String::from_utf8_lossy(&out.stderr).lines() {
+            if !line.trim().is_empty() {
+                let _ = app.emit(
+                    "randomizer://bridge-log",
+                    BridgeLog {
+                        stream: "stderr",
+                        text: line.to_string(),
+                    },
+                );
+            }
+        }
+
+        if !out.status.success() {
+            let stderr = String::from_utf8_lossy(&out.stderr).to_string();
+            let tail = stderr
+                .lines()
+                .rev()
+                .take(8)
+                .collect::<Vec<_>>()
+                .into_iter()
+                .rev()
+                .collect::<Vec<_>>()
+                .join("\n");
+            bail!("patch failed: {tail}");
+        }
+    }
+    // (If the helper was missing we already emitted a bridge-log message above.)
+
+    // --- SNI short-circuit -----------------------------------------------
+    // The bundled runtime doesn't ship SNIClient.py, so any attempt to launch
+    // it via Launcher.py just yields `[Errno 2] No such file or directory`
+    // in the Console. For these games the patched ROM from step 1 is
+    // everything Zephyr can provide — the user runs their own external SNI
+    // Client + emulator from there. Emit an informative multi-line message
+    // with the exact tools and URLs the user needs, then skip step 2.
+    if is_sni_patch(patch_path) && !dir.join("SNIClient.py").exists() {
+        let ext = patch_path
+            .extension()
+            .and_then(|s| s.to_str())
+            .unwrap_or("ap*");
+        for line in [
+            "[zephyr] SNES game detected — patched ROM is ready next to the patch.".to_string(),
+            format!(
+                "[zephyr] Archipelago's SNIClient.py is not bundled; this extension (.{ext}) needs an external SNI stack to play."
+            ),
+            "[zephyr] To play:".to_string(),
+            "[zephyr]   1. Download SNI daemon: https://github.com/alttpo/sni/releases".to_string(),
+            "[zephyr]   2. Run SNI (system tray) alongside an SNI-compatible emulator (snes9x-rr, BsnesPlus, RetroArch+snes9x_libretro, or BizHawk+SNI-connector).".to_string(),
+            "[zephyr]   3. Grab SNIClient.py from an upstream Archipelago install and run: python SNIClient.py <patch-file>".to_string(),
+            "[zephyr]   4. Use this Zephyr Console alongside for chat/hints (it's already connected when you click Connect in the Client tab).".to_string(),
+        ] {
+            let _ = app.emit(
+                "randomizer://bridge-log",
+                BridgeLog {
+                    stream: "stdout",
+                    text: line,
+                },
+            );
+        }
+        return Ok(());
+    }
+
+    // --- Step 2: fire up the per-game client (bridge-only). ---------------
+    // Non-fatal: the ROM already exists on disk after step 1, so even if the
+    // Launcher can't find a client (e.g. SNI games w/o SNIClient.py) the user
+    // can still run the ROM manually.
+    //
+    // We pipe stdout/stderr so bridge events (BizHawk connect/disconnect,
+    // item receive, deathlink) can be forwarded to the Zephyr Console as a
+    // log feed — see the `randomizer://bridge-log` event below.
+    match Command::new(&python)
         .current_dir(&dir)
         .env("PYTHONIOENCODING", "utf-8")
         .env("PYTHONDONTWRITEBYTECODE", "1")
         .arg(&launcher)
         .arg(patch_path)
+        // `--` tells Launcher.py's argparse to stop flag-parsing; everything
+        // after is forwarded verbatim to the resolved component. Without it
+        // argparse sees `--nogui` and errors with
+        // `unrecognized arguments: --nogui` because Launcher.py itself
+        // doesn't define that flag.
+        .arg("--")
+        .arg("--nogui")
         .stdin(Stdio::null())
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
         .spawn()
-        .with_context(|| format!("spawn {} {}", python, patch_path.display()))?;
+    {
+        Ok(mut child) => {
+            let patch_name = patch_path
+                .file_name()
+                .and_then(|s| s.to_str())
+                .unwrap_or("patch")
+                .to_string();
+            let _ = app.emit(
+                "randomizer://bridge-started",
+                BridgeStarted {
+                    pid: child.id(),
+                    patch: patch_name.clone(),
+                },
+            );
+
+            // Drain stdout → bridge-log(stream="stdout").
+            if let Some(stdout) = child.stdout.take() {
+                let app_h = app.clone();
+                std::thread::spawn(move || {
+                    for line in BufReader::new(stdout).lines().flatten() {
+                        let _ = app_h.emit(
+                            "randomizer://bridge-log",
+                            BridgeLog {
+                                stream: "stdout",
+                                text: line,
+                            },
+                        );
+                    }
+                });
+            }
+            // Drain stderr → bridge-log(stream="stderr") so Python tracebacks
+            // from the client (failed SNI connect, missing base ROM, etc.)
+            // surface in the Console instead of disappearing into /dev/null.
+            if let Some(stderr) = child.stderr.take() {
+                let app_h = app.clone();
+                std::thread::spawn(move || {
+                    for line in BufReader::new(stderr).lines().flatten() {
+                        let _ = app_h.emit(
+                            "randomizer://bridge-log",
+                            BridgeLog {
+                                stream: "stderr",
+                                text: line,
+                            },
+                        );
+                    }
+                });
+            }
+            // Reap the child + announce exit on a separate thread so we don't
+            // leave a zombie process and the UI knows when to re-enable Play.
+            let app_exit = app.clone();
+            std::thread::spawn(move || {
+                let code = child.wait().ok().and_then(|s| s.code());
+                let _ = app_exit.emit(
+                    "randomizer://bridge-exited",
+                    BridgeExited {
+                        code,
+                        patch: patch_name,
+                    },
+                );
+            });
+        }
+        Err(err) => {
+            tracing::warn!(
+                "failed to spawn Launcher for {}: {err:#}",
+                patch_path.display()
+            );
+        }
+    }
     Ok(())
+}
+
+#[derive(Serialize, Clone, Debug)]
+struct BridgeStarted {
+    pid: u32,
+    patch: String,
+}
+
+#[derive(Serialize, Clone, Debug)]
+struct BridgeLog {
+    stream: &'static str,
+    text: String,
+}
+
+#[derive(Serialize, Clone, Debug)]
+struct BridgeExited {
+    code: Option<i32>,
+    patch: String,
 }
 
 /// Launch a named Archipelago component (typically a custom client like

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import Icon from '@iconify/svelte';
+	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 
 	import LogFeed from '../ui/LogFeed.svelte';
 	import CommandInput from '../ui/CommandInput.svelte';
@@ -11,15 +12,67 @@
 	const session = new ClientSession();
 	let helpOpen = $state(false);
 
-	onMount(() => {
+	let unlistenBridgeStarted: UnlistenFn | null = null;
+	let unlistenBridgeLog: UnlistenFn | null = null;
+	let unlistenBridgeExited: UnlistenFn | null = null;
+
+	/** Drop AP's ANSI color escapes so they don't render as garbage in the feed. */
+	function stripAnsi(s: string): string {
+		// eslint-disable-next-line no-control-regex
+		return s.replace(/\x1b\[[0-9;]*[A-Za-z]/g, '');
+	}
+
+	onMount(async () => {
 		session.log.appendSystem(
 			'Zephyr Client console. Fill in the host/slot form to connect.',
 			'system'
+		);
+
+		unlistenBridgeStarted = await listen<{ pid: number; patch: string }>(
+			'randomizer://bridge-started',
+			(e) => {
+				session.log.append({
+					level: 'system',
+					source: 'BRIDGE',
+					text: `Emulator bridge started (pid ${e.payload.pid}) for ${e.payload.patch}`,
+					origin: 'system'
+				});
+			}
+		);
+
+		unlistenBridgeLog = await listen<{ stream: 'stdout' | 'stderr'; text: string }>(
+			'randomizer://bridge-log',
+			(e) => {
+				const text = stripAnsi(e.payload.text);
+				if (!text.trim()) return;
+				const isErr = e.payload.stream === 'stderr';
+				session.log.append({
+					level: isErr ? 'error' : 'info',
+					source: 'BRIDGE',
+					text,
+					origin: isErr ? 'bridge-stderr' : 'bridge-stdout'
+				});
+			}
+		);
+
+		unlistenBridgeExited = await listen<{ code: number | null; patch: string }>(
+			'randomizer://bridge-exited',
+			(e) => {
+				session.log.append({
+					level: e.payload.code === 0 ? 'system' : 'warn',
+					source: 'BRIDGE',
+					text: `Emulator bridge for ${e.payload.patch} exited (code ${e.payload.code ?? '?'}).`,
+					origin: 'system'
+				});
+			}
 		);
 	});
 
 	onDestroy(() => {
 		session.dispose();
+		unlistenBridgeStarted?.();
+		unlistenBridgeLog?.();
+		unlistenBridgeExited?.();
 	});
 
 	function handleConnect(params: ConnectParams) {

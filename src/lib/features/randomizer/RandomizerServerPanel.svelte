@@ -5,6 +5,7 @@
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import SeedPatchesPanel from './SeedPatchesPanel.svelte';
 	import { pushToast } from '$lib/toast';
 	import * as api from './api';
 	import type { GenerateOutcome, PlayerFile, PythonStatus, SeedFile, ServerStatus } from './types';
@@ -42,6 +43,8 @@
 	let generateLog: string = $state('');
 	let generating = $state(false);
 	let starting = $state(false);
+	/** Bumped after generate/rename so the patches panel refreshes. */
+	let patchesReloadToken = $state(0);
 
 	// --- Remote server state ---
 	let hostMode: 'local' | 'remote' = $state('remote');
@@ -114,6 +117,8 @@
 				}
 			}
 			seeds = await api.listSeeds();
+			// Generate just produced new patch files — refresh the panel.
+			patchesReloadToken++;
 
 			// Auto-upload and restart remote server if in remote mode
 			if (outcome.success && selectedSeed && hostMode === 'remote') {
@@ -473,6 +478,11 @@
 				{/each}
 			</ul>
 		{/if}
+
+		<SeedPatchesPanel
+			selectedSeedPath={selectedSeed}
+			reloadToken={patchesReloadToken}
+		/>
 
 		{#if generateLog}
 			<details class="rdz-log-details">

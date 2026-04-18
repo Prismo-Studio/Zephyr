@@ -32,7 +32,14 @@ export type LogEntry = {
 	source?: string; // e.g. "SRV", "YOU", "Slot#3", "CHAT"
 	text: string;
 	/** Origin of the entry — useful for filtering/debug. */
-	origin: 'server-stdout' | 'server-stderr' | 'echo' | 'client' | 'system';
+	origin:
+		| 'server-stdout'
+		| 'server-stderr'
+		| 'echo'
+		| 'client'
+		| 'system'
+		| 'bridge-stdout'
+		| 'bridge-stderr';
 };
 
 /**

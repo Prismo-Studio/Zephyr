@@ -2,6 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
 	import { onMount } from 'svelte';
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import {
@@ -9,8 +10,8 @@
 		clearRomPath,
 		deletePatch,
 		getRomPaths,
-		launchApComponent,
 		listPatches,
+		openConsoleWindow,
 		setRomPath
 	} from './api';
 	import type { PatchFile } from './types';
@@ -29,6 +30,8 @@
 	let romPaths: Record<string, string> = $state({});
 	let loading = $state(false);
 	let busyExt: string | null = $state(null);
+	/** Patch pending delete-confirmation. `null` = modal closed. */
+	let pendingDelete: PatchFile | null = $state(null);
 
 	async function refresh() {
 		loading = true;
@@ -64,8 +67,23 @@
 
 	async function play(patch: PatchFile) {
 		try {
+			// Apply + spawn the custom Python client. The Python client is kept
+			// for its emulator bridge (Lua connector / memory I/O) only — chat
+			// is handled by Zephyr Console, which we open right after so both
+			// windows are live side-by-side.
 			await applyPatch(patch.path);
 			pushInfoToast({ message: `Launching ${patch.file_name}…` });
+			try {
+				await openConsoleWindow();
+			} catch (err) {
+				// Non-fatal — the patch is already applying. Surface as a warning
+				// toast so the user knows chat won't open automatically.
+				pushToast({
+					type: 'error',
+					name: 'Console failed to open',
+					message: (err as any)?.message ?? String(err)
+				});
+			}
 		} catch (err) {
 			pushToast({
 				type: 'error',
@@ -104,19 +122,25 @@
 		}
 	}
 
-	async function removePatch(patch: PatchFile) {
-		if (!confirm(`Delete ${patch.file_name}?`)) return;
-		await deletePatch(patch.path);
+	function askDelete(patch: PatchFile) {
+		pendingDelete = patch;
+	}
+
+	async function confirmDelete() {
+		if (!pendingDelete) return;
+		const target = pendingDelete;
+		pendingDelete = null;
+		await deletePatch(target.path);
 		await refresh();
 	}
 
 	async function launchTextClient() {
 		try {
-			await launchApComponent('Text Client');
+			await openConsoleWindow();
 		} catch (err) {
 			pushToast({
 				type: 'error',
-				name: 'Launch failed',
+				name: 'Console failed to open',
 				message: (err as any)?.message ?? String(err)
 			});
 		}
@@ -147,10 +171,10 @@
 			</p>
 		</div>
 		<div class="sp-actions">
-			<Tooltip text="Universal server chat client" position="top" delay={200}>
+			<Tooltip text="Open the Zephyr Console for this server" position="top" delay={200}>
 				<Button size="sm" variant="ghost" onclick={launchTextClient}>
 					{#snippet icon()}<Icon icon="mdi:console" />{/snippet}
-					Text Client
+					Zephyr Console
 				</Button>
 			</Tooltip>
 			<Button size="sm" variant="ghost" onclick={refresh} disabled={loading}>
@@ -231,7 +255,7 @@
 							<button
 								class="sp-icon-btn"
 								aria-label="Delete patch"
-								onclick={() => removePatch(patch)}
+								onclick={() => askDelete(patch)}
 							>
 								<Icon icon="mdi:trash-can-outline" />
 							</button>
@@ -242,6 +266,28 @@
 		</ul>
 	{/if}
 </section>
+
+<Modal
+	open={pendingDelete !== null}
+	onclose={() => (pendingDelete = null)}
+	title="Delete patch?"
+>
+	{#if pendingDelete}
+		<p class="sp-modal-text">
+			Permanently delete <code>{pendingDelete.file_name}</code>?
+		</p>
+		<p class="sp-modal-hint">
+			This removes the patch file only. The applied ROM (if any) and the seed itself stay in place.
+		</p>
+	{/if}
+	{#snippet actions()}
+		<Button variant="ghost" onclick={() => (pendingDelete = null)}>Cancel</Button>
+		<Button variant="danger" onclick={confirmDelete}>
+			{#snippet icon()}<Icon icon="mdi:trash-can-outline" />{/snippet}
+			Delete
+		</Button>
+	{/snippet}
+</Modal>
 
 <style>
 	.sp-panel {
@@ -480,5 +526,24 @@
 	.sp-empty :global(svg) {
 		font-size: 18px;
 		opacity: 0.7;
+	}
+
+	.sp-modal-text {
+		margin: 0 0 var(--space-xs);
+		font-size: 13px;
+		color: var(--text-primary);
+	}
+
+	.sp-modal-text code {
+		background: var(--bg-active);
+		padding: 2px 6px;
+		border-radius: var(--radius-sm);
+		font-size: 12px;
+	}
+
+	.sp-modal-hint {
+		margin: 0;
+		font-size: 11px;
+		color: var(--text-muted);
 	}
 </style>
