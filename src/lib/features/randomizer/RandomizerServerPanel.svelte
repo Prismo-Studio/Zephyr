@@ -5,15 +5,12 @@
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
-	import SeedPatchesPanel from './SeedPatchesPanel.svelte';
 	import { pushToast } from '$lib/toast';
 	import * as api from './api';
 	import type { GenerateOutcome, PlayerFile, PythonStatus, SeedFile, ServerStatus } from './types';
 	import { onDestroy, onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-
-	let patchesReloadToken = $state(0);
 
 	export function refresh() {
 		refreshAll();
@@ -64,10 +61,10 @@
 	// Suggested alt ports when the default 38281 is blocked by the ISP / CGNAT.
 	const PRESET_PORTS = [
 		{ p: 38281, label: 'AP default' },
-		{ p: 443, label: '443 (HTTPS)' },
-		{ p: 80, label: '80 (HTTP)' },
-		{ p: 25565, label: '25565 (Minecraft)' },
-		{ p: 7777, label: '7777 (games)' }
+		{ p: 443, label: 'HTTPS' },
+		{ p: 80, label: 'HTTP' },
+		{ p: 25565, label: 'Minecraft' },
+		{ p: 7777, label: 'Games' }
 	];
 
 	async function refreshAll() {
@@ -117,9 +114,6 @@
 				}
 			}
 			seeds = await api.listSeeds();
-			// Generate just produced new patch files next to the .archipelago,
-			// bump the token so the patches panel picks them up.
-			patchesReloadToken++;
 
 			// Auto-upload and restart remote server if in remote mode
 			if (outcome.success && selectedSeed && hostMode === 'remote') {
@@ -480,11 +474,6 @@
 			</ul>
 		{/if}
 
-		<SeedPatchesPanel
-			selectedSeedPath={selectedSeed}
-			reloadToken={patchesReloadToken}
-		/>
-
 		{#if generateLog}
 			<details class="rdz-log-details">
 				<summary>
@@ -545,12 +534,10 @@
 		{#if hostMode === 'remote'}
 			<div class="rdz-remote-host">
 				{#if remote?.running}
-					<div class="rdz-status-row">
-						<div class="rdz-status-pill rdz-status-on">
-							<Icon icon="mdi:circle" />
-							{i18nState.locale && m.randomizer_running()}
-							{remote.seed}
-						</div>
+					<div class="rdz-running-line">
+						<span class="rdz-live-dot"></span>
+						<span>{i18nState.locale && m.randomizer_running()}</span>
+						<code>{remote.seed}</code>
 					</div>
 					<button
 						class="rdz-conn-card"
@@ -644,12 +631,10 @@
 						: [])
 				]}
 				<div class="rdz-server-running">
-					<div class="rdz-status-row">
-						<div class="rdz-status-pill rdz-status-on">
-							<Icon icon="mdi:circle" />
-							{i18nState.locale &&
-								m.randomizer_runningOnPort({ port: (server.port ?? 0).toString() })}
-						</div>
+					<div class="rdz-running-line">
+						<span class="rdz-live-dot"></span>
+						<span>{i18nState.locale &&
+							m.randomizer_runningOnPort({ port: (server.port ?? 0).toString() })}</span>
 					</div>
 
 					<div class="rdz-conn-picker">
@@ -1064,6 +1049,42 @@
 		to {
 			opacity: 1;
 			transform: translateY(0);
+		}
+	}
+
+	.rdz-running-line {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: 12px;
+		color: var(--text-secondary);
+		padding: 2px 2px 6px;
+	}
+
+	.rdz-running-line code {
+		font-family: 'JetBrains Mono', ui-monospace, monospace;
+		color: var(--text-primary);
+		background: transparent;
+		padding: 0;
+		font-size: 12px;
+	}
+
+	.rdz-live-dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--success, var(--accent-400));
+		box-shadow: 0 0 0 0 color-mix(in srgb, var(--success, var(--accent-400)) 60%, transparent);
+		animation: rdz-live-pulse 2s ease-in-out infinite;
+		flex-shrink: 0;
+	}
+
+	@keyframes rdz-live-pulse {
+		0%, 100% {
+			box-shadow: 0 0 0 0 color-mix(in srgb, var(--success, var(--accent-400)) 50%, transparent);
+		}
+		50% {
+			box-shadow: 0 0 0 5px transparent;
 		}
 	}
 
