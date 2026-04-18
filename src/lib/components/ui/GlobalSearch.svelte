@@ -48,7 +48,9 @@
 			const parts = text.split(regex);
 			if (parts.length <= 1) continue;
 
-			const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--text-accent').trim();
+			const accentColor = getComputedStyle(document.documentElement)
+				.getPropertyValue('--text-accent')
+				.trim();
 			const frag = document.createDocumentFragment();
 			for (const part of parts) {
 				if (part.toLowerCase() === term.toLowerCase()) {
@@ -73,7 +75,9 @@
 	}
 
 	function scrollToMatch(idx: number) {
-		const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--text-accent').trim();
+		const accentColor = getComputedStyle(document.documentElement)
+			.getPropertyValue('--text-accent')
+			.trim();
 		const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-base').trim();
 		marks.forEach((m) => {
 			m.classList.remove(ACTIVE_CLASS);
@@ -81,7 +85,8 @@
 		});
 		if (idx >= 0 && idx < marks.length) {
 			marks[idx].classList.add(ACTIVE_CLASS);
-			marks[idx].style.cssText = `background:${accentColor};color:${bgColor};border-radius:2px;padding:0 2px;font-weight:bold`;
+			marks[idx].style.cssText =
+				`background:${accentColor};color:${bgColor};border-radius:2px;padding:0 2px;font-weight:bold`;
 			marks[idx].scrollIntoView({ block: 'center', behavior: 'smooth' });
 		}
 	}
@@ -151,8 +156,14 @@
 	}
 
 	function stopObserving() {
-		if (observer) { observer.disconnect(); observer = null; }
-		if (debounceTimer) { clearTimeout(debounceTimer); debounceTimer = null; }
+		if (observer) {
+			observer.disconnect();
+			observer = null;
+		}
+		if (debounceTimer) {
+			clearTimeout(debounceTimer);
+			debounceTimer = null;
+		}
 	}
 
 	$effect(() => {
@@ -293,7 +304,6 @@
 		color: var(--text-primary);
 		background: var(--bg-hover);
 	}
-
 
 	@keyframes slideDown {
 		from {

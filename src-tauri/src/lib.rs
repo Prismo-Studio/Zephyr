@@ -67,12 +67,19 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         warn!("failed to register zephyr deep link protocol: {:#}", err);
     }
 
-    let handle = app.handle().to_owned();
-    app.deep_link().on_open_url(move |event| {
-        for url in event.urls() {
-            deep_link::handle(&handle, vec![String::from("zephyr"), url.to_string()]);
-        }
-    });
+    // Apple Events only matter on macOS where browsers deliver custom URL
+    // schemes via NSAppleEventManager rather than argv. On Windows and Linux,
+    // tauri-plugin-single-instance already handles the deep link via argv,
+    // so registering on_open_url there would double-fire the callback.
+    #[cfg(target_os = "macos")]
+    {
+        let handle = app.handle().to_owned();
+        app.deep_link().on_open_url(move |event| {
+            for url in event.urls() {
+                deep_link::handle(&handle, vec![String::from("zephyr"), url.to_string()]);
+            }
+        });
+    }
 
     let args = env::args().collect_vec();
     if !args.is_empty() && !deep_link::handle(app.handle(), args.clone()) {

@@ -23,7 +23,7 @@ impl State {
     pub fn new(stored_creds: Option<AuthCredentials>) -> Self {
         Self {
             creds: Mutex::new(stored_creds),
-            callback_channel: broadcast::channel(1).0,
+            callback_channel: broadcast::channel(16).0,
         }
     }
 
@@ -77,39 +77,47 @@ pub async fn login_with_oauth(app: &AppHandle) -> Result<User> {
 
     let mut channel = app.sync_auth().callback_channel.subscribe();
 
-    tokio::select! {
-        url = channel.recv() => {
-         let url = url?;
-         let url = Url::parse(&url).context("invalid url")?;
-         let query: HashMap<_, _> = url.query_pairs().collect();
-
-         let access_token = query
-             .get("access_token")
-             .ok_or_eyre("access_token parameter is missing")?
-             .clone()
-             .into_owned();
-
-         let refresh_token = query
-             .get("refresh_token")
-             .ok_or_eyre("refresh_token parameter is missing")?
-             .clone()
-             .into_owned();
-
-         app.get_webview_window("main").unwrap().set_focus().ok();
-
-         let creds = AuthCredentials::from_tokens(access_token, refresh_token)?;
-         let user = creds.user.clone();
-
-         info!("logged in as {}", user.name);
-
-         app.sync_auth().set_creds(Some(creds), app.db())?;
-
-         Ok(user)
+    let url = loop {
+        tokio::select! {
+            res = channel.recv() => match res {
+                Ok(url) => break url,
+                Err(broadcast::error::RecvError::Lagged(n)) => {
+                    warn!("auth callback channel lagged by {n}, retrying");
+                    continue;
+                }
+                Err(err) => return Err(err.into()),
+            },
+            _ = tokio::time::sleep(OAUTH_TIMEOUT) => {
+                return Err(eyre!("auth callback timed out"));
+            }
         }
-        _ = tokio::time::sleep(OAUTH_TIMEOUT) => {
-            Err(eyre!("auth callback timed out"))
-        }
-    }
+    };
+
+    let url = Url::parse(&url).context("invalid url")?;
+    let query: HashMap<_, _> = url.query_pairs().collect();
+
+    let access_token = query
+        .get("access_token")
+        .ok_or_eyre("access_token parameter is missing")?
+        .clone()
+        .into_owned();
+
+    let refresh_token = query
+        .get("refresh_token")
+        .ok_or_eyre("refresh_token parameter is missing")?
+        .clone()
+        .into_owned();
+
+    app.get_webview_window("main").unwrap().set_focus().ok();
+
+    let creds = AuthCredentials::from_tokens(access_token, refresh_token)?;
+    let user = creds.user.clone();
+
+    info!("logged in as {}", user.name);
+
+    app.sync_auth().set_creds(Some(creds), app.db())?;
+
+    Ok(user)
 }
 
 pub async fn handle_callback(url: String, app: &AppHandle) -> Result<()> {
