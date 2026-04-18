@@ -221,12 +221,23 @@
 				return;
 			}
 		}
-		// Block Ctrl+shortcuts except Ctrl+C/V/X/A/Z (standard editing)
+		// Block Ctrl+shortcuts except Ctrl+C/V/X/A/Z (standard editing).
+		// Exception: if the event originates from an editable element
+		// (input / textarea / contenteditable), let every Ctrl+* through so
+		// Ctrl+Backspace (delete word), Ctrl+←/→ (jump word), Ctrl+Home/End
+		// etc. behave natively. The Console command input benefits the most
+		// but this helps every text field in the app.
 		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey) {
-			const allowed = ['c', 'v', 'x', 'a', 'z'];
-			if (!allowed.includes(k)) {
-				evt.preventDefault();
-				return;
+			const target = evt.target as HTMLElement | null;
+			const tag = target?.tagName;
+			const editable =
+				tag === 'INPUT' || tag === 'TEXTAREA' || !!target?.isContentEditable;
+			if (!editable) {
+				const allowed = ['c', 'v', 'x', 'a', 'z'];
+				if (!allowed.includes(k)) {
+					evt.preventDefault();
+					return;
+				}
 			}
 		}
 		// Block Ctrl+Shift+I/J/C (devtools variants)

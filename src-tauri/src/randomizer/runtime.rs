@@ -298,18 +298,17 @@ fn provision_venv_at(
         emit(ProgressEvent::ProvisioningVenv {
             message: format!("Creating venv at {}", venv.display()),
         });
-        // Find a system python to create the venv.
-        let candidate = find_bootstrap_python().ok_or_else(|| {
-            eyre::eyre!("Python 3.11+ not found on PATH — install Python, then retry.")
+        let (bin, prefix_args) = find_bootstrap_python().ok_or_else(|| {
+            eyre::eyre!(
+                "Supported Python not found (need 3.11, 3.12 or 3.13). Install one from python.org then retry."
+            )
         })?;
-        run_to_log(
-            Command::new(&candidate)
-                .arg("-m")
-                .arg("venv")
-                .arg(&venv),
-            emit,
-        )
-        .context("create venv")?;
+        let mut cmd = Command::new(&bin);
+        for arg in &prefix_args {
+            cmd.arg(arg);
+        }
+        cmd.arg("-m").arg("venv").arg(&venv);
+        run_to_log(&mut cmd, emit).context("create venv")?;
         venv_python_path(runtime_dir).to_string_lossy().to_string()
     };
 
@@ -427,17 +426,72 @@ fn provision_venv_at(
     Ok(())
 }
 
-fn find_bootstrap_python() -> Option<String> {
-    for candidate in ["python3.13", "python3.12", "python3.11", "python3", "python", "py"] {
-        if Command::new(candidate)
-            .arg("--version")
-            .output()
-            .map(|o| o.status.success())
-            .unwrap_or(false)
-        {
-            return Some(candidate.to_string());
+/// Probe a Python candidate: return (major, minor) on success.
+fn probe_python_version(candidate: &str, extra_args: &[&str]) -> Option<(u32, u32)> {
+    let mut cmd = Command::new(candidate);
+    for arg in extra_args {
+        cmd.arg(arg);
+    }
+    let out = cmd.arg("--version").output().ok()?;
+    if !out.status.success() {
+        return None;
+    }
+    let stdout = String::from_utf8_lossy(&out.stdout).to_string();
+    let stderr = String::from_utf8_lossy(&out.stderr).to_string();
+    let text = if stdout.trim().is_empty() { stderr } else { stdout };
+    let digits = text
+        .trim()
+        .trim_start_matches("Python ")
+        .split('.')
+        .take(2)
+        .filter_map(|s| s.parse::<u32>().ok())
+        .collect::<Vec<_>>();
+    if digits.len() != 2 {
+        return None;
+    }
+    Some((digits[0], digits[1]))
+}
+
+fn is_supported(version: (u32, u32)) -> bool {
+    version.0 == 3 && (11..=13).contains(&version.1)
+}
+
+/// Supported Python range: 3.11–3.13. Kivy (required by a few AP worlds)
+/// doesn't ship 3.14 wheels yet; 3.10 and below are below AP's minimum.
+///
+/// Returns `(binary, extra_args)` so the caller can spawn `py -3.11 ...`
+/// correctly without us trying to exec a single string.
+pub fn find_bootstrap_python() -> Option<(String, Vec<String>)> {
+    for candidate in ["python3.13", "python3.12", "python3.11"] {
+        if let Some(v) = probe_python_version(candidate, &[]) {
+            if is_supported(v) {
+                return Some((candidate.to_string(), vec![]));
+            }
         }
     }
+
+    for candidate in ["python3", "python"] {
+        if let Some(v) = probe_python_version(candidate, &[]) {
+            if is_supported(v) {
+                return Some((candidate.to_string(), vec![]));
+            }
+        }
+    }
+
+    for flag in ["-3.13", "-3.12", "-3.11"] {
+        if let Some(v) = probe_python_version("py", &[flag]) {
+            if is_supported(v) {
+                return Some(("py".to_string(), vec![flag.to_string()]));
+            }
+        }
+    }
+
+    if let Some(v) = probe_python_version("py", &[]) {
+        if is_supported(v) {
+            return Some(("py".to_string(), vec![]));
+        }
+    }
+
     None
 }
 

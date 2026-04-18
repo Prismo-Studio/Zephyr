@@ -893,6 +893,11 @@ impl ServerState {
         cmd.current_dir(&dir)
             .env("SKIP_REQUIREMENTS_UPDATE", "1")
             .env("PYTHONIOENCODING", "utf-8")
+            // Force unbuffered stdout/stderr so responses to stdin commands
+            // reach the Console immediately instead of sitting in a block
+            // buffer until MultiServer flushes on shutdown.
+            .env("PYTHONUNBUFFERED", "1")
+            .arg("-u")
             .arg("MultiServer.py")
             .arg(multidata)
             .arg("--port")
