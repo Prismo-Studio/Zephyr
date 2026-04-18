@@ -136,9 +136,10 @@
 		background: var(--bg-elevated);
 		border: 1px solid var(--border-default);
 		border-radius: var(--radius-md);
+		width: max-content;
 		max-width: min(420px, calc(100vw - 24px));
+		white-space: normal;
 		overflow-wrap: anywhere;
-		word-break: break-word;
 		pointer-events: none;
 		z-index: 9999;
 		animation: tooltipIn 150ms ease;
