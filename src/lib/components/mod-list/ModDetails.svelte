@@ -564,13 +564,14 @@
 		gap: var(--space-lg);
 	}
 
-	.z-details-icon {
+	:global(.z-details-icon) {
 		width: 64px;
 		height: 64px;
 		border-radius: var(--radius-lg);
 		object-fit: cover;
 		background: var(--bg-overlay);
 		border: 1px solid var(--border-subtle);
+		flex-shrink: 0;
 	}
 
 	.z-details-name-row {

@@ -9,7 +9,7 @@
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import LaunchOverlay from '$lib/components/dialogs/LaunchOverlay.svelte';
 	import * as api from '$lib/api';
-	import { installState } from '$lib/state/misc.svelte';
+	import { launchGameWithBepInExFallback } from '$lib/launch';
 	import { open } from '@tauri-apps/plugin-shell';
 	// import { activeSourceState } from '$lib/state/source.svelte';
 	// import type { SourceGame } from '$lib/api/sources';
@@ -103,68 +103,12 @@
 
 	let launching = $state(false);
 
-	function waitForInstallEnd(): Promise<void> {
-		return new Promise((resolve) => {
-			const check = () => {
-				if (!installState.active) return resolve();
-				setTimeout(check, 300);
-			};
-			setTimeout(check, 500);
-		});
-	}
-
-	async function installBepInEx(): Promise<boolean> {
-		try {
-			const results = await api.thunderstore.query({
-				searchTerm: 'BepInExPack',
-				includeCategories: [],
-				excludeCategories: [],
-				includeNsfw: false,
-				includeDeprecated: false,
-				includeDisabled: true,
-				includeEnabled: true,
-				sortBy: 'downloads',
-				sortOrder: 'descending',
-				maxCount: 5
-			});
-			const bepinex = results.find(
-				(m) => m.name === 'BepInExPack' || m.name.startsWith('BepInExPack')
-			);
-			if (bepinex && !bepinex.isInstalled) {
-				await api.profile.install.mod({
-					packageUuid: bepinex.uuid,
-					versionUuid: bepinex.versions[0].uuid
-				});
-				await waitForInstallEnd();
-				return true;
-			}
-		} catch {}
-		return false;
-	}
-
 	async function launchGame() {
 		launching = true;
 		try {
-			await api.profile.launch.launchGameSilent();
-		} catch (err: any) {
-			const msg = String(err).toLowerCase();
-			if (msg.includes('bepinex') || msg.includes('preloader not found')) {
-				const installed = await installBepInEx();
-				if (installed) {
-					try {
-						await api.profile.launch.launchGame();
-						return;
-					} catch {}
-				}
-				launching = false;
-				return;
-			}
-			// Not a BepInEx error — show the toast via normal launch path
-			try {
-				await api.profile.launch.launchGame();
-			} catch {
-				launching = false;
-			}
+			await launchGameWithBepInExFallback();
+		} finally {
+			launching = false;
 		}
 	}
 
