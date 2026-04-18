@@ -143,12 +143,7 @@
 					<h1>{schema.name}</h1>
 					<small>v{schema.version}</small>
 				</div>
-				<a
-					class="rdz-setup-link"
-					href={setupGuideUrl(schema.id, schema.name)}
-					target="_blank"
-					rel="noopener"
-				>
+				<a class="rdz-setup-link" href={setupGuideUrl(schema.id, schema.name)}>
 					<Icon icon="mdi:book-open-variant" />
 					{i18nState.locale && m.randomizer_setupGuide()}
 				</a>
