@@ -17,6 +17,7 @@ mod config;
 mod db;
 mod deep_link;
 mod game;
+mod icon_cache;
 mod logger;
 mod prefs;
 mod profile;
@@ -196,6 +197,8 @@ pub fn run() {
             prefs::commands::set_dpi_scale,
             prefs::commands::get_system_fonts,
             prefs::commands::open_dir,
+            icon_cache::get_cached_icon,
+            icon_cache::clear_icon_cache,
             profile::commands::get_game_info,
             profile::commands::favorite_game,
             profile::commands::set_active_game,
