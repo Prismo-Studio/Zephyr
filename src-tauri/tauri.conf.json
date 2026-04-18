@@ -1,6 +1,6 @@
 {
 	"productName": "Zephyr",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"identifier": "com.prismo-studio.zephyr",
 	"build": {
 		"beforeBuildCommand": "pnpm run build",
