@@ -237,19 +237,25 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
                 .ok()
         });
 
-    // Auto-extract the .archipelago multidata next to the zip; that's what we
-    // hand to MultiServer.py (its zip support is unreliable).
-    // After successful extraction, delete the zip to avoid ghost duplicates
-    // when list_seeds() tries to re-extract from renamed zips.
+    // Auto-extract the entire AP_*.zip next to itself. The `.archipelago`
+    // multidata is what MultiServer.py needs; the other entries are per-player
+    // patch files (.apemerald, .aptunic, etc.) and spoiler logs that the
+    // patches panel then surfaces to the user. After successful extraction
+    // we delete the zip so list_seeds() doesn't re-extract it on every poll.
     let extracted = if let Some(zip) = new_zip.as_ref() {
-        match extract_archipelago(zip) {
-            Ok(p) => {
-                // Remove the zip — the .archipelago is all we need
+        match extract_seed_contents(zip) {
+            Ok((archipelago, patches)) => {
                 let _ = std::fs::remove_file(zip);
-                Some(p.to_string_lossy().to_string())
+                tracing::info!(
+                    "extracted seed {}: multidata={:?}, patches={}",
+                    zip.display(),
+                    archipelago.as_ref().map(|p| p.display().to_string()),
+                    patches.len()
+                );
+                archipelago.map(|p| p.to_string_lossy().to_string())
             }
             Err(err) => {
-                tracing::warn!("failed to extract .archipelago from {}: {err:#}", zip.display());
+                tracing::warn!("failed to extract contents of {}: {err:#}", zip.display());
                 None
             }
         }
@@ -382,21 +388,81 @@ pub fn rename_seed(path: &Path, new_name: &str) -> Result<PathBuf> {
         let _ = std::fs::rename(&old_spoiler, parent.join(format!("{safe}_Spoiler.txt")));
     }
 
+    // Rename per-player patches so they still group under the renamed seed.
+    // Archipelago emits them as `<old_stem>_P<n>_<slot>.ap<ext>` — we swap
+    // the prefix while keeping everything after `_P`.
+    if let Err(err) = rename_patch_siblings(parent, old_stem, &safe) {
+        tracing::warn!("failed to rename patch siblings for {old_stem}: {err:#}");
+    }
+
     Ok(new_path)
+}
+
+/// Scan `parent` for patch files that belong to `old_stem` and rename their
+/// prefix to `new_stem`. A file counts as a patch when its extension starts
+/// with `ap` and its name starts with `{old_stem}_P` (Archipelago's
+/// per-player naming: `_P1_SlotName`).
+fn rename_patch_siblings(parent: &Path, old_stem: &str, new_stem: &str) -> Result<()> {
+    if old_stem == new_stem {
+        return Ok(());
+    }
+    let prefix = format!("{old_stem}_P");
+    for entry in std::fs::read_dir(parent)? {
+        let Ok(entry) = entry else { continue };
+        let path = entry.path();
+        let Some(name) = path.file_name().and_then(|s| s.to_str()) else {
+            continue;
+        };
+        if !name.starts_with(&prefix) {
+            continue;
+        }
+        let Some(ext) = path.extension().and_then(|s| s.to_str()) else {
+            continue;
+        };
+        if !ext.to_ascii_lowercase().starts_with("ap") {
+            continue;
+        }
+        // Replace the leading `old_stem` only — keep the `_Pn_slot.ext` suffix.
+        let suffix = &name[old_stem.len()..];
+        let new_name = format!("{new_stem}{suffix}");
+        let new_path = parent.join(new_name);
+        let _ = std::fs::rename(&path, &new_path);
+    }
+    Ok(())
 }
 
 pub fn delete_seed(path: &Path) -> Result<()> {
     if path.exists() {
         std::fs::remove_file(path).with_context(|| format!("delete {}", path.display()))?;
     }
-    // Also clean siblings sharing the same stem: .zip, .apsave, _Spoiler.txt
+    // Also clean siblings sharing the same stem: .zip, .apsave, _Spoiler.txt,
+    // and any per-player .ap<ext> patches.
     if let (Some(parent), Some(stem)) = (path.parent(), path.file_stem()) {
-        let stem = stem.to_string_lossy();
+        let stem = stem.to_string_lossy().to_string();
         for ext in &[".zip", ".apsave"] {
             let p = parent.join(format!("{stem}{ext}"));
             let _ = std::fs::remove_file(p);
         }
         let _ = std::fs::remove_file(parent.join(format!("{stem}_Spoiler.txt")));
+        // Remove `{stem}_P*_*.ap*` patch files.
+        let prefix = format!("{stem}_P");
+        if let Ok(rd) = std::fs::read_dir(parent) {
+            for entry in rd.flatten() {
+                let p = entry.path();
+                let Some(name) = p.file_name().and_then(|s| s.to_str()) else {
+                    continue;
+                };
+                if !name.starts_with(&prefix) {
+                    continue;
+                }
+                let Some(ext) = p.extension().and_then(|s| s.to_str()) else {
+                    continue;
+                };
+                if ext.to_ascii_lowercase().starts_with("ap") {
+                    let _ = std::fs::remove_file(&p);
+                }
+            }
+        }
     }
     Ok(())
 }
@@ -600,6 +666,20 @@ pub fn update_host_yaml_port(ap_dir: &Path, port: u16) -> Result<()> {
 ///
 /// If the target file already exists, returns its path without re-extracting.
 pub fn extract_archipelago(zip_path: &Path) -> Result<PathBuf> {
+    let (archipelago, _) = extract_seed_contents(zip_path)?;
+    archipelago.ok_or_else(|| eyre::eyre!("no .archipelago entry found in {}", zip_path.display()))
+}
+
+/// Extract **every** entry of a generated `AP_*.zip` next to the zip.
+///
+/// Returns `(archipelago_path, patch_paths)`:
+/// * `archipelago_path` is the `.archipelago` multidata MultiServer needs.
+/// * `patch_paths` are per-player patch files (e.g. `.apemerald`, `.apmw`,
+///   `.aptunic`) plus any spoiler/txt outputs — everything the Archipelago
+///   Launcher might need to apply a patch and spin up a client.
+///
+/// Existing files are left in place so this is cheap to re-run.
+pub fn extract_seed_contents(zip_path: &Path) -> Result<(Option<PathBuf>, Vec<PathBuf>)> {
     let parent = zip_path
         .parent()
         .ok_or_else(|| eyre::eyre!("zip has no parent dir: {}", zip_path.display()))?;
@@ -609,28 +689,34 @@ pub fn extract_archipelago(zip_path: &Path) -> Result<PathBuf> {
     let mut archive = ZipArchive::new(file)
         .with_context(|| format!("read zip {}", zip_path.display()))?;
 
+    let mut archipelago: Option<PathBuf> = None;
+    let mut patches: Vec<PathBuf> = Vec::new();
+
     for i in 0..archive.len() {
         let mut entry = archive.by_index(i)?;
-        let name = entry.name().to_string();
-        if !name.ends_with(".archipelago") {
+        if entry.is_dir() {
             continue;
         }
-        let target = parent.join(
-            Path::new(&name)
-                .file_name()
-                .map(|s| s.to_os_string())
-                .unwrap_or_else(|| name.clone().into()),
-        );
+        let name = entry.name().to_string();
+        let Some(file_name) = Path::new(&name).file_name() else {
+            continue;
+        };
+        let target = parent.join(file_name);
         if !target.exists() {
             let mut out = File::create(&target)
                 .with_context(|| format!("create {}", target.display()))?;
             io::copy(&mut entry, &mut out)
                 .with_context(|| format!("extract to {}", target.display()))?;
         }
-        return Ok(target);
+
+        if name.ends_with(".archipelago") {
+            archipelago = Some(target);
+        } else {
+            patches.push(target);
+        }
     }
 
-    bail!("no .archipelago entry found in {}", zip_path.display())
+    Ok((archipelago, patches))
 }
 
 /// Check whether something is listening on `port` on the wildcard interface.

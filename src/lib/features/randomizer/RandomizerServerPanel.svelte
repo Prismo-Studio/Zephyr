@@ -4,12 +4,15 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import SeedPatchesPanel from './SeedPatchesPanel.svelte';
 	import { pushToast } from '$lib/toast';
 	import * as api from './api';
 	import type { GenerateOutcome, PlayerFile, PythonStatus, SeedFile, ServerStatus } from './types';
 	import { onDestroy, onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+
+	let patchesReloadToken = $state(0);
 
 	export function refresh() {
 		refreshAll();
@@ -95,6 +98,9 @@
 				}
 			}
 			seeds = await api.listSeeds();
+			// Generate just produced new patch files next to the .archipelago,
+			// bump the token so the patches panel picks them up.
+			patchesReloadToken++;
 
 			// Auto-upload and restart remote server if in remote mode
 			if (outcome.success && selectedSeed && hostMode === 'remote') {
@@ -419,6 +425,11 @@
 				{/each}
 			</ul>
 		{/if}
+
+		<SeedPatchesPanel
+			selectedSeedPath={selectedSeed}
+			reloadToken={patchesReloadToken}
+		/>
 
 		{#if generateLog}
 			<details class="rdz-log-details">

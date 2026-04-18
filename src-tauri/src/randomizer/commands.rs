@@ -7,6 +7,7 @@ use super::{
         self, GenerateOutcome, PlayerFile, PythonStatus, SeedFile, ServerState, ServerStatus,
     },
     apworlds::{self, CustomApworld, RefreshResult},
+    patches::{self, PatchFile},
     runtime::{self, RuntimeStatus},
     schema,
     types::*,
@@ -205,6 +206,48 @@ pub fn open_custom_worlds_dir(app: AppHandle) -> Result<()> {
     Ok(())
 }
 
+// --- Patch files & custom clients ---
+
+#[command]
+pub fn list_patches(app: AppHandle) -> Result<Vec<PatchFile>> {
+    Ok(patches::list_patches(&app)?)
+}
+
+#[command]
+pub fn delete_patch(path: String) -> Result<()> {
+    patches::delete_patch(&PathBuf::from(path))?;
+    Ok(())
+}
+
+#[command]
+pub fn apply_patch(app: AppHandle, path: String) -> Result<()> {
+    patches::apply_and_launch(&app, &PathBuf::from(path))?;
+    Ok(())
+}
+
+#[command]
+pub fn launch_ap_component(app: AppHandle, name: String) -> Result<()> {
+    patches::launch_component(&app, &name)?;
+    Ok(())
+}
+
+#[command]
+pub fn get_rom_paths(app: AppHandle) -> Result<std::collections::HashMap<String, String>> {
+    Ok(patches::load_rom_paths(&app)?)
+}
+
+#[command]
+pub fn set_rom_path(app: AppHandle, extension: String, rom_path: String) -> Result<()> {
+    patches::set_rom_path(&app, &extension, &rom_path)?;
+    Ok(())
+}
+
+#[command]
+pub fn clear_rom_path(app: AppHandle, extension: String) -> Result<()> {
+    patches::clear_rom_path(&app, &extension)?;
+    Ok(())
+}
+
 // --- Archipelago runtime install ---
 
 #[command]
@@ -215,6 +258,11 @@ pub fn runtime_status(app: AppHandle) -> RuntimeStatus {
 #[command]
 pub async fn install_runtime(app: AppHandle, url: Option<String>) -> Result<RuntimeStatus> {
     Ok(runtime::install(&app, url).await?)
+}
+
+#[command]
+pub async fn provision_runtime_venv(app: AppHandle) -> Result<RuntimeStatus> {
+    Ok(runtime::provision_venv(&app).await?)
 }
 
 #[command]

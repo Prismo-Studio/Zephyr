@@ -7,6 +7,7 @@ import type {
 	GameSummary,
 	GenerateOutcome,
 	LintIssue,
+	PatchFile,
 	PlayerFile,
 	PythonStatus,
 	RandomizerConfig,
@@ -81,12 +82,31 @@ export const refreshApworldSchemas = () =>
 
 export const openCustomWorldsDir = () => invoke('open_custom_worlds_dir');
 
+// --- Patch files & custom clients ---
+
+export const listPatches = () => invoke<PatchFile[]>('list_patches');
+
+export const deletePatch = (path: string) => invoke('delete_patch', { path });
+
+export const applyPatch = (path: string) => invoke('apply_patch', { path });
+
+export const launchApComponent = (name: string) => invoke('launch_ap_component', { name });
+
+export const getRomPaths = () => invoke<Record<string, string>>('get_rom_paths');
+
+export const setRomPath = (extension: string, romPath: string) =>
+	invoke('set_rom_path', { extension, romPath });
+
+export const clearRomPath = (extension: string) => invoke('clear_rom_path', { extension });
+
 // --- Archipelago runtime install ---
 
 export const runtimeStatus = () => invoke<RuntimeStatus>('runtime_status');
 
 export const installRuntime = (url?: string) =>
 	invoke<RuntimeStatus>('install_runtime', { url });
+
+export const provisionRuntimeVenv = () => invoke<RuntimeStatus>('provision_runtime_venv');
 
 export const removeRuntime = () => invoke('remove_runtime');
 

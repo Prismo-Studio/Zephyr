@@ -3,7 +3,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
-	import { installRuntime, runtimeStatus } from './api';
+	import { installRuntime, provisionRuntimeVenv, runtimeStatus } from './api';
 	import type { RuntimeProgress, RuntimeStatus } from './types';
 	import { randomizerStore } from './randomizer.store.svelte';
 	import { pushToast } from '$lib/toast';
@@ -43,11 +43,20 @@
 			}
 			case 'extracting':
 				return `Extracting ${progress.done}/${progress.total}`;
+			case 'provisioning_venv':
+				return progress.message;
+			case 'installing_deps':
+				return progress.message;
 			case 'installed':
 				return 'Installed';
 			case 'failed':
 				return `Failed: ${progress.error}`;
 		}
+	});
+
+	const progressIsIndeterminate = $derived.by(() => {
+		if (!progress) return false;
+		return progress.stage === 'provisioning_venv' || progress.stage === 'installing_deps';
 	});
 
 	async function refresh() {
@@ -78,6 +87,25 @@
 		}
 	}
 
+	async function provisionDeps() {
+		if (installing) return;
+		installing = true;
+		progress = null;
+		try {
+			status = await provisionRuntimeVenv();
+			await randomizerStore.loadCatalog();
+		} catch (err) {
+			console.error(err);
+			pushToast({
+				type: 'error',
+				name: 'Dependency install failed',
+				message: (err as any)?.message ?? String(err)
+			});
+		} finally {
+			installing = false;
+		}
+	}
+
 	onMount(async () => {
 		await refresh();
 		const un = await listen<RuntimeProgress>('randomizer://runtime-progress', (event) => {
@@ -91,6 +119,26 @@
 	});
 </script>
 
+{#snippet progressBlock()}
+	{#if installing && progress}
+		<div class="rim-progress">
+			<div class="rim-progress-bar">
+				<div
+					class="rim-progress-fill"
+					style:width={progressIsIndeterminate || progressPercent == null
+						? '100%'
+						: `${progressPercent}%`}
+					class:rim-indeterminate={progressIsIndeterminate || progressPercent == null}
+				></div>
+			</div>
+			<span class="rim-progress-label">
+				{progressLabel}
+				{#if !progressIsIndeterminate && progressPercent != null}· {progressPercent}%{/if}
+			</span>
+		</div>
+	{/if}
+{/snippet}
+
 {#if !loading && status && !status.installed}
 	<div class="rim-banner" role="region" aria-label="Archipelago runtime not installed">
 		<Icon icon="mdi:cloud-download-outline" />
@@ -100,21 +148,7 @@
 				Zephyr can generate seeds locally, but it needs the Archipelago Python runtime. Releases
 				ship without it to keep downloads small.
 			</small>
-			{#if installing && progress}
-				<div class="rim-progress">
-					<div class="rim-progress-bar">
-						<div
-							class="rim-progress-fill"
-							style:width={progressPercent == null ? '100%' : `${progressPercent}%`}
-							class:rim-indeterminate={progressPercent == null}
-						></div>
-					</div>
-					<span class="rim-progress-label">
-						{progressLabel}
-						{#if progressPercent != null}· {progressPercent}%{/if}
-					</span>
-				</div>
-			{/if}
+			{@render progressBlock()}
 		</div>
 		<div class="rim-actions">
 			<Button size="md" variant="primary" onclick={install} disabled={installing}>
@@ -123,6 +157,29 @@
 						class={installing ? 'rim-spin' : ''}
 					/>{/snippet}
 				{installing ? 'Installing…' : 'Download & install'}
+			</Button>
+		</div>
+	</div>
+{:else if !loading && status && status.installed && !status.venv_ready}
+	<div class="rim-banner rim-warn" role="region" aria-label="Python dependencies missing">
+		<Icon icon="mdi:alert-circle-outline" />
+		<div class="rim-body">
+			<strong>Python dependencies not installed</strong>
+			<small>
+				The Archipelago runtime is on disk, but its Python venv isn't set up yet. Generation
+				will fail for games whose worlds need extra modules (Pokémon Emerald needs
+				<code>setuptools</code>, SoE needs <code>pyevermizer</code>, Zillion needs
+				<code>zilliandomizer</code>, etc.).
+			</small>
+			{@render progressBlock()}
+		</div>
+		<div class="rim-actions">
+			<Button size="md" variant="primary" onclick={provisionDeps} disabled={installing}>
+				{#snippet icon()}<Icon
+						icon={installing ? 'mdi:loading' : 'mdi:language-python'}
+						class={installing ? 'rim-spin' : ''}
+					/>{/snippet}
+				{installing ? 'Installing…' : 'Install Python dependencies'}
 			</Button>
 		</div>
 	</div>
@@ -148,6 +205,20 @@
 		border-radius: var(--radius-lg);
 		background: var(--bg-active);
 		color: var(--text-primary);
+	}
+
+	.rim-banner.rim-warn {
+		border-color: #f0b43c;
+		background: rgba(240, 180, 60, 0.08);
+	}
+	.rim-banner.rim-warn > :global(svg) {
+		color: #f0b43c;
+	}
+	.rim-banner code {
+		background: var(--bg-surface);
+		padding: 1px 5px;
+		border-radius: var(--radius-sm);
+		font-size: 11px;
 	}
 
 	.rim-banner > :global(svg) {

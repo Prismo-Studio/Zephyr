@@ -310,7 +310,15 @@ pub fn run() {
             randomizer::commands::open_custom_worlds_dir,
             randomizer::commands::runtime_status,
             randomizer::commands::install_runtime,
+            randomizer::commands::provision_runtime_venv,
             randomizer::commands::remove_runtime,
+            randomizer::commands::list_patches,
+            randomizer::commands::delete_patch,
+            randomizer::commands::apply_patch,
+            randomizer::commands::launch_ap_component,
+            randomizer::commands::get_rom_paths,
+            randomizer::commands::set_rom_path,
+            randomizer::commands::clear_rom_path,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())

@@ -12,8 +12,9 @@
 
 use std::{
     fs,
-    io::{Cursor, Write},
+    io::{BufRead, BufReader, Cursor, Write},
     path::{Path, PathBuf},
+    process::{Command, Stdio},
 };
 
 use eyre::{bail, Context, Result};
@@ -21,7 +22,7 @@ use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter};
 use zip::ZipArchive;
 
-use super::ap_runner::ap_install_dir;
+use super::ap_runner::{ap_dir, ap_install_dir, venv_dir};
 
 /// Default source: the source tarball of the runtime repo's main branch.
 /// Overridable by the caller (UI can pass a pinned release URL later).
@@ -31,6 +32,10 @@ pub const DEFAULT_RUNTIME_URL: &str =
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct RuntimeStatus {
     pub installed: bool,
+    /// The Python venv at `<runtime>/venv/` exists and has a python binary.
+    /// False means Generate.py will fall back to system Python and may error
+    /// on world imports because dependencies aren't installed.
+    pub venv_ready: bool,
     pub path: String,
     pub bytes_on_disk: u64,
     pub world_count: u32,
@@ -43,7 +48,7 @@ pub fn status(app: &AppHandle) -> RuntimeStatus {
 
     // Prefer whichever path `ap_dir` resolves to — dev checkout in dev builds,
     // the install dir in release. That way the UI reflects reality.
-    let effective = super::ap_runner::ap_dir(app);
+    let effective = ap_dir(app);
     let effective_installed = effective.join("Generate.py").exists();
 
     let world_count = count_worlds(&effective).unwrap_or(0);
@@ -51,6 +56,12 @@ pub fn status(app: &AppHandle) -> RuntimeStatus {
 
     RuntimeStatus {
         installed: installed || effective_installed,
+        // venv_ready only when BOTH the venv python exists AND our marker
+        // file is present. The marker is written at the end of a successful
+        // provisioning run, so a half-installed venv still shows as "not
+        // ready" and gives the user an obvious "Install dependencies" action.
+        venv_ready: venv_python_path(&effective).exists()
+            && provision_marker(&effective).exists(),
         path: effective.to_string_lossy().to_string(),
         bytes_on_disk: bytes,
         world_count,
@@ -58,11 +69,17 @@ pub fn status(app: &AppHandle) -> RuntimeStatus {
     }
 }
 
+fn provision_marker(runtime_dir: &Path) -> PathBuf {
+    runtime_dir.join("venv").join(".zephyr-deps-installed")
+}
+
 #[derive(Serialize, Clone, Debug)]
 #[serde(tag = "stage", rename_all = "snake_case")]
 pub enum ProgressEvent {
     Downloading { received: u64, total: Option<u64> },
     Extracting { entry: String, done: u32, total: u32 },
+    ProvisioningVenv { message: String },
+    InstallingDeps { message: String },
     Installed { path: String },
     Failed { error: String },
 }
@@ -204,16 +221,281 @@ pub async fn install(app: &AppHandle, url: Option<String>) -> Result<RuntimeStat
         emit(ProgressEvent::Failed { error: msg.clone() });
         bail!(msg);
     }
+
+    // --- Provision venv + install deps -----------------------------------
+    // Non-fatal: if this fails, the runtime still exists on disk and the user
+    // can retry via the "Install Python dependencies" button in the UI.
+    if let Err(err) = provision_venv_at(app, &ap_dir(app), &emit) {
+        let msg = format!("runtime extracted but venv provisioning failed: {err:#}");
+        tracing::warn!("{msg}");
+        emit(ProgressEvent::Failed { error: msg });
+        // Return the status anyway — partially installed is still usable once
+        // the user runs provision_venv manually.
+        return Ok(status(app));
+    }
+
+    let st = status(app);
     emit(ProgressEvent::Installed {
         path: st.path.clone(),
     });
     Ok(st)
 }
 
+/// Create `<runtime>/venv/`, upgrade pip/setuptools, install Archipelago's
+/// main requirements.txt, then best-effort install each `worlds/*/requirements.txt`.
+/// Safe to call repeatedly.
+pub async fn provision_venv(app: &AppHandle) -> Result<RuntimeStatus> {
+    let emit = |event: ProgressEvent| {
+        let _ = app.emit("randomizer://runtime-progress", event);
+    };
+    let dir = ap_dir(app);
+    if !dir.join("Generate.py").exists() {
+        bail!(
+            "Archipelago runtime not installed at {} — download it first.",
+            dir.display()
+        );
+    }
+    provision_venv_at(app, &dir, &emit)?;
+    Ok(status(app))
+}
+
 pub fn remove(app: &AppHandle) -> Result<()> {
     let dir = ap_install_dir(app);
     if dir.exists() {
         fs::remove_dir_all(&dir).with_context(|| format!("remove {}", dir.display()))?;
+    }
+    Ok(())
+}
+
+// ---------------------------------------------------------------------------
+// Venv provisioning
+// ---------------------------------------------------------------------------
+
+fn venv_python_path(runtime_dir: &Path) -> PathBuf {
+    let venv = runtime_dir.join("venv");
+    if cfg!(target_os = "windows") {
+        venv.join("Scripts").join("python.exe")
+    } else {
+        venv.join("bin").join("python")
+    }
+}
+
+fn provision_venv_at(
+    app: &AppHandle,
+    runtime_dir: &Path,
+    emit: &dyn Fn(ProgressEvent),
+) -> Result<()> {
+    emit(ProgressEvent::ProvisioningVenv {
+        message: "Detecting system Python…".into(),
+    });
+    // We need a system Python to bootstrap the venv. detect_python prefers
+    // the venv first, so call it AFTER ruling the venv in/out.
+    let venv = venv_dir(app);
+    let system_python = if venv_python_path(runtime_dir).exists() {
+        // venv already exists — keep using it.
+        venv_python_path(runtime_dir).to_string_lossy().to_string()
+    } else {
+        emit(ProgressEvent::ProvisioningVenv {
+            message: format!("Creating venv at {}", venv.display()),
+        });
+        // Find a system python to create the venv.
+        let candidate = find_bootstrap_python().ok_or_else(|| {
+            eyre::eyre!("Python 3.11+ not found on PATH — install Python, then retry.")
+        })?;
+        run_to_log(
+            Command::new(&candidate)
+                .arg("-m")
+                .arg("venv")
+                .arg(&venv),
+            emit,
+        )
+        .context("create venv")?;
+        venv_python_path(runtime_dir).to_string_lossy().to_string()
+    };
+
+    // Upgrade pip + wheel + setuptools. We pin setuptools to <81 because
+    // `pkg_resources` was deprecated and ultimately gated behind an import
+    // warning in setuptools 81+; several Archipelago worlds still
+    // `import pkg_resources` directly (Pokémon Emerald's data.py is the
+    // canonical offender). <81 keeps the import working on Python 3.13.
+    emit(ProgressEvent::InstallingDeps {
+        message: "Upgrading pip, setuptools, wheel…".into(),
+    });
+    run_to_log(
+        Command::new(&system_python)
+            .arg("-m")
+            .arg("pip")
+            .arg("install")
+            .arg("--upgrade")
+            .arg("pip")
+            .arg("setuptools<81")
+            .arg("wheel"),
+        emit,
+    )
+    .context("upgrade pip/setuptools — base bootstrap failed; cannot continue")?;
+
+    // Sanity check: confirm pkg_resources actually imports inside the venv.
+    // If this fails we want a loud error, not a silent fallthrough that
+    // leaves Pokémon Emerald broken.
+    let pkg_check = Command::new(&system_python)
+        .arg("-c")
+        .arg("import pkg_resources")
+        .output()
+        .context("probe pkg_resources")?;
+    if !pkg_check.status.success() {
+        let stderr = String::from_utf8_lossy(&pkg_check.stderr).to_string();
+        bail!(
+            "pkg_resources not importable after installing setuptools; most likely the pinned version didn't land. stderr:\n{stderr}"
+        );
+    }
+
+    // Main requirements.
+    let main_req = runtime_dir.join("requirements.txt");
+    if main_req.exists() {
+        emit(ProgressEvent::InstallingDeps {
+            message: "Installing Archipelago core dependencies…".into(),
+        });
+        run_to_log(
+            Command::new(&system_python)
+                .arg("-m")
+                .arg("pip")
+                .arg("install")
+                .arg("-r")
+                .arg(&main_req),
+            emit,
+        )
+        .context("install core requirements")?;
+    } else {
+        tracing::warn!(
+            "no requirements.txt at {} — skipping core deps",
+            main_req.display()
+        );
+    }
+
+    // Mark core deps as installed BEFORE the per-world loop so that a failure
+    // in one optional world's deps doesn't reset the "venv is ready for the
+    // standard worlds" signal. We overwrite this at the very end too.
+    let marker = provision_marker(runtime_dir);
+    if let Some(parent) = marker.parent() {
+        fs::create_dir_all(parent).ok();
+    }
+    fs::write(&marker, "core\n").ok();
+
+    // Per-world requirements. Best-effort: one broken world's install failure
+    // shouldn't kill the whole provisioning step.
+    let worlds_dir = runtime_dir.join("worlds");
+    if worlds_dir.exists() {
+        if let Ok(entries) = fs::read_dir(&worlds_dir) {
+            let mut reqs: Vec<PathBuf> = entries
+                .flatten()
+                .map(|e| e.path())
+                .filter(|p| p.is_dir())
+                .map(|p| p.join("requirements.txt"))
+                .filter(|p| p.exists())
+                .collect();
+            reqs.sort();
+            for (idx, req) in reqs.iter().enumerate() {
+                let world = req
+                    .parent()
+                    .and_then(|p| p.file_name())
+                    .and_then(|s| s.to_str())
+                    .unwrap_or("?");
+                emit(ProgressEvent::InstallingDeps {
+                    message: format!("Installing {world} deps ({}/{})…", idx + 1, reqs.len()),
+                });
+                if let Err(err) = run_to_log(
+                    Command::new(&system_python)
+                        .arg("-m")
+                        .arg("pip")
+                        .arg("install")
+                        .arg("-r")
+                        .arg(req),
+                    emit,
+                ) {
+                    tracing::warn!("skipping {world}: {err:#}");
+                    emit(ProgressEvent::InstallingDeps {
+                        message: format!("⚠ {world}: {err}"),
+                    });
+                }
+            }
+        }
+    }
+
+    // Final marker — everything succeeded. `venv_ready` in status() keys off
+    // this file so that a torn-down install doesn't masquerade as ready.
+    fs::write(&marker, "full\n").ok();
+    Ok(())
+}
+
+fn find_bootstrap_python() -> Option<String> {
+    for candidate in ["python3.13", "python3.12", "python3.11", "python3", "python", "py"] {
+        if Command::new(candidate)
+            .arg("--version")
+            .output()
+            .map(|o| o.status.success())
+            .unwrap_or(false)
+        {
+            return Some(candidate.to_string());
+        }
+    }
+    None
+}
+
+/// Spawn a command, stream stdout to the progress channel line-by-line, and
+/// capture stderr for error reporting. Returns the tail of stderr when the
+/// process exits non-zero.
+///
+/// We read stdout on the calling thread (safe with `emit`) and buffer stderr
+/// in a spawned thread that doesn't touch `emit`.
+fn run_to_log(cmd: &mut Command, emit: &dyn Fn(ProgressEvent)) -> Result<()> {
+    cmd.env("PYTHONIOENCODING", "utf-8")
+        .env("PYTHONDONTWRITEBYTECODE", "1")
+        .env("PIP_DISABLE_PIP_VERSION_CHECK", "1")
+        .stdin(Stdio::null())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped());
+    let mut child = cmd.spawn().context("spawn pip")?;
+
+    // Drain stderr in a background thread into a shared buffer so we don't
+    // deadlock on full pipe buffers. No `emit` cross-thread dance needed.
+    let stderr_buf: std::sync::Arc<std::sync::Mutex<Vec<String>>> =
+        std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
+    if let Some(stderr) = child.stderr.take() {
+        let buf = stderr_buf.clone();
+        std::thread::spawn(move || {
+            let reader = BufReader::new(stderr);
+            for line in reader.lines().flatten() {
+                if let Ok(mut g) = buf.lock() {
+                    g.push(line);
+                    // Cap to avoid unbounded growth on a chatty failure.
+                    if g.len() > 500 {
+                        let drop = g.len() - 500;
+                        g.drain(0..drop);
+                    }
+                }
+            }
+        });
+    }
+
+    // Stream stdout on the current thread — safe to call `emit` here.
+    if let Some(stdout) = child.stdout.take() {
+        let reader = BufReader::new(stdout);
+        for line in reader.lines().flatten() {
+            emit(ProgressEvent::InstallingDeps { message: line });
+        }
+    }
+
+    let status = child.wait().context("wait pip")?;
+    if !status.success() {
+        let tail: String = stderr_buf
+            .lock()
+            .map(|g| g.iter().rev().take(10).cloned().collect::<Vec<_>>())
+            .unwrap_or_default()
+            .into_iter()
+            .rev()
+            .collect::<Vec<_>>()
+            .join("\n");
+        bail!("pip exited with status {status}\n{tail}");
     }
     Ok(())
 }
