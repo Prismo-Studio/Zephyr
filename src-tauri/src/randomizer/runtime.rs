@@ -29,6 +29,48 @@ use super::ap_runner::{ap_dir, ap_install_dir, venv_dir};
 pub const DEFAULT_RUNTIME_URL: &str =
     "https://github.com/Prismo-Studio/randomizer-server/archive/refs/heads/main.zip";
 
+/// Upstream location of SNIClient.py. Prismo-Studio/randomizer-server strips
+/// this file; without it, Launcher.py can't bridge SNES games (ALttP, SMZ3,
+/// Super Metroid, SMW, etc.) between the MultiServer and the emulator via SNI.
+const SNICLIENT_URL: &str =
+    "https://raw.githubusercontent.com/ArchipelagoMW/Archipelago/main/SNIClient.py";
+
+async fn ensure_sni_client(install_dir: &Path, client: &reqwest::Client) -> Result<()> {
+    let target = install_dir.join("SNIClient.py");
+    if target.exists() {
+        return Ok(());
+    }
+    let resp = client
+        .get(SNICLIENT_URL)
+        .send()
+        .await
+        .context("fetch SNIClient.py")?;
+    if !resp.status().is_success() {
+        bail!("SNIClient.py download failed: HTTP {}", resp.status());
+    }
+    let body = resp.bytes().await.context("read SNIClient.py body")?;
+    fs::write(&target, &body).with_context(|| format!("write {}", target.display()))?;
+    tracing::info!("installed SNIClient.py into {}", install_dir.display());
+    Ok(())
+}
+
+/// Flip `snes_rom_start: true` to `false` in host.yaml so SNIClient does not
+/// try to auto-open the patched ROM with the OS default handler (which often
+/// resolves to a browser on Linux / misconfigured Windows installs).
+fn patch_host_yaml(install_dir: &Path) -> Result<()> {
+    let path = install_dir.join("host.yaml");
+    if !path.exists() {
+        return Ok(());
+    }
+    let contents = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+    let patched = contents.replace("snes_rom_start: true", "snes_rom_start: false");
+    if patched != contents {
+        fs::write(&path, patched).with_context(|| format!("write {}", path.display()))?;
+        tracing::info!("patched host.yaml snes_rom_start -> false");
+    }
+    Ok(())
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct RuntimeStatus {
     pub installed: bool,
@@ -215,11 +257,18 @@ pub async fn install(app: &AppHandle, url: Option<String>) -> Result<RuntimeStat
     let st = status(app);
     if !st.installed {
         let msg = format!(
-            "install finished but {} was not written — is the downloaded archive the correct runtime?",
+            "install finished but {} was not written, is the downloaded archive the correct runtime?",
             install_dir.join("Generate.py").display()
         );
         emit(ProgressEvent::Failed { error: msg.clone() });
         bail!(msg);
+    }
+
+    if let Err(err) = ensure_sni_client(&install_dir, &client).await {
+        tracing::warn!("SNIClient.py bootstrap skipped: {err:#}");
+    }
+    if let Err(err) = patch_host_yaml(&install_dir) {
+        tracing::warn!("host.yaml patch skipped: {err:#}");
     }
 
     // --- Provision venv + install deps -----------------------------------
@@ -254,6 +303,16 @@ pub async fn provision_venv(app: &AppHandle) -> Result<RuntimeStatus> {
             "Archipelago runtime not installed at {} — download it first.",
             dir.display()
         );
+    }
+    let client = reqwest::Client::builder()
+        .user_agent("Zephyr/1 (archipelago-runtime-installer)")
+        .build()
+        .context("build http client")?;
+    if let Err(err) = ensure_sni_client(&dir, &client).await {
+        tracing::warn!("SNIClient.py bootstrap skipped: {err:#}");
+    }
+    if let Err(err) = patch_host_yaml(&dir) {
+        tracing::warn!("host.yaml patch skipped: {err:#}");
     }
     provision_venv_at(app, &dir, &emit)?;
     Ok(status(app))

@@ -3,7 +3,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import {
 		applyPatch,
@@ -38,13 +38,26 @@
 	async function refresh() {
 		loading = true;
 		try {
-			[all, romPaths] = await Promise.all([listPatches(), getRomPaths()]);
+			const [nextPatches, nextRoms] = await Promise.all([listPatches(), getRomPaths()]);
+			all = nextPatches;
+			romPaths = nextRoms;
 		} finally {
 			loading = false;
 		}
 	}
 
-	onMount(refresh);
+	let pollHandle: ReturnType<typeof setInterval> | null = null;
+
+	onMount(() => {
+		refresh();
+		pollHandle = setInterval(refresh, 3000);
+		window.addEventListener('focus', refresh);
+	});
+
+	onDestroy(() => {
+		if (pollHandle) clearInterval(pollHandle);
+		window.removeEventListener('focus', refresh);
+	});
 
 	$effect(() => {
 		// React to the external reload signal.
@@ -125,7 +138,11 @@
 		if (!pendingDelete) return;
 		const target = pendingDelete;
 		pendingDelete = null;
-		await deletePatch(target.path);
+		try {
+			await deletePatch(target.path);
+		} catch {
+			// already toasted
+		}
 		await refresh();
 	}
 

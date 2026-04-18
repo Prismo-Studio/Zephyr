@@ -285,28 +285,19 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
     }
     // (If the helper was missing we already emitted a bridge-log message above.)
 
-    // --- SNI short-circuit -----------------------------------------------
-    // The bundled runtime doesn't ship SNIClient.py, so any attempt to launch
-    // it via Launcher.py just yields `[Errno 2] No such file or directory`
-    // in the Console. For these games the patched ROM from step 1 is
-    // everything Zephyr can provide — the user runs their own external SNI
-    // Client + emulator from there. Emit an informative multi-line message
-    // with the exact tools and URLs the user needs, then skip step 2.
     if is_sni_patch(patch_path) && !dir.join("SNIClient.py").exists() {
         let ext = patch_path
             .extension()
             .and_then(|s| s.to_str())
             .unwrap_or("ap*");
         for line in [
-            "[zephyr] SNES game detected — patched ROM is ready next to the patch.".to_string(),
-            format!(
-                "[zephyr] Archipelago's SNIClient.py is not bundled; this extension (.{ext}) needs an external SNI stack to play."
-            ),
+            "[zephyr] SNES game detected. The patched ROM is ready next to the patch.".to_string(),
+            format!("[zephyr] SNIClient.py is not bundled; .{ext} needs an external SNI stack."),
             "[zephyr] To play:".to_string(),
             "[zephyr]   1. Download SNI daemon: https://github.com/alttpo/sni/releases".to_string(),
-            "[zephyr]   2. Run SNI (system tray) alongside an SNI-compatible emulator (snes9x-rr, BsnesPlus, RetroArch+snes9x_libretro, or BizHawk+SNI-connector).".to_string(),
-            "[zephyr]   3. Grab SNIClient.py from an upstream Archipelago install and run: python SNIClient.py <patch-file>".to_string(),
-            "[zephyr]   4. Use this Zephyr Console alongside for chat/hints (it's already connected when you click Connect in the Client tab).".to_string(),
+            "[zephyr]   2. Run SNI alongside an SNI-compatible emulator.".to_string(),
+            "[zephyr]   3. Launch SNIClient.py from an upstream Archipelago install.".to_string(),
+            "[zephyr]   4. Use this Zephyr Console for chat / hints.".to_string(),
         ] {
             let _ = app.emit(
                 "randomizer://bridge-log",
@@ -333,11 +324,6 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
         .env("PYTHONDONTWRITEBYTECODE", "1")
         .arg(&launcher)
         .arg(patch_path)
-        // `--` tells Launcher.py's argparse to stop flag-parsing; everything
-        // after is forwarded verbatim to the resolved component. Without it
-        // argparse sees `--nogui` and errors with
-        // `unrecognized arguments: --nogui` because Launcher.py itself
-        // doesn't define that flag.
         .arg("--")
         .arg("--nogui")
         .stdin(Stdio::null())
