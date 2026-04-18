@@ -33,17 +33,10 @@
 	});
 
 	onMount(() => {
-		// Forcefully remove native window decorations at runtime.
-		// This is the most reliable approach because it runs after the window is
-		// fully realized - the point where GTK/WM decorations can sneak back in
-		// despite decorations: false being set in tauri.conf.json (known Tauri v2 bug).
 		if (platform() === 'linux') {
 			appWindow
 				.setDecorations(false)
 				.then(async () => {
-					// On Linux, removing decorations causes GTK to adjust the window geometry,
-					// which can make the WebView miscalculate its content bounds (sidebar disappears).
-					// Re-setting the size to the current value forces a WebView relayout.
 					const size = await appWindow.innerSize();
 					await appWindow.setSize(size);
 				})

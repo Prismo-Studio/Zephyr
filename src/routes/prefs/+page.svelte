@@ -7,6 +7,7 @@
 	import Icon from '@iconify/svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
+	import ColorPicker from '$lib/components/ui/ColorPicker.svelte';
 
 	import updates from '$lib/state/update.svelte';
 	import * as api from '$lib/api';
@@ -26,7 +27,11 @@
 		getTheme,
 		setTheme,
 		getVisibleThemes,
+		getCustomColors,
+		setCustomColors,
+		DEFAULT_CUSTOM_COLORS,
 		type ThemeId,
+		type CustomThemeColors,
 		isWingdingsUnlocked
 	} from '$lib/design-system/tokens';
 	import { m } from '$lib/paraglide/messages';
@@ -155,7 +160,25 @@
 	function switchTheme(id: ThemeId) {
 		currentTheme = id;
 		setTheme(id);
+		if (id === 'custom') {
+			customModalOpen = true;
+		}
 	}
+
+	let customDraft = $state<CustomThemeColors>(getCustomColors());
+	let customModalOpen = $state(false);
+
+	function resetCustomColors() {
+		customDraft = { ...DEFAULT_CUSTOM_COLORS };
+	}
+
+	$effect(() => {
+		const _ = customDraft;
+		setCustomColors(customDraft);
+		if (currentTheme === 'custom') {
+			window.dispatchEvent(new CustomEvent('custom-theme-changed'));
+		}
+	});
 
 	function changeFont(font: string) {
 		currentFont = font;
@@ -567,6 +590,61 @@
 			>
 				{#snippet icon()}<Icon icon="mdi:check" />{/snippet}
 				{i18nState.locale && m.prefs_curseforge_modal_confirm()}
+			</Button>
+		{/snippet}
+	</Modal>
+{/if}
+
+{#if customModalOpen}
+	<Modal
+		bind:open={customModalOpen}
+		title="Custom theme"
+		onclose={() => (customModalOpen = false)}
+	>
+		{#snippet children()}
+			<div class="z-custom-theme">
+				<p class="z-custom-hint">
+					Pick four colors. The interface updates live as you change them.
+				</p>
+
+				<div class="z-color-row">
+					<div class="z-color-label">
+						<span class="z-color-name">Accent</span>
+						<span class="z-color-desc">Buttons, links, highlights</span>
+					</div>
+					<ColorPicker bind:value={customDraft.accent} />
+				</div>
+
+				<div class="z-color-row">
+					<div class="z-color-label">
+						<span class="z-color-name">Background</span>
+						<span class="z-color-desc">Main app background</span>
+					</div>
+					<ColorPicker bind:value={customDraft.bg} />
+				</div>
+
+				<div class="z-color-row">
+					<div class="z-color-label">
+						<span class="z-color-name">Cards</span>
+						<span class="z-color-desc">Surfaces, cards, modals</span>
+					</div>
+					<ColorPicker bind:value={customDraft.bgCard} />
+				</div>
+
+				<div class="z-color-row">
+					<div class="z-color-label">
+						<span class="z-color-name">Text</span>
+						<span class="z-color-desc">Main foreground color</span>
+					</div>
+					<ColorPicker bind:value={customDraft.text} />
+				</div>
+			</div>
+		{/snippet}
+		{#snippet actions()}
+			<Button variant="ghost" onclick={resetCustomColors}>Reset</Button>
+			<Button variant="primary" onclick={() => (customModalOpen = false)}>
+				{#snippet icon()}<Icon icon="mdi:check" />{/snippet}
+				Done
 			</Button>
 		{/snippet}
 	</Modal>
@@ -1020,4 +1098,49 @@
 		font-size: 13px;
 		color: var(--text-muted);
 	}
+
+	.z-custom-theme {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		min-width: 360px;
+	}
+
+	.z-custom-hint {
+		font-size: 13px;
+		color: var(--text-secondary);
+		margin: 0 0 4px;
+	}
+
+	.z-color-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		padding: 12px;
+		border-radius: var(--radius-md);
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+	}
+
+	.z-color-label {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+		flex: 1;
+		cursor: pointer;
+	}
+
+	.z-color-name {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+
+	.z-color-desc {
+		font-size: 11px;
+		color: var(--text-muted);
+	}
+
 </style>

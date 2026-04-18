@@ -8,6 +8,9 @@
 	import InstallPopover from '$lib/components/toolbar/InstallPopover.svelte';
 	import InstallModDialog from '$lib/components/dialogs/InstallModDialog.svelte';
 	import ImportProfileDialog from '$lib/components/dialogs/ImportProfileDialog.svelte';
+	// Dev-only easter egg (DOOM via 0x5f3759df). Uncomment this import + the
+	// <DoomEasterEgg /> mount below + the DOOM_SEQUENCE block in tokens.ts to enable.
+	// import DoomEasterEgg from '$lib/components/dialogs/DoomEasterEgg.svelte';
 	import GlobalSearch from '$lib/components/ui/GlobalSearch.svelte';
 
 	import { onMount, type Snippet } from 'svelte';
@@ -306,6 +309,7 @@
 	<InstallPopover />
 	<InstallModDialog />
 	<ImportProfileDialog />
+	<!-- <DoomEasterEgg /> -->
 
 	{#if gamepadKeyboard.open}
 		<GamepadKeyboard
