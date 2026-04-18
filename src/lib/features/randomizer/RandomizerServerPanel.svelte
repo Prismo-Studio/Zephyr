@@ -2,6 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import SeedPatchesPanel from './SeedPatchesPanel.svelte';
@@ -17,6 +18,24 @@
 	export function refresh() {
 		refreshAll();
 	}
+
+	// Collapsible sections — mirror the randomizer options accordion behaviour.
+	// All open by default; the narrow sidebar is the default layout so users can
+	// close what they don't need to focus on the part they're working on.
+	let openBlocks = $state<Record<string, boolean>>({
+		python: true,
+		players: true,
+		seeds: true,
+		host: true
+	});
+	function toggleBlock(key: string) {
+		openBlocks[key] = !openBlocks[key];
+	}
+
+	// Which connection address to display. The old UI piled 3 cards on top of
+	// each other, eating all the vertical space. Dropdown-picker is tighter.
+	type ConnTarget = 'local' | 'lan' | 'public';
+	let connTarget: ConnTarget = $state('local');
 
 	let python: PythonStatus | null = $state(null);
 	let players: PlayerFile[] = $state([]);
@@ -281,97 +300,132 @@
 		block
 	>
 		<div class="rdz-block" class:rdz-block-disabled={hostMode === 'remote'}>
-			<div class="rdz-block-title">
+			<button class="rdz-block-header" onclick={() => toggleBlock('python')}>
 				<Icon icon="mdi:language-python" />
-				{i18nState.locale && m.randomizer_pythonRuntime()}
+				<span class="rdz-block-name">{i18nState.locale && m.randomizer_pythonRuntime()}</span>
 				{#if hostMode === 'remote'}
 					<span class="rdz-block-badge">
 						<Icon icon="mdi:laptop" />
 						{i18nState.locale && m.randomizer_localOnly()}
 					</span>
 				{/if}
-			</div>
-			{#if python === null}
-				<p class="rdz-muted">{i18nState.locale && m.randomizer_checking()}</p>
-			{:else if python.available}
-				<p class="rdz-ok">
-					<Icon icon="mdi:check-circle" />
-					{i18nState.locale && m.randomizer_pythonFound({ version: python.version ?? '' })} ({python.executable})
-				</p>
-				{#if !python.ap_present}
-					<p class="rdz-warn">
-						<Icon icon="mdi:alert" />
-						{i18nState.locale && m.randomizer_apNotFound()} <code>{python.ap_dir}</code>
-					</p>
-				{:else}
-					<p class="rdz-muted"><code>{python.ap_dir}</code></p>
-				{/if}
-			{:else}
-				<p class="rdz-err">
-					<Icon icon="mdi:close-circle" />
-					{i18nState.locale && m.randomizer_pythonNotDetected()}
-				</p>
+				<Icon
+					icon="mdi:chevron-down"
+					class={openBlocks.python ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'}
+				/>
+			</button>
+			{#if openBlocks.python}
+				<div class="rdz-block-body">
+					{#if python === null}
+						<p class="rdz-muted">{i18nState.locale && m.randomizer_checking()}</p>
+					{:else if python.available}
+						<p class="rdz-ok">
+							<Icon icon="mdi:check-circle" />
+							{i18nState.locale && m.randomizer_pythonFound({ version: python.version ?? '' })} ({python.executable})
+						</p>
+						{#if !python.ap_present}
+							<p class="rdz-warn">
+								<Icon icon="mdi:alert" />
+								{i18nState.locale && m.randomizer_apNotFound()} <code>{python.ap_dir}</code>
+							</p>
+						{:else}
+							<p class="rdz-muted"><code>{python.ap_dir}</code></p>
+						{/if}
+					{:else}
+						<p class="rdz-err">
+							<Icon icon="mdi:close-circle" />
+							{i18nState.locale && m.randomizer_pythonNotDetected()}
+						</p>
+					{/if}
+				</div>
 			{/if}
 		</div>
 	</Tooltip>
 
 	<!-- Player files -->
 	<div class="rdz-block">
-		<div class="rdz-block-title">
-			<Icon icon="mdi:account-multiple" />
-			{i18nState.locale && m.randomizer_playerSlots()} ({players.length})
-			<Button size="sm" variant="ghost" onclick={() => api.openWorkspaceDir()}>
-				{#snippet icon()}<Icon icon="mdi:folder-open" />{/snippet}
-				{i18nState.locale && m.randomizer_openFolder()}
-			</Button>
+		<div class="rdz-block-row">
+			<button class="rdz-block-header" onclick={() => toggleBlock('players')}>
+				<Icon icon="mdi:account-multiple" />
+				<span class="rdz-block-name">
+					{i18nState.locale && m.randomizer_playerSlots()} <small>({players.length})</small>
+				</span>
+				<Icon
+					icon="mdi:chevron-down"
+					class={openBlocks.players ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'}
+				/>
+			</button>
+			<Tooltip
+				text={i18nState.locale && m.randomizer_openFolder()}
+				position="top"
+				delay={200}
+			>
+				<button class="rdz-icon-btn" onclick={() => api.openWorkspaceDir()} aria-label="Open folder">
+					<Icon icon="mdi:folder-open" />
+				</button>
+			</Tooltip>
 		</div>
-		{#if players.length === 0}
-			<p class="rdz-muted">
-				{i18nState.locale && m.randomizer_noPlayerYamls()}
-			</p>
-		{:else}
-			<ul class="rdz-player-list">
-				{#each players as p (p.path)}
-					<li>
-						<Icon icon="mdi:file-document" />
-						<span class="rdz-player-name">{p.name}</span>
-						<span class="rdz-player-size">{Math.ceil(p.size / 102.4) / 10} KB</span>
-						<div class="rdz-seed-actions">
-							<Tooltip text={i18nState.locale && m.randomizer_rename()} position="top" delay={200}>
-								<button class="rdz-icon-btn" onclick={() => openRenamePlayer(p)}>
-									<Icon icon="mdi:pencil" />
-								</button>
-							</Tooltip>
-							<Tooltip text={i18nState.locale && m.randomizer_delete()} position="top" delay={200}>
-								<button class="rdz-icon-btn" onclick={() => deletePlayer(p)}>
-									<Icon icon="mdi:delete" />
-								</button>
-							</Tooltip>
-						</div>
-					</li>
-				{/each}
-			</ul>
+		{#if openBlocks.players}
+			<div class="rdz-block-body">
+				{#if players.length === 0}
+					<p class="rdz-muted">
+						{i18nState.locale && m.randomizer_noPlayerYamls()}
+					</p>
+				{:else}
+					<ul class="rdz-player-list">
+						{#each players as p (p.path)}
+							<li>
+								<Icon icon="mdi:file-document" />
+								<span class="rdz-player-name">{p.name}</span>
+								<span class="rdz-player-size">{Math.ceil(p.size / 102.4) / 10} KB</span>
+								<div class="rdz-seed-actions">
+									<Tooltip text={i18nState.locale && m.randomizer_rename()} position="top" delay={200}>
+										<button class="rdz-icon-btn" onclick={() => openRenamePlayer(p)}>
+											<Icon icon="mdi:pencil" />
+										</button>
+									</Tooltip>
+									<Tooltip text={i18nState.locale && m.randomizer_delete()} position="top" delay={200}>
+										<button class="rdz-icon-btn" onclick={() => deletePlayer(p)}>
+											<Icon icon="mdi:delete" />
+										</button>
+									</Tooltip>
+								</div>
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</div>
 		{/if}
 	</div>
 
 	<!-- Seeds -->
 	<div class="rdz-block">
-		<div class="rdz-block-title">
-			<Icon icon="mdi:dice-multiple" />
-			{i18nState.locale && m.randomizer_seeds()} ({seeds.length})
+		<div class="rdz-block-row">
+			<button class="rdz-block-header" onclick={() => toggleBlock('seeds')}>
+				<Icon icon="mdi:dice-multiple" />
+				<span class="rdz-block-name">
+					{i18nState.locale && m.randomizer_seeds()} <small>({seeds.length})</small>
+				</span>
+				<Icon
+					icon="mdi:chevron-down"
+					class={openBlocks.seeds ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'}
+				/>
+			</button>
 			{#if seeds.length > 0}
 				<Tooltip
 					text={i18nState.locale && m.randomizer_deleteAllSeeds()}
 					position="top"
 					delay={200}
 				>
-					<button class="rdz-icon-btn rdz-clear-all" onclick={clearAllSeeds}>
+					<button class="rdz-icon-btn rdz-clear-all" onclick={clearAllSeeds} aria-label="Clear all seeds">
 						<Icon icon="mdi:delete-sweep" />
 					</button>
 				</Tooltip>
 			{/if}
 		</div>
 
+		{#if openBlocks.seeds}
+		<div class="rdz-block-body">
 		<Button
 			variant="primary"
 			disabled={generating || players.length === 0 || !python?.available}
@@ -452,15 +506,23 @@
 				<pre class="rdz-log">{generateLog}</pre>
 			</details>
 		{/if}
+		</div>
+		{/if}
 	</div>
 
 	<!-- Host -->
 	<div class="rdz-block">
-		<div class="rdz-block-title">
+		<button class="rdz-block-header" onclick={() => toggleBlock('host')}>
 			<Icon icon="mdi:broadcast" />
-			{i18nState.locale && m.randomizer_host()}
-		</div>
+			<span class="rdz-block-name">{i18nState.locale && m.randomizer_host()}</span>
+			<Icon
+				icon="mdi:chevron-down"
+				class={openBlocks.host ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'}
+			/>
+		</button>
 
+		{#if openBlocks.host}
+		<div class="rdz-block-body">
 		<div class="rdz-host-toggle">
 			<button
 				class="rdz-toggle-btn"
@@ -549,6 +611,38 @@
 			</div>
 		{:else}
 			{#if server?.running}
+				{@const selectedIp =
+					connTarget === 'local'
+						? '127.0.0.1'
+						: connTarget === 'lan'
+							? server.local_ip ?? '127.0.0.1'
+							: server.public_ip ?? '127.0.0.1'}
+				{@const selectedAddr = `${selectedIp}:${server.port}`}
+				{@const selectedIcon =
+					connTarget === 'local' ? 'mdi:laptop' : connTarget === 'lan' ? 'mdi:lan' : 'mdi:earth'}
+				{@const selectedLabel =
+					connTarget === 'local'
+						? (i18nState.locale && m.randomizer_thisMachine()) || 'Cette machine'
+						: connTarget === 'lan'
+							? (i18nState.locale && m.randomizer_lanTailscale()) || 'LAN / Tailscale'
+							: (i18nState.locale && m.randomizer_publicInternet()) || 'Internet public'}
+				{@const selectedDesc =
+					connTarget === 'local'
+						? (i18nState.locale && m.randomizer_thisMachineDesc()) || ''
+						: connTarget === 'lan'
+							? (i18nState.locale && m.randomizer_lanDesc()) || ''
+							: (i18nState.locale &&
+									m.randomizer_publicDesc({ port: (server.port ?? 0).toString() })) ||
+								''}
+				{@const connOptions = [
+					{ value: 'local', label: (i18nState.locale && m.randomizer_thisMachine()) || 'Cette machine' },
+					...(server.local_ip
+						? [{ value: 'lan', label: (i18nState.locale && m.randomizer_lanTailscale()) || 'LAN / Tailscale' }]
+						: []),
+					...(server.public_ip
+						? [{ value: 'public', label: (i18nState.locale && m.randomizer_publicInternet()) || 'Internet public' }]
+						: [])
+				]}
 				<div class="rdz-server-running">
 					<div class="rdz-status-row">
 						<div class="rdz-status-pill rdz-status-on">
@@ -556,64 +650,31 @@
 							{i18nState.locale &&
 								m.randomizer_runningOnPort({ port: (server.port ?? 0).toString() })}
 						</div>
-						{#if server.port_reachable}
-							<div class="rdz-status-pill rdz-status-on">
-								<Icon icon="mdi:check-circle" />
-								{i18nState.locale && m.randomizer_portReachable()}
-							</div>
-						{:else}
-							<div class="rdz-status-pill rdz-status-warn">
-								<Icon icon="mdi:alert" />
-								{i18nState.locale && m.randomizer_portNotResponding()}
-							</div>
-						{/if}
 					</div>
 
-					<div class="rdz-conn-grid">
+					<div class="rdz-conn-picker">
+						<Dropdown
+							options={connOptions}
+							value={connTarget}
+							onchange={(v) => (connTarget = v as ConnTarget)}
+						/>
 						<button
 							class="rdz-conn-card rdz-conn-recommended"
 							title={i18nState.locale && m.randomizer_clickToCopy()}
-							onclick={() => navigator.clipboard.writeText(`127.0.0.1:${server?.port}`)}
+							onclick={() => copyText(selectedAddr, 'addr')}
 						>
 							<span class="rdz-label">
-								<Icon icon="mdi:laptop" />
-								{i18nState.locale && m.randomizer_thisMachine()}
+								<Icon icon={selectedIcon} />
+								{selectedLabel}
+								<span class="rdz-conn-copy-hint">
+									<Icon icon={copiedKey === 'addr' ? 'mdi:check' : 'mdi:content-copy'} />
+								</span>
 							</span>
-							<code>127.0.0.1:{server.port}</code>
-							<small>{i18nState.locale && m.randomizer_thisMachineDesc()}</small>
+							<code>{selectedAddr}</code>
+							{#if selectedDesc}
+								<small>{selectedDesc}</small>
+							{/if}
 						</button>
-						{#if server.local_ip}
-							<button
-								class="rdz-conn-card"
-								title={i18nState.locale && m.randomizer_clickToCopy()}
-								onclick={() => navigator.clipboard.writeText(`${server?.local_ip}:${server?.port}`)}
-							>
-								<span class="rdz-label">
-									<Icon icon="mdi:lan" />
-									{i18nState.locale && m.randomizer_lanTailscale()}
-								</span>
-								<code>{server.local_ip}:{server.port}</code>
-								<small>{i18nState.locale && m.randomizer_lanDesc()}</small>
-							</button>
-						{/if}
-						{#if server.public_ip}
-							<button
-								class="rdz-conn-card"
-								title={i18nState.locale && m.randomizer_clickToCopy()}
-								onclick={() =>
-									navigator.clipboard.writeText(`${server?.public_ip}:${server?.port}`)}
-							>
-								<span class="rdz-label">
-									<Icon icon="mdi:earth" />
-									{i18nState.locale && m.randomizer_publicInternet()}
-								</span>
-								<code>{server.public_ip}:{server.port}</code>
-								<small>
-									{i18nState.locale &&
-										m.randomizer_publicDesc({ port: (server.port ?? 0).toString() })}
-								</small>
-							</button>
-						{/if}
 					</div>
 
 					{#if server.password}
@@ -627,10 +688,40 @@
 						<code>{server.pid}</code>
 					</div>
 
-					<Button variant="danger" onclick={stop}>
-						{#snippet icon()}<Icon icon="mdi:stop" />{/snippet}
-						{i18nState.locale && m.randomizer_stopServer()}
-					</Button>
+					<div class="rdz-inline-field rdz-running-port" aria-disabled="true">
+						<span>{i18nState.locale && m.randomizer_port()}</span>
+						<div class="rdz-inline-control">
+							<Input value={String(server.port ?? portStr)} placeholder="38281" />
+						</div>
+						<div class="rdz-port-presets">
+							{#each PRESET_PORTS as preset}
+								<button
+									type="button"
+									class="rdz-preset-chip"
+									class:active={server.port === preset.p}
+									disabled
+								>
+									<span class="rdz-preset-port">{preset.p}</span>
+									<span class="rdz-preset-label">{preset.label}</span>
+								</button>
+							{/each}
+						</div>
+						<p class="rdz-muted rdz-running-hint">
+							<Icon icon="mdi:information-outline" />
+							Arrêtez le serveur pour changer le port.
+						</p>
+					</div>
+
+					<div class="rdz-server-actions">
+						<Button variant="primary" onclick={() => api.openConsoleWindow()}>
+							{#snippet icon()}<Icon icon="mdi:console" />{/snippet}
+							Open console
+						</Button>
+						<Button variant="danger" onclick={stop}>
+							{#snippet icon()}<Icon icon="mdi:stop" />{/snippet}
+							{i18nState.locale && m.randomizer_stopServer()}
+						</Button>
+					</div>
 				</div>
 			{:else}
 				<div class="rdz-host-form">
@@ -646,9 +737,9 @@
 									class="rdz-preset-chip"
 									class:active={port === preset.p}
 									onclick={() => (portStr = String(preset.p))}
-									title={preset.label}
 								>
-									{preset.p}
+									<span class="rdz-preset-port">{preset.p}</span>
+									<span class="rdz-preset-label">{preset.label}</span>
 								</button>
 							{/each}
 						</div>
@@ -715,6 +806,8 @@
 			{/if}
 		{/if}
 		<!-- end hostMode if/else -->
+		</div>
+		{/if}
 	</div>
 </section>
 
@@ -889,6 +982,111 @@
 		position: relative;
 		z-index: 2;
 		opacity: 2; /* Compensate the parent's 0.5 opacity so badge stays at full opacity */
+	}
+
+	.rdz-block-row {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+		width: 100%;
+	}
+
+	.rdz-block-row > :global(.rdz-icon-btn) {
+		flex-shrink: 0;
+	}
+
+	.rdz-block-header {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+		width: 100%;
+		padding: 8px 10px;
+		border: none;
+		background: transparent;
+		color: var(--text-primary);
+		font-family: var(--font-body);
+		font-size: 13px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		cursor: pointer;
+		border-radius: var(--radius-sm);
+		text-align: left;
+		transition: background var(--transition-fast);
+	}
+
+	.rdz-block-header:hover {
+		background: var(--bg-hover);
+	}
+
+	.rdz-block-header :global(svg:first-child) {
+		font-size: 16px;
+		color: var(--accent-400);
+		flex-shrink: 0;
+	}
+
+	.rdz-block-name {
+		flex: 1;
+		color: var(--text-primary);
+	}
+
+	.rdz-block-name small {
+		color: var(--text-muted);
+		font-weight: 600;
+		margin-left: 4px;
+	}
+
+	:global(.rdz-chev) {
+		font-size: 16px;
+		color: var(--text-muted);
+		transition: transform 180ms ease;
+		flex-shrink: 0;
+	}
+
+	:global(.rdz-chev-closed) {
+		transform: rotate(-90deg);
+	}
+
+	.rdz-block-body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+		padding: 0 4px 4px;
+		animation: rdz-block-in 180ms ease;
+	}
+
+	@keyframes rdz-block-in {
+		from {
+			opacity: 0;
+			transform: translateY(-2px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.rdz-conn-picker {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.rdz-conn-copy-hint {
+		margin-left: auto;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.rdz-conn-copy-hint :global(svg) {
+		font-size: 14px;
+		color: var(--text-muted);
+		transition: color var(--transition-fast);
+	}
+
+	.rdz-conn-card:hover .rdz-conn-copy-hint :global(svg) {
+		color: var(--accent-400);
 	}
 
 	.rdz-block-title {
@@ -1145,25 +1343,69 @@
 	}
 
 	.rdz-preset-chip {
-		padding: 2px 8px;
+		display: inline-flex;
+		align-items: baseline;
+		gap: 6px;
+		padding: 4px 10px;
 		border-radius: var(--radius-full);
 		border: 1px solid var(--border-default);
 		background: var(--bg-elevated);
 		color: var(--text-muted);
-		font-size: 10px;
-		font-family: var(--font-mono, monospace);
 		cursor: pointer;
 		transition: all var(--transition-fast);
 	}
 
+	.rdz-preset-port {
+		font-family: var(--font-mono, 'JetBrains Mono', monospace);
+		font-size: 11px;
+		font-weight: 700;
+		color: var(--text-primary);
+	}
+
+	.rdz-preset-label {
+		font-size: 10px;
+		color: var(--text-muted);
+	}
+
 	.rdz-preset-chip:hover {
 		border-color: var(--accent-400);
+	}
+	.rdz-preset-chip:hover .rdz-preset-port,
+	.rdz-preset-chip:hover .rdz-preset-label {
 		color: var(--accent-400);
 	}
 
 	.rdz-preset-chip.active {
 		background: var(--bg-active);
 		border-color: var(--accent-400);
+	}
+	.rdz-preset-chip.active .rdz-preset-port,
+	.rdz-preset-chip.active .rdz-preset-label {
+		color: var(--accent-400);
+	}
+
+	.rdz-preset-chip:disabled {
+		cursor: not-allowed;
+	}
+
+	.rdz-running-port {
+		opacity: 0.65;
+		pointer-events: none;
+	}
+	.rdz-running-port .rdz-preset-chip.active {
+		pointer-events: none;
+	}
+
+	.rdz-running-hint {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		font-size: 11px;
+		margin-top: 6px !important;
+		opacity: 0.85;
+	}
+	.rdz-running-hint :global(svg) {
+		font-size: 13px;
 		color: var(--accent-400);
 	}
 
@@ -1208,6 +1450,13 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-sm);
+	}
+
+	.rdz-server-actions {
+		display: flex;
+		gap: var(--space-sm);
+		flex-wrap: wrap;
+		align-items: center;
 	}
 
 	.rdz-status-pill {

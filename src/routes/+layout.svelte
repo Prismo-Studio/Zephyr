@@ -54,6 +54,12 @@
 	let updateInstalling = $state(false);
 	let appVersion = $state('');
 
+	/** Standalone companion window (opened via `open_console_window`). Renders
+	 *  the children full-bleed with no sidebar/titlebar/statusbar chrome. */
+	const isStandalone =
+		typeof window !== 'undefined' &&
+		new URLSearchParams(window.location.search).get('standalone') === '1';
+
 	let currentDpiScale = 1;
 	const DPI_STEPS = [0.75, 0.85, 0.9, 1, 1.1, 1.15, 1.25, 1.5, 1.75, 2];
 
@@ -252,6 +258,15 @@
 	}}
 />
 
+{#if isStandalone}
+	<main class="z-app z-app-standalone">
+		<Titlebar />
+		<div class="z-standalone-body">
+			{@render children?.()}
+		</div>
+		<Toasts />
+	</main>
+{:else}
 <main class="z-app">
 	<Titlebar />
 
@@ -353,8 +368,24 @@
 		</Modal>
 	{/if}
 </main>
+{/if}
 
 <style>
+	.z-app-standalone {
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	.z-standalone-body {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
 	.z-app {
 		display: flex;
 		flex-direction: column;

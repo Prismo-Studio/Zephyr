@@ -64,6 +64,10 @@ export const renameSeed = (path: string, newName: string) =>
 
 export const clearSeeds = () => invoke<number>('clear_seeds');
 
+/** Spawn the standalone Zephyr Console window (Archipelago-TextClient-style).
+ *  Single-instance — focuses the existing window if already open. */
+export const openConsoleWindow = () => invoke<void>('open_console_window');
+
 // --- Custom apworlds ---
 
 export const listCustomApworlds = () => invoke<CustomApworld[]>('list_custom_apworlds');

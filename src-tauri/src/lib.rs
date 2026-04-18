@@ -14,6 +14,7 @@ use gtk::prelude::GtkWindowExt;
 
 mod cli;
 mod config;
+mod console;
 mod db;
 mod deep_link;
 mod game;
@@ -319,6 +320,9 @@ pub fn run() {
             randomizer::commands::get_rom_paths,
             randomizer::commands::set_rom_path,
             randomizer::commands::clear_rom_path,
+            console::commands::console_server_send_stdin,
+            console::commands::console_server_recent_log,
+            console::commands::open_console_window,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())

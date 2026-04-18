@@ -7,10 +7,10 @@
 
 use std::{
     fs::File,
-    io::{self, BufRead, BufReader},
+    io::{self, BufRead, BufReader, Write},
     net::{IpAddr, TcpListener, UdpSocket},
     path::{Path, PathBuf},
-    process::{Child, Command, Stdio},
+    process::{Child, ChildStdin, Command, Stdio},
     sync::{Arc, Mutex},
     thread,
 };
@@ -19,7 +19,7 @@ use zip::ZipArchive;
 
 use eyre::{bail, Context, Result};
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 use tracing::{info, warn};
 
 /// Persistent install location for the Archipelago runtime in packaged builds.
@@ -573,9 +573,30 @@ pub struct ServerState {
 
 struct RunningServer {
     child: Child,
+    stdin: Option<ChildStdin>,
     port: u16,
     password: Option<String>,
     multidata: String,
+}
+
+/// Payload emitted on the `"console://server-log"` Tauri event for every line
+/// MultiServer.py writes to stdout or stderr. Kept intentionally dumb — the
+/// console frontend does the parsing. This is the Phase 1 feed source; Phase 2
+/// will add a structured WebSocket-observer channel alongside.
+#[derive(Serialize, Clone, Debug)]
+pub struct ServerLogEvent {
+    pub stream: &'static str, // "stdout" | "stderr"
+    pub line: String,
+    pub ts_ms: u64,
+}
+
+const SERVER_LOG_EVENT: &str = "console://server-log";
+
+fn now_ms() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_millis() as u64)
+        .unwrap_or(0)
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -878,7 +899,10 @@ impl ServerState {
             .arg(port.to_string())
             .arg("--loglevel")
             .arg("info")
-            .stdin(Stdio::null())
+            // piped so the Console can type admin commands (/players, /send, …).
+            // MultiServer.py's atexit "Press enter to close" is a no-op when
+            // stdin is a pipe we own: we just drop the handle on shutdown.
+            .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
         if let Some(pw) = password.as_ref() {
@@ -903,26 +927,40 @@ impl ServerState {
 
         let mut child = cmd.spawn().context("failed to spawn MultiServer.py")?;
 
-        // Drain stdout/stderr into the rolling log buffer
+        // Grab the stdin handle before we move the child into RunningServer.
+        let stdin_handle = child.stdin.take();
+
+        // Drain stdout/stderr into the rolling log buffer AND emit a Tauri
+        // event per line so the Console UI can stream them live.
         let buf = Arc::clone(&self.log_buffer);
         if let Some(stdout) = child.stdout.take() {
             let buf = Arc::clone(&buf);
+            let app = app.clone();
             thread::spawn(move || {
                 let reader = BufReader::new(stdout);
                 for line in reader.lines().map_while(|l| l.ok()) {
                     info!("AP server: {line}");
                     if let Ok(mut b) = buf.lock() {
-                        b.push(line);
+                        b.push(line.clone());
                         let len = b.len();
                         if len > 500 {
                             b.drain(0..len - 500);
                         }
                     }
+                    let _ = app.emit(
+                        SERVER_LOG_EVENT,
+                        ServerLogEvent {
+                            stream: "stdout",
+                            line,
+                            ts_ms: now_ms(),
+                        },
+                    );
                 }
             });
         }
         if let Some(stderr) = child.stderr.take() {
             let buf = Arc::clone(&buf);
+            let app = app.clone();
             thread::spawn(move || {
                 let reader = BufReader::new(stderr);
                 for line in reader.lines().map_while(|l| l.ok()) {
@@ -934,6 +972,14 @@ impl ServerState {
                             b.drain(0..len - 500);
                         }
                     }
+                    let _ = app.emit(
+                        SERVER_LOG_EVENT,
+                        ServerLogEvent {
+                            stream: "stderr",
+                            line,
+                            ts_ms: now_ms(),
+                        },
+                    );
                 }
             });
         }
@@ -941,6 +987,7 @@ impl ServerState {
         let pid = child.id();
         let server = RunningServer {
             child,
+            stdin: stdin_handle,
             port,
             password: password.clone(),
             multidata: multidata.to_string_lossy().to_string(),
@@ -967,9 +1014,42 @@ impl ServerState {
     pub fn stop(&self) -> Result<()> {
         let mut guard = self.inner.lock().unwrap();
         if let Some(mut server) = guard.take() {
+            // Dropping the stdin pipe first gives MultiServer.py's atexit its EOF.
+            let _ = server.stdin.take();
             let _ = server.child.kill();
             let _ = server.child.wait();
         }
         Ok(())
+    }
+
+    /// Write a line to the running MultiServer's stdin, appending `\n` if
+    /// missing. Used by the Console to dispatch admin commands (`/players`,
+    /// `/send`, …). Errors if no server is running or the pipe is dead.
+    pub fn send_line(&self, line: &str) -> Result<()> {
+        let mut guard = self.inner.lock().unwrap();
+        let server = guard
+            .as_mut()
+            .ok_or_else(|| eyre::eyre!("no server running"))?;
+        let stdin = server
+            .stdin
+            .as_mut()
+            .ok_or_else(|| eyre::eyre!("server stdin is not available"))?;
+
+        let mut payload = line.to_string();
+        if !payload.ends_with('\n') {
+            payload.push('\n');
+        }
+        stdin
+            .write_all(payload.as_bytes())
+            .context("write to MultiServer stdin")?;
+        stdin.flush().context("flush MultiServer stdin")?;
+        Ok(())
+    }
+
+    /// Return a snapshot of the most recent log lines (oldest first). Used by
+    /// the Console to backfill its feed when first opened, before the live
+    /// event stream kicks in.
+    pub fn recent_log_snapshot(&self) -> Vec<String> {
+        self.recent_log_lines()
     }
 }
