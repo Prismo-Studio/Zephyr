@@ -1,14 +1,14 @@
 import type { ClientSession } from './client-session.svelte';
+import { m } from '$lib/paraglide/messages';
 
 /**
  * Register every Client-side command (`!` prefix) into the session's
- * registry. Most are forwarded as `Say` packets — AP's server parses them
+ * registry. Most are forwarded as `Say` packets, AP's server parses them
  * natively, so we don't duplicate logic here.
  */
 export function registerClientCommands(session: ClientSession) {
 	const r = session.registry;
 
-	// ── Info ────────────────────────────────────────────────────────────
 	r.register({
 		prefix: '!',
 		name: 'help',
@@ -21,17 +21,23 @@ export function registerClientCommands(session: ClientSession) {
 			if (args.length === 0) {
 				const all = session.registry.all('!').filter((c) => c.status === 'ready');
 				session.log.appendSystem(
-					`${all.length} commands: ${all.map((c) => c.name).join(', ')}. Press Ctrl+/ for the palette.`,
+					m.console_msg_commandsList({
+						count: String(all.length),
+						names: all.map((c) => c.name).join(', ')
+					}),
 					'info'
 				);
 			} else {
 				const def = session.registry.lookup('!', args[0]);
 				if (!def) {
-					session.log.appendSystem(`unknown command: !${args[0]}`, 'warn');
+					session.log.appendSystem(
+						m.console_msg_unknownCmd({ prefix: '!', name: args[0] }),
+						'warn'
+					);
 					return;
 				}
 				session.log.appendSystem(
-					`${session.registry.signature(def)}  —  ${def.summary}`,
+					`${session.registry.signature(def)}  ·  ${def.summary}`,
 					'info'
 				);
 			}

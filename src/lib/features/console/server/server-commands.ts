@@ -1,4 +1,5 @@
 import type { ServerSession } from './server-session.svelte';
+import { m } from '$lib/paraglide/messages';
 
 /**
  * Register every Server-side command into the session's registry.
@@ -24,21 +25,25 @@ export function registerServerCommands(session: ServerSession) {
 		examples: ['/help', '/help send'],
 		run: async (args) => {
 			if (args.length === 0) {
-				// The help palette already renders the full list. A textual fallback
-				// in the feed stays useful for muscle-memory.
 				const all = session.registry.all('/').filter((c) => c.status === 'ready');
 				session.log.appendSystem(
-					`${all.length} commands: ${all.map((c) => c.name).join(', ')}. Press Ctrl+/ for the palette.`,
+					m.console_msg_commandsList({
+						count: String(all.length),
+						names: all.map((c) => c.name).join(', ')
+					}),
 					'info'
 				);
 			} else {
 				const def = session.registry.lookup('/', args[0]);
 				if (!def) {
-					session.log.appendSystem(`unknown command: /${args[0]}`, 'warn');
+					session.log.appendSystem(
+						m.console_msg_unknownCmd({ prefix: '/', name: args[0] }),
+						'warn'
+					);
 					return;
 				}
 				session.log.appendSystem(
-					`${session.registry.signature(def)}  —  ${def.summary}`,
+					`${session.registry.signature(def)}  ·  ${def.summary}`,
 					'info'
 				);
 			}

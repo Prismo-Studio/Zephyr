@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 	import type { LogEntry } from '../core/protocol';
 
 	type Props = {
@@ -22,7 +24,7 @@
 		<button
 			class="zc-badge zc-badge-{entry.level}"
 			onclick={() => onFilterSource?.(entry.source!)}
-			title="Filter feed to {entry.source}"
+			title={i18nState.locale && m.console_feed_filterTooltip({ source: entry.source })}
 		>{entry.source}</button>
 	{:else}
 		<span class="zc-badge-spacer"></span>

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	type Mode = 'server' | 'client';
 
@@ -11,7 +13,7 @@
 	let { mode, onchange, clientDisabled = false }: Props = $props();
 </script>
 
-<div class="zc-ct" role="tablist" aria-label="Console mode">
+<div class="zc-ct" role="tablist" aria-label={i18nState.locale && m.console_shell_mode()}>
 	<button
 		role="tab"
 		aria-selected={mode === 'server'}
@@ -20,7 +22,7 @@
 		onclick={() => onchange('server')}
 	>
 		<Icon icon="mdi:server" />
-		Server
+		{i18nState.locale && m.console_companion_server()}
 	</button>
 	<button
 		role="tab"
@@ -29,10 +31,12 @@
 		class:active={mode === 'client'}
 		disabled={clientDisabled}
 		onclick={() => onchange('client')}
-		title={clientDisabled ? 'Client view ships in Phase 3' : 'Switch to Client view'}
+		title={clientDisabled
+			? i18nState.locale && m.console_companion_clientDisabled()
+			: i18nState.locale && m.console_companion_switchClient()}
 	>
 		<Icon icon="mdi:account" />
-		Client
+		{i18nState.locale && m.console_companion_client()}
 	</button>
 </div>
 

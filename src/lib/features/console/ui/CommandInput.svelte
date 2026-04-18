@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 	import type { CommandRegistry, CommandDef } from '../core/command-registry';
 	import { parseLine } from '../core/command-parser';
 
@@ -43,7 +45,7 @@
 		const nextArg = currentDef.args[typedArgs];
 		if (!nextArg) return '';
 		const wrapped = nextArg.optional ? `[${nextArg.name}]` : `<${nextArg.name}>`;
-		return `next: ${wrapped}`;
+		return `${m.console_input_next()}: ${wrapped}`;
 	});
 
 	function acceptCandidate(i: number) {
@@ -155,9 +157,15 @@
 			onkeydown={onKey}
 			spellcheck="false"
 			autocomplete="off"
-			placeholder={prefix === '/' ? 'type /help for commands' : 'type !help, or chat…'}
+			placeholder={prefix === '/'
+				? i18nState.locale && m.console_input_promptServer()
+				: i18nState.locale && m.console_input_promptClient()}
 		/>
-		<button class="zc-help-btn" onclick={() => onhelp?.()} title="Help (Ctrl+/)">
+		<button
+			class="zc-help-btn"
+			onclick={() => onhelp?.()}
+			title={i18nState.locale && m.console_input_helpTooltip()}
+		>
 			<Icon icon="mdi:help-circle-outline" />
 		</button>
 	</div>

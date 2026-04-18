@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { onMount, onDestroy } from 'svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	import LogFeed from '../ui/LogFeed.svelte';
 	import CommandInput from '../ui/CommandInput.svelte';
@@ -31,12 +33,12 @@
 	<div class="zc-players">
 		<header>
 			<Icon icon="mdi:account-group" />
-			<span>Active sources</span>
+			<span>{i18nState.locale && m.console_server_activeSources()}</span>
 			<small>{session.log.distinctSources.length}</small>
 		</header>
 
 		{#if session.log.distinctSources.length === 0}
-			<p class="zc-players-empty">Sources will appear as the server logs activity.</p>
+			<p class="zc-players-empty">{i18nState.locale && m.console_client_noRoster()}</p>
 		{:else}
 			<ul>
 				{#each session.log.distinctSources as source (source)}
@@ -59,11 +61,13 @@
 		<footer>
 			<div class="zc-conn" class:on={session.connected}>
 				<span class="zc-conn-dot"></span>
-				{session.connected ? 'Live' : 'Idle'}
+				{session.connected
+					? i18nState.locale && m.console_server_live()
+					: i18nState.locale && m.console_server_idle()}
 			</div>
 			<button class="zc-clear-btn" onclick={() => session.log.clear()}>
 				<Icon icon="mdi:broom" />
-				Clear
+				{i18nState.locale && m.console_server_clear()}
 			</button>
 		</footer>
 	</div>

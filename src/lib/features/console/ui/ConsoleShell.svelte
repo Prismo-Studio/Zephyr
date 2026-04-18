@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import Icon from '@iconify/svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	import CompanionToggle from './CompanionToggle.svelte';
 	import ServerView from '../server/ServerView.svelte';
@@ -52,7 +54,7 @@
 <div class="zc-shell" class:standalone={isStandalone}>
 	<header class="zc-header">
 		{#if !isStandalone}
-			<a class="zc-back" href="/randomizer" aria-label="Back">
+			<a class="zc-back" href="/randomizer" aria-label={i18nState.locale && m.console_shell_back()}>
 				<Icon icon="mdi:arrow-left" />
 			</a>
 		{/if}
@@ -70,7 +72,7 @@
 
 		<div class="zc-header-right">
 			<kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>T</kbd>
-			<span class="zc-right-label">swap</span>
+			<span class="zc-right-label">{i18nState.locale && m.console_shell_swap()}</span>
 		</div>
 	</header>
 
@@ -89,13 +91,13 @@
 	</main>
 
 	<footer class="zc-footer">
-		<span><kbd>Ctrl</kbd>+<kbd>/</kbd> help</span>
-		<span><kbd>↑</kbd>/<kbd>↓</kbd> history</span>
-		<span><kbd>Ctrl+Shift+S</kbd>/<kbd>C</kbd> mode</span>
+		<span><kbd>Ctrl</kbd>+<kbd>/</kbd> {i18nState.locale && m.console_shell_help()}</span>
+		<span><kbd>↑</kbd>/<kbd>↓</kbd> {i18nState.locale && m.console_shell_history()}</span>
+		<span><kbd>Ctrl+Shift+S</kbd>/<kbd>C</kbd> {i18nState.locale && m.console_shell_modeShortcut()}</span>
 		<span class="zc-footer-spacer"></span>
-		<span>mode · <strong>{mode}</strong></span>
+		<span>{i18nState.locale && m.console_shell_mode()} · <strong>{mode}</strong></span>
 		{#if isStandalone}
-			<span class="zc-footer-pill">standalone</span>
+			<span class="zc-footer-pill">{i18nState.locale && m.console_shell_standalone()}</span>
 		{/if}
 	</footer>
 </div>

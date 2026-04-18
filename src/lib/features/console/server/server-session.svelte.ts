@@ -7,6 +7,7 @@ import { parseLine } from '../core/command-parser';
 import { CommandRegistry } from '../core/command-registry';
 import { classifyLine, SERVER_LOG_EVENT, type ServerLogEvent } from '../core/protocol';
 import { registerServerCommands } from './server-commands';
+import { m } from '$lib/paraglide/messages';
 
 /**
  * Owns the log store, the command registry, and the Tauri event subscription
@@ -62,7 +63,7 @@ export class ServerSession {
 			this.connected = true;
 		});
 
-		this.log.appendSystem('Zephyr Console ready. Type /help to list commands.', 'system');
+		this.log.appendSystem(m.console_msg_ready(), 'system');
 	}
 
 	dispose() {
@@ -90,15 +91,14 @@ export class ServerSession {
 				text: parsed.text,
 				origin: 'echo'
 			});
-			this.log.appendSystem('Server has no chat channel. Use /broadcast <msg>.', 'warn');
+			this.log.appendSystem(m.console_msg_noServerChat(), 'warn');
 			return;
 		}
 
 		if (parsed.kind !== 'command') return;
 
-		// Only server-side commands on the Server view.
 		if (parsed.prefix !== '/') {
-			this.log.appendSystem(`! commands belong to the Client view, not Server.`, 'warn');
+			this.log.appendSystem(m.console_msg_clientCmd(), 'warn');
 			return;
 		}
 
@@ -113,7 +113,7 @@ export class ServerSession {
 		const def = this.registry.lookup('/', parsed.name);
 
 		if (def?.status === 'coming-soon') {
-			this.log.appendSystem(`/${parsed.name} is a Zephyr v2 extension, not available yet.`, 'warn');
+			this.log.appendSystem(m.console_msg_comingSoon({ name: parsed.name }), 'warn');
 			return;
 		}
 
@@ -121,7 +121,10 @@ export class ServerSession {
 			try {
 				await def.run(parsed.args, line);
 			} catch (err: unknown) {
-				this.log.appendSystem(`command failed: ${(err as Error).message ?? err}`, 'error');
+				this.log.appendSystem(
+					m.console_msg_cmdFailed({ error: String((err as Error).message ?? err) }),
+					'error'
+				);
 			}
 			return;
 		}
@@ -136,7 +139,10 @@ export class ServerSession {
 		try {
 			await invoke('console_server_send_stdin', { line });
 		} catch (err: unknown) {
-			this.log.appendSystem(`send_stdin failed: ${(err as Error).message ?? err}`, 'error');
+			this.log.appendSystem(
+				m.console_msg_sendFailed({ error: String((err as Error).message ?? err) }),
+				'error'
+			);
 		}
 	}
 

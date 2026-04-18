@@ -148,11 +148,23 @@ export type ServerPacket =
 
 // ── Protocol constants ───────────────────────────────────────────────
 
-/** AP protocol version we target. Anchored to AP 0.5.x. */
-export const PROTOCOL_VERSION = { major: 0, minor: 5, build: 0, class: 'Version' as const };
+/** AP protocol version we target. Bumped to 0.6.0 to match current AP. */
+export const PROTOCOL_VERSION = { major: 0, minor: 6, build: 0, class: 'Version' as const };
 
-/** items_handling bitmask: 0b111 = remote items + remote items from self + items from starting inventory. */
-export const TRACKER_ITEMS_HANDLING = 0b111;
+/**
+ * items_handling bitmasks per AP network protocol:
+ *   0b000 (0) — server does NOT send ReceivedItems. Correct for trackers /
+ *               admin consoles that sit alongside a real game client. The
+ *               real client (SNIClient etc.) handles actual item delivery.
+ *   0b111 (7) — full remote-items mode. Correct only when this client is the
+ *               slot's actual item receiver and delivers them in-game.
+ *
+ * Using 0b111 for a tracker lies to the server about the slot's capabilities
+ * and can interfere with server-side bookkeeping. Always use
+ * TRACKER_ITEMS_HANDLING when connecting as a tracker.
+ */
+export const TRACKER_ITEMS_HANDLING = 0b000;
+export const PLAYER_ITEMS_HANDLING = 0b111;
 
 // ── Parsing helpers ──────────────────────────────────────────────────
 

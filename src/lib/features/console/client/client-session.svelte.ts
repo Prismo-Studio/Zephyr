@@ -1,8 +1,10 @@
 import { LogStore } from '../core/log-store.svelte';
 import { CommandRegistry } from '../core/command-registry';
 import { parseLine } from '../core/command-parser';
+import { m } from '$lib/paraglide/messages';
 import {
 	PROTOCOL_VERSION,
+	PLAYER_ITEMS_HANDLING,
 	TRACKER_ITEMS_HANDLING,
 	flattenPrintJSON,
 	generateUuid,
@@ -84,21 +86,21 @@ export class ClientSession {
 		const url = `ws://${host}/`;
 
 		this.status = 'connecting';
-		this.statusMessage = `Opening ${url}…`;
-		this.log.appendSystem(`connecting to ${url}`, 'system');
+		this.statusMessage = m.console_msg_connecting({ url });
+		this.log.appendSystem(this.statusMessage, 'system');
 
 		try {
 			this.ws = new WebSocket(url);
 		} catch (err: unknown) {
 			this.status = 'error';
-			this.statusMessage = `failed to open: ${(err as Error).message ?? err}`;
+			this.statusMessage = (err as Error).message ?? String(err);
 			this.log.appendSystem(this.statusMessage, 'error');
 			return;
 		}
 
 		this.ws.addEventListener('open', () => {
 			this.reconnectAttempts = 0;
-			this.log.appendSystem('socket open, awaiting RoomInfo…', 'system');
+			this.log.appendSystem(m.console_msg_socketOpen(), 'system');
 		});
 
 		this.ws.addEventListener('message', (evt) => {
@@ -108,25 +110,23 @@ export class ClientSession {
 		});
 
 		this.ws.addEventListener('error', () => {
-			this.log.appendSystem('socket error', 'error');
+			this.log.appendSystem(m.console_msg_socketError(), 'error');
 		});
 
 		this.ws.addEventListener('close', (evt) => {
-			this.log.appendSystem(
-				`socket closed (${evt.code}${evt.reason ? ` ${evt.reason}` : ''})`,
-				'system'
-			);
+			const code = `${evt.code}${evt.reason ? ` ${evt.reason}` : ''}`;
+			this.log.appendSystem(m.console_msg_socketClosed({ code }), 'system');
 			const wasConnected = this.status === 'connected';
 			this.status = 'disconnected';
-			this.statusMessage = evt.reason || 'disconnected';
+			this.statusMessage = evt.reason || m.console_msg_disconnected();
 			this.ws = null;
 
 			if (wasConnected && this.params) {
-				// Opportunistic reconnect with backoff, capped at 10 tries.
 				if (this.reconnectAttempts < 10) {
 					const delay = Math.min(10_000, 500 * Math.pow(2, this.reconnectAttempts));
 					this.reconnectAttempts += 1;
-					this.log.appendSystem(`reconnecting in ${Math.round(delay / 100) / 10}s…`, 'warn');
+					const seconds = String(Math.round(delay / 100) / 10);
+					this.log.appendSystem(m.console_msg_reconnecting({ seconds }), 'warn');
 					this.reconnectTimer = setTimeout(() => void this.openSocket(), delay);
 				}
 			}
@@ -146,7 +146,7 @@ export class ClientSession {
 		}
 		this.status = 'disconnected';
 		this.statusMessage = '';
-		this.log.appendSystem('disconnected', 'system');
+		this.log.appendSystem(m.console_msg_disconnected(), 'system');
 	}
 
 	dispose() {
@@ -165,7 +165,10 @@ export class ClientSession {
 		try {
 			this.ws.send(serializeFrame(packets));
 		} catch (err: unknown) {
-			this.log.appendSystem(`send failed: ${(err as Error).message ?? err}`, 'error');
+			this.log.appendSystem(
+				m.console_msg_sendFailed({ error: String((err as Error).message ?? err) }),
+				'error'
+			);
 		}
 	}
 
@@ -181,7 +184,7 @@ export class ClientSession {
 			case 'ConnectionRefused': {
 				const errors = (p as { errors?: string[] }).errors ?? ['unknown'];
 				this.status = 'error';
-				this.statusMessage = `refused: ${errors.join(', ')}`;
+				this.statusMessage = m.console_msg_refused({ reasons: errors.join(', ') });
 				this.log.appendSystem(this.statusMessage, 'error');
 				try {
 					this.ws?.close(1000);
@@ -207,14 +210,17 @@ export class ClientSession {
 						level: 'item',
 						source: 'ITEM',
 						origin: 'client',
-						text: `received Item#${it.item} from ${fromName}`
+						text: m.console_msg_receivedItem({
+							item: String(it.item),
+							from: fromName
+						})
 					});
 				}
 				return;
 			}
 			case 'InvalidPacket':
 				this.log.appendSystem(
-					`server rejected packet: ${(p as { text?: string }).text ?? ''}`,
+					m.console_msg_serverRejected({ text: (p as { text?: string }).text ?? '' }),
 					'error'
 				);
 				return;
@@ -222,8 +228,7 @@ export class ClientSession {
 				// Not surfaced in v1; Phase 5 will use this for Zephyr sidecar events.
 				return;
 			default:
-				// Unknown cmd — dump to system so we can debug.
-				this.log.appendSystem(`unknown packet: ${p.cmd}`, 'system');
+				this.log.appendSystem(m.console_msg_unknownPacket({ cmd: p.cmd }), 'system');
 				return;
 		}
 	}
@@ -231,14 +236,24 @@ export class ClientSession {
 	private onRoomInfo(p: RoomInfoPacket) {
 		this.seedName = p.seed_name ?? '';
 		this.status = 'authenticating';
-		this.statusMessage = `authenticating as ${this.params?.slot ?? '?'}…`;
+		this.statusMessage = m.console_msg_authenticating({
+			slot: this.params?.slot ?? '?'
+		});
 		this.log.appendSystem(
-			`connected to seed ${this.seedName || '(unnamed)'}, sending Connect`,
+			m.console_msg_seedReady({ seed: this.seedName || '(unnamed)' }),
 			'system'
 		);
 
 		// Build and send Connect.
 		const params = this.params!;
+		// CRITICAL: Tracker must use items_handling=0 so the server does NOT
+		// deliver items to this client. Real item delivery (SNI -> emulator
+		// for ALttP / PM64 / etc.) happens via the user's actual game client
+		// (SNIClient) connected alongside. If Tracker declared a non-zero
+		// items_handling, the server would still deliver items to the real
+		// client (each client tracks its own index), but Tracker would lie
+		// about slot capabilities which can interfere with release/collect
+		// and goal detection. Keep Tracker strictly observer.
 		const connect: ConnectPacket = {
 			cmd: 'Connect',
 			game: params.useTracker ? '' : params.game,
@@ -246,7 +261,9 @@ export class ClientSession {
 			password: params.password ?? '',
 			uuid: generateUuid(),
 			version: PROTOCOL_VERSION,
-			items_handling: TRACKER_ITEMS_HANDLING,
+			items_handling: params.useTracker
+				? TRACKER_ITEMS_HANDLING
+				: PLAYER_ITEMS_HANDLING,
 			tags: params.useTracker ? ['Tracker'] : [],
 			slot_data: false
 		};
@@ -255,15 +272,17 @@ export class ClientSession {
 
 	private onConnected(p: ConnectedPacket) {
 		this.status = 'connected';
-		this.statusMessage = `connected as slot ${p.slot}`;
 		this.mySlot = p.slot;
 		this.myTeam = p.team;
 		this.players = p.players ?? [];
 		this.hintPoints = p.hint_points ?? 0;
-		this.log.appendSystem(
-			`connected as slot ${p.slot} (team ${p.team}) — ${p.players?.length ?? 0} players online`,
-			'admin'
-		);
+		const msg = m.console_msg_connectedAs({
+			slot: String(p.slot),
+			team: String(p.team),
+			count: String(p.players?.length ?? 0)
+		});
+		this.statusMessage = msg;
+		this.log.appendSystem(msg, 'admin');
 	}
 
 	private onRoomUpdate(p: RoomUpdatePacket) {
@@ -337,7 +356,7 @@ export class ClientSession {
 				text: parsed.text
 			});
 			if (this.status !== 'connected') {
-				this.log.appendSystem('not connected — type !help to see commands', 'warn');
+				this.log.appendSystem(m.console_msg_notConnected(), 'warn');
 				return;
 			}
 			this.send([{ cmd: 'Say', text: parsed.text } as SayPacket]);
@@ -346,7 +365,7 @@ export class ClientSession {
 
 		// Command path — must be `!` prefix for Client.
 		if (parsed.prefix !== '!') {
-			this.log.appendSystem(`Client uses ! prefix. Did you mean !${parsed.name}?`, 'warn');
+			this.log.appendSystem(m.console_msg_wrongPrefixClient({ name: parsed.name }), 'warn');
 			return;
 		}
 
@@ -359,7 +378,7 @@ export class ClientSession {
 
 		const def = this.registry.lookup('!', parsed.name);
 		if (def?.status === 'coming-soon') {
-			this.log.appendSystem(`!${parsed.name} is a v2 Zephyr extension, not yet wired up.`, 'warn');
+			this.log.appendSystem(m.console_msg_clientComingSoon({ name: parsed.name }), 'warn');
 			return;
 		}
 
@@ -367,7 +386,10 @@ export class ClientSession {
 			try {
 				await def.run(parsed.args, line);
 			} catch (err: unknown) {
-				this.log.appendSystem(`command failed: ${(err as Error).message ?? err}`, 'error');
+				this.log.appendSystem(
+					m.console_msg_cmdFailed({ error: String((err as Error).message ?? err) }),
+					'error'
+				);
 			}
 			return;
 		}
@@ -375,7 +397,7 @@ export class ClientSession {
 		// Unknown ! commands: forward raw as Say — AP's own parser handles
 		// them server-side (same path as Text Client does).
 		if (this.status !== 'connected') {
-			this.log.appendSystem('not connected — cannot send command', 'warn');
+			this.log.appendSystem(m.console_msg_notConnectedCmd(), 'warn');
 			return;
 		}
 		this.send([{ cmd: 'Say', text: line } as SayPacket]);

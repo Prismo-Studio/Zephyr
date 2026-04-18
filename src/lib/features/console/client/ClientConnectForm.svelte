@@ -2,6 +2,8 @@
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 	import type { ConnectParams } from './client-session.svelte';
 
 	type Props = {
@@ -59,33 +61,39 @@
 	<div class="zc-cf-card">
 		<header>
 			<Icon icon="mdi:connection" />
-			<h2>Connect to MultiServer</h2>
+			<h2>{i18nState.locale && m.console_client_connectTitle()}</h2>
 		</header>
 
-		<p class="zc-cf-desc">
-			Type your slot name and hit <kbd>Enter</kbd>. Local hosts default to
-			<code>127.0.0.1:&lt;port&gt;</code>; remote hosts look like
-			<code>archipelago.gg:38281</code>.
-		</p>
+		<p class="zc-cf-desc">{i18nState.locale && m.console_client_connectDesc()}</p>
 
 		<div class="zc-cf-row">
 			<label>
-				<span>Host</span>
+				<span>{i18nState.locale && m.console_client_host()}</span>
 				<Input bind:value={host} placeholder="127.0.0.1:38281" />
 			</label>
 			<label>
-				<span>Slot name</span>
+				<span>{i18nState.locale && m.console_client_slotName()}</span>
 				<Input bind:value={slot} placeholder="Player1" />
 			</label>
 		</div>
 
 		<div class="zc-cf-row">
 			<label>
-				<span>Password <small>(optional)</small></span>
+				<span>
+					{i18nState.locale && m.console_client_password()}
+					<small>({i18nState.locale && m.console_client_optional()})</small>
+				</span>
 				<Input bind:value={password} placeholder="" />
 			</label>
 			<label class:disabled={useTracker}>
-				<span>Game <small>({useTracker ? 'ignored in Tracker mode' : 'required for real slot'})</small></span>
+				<span>
+					{i18nState.locale && m.console_client_game()}
+					<small>
+						({useTracker
+							? i18nState.locale && m.console_client_gameIgnoredTracker()
+							: i18nState.locale && m.console_client_gameRequired()})
+					</small>
+				</span>
 				<Input bind:value={game} placeholder="A Link to the Past" />
 			</label>
 		</div>
@@ -93,11 +101,8 @@
 		<label class="zc-cf-toggle">
 			<input type="checkbox" bind:checked={useTracker} />
 			<div>
-				<strong>Tracker mode (recommended)</strong>
-				<small>
-					Observer connection: you can chat and run <code>!commands</code> but the server won't register
-					checks against your slot. Safer for a "watching only" console.
-				</small>
+				<strong>{i18nState.locale && m.console_client_trackerMode()}</strong>
+				<small>{i18nState.locale && m.console_client_trackerModeDesc()}</small>
 			</div>
 		</label>
 
@@ -116,7 +121,9 @@
 				{loading}
 			>
 				{#snippet icon()}<Icon icon="mdi:login" />{/snippet}
-				{loading ? 'Connecting…' : 'Connect'}
+				{loading
+					? i18nState.locale && m.console_client_connecting()
+					: i18nState.locale && m.console_client_connect()}
 			</Button>
 		</div>
 	</div>

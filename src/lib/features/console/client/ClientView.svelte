@@ -2,6 +2,8 @@
 	import { onMount, onDestroy } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 
 	import LogFeed from '../ui/LogFeed.svelte';
 	import CommandInput from '../ui/CommandInput.svelte';
@@ -23,10 +25,7 @@
 	}
 
 	onMount(async () => {
-		session.log.appendSystem(
-			'Zephyr Client console. Fill in the host/slot form to connect.',
-			'system'
-		);
+		session.log.appendSystem(m.console_msg_clientReady(), 'system');
 
 		unlistenBridgeStarted = await listen<{ pid: number; patch: string }>(
 			'randomizer://bridge-started',
@@ -93,26 +92,26 @@
 		<aside class="zc-slot">
 			<header>
 				<Icon icon="mdi:account-box" />
-				<span>Slot info</span>
+				<span>{i18nState.locale && m.console_client_slotInfo()}</span>
 			</header>
 			<div class="zc-slot-row">
-				<span class="zc-slot-label">Seed</span>
-				<code>{session.seedName || '—'}</code>
+				<span class="zc-slot-label">{i18nState.locale && m.console_client_seed()}</span>
+				<code>{session.seedName || '-'}</code>
 			</div>
 			<div class="zc-slot-row">
-				<span class="zc-slot-label">Slot</span>
-				<code>{session.mySlot ?? '—'}</code>
+				<span class="zc-slot-label">{i18nState.locale && m.console_client_slot()}</span>
+				<code>{session.mySlot ?? '-'}</code>
 			</div>
 			<div class="zc-slot-row">
-				<span class="zc-slot-label">Team</span>
-				<code>{session.myTeam ?? '—'}</code>
+				<span class="zc-slot-label">{i18nState.locale && m.console_client_team()}</span>
+				<code>{session.myTeam ?? '-'}</code>
 			</div>
 			<div class="zc-slot-row">
-				<span class="zc-slot-label">Hint pts</span>
+				<span class="zc-slot-label">{i18nState.locale && m.console_client_hintPoints()}</span>
 				<code>{session.hintPoints}</code>
 			</div>
 			<div class="zc-slot-row">
-				<span class="zc-slot-label">Items</span>
+				<span class="zc-slot-label">{i18nState.locale && m.console_client_items()}</span>
 				<code>{session.receivedItems.length}</code>
 			</div>
 
@@ -120,11 +119,11 @@
 
 			<header>
 				<Icon icon="mdi:account-group" />
-				<span>Players</span>
+				<span>{i18nState.locale && m.console_client_players()}</span>
 				<small>{session.players.length}</small>
 			</header>
 			{#if session.players.length === 0}
-				<p class="zc-slot-empty">no roster yet</p>
+				<p class="zc-slot-empty">{i18nState.locale && m.console_client_noRoster()}</p>
 			{:else}
 				<ul>
 					{#each session.players as p (p.slot)}
@@ -144,7 +143,7 @@
 				</div>
 				<button class="zc-disc" onclick={() => session.disconnect()}>
 					<Icon icon="mdi:logout" />
-					Disconnect
+					{i18nState.locale && m.console_client_disconnect()}
 				</button>
 			</footer>
 		</aside>

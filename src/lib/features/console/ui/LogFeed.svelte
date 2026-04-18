@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import Icon from '@iconify/svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 	import type { LogStore } from '../core/log-store.svelte';
 	import LogEntry from './LogEntry.svelte';
 
@@ -43,13 +45,17 @@
 		<Icon icon="mdi:filter" />
 		<span class="zc-filter-label">
 			{#if store.sourceFilter}
-				Filtering: <strong>{store.sourceFilter}</strong>
+				{i18nState.locale && m.console_feed_filtering()}:
+				<strong>{store.sourceFilter}</strong>
 			{/if}
 			{#if store.search}
-				Search: <strong>"{store.search}"</strong>
+				{i18nState.locale && m.console_feed_search()}:
+				<strong>"{store.search}"</strong>
 			{/if}
 		</span>
-		<button class="zc-clear" onclick={clearFilter}>Clear</button>
+		<button class="zc-clear" onclick={clearFilter}>
+			{i18nState.locale && m.console_feed_clear()}
+		</button>
 	</div>
 {/if}
 
@@ -61,8 +67,11 @@
 	{#if store.filtered.length === 0}
 		<div class="zc-empty">
 			<Icon icon="mdi:chat-processing-outline" />
-			<p>No log entries yet.</p>
-			<small>Waiting for the server to produce output, or try <code>/help</code>.</small>
+			<p>{i18nState.locale && m.console_feed_empty()}</p>
+			<small>
+				{i18nState.locale && m.console_feed_emptyHint()}
+				<code>/help</code>.
+			</small>
 		</div>
 	{/if}
 </div>
@@ -70,7 +79,7 @@
 {#if !autoscroll}
 	<button class="zc-scroll-pin" onclick={() => { autoscroll = true; if (scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight; }}>
 		<Icon icon="mdi:arrow-down-bold" />
-		Jump to latest
+		{i18nState.locale && m.console_feed_jumpLatest()}
 	</button>
 {/if}
 

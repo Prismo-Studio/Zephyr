@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 	import type { CommandRegistry, CommandDef, CommandGroup } from '../core/command-registry';
 
 	type Props = {
@@ -27,13 +29,13 @@
 		);
 	});
 
-	const GROUPS: { id: CommandGroup; label: string; icon: string }[] = [
-		{ id: 'info', label: 'Info', icon: 'mdi:information-outline' },
-		{ id: 'action', label: 'Action', icon: 'mdi:flash' },
-		{ id: 'social', label: 'Social', icon: 'mdi:forum' },
-		{ id: 'admin', label: 'Admin', icon: 'mdi:shield-account' },
-		{ id: 'zephyr-ext', label: 'Zephyr Extras (v2)', icon: 'mdi:sparkles' }
-	];
+	const GROUPS = $derived<{ id: CommandGroup; label: string; icon: string }[]>([
+		{ id: 'info', label: m.console_palette_group_info(), icon: 'mdi:information-outline' },
+		{ id: 'action', label: m.console_palette_group_action(), icon: 'mdi:flash' },
+		{ id: 'social', label: m.console_palette_group_social(), icon: 'mdi:forum' },
+		{ id: 'admin', label: m.console_palette_group_admin(), icon: 'mdi:shield-account' },
+		{ id: 'zephyr-ext', label: m.console_palette_group_zephyr(), icon: 'mdi:sparkles' }
+	]);
 
 	const grouped = $derived.by(() => {
 		const out: Record<CommandGroup, CommandDef[]> = {
@@ -77,17 +79,22 @@
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div class="zc-hp-backdrop" onclick={onclose}>
-		<div class="zc-hp" role="dialog" aria-label="Command palette" onclick={(e) => e.stopPropagation()}>
+		<div
+			class="zc-hp"
+			role="dialog"
+			aria-label={i18nState.locale && m.console_palette_search()}
+			onclick={(e) => e.stopPropagation()}
+		>
 			<div class="zc-hp-search">
 				<Icon icon="mdi:magnify" />
 				<input
 					bind:this={searchEl}
 					bind:value={search}
-					placeholder="Search commands…"
+					placeholder={i18nState.locale && m.console_palette_search()}
 					spellcheck="false"
 					autocomplete="off"
 				/>
-				<span class="zc-hp-hint">Esc to close</span>
+				<span class="zc-hp-hint">{i18nState.locale && m.console_palette_escToClose()}</span>
 			</div>
 
 			<div class="zc-hp-body">
@@ -106,7 +113,7 @@
 										<div class="zc-hp-row-head">
 											<code class="zc-hp-sig">{registry.signature(c)}</code>
 											{#if c.status === 'coming-soon'}
-												<span class="zc-hp-tag">v2</span>
+												<span class="zc-hp-tag">{i18nState.locale && m.console_palette_v2()}</span>
 											{/if}
 										</div>
 										<p class="zc-hp-sum">{c.summary}</p>
@@ -123,7 +130,7 @@
 										{#if c.status === 'ready'}
 											<button class="zc-hp-try" onclick={() => fillTemplate(c)}>
 												<Icon icon="mdi:arrow-right-bold" />
-												Try it
+												{i18nState.locale && m.console_palette_tryIt()}
 											</button>
 										{/if}
 									</article>
@@ -136,7 +143,7 @@
 				{#if filtered.length === 0}
 					<div class="zc-hp-empty">
 						<Icon icon="mdi:magnify-close" />
-						<p>No commands match "{search}".</p>
+						<p>{i18nState.locale && m.console_palette_empty({ search })}</p>
 					</div>
 				{/if}
 			</div>
