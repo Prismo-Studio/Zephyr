@@ -16,4 +16,4 @@ src-tauri/gen
 **/__pycache__/
 *.pyc
 *.pyo
-src-tauri/archipelago-runtime
+src-tauri/archipelago-runtime/
