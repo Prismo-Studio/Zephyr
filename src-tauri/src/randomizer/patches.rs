@@ -26,7 +26,37 @@ use eyre::{bail, Context, Result};
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 
-use super::ap_runner::{ap_dir, detect_python, output_dir};
+use super::ap_runner::{ap_dir, detect_python, output_dir, ping_local_port, ServerState};
+
+/// Archipelago's default MultiServer port. Used as a fallback when
+/// Zephyr's `ServerState` doesn't track a running child (external server,
+/// or one started outside the Server tab).
+const DEFAULT_AP_PORT: u16 = 38281;
+
+/// Resolve the AP server that a freshly-launched SNIClient should connect
+/// to. Priority:
+///   1. Zephyr-managed MultiServer (ServerState, started via Server tab).
+///   2. Anything listening on 127.0.0.1:38281 (external server, or one
+///      started outside Zephyr).
+///
+/// Returns `(host_port, password)` — SNIClient's `--connect` accepts
+/// `host:port` form; no `ws://` prefix needed.
+fn resolve_ap_target(app: &AppHandle) -> Option<(String, Option<String>)> {
+    use tauri::Manager;
+    if let Some(state) = app.try_state::<ServerState>() {
+        let st = state.status();
+        if let (true, Some(port)) = (st.running, st.port) {
+            return Some((
+                format!("127.0.0.1:{port}"),
+                st.password.clone().filter(|p| !p.is_empty()),
+            ));
+        }
+    }
+    if ping_local_port(DEFAULT_AP_PORT) {
+        return Some((format!("127.0.0.1:{DEFAULT_AP_PORT}"), None));
+    }
+    None
+}
 
 /// Archipelago patch-applying helper, embedded into the binary at build time
 /// so we can drop it next to any runtime (dev tree, user install dir, or a
@@ -318,19 +348,48 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
     // We pipe stdout/stderr so bridge events (BizHawk connect/disconnect,
     // item receive, deathlink) can be forwarded to the Zephyr Console as a
     // log feed — see the `randomizer://bridge-log` event below.
-    match Command::new(&python)
-        .current_dir(&dir)
+    // Build the Launcher.py invocation. After `--`, everything is forwarded
+    // verbatim to the resolved component (SNIClient / BizHawkClient / ...).
+    // We always pass `--nogui`, and when we can identify a running AP server
+    // we also pass `--connect host:port` (+ `--password` if set) so the
+    // client doesn't sit at "no active multiworld server connection" —
+    // stdin is piped to null so the user can't type /connect manually.
+    let mut cmd = Command::new(&python);
+    cmd.current_dir(&dir)
         .env("PYTHONIOENCODING", "utf-8")
         .env("PYTHONDONTWRITEBYTECODE", "1")
         .arg(&launcher)
         .arg(patch_path)
         .arg("--")
-        .arg("--nogui")
-        .stdin(Stdio::null())
+        .arg("--nogui");
+    if let Some((target, password)) = resolve_ap_target(app) {
+        cmd.arg("--connect").arg(&target);
+        if let Some(pw) = password {
+            cmd.arg("--password").arg(pw);
+        }
+        let _ = app.emit(
+            "randomizer://bridge-log",
+            BridgeLog {
+                stream: "stdout",
+                text: format!("[zephyr] Auto-connecting client to {target}"),
+            },
+        );
+    } else {
+        let _ = app.emit(
+            "randomizer://bridge-log",
+            BridgeLog {
+                stream: "stdout",
+                text: format!(
+                    "[zephyr] No AP server detected on 127.0.0.1:{DEFAULT_AP_PORT} — start your server first, or use /connect inside the client."
+                ),
+            },
+        );
+    }
+    cmd.stdin(Stdio::null())
         .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-    {
+        .stderr(Stdio::piped());
+
+    match cmd.spawn() {
         Ok(mut child) => {
             let patch_name = patch_path
                 .file_name()

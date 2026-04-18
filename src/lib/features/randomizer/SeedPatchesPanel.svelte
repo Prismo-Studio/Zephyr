@@ -82,16 +82,27 @@
 
 	async function play(patch: PatchFile) {
 		try {
+			// Open the console BEFORE applying the patch so the frontend
+			// listener is attached by the time apply_and_launch starts
+			// emitting `[zephyr] ...` diagnostic lines over bridge-log.
+			// Otherwise those early events fire into the void and the user
+			// only sees the later Launcher.py stdout stream.
+			try {
+				await openConsoleWindow();
+				// Give the Console window a moment to mount + register its
+				// `randomizer://bridge-log` listener. Without this pause the
+				// early `[zephyr] Auto-connecting client to ...` diagnostic
+				// emits before anyone is listening and the user never sees
+				// it — only the later Launcher.py stdout stream survives.
+				await new Promise((r) => setTimeout(r, 500));
+			} catch {
+				// Non-fatal — the patch will still apply; the console just
+				// didn't pop up, user can open it manually.
+			}
 			await applyPatch(patch.path);
 			pushInfoToast({
 				message: m.randomizer_patches_launching({ name: patch.file_name })
 			});
-			try {
-				await openConsoleWindow();
-			} catch {
-				// Non-fatal — the patch is already applying. The console just
-				// didn't pop up, user can open it manually.
-			}
 		} catch (err) {
 			pushToast({
 				type: 'error',

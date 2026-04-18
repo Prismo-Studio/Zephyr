@@ -71,6 +71,39 @@ fn patch_host_yaml(install_dir: &Path) -> Result<()> {
     Ok(())
 }
 
+/// Guard SNIClient.py's `args.connect = meta["server"]` line so the patch's
+/// baked-in server address (often empty for local seeds) doesn't clobber the
+/// `--connect host:port` Zephyr passes when spawning SNIClient. Without this,
+/// SNIClient always falls back to the embedded server field and — if that
+/// field is empty — sits at "no active multiworld server connection" forever
+/// even though Zephyr explicitly told it where to connect.
+fn patch_sniclient(install_dir: &Path) -> Result<()> {
+    let path = install_dir.join("SNIClient.py");
+    if !path.exists() {
+        return Ok(());
+    }
+    let contents = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+    let original = "        args.connect = meta[\"server\"]\n";
+    let replacement = "        if not args.connect:\n            args.connect = meta[\"server\"]\n";
+    if contents.contains(replacement) {
+        // Already patched; idempotent.
+        return Ok(());
+    }
+    if !contents.contains(original) {
+        // Upstream layout changed — bail rather than produce a broken file.
+        tracing::warn!(
+            "SNIClient.py --connect guard skipped: couldn't find the expected \
+             `args.connect = meta[\"server\"]` line in {}. Upstream refactor?",
+            path.display()
+        );
+        return Ok(());
+    }
+    let patched = contents.replace(original, replacement);
+    fs::write(&path, patched).with_context(|| format!("write {}", path.display()))?;
+    tracing::info!("patched SNIClient.py to respect --connect over meta['server']");
+    Ok(())
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct RuntimeStatus {
     pub installed: bool,
@@ -270,6 +303,9 @@ pub async fn install(app: &AppHandle, url: Option<String>) -> Result<RuntimeStat
     if let Err(err) = patch_host_yaml(&install_dir) {
         tracing::warn!("host.yaml patch skipped: {err:#}");
     }
+    if let Err(err) = patch_sniclient(&install_dir) {
+        tracing::warn!("SNIClient.py --connect guard skipped: {err:#}");
+    }
 
     // --- Provision venv + install deps -----------------------------------
     // Non-fatal: if this fails, the runtime still exists on disk and the user
@@ -313,6 +349,9 @@ pub async fn provision_venv(app: &AppHandle) -> Result<RuntimeStatus> {
     }
     if let Err(err) = patch_host_yaml(&dir) {
         tracing::warn!("host.yaml patch skipped: {err:#}");
+    }
+    if let Err(err) = patch_sniclient(&dir) {
+        tracing::warn!("SNIClient.py --connect guard skipped: {err:#}");
     }
     provision_venv_at(app, &dir, &emit)?;
     Ok(status(app))
