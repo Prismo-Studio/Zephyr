@@ -705,6 +705,7 @@
 	"randomizer_searchPlaceholder": "البحث عن ألعاب...",
 	"randomizer_refresh": "تحديث",
 	"randomizer_loading": "جاري تحميل الكتالوج...",
+	"randomizer_loadingData": "جاري التحميل...",
 	"randomizer_noSchemas": "لم يتم العثور على مخططات.",
 	"randomizer_noMatch": "لا توجد لعبة تطابق \"{search}\"",
 	"randomizer_clearSearch": "مسح البحث",

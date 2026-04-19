@@ -705,6 +705,7 @@
 	"randomizer_searchPlaceholder": "Search games...",
 	"randomizer_refresh": "Refresh",
 	"randomizer_loading": "Loading catalog...",
+	"randomizer_loadingData": "Loading...",
 	"randomizer_noSchemas": "No randomizer schemas found.",
 	"randomizer_noMatch": "No game matches \"{search}\"",
 	"randomizer_clearSearch": "Clear search",

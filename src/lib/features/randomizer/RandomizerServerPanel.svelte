@@ -46,6 +46,7 @@
 	let starting = $state(false);
 	/** Bumped after generate/rename so the patches panel refreshes. */
 	let patchesReloadToken = $state(0);
+	let initialLoading = $state(true);
 
 	// --- Remote server state ---
 	let hostMode: 'local' | 'remote' = $state('remote');
@@ -72,15 +73,18 @@
 	];
 
 	async function refreshAll() {
-		[python, players, server, seeds] = await Promise.all([
-			api.checkPython(),
-			api.listPlayerYamls(),
-			api.serverStatus(),
-			api.listSeeds()
-		]);
-		// Auto-select most recent if nothing chosen yet
-		if (!selectedSeed && seeds.length > 0) {
-			selectedSeed = seeds[0].path;
+		try {
+			[python, players, server, seeds] = await Promise.all([
+				api.checkPython(),
+				api.listPlayerYamls(),
+				api.serverStatus(),
+				api.listSeeds()
+			]);
+			if (!selectedSeed && seeds.length > 0) {
+				selectedSeed = seeds[0].path;
+			}
+		} finally {
+			initialLoading = false;
 		}
 	}
 
@@ -367,7 +371,12 @@
 		</div>
 		{#if openBlocks.players}
 			<div class="rdz-block-body">
-				{#if players.length === 0}
+				{#if initialLoading}
+					<p class="rdz-muted rdz-loading-row">
+						<Icon icon="mdi:loading" class="rdz-spin" />
+						<span>{i18nState.locale && m.randomizer_loadingData()}</span>
+					</p>
+				{:else if players.length === 0}
 					<p class="rdz-muted">
 						{i18nState.locale && m.randomizer_noPlayerYamls()}
 					</p>
@@ -438,6 +447,12 @@
 
 		{#if openBlocks.seeds}
 			<div class="rdz-block-body">
+				{#if initialLoading}
+					<p class="rdz-muted rdz-loading-row">
+						<Icon icon="mdi:loading" class="rdz-spin" />
+						<span>{i18nState.locale && m.randomizer_loadingData()}</span>
+					</p>
+				{/if}
 				<Button
 					variant="primary"
 					disabled={generating || players.length === 0 || !python?.available}
@@ -1141,6 +1156,22 @@
 		margin: 0;
 		color: var(--text-muted);
 		font-size: 12px;
+	}
+
+	.rdz-loading-row {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	:global(.rdz-spin) {
+		animation: rdz-spin 1s linear infinite;
+	}
+
+	@keyframes rdz-spin {
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.rdz-ok {

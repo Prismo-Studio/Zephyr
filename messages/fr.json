@@ -685,6 +685,7 @@
 	"randomizer_searchPlaceholder": "Rechercher un jeu...",
 	"randomizer_refresh": "Rafraîchir",
 	"randomizer_loading": "Chargement du catalogue...",
+	"randomizer_loadingData": "Chargement...",
 	"randomizer_noSchemas": "Aucun schéma de randomizer trouvé.",
 	"randomizer_noMatch": "Aucun jeu ne correspond à \"{search}\"",
 	"randomizer_clearSearch": "Effacer la recherche",

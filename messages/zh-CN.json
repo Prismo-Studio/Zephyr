@@ -681,6 +681,7 @@
 	"randomizer_searchPlaceholder": "搜索游戏...",
 	"randomizer_refresh": "刷新",
 	"randomizer_loading": "正在加载目录...",
+	"randomizer_loadingData": "加载中...",
 	"randomizer_noSchemas": "未找到随机器方案。",
 	"randomizer_noMatch": "没有匹配 \"{search}\" 的游戏",
 	"randomizer_clearSearch": "清除搜索",

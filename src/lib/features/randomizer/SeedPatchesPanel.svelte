@@ -31,6 +31,7 @@
 	let all: PatchFile[] = $state([]);
 	let romPaths: Record<string, string> = $state({});
 	let loading = $state(false);
+	let initialLoading = $state(true);
 	let busyExt: string | null = $state(null);
 	/** Patch pending delete-confirmation. `null` = modal closed. */
 	let pendingDelete: PatchFile | null = $state(null);
@@ -43,6 +44,7 @@
 			romPaths = nextRoms;
 		} finally {
 			loading = false;
+			initialLoading = false;
 		}
 	}
 
@@ -216,7 +218,12 @@
 		</div>
 	{/if}
 
-	{#if visible.length === 0}
+	{#if initialLoading}
+		<div class="sp-empty">
+			<Icon icon="mdi:loading" class="sp-spin" />
+			<span>{i18nState.locale && m.randomizer_loadingData()}</span>
+		</div>
+	{:else if visible.length === 0}
 		<div class="sp-empty">
 			<Icon icon="mdi:puzzle-outline" />
 			<span>
@@ -571,6 +578,16 @@
 	.sp-empty :global(svg) {
 		font-size: 18px;
 		opacity: 0.7;
+	}
+
+	:global(.sp-spin) {
+		animation: sp-spin 1s linear infinite;
+	}
+
+	@keyframes sp-spin {
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.sp-modal-text {

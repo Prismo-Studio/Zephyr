@@ -25,30 +25,27 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+_DEFAULT_AP_ROOT = REPO_ROOT / "src-tauri" / "archipelago-runtime"
 
 
-def _resolve_ap_root() -> Path:
-    """Figure out where Archipelago lives before argparse runs.
-
-    Priority: `--ap-root <path>` in argv, then `$ZEPHYR_AP_ROOT`, then the
-    dev layout (`<repo>/src-tauri/archipelago-runtime`). Rust passes
-    `--ap-root` explicitly in release, where the runtime lives under
-    `<app_data_dir>/randomizer/archipelago-runtime` and the dev fallback
-    would point at a non-existent path.
-    """
+def _early_runtime_override() -> Path | None:
+    """Resolve `--runtime` before argparse so sys.path is correct *before* we
+    import Archipelago modules. Zephyr's release build drops this script next
+    to the installed runtime (which is under app_data_dir, nowhere near the
+    repo), so the default `__file__`-based resolution would miss."""
     argv = sys.argv[1:]
     for i, a in enumerate(argv):
-        if a == "--ap-root" and i + 1 < len(argv):
-            return Path(argv[i + 1]).expanduser().resolve()
-        if a.startswith("--ap-root="):
-            return Path(a.split("=", 1)[1]).expanduser().resolve()
+        if a == "--runtime" and i + 1 < len(argv):
+            return Path(argv[i + 1]).resolve()
+        if a.startswith("--runtime="):
+            return Path(a.split("=", 1)[1]).resolve()
     env = os.environ.get("ZEPHYR_AP_ROOT")
     if env:
         return Path(env).expanduser().resolve()
-    return REPO_ROOT / "src-tauri" / "archipelago-runtime"
+    return None
 
 
-AP_ROOT = _resolve_ap_root()
+AP_ROOT = _early_runtime_override() or _DEFAULT_AP_ROOT
 WORLDS_DIR = AP_ROOT / "worlds"
 # Directory where schemas land unless --out-dir overrides it.
 DEFAULT_OUT_DIR = REPO_ROOT / "data" / "randomizer" / "schemas"
@@ -340,13 +337,13 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help="(default) Also scan custom_worlds/ alongside the bundled worlds/.",
     )
     p.add_argument(
-        "--ap-root",
+        "--runtime",
         type=Path,
         default=None,
         help=(
-            "Archipelago runtime root (directory containing Options.py and "
-            "worlds/). Overrides auto-detection; also honored via "
-            "$ZEPHYR_AP_ROOT."
+            "Archipelago runtime directory (the one that contains Generate.py). "
+            "Consumed before argparse to set sys.path; declared here so --help "
+            "documents it. Also honored via $ZEPHYR_AP_ROOT."
         ),
     )
     return p.parse_args(argv)

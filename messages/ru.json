@@ -690,6 +690,7 @@
 	"randomizer_searchPlaceholder": "Поиск игр...",
 	"randomizer_refresh": "Обновить",
 	"randomizer_loading": "Загрузка каталога...",
+	"randomizer_loadingData": "Загрузка...",
 	"randomizer_noSchemas": "Схемы рандомайзера не найдены.",
 	"randomizer_noMatch": "Нет игр, соответствующих \"{search}\"",
 	"randomizer_clearSearch": "Очистить поиск",
