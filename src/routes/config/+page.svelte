@@ -93,9 +93,7 @@
 	async function refresh() {
 		configFiles = await api.config.getFiles();
 		if (selectedFile) {
-			const stillThere = configFiles.find(
-				(f) => f.relativePath === selectedFile!.relativePath
-			);
+			const stillThere = configFiles.find((f) => f.relativePath === selectedFile!.relativePath);
 			selectedFile = stillThere ?? null;
 		}
 		if (!selectedFile) {

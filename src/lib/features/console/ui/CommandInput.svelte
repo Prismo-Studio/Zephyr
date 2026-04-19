@@ -136,11 +136,7 @@
 	{#if acOpen && candidates.length > 0}
 		<div class="zc-ac" role="listbox">
 			{#each candidates as c, i (c.prefix + c.name)}
-				<button
-					class="zc-ac-row"
-					class:active={i === acIndex}
-					onclick={() => acceptCandidate(i)}
-				>
+				<button class="zc-ac-row" class:active={i === acIndex} onclick={() => acceptCandidate(i)}>
 					<span class="zc-ac-sig">{registry.signature(c)}</span>
 					<span class="zc-ac-sum">{c.summary}</span>
 				</button>

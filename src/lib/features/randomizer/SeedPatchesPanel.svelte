@@ -194,7 +194,8 @@
 					<code>.{ext}</code>
 					{#if romPath}
 						<span class="sp-rom-path" title={romPath}>
-							<Icon icon="mdi:disc" /> {romPath.split(/[\\/]/).pop()}
+							<Icon icon="mdi:disc" />
+							{romPath.split(/[\\/]/).pop()}
 						</span>
 						<button
 							class="sp-rom-clear"
@@ -205,11 +206,7 @@
 							<Icon icon="mdi:close" />
 						</button>
 					{:else}
-						<button
-							class="sp-rom-set"
-							onclick={() => pickRom(ext)}
-							disabled={busyExt === ext}
-						>
+						<button class="sp-rom-set" onclick={() => pickRom(ext)} disabled={busyExt === ext}>
 							<Icon icon="mdi:disc-alert" />
 							{i18nState.locale && m.randomizer_patches_setBaseRom()}
 						</button>
@@ -285,8 +282,7 @@
 >
 	{#if pendingDelete}
 		<p class="sp-modal-text">
-			{i18nState.locale &&
-				m.randomizer_patches_deleteConfirm({ name: pendingDelete.file_name })}
+			{i18nState.locale && m.randomizer_patches_deleteConfirm({ name: pendingDelete.file_name })}
 		</p>
 		<p class="sp-modal-hint">{i18nState.locale && m.randomizer_patches_deleteHint()}</p>
 	{/if}

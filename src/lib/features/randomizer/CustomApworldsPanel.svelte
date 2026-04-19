@@ -92,7 +92,6 @@
 		}
 	}
 
-
 	let pendingRemove: CustomApworld | null = $state(null);
 
 	function remove(file: CustomApworld) {
@@ -121,11 +120,10 @@
 				pushToast({
 					type: 'error',
 					name: m.randomizer_customApworlds_refreshFailed(),
-					message: (
-						res.stderr ||
-						res.stdout ||
-						m.randomizer_customApworlds_unknownError()
-					).slice(0, 300)
+					message: (res.stderr || res.stdout || m.randomizer_customApworlds_unknownError()).slice(
+						0,
+						300
+					)
 				});
 			} else {
 				pushInfoToast({ message: m.randomizer_customApworlds_refreshed() });
@@ -354,7 +352,9 @@
 		border: 2px dashed var(--border-default);
 		border-radius: var(--radius-md);
 		background: var(--bg-base);
-		transition: border-color var(--transition-fast), background var(--transition-fast);
+		transition:
+			border-color var(--transition-fast),
+			background var(--transition-fast);
 	}
 
 	.apw-drop code {
@@ -491,7 +491,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: color var(--transition-fast), background var(--transition-fast);
+		transition:
+			color var(--transition-fast),
+			background var(--transition-fast);
 	}
 
 	.apw-remove:hover {

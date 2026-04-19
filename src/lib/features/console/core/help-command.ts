@@ -45,10 +45,7 @@ export function helpCommand(
 				session.log.appendSystem(m.console_msg_unknownCmd({ prefix, name: args[0] }), 'warn');
 				return;
 			}
-			session.log.appendSystem(
-				`${session.registry.signature(def)}  ·  ${def.summary}`,
-				'info'
-			);
+			session.log.appendSystem(`${session.registry.signature(def)}  ·  ${def.summary}`, 'info');
 		}
 	};
 }

@@ -224,21 +224,14 @@
 			<div
 				class="z-cp-plate"
 				bind:this={plateEl}
-				style:background="linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, {plateBg})"
+				style:background="linear-gradient(to top, #000, transparent), linear-gradient(to right,
+				#fff, {plateBg})"
 				onpointerdown={onPlateDown}
 			>
-				<div
-					class="z-cp-plate-marker"
-					style:left="{sat}%"
-					style:top="{100 - light}%"
-				></div>
+				<div class="z-cp-plate-marker" style:left="{sat}%" style:top="{100 - light}%"></div>
 			</div>
 
-			<div
-				class="z-cp-hue"
-				bind:this={hueEl}
-				onpointerdown={onHueDown}
-			>
+			<div class="z-cp-hue" bind:this={hueEl} onpointerdown={onHueDown}>
 				<div class="z-cp-hue-marker" style:left="{(hue / 360) * 100}%"></div>
 			</div>
 

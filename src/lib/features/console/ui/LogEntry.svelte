@@ -25,7 +25,8 @@
 			class="zc-badge zc-badge-{entry.level}"
 			onclick={() => onFilterSource?.(entry.source!)}
 			title={i18nState.locale && m.console_feed_filterTooltip({ source: entry.source })}
-		>{entry.source}</button>
+			>{entry.source}</button
+		>
 	{:else}
 		<span class="zc-badge-spacer"></span>
 	{/if}

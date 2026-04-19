@@ -1,40 +1,3 @@
-<script lang="ts" module>
-	import { convertFileSrc } from '@tauri-apps/api/core';
-	import * as api from '$lib/api';
-
-	const resolved = new Map<string, string>();
-	const inflight = new Map<string, Promise<string>>();
-
-	function isRemote(url: string): boolean {
-		return url.startsWith('http://') || url.startsWith('https://');
-	}
-
-	export async function resolveCached(url: string): Promise<string> {
-		const cached = resolved.get(url);
-		if (cached) return cached;
-
-		const pending = inflight.get(url);
-		if (pending) return pending;
-
-		const promise = (async () => {
-			try {
-				const path = await api.iconCache.getCachedIcon(url);
-				const final = path && path !== url ? convertFileSrc(path) : url;
-				resolved.set(url, final);
-				return final;
-			} catch {
-				resolved.set(url, url);
-				return url;
-			} finally {
-				inflight.delete(url);
-			}
-		})();
-
-		inflight.set(url, promise);
-		return promise;
-	}
-</script>
-
 <script lang="ts">
 	type Props = {
 		src: string | null | undefined;
@@ -45,14 +8,7 @@
 		height?: number | string;
 	};
 
-	let {
-		src,
-		alt = '',
-		class: className = '',
-		loading = 'lazy',
-		width,
-		height
-	}: Props = $props();
+	let { src, alt = '', class: className = '', loading = 'lazy', width, height }: Props = $props();
 
 	let displaySrc = $state<string | null>(null);
 	let failed = $state(false);
@@ -66,24 +22,7 @@
 			return;
 		}
 
-		if (!isRemote(src)) {
-			displaySrc = src;
-			return;
-		}
-
-		const cached = resolved.get(src);
-		if (cached) {
-			displaySrc = cached;
-			return;
-		}
-
 		displaySrc = src;
-		const requested = src;
-		void resolveCached(requested).then((url) => {
-			if (requested === src && url !== displaySrc) {
-				displaySrc = url;
-			}
-		});
 	});
 
 	function onError() {
@@ -92,18 +31,17 @@
 </script>
 
 {#if displaySrc && !failed}
-	<img
-		src={displaySrc}
-		{alt}
-		class={className}
-		{loading}
-		{width}
-		{height}
-		onerror={onError}
-	/>
+	<img src={displaySrc} {alt} class={className} {loading} {width} {height} onerror={onError} />
 {:else}
 	<div class="z-cached-img-fallback {className}" aria-label={alt}>
-		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
 			<rect x="3" y="3" width="18" height="18" rx="2" />
 			<circle cx="9" cy="9" r="2" />
 			<path d="M21 15l-5-5L5 21" />

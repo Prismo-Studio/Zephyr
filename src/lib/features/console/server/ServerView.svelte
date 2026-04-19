@@ -47,8 +47,7 @@
 							class="zc-source-btn"
 							class:active={session.log.sourceFilter === source}
 							onclick={() =>
-								(session.log.sourceFilter =
-									session.log.sourceFilter === source ? null : source)}
+								(session.log.sourceFilter = session.log.sourceFilter === source ? null : source)}
 						>
 							<span class="zc-source-dot"></span>
 							<span class="zc-source-name">{source}</span>

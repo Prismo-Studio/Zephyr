@@ -44,9 +44,7 @@
 			if (ok > 0) {
 				pushInfoToast({
 					message:
-						ok === 1
-							? `Installed ${paths[0].split(/[\\/]/).pop()}`
-							: `Installed ${ok} apworld(s)`
+						ok === 1 ? `Installed ${paths[0].split(/[\\/]/).pop()}` : `Installed ${ok} apworld(s)`
 				});
 				showCustom = true;
 				panelReloadToken++;

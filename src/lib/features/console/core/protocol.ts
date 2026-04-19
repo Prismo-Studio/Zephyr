@@ -64,7 +64,10 @@ export type LogEntry = {
  *   "(WARNING) [Server]: blah"                  → warn
  *   "[err] stderr passthrough"                  → error
  */
-export function classifyLine(raw: string, stream: LogStream): { level: LogLevel; source?: string; text: string } {
+export function classifyLine(
+	raw: string,
+	stream: LogStream
+): { level: LogLevel; source?: string; text: string } {
 	if (stream === 'stderr' || raw.startsWith('[err]')) {
 		return { level: 'error', source: 'ERR', text: raw.replace(/^\[err\]\s*/, '') };
 	}
@@ -76,7 +79,9 @@ export function classifyLine(raw: string, stream: LogStream): { level: LogLevel;
 	}
 
 	// Item send: "Alice sent X to Bob" or "Alice (Team #N) sent X to Bob"
-	const item = raw.match(/^([A-Za-z0-9_ \-]+?)(?:\s*\(Team\s*#\d+\))?\s+sent\s+(.+?)\s+to\s+([A-Za-z0-9_ \-]+)\s*(?:\(.*\))?$/);
+	const item = raw.match(
+		/^([A-Za-z0-9_ \-]+?)(?:\s*\(Team\s*#\d+\))?\s+sent\s+(.+?)\s+to\s+([A-Za-z0-9_ \-]+)\s*(?:\(.*\))?$/
+	);
 	if (item) {
 		return {
 			level: 'item',
@@ -107,7 +112,9 @@ export function classifyLine(raw: string, stream: LogStream): { level: LogLevel;
 	}
 
 	// Connect / Disconnect / Goal
-	const conn = raw.match(/^Player\s+([A-Za-z0-9_ \-]+)\s*(?:\(Team\s*#\d+\))?\s+has\s+(connected|disconnected|finished|reached their goal).*$/i);
+	const conn = raw.match(
+		/^Player\s+([A-Za-z0-9_ \-]+)\s*(?:\(Team\s*#\d+\))?\s+has\s+(connected|disconnected|finished|reached their goal).*$/i
+	);
 	if (conn) {
 		const action = conn[2].toLowerCase();
 		return {

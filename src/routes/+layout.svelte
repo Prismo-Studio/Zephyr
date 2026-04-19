@@ -230,8 +230,7 @@
 		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey) {
 			const target = evt.target as HTMLElement | null;
 			const tag = target?.tagName;
-			const editable =
-				tag === 'INPUT' || tag === 'TEXTAREA' || !!target?.isContentEditable;
+			const editable = tag === 'INPUT' || tag === 'TEXTAREA' || !!target?.isContentEditable;
 			if (!editable) {
 				const allowed = ['c', 'v', 'x', 'a', 'z'];
 				if (!allowed.includes(k)) {
@@ -278,107 +277,107 @@
 		<Toasts />
 	</main>
 {:else}
-<main class="z-app">
-	<Titlebar />
+	<main class="z-app">
+		<Titlebar />
 
-	<div class="z-app-body">
-		<Sidebar legendActive={!!(gamepadState.enabled && gamepadState.connected)} />
+		<div class="z-app-body">
+			<Sidebar legendActive={!!(gamepadState.enabled && gamepadState.connected)} />
 
-		<div class="z-main">
-			<div class="z-content">
-				{@render children?.()}
-			</div>
-			<Statusbar />
-		</div>
-	</div>
-
-	{#if gamepadState.enabled && gamepadState.connected}
-		{@const type = gamepadState.controllerType}
-		<div class="z-gamepad-legend">
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn">{type === 'playstation' ? '✕' : 'A'}</kbd>
-				<span>{m.gamepad_legend_select()}</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn">{type === 'playstation' ? '△' : 'Y'}</kbd>
-				<span>{m.gamepad_legend_multiselect()}</span>
-			</div>
-			<!-- Back button removed as per request -->
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'L3' : 'LS'}</kbd>
-				<span>{m.gamepad_legend_navigate()}</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'R3' : 'RS'}</kbd>
-				<span>{m.gamepad_legend_scroll()}</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn">{type === 'playstation' ? 'L1' : 'LB'}</kbd>
-				<kbd class="z-gp-btn">{type === 'playstation' ? 'R1' : 'RB'}</kbd>
-				<span>{m.gamepad_legend_tabs()}</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn">{type === 'playstation' ? 'R2' : 'RT'}</kbd>
-				<span>Filtres</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn"
-					>{type === 'playstation' ? 'Share' : type === 'xbox' ? 'View' : 'Select'}</kbd
-				>
-				<span>{m.dashboard_quickActions_title()}</span>
-			</div>
-		</div>
-	{/if}
-
-	<GlobalSearch />
-	<Toasts />
-	<InstallPopover />
-	<InstallModDialog />
-	<ImportProfileDialog />
-	<!-- <DoomEasterEgg /> -->
-
-	{#if gamepadKeyboard.open}
-		<GamepadKeyboard
-			open={gamepadKeyboard.open}
-			value={gamepadKeyboard.value}
-			onsubmit={(val) => gamepadKeyboard.submit(val)}
-			oncancel={() => gamepadKeyboard.cancel()}
-		/>
-	{/if}
-
-	{#if updates.next?.available}
-		<Modal
-			open={true}
-			onclose={() => (updates.next = null)}
-			title={i18nState.locale && m.updater_confirmDialog_title()}
-		>
-			{#snippet children()}
-				<div class="z-update-modal">
-					<p>
-						{updates.next!.version
-							? m.updater_confirmDialog_content_next({
-									next: updates.next!.version,
-									current: appVersion
-								})
-							: m.updater_confirmDialog_content_available()}
-					</p>
-					<p>{m.updater_confirmDialog_content()}</p>
+			<div class="z-main">
+				<div class="z-content">
+					{@render children?.()}
 				</div>
-			{/snippet}
-			{#snippet actions()}
-				<Button variant="primary" onclick={installUpdate} disabled={updateInstalling}>
-					{#snippet icon()}
-						<Icon
-							icon={updateInstalling ? 'mdi:loading' : 'mdi:download'}
-							class={updateInstalling ? 'z-spin' : ''}
-						/>
-					{/snippet}
-					{i18nState.locale && m.updater_confirmDialog_button()}
-				</Button>
-			{/snippet}
-		</Modal>
-	{/if}
-</main>
+				<Statusbar />
+			</div>
+		</div>
+
+		{#if gamepadState.enabled && gamepadState.connected}
+			{@const type = gamepadState.controllerType}
+			<div class="z-gamepad-legend">
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn">{type === 'playstation' ? '✕' : 'A'}</kbd>
+					<span>{m.gamepad_legend_select()}</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn">{type === 'playstation' ? '△' : 'Y'}</kbd>
+					<span>{m.gamepad_legend_multiselect()}</span>
+				</div>
+				<!-- Back button removed as per request -->
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'L3' : 'LS'}</kbd>
+					<span>{m.gamepad_legend_navigate()}</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'R3' : 'RS'}</kbd>
+					<span>{m.gamepad_legend_scroll()}</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn">{type === 'playstation' ? 'L1' : 'LB'}</kbd>
+					<kbd class="z-gp-btn">{type === 'playstation' ? 'R1' : 'RB'}</kbd>
+					<span>{m.gamepad_legend_tabs()}</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn">{type === 'playstation' ? 'R2' : 'RT'}</kbd>
+					<span>Filtres</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn"
+						>{type === 'playstation' ? 'Share' : type === 'xbox' ? 'View' : 'Select'}</kbd
+					>
+					<span>{m.dashboard_quickActions_title()}</span>
+				</div>
+			</div>
+		{/if}
+
+		<GlobalSearch />
+		<Toasts />
+		<InstallPopover />
+		<InstallModDialog />
+		<ImportProfileDialog />
+		<!-- <DoomEasterEgg /> -->
+
+		{#if gamepadKeyboard.open}
+			<GamepadKeyboard
+				open={gamepadKeyboard.open}
+				value={gamepadKeyboard.value}
+				onsubmit={(val) => gamepadKeyboard.submit(val)}
+				oncancel={() => gamepadKeyboard.cancel()}
+			/>
+		{/if}
+
+		{#if updates.next?.available}
+			<Modal
+				open={true}
+				onclose={() => (updates.next = null)}
+				title={i18nState.locale && m.updater_confirmDialog_title()}
+			>
+				{#snippet children()}
+					<div class="z-update-modal">
+						<p>
+							{updates.next!.version
+								? m.updater_confirmDialog_content_next({
+										next: updates.next!.version,
+										current: appVersion
+									})
+								: m.updater_confirmDialog_content_available()}
+						</p>
+						<p>{m.updater_confirmDialog_content()}</p>
+					</div>
+				{/snippet}
+				{#snippet actions()}
+					<Button variant="primary" onclick={installUpdate} disabled={updateInstalling}>
+						{#snippet icon()}
+							<Icon
+								icon={updateInstalling ? 'mdi:loading' : 'mdi:download'}
+								class={updateInstalling ? 'z-spin' : ''}
+							/>
+						{/snippet}
+						{i18nState.locale && m.updater_confirmDialog_button()}
+					</Button>
+				{/snippet}
+			</Modal>
+		{/if}
+	</main>
 {/if}
 
 <style>

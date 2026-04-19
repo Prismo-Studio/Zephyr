@@ -596,11 +596,7 @@
 {/if}
 
 {#if customModalOpen}
-	<Modal
-		bind:open={customModalOpen}
-		title="Custom theme"
-		onclose={() => (customModalOpen = false)}
-	>
+	<Modal bind:open={customModalOpen} title="Custom theme" onclose={() => (customModalOpen = false)}>
 		{#snippet children()}
 			<div class="z-custom-theme">
 				<p class="z-custom-hint">
@@ -1142,5 +1138,4 @@
 		font-size: 11px;
 		color: var(--text-muted);
 	}
-
 </style>

@@ -93,7 +93,10 @@
 	<footer class="zc-footer">
 		<span><kbd>Ctrl</kbd>+<kbd>/</kbd> {i18nState.locale && m.console_shell_help()}</span>
 		<span><kbd>↑</kbd>/<kbd>↓</kbd> {i18nState.locale && m.console_shell_history()}</span>
-		<span><kbd>Ctrl+Shift+S</kbd>/<kbd>C</kbd> {i18nState.locale && m.console_shell_modeShortcut()}</span>
+		<span
+			><kbd>Ctrl+Shift+S</kbd>/<kbd>C</kbd>
+			{i18nState.locale && m.console_shell_modeShortcut()}</span
+		>
 		<span class="zc-footer-spacer"></span>
 		<span>{i18nState.locale && m.console_shell_mode()} · <strong>{mode}</strong></span>
 		{#if isStandalone}

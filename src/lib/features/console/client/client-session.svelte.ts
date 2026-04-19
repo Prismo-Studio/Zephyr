@@ -22,12 +22,7 @@ import {
 } from '../core/ap-protocol';
 import { registerClientCommands } from './client-commands';
 
-export type ClientStatus =
-	| 'disconnected'
-	| 'connecting'
-	| 'authenticating'
-	| 'connected'
-	| 'error';
+export type ClientStatus = 'disconnected' | 'connecting' | 'authenticating' | 'connected' | 'error';
 
 export type ConnectParams = {
 	host: string; // "127.0.0.1:38281"
@@ -262,9 +257,7 @@ export class ClientSession {
 			password: params.password ?? '',
 			uuid: generateUuid(),
 			version: PROTOCOL_VERSION,
-			items_handling: params.useTracker
-				? TRACKER_ITEMS_HANDLING
-				: PLAYER_ITEMS_HANDLING,
+			items_handling: params.useTracker ? TRACKER_ITEMS_HANDLING : PLAYER_ITEMS_HANDLING,
 			tags: params.useTracker ? ['Tracker'] : [],
 			slot_data: false
 		};
@@ -412,7 +405,10 @@ export class ClientSession {
 	}
 
 	nameOfSlot(slot: number): string | undefined {
-		return this.players.find((p) => p.slot === slot)?.alias ?? this.players.find((p) => p.slot === slot)?.name;
+		return (
+			this.players.find((p) => p.slot === slot)?.alias ??
+			this.players.find((p) => p.slot === slot)?.name
+		);
 	}
 
 	// ── Command history ─────────────────────────────────────────────────

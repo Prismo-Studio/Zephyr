@@ -81,10 +81,7 @@ export type ConnectedPacket = {
 	missing_locations: number[];
 	checked_locations: number[];
 	slot_data: JsonValue;
-	slot_info: Record<
-		string,
-		{ name: string; game: string; type: number; group_members: number[] }
-	>;
+	slot_info: Record<string, { name: string; game: string; type: number; group_members: number[] }>;
 	hint_points: number;
 };
 
@@ -102,7 +99,14 @@ export type ReceivedItemsPacket = {
 export type PrintJSONPacket = {
 	cmd: 'PrintJSON';
 	type?: string; // "ItemSend", "Hint", "Chat", "ServerChat", "Countdown", ...
-	data: { type?: string; text?: string; player?: number; item?: number; location?: number; flags?: number }[];
+	data: {
+		type?: string;
+		text?: string;
+		player?: number;
+		item?: number;
+		location?: number;
+		flags?: number;
+	}[];
 	receiving?: number;
 	item?: { item: number; location: number; player: number; flags: number };
 	slot?: number;

@@ -198,8 +198,7 @@
 		<span>{i18nState.locale && m.randomizer_runtime_installed()} ·</span>
 		<code>{status.path}</code>
 		<span class="rim-ok-meta">
-			{i18nState.locale &&
-				m.randomizer_runtime_worlds({ count: String(status.world_count) })} · {formatSize(
+			{i18nState.locale && m.randomizer_runtime_worlds({ count: String(status.world_count) })} · {formatSize(
 				status.bytes_on_disk
 			)}
 		</span>
@@ -283,12 +282,7 @@
 	}
 
 	.rim-indeterminate {
-		background: linear-gradient(
-			90deg,
-			transparent 0%,
-			var(--accent-400) 50%,
-			transparent 100%
-		);
+		background: linear-gradient(90deg, transparent 0%, var(--accent-400) 50%, transparent 100%);
 		background-size: 200% 100%;
 		animation: rim-slide 1.4s ease-in-out infinite;
 	}

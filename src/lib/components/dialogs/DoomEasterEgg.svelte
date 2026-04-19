@@ -108,7 +108,9 @@
 		font-size: 13px;
 		line-height: 1.55;
 		color: #1afffa;
-		text-shadow: 0 0 6px #1afffa, 0 0 12px rgba(26, 255, 250, 0.6);
+		text-shadow:
+			0 0 6px #1afffa,
+			0 0 12px rgba(26, 255, 250, 0.6);
 		white-space: pre;
 		opacity: 0;
 		animation: doom-fade 1.1s ease forwards;
@@ -117,17 +119,34 @@
 	}
 
 	@keyframes doom-fade {
-		0%   { opacity: 0; }
-		20%  { opacity: 1; }
-		70%  { opacity: 1; }
-		100% { opacity: 0; }
+		0% {
+			opacity: 0;
+		}
+		20% {
+			opacity: 1;
+		}
+		70% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
 	}
 
 	@keyframes doom-shake {
-		0%, 100% { transform: translate(0, 0); }
-		25% { transform: translate(-2px, 1px); }
-		50% { transform: translate(2px, -1px); }
-		75% { transform: translate(-1px, -2px); }
+		0%,
+		100% {
+			transform: translate(0, 0);
+		}
+		25% {
+			transform: translate(-2px, 1px);
+		}
+		50% {
+			transform: translate(2px, -1px);
+		}
+		75% {
+			transform: translate(-1px, -2px);
+		}
 	}
 
 	.z-doom-backdrop {
@@ -142,8 +161,12 @@
 	}
 
 	@keyframes doom-bg {
-		from { opacity: 0; }
-		to { opacity: 1; }
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
 	.z-doom-frame {

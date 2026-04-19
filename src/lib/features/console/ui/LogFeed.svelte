@@ -77,7 +77,13 @@
 </div>
 
 {#if !autoscroll}
-	<button class="zc-scroll-pin" onclick={() => { autoscroll = true; if (scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight; }}>
+	<button
+		class="zc-scroll-pin"
+		onclick={() => {
+			autoscroll = true;
+			if (scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight;
+		}}
+	>
 		<Icon icon="mdi:arrow-down-bold" />
 		{i18nState.locale && m.console_feed_jumpLatest()}
 	</button>

@@ -63,7 +63,12 @@
 <div class="z-dashboard">
 	<Header title={i18nState.locale && m.dashboard_title()}>
 		{#snippet actions()}
-			<Button variant="accent" onclick={launch} disabled={!games.active || launching} loading={launching}>
+			<Button
+				variant="accent"
+				onclick={launch}
+				disabled={!games.active || launching}
+				loading={launching}
+			>
 				{#snippet icon()}<Icon icon="mdi:rocket-launch" />{/snippet}
 				{i18nState.locale && m.dashboard_launch({ name: games.active?.name ?? 'Game' })}
 			</Button>

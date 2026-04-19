@@ -81,8 +81,7 @@ export const installApworldFromBytes = (fileName: string, bytesBase64: string) =
 export const removeCustomApworld = (fileName: string) =>
 	invoke('remove_custom_apworld', { fileName });
 
-export const refreshApworldSchemas = () =>
-	invoke<ApworldRefreshResult>('refresh_apworld_schemas');
+export const refreshApworldSchemas = () => invoke<ApworldRefreshResult>('refresh_apworld_schemas');
 
 export const openCustomWorldsDir = () => invoke('open_custom_worlds_dir');
 
@@ -107,8 +106,7 @@ export const clearRomPath = (extension: string) => invoke('clear_rom_path', { ex
 
 export const runtimeStatus = () => invoke<RuntimeStatus>('runtime_status');
 
-export const installRuntime = (url?: string) =>
-	invoke<RuntimeStatus>('install_runtime', { url });
+export const installRuntime = (url?: string) => invoke<RuntimeStatus>('install_runtime', { url });
 
 export const provisionRuntimeVenv = () => invoke<RuntimeStatus>('provision_runtime_venv');
 

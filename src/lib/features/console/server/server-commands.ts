@@ -45,10 +45,7 @@ export function registerServerCommands(session: ServerSession) {
 		status: 'ready',
 		summary: 'Grant an item to a slot (admin).',
 		description: 'Dispatches the named item to the slot as if they had found it normally.',
-		args: [
-			{ name: 'slot' },
-			{ name: 'item' }
-		],
+		args: [{ name: 'slot' }, { name: 'item' }],
 		examples: ['/send 3 "Progressive Sword"']
 	});
 
@@ -173,7 +170,11 @@ export function registerServerCommands(session: ServerSession) {
 		group: 'zephyr-ext',
 		status: 'coming-soon',
 		summary: 'Put a bounty on an item; first finder gets a reward.',
-		args: [{ name: 'put|clear' }, { name: 'item', optional: true }, { name: 'reward', optional: true }]
+		args: [
+			{ name: 'put|clear' },
+			{ name: 'item', optional: true },
+			{ name: 'reward', optional: true }
+		]
 	});
 
 	r.register({

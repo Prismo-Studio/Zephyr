@@ -14,7 +14,13 @@
 		loading?: boolean;
 		error?: string;
 	};
-	let { onsubmit, initialHost = '127.0.0.1:38281', initialSlot = '', loading = false, error = '' }: Props = $props();
+	let {
+		onsubmit,
+		initialHost = '127.0.0.1:38281',
+		initialSlot = '',
+		loading = false,
+		error = ''
+	}: Props = $props();
 
 	const STORAGE_KEY = 'zephyr-console-last-connect';
 
@@ -43,7 +49,10 @@
 		const s = slot.trim();
 		if (!h || !s) return;
 		try {
-			localStorage.setItem(STORAGE_KEY, JSON.stringify({ host: h, slot: s, useTracker, game: game.trim() }));
+			localStorage.setItem(
+				STORAGE_KEY,
+				JSON.stringify({ host: h, slot: s, useTracker, game: game.trim() })
+			);
 		} catch {
 			// ignore
 		}
