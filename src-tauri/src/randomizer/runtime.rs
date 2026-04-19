@@ -22,12 +22,12 @@ use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter};
 use zip::ZipArchive;
 
-use super::ap_runner::{ap_dir, ap_install_dir, venv_dir};
+use super::ap_runner::{ap_dir, ap_install_dir, sanitize_python_env, venv_dir};
 
 /// Default source: the source tarball of the runtime repo's main branch.
 /// Overridable by the caller (UI can pass a pinned release URL later).
 pub const DEFAULT_RUNTIME_URL: &str =
-    "https://github.com/Prismo-Studio/randomizer-server/archive/refs/heads/main.zip";
+    "https://github.com/Prismo-Studio/randomizer-server/archive/refs/tags/1.0.0.zip";
 
 /// Upstream location of SNIClient.py. Prismo-Studio/randomizer-server strips
 /// this file; without it, Launcher.py can't bridge SNES games (ALttP, SMZ3,
@@ -434,7 +434,9 @@ fn provision_venv_at(
     // Sanity check: confirm pkg_resources actually imports inside the venv.
     // If this fails we want a loud error, not a silent fallthrough that
     // leaves Pokémon Emerald broken.
-    let pkg_check = Command::new(&system_python)
+    let mut pkg_cmd = Command::new(&system_python);
+    sanitize_python_env(&mut pkg_cmd);
+    let pkg_check = pkg_cmd
         .arg("-c")
         .arg("import pkg_resources")
         .output()
@@ -527,6 +529,7 @@ fn provision_venv_at(
 /// Probe a Python candidate: return (major, minor) on success.
 fn probe_python_version(candidate: &str, extra_args: &[&str]) -> Option<(u32, u32)> {
     let mut cmd = Command::new(candidate);
+    sanitize_python_env(&mut cmd);
     for arg in extra_args {
         cmd.arg(arg);
     }
@@ -600,6 +603,7 @@ pub fn find_bootstrap_python() -> Option<(String, Vec<String>)> {
 /// We read stdout on the calling thread (safe with `emit`) and buffer stderr
 /// in a spawned thread that doesn't touch `emit`.
 fn run_to_log(cmd: &mut Command, emit: &dyn Fn(ProgressEvent)) -> Result<()> {
+    sanitize_python_env(cmd);
     cmd.env("PYTHONIOENCODING", "utf-8")
         .env("PYTHONDONTWRITEBYTECODE", "1")
         .env("PIP_DISABLE_PIP_VERSION_CHECK", "1")

@@ -23,8 +23,12 @@ use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
 use zip::ZipArchive;
 
-use super::ap_runner::{ap_dir, detect_python};
+use super::ap_runner::{ap_dir, detect_python, sanitize_python_env};
 use super::schema::user_schemas_dir;
+
+/// Schema extractor Python script, embedded so releases don't depend on the
+/// Zephyr source tree being on disk.
+const EXTRACT_AP_SCHEMAS_PY: &str = include_str!("../../../scripts/extract_ap_schemas.py");
 
 /// Where Archipelago looks for additional worlds.
 pub fn custom_worlds_dir(app: &AppHandle) -> PathBuf {
@@ -225,20 +229,30 @@ pub fn refresh_schemas(app: &AppHandle) -> Result<RefreshResult> {
     let out_dir = user_schemas_dir(app);
     fs::create_dir_all(&out_dir).with_context(|| format!("create {}", out_dir.display()))?;
 
+    // Prefer the on-disk script in dev (lets contributors edit it without a
+    // rebuild); fall back to the embedded copy so releases work without the
+    // Zephyr source tree.
+    let ap = ap_dir(app);
     let root = repo_root(app);
-    let script = root.join("scripts").join("extract_ap_schemas.py");
-    if !script.exists() {
-        bail!(
-            "schema extractor not found at {}. Install the Zephyr source or point to a runtime with scripts/",
-            script.display()
-        );
-    }
+    let dev_script = root.join("scripts").join("extract_ap_schemas.py");
+    let script_path = if dev_script.exists() {
+        dev_script
+    } else {
+        let dest = ap.join(".zephyr_extract_ap_schemas.py");
+        fs::write(&dest, EXTRACT_AP_SCHEMAS_PY)
+            .with_context(|| format!("write {}", dest.display()))?;
+        dest
+    };
 
-    let out = Command::new(&python)
+    let mut cmd = Command::new(&python);
+    sanitize_python_env(&mut cmd);
+    let out = cmd
         .current_dir(&root)
         .env("PYTHONIOENCODING", "utf-8")
         .env("PYTHONDONTWRITEBYTECODE", "1")
-        .arg(&script)
+        .arg(&script_path)
+        .arg("--ap-root")
+        .arg(&ap)
         .arg("--out-dir")
         .arg(&out_dir)
         .stdin(Stdio::null())

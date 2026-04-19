@@ -97,6 +97,16 @@ pub struct PythonStatus {
     pub ap_present: bool,
 }
 
+/// Strip env vars that linuxdeploy's AppRun wrapper injects into our process.
+/// Without this, spawned Python inherits `PYTHONHOME=<AppDir>/usr/` and dies
+/// with "No module named 'encodings'" before it can run anything. Harmless on
+/// other platforms (the vars aren't set there).
+pub fn sanitize_python_env(cmd: &mut Command) -> &mut Command {
+    cmd.env_remove("PYTHONHOME")
+        .env_remove("PYTHONPATH")
+        .env_remove("LD_LIBRARY_PATH")
+}
+
 /// Find a usable Python executable.
 /// Priority: venv Python > system python > python3 > py.
 pub fn detect_python(app: &AppHandle) -> Option<(String, String)> {
@@ -110,7 +120,9 @@ pub fn detect_python(app: &AppHandle) -> Option<(String, String)> {
     candidates.extend(["python".to_string(), "python3".to_string(), "py".to_string()]);
 
     for candidate in &candidates {
-        if let Ok(out) = Command::new(candidate).arg("--version").output() {
+        let mut cmd = Command::new(candidate);
+        sanitize_python_env(&mut cmd);
+        if let Ok(out) = cmd.arg("--version").output() {
             if out.status.success() {
                 let version = String::from_utf8_lossy(&out.stdout)
                     .trim()
@@ -187,7 +199,9 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
         })
         .unwrap_or_default();
 
-    let out = Command::new(&python)
+    let mut cmd = Command::new(&python);
+    sanitize_python_env(&mut cmd);
+    let out = cmd
         .current_dir(&dir)
         .env("SKIP_REQUIREMENTS_UPDATE", "1")
         .env("PYTHONIOENCODING", "utf-8")
@@ -880,6 +894,7 @@ impl ServerState {
         // The port is passed via --port CLI arg which takes precedence anyway.
 
         let mut cmd = Command::new(&python);
+        sanitize_python_env(&mut cmd);
         cmd.current_dir(&dir)
             .env("SKIP_REQUIREMENTS_UPDATE", "1")
             .env("PYTHONIOENCODING", "utf-8")
