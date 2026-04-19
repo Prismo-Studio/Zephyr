@@ -1,6 +1,6 @@
 {
 	"productName": "Zephyr",
-	"version": "1.2.2",
+	"version": "1.2.3",
 	"identifier": "com.prismo-studio.zephyr",
 	"build": {
 		"beforeBuildCommand": "pnpm run build",
@@ -87,7 +87,7 @@
 				"height": 700,
 				"minWidth": 800,
 				"minHeight": 600,
-				"dragDropEnabled": false,
+				"dragDropEnabled": true,
 				"zoomHotkeysEnabled": false
 			}
 		],

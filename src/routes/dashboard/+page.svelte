@@ -13,6 +13,7 @@
 	import profiles from '$lib/state/profile.svelte';
 	import { gameIconSrc } from '$lib/util';
 	import * as api from '$lib/api';
+	import { launchGameWithBepInExFallback } from '$lib/launch';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
@@ -46,15 +47,28 @@
 		await games.refresh();
 	}
 
+	let launching = $state(false);
+
 	async function launch() {
-		await api.profile.launch.launchGame();
+		if (launching) return;
+		launching = true;
+		try {
+			await launchGameWithBepInExFallback();
+		} finally {
+			launching = false;
+		}
 	}
 </script>
 
 <div class="z-dashboard">
 	<Header title={i18nState.locale && m.dashboard_title()}>
 		{#snippet actions()}
-			<Button variant="accent" onclick={launch} disabled={!games.active}>
+			<Button
+				variant="accent"
+				onclick={launch}
+				disabled={!games.active || launching}
+				loading={launching}
+			>
 				{#snippet icon()}<Icon icon="mdi:rocket-launch" />{/snippet}
 				{i18nState.locale && m.dashboard_launch({ name: games.active?.name ?? 'Game' })}
 			</Button>

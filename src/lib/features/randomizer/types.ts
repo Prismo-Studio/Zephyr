@@ -127,6 +127,52 @@ export type ServerStatus = {
 	port_reachable: boolean;
 };
 
+export type CustomApworld = {
+	file_name: string;
+	path: string;
+	size: number;
+	world_id: string | null;
+	display_name: string | null;
+	world_version: string | null;
+	has_schema: boolean;
+};
+
+export type ApworldRefreshResult = {
+	success: boolean;
+	stdout: string;
+	stderr: string;
+	out_dir: string;
+};
+
+export type RuntimeStatus = {
+	installed: boolean;
+	venv_ready: boolean;
+	path: string;
+	bytes_on_disk: number;
+	world_count: number;
+	default_download_url: string;
+};
+
+export type PatchFile = {
+	path: string;
+	file_name: string;
+	extension: string;
+	size: number;
+	modified: number;
+	seed_stem: string | null;
+	player_label: string | null;
+	has_rom_registered: boolean;
+	output_rom_path: string | null;
+};
+
+export type RuntimeProgress =
+	| { stage: 'downloading'; received: number; total: number | null }
+	| { stage: 'extracting'; entry: string; done: number; total: number }
+	| { stage: 'provisioning_venv'; message: string }
+	| { stage: 'installing_deps'; message: string }
+	| { stage: 'installed'; path: string }
+	| { stage: 'failed'; error: string };
+
 export const CATEGORY_ORDER = [
 	'general',
 	'goals',

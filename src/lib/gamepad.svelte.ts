@@ -74,7 +74,6 @@ let prevDpadDir: Direction | null = null; // Track d-pad-as-axes direction (Linu
 let dpadRepeatTimer: { last: number; started: number } | null = null;
 let _initialFocusSet = false;
 let _prevRtPressed = false;
-let _nextDumpAt = 0;
 
 // Focus persistence across tab/page switches
 let focusMemory: Map<string, string> = new Map(); // route -> data-mod-uuid or selector
@@ -763,32 +762,6 @@ function pollGamepads(timestamp: number) {
 	const rtAxisVal = gp.axes.length >= 6 ? ((gp.axes[5] ?? -1) + 1) / 2 : 0;
 	const rtVal = Math.max(rtBtnVal, rtAxisVal);
 	const rtNow = rtBtnPressed || rtVal > 0.2;
-
-	// DIAGNOSTIC: dump full gamepad state whenever ANYTHING is deflected off rest,
-	// throttled to once every 200 ms so it's readable. This lets us see exactly
-	// what Linux Xbox reports for right stick + triggers regardless of which axis
-	// indices they land on.
-	if (!_nextDumpAt || timestamp >= _nextDumpAt) {
-		const all = navigator.getGamepads();
-		for (let i = 0; i < all.length; i++) {
-			const p = all[i];
-			if (!p) continue;
-			const activeBtns = p.buttons
-				.map((b, bi) =>
-					b.pressed || b.value > 0.05 ? `${bi}:${b.value.toFixed(2)}${b.pressed ? 'P' : ''}` : null
-				)
-				.filter(Boolean)
-				.join(' ');
-			const activeAxes = p.axes
-				.map((a, ai) => (Math.abs(a) > 0.05 ? `${ai}:${a.toFixed(2)}` : null))
-				.filter(Boolean)
-				.join(' ');
-			console.log(
-				`[gamepad] slot=${i} idx=${p.index} id="${p.id}" map=${p.mapping || 'none'} axesLen=${p.axes.length} btnsLen=${p.buttons.length} activeAxes=[${activeAxes}] activeBtns=[${activeBtns}]`
-			);
-		}
-		_nextDumpAt = timestamp + 500;
-	}
 
 	if (rtNow && !_prevRtPressed) {
 		pressButton(BTN.RT);

@@ -19,12 +19,42 @@
 	let searchTerm = $state('');
 	let noConfigForMod: string | null = $state(null);
 
+	function storageKey(): string | null {
+		const slug = games.active?.slug;
+		if (!slug) return null;
+		return `zephyr-config-last-file:${slug}`;
+	}
+
+	function savedSelection(): string | null {
+		try {
+			const key = storageKey();
+			return key ? localStorage.getItem(key) : null;
+		} catch {
+			return null;
+		}
+	}
+
+	function persistSelection(file: ConfigFile | null) {
+		try {
+			const key = storageKey();
+			if (!key) return;
+			if (file) localStorage.setItem(key, file.relativePath);
+			else localStorage.removeItem(key);
+		} catch {
+			//
+		}
+	}
+
+	function pickFile(file: ConfigFile) {
+		selectedFile = file;
+		persistSelection(file);
+	}
+
 	onMount(async () => {
 		await refresh();
 
 		const params = new URLSearchParams(window.location.search);
 
-		// Match by exact file path (e.g. /config?file=BepInEx/config/MyMod.cfg)
 		const targetFile = params.get('file');
 		if (targetFile) {
 			const match = configFiles.find(
@@ -33,7 +63,6 @@
 			if (match) selectedFile = match;
 		}
 
-		// Match by mod name — finds the config file whose name contains the mod name
 		const targetMod = params.get('mod');
 		if (targetMod) {
 			const lowerMod = targetMod.toLowerCase().replace(/_/g, ' ');
@@ -49,20 +78,32 @@
 		}
 	});
 
-	// Re-fetch configs when the active game changes
 	let lastGameSlug: string | null = null;
 	$effect(() => {
 		const slug = games.active?.slug ?? null;
-		if (slug !== lastGameSlug && lastGameSlug !== null) {
-			selectedFile = null;
-			refresh();
+		if (slug !== lastGameSlug) {
+			if (lastGameSlug !== null) {
+				selectedFile = null;
+			}
+			lastGameSlug = slug;
+			if (slug) refresh();
 		}
-		lastGameSlug = slug;
 	});
 
 	async function refresh() {
 		configFiles = await api.config.getFiles();
-		if (configFiles.length > 0 && !selectedFile) {
+		if (selectedFile) {
+			const stillThere = configFiles.find((f) => f.relativePath === selectedFile!.relativePath);
+			selectedFile = stillThere ?? null;
+		}
+		if (!selectedFile) {
+			const saved = savedSelection();
+			if (saved) {
+				const match = configFiles.find((f) => f.relativePath === saved);
+				if (match) selectedFile = match;
+			}
+		}
+		if (!selectedFile && configFiles.length > 0) {
 			selectedFile = configFiles[0];
 		}
 	}
@@ -152,7 +193,7 @@
 					<button
 						class="z-config-file"
 						class:active={selectedFile?.relativePath === file.relativePath}
-						onclick={() => (selectedFile = file)}
+						onclick={() => pickFile(file)}
 					>
 						<Icon
 							icon={file.type === 'ok'

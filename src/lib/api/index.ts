@@ -1,4 +1,5 @@
 export * as config from './config';
+export * as iconCache from './iconCache';
 export * as logger from './logger';
 export * as prefs from './prefs';
 export * as profile from './profile';

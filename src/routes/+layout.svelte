@@ -8,6 +8,9 @@
 	import InstallPopover from '$lib/components/toolbar/InstallPopover.svelte';
 	import InstallModDialog from '$lib/components/dialogs/InstallModDialog.svelte';
 	import ImportProfileDialog from '$lib/components/dialogs/ImportProfileDialog.svelte';
+	// Dev-only easter egg (DOOM via 0x5f3759df). Uncomment this import + the
+	// <DoomEasterEgg /> mount below + the DOOM_SEQUENCE block in tokens.ts to enable.
+	// import DoomEasterEgg from '$lib/components/dialogs/DoomEasterEgg.svelte';
 	import GlobalSearch from '$lib/components/ui/GlobalSearch.svelte';
 
 	import { onMount, type Snippet } from 'svelte';
@@ -50,6 +53,12 @@
 
 	let updateInstalling = $state(false);
 	let appVersion = $state('');
+
+	/** Standalone companion window (opened via `open_console_window`). Renders
+	 *  the children full-bleed with no sidebar/titlebar/statusbar chrome. */
+	const isStandalone =
+		typeof window !== 'undefined' &&
+		new URLSearchParams(window.location.search).get('standalone') === '1';
 
 	let currentDpiScale = 1;
 	const DPI_STEPS = [0.75, 0.85, 0.9, 1, 1.1, 1.15, 1.25, 1.5, 1.75, 2];
@@ -212,12 +221,22 @@
 				return;
 			}
 		}
-		// Block Ctrl+shortcuts except Ctrl+C/V/X/A/Z (standard editing)
+		// Block Ctrl+shortcuts except Ctrl+C/V/X/A/Z (standard editing).
+		// Exception: if the event originates from an editable element
+		// (input / textarea / contenteditable), let every Ctrl+* through so
+		// Ctrl+Backspace (delete word), Ctrl+←/→ (jump word), Ctrl+Home/End
+		// etc. behave natively. The Console command input benefits the most
+		// but this helps every text field in the app.
 		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey) {
-			const allowed = ['c', 'v', 'x', 'a', 'z'];
-			if (!allowed.includes(k)) {
-				evt.preventDefault();
-				return;
+			const target = evt.target as HTMLElement | null;
+			const tag = target?.tagName;
+			const editable = tag === 'INPUT' || tag === 'TEXTAREA' || !!target?.isContentEditable;
+			if (!editable) {
+				const allowed = ['c', 'v', 'x', 'a', 'z'];
+				if (!allowed.includes(k)) {
+					evt.preventDefault();
+					return;
+				}
 			}
 		}
 		// Block Ctrl+Shift+I/J/C (devtools variants)
@@ -249,108 +268,134 @@
 	}}
 />
 
-<main class="z-app">
-	<Titlebar />
-
-	<div class="z-app-body">
-		<Sidebar legendActive={!!(gamepadState.enabled && gamepadState.connected)} />
-
-		<div class="z-main">
-			<div class="z-content">
-				{@render children?.()}
-			</div>
-			<Statusbar />
+{#if isStandalone}
+	<main class="z-app z-app-standalone">
+		<Titlebar />
+		<div class="z-standalone-body">
+			{@render children?.()}
 		</div>
-	</div>
+		<Toasts />
+	</main>
+{:else}
+	<main class="z-app">
+		<Titlebar />
 
-	{#if gamepadState.enabled && gamepadState.connected}
-		{@const type = gamepadState.controllerType}
-		<div class="z-gamepad-legend">
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn">{type === 'playstation' ? '✕' : 'A'}</kbd>
-				<span>{m.gamepad_legend_select()}</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn">{type === 'playstation' ? '△' : 'Y'}</kbd>
-				<span>{m.gamepad_legend_multiselect()}</span>
-			</div>
-			<!-- Back button removed as per request -->
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'L3' : 'LS'}</kbd>
-				<span>{m.gamepad_legend_navigate()}</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'R3' : 'RS'}</kbd>
-				<span>{m.gamepad_legend_scroll()}</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn">{type === 'playstation' ? 'L1' : 'LB'}</kbd>
-				<kbd class="z-gp-btn">{type === 'playstation' ? 'R1' : 'RB'}</kbd>
-				<span>{m.gamepad_legend_tabs()}</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn">{type === 'playstation' ? 'R2' : 'RT'}</kbd>
-				<span>Filtres</span>
-			</div>
-			<div class="z-gamepad-legend-item">
-				<kbd class="z-gp-btn"
-					>{type === 'playstation' ? 'Share' : type === 'xbox' ? 'View' : 'Select'}</kbd
-				>
-				<span>{m.dashboard_quickActions_title()}</span>
-			</div>
-		</div>
-	{/if}
+		<div class="z-app-body">
+			<Sidebar legendActive={!!(gamepadState.enabled && gamepadState.connected)} />
 
-	<GlobalSearch />
-	<Toasts />
-	<InstallPopover />
-	<InstallModDialog />
-	<ImportProfileDialog />
-
-	{#if gamepadKeyboard.open}
-		<GamepadKeyboard
-			open={gamepadKeyboard.open}
-			value={gamepadKeyboard.value}
-			onsubmit={(val) => gamepadKeyboard.submit(val)}
-			oncancel={() => gamepadKeyboard.cancel()}
-		/>
-	{/if}
-
-	{#if updates.next?.available}
-		<Modal
-			open={true}
-			onclose={() => (updates.next = null)}
-			title={i18nState.locale && m.updater_confirmDialog_title()}
-		>
-			{#snippet children()}
-				<div class="z-update-modal">
-					<p>
-						{updates.next!.version
-							? m.updater_confirmDialog_content_next({
-									next: updates.next!.version,
-									current: appVersion
-								})
-							: m.updater_confirmDialog_content_available()}
-					</p>
-					<p>{m.updater_confirmDialog_content()}</p>
+			<div class="z-main">
+				<div class="z-content">
+					{@render children?.()}
 				</div>
-			{/snippet}
-			{#snippet actions()}
-				<Button variant="primary" onclick={installUpdate} disabled={updateInstalling}>
-					{#snippet icon()}
-						<Icon
-							icon={updateInstalling ? 'mdi:loading' : 'mdi:download'}
-							class={updateInstalling ? 'z-spin' : ''}
-						/>
-					{/snippet}
-					{i18nState.locale && m.updater_confirmDialog_button()}
-				</Button>
-			{/snippet}
-		</Modal>
-	{/if}
-</main>
+				<Statusbar />
+			</div>
+		</div>
+
+		{#if gamepadState.enabled && gamepadState.connected}
+			{@const type = gamepadState.controllerType}
+			<div class="z-gamepad-legend">
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn">{type === 'playstation' ? '✕' : 'A'}</kbd>
+					<span>{m.gamepad_legend_select()}</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn">{type === 'playstation' ? '△' : 'Y'}</kbd>
+					<span>{m.gamepad_legend_multiselect()}</span>
+				</div>
+				<!-- Back button removed as per request -->
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'L3' : 'LS'}</kbd>
+					<span>{m.gamepad_legend_navigate()}</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn z-gp-dpad">{type === 'playstation' ? 'R3' : 'RS'}</kbd>
+					<span>{m.gamepad_legend_scroll()}</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn">{type === 'playstation' ? 'L1' : 'LB'}</kbd>
+					<kbd class="z-gp-btn">{type === 'playstation' ? 'R1' : 'RB'}</kbd>
+					<span>{m.gamepad_legend_tabs()}</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn">{type === 'playstation' ? 'R2' : 'RT'}</kbd>
+					<span>Filtres</span>
+				</div>
+				<div class="z-gamepad-legend-item">
+					<kbd class="z-gp-btn"
+						>{type === 'playstation' ? 'Share' : type === 'xbox' ? 'View' : 'Select'}</kbd
+					>
+					<span>{m.dashboard_quickActions_title()}</span>
+				</div>
+			</div>
+		{/if}
+
+		<GlobalSearch />
+		<Toasts />
+		<InstallPopover />
+		<InstallModDialog />
+		<ImportProfileDialog />
+		<!-- <DoomEasterEgg /> -->
+
+		{#if gamepadKeyboard.open}
+			<GamepadKeyboard
+				open={gamepadKeyboard.open}
+				value={gamepadKeyboard.value}
+				onsubmit={(val) => gamepadKeyboard.submit(val)}
+				oncancel={() => gamepadKeyboard.cancel()}
+			/>
+		{/if}
+
+		{#if updates.next?.available}
+			<Modal
+				open={true}
+				onclose={() => (updates.next = null)}
+				title={i18nState.locale && m.updater_confirmDialog_title()}
+			>
+				{#snippet children()}
+					<div class="z-update-modal">
+						<p>
+							{updates.next!.version
+								? m.updater_confirmDialog_content_next({
+										next: updates.next!.version,
+										current: appVersion
+									})
+								: m.updater_confirmDialog_content_available()}
+						</p>
+						<p>{m.updater_confirmDialog_content()}</p>
+					</div>
+				{/snippet}
+				{#snippet actions()}
+					<Button variant="primary" onclick={installUpdate} disabled={updateInstalling}>
+						{#snippet icon()}
+							<Icon
+								icon={updateInstalling ? 'mdi:loading' : 'mdi:download'}
+								class={updateInstalling ? 'z-spin' : ''}
+							/>
+						{/snippet}
+						{i18nState.locale && m.updater_confirmDialog_button()}
+					</Button>
+				{/snippet}
+			</Modal>
+		{/if}
+	</main>
+{/if}
 
 <style>
+	.z-app-standalone {
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	.z-standalone-body {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
 	.z-app {
 		display: flex;
 		flex-direction: column;

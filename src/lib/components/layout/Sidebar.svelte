@@ -9,25 +9,8 @@
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import LaunchOverlay from '$lib/components/dialogs/LaunchOverlay.svelte';
 	import * as api from '$lib/api';
-	import { installState } from '$lib/state/misc.svelte';
+	import { launchGameWithBepInExFallback } from '$lib/launch';
 	import { open } from '@tauri-apps/plugin-shell';
-	// import { activeSourceState } from '$lib/state/source.svelte';
-	// import type { SourceGame } from '$lib/api/sources';
-
-	// let nexusGames: SourceGame[] = $state([]);
-	// let nexusGamesLoaded = $state(false);
-
-	// $effect(() => {
-	// 	if (activeSourceState.current === 'nexusmods' && !nexusGamesLoaded) {
-	// 		api.sources
-	// 			.getNexusmodsGames()
-	// 			.then((g) => {
-	// 				nexusGames = g;
-	// 				nexusGamesLoaded = true;
-	// 			})
-	// 			.catch(() => {});
-	// 	}
-	// });
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
@@ -103,68 +86,12 @@
 
 	let launching = $state(false);
 
-	function waitForInstallEnd(): Promise<void> {
-		return new Promise((resolve) => {
-			const check = () => {
-				if (!installState.active) return resolve();
-				setTimeout(check, 300);
-			};
-			setTimeout(check, 500);
-		});
-	}
-
-	async function installBepInEx(): Promise<boolean> {
-		try {
-			const results = await api.thunderstore.query({
-				searchTerm: 'BepInExPack',
-				includeCategories: [],
-				excludeCategories: [],
-				includeNsfw: false,
-				includeDeprecated: false,
-				includeDisabled: true,
-				includeEnabled: true,
-				sortBy: 'downloads',
-				sortOrder: 'descending',
-				maxCount: 5
-			});
-			const bepinex = results.find(
-				(m) => m.name === 'BepInExPack' || m.name.startsWith('BepInExPack')
-			);
-			if (bepinex && !bepinex.isInstalled) {
-				await api.profile.install.mod({
-					packageUuid: bepinex.uuid,
-					versionUuid: bepinex.versions[0].uuid
-				});
-				await waitForInstallEnd();
-				return true;
-			}
-		} catch {}
-		return false;
-	}
-
 	async function launchGame() {
 		launching = true;
 		try {
-			await api.profile.launch.launchGameSilent();
-		} catch (err: any) {
-			const msg = String(err).toLowerCase();
-			if (msg.includes('bepinex') || msg.includes('preloader not found')) {
-				const installed = await installBepInEx();
-				if (installed) {
-					try {
-						await api.profile.launch.launchGame();
-						return;
-					} catch {}
-				}
-				launching = false;
-				return;
-			}
-			// Not a BepInEx error — show the toast via normal launch path
-			try {
-				await api.profile.launch.launchGame();
-			} catch {
-				launching = false;
-			}
+			await launchGameWithBepInExFallback();
+		} finally {
+			launching = false;
 		}
 	}
 
@@ -234,39 +161,6 @@
 				/>
 			</div>
 			<div class="z-game-dropdown-list">
-				<!-- NexusMods game list commented out
-				{#if activeSourceState.current === 'nexusmods'}
-					{#each nexusGames.filter((g) => g.name
-							.toLowerCase()
-							.includes(gameSearchTerm.toLowerCase())) as nxGame}
-						<button
-							class="z-game-dropdown-item"
-							class:active={games.active?.slug === nxGame.slug}
-							onclick={async () => {
-								const match = games.list.find((g) => g.slug === nxGame.slug);
-								if (match) {
-									await games.setActive(match.slug);
-								}
-								gameMenuOpen = false;
-								gameSearchTerm = '';
-							}}
-						>
-							<div class="z-game-dropdown-icon z-nx-game-icon">
-								<Icon icon="mdi:gamepad-variant" />
-							</div>
-							<span class="z-game-dropdown-name">{nxGame.name}</span>
-							<span class="z-game-dropdown-count">{nxGame.modCount}</span>
-						</button>
-					{/each}
-					{#if nexusGames.filter((g) => g.name
-							.toLowerCase()
-							.includes(gameSearchTerm.toLowerCase())).length === 0}
-						<div class="z-game-dropdown-empty">
-							<Icon icon="mdi:magnify" />
-							<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
-						</div>
-					{/if}
-				{:else} -->
 				{#each games.list.filter((g) => g.name
 						.toLowerCase()
 						.includes(gameSearchTerm.toLowerCase())) as game}
@@ -294,7 +188,6 @@
 						<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
 					</div>
 				{/if}
-				<!-- {/if} NexusMods conditional end -->
 			</div>
 		</div>
 	{/if}

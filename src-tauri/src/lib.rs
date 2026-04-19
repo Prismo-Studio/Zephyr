@@ -14,9 +14,11 @@ use gtk::prelude::GtkWindowExt;
 
 mod cli;
 mod config;
+mod console;
 mod db;
 mod deep_link;
 mod game;
+mod icon_cache;
 mod logger;
 mod prefs;
 mod profile;
@@ -196,6 +198,8 @@ pub fn run() {
             prefs::commands::set_dpi_scale,
             prefs::commands::get_system_fonts,
             prefs::commands::open_dir,
+            icon_cache::get_cached_icon,
+            icon_cache::clear_icon_cache,
             profile::commands::get_game_info,
             profile::commands::favorite_game,
             profile::commands::set_active_game,
@@ -299,6 +303,26 @@ pub fn run() {
             randomizer::commands::read_file_base64,
             randomizer::commands::remote_upload_seed,
             randomizer::commands::remote_request,
+            randomizer::commands::list_custom_apworlds,
+            randomizer::commands::install_apworld_from_path,
+            randomizer::commands::install_apworld_from_bytes,
+            randomizer::commands::remove_custom_apworld,
+            randomizer::commands::refresh_apworld_schemas,
+            randomizer::commands::open_custom_worlds_dir,
+            randomizer::commands::runtime_status,
+            randomizer::commands::install_runtime,
+            randomizer::commands::provision_runtime_venv,
+            randomizer::commands::remove_runtime,
+            randomizer::commands::list_patches,
+            randomizer::commands::delete_patch,
+            randomizer::commands::apply_patch,
+            randomizer::commands::launch_ap_component,
+            randomizer::commands::get_rom_paths,
+            randomizer::commands::set_rom_path,
+            randomizer::commands::clear_rom_path,
+            console::commands::console_server_send_stdin,
+            console::commands::console_server_recent_log,
+            console::commands::open_console_window,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())

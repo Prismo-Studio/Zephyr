@@ -14,6 +14,7 @@ local Archipelago package to sys.path.
 
 from __future__ import annotations
 
+import argparse
 import importlib
 import json
 import os
@@ -26,7 +27,12 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parent.parent
 AP_ROOT = REPO_ROOT / "src-tauri" / "archipelago-runtime"
 WORLDS_DIR = AP_ROOT / "worlds"
-OUT_DIR = REPO_ROOT / "data" / "randomizer" / "schemas"
+# Directory where schemas land unless --out-dir overrides it.
+DEFAULT_OUT_DIR = REPO_ROOT / "data" / "randomizer" / "schemas"
+# Custom (user-installed) worlds live here. Archipelago's loader already
+# discovers them at runtime; we also scan the folder here so the extractor
+# can produce schemas for them without any extra plumbing.
+CUSTOM_WORLDS_DIR = AP_ROOT / "custom_worlds"
 
 # Make the bundled Archipelago importable.
 sys.path.insert(0, str(AP_ROOT))
@@ -291,12 +297,57 @@ def import_world_module(dirname: str) -> tuple[Any, Exception | None]:
         return None, exc  # type: ignore[return-value]
 
 
-def main() -> int:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Extract Archipelago world schemas.")
+    p.add_argument(
+        "--out-dir",
+        type=Path,
+        default=DEFAULT_OUT_DIR,
+        help="Directory to write schema JSON files into.",
+    )
+    p.add_argument(
+        "--only",
+        default="",
+        help="Comma-separated list of world dir names to extract (default: all).",
+    )
+    p.add_argument(
+        "--include-custom",
+        action="store_true",
+        default=True,
+        help="(default) Also scan custom_worlds/ alongside the bundled worlds/.",
+    )
+    return p.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv if argv is not None else sys.argv[1:])
+    out_dir: Path = args.out_dir
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    only_filter = {s.strip() for s in args.only.split(",") if s.strip()}
+
+    # Archipelago's own `worlds/__init__.py` scans custom_worlds/ during
+    # module import (triggered above by `from worlds.AutoWorld import ...`),
+    # so AutoWorldRegister is already populated with any user-installed
+    # worlds by the time we get here.
 
     # Pre-import the worlds package so AutoWorldRegister fills up.
     # Importing each subpackage individually below populates the registry.
     world_dirs = list_world_dirs()
+    if args.include_custom and CUSTOM_WORLDS_DIR.exists():
+        for entry in sorted(os.listdir(CUSTOM_WORLDS_DIR)):
+            full = CUSTOM_WORLDS_DIR / entry
+            name = entry
+            if entry.endswith(".apworld"):
+                name = entry[: -len(".apworld")]
+            elif not full.is_dir():
+                continue
+            if name.startswith(("_", ".")):
+                continue
+            if name not in world_dirs:
+                world_dirs.append(name)
+    if only_filter:
+        world_dirs = [d for d in world_dirs if d in only_filter]
 
     # First pass: try importing every world so AutoWorldRegister gets populated.
     import_failures: list[tuple[str, str]] = []
@@ -332,7 +383,7 @@ def main() -> int:
         try:
             world_id = slug(d)
             schema = build_schema(world_id, world_cls)
-            out_path = OUT_DIR / f"{world_id}.json"
+            out_path = out_dir / f"{world_id}.json"
             with out_path.open("w", encoding="utf-8") as fh:
                 json.dump(schema, fh, indent=2, ensure_ascii=False)
                 fh.write("\n")

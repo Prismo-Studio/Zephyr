@@ -10,6 +10,7 @@
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { isModPinned, installState } from '$lib/state/misc.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
+	import CachedImage from '$lib/components/ui/CachedImage.svelte';
 
 	type Props = {
 		mod: Mod;
@@ -84,7 +85,7 @@
 		tabindex="0"
 	>
 		<div class="z-grid-icon">
-			<img src={modIconSrc(mod)} alt={mod.name} />
+			<CachedImage src={modIconSrc(mod)} alt={mod.name} />
 			{#if mod.isInstalled}
 				<span class="z-grid-installed">
 					<Icon icon="mdi:check-circle" class="text-[12px]" />
@@ -187,7 +188,7 @@
 
 		<!-- Icon -->
 		<div class="z-mod-icon">
-			<img src={modIconSrc(mod)} alt={mod.name} />
+			<CachedImage src={modIconSrc(mod)} alt={mod.name} />
 			{#if mod.isInstalled}
 				<span class="z-mod-installed-badge">
 					<Icon icon="mdi:check" class="text-[9px]" />

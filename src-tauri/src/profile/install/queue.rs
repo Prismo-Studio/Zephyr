@@ -311,28 +311,13 @@ async fn handle_batch(batch: InstallBatch, cancel: &AtomicBool, app: &AppHandle)
         match &result {
             Ok(()) => (),
             Err(InstallError::Cancelled) => {
-                rollback_batch(&batch, app, i).unwrap_or_else(|err| {
-                    warn!("failed to rollback cancelled installation: {}", err)
-                });
-
-                // cancel all pending bathes
-                let mut handle = app.install_queue().handle();
-                for batch in handle.state.pending.drain(..) {
-                    batch.complete(Err(InstallError::Cancelled), app);
-                }
-
-                reason = HideReason::Cancelled;
+                reason = on_batch_cancelled(&batch, app, i);
                 break;
             }
             Err(InstallError::Err(_)) => {
-                rollback_batch(&batch, app, i)
-                    .unwrap_or_else(|err| warn!("failed to rollback failed installation: {err}",));
-
-                result = result
-                    .wrap_err_with(|| format!("failed to install {}", install.ident))
-                    .map_err(InstallError::Err);
-
-                reason = HideReason::Error;
+                let (next_reason, wrapped) = on_batch_failed(&batch, app, i, install, result);
+                reason = next_reason;
+                result = wrapped;
                 break;
             }
         }
@@ -340,6 +325,36 @@ async fn handle_batch(batch: InstallBatch, cancel: &AtomicBool, app: &AppHandle)
 
     batch.complete(result, app);
     reason
+}
+
+fn on_batch_cancelled(batch: &InstallBatch, app: &AppHandle, up_to: usize) -> HideReason {
+    rollback_batch(batch, app, up_to)
+        .unwrap_or_else(|err| warn!("failed to rollback cancelled installation: {}", err));
+
+    // Cancel every batch still queued behind us.
+    let mut handle = app.install_queue().handle();
+    for pending in handle.state.pending.drain(..) {
+        pending.complete(Err(InstallError::Cancelled), app);
+    }
+
+    HideReason::Cancelled
+}
+
+fn on_batch_failed(
+    batch: &InstallBatch,
+    app: &AppHandle,
+    up_to: usize,
+    install: &ModInstall,
+    result: InstallResult<()>,
+) -> (HideReason, InstallResult<()>) {
+    rollback_batch(batch, app, up_to)
+        .unwrap_or_else(|err| warn!("failed to rollback failed installation: {err}"));
+
+    let wrapped = result
+        .wrap_err_with(|| format!("failed to install {}", install.ident))
+        .map_err(InstallError::Err);
+
+    (HideReason::Error, wrapped)
 }
 
 fn rollback_batch(batch: &InstallBatch, app: &AppHandle, count: usize) -> Result<()> {

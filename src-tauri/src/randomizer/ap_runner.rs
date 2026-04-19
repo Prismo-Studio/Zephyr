@@ -7,10 +7,10 @@
 
 use std::{
     fs::File,
-    io::{self, BufRead, BufReader},
+    io::{self, BufRead, BufReader, Write},
     net::{IpAddr, TcpListener, UdpSocket},
     path::{Path, PathBuf},
-    process::{Child, Command, Stdio},
+    process::{Child, ChildStdin, Command, Stdio},
     sync::{Arc, Mutex},
     thread,
 };
@@ -19,26 +19,41 @@ use zip::ZipArchive;
 
 use eyre::{bail, Context, Result};
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 use tracing::{info, warn};
 
-/// Resolve the directory of the bundled Archipelago runtime.
-/// In dev: `src-tauri/archipelago-runtime` (relative to CWD or one level up).
-/// In prod: could be the Tauri resource dir in the future.
-pub fn ap_dir(_app: &AppHandle) -> PathBuf {
+/// Persistent install location for the Archipelago runtime in packaged builds.
+/// On Linux that's `~/.local/share/<bundle-id>/randomizer/archipelago-runtime`;
+/// Tauri's `app_data_dir` maps to the platform-appropriate equivalents on macOS
+/// (`~/Library/Application Support/...`) and Windows (`%APPDATA%/...`).
+pub fn ap_install_dir(app: &AppHandle) -> PathBuf {
+    let base = app
+        .path()
+        .app_data_dir()
+        .unwrap_or_else(|_| std::env::temp_dir());
+    base.join("randomizer").join("archipelago-runtime")
+}
+
+/// Resolve the directory of the Archipelago runtime.
+///
+/// Priority:
+/// 1. A checked-out runtime at a dev-relative path (so `cargo tauri dev`
+///    still uses the in-tree copy).
+/// 2. The user-install dir under `app_data_dir`. Releases ship without the
+///    runtime to keep the binary small; the user downloads it on demand.
+pub fn ap_dir(app: &AppHandle) -> PathBuf {
     let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
-    let candidates = [
+    let dev_candidates = [
         cwd.join("archipelago-runtime"),
         cwd.join("../src-tauri/archipelago-runtime"),
         cwd.join("src-tauri/archipelago-runtime"),
     ];
-    for c in &candidates {
-        if c.exists() {
+    for c in &dev_candidates {
+        if c.join("Generate.py").exists() {
             return c.clone();
         }
     }
-    // Fallback — first candidate
-    candidates[0].clone()
+    ap_install_dir(app)
 }
 
 /// Path to the Python venv inside the Archipelago runtime directory.
@@ -222,19 +237,25 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
                 .ok()
         });
 
-    // Auto-extract the .archipelago multidata next to the zip; that's what we
-    // hand to MultiServer.py (its zip support is unreliable).
-    // After successful extraction, delete the zip to avoid ghost duplicates
-    // when list_seeds() tries to re-extract from renamed zips.
+    // Auto-extract the entire AP_*.zip next to itself. The `.archipelago`
+    // multidata is what MultiServer.py needs; the other entries are per-player
+    // patch files (.apemerald, .aptunic, etc.) and spoiler logs that the
+    // patches panel then surfaces to the user. After successful extraction
+    // we delete the zip so list_seeds() doesn't re-extract it on every poll.
     let extracted = if let Some(zip) = new_zip.as_ref() {
-        match extract_archipelago(zip) {
-            Ok(p) => {
-                // Remove the zip — the .archipelago is all we need
+        match extract_seed_contents(zip) {
+            Ok((archipelago, patches)) => {
                 let _ = std::fs::remove_file(zip);
-                Some(p.to_string_lossy().to_string())
+                tracing::info!(
+                    "extracted seed {}: multidata={:?}, patches={}",
+                    zip.display(),
+                    archipelago.as_ref().map(|p| p.display().to_string()),
+                    patches.len()
+                );
+                archipelago.map(|p| p.to_string_lossy().to_string())
             }
             Err(err) => {
-                tracing::warn!("failed to extract .archipelago from {}: {err:#}", zip.display());
+                tracing::warn!("failed to extract contents of {}: {err:#}", zip.display());
                 None
             }
         }
@@ -254,11 +275,7 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
 pub fn save_player_yaml(app: &AppHandle, slot_name: &str, yaml: &str) -> Result<PathBuf> {
     let dir = players_dir(app);
     std::fs::create_dir_all(&dir)?;
-    // sanitize slot name for filename
-    let safe: String = slot_name
-        .chars()
-        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' { c } else { '_' })
-        .collect();
+    let safe = crate::util::fs::sanitize_filename_chars(slot_name, &[]);
     let safe = if safe.is_empty() { "player".to_string() } else { safe };
     let path = dir.join(format!("{safe}.yaml"));
     std::fs::write(&path, yaml).with_context(|| format!("write {}", path.display()))?;
@@ -342,10 +359,7 @@ pub fn rename_seed(path: &Path, new_name: &str) -> Result<PathBuf> {
     }
     let parent = path.parent().ok_or_else(|| eyre::eyre!("no parent"))?;
     let old_stem = path.file_stem().and_then(|s| s.to_str()).unwrap_or("");
-    let safe: String = new_name
-        .chars()
-        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' || c == '.' { c } else { '_' })
-        .collect();
+    let safe = crate::util::fs::sanitize_filename_chars(new_name, &['.']);
     let safe = if safe.is_empty() { "seed".to_string() } else { safe };
 
     // Rename the .archipelago file
@@ -367,21 +381,81 @@ pub fn rename_seed(path: &Path, new_name: &str) -> Result<PathBuf> {
         let _ = std::fs::rename(&old_spoiler, parent.join(format!("{safe}_Spoiler.txt")));
     }
 
+    // Rename per-player patches so they still group under the renamed seed.
+    // Archipelago emits them as `<old_stem>_P<n>_<slot>.ap<ext>` — we swap
+    // the prefix while keeping everything after `_P`.
+    if let Err(err) = rename_patch_siblings(parent, old_stem, &safe) {
+        tracing::warn!("failed to rename patch siblings for {old_stem}: {err:#}");
+    }
+
     Ok(new_path)
+}
+
+/// Scan `parent` for patch files that belong to `old_stem` and rename their
+/// prefix to `new_stem`. A file counts as a patch when its extension starts
+/// with `ap` and its name starts with `{old_stem}_P` (Archipelago's
+/// per-player naming: `_P1_SlotName`).
+fn rename_patch_siblings(parent: &Path, old_stem: &str, new_stem: &str) -> Result<()> {
+    if old_stem == new_stem {
+        return Ok(());
+    }
+    let prefix = format!("{old_stem}_P");
+    for entry in std::fs::read_dir(parent)? {
+        let Ok(entry) = entry else { continue };
+        let path = entry.path();
+        let Some(name) = path.file_name().and_then(|s| s.to_str()) else {
+            continue;
+        };
+        if !name.starts_with(&prefix) {
+            continue;
+        }
+        let Some(ext) = path.extension().and_then(|s| s.to_str()) else {
+            continue;
+        };
+        if !ext.to_ascii_lowercase().starts_with("ap") {
+            continue;
+        }
+        // Replace the leading `old_stem` only — keep the `_Pn_slot.ext` suffix.
+        let suffix = &name[old_stem.len()..];
+        let new_name = format!("{new_stem}{suffix}");
+        let new_path = parent.join(new_name);
+        let _ = std::fs::rename(&path, &new_path);
+    }
+    Ok(())
 }
 
 pub fn delete_seed(path: &Path) -> Result<()> {
     if path.exists() {
         std::fs::remove_file(path).with_context(|| format!("delete {}", path.display()))?;
     }
-    // Also clean siblings sharing the same stem: .zip, .apsave, _Spoiler.txt
+    // Also clean siblings sharing the same stem: .zip, .apsave, _Spoiler.txt,
+    // and any per-player .ap<ext> patches.
     if let (Some(parent), Some(stem)) = (path.parent(), path.file_stem()) {
-        let stem = stem.to_string_lossy();
+        let stem = stem.to_string_lossy().to_string();
         for ext in &[".zip", ".apsave"] {
             let p = parent.join(format!("{stem}{ext}"));
             let _ = std::fs::remove_file(p);
         }
         let _ = std::fs::remove_file(parent.join(format!("{stem}_Spoiler.txt")));
+        // Remove `{stem}_P*_*.ap*` patch files.
+        let prefix = format!("{stem}_P");
+        if let Ok(rd) = std::fs::read_dir(parent) {
+            for entry in rd.flatten() {
+                let p = entry.path();
+                let Some(name) = p.file_name().and_then(|s| s.to_str()) else {
+                    continue;
+                };
+                if !name.starts_with(&prefix) {
+                    continue;
+                }
+                let Some(ext) = p.extension().and_then(|s| s.to_str()) else {
+                    continue;
+                };
+                if ext.to_ascii_lowercase().starts_with("ap") {
+                    let _ = std::fs::remove_file(&p);
+                }
+            }
+        }
     }
     Ok(())
 }
@@ -450,10 +524,7 @@ pub fn rename_player_yaml(path: &Path, new_name: &str) -> Result<PathBuf> {
     if !path.exists() {
         bail!("player file not found: {}", path.display());
     }
-    let safe: String = new_name
-        .chars()
-        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' { c } else { '_' })
-        .collect();
+    let safe = crate::util::fs::sanitize_filename_chars(new_name, &[]);
     let safe = if safe.is_empty() { "player".to_string() } else { safe };
 
     // Update the `name:` field inside the YAML content to match the new name
@@ -492,9 +563,30 @@ pub struct ServerState {
 
 struct RunningServer {
     child: Child,
+    stdin: Option<ChildStdin>,
     port: u16,
     password: Option<String>,
     multidata: String,
+}
+
+/// Payload emitted on the `"console://server-log"` Tauri event for every line
+/// MultiServer.py writes to stdout or stderr. Kept intentionally dumb — the
+/// console frontend does the parsing. This is the Phase 1 feed source; Phase 2
+/// will add a structured WebSocket-observer channel alongside.
+#[derive(Serialize, Clone, Debug)]
+pub struct ServerLogEvent {
+    pub stream: &'static str, // "stdout" | "stderr"
+    pub line: String,
+    pub ts_ms: u64,
+}
+
+const SERVER_LOG_EVENT: &str = "console://server-log";
+
+fn now_ms() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_millis() as u64)
+        .unwrap_or(0)
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -585,6 +677,20 @@ pub fn update_host_yaml_port(ap_dir: &Path, port: u16) -> Result<()> {
 ///
 /// If the target file already exists, returns its path without re-extracting.
 pub fn extract_archipelago(zip_path: &Path) -> Result<PathBuf> {
+    let (archipelago, _) = extract_seed_contents(zip_path)?;
+    archipelago.ok_or_else(|| eyre::eyre!("no .archipelago entry found in {}", zip_path.display()))
+}
+
+/// Extract **every** entry of a generated `AP_*.zip` next to the zip.
+///
+/// Returns `(archipelago_path, patch_paths)`:
+/// * `archipelago_path` is the `.archipelago` multidata MultiServer needs.
+/// * `patch_paths` are per-player patch files (e.g. `.apemerald`, `.apmw`,
+///   `.aptunic`) plus any spoiler/txt outputs — everything the Archipelago
+///   Launcher might need to apply a patch and spin up a client.
+///
+/// Existing files are left in place so this is cheap to re-run.
+pub fn extract_seed_contents(zip_path: &Path) -> Result<(Option<PathBuf>, Vec<PathBuf>)> {
     let parent = zip_path
         .parent()
         .ok_or_else(|| eyre::eyre!("zip has no parent dir: {}", zip_path.display()))?;
@@ -594,28 +700,34 @@ pub fn extract_archipelago(zip_path: &Path) -> Result<PathBuf> {
     let mut archive = ZipArchive::new(file)
         .with_context(|| format!("read zip {}", zip_path.display()))?;
 
+    let mut archipelago: Option<PathBuf> = None;
+    let mut patches: Vec<PathBuf> = Vec::new();
+
     for i in 0..archive.len() {
         let mut entry = archive.by_index(i)?;
-        let name = entry.name().to_string();
-        if !name.ends_with(".archipelago") {
+        if entry.is_dir() {
             continue;
         }
-        let target = parent.join(
-            Path::new(&name)
-                .file_name()
-                .map(|s| s.to_os_string())
-                .unwrap_or_else(|| name.clone().into()),
-        );
+        let name = entry.name().to_string();
+        let Some(file_name) = Path::new(&name).file_name() else {
+            continue;
+        };
+        let target = parent.join(file_name);
         if !target.exists() {
             let mut out = File::create(&target)
                 .with_context(|| format!("create {}", target.display()))?;
             io::copy(&mut entry, &mut out)
                 .with_context(|| format!("extract to {}", target.display()))?;
         }
-        return Ok(target);
+
+        if name.ends_with(".archipelago") {
+            archipelago = Some(target);
+        } else {
+            patches.push(target);
+        }
     }
 
-    bail!("no .archipelago entry found in {}", zip_path.display())
+    Ok((archipelago, patches))
 }
 
 /// Check whether something is listening on `port` on the wildcard interface.
@@ -771,13 +883,21 @@ impl ServerState {
         cmd.current_dir(&dir)
             .env("SKIP_REQUIREMENTS_UPDATE", "1")
             .env("PYTHONIOENCODING", "utf-8")
+            // Force unbuffered stdout/stderr so responses to stdin commands
+            // reach the Console immediately instead of sitting in a block
+            // buffer until MultiServer flushes on shutdown.
+            .env("PYTHONUNBUFFERED", "1")
+            .arg("-u")
             .arg("MultiServer.py")
             .arg(multidata)
             .arg("--port")
             .arg(port.to_string())
             .arg("--loglevel")
             .arg("info")
-            .stdin(Stdio::null())
+            // piped so the Console can type admin commands (/players, /send, …).
+            // MultiServer.py's atexit "Press enter to close" is a no-op when
+            // stdin is a pipe we own: we just drop the handle on shutdown.
+            .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
         if let Some(pw) = password.as_ref() {
@@ -802,26 +922,40 @@ impl ServerState {
 
         let mut child = cmd.spawn().context("failed to spawn MultiServer.py")?;
 
-        // Drain stdout/stderr into the rolling log buffer
+        // Grab the stdin handle before we move the child into RunningServer.
+        let stdin_handle = child.stdin.take();
+
+        // Drain stdout/stderr into the rolling log buffer AND emit a Tauri
+        // event per line so the Console UI can stream them live.
         let buf = Arc::clone(&self.log_buffer);
         if let Some(stdout) = child.stdout.take() {
             let buf = Arc::clone(&buf);
+            let app = app.clone();
             thread::spawn(move || {
                 let reader = BufReader::new(stdout);
                 for line in reader.lines().map_while(|l| l.ok()) {
                     info!("AP server: {line}");
                     if let Ok(mut b) = buf.lock() {
-                        b.push(line);
+                        b.push(line.clone());
                         let len = b.len();
                         if len > 500 {
                             b.drain(0..len - 500);
                         }
                     }
+                    let _ = app.emit(
+                        SERVER_LOG_EVENT,
+                        ServerLogEvent {
+                            stream: "stdout",
+                            line,
+                            ts_ms: now_ms(),
+                        },
+                    );
                 }
             });
         }
         if let Some(stderr) = child.stderr.take() {
             let buf = Arc::clone(&buf);
+            let app = app.clone();
             thread::spawn(move || {
                 let reader = BufReader::new(stderr);
                 for line in reader.lines().map_while(|l| l.ok()) {
@@ -833,6 +967,14 @@ impl ServerState {
                             b.drain(0..len - 500);
                         }
                     }
+                    let _ = app.emit(
+                        SERVER_LOG_EVENT,
+                        ServerLogEvent {
+                            stream: "stderr",
+                            line,
+                            ts_ms: now_ms(),
+                        },
+                    );
                 }
             });
         }
@@ -840,6 +982,7 @@ impl ServerState {
         let pid = child.id();
         let server = RunningServer {
             child,
+            stdin: stdin_handle,
             port,
             password: password.clone(),
             multidata: multidata.to_string_lossy().to_string(),
@@ -866,9 +1009,42 @@ impl ServerState {
     pub fn stop(&self) -> Result<()> {
         let mut guard = self.inner.lock().unwrap();
         if let Some(mut server) = guard.take() {
+            // Dropping the stdin pipe first gives MultiServer.py's atexit its EOF.
+            let _ = server.stdin.take();
             let _ = server.child.kill();
             let _ = server.child.wait();
         }
         Ok(())
+    }
+
+    /// Write a line to the running MultiServer's stdin, appending `\n` if
+    /// missing. Used by the Console to dispatch admin commands (`/players`,
+    /// `/send`, …). Errors if no server is running or the pipe is dead.
+    pub fn send_line(&self, line: &str) -> Result<()> {
+        let mut guard = self.inner.lock().unwrap();
+        let server = guard
+            .as_mut()
+            .ok_or_else(|| eyre::eyre!("no server running"))?;
+        let stdin = server
+            .stdin
+            .as_mut()
+            .ok_or_else(|| eyre::eyre!("server stdin is not available"))?;
+
+        let mut payload = line.to_string();
+        if !payload.ends_with('\n') {
+            payload.push('\n');
+        }
+        stdin
+            .write_all(payload.as_bytes())
+            .context("write to MultiServer stdin")?;
+        stdin.flush().context("flush MultiServer stdin")?;
+        Ok(())
+    }
+
+    /// Return a snapshot of the most recent log lines (oldest first). Used by
+    /// the Console to backfill its feed when first opened, before the live
+    /// event stream kicks in.
+    pub fn recent_log_snapshot(&self) -> Vec<String> {
+        self.recent_log_lines()
     }
 }

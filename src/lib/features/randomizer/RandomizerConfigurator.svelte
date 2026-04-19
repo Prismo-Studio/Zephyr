@@ -8,13 +8,8 @@
 	import { randomizerStore, dependenciesSatisfied } from './randomizer.store.svelte';
 	import { CATEGORY_ICONS, CATEGORY_LABELS, CATEGORY_ORDER, type OptionDef } from './types';
 	import RandomizerOptionField from './RandomizerOptionField.svelte';
-	import RandomizerServerPanel from './RandomizerServerPanel.svelte';
-	import YamlPreview from './YamlPreview.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-
-	let rightTab: 'yaml' | 'server' = $state('yaml');
-	let serverPanelRef: RandomizerServerPanel | undefined = $state();
 
 	// Maps game id (schema.id, matches the world folder) to the English tutorial
 	// URL path on archipelago.gg. Defaults to "setup/en" for games not listed.
@@ -50,9 +45,8 @@
 				name: m.randomizer_slotSaved(),
 				message: `${slot} -> ${path.split(/[/\\]/).pop()}`
 			});
-			rightTab = 'server';
-			// Refresh the server panel's player list so the new slot appears
-			serverPanelRef?.refresh();
+			// Tell the page to switch to the server tab and refresh the player list.
+			window.dispatchEvent(new CustomEvent('rdz-player-saved'));
 		} catch {
 			// invoke() already toasted
 		}
@@ -136,178 +130,141 @@
 </script>
 
 {#if schema}
-	<div class="rdz-config">
-		<div class="rdz-config-main">
-			<header class="rdz-config-header">
-				<button
-					class="rdz-back"
-					onclick={onBack}
-					aria-label={i18nState.locale && m.randomizer_backToCatalog()}
-				>
-					<Icon icon="mdi:arrow-left" />
-				</button>
-				<div class="rdz-config-title">
-					<h1>{schema.name}</h1>
-					<small>v{schema.version}</small>
-				</div>
-				<a
-					class="rdz-setup-link"
-					href={setupGuideUrl(schema.id, schema.name)}
-					target="_blank"
-					rel="noopener"
-				>
-					<Icon icon="mdi:book-open-variant" />
-					{i18nState.locale && m.randomizer_setupGuide()}
-				</a>
+	<div class="rdz-config-main">
+		<header class="rdz-config-header">
+			<button
+				class="rdz-back"
+				onclick={onBack}
+				aria-label={i18nState.locale && m.randomizer_backToCatalog()}
+			>
+				<Icon icon="mdi:arrow-left" />
+			</button>
+			<div class="rdz-config-title">
+				<h1>{schema.name}</h1>
+				<small>v{schema.version}</small>
+			</div>
+			<a class="rdz-setup-link" href={setupGuideUrl(schema.id, schema.name)}>
+				<Icon icon="mdi:book-open-variant" />
+				{i18nState.locale && m.randomizer_setupGuide()}
+			</a>
 
-				<div class="rdz-config-controls">
-					{#if hasPresets}
-						<div class="rdz-inline-field">
-							<span>{i18nState.locale && m.randomizer_preset()}</span>
-							<div class="rdz-inline-control rdz-inline-control-md">
-								<Dropdown
-									options={presetOptions}
-									value={randomizerStore.presetId ?? ''}
-									onchange={(v) => {
-										if (v) randomizerStore.applyPreset(v);
-										else randomizerStore.resetToDefaults();
-									}}
-								/>
-							</div>
-						</div>
-					{/if}
-
+			<div class="rdz-config-controls">
+				{#if hasPresets}
 					<div class="rdz-inline-field">
-						<span>{i18nState.locale && m.randomizer_player()}</span>
-						<div class="rdz-inline-control rdz-inline-control-sm">
-							<Input bind:value={randomizerStore.playerName} placeholder="Player1" />
-						</div>
-					</div>
-
-					<div class="rdz-inline-field">
-						<span>{i18nState.locale && m.randomizer_seed()}</span>
-						<div class="rdz-inline-control rdz-inline-control-sm">
-							<Input
-								bind:value={randomizerStore.seed}
-								placeholder={i18nState.locale && m.randomizer_random()}
+						<span>{i18nState.locale && m.randomizer_preset()}</span>
+						<div class="rdz-inline-control rdz-inline-control-md">
+							<Dropdown
+								options={presetOptions}
+								value={randomizerStore.presetId ?? ''}
+								onchange={(v) => {
+									if (v) randomizerStore.applyPreset(v);
+									else randomizerStore.resetToDefaults();
+								}}
 							/>
 						</div>
 					</div>
+				{/if}
 
-					{#if hasAdvanced}
-						<Button
-							variant={randomizerStore.showAdvanced ? 'accent' : 'secondary'}
-							size="sm"
-							onclick={() => (randomizerStore.showAdvanced = !randomizerStore.showAdvanced)}
-						>
-							{#snippet icon()}
-								<Icon icon="mdi:tune-variant" />
-							{/snippet}
-							{i18nState.locale && m.randomizer_advanced()}
-						</Button>
-					{/if}
-				</div>
-			</header>
-
-			{#if lastChangeBanner}
-				<div class="rdz-change-banner">
-					<Icon icon="mdi:lightning-bolt" />
-					<div>
-						<strong>{lastChangeBanner.option.label}</strong>
-						{i18nState.locale && m.randomizer_changed()}
-						{#if lastChangeBanner.impact.newlyVisible.length > 0}
-							{i18nState.locale && m.randomizer_nowVisible()}
-							<em>{lastChangeBanner.named(lastChangeBanner.impact.newlyVisible)}</em>.
-						{/if}
-						{#if lastChangeBanner.impact.newlyHidden.length > 0}
-							{i18nState.locale && m.randomizer_nowHidden()}
-							<em>{lastChangeBanner.named(lastChangeBanner.impact.newlyHidden)}</em>.
-						{/if}
+				<div class="rdz-inline-field">
+					<span>{i18nState.locale && m.randomizer_player()}</span>
+					<div class="rdz-inline-control rdz-inline-control-sm">
+						<Input bind:value={randomizerStore.playerName} placeholder="Player1" />
 					</div>
 				</div>
-			{/if}
 
-			<div class="rdz-config-body">
-				{#each groupedOptions as group (group.category)}
-					{@const visibleCount = visibleOptionCount(group.options)}
-					{#if visibleCount > 0}
-						<section class="rdz-group">
-							<button class="rdz-group-header" onclick={() => toggleCat(group.category)}>
-								<Icon icon={CATEGORY_ICONS[group.category] ?? 'mdi:folder'} />
-								<span class="rdz-group-name">
-									{CATEGORY_LABELS[group.category] ?? group.category}
-								</span>
-								<span class="rdz-group-count">{visibleCount}</span>
-								<Icon
-									icon="mdi:chevron-down"
-									class={openCategories[group.category]
-										? 'rdz-chevron'
-										: 'rdz-chevron rdz-chevron-collapsed'}
-								/>
-							</button>
-							{#if openCategories[group.category]}
-								<div class="rdz-group-fields">
-									{#each group.options as opt (opt.id)}
-										<RandomizerOptionField option={opt} />
-									{/each}
-								</div>
-							{/if}
-						</section>
-					{/if}
-				{/each}
-			</div>
-
-			<footer class="rdz-config-footer">
-				<Button variant="ghost" onclick={() => randomizerStore.resetToDefaults()}>
-					{#snippet icon()}
-						<Icon icon="mdi:restore" />
-					{/snippet}
-					{i18nState.locale && m.randomizer_reset()}
-				</Button>
-				<Button variant="secondary" onclick={() => randomizerStore.refreshGenerated()}>
-					{#snippet icon()}
-						<Icon icon="mdi:refresh" />
-					{/snippet}
-					{i18nState.locale && m.randomizer_refreshYaml()}
-				</Button>
-				<Button variant="primary" onclick={saveSlot}>
-					{#snippet icon()}
-						<Icon icon="mdi:account-plus" />
-					{/snippet}
-					{i18nState.locale && m.randomizer_savePlayerSlot()}
-				</Button>
-			</footer>
-		</div>
-
-		<aside class="rdz-right-pane">
-			<div class="rdz-right-tabs">
-				<button
-					class="rdz-tab"
-					class:active={rightTab === 'yaml'}
-					onclick={() => (rightTab = 'yaml')}
-				>
-					<Icon icon="mdi:code-braces" />
-					{i18nState.locale && m.randomizer_yaml()}
-				</button>
-				<button
-					class="rdz-tab"
-					class:active={rightTab === 'server'}
-					onclick={() => (rightTab = 'server')}
-				>
-					<Icon icon="mdi:server-network" />
-					{i18nState.locale && m.randomizer_multiplayer()}
-				</button>
-			</div>
-			<div class="rdz-right-body">
-				{#if rightTab === 'yaml'}
-					<YamlPreview />
-				{:else}
-					<div class="rdz-right-scroll">
-						<RandomizerServerPanel bind:this={serverPanelRef} />
+				<div class="rdz-inline-field">
+					<span>{i18nState.locale && m.randomizer_seed()}</span>
+					<div class="rdz-inline-control rdz-inline-control-sm">
+						<Input
+							bind:value={randomizerStore.seed}
+							placeholder={i18nState.locale && m.randomizer_random()}
+						/>
 					</div>
+				</div>
+
+				{#if hasAdvanced}
+					<Button
+						variant={randomizerStore.showAdvanced ? 'accent' : 'secondary'}
+						size="sm"
+						onclick={() => (randomizerStore.showAdvanced = !randomizerStore.showAdvanced)}
+					>
+						{#snippet icon()}
+							<Icon icon="mdi:tune-variant" />
+						{/snippet}
+						{i18nState.locale && m.randomizer_advanced()}
+					</Button>
 				{/if}
 			</div>
-		</aside>
+		</header>
+
+		{#if lastChangeBanner}
+			<div class="rdz-change-banner">
+				<Icon icon="mdi:lightning-bolt" />
+				<div>
+					<strong>{lastChangeBanner.option.label}</strong>
+					{i18nState.locale && m.randomizer_changed()}
+					{#if lastChangeBanner.impact.newlyVisible.length > 0}
+						{i18nState.locale && m.randomizer_nowVisible()}
+						<em>{lastChangeBanner.named(lastChangeBanner.impact.newlyVisible)}</em>.
+					{/if}
+					{#if lastChangeBanner.impact.newlyHidden.length > 0}
+						{i18nState.locale && m.randomizer_nowHidden()}
+						<em>{lastChangeBanner.named(lastChangeBanner.impact.newlyHidden)}</em>.
+					{/if}
+				</div>
+			</div>
+		{/if}
+
+		<div class="rdz-config-body">
+			{#each groupedOptions as group (group.category)}
+				{@const visibleCount = visibleOptionCount(group.options)}
+				{#if visibleCount > 0}
+					<section class="rdz-group">
+						<button class="rdz-group-header" onclick={() => toggleCat(group.category)}>
+							<Icon icon={CATEGORY_ICONS[group.category] ?? 'mdi:folder'} />
+							<span class="rdz-group-name">
+								{CATEGORY_LABELS[group.category] ?? group.category}
+							</span>
+							<span class="rdz-group-count">{visibleCount}</span>
+							<Icon
+								icon="mdi:chevron-down"
+								class={openCategories[group.category]
+									? 'rdz-chevron'
+									: 'rdz-chevron rdz-chevron-collapsed'}
+							/>
+						</button>
+						{#if openCategories[group.category]}
+							<div class="rdz-group-fields">
+								{#each group.options as opt (opt.id)}
+									<RandomizerOptionField option={opt} />
+								{/each}
+							</div>
+						{/if}
+					</section>
+				{/if}
+			{/each}
+		</div>
+
+		<footer class="rdz-config-footer">
+			<Button variant="ghost" onclick={() => randomizerStore.resetToDefaults()}>
+				{#snippet icon()}
+					<Icon icon="mdi:restore" />
+				{/snippet}
+				{i18nState.locale && m.randomizer_reset()}
+			</Button>
+			<Button variant="secondary" onclick={() => randomizerStore.refreshGenerated()}>
+				{#snippet icon()}
+					<Icon icon="mdi:refresh" />
+				{/snippet}
+				{i18nState.locale && m.randomizer_refreshYaml()}
+			</Button>
+			<Button variant="primary" onclick={saveSlot}>
+				{#snippet icon()}
+					<Icon icon="mdi:account-plus" />
+				{/snippet}
+				{i18nState.locale && m.randomizer_savePlayerSlot()}
+			</Button>
+		</footer>
 	</div>
 {:else if randomizerStore.loadingSchema}
 	<div class="rdz-loading">
@@ -317,14 +274,6 @@
 {/if}
 
 <style>
-	.rdz-config {
-		display: flex;
-		flex: 1;
-		min-height: 0;
-		width: 100%;
-		overflow: hidden;
-	}
-
 	.rdz-config-main {
 		flex: 1;
 		display: flex;
@@ -559,75 +508,6 @@
 		padding: var(--space-md) var(--space-lg);
 		border-top: 1px solid var(--border-subtle);
 		background: var(--bg-surface);
-	}
-
-	.rdz-right-pane {
-		display: flex;
-		flex-direction: column;
-		flex: 0 0 420px;
-		background: var(--bg-surface);
-		border-left: 1px solid var(--border-subtle);
-		min-height: 0;
-		max-height: 100%;
-		overflow: hidden;
-	}
-
-	.rdz-right-tabs {
-		display: flex;
-		gap: 0;
-		background: var(--bg-elevated);
-		border-bottom: 1px solid var(--border-subtle);
-		flex-shrink: 0;
-	}
-
-	.rdz-tab {
-		flex: 1;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
-		padding: 10px;
-		border: none;
-		background: transparent;
-		color: var(--text-muted);
-		font-size: 12px;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		cursor: pointer;
-		border-bottom: 2px solid transparent;
-		transition: all var(--transition-fast);
-	}
-
-	.rdz-tab :global(svg) {
-		font-size: 14px;
-	}
-
-	.rdz-tab:hover {
-		color: var(--text-secondary);
-	}
-
-	.rdz-tab.active {
-		color: var(--accent-400);
-		border-bottom-color: var(--accent-400);
-		background: var(--bg-surface);
-	}
-
-	.rdz-right-body {
-		flex: 1;
-		min-height: 0;
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
-	}
-
-	.rdz-right-scroll {
-		flex: 1 1 0;
-		min-height: 0;
-		overflow-y: auto;
-		overflow-x: hidden;
-		padding: var(--space-md);
-		padding-bottom: var(--space-3xl);
 	}
 
 	.rdz-loading {

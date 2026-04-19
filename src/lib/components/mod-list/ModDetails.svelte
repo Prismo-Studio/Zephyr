@@ -21,6 +21,7 @@
 	import { pushToast } from '$lib/toast';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
+	import CachedImage from '$lib/components/ui/CachedImage.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 	import { open } from '@tauri-apps/plugin-shell';
@@ -216,7 +217,7 @@
 		</button>
 
 		<div class="z-details-hero">
-			<img src={modIconSrc(mod)} alt={mod.name} class="z-details-icon" />
+			<CachedImage src={modIconSrc(mod)} alt={mod.name} class="z-details-icon" />
 			<div class="z-details-title">
 				<div class="z-details-name-row">
 					<h2>{formatModName(mod.name)}</h2>
@@ -563,13 +564,14 @@
 		gap: var(--space-lg);
 	}
 
-	.z-details-icon {
+	:global(.z-details-icon) {
 		width: 64px;
 		height: 64px;
 		border-radius: var(--radius-lg);
 		object-fit: cover;
 		background: var(--bg-overlay);
 		border: 1px solid var(--border-subtle);
+		flex-shrink: 0;
 	}
 
 	.z-details-name-row {
