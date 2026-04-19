@@ -35,6 +35,7 @@
 	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
 	import * as api from '$lib/api';
 	import { getCurrentWindow } from '@tauri-apps/api/window';
+	import { initFullscreen, toggleFullscreen } from '$lib/fullscreen.svelte';
 	import { initErrorListener } from '$lib/invoke';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { relaunch } from '@tauri-apps/plugin-process';
@@ -110,9 +111,16 @@
 					e.preventDefault();
 					e.stopImmediatePropagation();
 				}
+				if (e.key === 'F11') {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					toggleFullscreen();
+				}
 			},
 			true
 		);
+
+		initFullscreen();
 
 		getCurrentWindow()
 			.isVisible()

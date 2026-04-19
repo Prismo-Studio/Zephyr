@@ -25,7 +25,27 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-AP_ROOT = REPO_ROOT / "src-tauri" / "archipelago-runtime"
+_DEFAULT_AP_ROOT = REPO_ROOT / "src-tauri" / "archipelago-runtime"
+
+
+def _early_runtime_override() -> Path | None:
+    """Resolve `--runtime` before argparse so sys.path is correct *before* we
+    import Archipelago modules. Zephyr's release build drops this script next
+    to the installed runtime (which is under app_data_dir, nowhere near the
+    repo), so the default `__file__`-based resolution would miss."""
+    argv = sys.argv[1:]
+    for i, a in enumerate(argv):
+        if a == "--runtime" and i + 1 < len(argv):
+            return Path(argv[i + 1]).resolve()
+        if a.startswith("--runtime="):
+            return Path(a.split("=", 1)[1]).resolve()
+    env = os.environ.get("ZEPHYR_AP_ROOT")
+    if env:
+        return Path(env).expanduser().resolve()
+    return None
+
+
+AP_ROOT = _early_runtime_override() or _DEFAULT_AP_ROOT
 WORLDS_DIR = AP_ROOT / "worlds"
 # Directory where schemas land unless --out-dir overrides it.
 DEFAULT_OUT_DIR = REPO_ROOT / "data" / "randomizer" / "schemas"
@@ -315,6 +335,16 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         default=True,
         help="(default) Also scan custom_worlds/ alongside the bundled worlds/.",
+    )
+    p.add_argument(
+        "--runtime",
+        type=Path,
+        default=None,
+        help=(
+            "Archipelago runtime directory (the one that contains Generate.py). "
+            "Consumed before argparse to set sys.path; declared here so --help "
+            "documents it. Also honored via $ZEPHYR_AP_ROOT."
+        ),
     )
     return p.parse_args(argv)
 

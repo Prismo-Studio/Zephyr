@@ -23,24 +23,18 @@ use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
 use zip::ZipArchive;
 
-use super::ap_runner::{ap_dir, detect_python};
+use super::ap_runner::{ap_dir, detect_python, sanitize_python_env};
 use super::schema::user_schemas_dir;
+
+/// Archipelago schema-extractor helper, embedded into the binary at build time
+/// so release builds don't need `scripts/` on disk. Materialised next to the
+/// runtime on every `refresh_schemas` call (mirrors the apply_patch.py flow
+/// in patches.rs).
+const EXTRACT_AP_SCHEMAS_PY: &str = include_str!("../../../scripts/extract_ap_schemas.py");
 
 /// Where Archipelago looks for additional worlds.
 pub fn custom_worlds_dir(app: &AppHandle) -> PathBuf {
     ap_dir(app).join("custom_worlds")
-}
-
-/// Top-level directory of the bundled schema-extractor script (repo root in
-/// dev, resource dir in a packaged build).
-fn repo_root(app: &AppHandle) -> PathBuf {
-    // Archipelago runtime sits at <root>/src-tauri/archipelago-runtime in dev.
-    // Walk up twice to get the repo root.
-    let ap = ap_dir(app);
-    ap.parent()
-        .and_then(|p| p.parent())
-        .map(|p| p.to_path_buf())
-        .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")))
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -215,7 +209,8 @@ pub struct RefreshResult {
     pub out_dir: String,
 }
 
-/// Run `python scripts/extract_ap_schemas.py --out-dir <user_schemas_dir>` so
+/// Materialise the embedded extractor next to the runtime and run
+/// `python <helper> --runtime <ap_dir> --out-dir <user_schemas_dir>` so
 /// schemas for freshly installed custom apworlds land in the overlay dir.
 pub fn refresh_schemas(app: &AppHandle) -> Result<RefreshResult> {
     let (python, _) = detect_python(app).ok_or_else(|| {
@@ -225,20 +220,27 @@ pub fn refresh_schemas(app: &AppHandle) -> Result<RefreshResult> {
     let out_dir = user_schemas_dir(app);
     fs::create_dir_all(&out_dir).with_context(|| format!("create {}", out_dir.display()))?;
 
-    let root = repo_root(app);
-    let script = root.join("scripts").join("extract_ap_schemas.py");
-    if !script.exists() {
+    let runtime = ap_dir(app);
+    if !runtime.join("Generate.py").exists() {
         bail!(
-            "schema extractor not found at {}. Install the Zephyr source or point to a runtime with scripts/",
-            script.display()
+            "Archipelago runtime not installed at {}. Install it from the randomizer page first.",
+            runtime.display()
         );
     }
 
-    let out = Command::new(&python)
-        .current_dir(&root)
+    let helper = runtime.join(".zephyr_extract_schemas.py");
+    fs::write(&helper, EXTRACT_AP_SCHEMAS_PY)
+        .with_context(|| format!("write {}", helper.display()))?;
+
+    let mut cmd = Command::new(&python);
+    sanitize_python_env(&mut cmd);
+    let out = cmd
+        .current_dir(&runtime)
         .env("PYTHONIOENCODING", "utf-8")
         .env("PYTHONDONTWRITEBYTECODE", "1")
-        .arg(&script)
+        .arg(&helper)
+        .arg("--runtime")
+        .arg(&runtime)
         .arg("--out-dir")
         .arg(&out_dir)
         .stdin(Stdio::null())

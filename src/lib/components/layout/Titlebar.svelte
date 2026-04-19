@@ -6,6 +6,7 @@
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { platform } from '@tauri-apps/plugin-os';
 	import { useNativeTitlebar } from '$lib/themeSystem';
+	import { fullscreenState, setFullscreen } from '$lib/fullscreen.svelte';
 
 	const appWindow = getCurrentWindow();
 
@@ -20,6 +21,11 @@
 	}
 
 	async function toggleMaximize() {
+		if (fullscreenState.active) {
+			await setFullscreen(false);
+			await checkMaximized();
+			return;
+		}
 		await appWindow.toggleMaximize();
 		await checkMaximized();
 	}

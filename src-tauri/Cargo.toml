@@ -1,6 +1,6 @@
 [package]
 name = "zephyr"
-version = "1.2.3"
+version = "1.2.4"
 description = "A fast, modern mod manager for all your games"
 authors = ["Prismo Studio"]
 license = "GPL-3.0"
@@ -74,6 +74,7 @@ blake3 = "1"
 which = { version = "7", features = ["tracing"] }
 steamlocate = "2"
 flate2 = "1"
+tar = "0.4"
 font-kit = "0.14"
 internment = { version = "0.8.6", features = ["serde"] }
 reqwest-websocket = { version = "0.6.0", features = ["json"] }

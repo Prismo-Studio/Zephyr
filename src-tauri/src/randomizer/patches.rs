@@ -26,7 +26,9 @@ use eyre::{bail, Context, Result};
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 
-use super::ap_runner::{ap_dir, detect_python, output_dir, ping_local_port, ServerState};
+use super::ap_runner::{
+    ap_dir, detect_python, output_dir, ping_local_port, sanitize_python_env, ServerState,
+};
 
 /// Archipelago's default MultiServer port. Used as a fallback when
 /// Zephyr's `ServerState` doesn't track a running child (external server,
@@ -264,7 +266,9 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
 
     if helper.exists() {
         emit_log(format!("[zephyr]   applying via {}", helper.display()));
-        let out = Command::new(&python)
+        let mut cmd = Command::new(&python);
+        sanitize_python_env(&mut cmd);
+        let out = cmd
             .current_dir(&dir)
             .env("PYTHONIOENCODING", "utf-8")
             .env("PYTHONDONTWRITEBYTECODE", "1")
@@ -355,6 +359,7 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
     // client doesn't sit at "no active multiworld server connection" —
     // stdin is piped to null so the user can't type /connect manually.
     let mut cmd = Command::new(&python);
+    sanitize_python_env(&mut cmd);
     cmd.current_dir(&dir)
         .env("PYTHONIOENCODING", "utf-8")
         .env("PYTHONDONTWRITEBYTECODE", "1")
@@ -494,8 +499,9 @@ pub fn launch_component(app: &AppHandle, component_name: &str) -> Result<()> {
         );
     }
 
-    Command::new(&python)
-        .current_dir(&dir)
+    let mut cmd = Command::new(&python);
+    sanitize_python_env(&mut cmd);
+    cmd.current_dir(&dir)
         .env("PYTHONIOENCODING", "utf-8")
         .arg(&launcher)
         .arg(component_name)
