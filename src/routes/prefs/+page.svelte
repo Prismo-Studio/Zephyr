@@ -356,14 +356,10 @@
 			<div class="z-settings-row">
 				<div class="z-settings-label">
 					<span>{i18nState.locale && m.prefs_window_fullscreen()}</span>
-					<span class="z-settings-desc"
-						>{i18nState.locale && m.prefs_window_fullscreen_desc()}</span
+					<span class="z-settings-desc">{i18nState.locale && m.prefs_window_fullscreen_desc()}</span
 					>
 				</div>
-				<Toggle
-					checked={fullscreenState.active}
-					onchange={(v) => setFullscreen(v)}
-				/>
+				<Toggle checked={fullscreenState.active} onchange={(v) => setFullscreen(v)} />
 			</div>
 		</section>
 
