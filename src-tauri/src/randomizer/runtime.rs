@@ -18,11 +18,25 @@ use std::{
 };
 
 use eyre::{bail, Context, Result};
+use flate2::read::GzDecoder;
 use serde::{Deserialize, Serialize};
+use tar::Archive as TarArchive;
 use tauri::{AppHandle, Emitter};
 use zip::ZipArchive;
 
 use super::ap_runner::{ap_dir, ap_install_dir, sanitize_python_env, venv_dir};
+
+/// Pinned python-build-standalone release that ships CPython 3.13.9.
+/// Archipelago supports Python 3.11–3.13; we pick 3.13 as the latest supported
+/// minor so bundled users match whatever the runtime's wheels target.
+/// Bump both constants together when rolling forward.
+const BUNDLED_PYTHON_VERSION: &str = "3.13.9";
+const BUNDLED_PYTHON_TAG: &str = "20251014";
+
+/// Base URL for python-build-standalone release assets. The full asset URL is
+/// `<BASE>/<TAG>/cpython-<VER>+<TAG>-<TARGET_TRIPLE>-install_only.tar.gz`.
+const BUNDLED_PYTHON_BASE_URL: &str =
+    "https://github.com/astral-sh/python-build-standalone/releases/download";
 
 /// Default source: the source tarball of the runtime repo's main branch.
 /// Overridable by the caller (UI can pass a pinned release URL later).
@@ -102,6 +116,114 @@ fn patch_sniclient(install_dir: &Path) -> Result<()> {
     fs::write(&path, patched).with_context(|| format!("write {}", path.display()))?;
     tracing::info!("patched SNIClient.py to respect --connect over meta['server']");
     Ok(())
+}
+
+/// Rewrite `<pkg> @ git+https://github.com/OWNER/REPO@REV[#frag]` lines in
+/// every `requirements.txt` under `install_dir` into archive-URL form:
+/// `<pkg> @ https://github.com/OWNER/REPO/archive/REV.zip`.
+///
+/// This lets pip install those packages without shelling out to `git`, which
+/// Zephyr users often don't have in PATH (especially on Windows). Three such
+/// lines ship upstream: `kivymd` (core), `zilliandomizer` (Zillion world),
+/// and `pony` (WebHostLib).
+///
+/// Idempotent: re-running skips files that already have no `git+` markers.
+fn patch_git_requirements(install_dir: &Path) -> Result<()> {
+    let mut candidates: Vec<PathBuf> = Vec::new();
+    candidates.push(install_dir.join("requirements.txt"));
+    candidates.push(install_dir.join("WebHostLib").join("requirements.txt"));
+
+    let worlds_dir = install_dir.join("worlds");
+    if let Ok(rd) = fs::read_dir(&worlds_dir) {
+        for entry in rd.flatten() {
+            let p = entry.path();
+            if p.is_dir() {
+                let req = p.join("requirements.txt");
+                if req.exists() {
+                    candidates.push(req);
+                }
+            }
+        }
+    }
+
+    for path in candidates {
+        if !path.exists() {
+            continue;
+        }
+        let contents = match fs::read_to_string(&path) {
+            Ok(c) => c,
+            Err(err) => {
+                tracing::warn!("skip {}: {err:#}", path.display());
+                continue;
+            }
+        };
+        if !contents.contains("git+https://") {
+            continue;
+        }
+        let rewritten: String = contents
+            .lines()
+            .map(rewrite_git_requirement_line)
+            .collect::<Vec<_>>()
+            .join("\n");
+        let rewritten = if contents.ends_with('\n') {
+            format!("{rewritten}\n")
+        } else {
+            rewritten
+        };
+        if rewritten != contents {
+            fs::write(&path, &rewritten)
+                .with_context(|| format!("write {}", path.display()))?;
+            tracing::info!(
+                "rewrote git+ URLs in {} (pip no longer needs the git binary)",
+                path.display()
+            );
+        }
+    }
+    Ok(())
+}
+
+/// Pure-function rewrite of a single requirements.txt line. Exposed as its
+/// own fn for unit tests.
+fn rewrite_git_requirement_line(line: &str) -> String {
+    let marker = "git+https://github.com/";
+    let Some(start) = line.find(marker) else {
+        return line.to_string();
+    };
+    let prefix = &line[..start];
+    let rest = &line[start + marker.len()..];
+
+    // End of URL body: next `#`, `;`, or whitespace.
+    let end = rest
+        .find(|c: char| c == '#' || c == ';' || c.is_whitespace())
+        .unwrap_or(rest.len());
+    let url_body = &rest[..end];
+    let tail = &rest[end..];
+
+    // url_body is "OWNER/REPO@REV" — split on the only `@` (GitHub names
+    // don't contain `@`, so this is unambiguous).
+    let Some(at_idx) = url_body.find('@') else {
+        return line.to_string();
+    };
+    let (owner_repo, rev_with_at) = url_body.split_at(at_idx);
+    let rev = &rev_with_at[1..];
+    let Some(slash) = owner_repo.find('/') else {
+        return line.to_string();
+    };
+    let owner = &owner_repo[..slash];
+    let repo = &owner_repo[slash + 1..];
+
+    // Strip any `#fragment` but preserve a trailing `; env marker`.
+    let tail_clean = if let Some(hash_idx) = tail.find('#') {
+        let after_hash = &tail[hash_idx..];
+        match after_hash.find(';') {
+            Some(semi_idx) => &after_hash[semi_idx..],
+            None => "",
+        }
+    } else {
+        tail
+    };
+
+    format!("{prefix}https://github.com/{owner}/{repo}/archive/{rev}.zip{tail_clean}")
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -306,6 +428,9 @@ pub async fn install(app: &AppHandle, url: Option<String>) -> Result<RuntimeStat
     if let Err(err) = patch_sniclient(&install_dir) {
         tracing::warn!("SNIClient.py --connect guard skipped: {err:#}");
     }
+    if let Err(err) = patch_git_requirements(&install_dir) {
+        tracing::warn!("git+ requirements rewrite skipped: {err:#}");
+    }
 
     // --- Provision venv + install deps -----------------------------------
     // Non-fatal: if this fails, the runtime still exists on disk and the user
@@ -353,6 +478,9 @@ pub async fn provision_venv(app: &AppHandle) -> Result<RuntimeStatus> {
     if let Err(err) = patch_sniclient(&dir) {
         tracing::warn!("SNIClient.py --connect guard skipped: {err:#}");
     }
+    if let Err(err) = patch_git_requirements(&dir) {
+        tracing::warn!("git+ requirements rewrite skipped: {err:#}");
+    }
     provision_venv_at(app, &dir, &emit)?;
     Ok(status(app))
 }
@@ -396,11 +524,20 @@ fn provision_venv_at(
         emit(ProgressEvent::ProvisioningVenv {
             message: format!("Creating venv at {}", venv.display()),
         });
-        let (bin, prefix_args) = find_bootstrap_python().ok_or_else(|| {
-            eyre::eyre!(
-                "Supported Python not found (need 3.11, 3.12 or 3.13). Install one from python.org then retry."
-            )
-        })?;
+        // Prefer a compatible system Python (3.11–3.13). If the user only has
+        // 3.14+ or no Python at all, fall back to our bundled python-build-
+        // standalone interpreter so the flow still completes without manual
+        // install steps. The bundled copy is kept on disk after provisioning
+        // so later upgrades of system Python don't force a re-download.
+        let (bin, prefix_args) = match find_bootstrap_python() {
+            Some(found) => found,
+            None => {
+                let python = ensure_bundled_python(runtime_dir, emit).context(
+                    "no compatible system Python (3.11–3.13) and bundled Python fallback failed",
+                )?;
+                (python.to_string_lossy().to_string(), Vec::new())
+            }
+        };
         let mut cmd = Command::new(&bin);
         for arg in &prefix_args {
             cmd.arg(arg);
@@ -596,6 +733,155 @@ pub fn find_bootstrap_python() -> Option<(String, Vec<String>)> {
     None
 }
 
+// ---------------------------------------------------------------------------
+// Bundled Python (python-build-standalone) fallback
+// ---------------------------------------------------------------------------
+
+/// Return the python-build-standalone target triple for the current platform,
+/// or `None` if we don't ship an asset for it (e.g. Linux on a musl libc host
+/// — those users can supply their own Python).
+fn bundled_python_target_triple() -> Option<&'static str> {
+    match (std::env::consts::OS, std::env::consts::ARCH) {
+        ("linux", "x86_64") => Some("x86_64-unknown-linux-gnu"),
+        ("linux", "aarch64") => Some("aarch64-unknown-linux-gnu"),
+        ("windows", "x86_64") => Some("x86_64-pc-windows-msvc"),
+        ("windows", "aarch64") => Some("aarch64-pc-windows-msvc"),
+        ("macos", "x86_64") => Some("x86_64-apple-darwin"),
+        ("macos", "aarch64") => Some("aarch64-apple-darwin"),
+        _ => None,
+    }
+}
+
+/// Root of the bundled Python install: `<runtime>/python/`. Matches the
+/// top-level directory produced by python-build-standalone's install_only
+/// tarballs so we can extract straight into `<runtime>/`.
+fn bundled_python_dir(runtime_dir: &Path) -> PathBuf {
+    runtime_dir.join("python")
+}
+
+/// Path to the bundled python interpreter we hand to `-m venv`.
+fn bundled_python_binary(runtime_dir: &Path) -> PathBuf {
+    let root = bundled_python_dir(runtime_dir);
+    if cfg!(target_os = "windows") {
+        root.join("python.exe")
+    } else {
+        root.join("bin").join("python3")
+    }
+}
+
+/// Marker file written at the end of a successful bundled-Python extraction.
+/// Its contents include the pinned version so a version bump automatically
+/// invalidates older installs and triggers a redownload.
+fn bundled_python_marker(runtime_dir: &Path) -> PathBuf {
+    bundled_python_dir(runtime_dir).join(".zephyr-python-ready")
+}
+
+fn bundled_python_marker_expected() -> String {
+    format!("{BUNDLED_PYTHON_VERSION}+{BUNDLED_PYTHON_TAG}\n")
+}
+
+/// Download and extract python-build-standalone into `<runtime>/python/` if
+/// not already present. Idempotent: a previously-extracted install is reused
+/// without touching the network, as long as the marker file matches the
+/// currently pinned version.
+fn ensure_bundled_python(
+    runtime_dir: &Path,
+    emit: &dyn Fn(ProgressEvent),
+) -> Result<PathBuf> {
+    let binary = bundled_python_binary(runtime_dir);
+    let marker = bundled_python_marker(runtime_dir);
+    if binary.exists() && fs::read_to_string(&marker).ok().as_deref()
+        == Some(bundled_python_marker_expected().as_str())
+    {
+        return Ok(binary);
+    }
+
+    let triple = bundled_python_target_triple().ok_or_else(|| {
+        eyre::eyre!(
+            "No bundled Python available for {}-{}. Install Python 3.11–3.13 manually then retry.",
+            std::env::consts::OS,
+            std::env::consts::ARCH,
+        )
+    })?;
+
+    let asset = format!(
+        "cpython-{ver}+{tag}-{triple}-install_only.tar.gz",
+        ver = BUNDLED_PYTHON_VERSION,
+        tag = BUNDLED_PYTHON_TAG,
+        triple = triple,
+    );
+    let url = format!("{BUNDLED_PYTHON_BASE_URL}/{BUNDLED_PYTHON_TAG}/{asset}");
+
+    emit(ProgressEvent::ProvisioningVenv {
+        message: format!(
+            "Downloading bundled Python {BUNDLED_PYTHON_VERSION} ({triple})…"
+        ),
+    });
+    tracing::info!("fetching bundled python tarball from {url}");
+
+    let client = reqwest::blocking::Client::builder()
+        .user_agent("Zephyr/1 (archipelago-runtime-installer)")
+        .timeout(std::time::Duration::from_secs(600))
+        .build()
+        .context("build http client for bundled python")?;
+
+    let resp = client
+        .get(&url)
+        .send()
+        .with_context(|| format!("GET {url}"))?;
+    if !resp.status().is_success() {
+        bail!(
+            "Bundled Python download failed: HTTP {} from {url}",
+            resp.status()
+        );
+    }
+    let bytes = resp.bytes().context("read python tarball body")?;
+
+    emit(ProgressEvent::ProvisioningVenv {
+        message: format!(
+            "Extracting Python to {}…",
+            bundled_python_dir(runtime_dir).display()
+        ),
+    });
+
+    // Wipe any partial previous extraction so a failed attempt doesn't leave
+    // a half-populated `python/` that `exists()` then treats as "already here".
+    let target_root = bundled_python_dir(runtime_dir);
+    if target_root.exists() {
+        fs::remove_dir_all(&target_root)
+            .with_context(|| format!("wipe {}", target_root.display()))?;
+    }
+    fs::create_dir_all(runtime_dir)
+        .with_context(|| format!("create {}", runtime_dir.display()))?;
+
+    // install_only tarballs extract to `python/` at the top level, so
+    // unpacking into `<runtime>/` lands everything at `<runtime>/python/`.
+    let gz = GzDecoder::new(Cursor::new(bytes));
+    let mut archive = TarArchive::new(gz);
+    archive
+        .unpack(runtime_dir)
+        .with_context(|| format!("extract python tarball into {}", runtime_dir.display()))?;
+
+    if !binary.exists() {
+        bail!(
+            "Python extraction finished but {} is missing — unexpected tarball layout?",
+            binary.display()
+        );
+    }
+
+    // Written last so a crash between unpack() and here invalidates the
+    // install on next call (marker mismatch → full redownload).
+    fs::write(&marker, bundled_python_marker_expected())
+        .with_context(|| format!("write marker {}", marker.display()))?;
+
+    tracing::info!(
+        "bundled Python {} ready at {}",
+        BUNDLED_PYTHON_VERSION,
+        binary.display()
+    );
+    Ok(binary)
+}
+
 /// Spawn a command, stream stdout to the progress channel line-by-line, and
 /// capture stderr for error reporting. Returns the tail of stderr when the
 /// process exits non-zero.
@@ -746,5 +1032,52 @@ fn walk(dir: &Path, f: &mut dyn FnMut(&Path)) {
         } else {
             f(&p);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::rewrite_git_requirement_line as rw;
+
+    #[test]
+    fn rewrites_bare_kivymd() {
+        assert_eq!(
+            rw("kivymd @ git+https://github.com/kivymd/KivyMD@5ff9d0d"),
+            "kivymd @ https://github.com/kivymd/KivyMD/archive/5ff9d0d.zip"
+        );
+    }
+
+    #[test]
+    fn rewrites_with_fragment() {
+        assert_eq!(
+            rw("zilliandomizer @ git+https://github.com/beauxq/zilliandomizer@96d9a20f#0.9.1"),
+            "zilliandomizer @ https://github.com/beauxq/zilliandomizer/archive/96d9a20f.zip"
+        );
+    }
+
+    #[test]
+    fn rewrites_with_fragment_and_marker() {
+        assert_eq!(
+            rw("pony @ git+https://github.com/black-sliver/pony@7feb122#0.7.19; python_version >= '3.13'"),
+            "pony @ https://github.com/black-sliver/pony/archive/7feb122.zip; python_version >= '3.13'"
+        );
+    }
+
+    #[test]
+    fn leaves_non_git_lines_alone() {
+        for line in [
+            "# comment",
+            "",
+            "requests>=2.28",
+            "flask @ https://example.com/flask.tar.gz",
+        ] {
+            assert_eq!(rw(line), line);
+        }
+    }
+
+    #[test]
+    fn idempotent_on_already_rewritten() {
+        let rewritten = "kivymd @ https://github.com/kivymd/KivyMD/archive/5ff9d0d.zip";
+        assert_eq!(rw(rewritten), rewritten);
     }
 }

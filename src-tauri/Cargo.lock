@@ -8009,6 +8009,7 @@ dependencies = [
  "steamlocate",
  "strum",
  "strum_macros",
+ "tar",
  "tauri",
  "tauri-build",
  "tauri-plugin-clipboard-manager",
