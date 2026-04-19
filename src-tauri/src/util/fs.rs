@@ -147,6 +147,21 @@ pub fn file_name_owned(path: impl AsRef<Path>) -> String {
         .into_owned()
 }
 
+/// Replace every char that isn't ASCII alphanumeric, `_`, `-`, or listed in
+/// `extra_allowed` with `_`. Does not trim, strip path separators, or apply
+/// any empty-string fallback — callers handle that when needed.
+pub fn sanitize_filename_chars(name: &str, extra_allowed: &[char]) -> String {
+    name.chars()
+        .map(|c| {
+            if c.is_ascii_alphanumeric() || c == '_' || c == '-' || extra_allowed.contains(&c) {
+                c
+            } else {
+                '_'
+            }
+        })
+        .collect()
+}
+
 pub fn is_enclosed(path: impl AsRef<Path>) -> bool {
     use std::path::Component;
 

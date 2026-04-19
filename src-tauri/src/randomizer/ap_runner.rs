@@ -275,11 +275,7 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
 pub fn save_player_yaml(app: &AppHandle, slot_name: &str, yaml: &str) -> Result<PathBuf> {
     let dir = players_dir(app);
     std::fs::create_dir_all(&dir)?;
-    // sanitize slot name for filename
-    let safe: String = slot_name
-        .chars()
-        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' { c } else { '_' })
-        .collect();
+    let safe = crate::util::fs::sanitize_filename_chars(slot_name, &[]);
     let safe = if safe.is_empty() { "player".to_string() } else { safe };
     let path = dir.join(format!("{safe}.yaml"));
     std::fs::write(&path, yaml).with_context(|| format!("write {}", path.display()))?;
@@ -363,10 +359,7 @@ pub fn rename_seed(path: &Path, new_name: &str) -> Result<PathBuf> {
     }
     let parent = path.parent().ok_or_else(|| eyre::eyre!("no parent"))?;
     let old_stem = path.file_stem().and_then(|s| s.to_str()).unwrap_or("");
-    let safe: String = new_name
-        .chars()
-        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' || c == '.' { c } else { '_' })
-        .collect();
+    let safe = crate::util::fs::sanitize_filename_chars(new_name, &['.']);
     let safe = if safe.is_empty() { "seed".to_string() } else { safe };
 
     // Rename the .archipelago file
@@ -531,10 +524,7 @@ pub fn rename_player_yaml(path: &Path, new_name: &str) -> Result<PathBuf> {
     if !path.exists() {
         bail!("player file not found: {}", path.display());
     }
-    let safe: String = new_name
-        .chars()
-        .map(|c| if c.is_ascii_alphanumeric() || c == '_' || c == '-' { c } else { '_' })
-        .collect();
+    let safe = crate::util::fs::sanitize_filename_chars(new_name, &[]);
     let safe = if safe.is_empty() { "player".to_string() } else { safe };
 
     // Update the `name:` field inside the YAML content to match the new name

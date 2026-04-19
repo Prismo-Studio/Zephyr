@@ -141,15 +141,20 @@
 		filtersExpanded = true;
 	}
 	let showCurseForgeOnly = $state(false);
+	type PaginatedSource = {
+		items: Mod[];
+		offset: number;
+		hasMore: boolean;
+		loading: boolean;
+	};
+
+	function emptyPage(): PaginatedSource {
+		return { items: [], offset: 0, hasMore: true, loading: false };
+	}
+
 	let thunderstoreMods: Mod[] = $state([]);
-	let cfOffset = $state(0);
-	let cfMods: Mod[] = $state([]);
-	let cfHasMore = $state(true);
-	let cfLoading = $state(false);
-	let serverMods: Mod[] = $state([]);
-	let serverOffset = $state(0);
-	let serverHasMore = $state(true);
-	let serverLoading = $state(false);
+	let cfPage: PaginatedSource = $state(emptyPage());
+	let serverPage: PaginatedSource = $state(emptyPage());
 	let zephyrServerReachable: boolean | null = $state(null);
 	let communityMods: Mod[] = $state([]);
 
@@ -169,17 +174,17 @@
 		if (activeSource !== 'thunderstore') return;
 		mods = [
 			...thunderstoreMods,
-			...(shouldUseZephyrServer() ? serverMods : cfMods),
+			...(shouldUseZephyrServer() ? serverPage.items : cfPage.items),
 			...communityMods
 		];
 	}
 
 	function externalHasMore(): boolean {
-		return shouldUseZephyrServer() ? serverHasMore : cfHasMore;
+		return shouldUseZephyrServer() ? serverPage.hasMore : cfPage.hasMore;
 	}
 
 	function externalLoading(): boolean {
-		return shouldUseZephyrServer() ? serverLoading : cfLoading;
+		return shouldUseZephyrServer() ? serverPage.loading : cfPage.loading;
 	}
 
 	async function loadMoreExternalMods() {
@@ -310,12 +315,12 @@
 		if (currentSlug !== lastGameSlug) {
 			mods = [];
 			thunderstoreMods = [];
-			cfMods = [];
-			cfOffset = 0;
-			cfHasMore = true;
-			serverMods = [];
-			serverOffset = 0;
-			serverHasMore = true;
+			cfPage.items = [];
+			cfPage.offset = 0;
+			cfPage.hasMore = true;
+			serverPage.items = [];
+			serverPage.offset = 0;
+			serverPage.hasMore = true;
 			communityMods = [];
 			hasRefreshed = false;
 			lastGameSlug = currentSlug;
@@ -331,12 +336,12 @@
 		if (queryHash !== lastQueryHash) {
 			lastQueryHash = queryHash;
 			thunderstoreMods = [];
-			cfMods = [];
-			cfOffset = 0;
-			cfHasMore = true;
-			serverMods = [];
-			serverOffset = 0;
-			serverHasMore = true;
+			cfPage.items = [];
+			cfPage.offset = 0;
+			cfPage.hasMore = true;
+			serverPage.items = [];
+			serverPage.offset = 0;
+			serverPage.hasMore = true;
 		}
 
 		refreshing = true;
@@ -349,27 +354,27 @@
 				if (zephyrServerState.current.enabled) {
 					const serverAvailable = await ensureZephyrServerAvailable();
 					if (serverAvailable) {
-						cfMods = [];
-						if (serverMods.length === 0) {
-							serverOffset = 0;
+						cfPage.items = [];
+						if (serverPage.items.length === 0) {
+							serverPage.offset = 0;
 							await loadMoreFromServer();
 						}
 					} else {
-						serverMods = [];
-						if (cfMods.length === 0) {
-							cfOffset = 0;
+						serverPage.items = [];
+						if (cfPage.items.length === 0) {
+							cfPage.offset = 0;
 							await loadMoreCF();
 						}
 					}
 				} else if (curseForgeEnabled.current) {
-					serverMods = [];
-					if (cfMods.length === 0) {
-						cfOffset = 0;
+					serverPage.items = [];
+					if (cfPage.items.length === 0) {
+						cfPage.offset = 0;
 						await loadMoreCF();
 					}
 				} else {
-					cfMods = [];
-					serverMods = [];
+					cfPage.items = [];
+					serverPage.items = [];
 				}
 
 				// Community mods — disabled for now
@@ -432,7 +437,7 @@
 	const CF_PAGE_SIZE = 25;
 
 	async function loadMoreCF() {
-		cfLoading = true;
+		cfPage.loading = true;
 		try {
 			const sortMap: Record<string, 'downloads' | 'rating' | 'newest' | 'updated' | 'name'> = {
 				lastUpdated: 'updated',
@@ -451,15 +456,15 @@
 				maxCount: CF_PAGE_SIZE,
 				sources: ['curseforge'],
 				gameSlug: games.active?.slug,
-				offset: cfOffset
+				offset: cfPage.offset
 			});
 			const newMods = cfResults.flatMap((r) => r.mods.map((u) => unifiedToMod(u, 'curseforge')));
-			cfMods = [...cfMods, ...newMods];
-			cfOffset += CF_PAGE_SIZE;
-			cfHasMore = newMods.length >= CF_PAGE_SIZE;
+			cfPage.items = [...cfPage.items, ...newMods];
+			cfPage.offset += CF_PAGE_SIZE;
+			cfPage.hasMore = newMods.length >= CF_PAGE_SIZE;
 			syncThunderstoreBrowseMods();
 		} catch {}
-		cfLoading = false;
+		cfPage.loading = false;
 	}
 
 	function isCurseForgeMod(mod: Mod): boolean {
@@ -508,28 +513,28 @@
 
 	async function loadMoreFromServer() {
 		if (!zephyrServerState.current.enabled) return;
-		serverLoading = true;
+		serverPage.loading = true;
 		try {
 			const searchTerm = modQuery.current.searchTerm || '';
 			const cfGameId = zephyrServer.getCurseForgeGameId(games.active?.slug);
 			if (cfGameId === null) {
 				// Game not supported on CurseForge
-				serverHasMore = false;
-				serverLoading = false;
+				serverPage.hasMore = false;
+				serverPage.loading = false;
 				return;
 			}
-			const page = Math.floor(serverOffset / SERVER_PAGE_SIZE);
+			const page = Math.floor(serverPage.offset / SERVER_PAGE_SIZE);
 			const result = await zephyrServer.searchMods(searchTerm, cfGameId, page, SERVER_PAGE_SIZE);
 			const newMods = result.data.map(curseForgeModToMod);
-			serverMods = [...serverMods, ...newMods];
-			serverOffset += SERVER_PAGE_SIZE;
-			serverHasMore = serverOffset < result.pagination.totalCount;
+			serverPage.items = [...serverPage.items, ...newMods];
+			serverPage.offset += SERVER_PAGE_SIZE;
+			serverPage.hasMore = serverPage.offset < result.pagination.totalCount;
 			syncThunderstoreBrowseMods();
 		} catch (err) {
 			zephyrServerReachable = false;
 			console.warn('[ZephyrServer] Failed to load mods:', err);
 		}
-		serverLoading = false;
+		serverPage.loading = false;
 	}
 
 	async function installFromServer(mod: Mod, versionUuid?: string) {
@@ -803,7 +808,7 @@
 							<Checkbox bind:checked={modQuery.current.includeDeprecated} />
 							<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
 						</label>
-						{#if (curseForgeEnabled.current && cfMods.length > 0) || (zephyrServerState.current.enabled && serverMods.length > 0)}
+						{#if (curseForgeEnabled.current && cfPage.items.length > 0) || (zephyrServerState.current.enabled && serverPage.items.length > 0)}
 							<label class="z-filter-toggle">
 								<Checkbox bind:checked={showCurseForgeOnly} />
 								<span>CurseForge</span>
@@ -856,7 +861,7 @@
 			<div class="z-browse-list" class:z-grid-layout={viewMode.current === 'grid'}>
 				{#if mods.length === 0 && !hasRefreshed}
 					<Loader />
-				{:else if cfLoading && showCurseForgeOnly && cfMods.length === 0}
+				{:else if cfPage.loading && showCurseForgeOnly && cfPage.items.length === 0}
 					<Loader />
 				{:else if displayedMods.length === 0 && hasRefreshed}
 					<div class="z-browse-empty">
@@ -896,16 +901,16 @@
 								{externalLoading() ? 'Loading...' : i18nState.locale && m.browse_loadMore()}
 							</button>
 						{/if}
-					{:else if displayedMods.length >= maxCount || (shouldUseZephyrServer() ? serverHasMore : curseForgeEnabled.current && cfHasMore)}
+					{:else if displayedMods.length >= maxCount || (shouldUseZephyrServer() ? serverPage.hasMore : curseForgeEnabled.current && cfPage.hasMore)}
 						<button
 							class="z-load-more"
 							onclick={() => {
 								maxCount += 30;
-								if (shouldUseZephyrServer() && serverHasMore) {
+								if (shouldUseZephyrServer() && serverPage.hasMore) {
 									loadMoreFromServer();
-								} else if (curseForgeEnabled.current && cfHasMore) {
+								} else if (curseForgeEnabled.current && cfPage.hasMore) {
 									loadMoreCF();
-								} else if (zephyrServerState.current.enabled && cfHasMore) {
+								} else if (zephyrServerState.current.enabled && cfPage.hasMore) {
 									loadMoreCF();
 								}
 							}}

@@ -11,23 +11,6 @@
 	import * as api from '$lib/api';
 	import { launchGameWithBepInExFallback } from '$lib/launch';
 	import { open } from '@tauri-apps/plugin-shell';
-	// import { activeSourceState } from '$lib/state/source.svelte';
-	// import type { SourceGame } from '$lib/api/sources';
-
-	// let nexusGames: SourceGame[] = $state([]);
-	// let nexusGamesLoaded = $state(false);
-
-	// $effect(() => {
-	// 	if (activeSourceState.current === 'nexusmods' && !nexusGamesLoaded) {
-	// 		api.sources
-	// 			.getNexusmodsGames()
-	// 			.then((g) => {
-	// 				nexusGames = g;
-	// 				nexusGamesLoaded = true;
-	// 			})
-	// 			.catch(() => {});
-	// 	}
-	// });
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
@@ -178,39 +161,6 @@
 				/>
 			</div>
 			<div class="z-game-dropdown-list">
-				<!-- NexusMods game list commented out
-				{#if activeSourceState.current === 'nexusmods'}
-					{#each nexusGames.filter((g) => g.name
-							.toLowerCase()
-							.includes(gameSearchTerm.toLowerCase())) as nxGame}
-						<button
-							class="z-game-dropdown-item"
-							class:active={games.active?.slug === nxGame.slug}
-							onclick={async () => {
-								const match = games.list.find((g) => g.slug === nxGame.slug);
-								if (match) {
-									await games.setActive(match.slug);
-								}
-								gameMenuOpen = false;
-								gameSearchTerm = '';
-							}}
-						>
-							<div class="z-game-dropdown-icon z-nx-game-icon">
-								<Icon icon="mdi:gamepad-variant" />
-							</div>
-							<span class="z-game-dropdown-name">{nxGame.name}</span>
-							<span class="z-game-dropdown-count">{nxGame.modCount}</span>
-						</button>
-					{/each}
-					{#if nexusGames.filter((g) => g.name
-							.toLowerCase()
-							.includes(gameSearchTerm.toLowerCase())).length === 0}
-						<div class="z-game-dropdown-empty">
-							<Icon icon="mdi:magnify" />
-							<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
-						</div>
-					{/if}
-				{:else} -->
 				{#each games.list.filter((g) => g.name
 						.toLowerCase()
 						.includes(gameSearchTerm.toLowerCase())) as game}
@@ -238,7 +188,6 @@
 						<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
 					</div>
 				{/if}
-				<!-- {/if} NexusMods conditional end -->
 			</div>
 		</div>
 	{/if}

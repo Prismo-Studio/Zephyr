@@ -12,7 +12,6 @@ export const i18nState = $state({
 export function updateAppLanguage(lang: Locale | string) {
 	setLocale(lang as Locale, { reload: false });
 	i18nState.locale = lang as Locale;
-	console.log(`[i18nCore] Language updated to ${lang}`);
 }
 
 export const languageTitle: Record<Locale, string> = locales.reduce(

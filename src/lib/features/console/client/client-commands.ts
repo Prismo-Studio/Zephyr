@@ -1,5 +1,5 @@
 import type { ClientSession } from './client-session.svelte';
-import { m } from '$lib/paraglide/messages';
+import { helpCommand } from '../core/help-command';
 
 /**
  * Register every Client-side command (`!` prefix) into the session's
@@ -9,40 +9,7 @@ import { m } from '$lib/paraglide/messages';
 export function registerClientCommands(session: ClientSession) {
 	const r = session.registry;
 
-	r.register({
-		prefix: '!',
-		name: 'help',
-		group: 'info',
-		status: 'ready',
-		summary: 'List commands or show details on one.',
-		args: [{ name: 'cmd', optional: true }],
-		examples: ['!help', '!help hint'],
-		run: async (args) => {
-			if (args.length === 0) {
-				const all = session.registry.all('!').filter((c) => c.status === 'ready');
-				session.log.appendSystem(
-					m.console_msg_commandsList({
-						count: String(all.length),
-						names: all.map((c) => c.name).join(', ')
-					}),
-					'info'
-				);
-			} else {
-				const def = session.registry.lookup('!', args[0]);
-				if (!def) {
-					session.log.appendSystem(
-						m.console_msg_unknownCmd({ prefix: '!', name: args[0] }),
-						'warn'
-					);
-					return;
-				}
-				session.log.appendSystem(
-					`${session.registry.signature(def)}  ·  ${def.summary}`,
-					'info'
-				);
-			}
-		}
-	});
+	r.register(helpCommand('!', session, ['!help', '!help hint']));
 
 	r.register({
 		prefix: '!',

@@ -266,15 +266,7 @@ fn sanitize_filename(name: &str) -> String {
         .file_name()
         .and_then(|s| s.to_str())
         .unwrap_or(trimmed);
-    base.chars()
-        .map(|c| {
-            if c.is_ascii_alphanumeric() || matches!(c, '.' | '_' | '-' | ' ' | '(' | ')') {
-                c
-            } else {
-                '_'
-            }
-        })
-        .collect()
+    crate::util::fs::sanitize_filename_chars(base, &['.', ' ', '(', ')'])
 }
 
 /// Peek inside a `.apworld` zip and pull out (world_id, display_name, world_version).

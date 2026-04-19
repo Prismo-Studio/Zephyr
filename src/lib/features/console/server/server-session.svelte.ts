@@ -5,6 +5,7 @@ import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 import { LogStore } from '../core/log-store.svelte';
 import { parseLine } from '../core/command-parser';
 import { CommandRegistry } from '../core/command-registry';
+import { loadCommandHistory, pushCommandHistory } from '../core/history';
 import { classifyLine, SERVER_LOG_EVENT, type ServerLogEvent } from '../core/protocol';
 import { registerServerCommands } from './server-commands';
 import { m } from '$lib/paraglide/messages';
@@ -148,22 +149,10 @@ export class ServerSession {
 
 	// ── Command history persistence ────────────────────────────────────
 	private loadHistory() {
-		try {
-			const raw = localStorage.getItem(this.historyKey);
-			if (!raw) return;
-			const parsed = JSON.parse(raw);
-			if (Array.isArray(parsed)) this.history = parsed.filter((x) => typeof x === 'string');
-		} catch {
-			// ignore
-		}
+		this.history = loadCommandHistory(this.historyKey);
 	}
 
 	private pushHistory(line: string) {
-		this.history = [line, ...this.history.filter((h) => h !== line)].slice(0, 100);
-		try {
-			localStorage.setItem(this.historyKey, JSON.stringify(this.history));
-		} catch {
-			// ignore
-		}
+		this.history = pushCommandHistory(this.historyKey, this.history, line);
 	}
 }

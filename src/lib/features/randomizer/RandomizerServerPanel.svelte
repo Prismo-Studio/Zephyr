@@ -5,6 +5,7 @@
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import RemoteServerPanel from './RemoteServerPanel.svelte';
 	import SeedPatchesPanel from './SeedPatchesPanel.svelte';
 	import { pushToast } from '$lib/toast';
 	import * as api from './api';
@@ -542,70 +543,17 @@
 		</div>
 
 		{#if hostMode === 'remote'}
-			<div class="rdz-remote-host">
-				{#if remote?.running}
-					<div class="rdz-running-line">
-						<span class="rdz-live-dot"></span>
-						<span>{i18nState.locale && m.randomizer_running()}</span>
-						<code>{remote.seed}</code>
-					</div>
-					<button
-						class="rdz-conn-card"
-						onclick={() => copyText('nozomi.proxy.rlwy.net:45465', 'addr')}
-					>
-						<span class="rdz-label"
-							><Icon icon="mdi:cloud" /> {i18nState.locale && m.randomizer_connectAddress()}</span
-						>
-						<code>nozomi.proxy.rlwy.net:45465</code>
-						<small
-							>{copiedKey === 'addr'
-								? i18nState.locale && m.randomizer_copiedExcl()
-								: i18nState.locale && m.randomizer_clickToCopy()}</small
-						>
-					</button>
-				{:else}
-					<p class="rdz-muted">
-						{#if !selectedSeed}
-							{i18nState.locale && m.randomizer_selectSeed()}
-						{:else}
-							{i18nState.locale && m.randomizer_readyToUpload()}
-						{/if}
-					</p>
-					<Button
-						variant="primary"
-						disabled={!selectedSeed || uploading || remoteStarting}
-						loading={uploading || remoteStarting}
-						onclick={uploadAndStartRemote}
-					>
-						{#snippet icon()}<Icon icon="mdi:cloud-upload" />{/snippet}
-						{uploading
-							? i18nState.locale && m.randomizer_uploading()
-							: remoteStarting
-								? i18nState.locale && m.randomizer_starting()
-								: i18nState.locale && m.randomizer_uploadAndStart()}
-					</Button>
-				{/if}
-				{#if remoteLog.length > 0}
-					<details class="rdz-log-details" open>
-						<summary>
-							<span>{i18nState.locale && m.randomizer_remoteLog()}</span>
-							<button
-								class="rdz-log-copy"
-								onclick={(e) => {
-									e.preventDefault();
-									copyText(remoteLog.join('\n'), 'remote');
-								}}
-							>
-								<Icon icon={copiedKey === 'remote' ? 'mdi:check' : 'mdi:content-copy'} />
-								{copiedKey === 'remote'
-									? i18nState.locale && m.randomizer_copied()
-									: i18nState.locale && m.randomizer_copy()}
-							</button>
-						</summary>
-						<pre class="rdz-log">{remoteLog.join('\n')}</pre>
-					</details>
-				{/if}
-			</div>
+			<RemoteServerPanel
+				{remote}
+				{selectedSeed}
+				{uploading}
+				{remoteStarting}
+				{remoteLog}
+				{copiedKey}
+				onCopyAddr={() => copyText('nozomi.proxy.rlwy.net:45465', 'addr')}
+				onCopyLog={() => copyText(remoteLog.join('\n'), 'remote')}
+				onUploadAndStart={uploadAndStartRemote}
+			/>
 		{:else}
 			{#if server?.running}
 				{@const selectedIp =
@@ -892,12 +840,6 @@
 		box-shadow: var(--shadow-sm);
 	}
 
-	.rdz-remote-host {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-sm);
-	}
-
 	.rdz-server-header {
 		display: flex;
 		align-items: center;
@@ -1079,19 +1021,6 @@
 
 	.rdz-running-line > span:not(.rdz-live-dot) {
 		flex-shrink: 0;
-	}
-
-	.rdz-running-line code {
-		font-family: 'JetBrains Mono', ui-monospace, monospace;
-		color: var(--text-primary);
-		background: transparent;
-		padding: 0;
-		font-size: 12px;
-		flex: 1 1 100%;
-		min-width: 0;
-		overflow-wrap: anywhere;
-		word-break: break-all;
-		line-height: 1.4;
 	}
 
 	.rdz-live-dot {

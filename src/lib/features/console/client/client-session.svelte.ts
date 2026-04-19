@@ -1,6 +1,7 @@
 import { LogStore } from '../core/log-store.svelte';
 import { CommandRegistry } from '../core/command-registry';
 import { parseLine } from '../core/command-parser';
+import { loadCommandHistory, pushCommandHistory } from '../core/history';
 import { m } from '$lib/paraglide/messages';
 import {
 	PROTOCOL_VERSION,
@@ -416,22 +417,10 @@ export class ClientSession {
 
 	// ── Command history ─────────────────────────────────────────────────
 	private loadHistory() {
-		try {
-			const raw = localStorage.getItem(this.historyKey);
-			if (!raw) return;
-			const parsed = JSON.parse(raw);
-			if (Array.isArray(parsed)) this.history = parsed.filter((x) => typeof x === 'string');
-		} catch {
-			// ignore
-		}
+		this.history = loadCommandHistory(this.historyKey);
 	}
 
 	private pushHistory(line: string) {
-		this.history = [line, ...this.history.filter((h) => h !== line)].slice(0, 100);
-		try {
-			localStorage.setItem(this.historyKey, JSON.stringify(this.history));
-		} catch {
-			// ignore
-		}
+		this.history = pushCommandHistory(this.historyKey, this.history, line);
 	}
 }
