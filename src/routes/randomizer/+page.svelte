@@ -8,9 +8,11 @@
 	import { randomizerStore } from '$lib/features/randomizer/randomizer.store.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { PersistedState } from 'runed';
 
 	let rightTab: 'yaml' | 'server' = $state('server');
 	let serverPanelRef: RandomizerServerPanel | undefined = $state();
+	const rightPaneCollapsed = new PersistedState<boolean>('zephyr-rdz-right-collapsed', false);
 
 	// Resizable right pane width, persisted to localStorage.
 	const MIN_RIGHT = 280;
@@ -135,53 +137,71 @@
 		{/if}
 	</div>
 
-	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-	<div
-		class="rdz-resize-handle"
-		class:active={resizing}
-		role="separator"
-		aria-orientation="vertical"
-		aria-label="Resize panel"
-		aria-valuenow={Math.round(rightWidth)}
-		aria-valuemin={MIN_RIGHT}
-		aria-valuemax={MAX_RIGHT}
-		tabindex="0"
-		onpointerdown={startResize}
-		onclick={resetWidth}
-		onkeydown={onResizeKey}
-	></div>
+	{#if !rightPaneCollapsed.current}
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+		<div
+			class="rdz-resize-handle"
+			class:active={resizing}
+			role="separator"
+			aria-orientation="vertical"
+			aria-label="Resize panel"
+			aria-valuenow={Math.round(rightWidth)}
+			aria-valuemin={MIN_RIGHT}
+			aria-valuemax={MAX_RIGHT}
+			tabindex="0"
+			onpointerdown={startResize}
+			onclick={resetWidth}
+			onkeydown={onResizeKey}
+		></div>
+	{/if}
 
-	<aside class="rdz-right-pane" style="flex-basis: {rightWidth}px;">
-		<div class="rdz-right-tabs">
-			{#if randomizerStore.currentSchema}
+	<aside
+		class="rdz-right-pane"
+		class:collapsed={rightPaneCollapsed.current}
+		style={rightPaneCollapsed.current ? 'flex-basis: 38px;' : `flex-basis: ${rightWidth}px;`}
+	>
+		{#if !rightPaneCollapsed.current}
+			<div class="rdz-right-tabs">
+				{#if randomizerStore.currentSchema}
+					<button
+						class="rdz-tab"
+						class:active={rightTab === 'yaml'}
+						onclick={() => (rightTab = 'yaml')}
+					>
+						<Icon icon="mdi:code-braces" />
+						{i18nState.locale && m.randomizer_yaml()}
+					</button>
+				{/if}
 				<button
 					class="rdz-tab"
-					class:active={rightTab === 'yaml'}
-					onclick={() => (rightTab = 'yaml')}
+					class:active={rightTab === 'server'}
+					onclick={() => (rightTab = 'server')}
 				>
-					<Icon icon="mdi:code-braces" />
-					{i18nState.locale && m.randomizer_yaml()}
+					<Icon icon="mdi:server-network" />
+					{i18nState.locale && m.randomizer_multiplayer()}
 				</button>
-			{/if}
-			<button
-				class="rdz-tab"
-				class:active={rightTab === 'server'}
-				onclick={() => (rightTab = 'server')}
-			>
-				<Icon icon="mdi:server-network" />
-				{i18nState.locale && m.randomizer_multiplayer()}
-			</button>
-		</div>
-		<div class="rdz-right-body">
-			{#if rightTab === 'yaml' && randomizerStore.currentSchema}
-				<YamlPreview />
-			{:else}
-				<div class="rdz-right-scroll">
-					<RandomizerServerPanel bind:this={serverPanelRef} />
-				</div>
-			{/if}
-		</div>
+			</div>
+			<div class="rdz-right-body">
+				{#if rightTab === 'yaml' && randomizerStore.currentSchema}
+					<YamlPreview />
+				{:else}
+					<div class="rdz-right-scroll">
+						<RandomizerServerPanel bind:this={serverPanelRef} />
+					</div>
+				{/if}
+			</div>
+		{/if}
+		<button
+			class="rdz-right-toggle"
+			onclick={() => (rightPaneCollapsed.current = !rightPaneCollapsed.current)}
+			aria-label={i18nState.locale &&
+				(rightPaneCollapsed.current ? m.sidebar_expand() : m.sidebar_collapse())}
+			title={i18nState.locale &&
+				(rightPaneCollapsed.current ? m.sidebar_expand() : m.sidebar_collapse())}
+		>
+			<Icon icon={rightPaneCollapsed.current ? 'mdi:chevron-left' : 'mdi:chevron-right'} />
+		</button>
 	</aside>
 </div>
 
@@ -216,6 +236,51 @@
 		min-height: 0;
 		max-height: 100%;
 		overflow: hidden;
+		position: relative;
+	}
+
+	.rdz-right-pane.collapsed {
+		border-left: 1px solid var(--border-subtle);
+		background: var(--bg-base);
+	}
+
+	.rdz-right-toggle {
+		position: absolute;
+		bottom: 10px;
+		left: 6px;
+		width: 26px;
+		height: 26px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--accent-400);
+		background: var(--accent-400);
+		color: var(--text-inverse, #0a0a0a);
+		cursor: pointer;
+		transition:
+			color var(--transition-fast),
+			border-color var(--transition-fast),
+			background var(--transition-fast),
+			box-shadow var(--transition-fast);
+		z-index: 20;
+		box-shadow: var(--shadow-sm), var(--shadow-glow);
+	}
+
+	.rdz-right-pane.collapsed .rdz-right-toggle {
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.rdz-right-toggle:hover {
+		background: var(--accent-500, var(--accent-400));
+		border-color: var(--accent-500, var(--accent-400));
+		box-shadow: var(--shadow-md), var(--shadow-glow);
+	}
+
+	.rdz-right-toggle :global(svg) {
+		font-size: 14px;
 	}
 
 	.rdz-resize-handle {

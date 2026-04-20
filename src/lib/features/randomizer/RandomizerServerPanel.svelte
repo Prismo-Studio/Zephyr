@@ -6,8 +6,8 @@
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import RemoteServerPanel from './RemoteServerPanel.svelte';
-	import SeedPatchesPanel from './SeedPatchesPanel.svelte';
-	import { pushToast } from '$lib/toast';
+	import { pushToast, pushInfoToast } from '$lib/toast';
+	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import * as api from './api';
 	import type { GenerateOutcome, PlayerFile, PythonStatus, SeedFile, ServerStatus } from './types';
 	import { onDestroy, onMount } from 'svelte';
@@ -44,8 +44,6 @@
 	let generateLog: string = $state('');
 	let generating = $state(false);
 	let starting = $state(false);
-	/** Bumped after generate/rename so the patches panel refreshes. */
-	let patchesReloadToken = $state(0);
 	let initialLoading = $state(true);
 
 	// --- Remote server state ---
@@ -71,6 +69,83 @@
 		{ p: 25565, label: 'Minecraft' },
 		{ p: 7777, label: 'Games' }
 	];
+
+	// ── Quick Actions popover ──
+	let quickActionsOpen = $state(false);
+	let quickActionsEl: HTMLDivElement | null = $state(null);
+	let quickActionsBusy = $state(false);
+
+	function closeQuickActions(e: MouseEvent) {
+		if (!quickActionsOpen) return;
+		if (quickActionsEl && !quickActionsEl.contains(e.target as Node)) {
+			quickActionsOpen = false;
+		}
+	}
+
+	$effect(() => {
+		if (quickActionsOpen) {
+			document.addEventListener('mousedown', closeQuickActions, true);
+		} else {
+			document.removeEventListener('mousedown', closeQuickActions, true);
+		}
+		return () => document.removeEventListener('mousedown', closeQuickActions, true);
+	});
+
+	async function quickPatchGame() {
+		quickActionsOpen = false;
+		const picked = await openDialog({
+			filters: [
+				{
+					name: 'Archipelago patch',
+					extensions: [
+						'apemerald', 'apfirered', 'apleafgreen', 'appkmnrb', 'appkmnye',
+						'apcrystal', 'apgold', 'apsilver', 'apsms', 'apmw', 'apsmz3',
+						'aplttp', 'apz3', 'apdkc3', 'apkdl3', 'apeb', 'apsoe', 'apzl',
+						'aptloz', 'aptloz2', 'aptunic', 'apladx', 'aposrs', 'apterraria'
+					]
+				},
+				{ name: 'All files', extensions: ['*'] }
+			],
+			multiple: false
+		});
+		if (!picked || Array.isArray(picked)) return;
+		quickActionsBusy = true;
+		try {
+			try {
+				await api.openConsoleWindow();
+				await new Promise((r) => setTimeout(r, 500));
+			} catch {
+				// Non-fatal — patch still applies, console just didn't pop up.
+			}
+			await api.applyPatch(picked);
+			const fileName = picked.split(/[\\/]/).pop() ?? picked;
+			pushInfoToast({ message: m.randomizer_patches_launching({ name: fileName }) });
+		} catch (err) {
+			pushToast({
+				type: 'error',
+				name: m.randomizer_patches_applyFailed(),
+				message: (err as any)?.message ?? String(err)
+			});
+		} finally {
+			quickActionsBusy = false;
+		}
+	}
+
+	async function quickOpenConsole() {
+		quickActionsOpen = false;
+		quickActionsBusy = true;
+		try {
+			await api.openConsoleWindow();
+		} catch (err) {
+			pushToast({
+				type: 'error',
+				name: m.randomizer_quickActions_launchFailed(),
+				message: (err as any)?.message ?? String(err)
+			});
+		} finally {
+			quickActionsBusy = false;
+		}
+	}
 
 	async function refreshAll() {
 		try {
@@ -122,8 +197,6 @@
 				}
 			}
 			seeds = await api.listSeeds();
-			// Generate just produced new patch files — refresh the panel.
-			patchesReloadToken++;
 
 			// Auto-upload and restart remote server if in remote mode
 			if (outcome.success && selectedSeed && hostMode === 'remote') {
@@ -290,6 +363,53 @@
 	<header class="rdz-server-header">
 		<Icon icon="mdi:server-network" />
 		<h2>{i18nState.locale && m.randomizer_serverTitle()}</h2>
+		<div class="rdz-qa-wrapper" bind:this={quickActionsEl}>
+			<Button
+				size="sm"
+				variant="ghost"
+				onclick={() => (quickActionsOpen = !quickActionsOpen)}
+				disabled={quickActionsBusy}
+			>
+				{#snippet icon()}<Icon icon="mdi:flash" />{/snippet}
+				{i18nState.locale && m.randomizer_quickActions_title()}
+			</Button>
+			{#if quickActionsOpen}
+				<div class="rdz-qa-menu" role="menu">
+					<button
+						class="rdz-qa-item"
+						role="menuitem"
+						onclick={quickPatchGame}
+						disabled={quickActionsBusy}
+					>
+						<Icon icon="mdi:puzzle" />
+						<div class="rdz-qa-item-body">
+							<span class="rdz-qa-item-title"
+								>{i18nState.locale && m.randomizer_quickActions_patchGame()}</span
+							>
+							<span class="rdz-qa-item-desc"
+								>{i18nState.locale && m.randomizer_quickActions_patchGameDesc()}</span
+							>
+						</div>
+					</button>
+					<button
+						class="rdz-qa-item"
+						role="menuitem"
+						onclick={quickOpenConsole}
+						disabled={quickActionsBusy}
+					>
+						<Icon icon="mdi:console-line" />
+						<div class="rdz-qa-item-body">
+							<span class="rdz-qa-item-title"
+								>{i18nState.locale && m.randomizer_quickActions_console()}</span
+							>
+							<span class="rdz-qa-item-desc"
+								>{i18nState.locale && m.randomizer_quickActions_consoleDesc()}</span
+							>
+						</div>
+					</button>
+				</div>
+			{/if}
+		</div>
 		<Button size="sm" variant="ghost" onclick={refreshAll}>
 			{#snippet icon()}<Icon icon="mdi:refresh" />{/snippet}
 			{i18nState.locale && m.randomizer_refresh()}
@@ -526,8 +646,6 @@
 						{/each}
 					</ul>
 				{/if}
-
-				<SeedPatchesPanel selectedSeedPath={selectedSeed} reloadToken={patchesReloadToken} />
 
 				{#if generateLog}
 					<details class="rdz-log-details">
@@ -920,6 +1038,86 @@
 		flex: 1;
 		font-size: 16px;
 		color: var(--text-primary);
+	}
+
+	.rdz-qa-wrapper {
+		position: relative;
+	}
+
+	.rdz-qa-menu {
+		position: absolute;
+		top: calc(100% + 6px);
+		right: 0;
+		min-width: 260px;
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-default);
+		border-radius: var(--radius-lg);
+		padding: 4px;
+		box-shadow: var(--shadow-lg), var(--shadow-glow);
+		z-index: var(--z-dropdown);
+		animation: rdz-qa-in 150ms ease;
+	}
+
+	@keyframes rdz-qa-in {
+		from {
+			opacity: 0;
+			transform: translateY(-4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.rdz-qa-item {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--space-sm);
+		width: 100%;
+		padding: var(--space-sm) var(--space-md);
+		border: none;
+		border-radius: var(--radius-md);
+		background: transparent;
+		color: var(--text-secondary);
+		cursor: pointer;
+		text-align: left;
+		transition: all var(--transition-fast);
+		font-family: var(--font-body);
+	}
+
+	.rdz-qa-item:hover:not(:disabled) {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+	}
+
+	.rdz-qa-item:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.rdz-qa-item :global(svg) {
+		font-size: 18px;
+		color: var(--accent-400);
+		flex-shrink: 0;
+		margin-top: 2px;
+	}
+
+	.rdz-qa-item-body {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+
+	.rdz-qa-item-title {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+
+	.rdz-qa-item-desc {
+		font-size: 11px;
+		color: var(--text-muted);
 	}
 
 	.rdz-server-header :global(svg) {
