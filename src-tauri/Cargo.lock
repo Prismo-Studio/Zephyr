@@ -7996,6 +7996,7 @@ dependencies = [
  "itertools 0.13.0",
  "justerror",
  "keyring",
+ "mime_guess",
  "open",
  "rayon",
  "reqwest 0.13.1",

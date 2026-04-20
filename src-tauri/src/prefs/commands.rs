@@ -1,6 +1,6 @@
-use eyre::anyhow;
+use eyre::{anyhow, eyre, Context};
 use font_kit::source::SystemSource;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use tauri::{command, AppHandle, Manager, Window};
 
 use super::Prefs;
@@ -8,6 +8,105 @@ use crate::{
     state::ManagerExt,
     util::{cmd::Result, fs::open_path, window::WindowExt},
 };
+
+#[derive(Serialize)]
+pub struct CustomBgUpload {
+    pub url: String,
+    pub kind: String,
+}
+
+pub const MAX_IMAGE_BYTES: u64 = 10 * 1024 * 1024;
+pub const MAX_VIDEO_BYTES: u64 = 50 * 1024 * 1024;
+
+#[derive(Serialize)]
+pub struct CustomBgProbe {
+    pub size: u64,
+    pub kind: String,
+    pub max_image_bytes: u64,
+    pub max_video_bytes: u64,
+}
+
+#[command]
+pub fn probe_custom_background(file_path: String) -> Result<CustomBgProbe> {
+    let src = std::path::PathBuf::from(&file_path);
+    if !src.exists() {
+        return Err(eyre!("file does not exist: {}", src.display()).into());
+    }
+    let size = std::fs::metadata(&src).context("stat file")?.len();
+    let mime = mime_guess::from_path(&src)
+        .first_or_octet_stream()
+        .essence_str()
+        .to_string();
+    let kind = if mime.starts_with("video/") {
+        "video".to_string()
+    } else {
+        "image".to_string()
+    };
+    Ok(CustomBgProbe {
+        size,
+        kind,
+        max_image_bytes: MAX_IMAGE_BYTES,
+        max_video_bytes: MAX_VIDEO_BYTES,
+    })
+}
+
+#[command]
+pub async fn upload_custom_background(file_path: String, app: AppHandle) -> Result<CustomBgUpload> {
+    let src = std::path::PathBuf::from(&file_path);
+    if !src.exists() {
+        return Err(eyre!("file does not exist: {}", src.display()).into());
+    }
+
+    let file_name = src
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or("upload")
+        .to_string();
+
+    let mime = mime_guess::from_path(&src)
+        .first_or_octet_stream()
+        .essence_str()
+        .to_string();
+
+    let size = std::fs::metadata(&src).context("stat file")?.len();
+    let is_video = mime.starts_with("video/");
+    let limit = if is_video { MAX_VIDEO_BYTES } else { MAX_IMAGE_BYTES };
+    if size > limit {
+        return Err(eyre!("file_too_large").into());
+    }
+
+    let bytes = std::fs::read(&src).context("read file")?;
+    let part = reqwest::multipart::Part::bytes(bytes)
+        .file_name(file_name)
+        .mime_str(&mime)
+        .map_err(|err: reqwest::Error| anyhow!(err))?;
+    let form = reqwest::multipart::Form::new()
+        .part("file", part)
+        .text("upload_preset", "zephyr_avatars");
+
+    let response = app
+        .http()
+        .post("https://api.cloudinary.com/v1_1/djmsz47e5/auto/upload")
+        .multipart(form)
+        .send()
+        .await?
+        .error_for_status()
+        .context("cloudinary upload failed")?;
+
+    let json: serde_json::Value = response.json().await?;
+    let url = json["secure_url"]
+        .as_str()
+        .ok_or_else(|| eyre!("no secure_url in response"))?
+        .to_string();
+    let resource_type = json["resource_type"].as_str().unwrap_or("image");
+    let kind = if resource_type == "video" {
+        "video".to_string()
+    } else {
+        "image".to_string()
+    };
+
+    Ok(CustomBgUpload { url, kind })
+}
 
 #[command]
 pub fn get_prefs(app: AppHandle) -> Prefs {

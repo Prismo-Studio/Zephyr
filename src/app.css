@@ -383,6 +383,24 @@
 	--shadow-glow-strong: 0 0 40px rgba(255, 255, 0, 0.4);
 }
 
+[data-bg-media='1'] body,
+[data-bg-media='1'] .z-app,
+[data-bg-media='1'] .z-app-standalone {
+	background: transparent !important;
+}
+
+[data-bg-media='1'] .z-app,
+[data-bg-media='1'] .z-app-standalone {
+	position: relative;
+	z-index: 1;
+}
+
+[data-bg-media='1'] {
+	--bg-surface: rgba(13, 21, 38, 0.6);
+	--bg-elevated: rgba(17, 29, 51, 0.75);
+	--bg-overlay: rgba(22, 34, 64, 0.8);
+}
+
 /* ============================================================
    Base Styles
    ============================================================ */

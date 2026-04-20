@@ -36,6 +36,8 @@
 	import * as api from '$lib/api';
 	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import { initFullscreen, toggleFullscreen } from '$lib/fullscreen.svelte';
+	import CustomBackground from '$lib/components/CustomBackground.svelte';
+	import { initCustomBg } from '$lib/design-system/customBg.svelte';
 	import { initErrorListener } from '$lib/invoke';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { relaunch } from '@tauri-apps/plugin-process';
@@ -121,6 +123,7 @@
 		);
 
 		initFullscreen();
+		initCustomBg();
 
 		getCurrentWindow()
 			.isVisible()
@@ -275,6 +278,8 @@
 		}
 	}}
 />
+
+<CustomBackground />
 
 {#if isStandalone}
 	<main class="z-app z-app-standalone">

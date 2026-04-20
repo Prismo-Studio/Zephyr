@@ -23,6 +23,7 @@
 		curseForgeEnabled
 	} from '$lib/themeSystem';
 	import { fullscreenState, setFullscreen } from '$lib/fullscreen.svelte';
+	import { customBgState, setCustomBg, clearCustomBg } from '$lib/design-system/customBg.svelte';
 
 	import {
 		getTheme,
@@ -171,6 +172,62 @@
 
 	function resetCustomColors() {
 		customDraft = { ...DEFAULT_CUSTOM_COLORS };
+	}
+
+	let mediaUploading = $state(false);
+	let mediaError = $state<string | null>(null);
+
+	async function pickCustomBg() {
+		const selected = await selectDirectory({
+			multiple: false,
+			directory: false,
+			filters: [
+				{
+					name: 'Image or video',
+					extensions: [
+						'png',
+						'jpg',
+						'jpeg',
+						'webp',
+						'gif',
+						'bmp',
+						'avif',
+						'mp4',
+						'webm',
+						'mov',
+						'm4v'
+					]
+				}
+			]
+		});
+		if (!selected || typeof selected !== 'string') return;
+		mediaError = null;
+		mediaUploading = true;
+		try {
+			const probe = await api.prefs.probeCustomBackground(selected);
+			const actualLimit = probe.kind === 'video' ? probe.max_video_bytes : probe.max_image_bytes;
+			if (probe.size > actualLimit) {
+				const sizeMb = (probe.size / 1024 / 1024).toFixed(1);
+				const maxMb = Math.round(actualLimit / 1024 / 1024).toString();
+				mediaError =
+					(i18nState.locale &&
+						m.prefs_custom_bgMedia_tooLarge({
+							size: sizeMb,
+							max: maxMb,
+							kind: probe.kind
+						})) ||
+					`File too large (${sizeMb} MB). Max: ${maxMb} MB.`;
+				return;
+			}
+			const uploaded = await api.prefs.uploadCustomBackground(selected);
+			setCustomBg({ kind: uploaded.kind, url: uploaded.url });
+		} catch (err) {
+			const raw = err instanceof Error ? err.message : String(err);
+			mediaError =
+				(i18nState.locale && m.prefs_custom_bgMedia_uploadFailed({ reason: raw })) || raw;
+		} finally {
+			mediaUploading = false;
+		}
 	}
 
 	$effect(() => {
@@ -644,6 +701,65 @@
 					</div>
 					<ColorPicker bind:value={customDraft.text} />
 				</div>
+
+				<div class="z-custom-media">
+					<div class="z-custom-media-head">
+						<div>
+							<div class="z-custom-media-title">
+								{i18nState.locale && m.prefs_custom_bgMedia_title()}
+							</div>
+							<div class="z-custom-media-desc">
+								{i18nState.locale && m.prefs_custom_bgMedia_desc()}
+							</div>
+						</div>
+						<div class="z-custom-media-actions">
+							<Button variant="primary" disabled={mediaUploading} onclick={pickCustomBg}>
+								{#snippet icon()}<Icon icon="mdi:upload" />{/snippet}
+								{mediaUploading
+									? i18nState.locale && m.prefs_custom_bgMedia_uploading()
+									: customBgState.media
+										? i18nState.locale && m.prefs_custom_bgMedia_replace()
+										: i18nState.locale && m.prefs_custom_bgMedia_pick()}
+							</Button>
+							{#if customBgState.media}
+								<Button
+									variant="ghost"
+									disabled={mediaUploading}
+									onclick={() => clearCustomBg()}
+								>
+									{#snippet icon()}<Icon icon="mdi:delete" />{/snippet}
+									{i18nState.locale && m.prefs_custom_bgMedia_clear()}
+								</Button>
+							{/if}
+						</div>
+					</div>
+
+					{#if customBgState.media}
+						<div class="z-custom-media-preview">
+							{#if customBgState.media.kind === 'video'}
+								<video
+									src={customBgState.media.url}
+									autoplay
+									loop
+									muted
+									playsinline
+								></video>
+							{:else}
+								<img src={customBgState.media.url} alt="" />
+							{/if}
+							<span class="z-custom-media-kind">
+								<Icon
+									icon={customBgState.media.kind === 'video' ? 'mdi:video' : 'mdi:image'}
+								/>
+								{customBgState.media.kind}
+							</span>
+						</div>
+					{/if}
+
+					{#if mediaError}
+						<p class="z-custom-media-err">{mediaError}</p>
+					{/if}
+				</div>
 			</div>
 		{/snippet}
 		{#snippet actions()}
@@ -1116,6 +1232,86 @@
 		font-size: 13px;
 		color: var(--text-secondary);
 		margin: 0 0 4px;
+	}
+
+	.z-custom-media {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 12px;
+		border-radius: var(--radius-md);
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+	}
+
+	.z-custom-media-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+
+	.z-custom-media-title {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+
+	.z-custom-media-desc {
+		font-size: 11px;
+		color: var(--text-muted);
+		margin-top: 2px;
+	}
+
+	.z-custom-media-actions {
+		display: flex;
+		gap: 8px;
+		flex-shrink: 0;
+	}
+
+	.z-custom-media-preview {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		border-radius: var(--radius-sm);
+		overflow: hidden;
+		background: #000;
+		border: 1px solid var(--border-subtle);
+	}
+
+	.z-custom-media-preview img,
+	.z-custom-media-preview video {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.z-custom-media-kind {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 4px 10px;
+		border-radius: var(--radius-full);
+		background: rgba(0, 0, 0, 0.6);
+		color: #fff;
+		font-size: 10px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.z-custom-media-kind :global(svg) {
+		font-size: 12px;
+	}
+
+	.z-custom-media-err {
+		margin: 0;
+		color: var(--error);
+		font-size: 11px;
 	}
 
 	.z-color-row {

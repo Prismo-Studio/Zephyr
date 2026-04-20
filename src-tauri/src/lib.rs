@@ -198,6 +198,8 @@ pub fn run() {
             prefs::commands::set_dpi_scale,
             prefs::commands::get_system_fonts,
             prefs::commands::open_dir,
+            prefs::commands::upload_custom_background,
+            prefs::commands::probe_custom_background,
             icon_cache::get_cached_icon,
             icon_cache::clear_icon_cache,
             profile::commands::get_game_info,
