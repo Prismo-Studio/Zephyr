@@ -575,6 +575,7 @@
 	"mods_noMods_desc": "Загляни в каталог, чтобы найти моды для своей игры",
 	"mods_browseMods": "Каталог модов",
 	"mods_loadMore": "Загрузить ещё (осталось {count})",
+	"mods_pageSize_label": "На странице",
 	"mods_contextMenu_enable": "Включить",
 	"mods_contextMenu_disable": "Отключить",
 	"mods_contextMenu_openThunderstore": "Открыть сайт",

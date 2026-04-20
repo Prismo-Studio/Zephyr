@@ -575,6 +575,7 @@
 	"mods_noMods_desc": "浏览商店为您的游戏寻找模组",
 	"mods_browseMods": "浏览模组",
 	"mods_loadMore": "加载更多（剩余 {count} 个）",
+	"mods_pageSize_label": "每页数量",
 	"mods_contextMenu_enable": "启用",
 	"mods_contextMenu_disable": "禁用",
 	"mods_contextMenu_openThunderstore": "打开网站",

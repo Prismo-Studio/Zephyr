@@ -554,6 +554,7 @@
 	"mods_noMods_desc": "Explora la tienda para encontrar mods para tu juego",
 	"mods_browseMods": "Explorar mods",
 	"mods_loadMore": "Cargar más ({count} restantes)",
+	"mods_pageSize_label": "Por página",
 	"mods_contextMenu_enable": "Activar",
 	"mods_contextMenu_disable": "Desactivar",
 	"mods_contextMenu_openThunderstore": "Abrir sitio web",

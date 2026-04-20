@@ -575,6 +575,7 @@
 	"mods_noMods_desc": "تصفح المتجر للعثور على تعديلات للعبتك",
 	"mods_browseMods": "تصفح التعديلات",
 	"mods_loadMore": "تحميل المزيد ({count} متبقي)",
+	"mods_pageSize_label": "لكل صفحة",
 	"mods_contextMenu_enable": "تفعيل",
 	"mods_contextMenu_disable": "تعطيل",
 	"mods_contextMenu_openThunderstore": "فتح الموقع",

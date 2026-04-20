@@ -575,6 +575,7 @@
 	"mods_noMods_desc": "Parcourez le magasin pour trouver des mods",
 	"mods_browseMods": "Parcourir les mods",
 	"mods_loadMore": "Charger plus ({count} restants)",
+	"mods_pageSize_label": "Par page",
 	"mods_contextMenu_enable": "Activer",
 	"mods_contextMenu_disable": "Désactiver",
 	"mods_contextMenu_openThunderstore": "Ouvrir le site web",

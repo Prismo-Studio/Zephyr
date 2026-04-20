@@ -15,6 +15,9 @@
 		expanded?: boolean;
 		externalPanel?: boolean;
 		viewMode?: 'list' | 'grid';
+		pageSize?: number;
+		pageSizeChoices?: number[];
+		onChangePageSize?: (size: number) => void;
 	};
 
 	let {
@@ -23,10 +26,14 @@
 		showCategories = false,
 		expanded = $bindable(false),
 		externalPanel = false,
-		viewMode = $bindable('list' as 'list' | 'grid')
+		viewMode = $bindable('list' as 'list' | 'grid'),
+		pageSize,
+		pageSizeChoices,
+		onChangePageSize
 	}: Props = $props();
 
 	let sortOpen = $state(false);
+	let pageSizeOpen = $state(false);
 
 	let sortLabels = $derived({
 		newest: i18nState.locale && m.modListFilters_options_newest(),
@@ -110,6 +117,46 @@
 				/>
 			</button>
 		</div>
+
+		{#if pageSize !== undefined && pageSizeChoices && onChangePageSize}
+			<div class="z-sort-wrapper">
+				<Tooltip
+					text={i18nState.locale && m.mods_pageSize_label()}
+					position="bottom"
+					delay={200}
+				>
+					<button
+					class="z-sort-trigger z-sort-trigger-solo"
+					onclick={() => (pageSizeOpen = !pageSizeOpen)}
+				>
+						<Icon icon="mdi:format-list-numbered" />
+						<span>{pageSize}</span>
+						<Icon icon="mdi:chevron-down" class="z-sort-chevron {pageSizeOpen ? 'open' : ''}" />
+					</button>
+				</Tooltip>
+
+				{#if pageSizeOpen}
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<div class="z-sort-dropdown" onmouseleave={() => (pageSizeOpen = false)}>
+						{#each pageSizeChoices as choice}
+							<button
+								class="z-sort-option"
+								class:active={pageSize === choice}
+								onclick={() => {
+									onChangePageSize?.(choice);
+									pageSizeOpen = false;
+								}}
+							>
+								{#if pageSize === choice}
+									<Icon icon="mdi:check" class="z-sort-check" />
+								{/if}
+								<span>{choice}</span>
+							</button>
+						{/each}
+					</div>
+				{/if}
+			</div>
+		{/if}
 
 		<div class="z-view-toggle">
 			<button
@@ -248,6 +295,11 @@
 		cursor: pointer;
 		transition: all var(--transition-fast);
 		white-space: nowrap;
+	}
+
+	.z-sort-trigger.z-sort-trigger-solo {
+		border-radius: var(--radius-md);
+		border-right: 1px solid var(--border-default);
 	}
 
 	.z-sort-trigger:hover {

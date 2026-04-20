@@ -575,6 +575,7 @@
 	"mods_noMods_desc": "Browse the store to find mods for your game",
 	"mods_browseMods": "Browse mods",
 	"mods_loadMore": "Load more ({count} remaining)",
+	"mods_pageSize_label": "Per page",
 	"mods_contextMenu_enable": "Enable",
 	"mods_contextMenu_disable": "Disable",
 	"mods_contextMenu_openThunderstore": "Open website",
