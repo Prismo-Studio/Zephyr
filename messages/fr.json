@@ -666,7 +666,7 @@
 	"prefs_window_nativeTitlebar": "Barre de titre native",
 	"prefs_window_nativeTitlebar_desc": "Utiliser la barre de titre du système au lieu de celle de Zephyr. Nécessite un redémarrage.",
 	"prefs_window_fullscreen": "Plein écran",
-	"prefs_window_fullscreen_desc": "Masque la barre des tâches et le cadre de la fenêtre. Bascule avec F11 à tout moment.",
+	"prefs_window_fullscreen_desc": "Masque la barre des tâches et le cadre de la fenêtre. Bascule avec {shortcut} à tout moment.",
 	"mods_contextMenu_install": "Installer",
 	"mods_contextMenu_pin": "Épingler en haut",
 	"mods_contextMenu_unpin": "Désépingler",

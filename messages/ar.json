@@ -671,7 +671,7 @@
 	"prefs_window_nativeTitlebar": "شريط العنوان الأصلي",
 	"prefs_window_nativeTitlebar_desc": "استخدم شريط عنوان النظام بدلاً من شريط Zephyr المخصص. يتطلب إعادة التشغيل.",
 	"prefs_window_fullscreen": "ملء الشاشة",
-	"prefs_window_fullscreen_desc": "يخفي شريط المهام وإطار النافذة. بدّل في أي وقت بالضغط على F11.",
+	"prefs_window_fullscreen_desc": "يخفي شريط المهام وإطار النافذة. بدّل في أي وقت بالضغط على {shortcut}.",
 	"mods_contextMenu_install": "تثبيت",
 	"mods_contextMenu_pin": "تثبيت في الأعلى",
 	"mods_contextMenu_unpin": "إلغاء التثبيت",

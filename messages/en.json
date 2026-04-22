@@ -671,7 +671,7 @@
 	"prefs_window_nativeTitlebar": "Native title bar",
 	"prefs_window_nativeTitlebar_desc": "Use the system title bar instead of Zephyr's custom one. Requires restart.",
 	"prefs_window_fullscreen": "Fullscreen",
-	"prefs_window_fullscreen_desc": "Hide the taskbar and window chrome. Toggle anytime with F11.",
+	"prefs_window_fullscreen_desc": "Hide the taskbar and window chrome. Toggle anytime with {shortcut}.",
 	"mods_contextMenu_install": "Install",
 	"mods_contextMenu_pin": "Pin to top",
 	"mods_contextMenu_unpin": "Unpin",

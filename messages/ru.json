@@ -671,7 +671,7 @@
 	"prefs_window_nativeTitlebar": "Системный заголовок окна",
 	"prefs_window_nativeTitlebar_desc": "Использовать системный заголовок окна вместо пользовательского от Zephyr. Требуется перезапуск.",
 	"prefs_window_fullscreen": "Полноэкранный режим",
-	"prefs_window_fullscreen_desc": "Скрывает панель задач и рамку окна. Переключение в любой момент клавишей F11.",
+	"prefs_window_fullscreen_desc": "Скрывает панель задач и рамку окна. Переключение в любой момент клавишей {shortcut}.",
 	"mods_contextMenu_install": "Установить",
 	"mods_contextMenu_pin": "Закрепить наверху",
 	"mods_contextMenu_unpin": "Открепить",

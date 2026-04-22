@@ -57,6 +57,11 @@
 	let updateInstalling = $state(false);
 	let appVersion = $state('');
 
+	$effect(() => {
+		profiles.active;
+		updateBanner.threshold = 0;
+	});
+
 	/** Standalone companion window (opened via `open_console_window`). Renders
 	 *  the children full-bleed with no sidebar/titlebar/statusbar chrome. */
 	const isStandalone =
@@ -114,6 +119,18 @@
 					e.stopImmediatePropagation();
 				}
 				if (e.key === 'F11') {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					toggleFullscreen();
+				}
+				// macOS fullscreen shortcut: Cmd+F (no other modifier)
+				if (
+					e.metaKey &&
+					!e.ctrlKey &&
+					!e.altKey &&
+					!e.shiftKey &&
+					(e.key === 'f' || e.key === 'F')
+				) {
 					e.preventDefault();
 					e.stopImmediatePropagation();
 					toggleFullscreen();
@@ -181,11 +198,6 @@
 				updateAppLanguage(lang);
 			}
 		})();
-
-		$effect(() => {
-			profiles.active;
-			updateBanner.threshold = 0;
-		});
 
 		listen<ProfileInfo>('profile_changed', (evt) => {
 			profiles.updateOne(evt.payload);

@@ -600,7 +600,7 @@
 	"prefs_window_nativeTitlebar": "Barra de título nativa",
 	"prefs_window_nativeTitlebar_desc": "Usar a barra de título do sistema em vez da personalizada do Zephyr. Requer reinicialização.",
 	"prefs_window_fullscreen": "Tela cheia",
-	"prefs_window_fullscreen_desc": "Oculta a barra de tarefas e as bordas da janela. Alterna com F11 a qualquer momento.",
+	"prefs_window_fullscreen_desc": "Oculta a barra de tarefas e as bordas da janela. Alterna com {shortcut} a qualquer momento.",
 	"mods_contextMenu_install": "Instalar",
 	"mods_contextMenu_pin": "Fixar no topo",
 	"mods_contextMenu_unpin": "Desafixar",

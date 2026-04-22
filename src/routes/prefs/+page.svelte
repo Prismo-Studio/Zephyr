@@ -23,6 +23,7 @@
 		curseForgeEnabled
 	} from '$lib/themeSystem';
 	import { fullscreenState, setFullscreen } from '$lib/fullscreen.svelte';
+	import { platform } from '@tauri-apps/plugin-os';
 	import { customBgState, setCustomBg, clearCustomBg } from '$lib/design-system/customBg.svelte';
 
 	import {
@@ -49,6 +50,9 @@
 		getConnectedGamepad,
 		getGamepadDisplayName
 	} from '$lib/gamepad.svelte';
+
+	const isMac = platform() === 'macos';
+	const fullscreenShortcut = isMac ? '⌘F' : 'F11';
 
 	let prefs: Prefs | null = $state(null);
 	let showCurseForgeModal = $state(false);
@@ -400,20 +404,24 @@
 				{i18nState.locale && m.prefs_window_title()}
 			</h3>
 
-			<div class="z-settings-row">
-				<div class="z-settings-label">
-					<span>{i18nState.locale && m.prefs_window_nativeTitlebar()}</span>
-					<span class="z-settings-desc"
-						>{i18nState.locale && m.prefs_window_nativeTitlebar_desc()}</span
-					>
+			{#if !isMac}
+				<div class="z-settings-row">
+					<div class="z-settings-label">
+						<span>{i18nState.locale && m.prefs_window_nativeTitlebar()}</span>
+						<span class="z-settings-desc"
+							>{i18nState.locale && m.prefs_window_nativeTitlebar_desc()}</span
+						>
+					</div>
+					<Toggle bind:checked={useNativeTitlebar.current} />
 				</div>
-				<Toggle bind:checked={useNativeTitlebar.current} />
-			</div>
+			{/if}
 
 			<div class="z-settings-row">
 				<div class="z-settings-label">
 					<span>{i18nState.locale && m.prefs_window_fullscreen()}</span>
-					<span class="z-settings-desc">{i18nState.locale && m.prefs_window_fullscreen_desc()}</span
+					<span class="z-settings-desc"
+						>{i18nState.locale &&
+							m.prefs_window_fullscreen_desc({ shortcut: fullscreenShortcut })}</span
 					>
 				</div>
 				<Toggle checked={fullscreenState.active} onchange={(v) => setFullscreen(v)} />

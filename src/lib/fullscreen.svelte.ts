@@ -8,7 +8,17 @@ export async function initFullscreen() {
 	if (initialised) return;
 	initialised = true;
 	try {
-		fullscreenState.active = await getCurrentWindow().isFullscreen();
+		const win = getCurrentWindow();
+		fullscreenState.active = await win.isFullscreen();
+		// Keep the state in sync when fullscreen is toggled outside of our
+		// toggleFullscreen() wrapper (e.g. the native green button on macOS).
+		await win.onResized(async () => {
+			try {
+				fullscreenState.active = await win.isFullscreen();
+			} catch {
+				// ignore
+			}
+		});
 	} catch (err) {
 		console.warn('fullscreen init failed:', err);
 	}
