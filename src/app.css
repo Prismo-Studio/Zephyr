@@ -453,6 +453,15 @@ select,
 	cursor: auto !important;
 }
 
+.markdown a,
+.markdown a *,
+.markdown button,
+.markdown button *,
+.markdown [role='button'],
+.markdown [role='button'] * {
+	cursor: pointer !important;
+}
+
 /* Allow text selection in interactive elements */
 input,
 textarea,
