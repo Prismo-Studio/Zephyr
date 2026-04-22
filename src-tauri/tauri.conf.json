@@ -78,7 +78,7 @@
 		"windows": [
 			{
 				"visible": false,
-				"decorations": false,
+				"decorations": true,
 				"fullscreen": false,
 				"transparent": false,
 				"resizable": true,
@@ -88,7 +88,9 @@
 				"minWidth": 800,
 				"minHeight": 600,
 				"dragDropEnabled": true,
-				"zoomHotkeysEnabled": false
+				"zoomHotkeysEnabled": false,
+				"titleBarStyle": "Overlay",
+				"hiddenTitle": true
 			}
 		],
 		"security": {

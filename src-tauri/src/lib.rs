@@ -198,6 +198,8 @@ pub fn run() {
             prefs::commands::set_dpi_scale,
             prefs::commands::get_system_fonts,
             prefs::commands::open_dir,
+            prefs::commands::upload_custom_background,
+            prefs::commands::probe_custom_background,
             icon_cache::get_cached_icon,
             icon_cache::clear_icon_cache,
             profile::commands::get_game_info,
@@ -332,7 +334,14 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_http::init())
-        .plugin(tauri_plugin_window_state::Builder::new().build())
+        .plugin(
+            tauri_plugin_window_state::Builder::new()
+                .with_state_flags(
+                    tauri_plugin_window_state::StateFlags::all()
+                        & !tauri_plugin_window_state::StateFlags::FULLSCREEN,
+                )
+                .build(),
+        )
         // TODO .plugin(tauri_plugin_oauth::Builder)
         .plugin(tauri_plugin_single_instance::init(handle_single_instance))
         .setup(setup)

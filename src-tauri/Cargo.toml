@@ -44,6 +44,7 @@ indexmap = { version = "2", features = ["serde"] }
 open = "5"
 itertools = "0.13"
 zip = { version = "2", features = ["deflate"] }
+mime_guess = "2"
 uuid = { version = "1", features = ["v4", "serde"] }
 reqwest = { version = "0.13.1", features = ["json", "stream", "gzip", "multipart", "blocking"] }
 walkdir = "2"

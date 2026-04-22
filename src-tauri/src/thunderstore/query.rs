@@ -260,23 +260,30 @@ where
     let search_terms = args.search_term.as_ref().map(|str| {
         let full = str.to_lowercase().trim().to_owned();
         let package = full.replace(' ', "_");
-        // search for packages with underscores and descriptions with spaces
-        (full, package)
+        // Alphanumeric-only form so "More Shop" matches "MoreShopItems"
+        // (author_Package style or PascalCase concatenations).
+        let compact: String = full.chars().filter(|c| c.is_ascii_alphanumeric()).collect();
+        (full, package, compact)
     });
 
     let mut results = mods
         .filter(|queryable| {
-            if let Some((full_search, package_search)) = &search_terms {
-                let name_match = queryable
-                    .full_name()
-                    .to_lowercase()
-                    .contains(package_search);
+            if let Some((full_search, package_search, compact_search)) = &search_terms {
+                let lower_name = queryable.full_name().to_lowercase();
+                let name_match = lower_name.contains(package_search);
+                let compact_name_match = !compact_search.is_empty() && {
+                    let compact: String = lower_name
+                        .chars()
+                        .filter(|c| c.is_ascii_alphanumeric())
+                        .collect();
+                    compact.contains(compact_search)
+                };
 
                 let description_match = queryable
                     .description()
                     .is_some_and(|description| description.to_lowercase().contains(full_search));
 
-                if !name_match && !description_match {
+                if !name_match && !compact_name_match && !description_match {
                     return false;
                 }
             }

@@ -36,6 +36,8 @@
 	import * as api from '$lib/api';
 	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import { initFullscreen, toggleFullscreen } from '$lib/fullscreen.svelte';
+	import CustomBackground from '$lib/components/CustomBackground.svelte';
+	import { initCustomBg } from '$lib/design-system/customBg.svelte';
 	import { initErrorListener } from '$lib/invoke';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { relaunch } from '@tauri-apps/plugin-process';
@@ -54,6 +56,11 @@
 
 	let updateInstalling = $state(false);
 	let appVersion = $state('');
+
+	$effect(() => {
+		profiles.active;
+		updateBanner.threshold = 0;
+	});
 
 	/** Standalone companion window (opened via `open_console_window`). Renders
 	 *  the children full-bleed with no sidebar/titlebar/statusbar chrome. */
@@ -116,11 +123,24 @@
 					e.stopImmediatePropagation();
 					toggleFullscreen();
 				}
+				// macOS fullscreen shortcut: Cmd+F (no other modifier)
+				if (
+					e.metaKey &&
+					!e.ctrlKey &&
+					!e.altKey &&
+					!e.shiftKey &&
+					(e.key === 'f' || e.key === 'F')
+				) {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					toggleFullscreen();
+				}
 			},
 			true
 		);
 
 		initFullscreen();
+		initCustomBg();
 
 		getCurrentWindow()
 			.isVisible()
@@ -178,11 +198,6 @@
 				updateAppLanguage(lang);
 			}
 		})();
-
-		$effect(() => {
-			profiles.active;
-			updateBanner.threshold = 0;
-		});
 
 		listen<ProfileInfo>('profile_changed', (evt) => {
 			profiles.updateOne(evt.payload);
@@ -275,6 +290,8 @@
 		}
 	}}
 />
+
+<CustomBackground />
 
 {#if isStandalone}
 	<main class="z-app z-app-standalone">

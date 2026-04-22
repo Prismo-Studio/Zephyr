@@ -174,7 +174,27 @@
 	let updates: AvailableUpdate[] = $state([]);
 	let unknownMods: { fullName: string; uuid: string }[] = $state([]);
 	let totalModCount = $state(0);
-	let maxCount = $state(40);
+
+	const PAGE_SIZE_KEY = 'zephyr-mods-page-size';
+	const PAGE_SIZE_CHOICES = [30, 50, 100, 500];
+	function loadPageSize(): number {
+		if (typeof localStorage === 'undefined') return 30;
+		const raw = localStorage.getItem(PAGE_SIZE_KEY);
+		const v = raw === null ? NaN : parseInt(raw, 10);
+		return PAGE_SIZE_CHOICES.includes(v) ? v : 30;
+	}
+	let pageSize = $state(loadPageSize());
+	let maxCount = $state(pageSize);
+
+	function changePageSize(v: number) {
+		pageSize = PAGE_SIZE_CHOICES.includes(v) ? v : 30;
+		try {
+			localStorage.setItem(PAGE_SIZE_KEY, String(pageSize));
+		} catch {
+			/* ignore */
+		}
+		maxCount = pageSize;
+	}
 
 	// --- Selection ---
 	let selectedModIds: string[] = $state([]);
@@ -720,6 +740,9 @@
 							externalPanel
 							bind:expanded={filtersExpanded}
 							bind:viewMode={viewMode.current}
+							{pageSize}
+							pageSizeChoices={PAGE_SIZE_CHOICES}
+							onChangePageSize={changePageSize}
 						/>
 					</div>
 					{#if filtersExpanded}
@@ -837,8 +860,11 @@
 							{/if}
 						{/if}
 
-						{#if mods.length >= maxCount}
-							<button class="z-load-more" onclick={() => (maxCount += 40)}>
+						{#if mods.length >= maxCount && pageSize !== -1}
+							<button
+								class="z-load-more"
+								onclick={() => (maxCount += pageSize === -1 ? 10_000 : pageSize)}
+							>
 								{m.mods_loadMore({ count: (totalModCount - mods.length).toString() })}
 							</button>
 						{/if}

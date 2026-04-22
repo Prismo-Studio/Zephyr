@@ -9,6 +9,7 @@
 	import { fullscreenState, setFullscreen } from '$lib/fullscreen.svelte';
 
 	const appWindow = getCurrentWindow();
+	const isMac = platform() === 'macos';
 
 	let maximized = $state(false);
 
@@ -35,6 +36,11 @@
 	}
 
 	$effect(() => {
+		// On macOS we keep native decorations on (with titleBarStyle=Overlay +
+		// hiddenTitle) so the OS renders the traffic-lights and supports native
+		// fullscreen. Our custom titlebar sits behind them. Don't toggle
+		// decorations there — the Native titlebar option is hidden on macOS.
+		if (isMac) return;
 		appWindow.setDecorations(useNativeTitlebar.current).catch(() => {});
 	});
 
@@ -52,8 +58,12 @@
 	});
 </script>
 
-{#if !useNativeTitlebar.current}
-	<div class="z-titlebar" data-tauri-drag-region>
+{#if isMac || !useNativeTitlebar.current}
+	<div
+		class="z-titlebar"
+		class:z-titlebar-mac={isMac && !fullscreenState.active}
+		data-tauri-drag-region
+	>
 		<div class="z-titlebar-left" data-tauri-drag-region>
 			<span class="z-titlebar-brand" data-tauri-drag-region>
 				<img src="/logo.png" alt="Zephyr" class="z-titlebar-logo" />
@@ -63,34 +73,37 @@
 
 		<div class="z-titlebar-center" data-tauri-drag-region></div>
 
-		<div class="z-titlebar-controls">
-			<button
-				class="z-titlebar-btn"
-				onclick={minimize}
-				title={i18nState.locale && m.titlebar_minimize()}
-			>
-				<Icon icon="mdi:minus" />
-			</button>
-			<button
-				class="z-titlebar-btn"
-				onclick={toggleMaximize}
-				title={i18nState.locale && (maximized ? m.titlebar_restore() : m.titlebar_maximize())}
-			>
-				<Icon icon={maximized ? 'mdi:window-restore' : 'mdi:window-maximize'} />
-			</button>
-			<button
-				class="z-titlebar-btn z-titlebar-close"
-				onclick={close}
-				title={i18nState.locale && m.titlebar_close()}
-			>
-				<Icon icon="mdi:close" />
-			</button>
-		</div>
+		{#if !isMac}
+			<div class="z-titlebar-controls">
+				<button
+					class="z-titlebar-btn"
+					onclick={minimize}
+					title={i18nState.locale && m.titlebar_minimize()}
+				>
+					<Icon icon="mdi:minus" />
+				</button>
+				<button
+					class="z-titlebar-btn"
+					onclick={toggleMaximize}
+					title={i18nState.locale && (maximized ? m.titlebar_restore() : m.titlebar_maximize())}
+				>
+					<Icon icon={maximized ? 'mdi:window-restore' : 'mdi:window-maximize'} />
+				</button>
+				<button
+					class="z-titlebar-btn z-titlebar-close"
+					onclick={close}
+					title={i18nState.locale && m.titlebar_close()}
+				>
+					<Icon icon="mdi:close" />
+				</button>
+			</div>
+		{/if}
 	</div>
 {/if}
 
 <style>
 	.z-titlebar {
+		position: relative;
 		display: flex;
 		align-items: center;
 		height: 32px;
@@ -108,6 +121,11 @@
 		align-items: center;
 		padding-left: 12px;
 		gap: 8px;
+	}
+
+	/* macOS: make room for the native traffic-light controls on the left */
+	.z-titlebar-mac .z-titlebar-left {
+		padding-left: 80px;
 	}
 
 	.z-titlebar-brand {
