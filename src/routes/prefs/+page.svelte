@@ -730,11 +730,7 @@
 										: i18nState.locale && m.prefs_custom_bgMedia_pick()}
 							</Button>
 							{#if customBgState.media}
-								<Button
-									variant="ghost"
-									disabled={mediaUploading}
-									onclick={() => clearCustomBg()}
-								>
+								<Button variant="ghost" disabled={mediaUploading} onclick={() => clearCustomBg()}>
 									{#snippet icon()}<Icon icon="mdi:delete" />{/snippet}
 									{i18nState.locale && m.prefs_custom_bgMedia_clear()}
 								</Button>
@@ -745,20 +741,12 @@
 					{#if customBgState.media}
 						<div class="z-custom-media-preview">
 							{#if customBgState.media.kind === 'video'}
-								<video
-									src={customBgState.media.url}
-									autoplay
-									loop
-									muted
-									playsinline
-								></video>
+								<video src={customBgState.media.url} autoplay loop muted playsinline></video>
 							{:else}
 								<img src={customBgState.media.url} alt="" />
 							{/if}
 							<span class="z-custom-media-kind">
-								<Icon
-									icon={customBgState.media.kind === 'video' ? 'mdi:video' : 'mdi:image'}
-								/>
+								<Icon icon={customBgState.media.kind === 'video' ? 'mdi:video' : 'mdi:image'} />
 								{customBgState.media.kind}
 							</span>
 						</div>

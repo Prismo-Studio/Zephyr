@@ -120,15 +120,11 @@
 
 		{#if pageSize !== undefined && pageSizeChoices && onChangePageSize}
 			<div class="z-sort-wrapper">
-				<Tooltip
-					text={i18nState.locale && m.mods_pageSize_label()}
-					position="bottom"
-					delay={200}
-				>
+				<Tooltip text={i18nState.locale && m.mods_pageSize_label()} position="bottom" delay={200}>
 					<button
-					class="z-sort-trigger z-sort-trigger-solo"
-					onclick={() => (pageSizeOpen = !pageSizeOpen)}
-				>
+						class="z-sort-trigger z-sort-trigger-solo"
+						onclick={() => (pageSizeOpen = !pageSizeOpen)}
+					>
 						<Icon icon="mdi:format-list-numbered" />
 						<span>{pageSize}</span>
 						<Icon icon="mdi:chevron-down" class="z-sort-chevron {pageSizeOpen ? 'open' : ''}" />

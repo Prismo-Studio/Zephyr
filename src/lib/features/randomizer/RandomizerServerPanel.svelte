@@ -98,10 +98,30 @@
 				{
 					name: 'Archipelago patch',
 					extensions: [
-						'apemerald', 'apfirered', 'apleafgreen', 'appkmnrb', 'appkmnye',
-						'apcrystal', 'apgold', 'apsilver', 'apsms', 'apmw', 'apsmz3',
-						'aplttp', 'apz3', 'apdkc3', 'apkdl3', 'apeb', 'apsoe', 'apzl',
-						'aptloz', 'aptloz2', 'aptunic', 'apladx', 'aposrs', 'apterraria'
+						'apemerald',
+						'apfirered',
+						'apleafgreen',
+						'appkmnrb',
+						'appkmnye',
+						'apcrystal',
+						'apgold',
+						'apsilver',
+						'apsms',
+						'apmw',
+						'apsmz3',
+						'aplttp',
+						'apz3',
+						'apdkc3',
+						'apkdl3',
+						'apeb',
+						'apsoe',
+						'apzl',
+						'aptloz',
+						'aptloz2',
+						'aptunic',
+						'apladx',
+						'aposrs',
+						'apterraria'
 					]
 				},
 				{ name: 'All files', extensions: ['*'] }
