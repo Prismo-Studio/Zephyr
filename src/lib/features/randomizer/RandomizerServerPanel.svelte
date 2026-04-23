@@ -48,7 +48,7 @@
 
 	// --- Remote server state ---
 	let hostMode: 'local' | 'remote' = $state('remote');
-	let remote: api.RemoteStatus | null = $state(null);
+	let remoteRoom: api.ArchipelagoGgRoom | null = $state(null);
 	let uploading = $state(false);
 	let remoteStarting = $state(false);
 
@@ -185,15 +185,14 @@
 
 	onMount(() => {
 		refreshAll();
-		refreshRemote();
 		pollHandle = setInterval(() => {
 			api.serverStatus().then((s) => (server = s));
-			refreshRemote();
 		}, 5000);
 	});
 
 	onDestroy(() => {
 		if (pollHandle) clearInterval(pollHandle);
+		stopPortPoll();
 	});
 
 	async function generate() {
@@ -234,18 +233,65 @@
 
 	let remoteLog: string[] = $state([]);
 
+	let portPollHandle: ReturnType<typeof setInterval> | null = null;
+
+	function stopPortPoll() {
+		if (portPollHandle) {
+			clearInterval(portPollHandle);
+			portPollHandle = null;
+		}
+	}
+
+	function startPortPoll(roomId: string) {
+		stopPortPoll();
+		let attempts = 0;
+		const maxAttempts = 30;
+		portPollHandle = setInterval(async () => {
+			attempts += 1;
+			try {
+				const info = await api.archipelagoGgRoomInfo(roomId);
+				if (remoteRoom && remoteRoom.room_id === roomId) {
+					let changed = false;
+					if (info.port > 0 && remoteRoom.port !== info.port) {
+						remoteRoom = { ...remoteRoom, port: info.port };
+						remoteLog = [...remoteLog, `Connect at: ${remoteRoom.host}:${info.port}`];
+						changed = true;
+					}
+					if (info.tracker_url && remoteRoom.tracker_url !== info.tracker_url) {
+						remoteRoom = { ...remoteRoom, tracker_url: info.tracker_url };
+						changed = true;
+					}
+					if (changed && remoteRoom.port > 0 && remoteRoom.tracker_url) {
+						stopPortPoll();
+						return;
+					}
+				}
+			} catch {
+				// ignore polling errors
+			}
+			if (attempts >= maxAttempts) {
+				stopPortPoll();
+			}
+		}, 2000);
+	}
+
 	async function uploadAndStartRemote() {
 		if (!selectedSeed) return;
+		stopPortPoll();
 		uploading = true;
+		remoteStarting = true;
 		remoteLog = [];
 		try {
-			remoteLog.push(`Uploading ${selectedSeed.split(/[/\\]/).pop()}...`);
-			const result = await api.remoteUploadSeed(selectedSeed);
-			remoteLog.push(`Uploaded: ${result.uploaded}`);
-			remoteStarting = true;
-			remoteLog.push('Starting remote server...');
-			remote = await api.remoteStart(result.uploaded);
-			remoteLog.push(remote.running ? 'Server started!' : 'Server failed to start');
+			remoteLog.push(`Uploading ${selectedSeed.split(/[/\\]/).pop()} to archipelago.gg...`);
+			const room = await api.archipelagoGgHost(selectedSeed);
+			remoteRoom = room;
+			remoteLog.push(`Room created: ${room.room_url}`);
+			if (room.port > 0) {
+				remoteLog.push(`Connect at: ${room.host}:${room.port}`);
+			} else {
+				remoteLog.push('Waiting for port assignment...');
+				startPortPoll(room.room_id);
+			}
 		} catch (e: any) {
 			remoteLog.push(`Error: ${e?.message || e}`);
 		} finally {
@@ -254,17 +300,10 @@
 		}
 	}
 
-	async function stopRemote() {
-		remote = await api.remoteStop();
-	}
-
-	async function refreshRemote() {
-		try {
-			const status = await api.remoteStatus();
-			remote = status;
-		} catch {
-			// Don't reset remote state on network error — keep last known state
-		}
+	function clearRemoteRoom() {
+		stopPortPoll();
+		remoteRoom = null;
+		remoteLog = [];
 	}
 
 	async function startHost() {
@@ -726,15 +765,16 @@
 
 				{#if hostMode === 'remote'}
 					<RemoteServerPanel
-						{remote}
+						{remoteRoom}
 						{selectedSeed}
 						{uploading}
 						{remoteStarting}
 						{remoteLog}
 						{copiedKey}
-						onCopyAddr={() => copyText('nozomi.proxy.rlwy.net:45465', 'addr')}
+						onCopyAddr={(text, key) => copyText(text, key)}
 						onCopyLog={() => copyText(remoteLog.join('\n'), 'remote')}
 						onUploadAndStart={uploadAndStartRemote}
+						onClearRoom={clearRemoteRoom}
 					/>
 				{:else}
 					{#if server?.running}

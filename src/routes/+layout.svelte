@@ -234,6 +234,20 @@
 			games.refresh().catch(() => {});
 			return;
 		}
+		// Ctrl+Left / Ctrl+Right to cycle between profiles, except when the
+		// focus is in an editable field (let caret navigation work there).
+		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey && !evt.metaKey) {
+			if (evt.key === 'ArrowLeft' || evt.key === 'ArrowRight') {
+				const target = evt.target as HTMLElement | null;
+				const tag = target?.tagName;
+				const editable = tag === 'INPUT' || tag === 'TEXTAREA' || !!target?.isContentEditable;
+				if (!editable) {
+					evt.preventDefault();
+					profiles.cycle(evt.key === 'ArrowRight' ? 1 : -1).catch(() => {});
+					return;
+				}
+			}
+		}
 		// Ctrl+=/Ctrl++ to increase DPI scale, Ctrl+- to decrease. Matches browser zoom shortcuts.
 		if (evt.ctrlKey && !evt.altKey) {
 			const isPlus = evt.key === '=' || evt.key === '+';

@@ -46,6 +46,17 @@ class ProfilesState {
 	setActive = async (index: number) => {
 		await api.profile.setActive(index);
 	};
+
+	cycle = async (delta: 1 | -1) => {
+		if (this.list.length < 2) return;
+		const currentIdx = this.list.findIndex((p) => p.id === this.activeId);
+		if (currentIdx === -1) {
+			await api.profile.setActive(0);
+			return;
+		}
+		const next = (currentIdx + delta + this.list.length) % this.list.length;
+		await api.profile.setActive(next);
+	};
 }
 
 const profiles = new ProfilesState();

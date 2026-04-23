@@ -142,28 +142,236 @@ pub fn read_file_base64(path: String) -> Result<String> {
     Ok(base64::engine::general_purpose::STANDARD.encode(&bytes))
 }
 
-#[command]
-pub async fn remote_upload_seed(path: String, remote_url: String) -> Result<String> {
-    let bytes = std::fs::read(&path)
-        .map_err(|e| eyre::eyre!("read {path}: {e}"))?;
+#[derive(serde::Serialize)]
+pub struct ArchipelagoGgRoom {
+    pub room_id: String,
+    pub room_url: String,
+    pub tracker_url: Option<String>,
+    pub host: String,
+    pub port: u16,
+}
+
+async fn archipelago_gg_host_inner(path: String) -> eyre::Result<ArchipelagoGgRoom> {
+    use eyre::{eyre, Context};
+
+    let bytes = std::fs::read(&path).with_context(|| format!("read {path}"))?;
     let file_name = std::path::Path::new(&path)
         .file_name()
         .and_then(|s| s.to_str())
         .unwrap_or("seed.archipelago")
         .to_string();
 
-    let client = reqwest::Client::new();
+    let client = reqwest::Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .user_agent("Zephyr/1 (archipelago.gg-client)")
+        .build()
+        .context("build http client")?;
+
+    let part = reqwest::multipart::Part::bytes(bytes)
+        .file_name(file_name)
+        .mime_str("application/zip")
+        .context("mime")?;
+    let form = reqwest::multipart::Form::new().part("file", part);
+
     let resp = client
-        .post(format!("{remote_url}/upload"))
-        .header("Content-Type", "application/octet-stream")
-        .header("X-Filename", &file_name)
-        .body(bytes)
+        .post("https://archipelago.gg/uploads")
+        .multipart(form)
         .send()
         .await
-        .map_err(|e| eyre::eyre!("upload failed: {e}"))?;
+        .context("upload request")?;
 
-    let body = resp.text().await.map_err(|e| eyre::eyre!("read response: {e}"))?;
-    Ok(body)
+    if !resp.status().is_redirection() && !resp.status().is_success() {
+        let status = resp.status();
+        let body = resp.text().await.unwrap_or_default();
+        return Err(eyre!("archipelago.gg upload failed: HTTP {status}\n{body}"));
+    }
+
+    let upload_location = resp
+        .headers()
+        .get("location")
+        .and_then(|v| v.to_str().ok())
+        .ok_or_else(|| eyre!("archipelago.gg upload: missing Location header"))?
+        .to_string();
+
+    let seed_id = upload_location
+        .trim_end_matches('/')
+        .rsplit('/')
+        .next()
+        .ok_or_else(|| eyre!("cannot parse seed id from {upload_location}"))?
+        .to_string();
+
+    let resp = client
+        .get(format!("https://archipelago.gg/new_room/{seed_id}"))
+        .send()
+        .await
+        .context("new_room request")?;
+
+    if !resp.status().is_redirection() && !resp.status().is_success() {
+        let status = resp.status();
+        return Err(eyre!("archipelago.gg new_room failed: HTTP {status}"));
+    }
+
+    let room_location = resp
+        .headers()
+        .get("location")
+        .and_then(|v| v.to_str().ok())
+        .ok_or_else(|| eyre!("archipelago.gg new_room: missing Location header"))?
+        .to_string();
+
+    let room_id = room_location
+        .trim_end_matches('/')
+        .rsplit('/')
+        .next()
+        .ok_or_else(|| eyre!("cannot parse room id from {room_location}"))?
+        .to_string();
+
+    let (port, tracker_url) = fetch_room_details(&client, &room_id).await;
+
+    Ok(ArchipelagoGgRoom {
+        room_url: format!("https://archipelago.gg/room/{room_id}"),
+        tracker_url,
+        host: "archipelago.gg".to_string(),
+        port: port.unwrap_or(0),
+        room_id,
+    })
+}
+
+async fn fetch_room_details(
+    client: &reqwest::Client,
+    room_id: &str,
+) -> (Option<u16>, Option<String>) {
+    let mut port = fetch_port_via_api(client, room_id).await;
+    let mut tracker_url: Option<String> = None;
+
+    for attempt in 0..2 {
+        if attempt > 0 {
+            tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+        }
+        let Ok(resp) = client
+            .get(format!("https://archipelago.gg/room/{room_id}"))
+            .send()
+            .await
+        else {
+            continue;
+        };
+        let Ok(html) = resp.text().await else {
+            continue;
+        };
+        if port.is_none() {
+            port = extract_port_from_html(&html);
+        }
+        if tracker_url.is_none() {
+            tracker_url = extract_tracker_url_from_html(&html);
+        }
+        if port.is_some() && tracker_url.is_some() {
+            break;
+        }
+    }
+
+    (port, tracker_url)
+}
+
+fn extract_tracker_url_from_html(html: &str) -> Option<String> {
+    for needle in &["/tracker/", "href=\"/tracker/", "href='/tracker/"] {
+        if let Some(idx) = html.find(needle) {
+            let start = idx + needle.len() - "/tracker/".len() + 1;
+            let rest = &html[start..];
+            let tail: String = rest
+                .chars()
+                .take_while(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | '/'))
+                .collect();
+            if tail.starts_with("tracker/") && tail.len() > "tracker/".len() + 4 {
+                return Some(format!("https://archipelago.gg/{tail}"));
+            }
+        }
+    }
+    None
+}
+
+async fn fetch_port_via_api(client: &reqwest::Client, room_id: &str) -> Option<u16> {
+    let resp = client
+        .get(format!("https://archipelago.gg/api/room_status/{room_id}"))
+        .send()
+        .await
+        .ok()?;
+    if !resp.status().is_success() {
+        return None;
+    }
+    let json: serde_json::Value = resp.json().await.ok()?;
+    json.get("last_port")
+        .and_then(|v| v.as_u64())
+        .or_else(|| json.get("port").and_then(|v| v.as_u64()))
+        .and_then(|n| u16::try_from(n).ok())
+        .filter(|p| *p > 0)
+}
+
+fn extract_port_from_html(html: &str) -> Option<u16> {
+    let needles = [
+        "archipelago.gg:",
+        "archipelago.gg</a>:",
+        "archipelago.gg</code>:",
+        "archipelago.gg</strong>:",
+        "archipelago.gg</span>:",
+        "\"last_port\":",
+        "\"port\":",
+        "last_port=",
+    ];
+    for needle in &needles {
+        if let Some(idx) = html.find(needle) {
+            let rest = &html[idx + needle.len()..];
+            let digits: String = rest
+                .chars()
+                .skip_while(|c| !c.is_ascii_digit())
+                .take_while(|c| c.is_ascii_digit())
+                .collect();
+            if let Ok(port) = digits.parse::<u16>() {
+                if port >= 1024 {
+                    return Some(port);
+                }
+            }
+        }
+    }
+    None
+}
+
+#[command]
+pub async fn archipelago_gg_host(path: String) -> Result<ArchipelagoGgRoom> {
+    Ok(archipelago_gg_host_inner(path).await?)
+}
+
+#[derive(serde::Serialize)]
+pub struct ArchipelagoGgRoomInfo {
+    pub port: u16,
+    pub tracker_url: Option<String>,
+}
+
+#[command]
+pub async fn archipelago_gg_room_info(room_id: String) -> Result<ArchipelagoGgRoomInfo> {
+    let client = reqwest::Client::builder()
+        .user_agent("Zephyr/1 (archipelago.gg-client)")
+        .build()
+        .map_err(|e| eyre::eyre!("build client: {e}"))?;
+
+    let mut port = fetch_port_via_api(&client, &room_id).await;
+    let html = if let Ok(resp) = client
+        .get(format!("https://archipelago.gg/room/{room_id}"))
+        .send()
+        .await
+    {
+        resp.text().await.ok()
+    } else {
+        None
+    };
+
+    if port.is_none() {
+        port = html.as_deref().and_then(extract_port_from_html);
+    }
+    let tracker_url = html.as_deref().and_then(extract_tracker_url_from_html);
+
+    Ok(ArchipelagoGgRoomInfo {
+        port: port.unwrap_or(0),
+        tracker_url,
+    })
 }
 
 // --- Custom apworlds ---
@@ -271,21 +479,3 @@ pub fn remove_runtime(app: AppHandle) -> Result<()> {
     Ok(())
 }
 
-#[command]
-pub async fn remote_request(remote_url: String, endpoint: String, method: String, body: Option<String>) -> Result<String> {
-    let client = reqwest::Client::new();
-    let url = format!("{remote_url}{endpoint}");
-    let req = match method.as_str() {
-        "POST" => {
-            let mut r = client.post(&url);
-            if let Some(b) = body {
-                r = r.header("Content-Type", "application/json").body(b);
-            }
-            r
-        }
-        _ => client.get(&url),
-    };
-    let resp = req.send().await.map_err(|e| eyre::eyre!("request failed: {e}"))?;
-    let text = resp.text().await.map_err(|e| eyre::eyre!("read response: {e}"))?;
-    Ok(text)
-}

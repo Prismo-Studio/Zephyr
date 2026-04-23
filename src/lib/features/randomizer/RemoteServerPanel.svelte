@@ -1,24 +1,26 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import { open as openExternal } from '@tauri-apps/plugin-shell';
 	import * as api from './api';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { m } from '$lib/paraglide/messages';
 
 	type Props = {
-		remote: api.RemoteStatus | null;
+		remoteRoom: api.ArchipelagoGgRoom | null;
 		selectedSeed: string | null;
 		uploading: boolean;
 		remoteStarting: boolean;
 		remoteLog: string[];
 		copiedKey: string | null;
-		onCopyAddr: () => void;
+		onCopyAddr: (text: string, key: string) => void;
 		onCopyLog: () => void;
 		onUploadAndStart: () => void;
+		onClearRoom: () => void;
 	};
 
 	const {
-		remote,
+		remoteRoom,
 		selectedSeed,
 		uploading,
 		remoteStarting,
@@ -26,30 +28,80 @@
 		copiedKey,
 		onCopyAddr,
 		onCopyLog,
-		onUploadAndStart
+		onUploadAndStart,
+		onClearRoom
 	}: Props = $props();
 
-	const REMOTE_ADDRESS = 'nozomi.proxy.rlwy.net:45465';
+	function openUrl(url: string) {
+		openExternal(url).catch(() => {});
+	}
 </script>
 
 <div class="rdz-remote-host">
-	{#if remote?.running}
+	{#if remoteRoom}
 		<div class="rdz-running-line">
 			<span class="rdz-live-dot"></span>
 			<span>{i18nState.locale && m.randomizer_running()}</span>
-			<code>{remote.seed}</code>
 		</div>
-		<button class="rdz-conn-card" onclick={onCopyAddr}>
-			<span class="rdz-label"
-				><Icon icon="mdi:cloud" /> {i18nState.locale && m.randomizer_connectAddress()}</span
+
+		{#if remoteRoom.port > 0}
+			<button
+				class="rdz-conn-card"
+				onclick={() => onCopyAddr(`${remoteRoom.host}:${remoteRoom.port}`, 'addr')}
 			>
-			<code>{REMOTE_ADDRESS}</code>
-			<small
-				>{copiedKey === 'addr'
+				<span class="rdz-label">
+					<Icon icon="mdi:cloud" />
+					{i18nState.locale && m.randomizer_connectAddress()}
+				</span>
+				<code>{remoteRoom.host}:{remoteRoom.port}</code>
+				<small>
+					{copiedKey === 'addr'
+						? i18nState.locale && m.randomizer_copiedExcl()
+						: i18nState.locale && m.randomizer_clickToCopy()}
+				</small>
+			</button>
+		{:else}
+			<div class="rdz-conn-card rdz-conn-pending">
+				<span class="rdz-label">
+					<Icon icon="mdi:cloud" />
+					{i18nState.locale && m.randomizer_connectAddress()}
+				</span>
+				<div class="rdz-pending-line">
+					<Icon icon="mdi:loading" class="rdz-spin" />
+					<span>{i18nState.locale && m.randomizer_waitingPort()}</span>
+				</div>
+			</div>
+		{/if}
+
+		<button class="rdz-conn-card" onclick={() => onCopyAddr(remoteRoom.room_url, 'room')}>
+			<span class="rdz-label">
+				<Icon icon="mdi:link-variant" />
+				{i18nState.locale && m.randomizer_roomUrl()}
+			</span>
+			<code>{remoteRoom.room_url}</code>
+			<small>
+				{copiedKey === 'room'
 					? i18nState.locale && m.randomizer_copiedExcl()
-					: i18nState.locale && m.randomizer_clickToCopy()}</small
-			>
+					: i18nState.locale && m.randomizer_clickToCopy()}
+			</small>
 		</button>
+
+		<div class="rdz-remote-actions">
+			<Button variant="ghost" onclick={() => openUrl(remoteRoom.room_url)}>
+				{#snippet icon()}<Icon icon="mdi:open-in-new" />{/snippet}
+				{i18nState.locale && m.randomizer_openRoom()}
+			</Button>
+			{#if remoteRoom.tracker_url}
+				<Button variant="ghost" onclick={() => openUrl(remoteRoom.tracker_url!)}>
+					{#snippet icon()}<Icon icon="mdi:chart-line" />{/snippet}
+					Tracker
+				</Button>
+			{/if}
+			<Button variant="ghost" onclick={onClearRoom}>
+				{#snippet icon()}<Icon icon="mdi:close" />{/snippet}
+				{i18nState.locale && m.randomizer_clearRoom()}
+			</Button>
+		</div>
 	{:else}
 		<p class="rdz-muted">
 			{#if !selectedSeed}
@@ -103,12 +155,11 @@
 
 	.rdz-running-line {
 		display: flex;
-		align-items: flex-start;
+		align-items: center;
 		gap: 8px;
 		font-size: 12px;
 		color: var(--text-secondary);
 		padding: 2px 2px 6px;
-		flex-wrap: wrap;
 	}
 
 	.rdz-live-dot {
@@ -117,25 +168,7 @@
 		border-radius: 50%;
 		background: var(--success, var(--accent-400));
 		box-shadow: 0 0 6px color-mix(in srgb, var(--success, var(--accent-400)) 50%, transparent);
-		margin-top: 4px;
 		flex-shrink: 0;
-	}
-
-	.rdz-running-line > span:not(.rdz-live-dot) {
-		flex-shrink: 0;
-	}
-
-	.rdz-running-line code {
-		font-family: 'JetBrains Mono', ui-monospace, monospace;
-		color: var(--text-primary);
-		background: transparent;
-		padding: 0;
-		font-size: 12px;
-		flex: 1 1 100%;
-		min-width: 0;
-		overflow-wrap: anywhere;
-		word-break: break-all;
-		line-height: 1.4;
 	}
 
 	.rdz-conn-card {
@@ -176,6 +209,34 @@
 		line-height: 1.3;
 	}
 
+	.rdz-conn-pending {
+		cursor: default;
+		opacity: 0.75;
+	}
+
+	.rdz-conn-pending:hover {
+		border-color: var(--border-accent);
+		box-shadow: none;
+	}
+
+	.rdz-pending-line {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: 12px;
+		color: var(--text-muted);
+	}
+
+	:global(.rdz-spin) {
+		animation: rdz-spin 1s linear infinite;
+	}
+
+	@keyframes rdz-spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
 	.rdz-label {
 		display: inline-flex;
 		align-items: center;
@@ -189,6 +250,12 @@
 
 	.rdz-label :global(svg) {
 		font-size: 11px;
+	}
+
+	.rdz-remote-actions {
+		display: flex;
+		gap: var(--space-xs);
+		flex-wrap: wrap;
 	}
 
 	.rdz-muted {
