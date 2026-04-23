@@ -304,6 +304,7 @@ pub fn run() {
             randomizer::commands::clear_seeds,
             randomizer::commands::read_file_base64,
             randomizer::commands::archipelago_gg_host,
+            randomizer::commands::archipelago_gg_room_info,
             randomizer::commands::list_custom_apworlds,
             randomizer::commands::install_apworld_from_path,
             randomizer::commands::install_apworld_from_bytes,

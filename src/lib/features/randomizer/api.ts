@@ -114,11 +114,19 @@ export const removeRuntime = () => invoke('remove_runtime');
 export type ArchipelagoGgRoom = {
 	room_id: string;
 	room_url: string;
-	tracker_url: string;
+	tracker_url: string | null;
 	host: string;
 	port: number;
 };
 
 export function archipelagoGgHost(path: string): Promise<ArchipelagoGgRoom> {
 	return invoke<ArchipelagoGgRoom>('archipelago_gg_host', { path });
+}
+
+export function archipelagoGgRoomInfo(
+	roomId: string
+): Promise<{ port: number; tracker_url: string | null }> {
+	return invoke<{ port: number; tracker_url: string | null }>('archipelago_gg_room_info', {
+		roomId
+	});
 }

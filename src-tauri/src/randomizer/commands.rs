@@ -146,7 +146,7 @@ pub fn read_file_base64(path: String) -> Result<String> {
 pub struct ArchipelagoGgRoom {
     pub room_id: String,
     pub room_url: String,
-    pub tracker_url: String,
+    pub tracker_url: Option<String>,
     pub host: String,
     pub port: u16,
 }
@@ -201,7 +201,7 @@ async fn archipelago_gg_host_inner(path: String) -> eyre::Result<ArchipelagoGgRo
         .to_string();
 
     let resp = client
-        .post(format!("https://archipelago.gg/new_room/{seed_id}"))
+        .get(format!("https://archipelago.gg/new_room/{seed_id}"))
         .send()
         .await
         .context("new_room request")?;
@@ -225,36 +225,153 @@ async fn archipelago_gg_host_inner(path: String) -> eyre::Result<ArchipelagoGgRo
         .ok_or_else(|| eyre!("cannot parse room id from {room_location}"))?
         .to_string();
 
-    let room_page = client
-        .get(format!("https://archipelago.gg/room/{room_id}"))
-        .send()
-        .await
-        .context("fetch room page")?
-        .text()
-        .await
-        .context("read room page")?;
-
-    let port = room_page
-        .split("archipelago.gg:")
-        .nth(1)
-        .and_then(|rest| {
-            let digits: String = rest.chars().take_while(|c| c.is_ascii_digit()).collect();
-            digits.parse::<u16>().ok()
-        })
-        .unwrap_or(0);
+    let (port, tracker_url) = fetch_room_details(&client, &room_id).await;
 
     Ok(ArchipelagoGgRoom {
         room_url: format!("https://archipelago.gg/room/{room_id}"),
-        tracker_url: format!("https://archipelago.gg/tracker/{room_id}"),
+        tracker_url,
         host: "archipelago.gg".to_string(),
-        port,
+        port: port.unwrap_or(0),
         room_id,
     })
+}
+
+async fn fetch_room_details(
+    client: &reqwest::Client,
+    room_id: &str,
+) -> (Option<u16>, Option<String>) {
+    let mut port = fetch_port_via_api(client, room_id).await;
+    let mut tracker_url: Option<String> = None;
+
+    for attempt in 0..2 {
+        if attempt > 0 {
+            tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+        }
+        let Ok(resp) = client
+            .get(format!("https://archipelago.gg/room/{room_id}"))
+            .send()
+            .await
+        else {
+            continue;
+        };
+        let Ok(html) = resp.text().await else {
+            continue;
+        };
+        if port.is_none() {
+            port = extract_port_from_html(&html);
+        }
+        if tracker_url.is_none() {
+            tracker_url = extract_tracker_url_from_html(&html);
+        }
+        if port.is_some() && tracker_url.is_some() {
+            break;
+        }
+    }
+
+    (port, tracker_url)
+}
+
+fn extract_tracker_url_from_html(html: &str) -> Option<String> {
+    for needle in &["/tracker/", "href=\"/tracker/", "href='/tracker/"] {
+        if let Some(idx) = html.find(needle) {
+            let start = idx + needle.len() - "/tracker/".len() + 1;
+            let rest = &html[start..];
+            let tail: String = rest
+                .chars()
+                .take_while(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | '/'))
+                .collect();
+            if tail.starts_with("tracker/") && tail.len() > "tracker/".len() + 4 {
+                return Some(format!("https://archipelago.gg/{tail}"));
+            }
+        }
+    }
+    None
+}
+
+async fn fetch_port_via_api(client: &reqwest::Client, room_id: &str) -> Option<u16> {
+    let resp = client
+        .get(format!("https://archipelago.gg/api/room_status/{room_id}"))
+        .send()
+        .await
+        .ok()?;
+    if !resp.status().is_success() {
+        return None;
+    }
+    let json: serde_json::Value = resp.json().await.ok()?;
+    json.get("last_port")
+        .and_then(|v| v.as_u64())
+        .or_else(|| json.get("port").and_then(|v| v.as_u64()))
+        .and_then(|n| u16::try_from(n).ok())
+        .filter(|p| *p > 0)
+}
+
+fn extract_port_from_html(html: &str) -> Option<u16> {
+    let needles = [
+        "archipelago.gg:",
+        "archipelago.gg</a>:",
+        "archipelago.gg</code>:",
+        "archipelago.gg</strong>:",
+        "archipelago.gg</span>:",
+        "\"last_port\":",
+        "\"port\":",
+        "last_port=",
+    ];
+    for needle in &needles {
+        if let Some(idx) = html.find(needle) {
+            let rest = &html[idx + needle.len()..];
+            let digits: String = rest
+                .chars()
+                .skip_while(|c| !c.is_ascii_digit())
+                .take_while(|c| c.is_ascii_digit())
+                .collect();
+            if let Ok(port) = digits.parse::<u16>() {
+                if port >= 1024 {
+                    return Some(port);
+                }
+            }
+        }
+    }
+    None
 }
 
 #[command]
 pub async fn archipelago_gg_host(path: String) -> Result<ArchipelagoGgRoom> {
     Ok(archipelago_gg_host_inner(path).await?)
+}
+
+#[derive(serde::Serialize)]
+pub struct ArchipelagoGgRoomInfo {
+    pub port: u16,
+    pub tracker_url: Option<String>,
+}
+
+#[command]
+pub async fn archipelago_gg_room_info(room_id: String) -> Result<ArchipelagoGgRoomInfo> {
+    let client = reqwest::Client::builder()
+        .user_agent("Zephyr/1 (archipelago.gg-client)")
+        .build()
+        .map_err(|e| eyre::eyre!("build client: {e}"))?;
+
+    let mut port = fetch_port_via_api(&client, &room_id).await;
+    let html = if let Ok(resp) = client
+        .get(format!("https://archipelago.gg/room/{room_id}"))
+        .send()
+        .await
+    {
+        resp.text().await.ok()
+    } else {
+        None
+    };
+
+    if port.is_none() {
+        port = html.as_deref().and_then(extract_port_from_html);
+    }
+    let tracker_url = html.as_deref().and_then(extract_tracker_url_from_html);
+
+    Ok(ArchipelagoGgRoomInfo {
+        port: port.unwrap_or(0),
+        tracker_url,
+    })
 }
 
 // --- Custom apworlds ---

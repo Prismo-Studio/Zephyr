@@ -192,6 +192,7 @@
 
 	onDestroy(() => {
 		if (pollHandle) clearInterval(pollHandle);
+		stopPortPoll();
 	});
 
 	async function generate() {
@@ -232,8 +233,51 @@
 
 	let remoteLog: string[] = $state([]);
 
+	let portPollHandle: ReturnType<typeof setInterval> | null = null;
+
+	function stopPortPoll() {
+		if (portPollHandle) {
+			clearInterval(portPollHandle);
+			portPollHandle = null;
+		}
+	}
+
+	function startPortPoll(roomId: string) {
+		stopPortPoll();
+		let attempts = 0;
+		const maxAttempts = 30;
+		portPollHandle = setInterval(async () => {
+			attempts += 1;
+			try {
+				const info = await api.archipelagoGgRoomInfo(roomId);
+				if (remoteRoom && remoteRoom.room_id === roomId) {
+					let changed = false;
+					if (info.port > 0 && remoteRoom.port !== info.port) {
+						remoteRoom = { ...remoteRoom, port: info.port };
+						remoteLog = [...remoteLog, `Connect at: ${remoteRoom.host}:${info.port}`];
+						changed = true;
+					}
+					if (info.tracker_url && remoteRoom.tracker_url !== info.tracker_url) {
+						remoteRoom = { ...remoteRoom, tracker_url: info.tracker_url };
+						changed = true;
+					}
+					if (changed && remoteRoom.port > 0 && remoteRoom.tracker_url) {
+						stopPortPoll();
+						return;
+					}
+				}
+			} catch {
+				// ignore polling errors
+			}
+			if (attempts >= maxAttempts) {
+				stopPortPoll();
+			}
+		}, 2000);
+	}
+
 	async function uploadAndStartRemote() {
 		if (!selectedSeed) return;
+		stopPortPoll();
 		uploading = true;
 		remoteStarting = true;
 		remoteLog = [];
@@ -245,9 +289,8 @@
 			if (room.port > 0) {
 				remoteLog.push(`Connect at: ${room.host}:${room.port}`);
 			} else {
-				remoteLog.push(
-					'Port not auto-detected. Open the room URL to get the connection info.'
-				);
+				remoteLog.push('Waiting for port assignment...');
+				startPortPoll(room.room_id);
 			}
 		} catch (e: any) {
 			remoteLog.push(`Error: ${e?.message || e}`);
@@ -258,6 +301,7 @@
 	}
 
 	function clearRemoteRoom() {
+		stopPortPoll();
 		remoteRoom = null;
 		remoteLog = [];
 	}

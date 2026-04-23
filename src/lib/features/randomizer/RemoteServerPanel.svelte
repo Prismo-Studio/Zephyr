@@ -60,12 +60,23 @@
 						: i18nState.locale && m.randomizer_clickToCopy()}
 				</small>
 			</button>
+		{:else}
+			<div class="rdz-conn-card rdz-conn-pending">
+				<span class="rdz-label">
+					<Icon icon="mdi:cloud" />
+					{i18nState.locale && m.randomizer_connectAddress()}
+				</span>
+				<div class="rdz-pending-line">
+					<Icon icon="mdi:loading" class="rdz-spin" />
+					<span>{i18nState.locale && m.randomizer_waitingPort()}</span>
+				</div>
+			</div>
 		{/if}
 
 		<button class="rdz-conn-card" onclick={() => onCopyAddr(remoteRoom.room_url, 'room')}>
 			<span class="rdz-label">
 				<Icon icon="mdi:link-variant" />
-				Room URL
+				{i18nState.locale && m.randomizer_roomUrl()}
 			</span>
 			<code>{remoteRoom.room_url}</code>
 			<small>
@@ -78,15 +89,17 @@
 		<div class="rdz-remote-actions">
 			<Button variant="ghost" onclick={() => openUrl(remoteRoom.room_url)}>
 				{#snippet icon()}<Icon icon="mdi:open-in-new" />{/snippet}
-				Open room
+				{i18nState.locale && m.randomizer_openRoom()}
 			</Button>
-			<Button variant="ghost" onclick={() => openUrl(remoteRoom.tracker_url)}>
-				{#snippet icon()}<Icon icon="mdi:chart-line" />{/snippet}
-				Tracker
-			</Button>
+			{#if remoteRoom.tracker_url}
+				<Button variant="ghost" onclick={() => openUrl(remoteRoom.tracker_url!)}>
+					{#snippet icon()}<Icon icon="mdi:chart-line" />{/snippet}
+					Tracker
+				</Button>
+			{/if}
 			<Button variant="ghost" onclick={onClearRoom}>
 				{#snippet icon()}<Icon icon="mdi:close" />{/snippet}
-				Clear
+				{i18nState.locale && m.randomizer_clearRoom()}
 			</Button>
 		</div>
 	{:else}
@@ -194,6 +207,34 @@
 		font-size: 10px;
 		color: var(--text-muted);
 		line-height: 1.3;
+	}
+
+	.rdz-conn-pending {
+		cursor: default;
+		opacity: 0.75;
+	}
+
+	.rdz-conn-pending:hover {
+		border-color: var(--border-accent);
+		box-shadow: none;
+	}
+
+	.rdz-pending-line {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: 12px;
+		color: var(--text-muted);
+	}
+
+	:global(.rdz-spin) {
+		animation: rdz-spin 1s linear infinite;
+	}
+
+	@keyframes rdz-spin {
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.rdz-label {

@@ -45,7 +45,7 @@ fn http_client() -> &'static reqwest::Client {
 
 const MAX_BYTES: usize = 8 * 1024 * 1024;
 
-async fn download_into_cache(app: &AppHandle, url: &str, dest: &PathBuf) -> eyre::Result<()> {
+async fn download_into_cache(_app: &AppHandle, url: &str, dest: &PathBuf) -> eyre::Result<()> {
     debug!("icon-cache: fetching {url}");
     let response = http_client()
         .get(url)
@@ -120,6 +120,7 @@ pub fn clear_icon_cache(app: AppHandle) -> Result<u64> {
     Ok(freed)
 }
 
+#[allow(dead_code)]
 pub fn evict_older_than(app: &AppHandle, max_age: Duration) -> u64 {
     let dir = cache_dir(app);
     if !dir.exists() {
