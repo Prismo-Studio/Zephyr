@@ -142,28 +142,119 @@ pub fn read_file_base64(path: String) -> Result<String> {
     Ok(base64::engine::general_purpose::STANDARD.encode(&bytes))
 }
 
-#[command]
-pub async fn remote_upload_seed(path: String, remote_url: String) -> Result<String> {
-    let bytes = std::fs::read(&path)
-        .map_err(|e| eyre::eyre!("read {path}: {e}"))?;
+#[derive(serde::Serialize)]
+pub struct ArchipelagoGgRoom {
+    pub room_id: String,
+    pub room_url: String,
+    pub tracker_url: String,
+    pub host: String,
+    pub port: u16,
+}
+
+async fn archipelago_gg_host_inner(path: String) -> eyre::Result<ArchipelagoGgRoom> {
+    use eyre::{eyre, Context};
+
+    let bytes = std::fs::read(&path).with_context(|| format!("read {path}"))?;
     let file_name = std::path::Path::new(&path)
         .file_name()
         .and_then(|s| s.to_str())
         .unwrap_or("seed.archipelago")
         .to_string();
 
-    let client = reqwest::Client::new();
+    let client = reqwest::Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .user_agent("Zephyr/1 (archipelago.gg-client)")
+        .build()
+        .context("build http client")?;
+
+    let part = reqwest::multipart::Part::bytes(bytes)
+        .file_name(file_name)
+        .mime_str("application/zip")
+        .context("mime")?;
+    let form = reqwest::multipart::Form::new().part("file", part);
+
     let resp = client
-        .post(format!("{remote_url}/upload"))
-        .header("Content-Type", "application/octet-stream")
-        .header("X-Filename", &file_name)
-        .body(bytes)
+        .post("https://archipelago.gg/uploads")
+        .multipart(form)
         .send()
         .await
-        .map_err(|e| eyre::eyre!("upload failed: {e}"))?;
+        .context("upload request")?;
 
-    let body = resp.text().await.map_err(|e| eyre::eyre!("read response: {e}"))?;
-    Ok(body)
+    if !resp.status().is_redirection() && !resp.status().is_success() {
+        let status = resp.status();
+        let body = resp.text().await.unwrap_or_default();
+        return Err(eyre!("archipelago.gg upload failed: HTTP {status}\n{body}"));
+    }
+
+    let upload_location = resp
+        .headers()
+        .get("location")
+        .and_then(|v| v.to_str().ok())
+        .ok_or_else(|| eyre!("archipelago.gg upload: missing Location header"))?
+        .to_string();
+
+    let seed_id = upload_location
+        .trim_end_matches('/')
+        .rsplit('/')
+        .next()
+        .ok_or_else(|| eyre!("cannot parse seed id from {upload_location}"))?
+        .to_string();
+
+    let resp = client
+        .post(format!("https://archipelago.gg/new_room/{seed_id}"))
+        .send()
+        .await
+        .context("new_room request")?;
+
+    if !resp.status().is_redirection() && !resp.status().is_success() {
+        let status = resp.status();
+        return Err(eyre!("archipelago.gg new_room failed: HTTP {status}"));
+    }
+
+    let room_location = resp
+        .headers()
+        .get("location")
+        .and_then(|v| v.to_str().ok())
+        .ok_or_else(|| eyre!("archipelago.gg new_room: missing Location header"))?
+        .to_string();
+
+    let room_id = room_location
+        .trim_end_matches('/')
+        .rsplit('/')
+        .next()
+        .ok_or_else(|| eyre!("cannot parse room id from {room_location}"))?
+        .to_string();
+
+    let room_page = client
+        .get(format!("https://archipelago.gg/room/{room_id}"))
+        .send()
+        .await
+        .context("fetch room page")?
+        .text()
+        .await
+        .context("read room page")?;
+
+    let port = room_page
+        .split("archipelago.gg:")
+        .nth(1)
+        .and_then(|rest| {
+            let digits: String = rest.chars().take_while(|c| c.is_ascii_digit()).collect();
+            digits.parse::<u16>().ok()
+        })
+        .unwrap_or(0);
+
+    Ok(ArchipelagoGgRoom {
+        room_url: format!("https://archipelago.gg/room/{room_id}"),
+        tracker_url: format!("https://archipelago.gg/tracker/{room_id}"),
+        host: "archipelago.gg".to_string(),
+        port,
+        room_id,
+    })
+}
+
+#[command]
+pub async fn archipelago_gg_host(path: String) -> Result<ArchipelagoGgRoom> {
+    Ok(archipelago_gg_host_inner(path).await?)
 }
 
 // --- Custom apworlds ---
@@ -271,21 +362,3 @@ pub fn remove_runtime(app: AppHandle) -> Result<()> {
     Ok(())
 }
 
-#[command]
-pub async fn remote_request(remote_url: String, endpoint: String, method: String, body: Option<String>) -> Result<String> {
-    let client = reqwest::Client::new();
-    let url = format!("{remote_url}{endpoint}");
-    let req = match method.as_str() {
-        "POST" => {
-            let mut r = client.post(&url);
-            if let Some(b) = body {
-                r = r.header("Content-Type", "application/json").body(b);
-            }
-            r
-        }
-        _ => client.get(&url),
-    };
-    let resp = req.send().await.map_err(|e| eyre::eyre!("request failed: {e}"))?;
-    let text = resp.text().await.map_err(|e| eyre::eyre!("read response: {e}"))?;
-    Ok(text)
-}

@@ -48,7 +48,7 @@
 
 	// --- Remote server state ---
 	let hostMode: 'local' | 'remote' = $state('remote');
-	let remote: api.RemoteStatus | null = $state(null);
+	let remoteRoom: api.ArchipelagoGgRoom | null = $state(null);
 	let uploading = $state(false);
 	let remoteStarting = $state(false);
 
@@ -185,10 +185,8 @@
 
 	onMount(() => {
 		refreshAll();
-		refreshRemote();
 		pollHandle = setInterval(() => {
 			api.serverStatus().then((s) => (server = s));
-			refreshRemote();
 		}, 5000);
 	});
 
@@ -237,15 +235,20 @@
 	async function uploadAndStartRemote() {
 		if (!selectedSeed) return;
 		uploading = true;
+		remoteStarting = true;
 		remoteLog = [];
 		try {
-			remoteLog.push(`Uploading ${selectedSeed.split(/[/\\]/).pop()}...`);
-			const result = await api.remoteUploadSeed(selectedSeed);
-			remoteLog.push(`Uploaded: ${result.uploaded}`);
-			remoteStarting = true;
-			remoteLog.push('Starting remote server...');
-			remote = await api.remoteStart(result.uploaded);
-			remoteLog.push(remote.running ? 'Server started!' : 'Server failed to start');
+			remoteLog.push(`Uploading ${selectedSeed.split(/[/\\]/).pop()} to archipelago.gg...`);
+			const room = await api.archipelagoGgHost(selectedSeed);
+			remoteRoom = room;
+			remoteLog.push(`Room created: ${room.room_url}`);
+			if (room.port > 0) {
+				remoteLog.push(`Connect at: ${room.host}:${room.port}`);
+			} else {
+				remoteLog.push(
+					'Port not auto-detected. Open the room URL to get the connection info.'
+				);
+			}
 		} catch (e: any) {
 			remoteLog.push(`Error: ${e?.message || e}`);
 		} finally {
@@ -254,17 +257,9 @@
 		}
 	}
 
-	async function stopRemote() {
-		remote = await api.remoteStop();
-	}
-
-	async function refreshRemote() {
-		try {
-			const status = await api.remoteStatus();
-			remote = status;
-		} catch {
-			// Don't reset remote state on network error — keep last known state
-		}
+	function clearRemoteRoom() {
+		remoteRoom = null;
+		remoteLog = [];
 	}
 
 	async function startHost() {
@@ -726,15 +721,16 @@
 
 				{#if hostMode === 'remote'}
 					<RemoteServerPanel
-						{remote}
+						{remoteRoom}
 						{selectedSeed}
 						{uploading}
 						{remoteStarting}
 						{remoteLog}
 						{copiedKey}
-						onCopyAddr={() => copyText('nozomi.proxy.rlwy.net:45465', 'addr')}
+						onCopyAddr={(text, key) => copyText(text, key)}
 						onCopyLog={() => copyText(remoteLog.join('\n'), 'remote')}
 						onUploadAndStart={uploadAndStartRemote}
+						onClearRoom={clearRemoteRoom}
 					/>
 				{:else}
 					{#if server?.running}
