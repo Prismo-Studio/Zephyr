@@ -90,6 +90,54 @@ pub fn list_custom_apworlds(app: &AppHandle) -> Result<Vec<CustomApworld>> {
     Ok(out)
 }
 
+/// Walk `folder` recursively and install every `.apworld` file found into
+/// `custom_worlds`. Returns the list of installed records plus the files that
+/// failed (along with their error message).
+pub fn install_from_folder(
+    app: &AppHandle,
+    folder: &Path,
+) -> Result<(Vec<CustomApworld>, Vec<(String, String)>)> {
+    if !folder.is_dir() {
+        bail!("not a directory: {}", folder.display());
+    }
+
+    fn collect(dir: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
+        for entry in fs::read_dir(dir).with_context(|| format!("read {}", dir.display()))? {
+            let entry = entry?;
+            let path = entry.path();
+            if path.is_dir() {
+                collect(&path, out)?;
+            } else if path
+                .extension()
+                .and_then(|s| s.to_str())
+                .map(|s| s.eq_ignore_ascii_case("apworld"))
+                .unwrap_or(false)
+            {
+                out.push(path);
+            }
+        }
+        Ok(())
+    }
+
+    let mut files: Vec<PathBuf> = Vec::new();
+    collect(folder, &mut files)?;
+
+    let mut installed: Vec<CustomApworld> = Vec::new();
+    let mut failed: Vec<(String, String)> = Vec::new();
+    for path in files {
+        let name = path
+            .file_name()
+            .and_then(|s| s.to_str())
+            .unwrap_or("unknown")
+            .to_string();
+        match install_from_path(app, &path) {
+            Ok(rec) => installed.push(rec),
+            Err(err) => failed.push((name, format!("{err:#}"))),
+        }
+    }
+    Ok((installed, failed))
+}
+
 /// Copy a `.apworld` file into the custom_worlds dir. Returns the installed record.
 pub fn install_from_path(app: &AppHandle, src_path: &Path) -> Result<CustomApworld> {
     if !src_path.exists() {

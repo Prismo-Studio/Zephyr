@@ -179,6 +179,7 @@ fn validation_flags_stale_dependency() {
         ],
         presets: vec![],
         meta: GameMeta::default(),
+        items: vec![],
     };
 
     let mut values: HashMap<String, Value> = HashMap::new();
