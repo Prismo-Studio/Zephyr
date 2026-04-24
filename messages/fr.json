@@ -660,6 +660,8 @@
 	"randomizer_quickActions_patchGameDesc": "Choisir un fichier patch et lancer son client",
 	"randomizer_quickActions_console": "Ouvrir la console",
 	"randomizer_quickActions_consoleDesc": "Ouvrir la fenêtre console d'Archipelago",
+	"randomizer_quickActions_refreshSchemas": "Actualiser les schémas",
+	"randomizer_quickActions_refreshSchemasDesc": "Met à jour les options de jeu et les listes d'objets depuis le runtime",
 	"randomizer_quickActions_launchFailed": "Échec du lancement",
 	"modListFilters_filterTooltip": "Filtres",
 	"prefs_window_title": "Fenêtre",

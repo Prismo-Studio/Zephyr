@@ -237,9 +237,40 @@ pub fn checksum(path: &Path) -> io::Result<blake3::Hash> {
 pub fn open_path(path: impl AsRef<Path>) -> Result<()> {
     #[cfg(target_os = "linux")]
     {
-        std::process::Command::new("xdg-open")
-            .arg(path.as_ref())
-            .spawn()
+        let mut cmd = std::process::Command::new("xdg-open");
+        cmd.arg(path.as_ref());
+
+        // When running from an AppImage, Tauri's AppRun sets LD_LIBRARY_PATH
+        // (and related vars) to the bundled libs. xdg-open and its children
+        // (gio, gvfs-open, dbus-launch, ...) inherit these and crash against
+        // the host's system libs — usually silently. Strip them so the spawned
+        // process uses the host system's environment.
+        if std::env::var_os("APPIMAGE").is_some() || std::env::var_os("APPDIR").is_some() {
+            for var in [
+                "LD_LIBRARY_PATH",
+                "LD_PRELOAD",
+                "GTK_PATH",
+                "GTK_EXE_PREFIX",
+                "GTK_DATA_PREFIX",
+                "GTK_IM_MODULE_FILE",
+                "GDK_PIXBUF_MODULE_FILE",
+                "GIO_MODULE_DIR",
+                "GCONV_PATH",
+                "GSETTINGS_SCHEMA_DIR",
+                "FONTCONFIG_PATH",
+                "FONTCONFIG_FILE",
+                "PYTHONHOME",
+                "PYTHONPATH",
+                "PERLLIB",
+                "QT_PLUGIN_PATH",
+                "GST_PLUGIN_PATH",
+                "GST_PLUGIN_SYSTEM_PATH",
+            ] {
+                cmd.env_remove(var);
+            }
+        }
+
+        cmd.spawn()
             .context("failed to open path with xdg-open")?;
     }
     #[cfg(not(target_os = "linux"))]

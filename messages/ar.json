@@ -665,6 +665,8 @@
 	"randomizer_quickActions_patchGameDesc": "اختر ملف تصحيح وشغّل العميل",
 	"randomizer_quickActions_console": "فتح وحدة التحكم",
 	"randomizer_quickActions_consoleDesc": "فتح نافذة وحدة تحكم Archipelago",
+	"randomizer_quickActions_refreshSchemas": "تحديث الـ Schemas",
+	"randomizer_quickActions_refreshSchemasDesc": "تحديث خيارات اللعبة وقوائم العناصر من وقت التشغيل",
 	"randomizer_quickActions_launchFailed": "فشل التشغيل",
 	"modListFilters_filterTooltip": "المرشحات",
 	"prefs_window_title": "النافذة",

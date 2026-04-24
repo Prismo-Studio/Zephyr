@@ -11,6 +11,7 @@ pub enum Value {
     Float(f64),
     String(String),
     List(Vec<Value>),
+    Map(HashMap<String, Value>),
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -119,6 +120,10 @@ pub struct GameSchema {
     pub presets: Vec<Preset>,
     #[serde(default)]
     pub meta: GameMeta,
+    /// All item names for this game, used for start_inventory autocomplete.
+    /// Empty for schemas generated before this field was added.
+    #[serde(default)]
+    pub items: Vec<String>,
 }
 
 /// Lightweight summary for the game catalog.

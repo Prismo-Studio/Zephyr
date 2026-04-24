@@ -637,6 +637,8 @@
 	"randomizer_quickActions_patchGameDesc": "Elige un archivo de parche y abre su cliente",
 	"randomizer_quickActions_console": "Abrir la consola",
 	"randomizer_quickActions_consoleDesc": "Abrir la ventana de consola de Archipelago",
+	"randomizer_quickActions_refreshSchemas": "Actualizar esquemas",
+	"randomizer_quickActions_refreshSchemasDesc": "Actualiza las opciones del juego y las listas de objetos desde el runtime",
 	"randomizer_quickActions_launchFailed": "Error al abrir",
 	"modListFilters_filterTooltip": "Filtros",
 	"modDetails_latest": "Última",

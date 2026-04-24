@@ -402,8 +402,13 @@ pub fn remove_custom_apworld(app: AppHandle, file_name: String) -> Result<()> {
 }
 
 #[command]
-pub fn refresh_apworld_schemas(app: AppHandle) -> Result<RefreshResult> {
-    Ok(apworlds::refresh_schemas(&app)?)
+pub async fn refresh_apworld_schemas(app: AppHandle) -> Result<RefreshResult> {
+    // Offload the blocking Python extraction to a worker thread so the UI
+    // event loop can keep painting the loading overlay spinner.
+    let res = tauri::async_runtime::spawn_blocking(move || apworlds::refresh_schemas(&app))
+        .await
+        .map_err(|e| eyre::eyre!("refresh_apworld_schemas join error: {e}"))?;
+    Ok(res?)
 }
 
 #[command]

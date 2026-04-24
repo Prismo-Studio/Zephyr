@@ -9,6 +9,8 @@
 		class?: string;
 		oninput?: (e: Event & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (e: KeyboardEvent) => void;
+		onfocus?: (e: FocusEvent & { currentTarget: HTMLInputElement }) => void;
+		onblur?: (e: FocusEvent & { currentTarget: HTMLInputElement }) => void;
 		iconLeft?: Snippet;
 		iconRight?: Snippet;
 	};
@@ -21,6 +23,8 @@
 		class: className = '',
 		oninput,
 		onkeydown,
+		onfocus,
+		onblur,
 		iconLeft,
 		iconRight
 	}: Props = $props();
@@ -40,6 +44,8 @@
 		bind:value
 		{oninput}
 		{onkeydown}
+		{onfocus}
+		{onblur}
 	/>
 	{#if iconRight}
 		<span class="z-input-icon right">{@render iconRight()}</span>
