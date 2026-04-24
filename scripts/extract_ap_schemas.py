@@ -274,6 +274,8 @@ def build_schema(world_id: str, world_cls: type) -> dict[str, Any]:
 
     description = first_sentence(world_cls.__doc__) or ""
 
+    item_names = sorted(getattr(world_cls, "item_name_to_id", {}).keys())
+
     return {
         "id": world_id,
         "name": getattr(world_cls, "game", world_id),
@@ -287,6 +289,7 @@ def build_schema(world_id: str, world_cls: type) -> dict[str, Any]:
         },
         "options": options,
         "presets": [],
+        "items": item_names,
     }
 
 

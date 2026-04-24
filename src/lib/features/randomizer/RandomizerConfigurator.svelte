@@ -9,6 +9,7 @@
 	import { randomizerStore, dependenciesSatisfied } from './randomizer.store.svelte';
 	import { CATEGORY_ICONS, CATEGORY_LABELS, CATEGORY_ORDER, type OptionDef } from './types';
 	import RandomizerOptionField from './RandomizerOptionField.svelte';
+	import StartInventoryEditor from './StartInventoryEditor.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
@@ -256,6 +257,7 @@
 					</section>
 				{/if}
 			{/each}
+			<StartInventoryEditor />
 		</div>
 
 		<footer class="rdz-config-footer">

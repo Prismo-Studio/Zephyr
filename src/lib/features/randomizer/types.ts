@@ -1,6 +1,6 @@
 // Mirror of src-tauri/src/randomizer/types.rs
 
-export type Value = boolean | number | string | Value[];
+export type Value = boolean | number | string | Value[] | { [key: string]: Value };
 
 export type Choice = {
 	value: string;
@@ -57,6 +57,8 @@ export type GameSchema = {
 	options: OptionDef[];
 	presets: Preset[];
 	meta: GameMeta;
+	/** Item names for start_inventory autocomplete. Empty on old schemas. */
+	items: string[];
 };
 
 export type GameSummary = {

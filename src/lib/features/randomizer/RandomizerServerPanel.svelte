@@ -10,7 +10,7 @@
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import * as api from './api';
 	import type { GenerateOutcome, PlayerFile, PythonStatus, SeedFile, ServerStatus } from './types';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, tick } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
@@ -74,6 +74,7 @@
 	let quickActionsOpen = $state(false);
 	let quickActionsEl: HTMLDivElement | null = $state(null);
 	let quickActionsBusy = $state(false);
+	let schemasRefreshing = $state(false);
 
 	function closeQuickActions(e: MouseEvent) {
 		if (!quickActionsOpen) return;
@@ -164,6 +165,45 @@
 			});
 		} finally {
 			quickActionsBusy = false;
+		}
+	}
+
+	async function quickRefreshSchemas() {
+		quickActionsOpen = false;
+		quickActionsBusy = true;
+		schemasRefreshing = true;
+		// Flush Svelte, then wait two animation frames so the browser definitely
+		// paints the overlay before we start the blocking Rust invoke. `tick()`
+		// alone is not enough — it resolves before the paint, so a very fast
+		// invoke would toggle the flag back off before the user sees anything.
+		await tick();
+		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null))));
+		const shownAt = performance.now();
+		try {
+			const res = await api.refreshApworldSchemas();
+			if (res.success) {
+				pushInfoToast({ message: m.randomizer_customApworlds_refreshed() });
+			} else {
+				pushToast({
+					type: 'error',
+					name: m.randomizer_customApworlds_refreshFailed(),
+					message: (res.stderr || res.stdout || '').slice(0, 300)
+				});
+			}
+		} catch (err) {
+			pushToast({
+				type: 'error',
+				name: m.randomizer_customApworlds_refreshFailed(),
+				message: (err as any)?.message ?? String(err)
+			});
+		} finally {
+			// Guarantee at least 400ms of visible spinner so it doesn't flash and vanish.
+			const elapsed = performance.now() - shownAt;
+			if (elapsed < 400) {
+				await new Promise((r) => setTimeout(r, 400 - elapsed));
+			}
+			quickActionsBusy = false;
+			schemasRefreshing = false;
 		}
 	}
 
@@ -419,6 +459,12 @@
 </script>
 
 <section class="rdz-server">
+	{#if schemasRefreshing}
+		<div class="rdz-schema-loading">
+			<Icon icon="mdi:loading" class="rdz-schema-spin" />
+			<span>{i18nState.locale && m.randomizer_quickActions_refreshSchemas()}…</span>
+		</div>
+	{/if}
 	<header class="rdz-server-header">
 		<Icon icon="mdi:server-network" />
 		<h2>{i18nState.locale && m.randomizer_serverTitle()}</h2>
@@ -429,7 +475,7 @@
 				onclick={() => (quickActionsOpen = !quickActionsOpen)}
 				disabled={quickActionsBusy}
 			>
-				{#snippet icon()}<Icon icon="mdi:flash" />{/snippet}
+				{#snippet icon()}<Icon icon="mdi:menu" />{/snippet}
 				{i18nState.locale && m.randomizer_quickActions_title()}
 			</Button>
 			{#if quickActionsOpen}
@@ -463,6 +509,22 @@
 							>
 							<span class="rdz-qa-item-desc"
 								>{i18nState.locale && m.randomizer_quickActions_consoleDesc()}</span
+							>
+						</div>
+					</button>
+					<button
+						class="rdz-qa-item"
+						role="menuitem"
+						onclick={quickRefreshSchemas}
+						disabled={quickActionsBusy}
+					>
+						<Icon icon="mdi:database-refresh" />
+						<div class="rdz-qa-item-body">
+							<span class="rdz-qa-item-title"
+								>{i18nState.locale && m.randomizer_quickActions_refreshSchemas()}</span
+							>
+							<span class="rdz-qa-item-desc"
+								>{i18nState.locale && m.randomizer_quickActions_refreshSchemasDesc()}</span
 							>
 						</div>
 					</button>
@@ -1047,6 +1109,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-md);
+		position: relative;
 	}
 
 	.rdz-host-toggle {
@@ -1113,9 +1176,30 @@
 		border: 1px solid var(--border-default);
 		border-radius: var(--radius-lg);
 		padding: 4px;
-		box-shadow: var(--shadow-lg), var(--shadow-glow);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
 		z-index: var(--z-dropdown);
 		animation: rdz-qa-in 150ms ease;
+	}
+
+	.rdz-schema-loading {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-md);
+		background: rgba(0, 0, 0, 0.75);
+		color: var(--text-primary);
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	.rdz-schema-loading :global(.rdz-schema-spin) {
+		font-size: 48px;
+		color: var(--accent-400);
+		animation: rdz-spin 0.8s linear infinite;
 	}
 
 	@keyframes rdz-qa-in {

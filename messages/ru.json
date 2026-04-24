@@ -665,6 +665,8 @@
 	"randomizer_quickActions_patchGameDesc": "Выберите патч и запустите клиент",
 	"randomizer_quickActions_console": "Открыть консоль",
 	"randomizer_quickActions_consoleDesc": "Открыть окно консоли Archipelago",
+	"randomizer_quickActions_refreshSchemas": "Обновить схемы",
+	"randomizer_quickActions_refreshSchemasDesc": "Обновляет параметры игр и списки предметов из среды выполнения",
 	"randomizer_quickActions_launchFailed": "Ошибка запуска",
 	"modListFilters_filterTooltip": "Фильтры",
 	"prefs_window_title": "Окно",

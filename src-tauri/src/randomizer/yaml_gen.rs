@@ -7,6 +7,10 @@ use super::types::{GameSchema, OptionDef, OptionType, RandomizerConfig, Value};
 /// See `Options.CommonOptions` in the Archipelago source.
 const COMMON_OPTION_IDS: &[&str] = &["progression_balancing", "accessibility"];
 
+/// Per-game common keys (PerGameCommonOptions) that live in the game section but are
+/// not part of the game's own schema — always emitted when non-empty.
+const EXTRA_GAME_SECTION_KEYS: &[&str] = &["start_inventory", "start_inventory_from_pool"];
+
 fn value_to_yaml(value: &Value) -> YamlValue {
     match value {
         Value::Bool(b) => YamlValue::Bool(*b),
@@ -14,6 +18,13 @@ fn value_to_yaml(value: &Value) -> YamlValue {
         Value::Float(f) => serde_yaml::to_value(f).unwrap_or(YamlValue::Null),
         Value::String(s) => YamlValue::String(s.clone()),
         Value::List(items) => YamlValue::Sequence(items.iter().map(value_to_yaml).collect()),
+        Value::Map(entries) => {
+            let mut mapping = Mapping::new();
+            for (k, v) in entries {
+                mapping.insert(YamlValue::String(k.clone()), value_to_yaml(v));
+            }
+            YamlValue::Mapping(mapping)
+        }
     }
 }
 
@@ -74,6 +85,20 @@ pub fn generate(schema: &GameSchema, config: &RandomizerConfig) -> Result<String
             root.insert(YamlValue::from(opt.id.clone()), yaml_value);
         } else {
             game_section.insert(YamlValue::from(opt.id.clone()), yaml_value);
+        }
+    }
+
+    // Emit start_inventory / start_inventory_from_pool if the user has set them.
+    // These are PerGameCommonOptions: they belong in the game section but are not
+    // part of the game's own schema, so they're handled separately.
+    for key in EXTRA_GAME_SECTION_KEYS {
+        if let Some(Value::Map(m)) = config.values.get(*key) {
+            if !m.is_empty() {
+                game_section.insert(
+                    YamlValue::from(*key),
+                    value_to_yaml(&Value::Map(m.clone())),
+                );
+            }
         }
     }
 
@@ -156,8 +181,12 @@ pub fn lint(yaml: &str, schema: &GameSchema) -> Vec<LintIssue> {
             message: format!("missing game section '{}'", schema.name),
         }),
         Some(section) => {
-            let known: std::collections::HashSet<&str> =
-                schema.options.iter().map(|o| o.id.as_str()).collect();
+            let known: std::collections::HashSet<&str> = schema
+                .options
+                .iter()
+                .map(|o| o.id.as_str())
+                .chain(EXTRA_GAME_SECTION_KEYS.iter().copied())
+                .collect();
             for (k, _) in section {
                 if let Some(key) = k.as_str() {
                     if !known.contains(key) {
