@@ -36,6 +36,7 @@
 
 	function openSetupGuide(e: MouseEvent, id: string, name: string) {
 		e.preventDefault();
+		e.stopPropagation();
 		openExternal(setupGuideUrl(id, name)).catch((err) => {
 			console.error('open setup guide failed:', err);
 		});
