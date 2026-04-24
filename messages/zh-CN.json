@@ -457,6 +457,8 @@
 	"modListFilters_options_enabled": "启用",
 	"modListFilters_options_descending": "降序",
 	"modListFilters_options_ascending": "升序",
+	"modListFilters_viewList": "列表视图",
+	"modListFilters_viewGrid": "网格视图",
 	"modListFilters_options_lastUpdated": "最后更新",
 	"modListFilters_options_newest": "最新",
 	"modListFilters_options_rating": "评分",

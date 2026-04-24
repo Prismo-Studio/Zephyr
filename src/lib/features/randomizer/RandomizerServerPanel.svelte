@@ -1154,13 +1154,18 @@
 		gap: var(--space-sm);
 		padding-bottom: var(--space-sm);
 		border-bottom: 1px solid var(--border-subtle);
+		flex-wrap: wrap;
 	}
 
 	.rdz-server-header h2 {
 		margin: 0;
-		flex: 1;
+		flex: 1 1 auto;
+		min-width: 0;
 		font-size: 16px;
 		color: var(--text-primary);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.rdz-qa-wrapper {

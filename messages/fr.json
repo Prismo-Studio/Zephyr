@@ -457,6 +457,8 @@
 	"modListFilters_options_enabled": "Activés",
 	"modListFilters_options_descending": "Décroissant",
 	"modListFilters_options_ascending": "Croissant",
+	"modListFilters_viewList": "Vue liste",
+	"modListFilters_viewGrid": "Vue grille",
 	"modListFilters_options_lastUpdated": "Dernière mise à jour",
 	"modListFilters_options_newest": "Plus récent",
 	"modListFilters_options_rating": "Note",

@@ -457,6 +457,8 @@
 	"modListFilters_options_enabled": "مفعل",
 	"modListFilters_options_descending": "تنازلي",
 	"modListFilters_options_ascending": "تصاعدي",
+	"modListFilters_viewList": "عرض قائمة",
+	"modListFilters_viewGrid": "عرض شبكي",
 	"modListFilters_options_lastUpdated": "آخر تحديث",
 	"modListFilters_options_newest": "الأحدث",
 	"modListFilters_options_rating": "التقييم",

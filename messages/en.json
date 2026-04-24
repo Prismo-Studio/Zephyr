@@ -457,6 +457,8 @@
 	"modListFilters_options_enabled": "Enabled",
 	"modListFilters_options_descending": "Descending",
 	"modListFilters_options_ascending": "Ascending",
+	"modListFilters_viewList": "List view",
+	"modListFilters_viewGrid": "Grid view",
 	"modListFilters_options_lastUpdated": "Last updated",
 	"modListFilters_options_newest": "Newest",
 	"modListFilters_options_rating": "Rating",

@@ -457,6 +457,8 @@
 	"modListFilters_options_enabled": "Включённые",
 	"modListFilters_options_descending": "По убыванию",
 	"modListFilters_options_ascending": "По возрастанию",
+	"modListFilters_viewList": "Список",
+	"modListFilters_viewGrid": "Сетка",
 	"modListFilters_options_lastUpdated": "По дате обновления",
 	"modListFilters_options_newest": "Новые",
 	"modListFilters_options_rating": "По рейтингу",
