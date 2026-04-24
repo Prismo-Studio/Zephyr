@@ -47,6 +47,14 @@ export type GameMeta = {
 	supported_versions: string[];
 	wiki_url?: string;
 	icon?: string;
+	/** True for worlds bundled with Archipelago (served on archipelago.gg).
+	 *  False for user-installed .apworld files whose tutorials live only in
+	 *  the apworld itself. Backward-compat default is true. */
+	is_official?: boolean;
+	/** Author-defined English tutorial link (e.g. "setup/en"). Absent when the
+	 *  world defines no tutorial — in which case the UI must not render an
+	 *  archipelago.gg link. */
+	tutorial_path?: string;
 };
 
 export type GameSchema = {

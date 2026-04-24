@@ -105,6 +105,23 @@ pub struct GameMeta {
     pub wiki_url: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub icon: Option<String>,
+    /// True for worlds bundled with Archipelago (i.e. present on
+    /// archipelago.gg). False for user-installed `.apworld` files whose
+    /// tutorials/setup docs are only served by a local webhost. Defaults to
+    /// `true` for backwards compatibility with schemas generated before this
+    /// field existed — all pre-existing bundled schemas are official.
+    #[serde(default = "default_true")]
+    pub is_official: bool,
+    /// Author-defined English tutorial link (e.g. "setup/en",
+    /// "multiworld/en"). Combined with the game name by the frontend to build
+    /// an archipelago.gg/tutorial/... URL. `None` when the world declares no
+    /// tutorial, in which case the UI hides the setup-guide button.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tutorial_path: Option<String>,
+}
+
+fn default_true() -> bool {
+    true
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

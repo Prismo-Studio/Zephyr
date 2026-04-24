@@ -139,7 +139,6 @@
 		<div class="rdz-catalog-title">
 			<h1>
 				{i18nState.locale && m.randomizer_title()}
-				<span class="rdz-subtitle-inline">{i18nState.locale && m.randomizer_subtitle()}</span>
 			</h1>
 			<p class="rdz-subtitle">
 				{i18nState.locale && m.randomizer_description()}
@@ -178,15 +177,23 @@
 						<button class="rdz-install-item" onclick={installApworldFiles}>
 							<Icon icon="mdi:file-document-multiple" />
 							<div>
-								<div class="rdz-install-item-title">Pick files</div>
-								<div class="rdz-install-item-desc">One or several .apworld files</div>
+								<div class="rdz-install-item-title">
+									{i18nState.locale && m.randomizer_installApworld_pickFiles()}
+								</div>
+								<div class="rdz-install-item-desc">
+									{i18nState.locale && m.randomizer_installApworld_pickFilesDesc()}
+								</div>
 							</div>
 						</button>
 						<button class="rdz-install-item" onclick={installApworldFolder}>
 							<Icon icon="mdi:folder-multiple" />
 							<div>
-								<div class="rdz-install-item-title">Pick folder</div>
-								<div class="rdz-install-item-desc">Scan a folder for .apworld files</div>
+								<div class="rdz-install-item-title">
+									{i18nState.locale && m.randomizer_installApworld_pickFolder()}
+								</div>
+								<div class="rdz-install-item-desc">
+									{i18nState.locale && m.randomizer_installApworld_pickFolderDesc()}
+								</div>
 							</div>
 						</button>
 					</div>
@@ -247,7 +254,9 @@
 					<div class="rdz-card-body">
 						<div class="rdz-card-title-row">
 							<h3>{game.name}</h3>
-							<span class="rdz-card-version">v{game.version}</span>
+							{#if game.version && game.version !== '0.0.0'}
+								<span class="rdz-card-version">v{game.version}</span>
+							{/if}
 						</div>
 						<p class="rdz-card-desc">
 							{game.description || (i18nState.locale && m.randomizer_noDescription())}
