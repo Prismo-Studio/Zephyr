@@ -113,8 +113,7 @@
 				<button
 					class="z-sort-order"
 					onclick={() => {
-						queryArgs.sortOrder =
-							queryArgs.sortOrder === 'ascending' ? 'descending' : 'ascending';
+						queryArgs.sortOrder = queryArgs.sortOrder === 'ascending' ? 'descending' : 'ascending';
 					}}
 					aria-label={i18nState.locale &&
 						(queryArgs.sortOrder === 'ascending'
@@ -167,11 +166,7 @@
 		{/if}
 
 		<div class="z-view-toggle">
-			<Tooltip
-				text={i18nState.locale && m.modListFilters_viewList()}
-				position="bottom"
-				delay={200}
-			>
+			<Tooltip text={i18nState.locale && m.modListFilters_viewList()} position="bottom" delay={200}>
 				<button
 					class="z-view-btn"
 					class:active={viewMode === 'list'}
@@ -181,11 +176,7 @@
 					<Icon icon="mdi:view-list" />
 				</button>
 			</Tooltip>
-			<Tooltip
-				text={i18nState.locale && m.modListFilters_viewGrid()}
-				position="bottom"
-				delay={200}
-			>
+			<Tooltip text={i18nState.locale && m.modListFilters_viewGrid()} position="bottom" delay={200}>
 				<button
 					class="z-view-btn"
 					class:active={viewMode === 'grid'}

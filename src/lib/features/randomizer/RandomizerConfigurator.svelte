@@ -138,8 +138,7 @@
 	const setupGuide = $derived.by(() => {
 		if (!schema) return null;
 		if (schema.meta.is_official === false) return null;
-		const path =
-			schema.meta.tutorial_path ?? LEGACY_TUTORIAL_PATH[schema.id] ?? 'setup/en';
+		const path = schema.meta.tutorial_path ?? LEGACY_TUTORIAL_PATH[schema.id] ?? 'setup/en';
 		return { url: setupGuideUrl(schema.id, schema.name, path), path };
 	});
 
