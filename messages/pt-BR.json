@@ -950,5 +950,10 @@
 	"console_msg_ready": "Console do Zephyr pronto. Digite /help para listar os comandos.",
 	"console_msg_clientReady": "Console do Client Zephyr. Preencha o formulário de host/slot para conectar.",
 	"console_msg_receivedItem": "recebeu Item#{item} de {from}",
-	"mods_pageSize_label": "Por página"
+	"mods_pageSize_label": "Por página",
+	"mods_unknownMods_desc": "Estes mods estão instalados no disco, mas o Zephyr não encontrou correspondência no Thunderstore. Podem ter sido removidos, renomeados ou instalados manualmente. Você pode removê-los para limpar o perfil.",
+	"mods_unknownMods_removeTooltip": "Remover do perfil",
+	"mods_unknownMods_removeAll": "Remover todos",
+	"mods_unknownMods_removeFailed": "Falha ao remover",
+	"mods_unknownMods_close": "Fechar"
 }
