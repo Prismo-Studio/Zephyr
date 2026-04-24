@@ -3,6 +3,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import { open as openExternal } from '@tauri-apps/plugin-shell';
 	import { pushToast } from '$lib/toast';
 	import * as api from './api';
 	import { randomizerStore, dependenciesSatisfied } from './randomizer.store.svelte';
@@ -31,6 +32,13 @@
 	function setupGuideUrl(id: string, name: string): string {
 		const path = TUTORIAL_PATH_OVERRIDES[id] ?? 'setup/en';
 		return `https://archipelago.gg/tutorial/${encodeURIComponent(name)}/${path}`;
+	}
+
+	function openSetupGuide(e: MouseEvent, id: string, name: string) {
+		e.preventDefault();
+		openExternal(setupGuideUrl(id, name)).catch((err) => {
+			console.error('open setup guide failed:', err);
+		});
 	}
 
 	async function saveSlot() {
@@ -143,7 +151,11 @@
 				<h1>{schema.name}</h1>
 				<small>v{schema.version}</small>
 			</div>
-			<a class="rdz-setup-link" href={setupGuideUrl(schema.id, schema.name)}>
+			<a
+				class="rdz-setup-link"
+				href={setupGuideUrl(schema.id, schema.name)}
+				onclick={(e) => openSetupGuide(e, schema.id, schema.name)}
+			>
 				<Icon icon="mdi:book-open-variant" />
 				{i18nState.locale && m.randomizer_setupGuide()}
 			</a>
