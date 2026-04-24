@@ -593,6 +593,7 @@
 	"dashboard_viewMods": "عرض التعديلات",
 	"dashboard_games": "الألعاب",
 	"dashboard_yourGames": "ألعابك",
+	"dashboard_favoritesTitle": "المفضلة",
 	"dashboard_favorites": "{count} مفضلة",
 	"dashboard_launch": "تشغيل {name}",
 	"dialog_cancel": "إلغاء",

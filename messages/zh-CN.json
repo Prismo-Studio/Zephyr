@@ -593,6 +593,7 @@
 	"dashboard_viewMods": "查看模组",
 	"dashboard_games": "游戏",
 	"dashboard_yourGames": "您的游戏",
+	"dashboard_favoritesTitle": "收藏",
 	"dashboard_favorites": "{count} 个收藏",
 	"dashboard_launch": "启动 {name}",
 	"dialog_cancel": "取消",

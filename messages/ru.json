@@ -593,6 +593,7 @@
 	"dashboard_viewMods": "Посмотреть моды",
 	"dashboard_games": "Игры",
 	"dashboard_yourGames": "Твои игры",
+	"dashboard_favoritesTitle": "Избранное",
 	"dashboard_favorites": "Избранных: {count}",
 	"dashboard_launch": "Запустить {name}",
 	"dialog_cancel": "Отмена",

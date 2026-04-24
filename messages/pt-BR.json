@@ -961,5 +961,6 @@
 	"mods_unknownMods_removeTooltip": "Remover do perfil",
 	"mods_unknownMods_removeAll": "Remover todos",
 	"mods_unknownMods_removeFailed": "Falha ao remover",
-	"mods_unknownMods_close": "Fechar"
+	"mods_unknownMods_close": "Fechar",
+	"dashboard_favoritesTitle": "Favoritos"
 }

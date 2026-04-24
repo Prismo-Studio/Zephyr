@@ -572,6 +572,7 @@
 	"dashboard_viewMods": "Ver mods",
 	"dashboard_games": "Juegos",
 	"dashboard_yourGames": "Tus juegos",
+	"dashboard_favoritesTitle": "Favoritos",
 	"dashboard_favorites": "{count} favoritos",
 	"dashboard_launch": "Iniciar {name}",
 	"dialog_cancel": "Cancelar",
