@@ -386,6 +386,32 @@ pub fn install_apworld_from_path(app: AppHandle, src_path: String) -> Result<Cus
     Ok(apworlds::install_from_path(&app, &PathBuf::from(src_path))?)
 }
 
+#[derive(serde::Serialize)]
+pub struct ApworldsFolderInstallResult {
+    pub installed: Vec<CustomApworld>,
+    pub failed: Vec<ApworldInstallFailure>,
+}
+
+#[derive(serde::Serialize)]
+pub struct ApworldInstallFailure {
+    pub file_name: String,
+    pub error: String,
+}
+
+#[command]
+pub fn install_apworlds_from_folder(
+    app: AppHandle,
+    folder_path: String,
+) -> Result<ApworldsFolderInstallResult> {
+    let (installed, failed_raw) =
+        apworlds::install_from_folder(&app, &PathBuf::from(folder_path))?;
+    let failed = failed_raw
+        .into_iter()
+        .map(|(file_name, error)| ApworldInstallFailure { file_name, error })
+        .collect();
+    Ok(ApworldsFolderInstallResult { installed, failed })
+}
+
 #[command]
 pub fn install_apworld_from_bytes(
     app: AppHandle,
