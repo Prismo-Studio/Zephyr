@@ -3,17 +3,21 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import { open as openExternal } from '@tauri-apps/plugin-shell';
 	import { pushToast } from '$lib/toast';
 	import * as api from './api';
 	import { randomizerStore, dependenciesSatisfied } from './randomizer.store.svelte';
 	import { CATEGORY_ICONS, CATEGORY_LABELS, CATEGORY_ORDER, type OptionDef } from './types';
 	import RandomizerOptionField from './RandomizerOptionField.svelte';
+	import StartInventoryEditor from './StartInventoryEditor.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
-	// Maps game id (schema.id, matches the world folder) to the English tutorial
-	// URL path on archipelago.gg. Defaults to "setup/en" for games not listed.
-	const TUTORIAL_PATH_OVERRIDES: Record<string, string> = {
+	// Hardcoded tutorial path overrides for older schemas that don't yet carry
+	// `meta.tutorial_path` (pre-refresh bundled schemas). Once the user runs
+	// "Refresh Schemas", `meta.tutorial_path` from the extractor supersedes
+	// this map.
+	const LEGACY_TUTORIAL_PATH: Record<string, string> = {
 		alttp: 'multiworld/en',
 		celeste64: 'guide/en',
 		celeste_open_world: 'guide/en',
@@ -28,9 +32,16 @@
 		wargroove: 'wargroove/en'
 	};
 
-	function setupGuideUrl(id: string, name: string): string {
-		const path = TUTORIAL_PATH_OVERRIDES[id] ?? 'setup/en';
+	function setupGuideUrl(id: string, name: string, path: string): string {
 		return `https://archipelago.gg/tutorial/${encodeURIComponent(name)}/${path}`;
+	}
+
+	function openSetupGuide(e: MouseEvent, id: string, name: string, path: string) {
+		e.preventDefault();
+		e.stopPropagation();
+		openExternal(setupGuideUrl(id, name, path)).catch((err) => {
+			console.error('open setup guide failed:', err);
+		});
 	}
 
 	async function saveSlot() {
@@ -116,6 +127,28 @@
 	const hasPresets = $derived(!!schema && schema.presets.length > 0);
 	const hasAdvanced = $derived(!!schema && schema.options.some((o) => o.advanced));
 
+	// Decide whether to link to the archipelago.gg setup guide.
+	// - Custom (non-bundled) APWorlds have no presence on archipelago.gg,
+	//   so any tutorial URL we build would 404. Hide the button entirely.
+	// - For bundled worlds, prefer the author-defined tutorial_path from the
+	//   schema; fall back to the legacy override map, then to "setup/en".
+	// A `false` is_official is authoritative; an undefined one means the
+	// schema predates this field and is assumed official (all pre-refresh
+	// bundled schemas are official).
+	const setupGuide = $derived.by(() => {
+		if (!schema) return null;
+		if (schema.meta.is_official === false) return null;
+		const path = schema.meta.tutorial_path ?? LEGACY_TUTORIAL_PATH[schema.id] ?? 'setup/en';
+		return { url: setupGuideUrl(schema.id, schema.name, path), path };
+	});
+
+	const versionLabel = $derived.by(() => {
+		if (!schema) return '';
+		const v = schema.version?.trim() ?? '';
+		if (!v || v === '0.0.0') return '';
+		return `v${v}`;
+	});
+
 	const lastChangeBanner = $derived.by(() => {
 		const id = randomizerStore.lastChangedId;
 		if (!id || !schema) return null;
@@ -141,12 +174,20 @@
 			</button>
 			<div class="rdz-config-title">
 				<h1>{schema.name}</h1>
-				<small>v{schema.version}</small>
+				{#if versionLabel}
+					<small>{versionLabel}</small>
+				{/if}
 			</div>
-			<a class="rdz-setup-link" href={setupGuideUrl(schema.id, schema.name)}>
-				<Icon icon="mdi:book-open-variant" />
-				{i18nState.locale && m.randomizer_setupGuide()}
-			</a>
+			{#if setupGuide}
+				<a
+					class="rdz-setup-link"
+					href={setupGuide.url}
+					onclick={(e) => openSetupGuide(e, schema.id, schema.name, setupGuide.path)}
+				>
+					<Icon icon="mdi:book-open-variant" />
+					{i18nState.locale && m.randomizer_setupGuide()}
+				</a>
+			{/if}
 
 			<div class="rdz-config-controls">
 				{#if hasPresets}
@@ -243,6 +284,7 @@
 					</section>
 				{/if}
 			{/each}
+			<StartInventoryEditor />
 		</div>
 
 		<footer class="rdz-config-footer">

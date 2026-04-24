@@ -208,6 +208,9 @@
 		font-size: 11px;
 		color: var(--text-muted);
 		line-height: 1.4;
+		/* Preserve author-written line breaks in multi-line option descriptions
+		   without forcing horizontal overflow on long single lines. */
+		white-space: pre-line;
 	}
 
 	.rdz-field-control {

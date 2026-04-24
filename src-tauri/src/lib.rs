@@ -307,6 +307,7 @@ pub fn run() {
             randomizer::commands::archipelago_gg_room_info,
             randomizer::commands::list_custom_apworlds,
             randomizer::commands::install_apworld_from_path,
+            randomizer::commands::install_apworlds_from_folder,
             randomizer::commands::install_apworld_from_bytes,
             randomizer::commands::remove_custom_apworld,
             randomizer::commands::refresh_apworld_schemas,

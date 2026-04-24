@@ -8,7 +8,7 @@
 	import GameLogo from './GameLogo.svelte';
 	import CustomApworldsPanel from './CustomApworldsPanel.svelte';
 	import RuntimeInstallBanner from './RuntimeInstallBanner.svelte';
-	import { installApworldFromPath } from './api';
+	import { installApworldFromPath, installApworldsFromFolder } from './api';
 	import { pushInfoToast, pushToast } from '$lib/toast';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
@@ -21,7 +21,27 @@
 	let panelReloadToken = $state(0);
 	let installing = $state(false);
 
-	async function installApworld() {
+	let installMenuOpen = $state(false);
+	let installMenuEl: HTMLDivElement | null = $state(null);
+
+	function closeInstallMenu(e: MouseEvent) {
+		if (!installMenuOpen) return;
+		if (installMenuEl && !installMenuEl.contains(e.target as Node)) {
+			installMenuOpen = false;
+		}
+	}
+
+	$effect(() => {
+		if (installMenuOpen) {
+			document.addEventListener('mousedown', closeInstallMenu, true);
+		} else {
+			document.removeEventListener('mousedown', closeInstallMenu, true);
+		}
+		return () => document.removeEventListener('mousedown', closeInstallMenu, true);
+	});
+
+	async function installApworldFiles() {
+		installMenuOpen = false;
 		if (installing) return;
 		const picked = await openDialog({
 			filters: [{ name: 'Archipelago world', extensions: ['apworld'] }],
@@ -61,6 +81,44 @@
 		}
 	}
 
+	async function installApworldFolder() {
+		installMenuOpen = false;
+		if (installing) return;
+		const picked = await openDialog({ directory: true, multiple: false });
+		if (!picked || Array.isArray(picked)) return;
+		installing = true;
+		try {
+			const res = await installApworldsFromFolder(picked);
+			if (res.installed.length > 0) {
+				pushInfoToast({
+					message:
+						res.installed.length === 1
+							? `Installed ${res.installed[0].file_name}`
+							: `Installed ${res.installed.length} apworld(s)`
+				});
+				showCustom = true;
+				panelReloadToken++;
+			} else if (res.failed.length === 0) {
+				pushInfoToast({ message: 'No .apworld files found in that folder' });
+			}
+			if (res.failed.length > 0) {
+				pushToast({
+					type: 'error',
+					name: 'Install failed',
+					message: `${res.failed.length} file(s) could not be installed.`
+				});
+			}
+		} catch (err) {
+			pushToast({
+				type: 'error',
+				name: 'Install failed',
+				message: err instanceof Error ? err.message : String(err)
+			});
+		} finally {
+			installing = false;
+		}
+	}
+
 	const filtered = $derived.by(() => {
 		const q = search.trim().toLowerCase();
 		if (!q) return randomizerStore.catalog;
@@ -81,7 +139,6 @@
 		<div class="rdz-catalog-title">
 			<h1>
 				{i18nState.locale && m.randomizer_title()}
-				<span class="rdz-subtitle-inline">{i18nState.locale && m.randomizer_subtitle()}</span>
 			</h1>
 			<p class="rdz-subtitle">
 				{i18nState.locale && m.randomizer_description()}
@@ -100,12 +157,48 @@
 					{/snippet}
 				</Input>
 			</div>
-			<Button size="md" variant="primary" onclick={installApworld} disabled={installing}>
-				{#snippet icon()}
-					<Icon icon={installing ? 'mdi:loading' : 'mdi:package-variant-plus'} />
-				{/snippet}
-				{i18nState.locale && m.randomizer_installApworld()}
-			</Button>
+			<div class="rdz-install-wrap" bind:this={installMenuEl}>
+				<Button
+					size="md"
+					variant="primary"
+					onclick={() => (installMenuOpen = !installMenuOpen)}
+					disabled={installing}
+				>
+					{#snippet icon()}
+						<Icon icon={installing ? 'mdi:loading' : 'mdi:package-variant-plus'} />
+					{/snippet}
+					<span class="rdz-install-label">
+						{i18nState.locale && m.randomizer_installApworld()}
+						<Icon icon="mdi:chevron-down" />
+					</span>
+				</Button>
+				{#if installMenuOpen}
+					<div class="rdz-install-menu">
+						<button class="rdz-install-item" onclick={installApworldFiles}>
+							<Icon icon="mdi:file-document-multiple" />
+							<div>
+								<div class="rdz-install-item-title">
+									{i18nState.locale && m.randomizer_installApworld_pickFiles()}
+								</div>
+								<div class="rdz-install-item-desc">
+									{i18nState.locale && m.randomizer_installApworld_pickFilesDesc()}
+								</div>
+							</div>
+						</button>
+						<button class="rdz-install-item" onclick={installApworldFolder}>
+							<Icon icon="mdi:folder-multiple" />
+							<div>
+								<div class="rdz-install-item-title">
+									{i18nState.locale && m.randomizer_installApworld_pickFolder()}
+								</div>
+								<div class="rdz-install-item-desc">
+									{i18nState.locale && m.randomizer_installApworld_pickFolderDesc()}
+								</div>
+							</div>
+						</button>
+					</div>
+				{/if}
+			</div>
 			<Button size="md" variant="ghost" onclick={() => (showCustom = !showCustom)}>
 				{#snippet icon()}
 					<Icon icon={showCustom ? 'mdi:chevron-up' : 'mdi:chevron-down'} />
@@ -161,7 +254,9 @@
 					<div class="rdz-card-body">
 						<div class="rdz-card-title-row">
 							<h3>{game.name}</h3>
-							<span class="rdz-card-version">v{game.version}</span>
+							{#if game.version && game.version !== '0.0.0'}
+								<span class="rdz-card-version">v{game.version}</span>
+							{/if}
 						</div>
 						<p class="rdz-card-desc">
 							{game.description || (i18nState.locale && m.randomizer_noDescription())}
@@ -417,5 +512,74 @@
 
 	.rdz-card-arrow :global(svg) {
 		font-size: 18px;
+	}
+
+	.rdz-install-wrap {
+		position: relative;
+	}
+
+	.rdz-install-label {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		white-space: nowrap;
+	}
+
+	.rdz-install-label :global(svg) {
+		flex-shrink: 0;
+	}
+
+	.rdz-install-menu {
+		position: absolute;
+		top: calc(100% + 4px);
+		right: 0;
+		min-width: 260px;
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-default);
+		border-radius: var(--radius-lg);
+		padding: 4px;
+		box-shadow:
+			0 8px 24px rgba(0, 0, 0, 0.45),
+			0 2px 6px rgba(0, 0, 0, 0.3);
+		z-index: var(--z-dropdown);
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.rdz-install-item {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 10px 12px;
+		background: transparent;
+		border: none;
+		border-radius: var(--radius-md);
+		color: var(--text-primary);
+		text-align: left;
+		cursor: pointer;
+		font-family: inherit;
+		transition: background var(--transition-fast);
+	}
+
+	.rdz-install-item:hover {
+		background: var(--bg-hover);
+	}
+
+	.rdz-install-item :global(svg) {
+		font-size: 20px;
+		color: var(--accent-400);
+		flex-shrink: 0;
+	}
+
+	.rdz-install-item-title {
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	.rdz-install-item-desc {
+		font-size: 11px;
+		color: var(--text-muted);
+		margin-top: 2px;
 	}
 </style>

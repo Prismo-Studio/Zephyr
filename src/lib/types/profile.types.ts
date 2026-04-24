@@ -42,6 +42,7 @@ export type ManagedGameInfo = {
 export type ProfileQuery = {
 	mods: Mod[];
 	totalModCount: number;
+	filteredModCount: number;
 	unknownMods: Dependant[];
 	updates: AvailableUpdate[];
 };

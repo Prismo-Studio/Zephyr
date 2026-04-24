@@ -380,6 +380,7 @@
 					class="z-external-link-btn"
 					onclick={(e) => {
 						e.preventDefault();
+						e.stopPropagation();
 						open(mod.websiteUrl!);
 					}}
 				>
@@ -393,6 +394,7 @@
 					class="z-external-link-btn z-external-link-secondary"
 					onclick={(e) => {
 						e.preventDefault();
+						e.stopPropagation();
 						open(mod.websiteUrl!.replace(/\/releases\/download\/.*$/, ''));
 					}}
 				>
@@ -408,6 +410,7 @@
 				class="z-external-link-btn"
 				onclick={(e) => {
 					e.preventDefault();
+					e.stopPropagation();
 					open(mod.websiteUrl!);
 				}}
 			>

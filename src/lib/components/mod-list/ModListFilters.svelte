@@ -102,20 +102,31 @@
 				{/if}
 			</div>
 
-			<button
-				class="z-sort-order"
-				onclick={() => {
-					queryArgs.sortOrder = queryArgs.sortOrder === 'ascending' ? 'descending' : 'ascending';
-				}}
-				title={i18nState.locale &&
+			<Tooltip
+				text={i18nState.locale &&
 					(queryArgs.sortOrder === 'ascending'
 						? m.modListFilters_options_ascending()
 						: m.modListFilters_options_descending())}
+				position="bottom"
+				delay={200}
 			>
-				<Icon
-					icon={queryArgs.sortOrder === 'ascending' ? 'mdi:sort-ascending' : 'mdi:sort-descending'}
-				/>
-			</button>
+				<button
+					class="z-sort-order"
+					onclick={() => {
+						queryArgs.sortOrder = queryArgs.sortOrder === 'ascending' ? 'descending' : 'ascending';
+					}}
+					aria-label={i18nState.locale &&
+						(queryArgs.sortOrder === 'ascending'
+							? m.modListFilters_options_ascending()
+							: m.modListFilters_options_descending())}
+				>
+					<Icon
+						icon={queryArgs.sortOrder === 'ascending'
+							? 'mdi:sort-ascending'
+							: 'mdi:sort-descending'}
+					/>
+				</button>
+			</Tooltip>
 		</div>
 
 		{#if pageSize !== undefined && pageSizeChoices && onChangePageSize}
@@ -155,22 +166,26 @@
 		{/if}
 
 		<div class="z-view-toggle">
-			<button
-				class="z-view-btn"
-				class:active={viewMode === 'list'}
-				onclick={() => (viewMode = 'list')}
-				title="List"
-			>
-				<Icon icon="mdi:view-list" />
-			</button>
-			<button
-				class="z-view-btn"
-				class:active={viewMode === 'grid'}
-				onclick={() => (viewMode = 'grid')}
-				title="Grid"
-			>
-				<Icon icon="mdi:view-module" />
-			</button>
+			<Tooltip text={i18nState.locale && m.modListFilters_viewList()} position="bottom" delay={200}>
+				<button
+					class="z-view-btn"
+					class:active={viewMode === 'list'}
+					onclick={() => (viewMode = 'list')}
+					aria-label={i18nState.locale && m.modListFilters_viewList()}
+				>
+					<Icon icon="mdi:view-list" />
+				</button>
+			</Tooltip>
+			<Tooltip text={i18nState.locale && m.modListFilters_viewGrid()} position="bottom" delay={200}>
+				<button
+					class="z-view-btn"
+					class:active={viewMode === 'grid'}
+					onclick={() => (viewMode = 'grid')}
+					aria-label={i18nState.locale && m.modListFilters_viewGrid()}
+				>
+					<Icon icon="mdi:view-module" />
+				</button>
+			</Tooltip>
 		</div>
 	</div>
 

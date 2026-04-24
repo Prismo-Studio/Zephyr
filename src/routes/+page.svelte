@@ -16,6 +16,7 @@
 	import BatchConfirmDialog from '$lib/components/dialogs/BatchConfirmDialog.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
@@ -173,7 +174,49 @@
 	let mods: Mod[] = $state([]);
 	let updates: AvailableUpdate[] = $state([]);
 	let unknownMods: { fullName: string; uuid: string }[] = $state([]);
+	let unknownModalOpen = $state(false);
+	let unknownBusy = $state(false);
+
+	async function removeOneUnknown(uuid: string) {
+		unknownBusy = true;
+		try {
+			await api.profile.forceRemoveMods([uuid]);
+			unknownMods = unknownMods.filter((m) => m.uuid !== uuid);
+			if (unknownMods.length === 0) {
+				unknownModalOpen = false;
+			}
+			await refresh();
+		} catch (err) {
+			pushToast({
+				type: 'error',
+				name: m.mods_unknownMods_removeFailed(),
+				message: err instanceof Error ? err.message : String(err)
+			});
+		} finally {
+			unknownBusy = false;
+		}
+	}
+
+	async function removeAllUnknown() {
+		if (unknownMods.length === 0) return;
+		unknownBusy = true;
+		try {
+			await api.profile.forceRemoveMods(unknownMods.map((m) => m.uuid));
+			unknownMods = [];
+			unknownModalOpen = false;
+			await refresh();
+		} catch (err) {
+			pushToast({
+				type: 'error',
+				name: m.mods_unknownMods_removeFailed(),
+				message: err instanceof Error ? err.message : String(err)
+			});
+		} finally {
+			unknownBusy = false;
+		}
+	}
 	let totalModCount = $state(0);
+	let filteredModCount = $state(0);
 
 	const PAGE_SIZE_KEY = 'zephyr-mods-page-size';
 	const PAGE_SIZE_CHOICES = [30, 50, 100, 500];
@@ -290,6 +333,7 @@
 			});
 			mods = result.mods;
 			totalModCount = result.totalModCount;
+			filteredModCount = result.filteredModCount;
 			updates = result.updates;
 			unknownMods = result.unknownMods;
 		} catch {}
@@ -688,7 +732,10 @@
 		<div class="z-mods-main">
 			<Header
 				title={i18nState.locale && m.navBar_label_mods()}
-				subtitle={i18nState.locale && m.mods_installed({ count: totalModCount.toString() })}
+				subtitle={i18nState.locale &&
+					m.mods_installed({
+						count: (filteredModCount || totalModCount).toString()
+					})}
 			>
 				{#snippet actions()}
 					<Button
@@ -795,10 +842,11 @@
 				</div>
 
 				{#if unknownMods.length > 0}
-					<div class="z-unknown-banner">
+					<button class="z-unknown-banner" onclick={() => (unknownModalOpen = true)}>
 						<Icon icon="mdi:help-circle" />
 						<span>{m.mods_unknownMods({ count: unknownMods.length.toString() })}</span>
-					</div>
+						<Icon icon="mdi:chevron-right" class="z-unknown-chev" />
+					</button>
 				{/if}
 
 				<div class="z-mods-list" class:z-grid-layout={viewMode.current === 'grid'}>
@@ -860,12 +908,14 @@
 							{/if}
 						{/if}
 
-						{#if mods.length >= maxCount && pageSize !== -1}
+						{#if mods.length < (filteredModCount || totalModCount) && pageSize !== -1}
 							<button
 								class="z-load-more"
 								onclick={() => (maxCount += pageSize === -1 ? 10_000 : pageSize)}
 							>
-								{m.mods_loadMore({ count: (totalModCount - mods.length).toString() })}
+								{m.mods_loadMore({
+									count: ((filteredModCount || totalModCount) - mods.length).toString()
+								})}
 							</button>
 						{/if}
 					{/if}
@@ -1042,6 +1092,43 @@
 	/>
 {/if}
 
+<Modal
+	bind:open={unknownModalOpen}
+	title={m.mods_unknownMods({ count: unknownMods.length.toString() })}
+	onclose={() => (unknownModalOpen = false)}
+>
+	<div class="z-unknown-modal">
+		<p class="z-unknown-desc">
+			{i18nState.locale && m.mods_unknownMods_desc()}
+		</p>
+		<ul class="z-unknown-list">
+			{#each unknownMods as unknown (unknown.uuid)}
+				<li class="z-unknown-item">
+					<Icon icon="mdi:help-circle" />
+					<code>{unknown.fullName}</code>
+					<button
+						class="z-unknown-remove"
+						disabled={unknownBusy}
+						onclick={() => removeOneUnknown(unknown.uuid)}
+						title={i18nState.locale && m.mods_unknownMods_removeTooltip()}
+					>
+						<Icon icon="mdi:delete" />
+					</button>
+				</li>
+			{/each}
+		</ul>
+	</div>
+	{#snippet actions()}
+		<Button variant="ghost" onclick={() => (unknownModalOpen = false)}>
+			{i18nState.locale && m.mods_unknownMods_close()}
+		</Button>
+		<Button variant="danger" disabled={unknownBusy} onclick={removeAllUnknown}>
+			{#snippet icon()}<Icon icon="mdi:delete-sweep" />{/snippet}
+			{i18nState.locale && m.mods_unknownMods_removeAll()}
+		</Button>
+	{/snippet}
+</Modal>
+
 <style>
 	.z-mods-page {
 		display: flex;
@@ -1217,6 +1304,100 @@
 		color: var(--warning);
 		font-size: 12px;
 		margin-bottom: var(--space-sm);
+		width: 100%;
+		text-align: left;
+		cursor: pointer;
+		font-family: inherit;
+		transition: all var(--transition-fast);
+	}
+
+	.z-unknown-banner:hover {
+		background: rgba(255, 179, 71, 0.15);
+		border-color: rgba(255, 179, 71, 0.4);
+	}
+
+	.z-unknown-banner span {
+		flex: 1;
+	}
+
+	.z-unknown-banner :global(.z-unknown-chev) {
+		font-size: 16px;
+		opacity: 0.6;
+	}
+
+	.z-unknown-modal {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.z-unknown-desc {
+		margin: 0;
+		font-size: 12px;
+		color: var(--text-secondary);
+		line-height: 1.5;
+	}
+
+	.z-unknown-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		max-height: 360px;
+		overflow-y: auto;
+	}
+
+	.z-unknown-item {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		padding: 8px 12px;
+		border-radius: var(--radius-sm);
+		background: var(--bg-base);
+		border: 1px solid var(--border-subtle);
+	}
+
+	.z-unknown-item > :global(svg:first-child) {
+		color: var(--warning);
+		flex-shrink: 0;
+	}
+
+	.z-unknown-item code {
+		flex: 1;
+		min-width: 0;
+		font-size: 12px;
+		color: var(--text-primary);
+		background: transparent;
+		padding: 0;
+		overflow-wrap: anywhere;
+		word-break: break-all;
+	}
+
+	.z-unknown-remove {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-default);
+		background: var(--bg-elevated);
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		flex-shrink: 0;
+	}
+
+	.z-unknown-remove:hover {
+		color: var(--error);
+		border-color: var(--error);
+	}
+
+	.z-unknown-remove:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
 	}
 
 	.z-mods-empty {

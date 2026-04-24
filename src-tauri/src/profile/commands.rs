@@ -193,6 +193,7 @@ pub struct FrontendAvailableUpdate {
 pub struct ProfileQuery {
     mods: Vec<FrontendProfileMod>,
     total_mod_count: usize,
+    filtered_mod_count: usize,
     updates: Vec<FrontendAvailableUpdate>,
     unknown_mods: Vec<Dependant>,
 }
@@ -207,6 +208,11 @@ pub fn query_profile(args: QueryModsArgs, app: AppHandle) -> Result<ProfileQuery
 
     let (mods, unknown_mods) = profile.query_mods(&args, &thunderstore);
     let total_mod_count = profile.mods.len();
+
+    let mut count_args = args.clone();
+    count_args.max_count = usize::MAX;
+    let (all_matching, _) = profile.query_mods(&count_args, &thunderstore);
+    let filtered_mod_count = all_matching.len();
 
     let updates = profile
         .mods
@@ -237,6 +243,7 @@ pub fn query_profile(args: QueryModsArgs, app: AppHandle) -> Result<ProfileQuery
     Ok(ProfileQuery {
         mods,
         total_mod_count,
+        filtered_mod_count,
         updates,
         unknown_mods,
     })

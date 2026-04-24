@@ -386,6 +386,32 @@ pub fn install_apworld_from_path(app: AppHandle, src_path: String) -> Result<Cus
     Ok(apworlds::install_from_path(&app, &PathBuf::from(src_path))?)
 }
 
+#[derive(serde::Serialize)]
+pub struct ApworldsFolderInstallResult {
+    pub installed: Vec<CustomApworld>,
+    pub failed: Vec<ApworldInstallFailure>,
+}
+
+#[derive(serde::Serialize)]
+pub struct ApworldInstallFailure {
+    pub file_name: String,
+    pub error: String,
+}
+
+#[command]
+pub fn install_apworlds_from_folder(
+    app: AppHandle,
+    folder_path: String,
+) -> Result<ApworldsFolderInstallResult> {
+    let (installed, failed_raw) =
+        apworlds::install_from_folder(&app, &PathBuf::from(folder_path))?;
+    let failed = failed_raw
+        .into_iter()
+        .map(|(file_name, error)| ApworldInstallFailure { file_name, error })
+        .collect();
+    Ok(ApworldsFolderInstallResult { installed, failed })
+}
+
 #[command]
 pub fn install_apworld_from_bytes(
     app: AppHandle,
@@ -402,8 +428,13 @@ pub fn remove_custom_apworld(app: AppHandle, file_name: String) -> Result<()> {
 }
 
 #[command]
-pub fn refresh_apworld_schemas(app: AppHandle) -> Result<RefreshResult> {
-    Ok(apworlds::refresh_schemas(&app)?)
+pub async fn refresh_apworld_schemas(app: AppHandle) -> Result<RefreshResult> {
+    // Offload the blocking Python extraction to a worker thread so the UI
+    // event loop can keep painting the loading overlay spinner.
+    let res = tauri::async_runtime::spawn_blocking(move || apworlds::refresh_schemas(&app))
+        .await
+        .map_err(|e| eyre::eyre!("refresh_apworld_schemas join error: {e}"))?;
+    Ok(res?)
 }
 
 #[command]

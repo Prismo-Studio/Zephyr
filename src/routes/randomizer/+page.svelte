@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import Icon from '@iconify/svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import RandomizerCatalog from '$lib/features/randomizer/RandomizerCatalog.svelte';
 	import RandomizerConfigurator from '$lib/features/randomizer/RandomizerConfigurator.svelte';
 	import RandomizerServerPanel from '$lib/features/randomizer/RandomizerServerPanel.svelte';
@@ -192,16 +193,23 @@
 				{/if}
 			</div>
 		{/if}
-		<button
-			class="rdz-right-toggle"
-			onclick={() => (rightPaneCollapsed.current = !rightPaneCollapsed.current)}
-			aria-label={i18nState.locale &&
-				(rightPaneCollapsed.current ? m.sidebar_expand() : m.sidebar_collapse())}
-			title={i18nState.locale &&
-				(rightPaneCollapsed.current ? m.sidebar_expand() : m.sidebar_collapse())}
-		>
-			<Icon icon={rightPaneCollapsed.current ? 'mdi:chevron-left' : 'mdi:chevron-right'} />
-		</button>
+		<div class="rdz-right-toggle-anchor" class:collapsed={rightPaneCollapsed.current}>
+			<Tooltip
+				text={i18nState.locale &&
+					(rightPaneCollapsed.current ? m.sidebar_expand() : m.sidebar_collapse())}
+				position="left"
+				delay={200}
+			>
+				<button
+					class="rdz-right-toggle"
+					onclick={() => (rightPaneCollapsed.current = !rightPaneCollapsed.current)}
+					aria-label={i18nState.locale &&
+						(rightPaneCollapsed.current ? m.sidebar_expand() : m.sidebar_collapse())}
+				>
+					<Icon icon={rightPaneCollapsed.current ? 'mdi:chevron-left' : 'mdi:chevron-right'} />
+				</button>
+			</Tooltip>
+		</div>
 	</aside>
 </div>
 
@@ -244,10 +252,19 @@
 		background: var(--bg-base);
 	}
 
-	.rdz-right-toggle {
+	.rdz-right-toggle-anchor {
 		position: absolute;
 		bottom: 10px;
 		left: 6px;
+		z-index: 20;
+	}
+
+	.rdz-right-toggle-anchor.collapsed {
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.rdz-right-toggle {
 		width: 26px;
 		height: 26px;
 		display: flex;
@@ -264,13 +281,7 @@
 			border-color var(--transition-fast),
 			background var(--transition-fast),
 			box-shadow var(--transition-fast);
-		z-index: 20;
 		box-shadow: var(--shadow-sm), var(--shadow-glow);
-	}
-
-	.rdz-right-pane.collapsed .rdz-right-toggle {
-		left: 50%;
-		transform: translateX(-50%);
 	}
 
 	.rdz-right-toggle:hover {

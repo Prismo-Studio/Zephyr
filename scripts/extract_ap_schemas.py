@@ -65,41 +65,37 @@ from worlds.AutoWorld import AutoWorldRegister, World  # type: ignore  # noqa: E
 # Helpers
 # ---------------------------------------------------------------------------
 
-CATEGORY_KEYWORDS: list[tuple[str, tuple[str, ...]]] = [
-    ("goals", ("goal", "victory", "win_condition", "ending")),
-    ("entrances", ("entrance", "shuffle_entrance", "door_shuffle", "warp")),
-    ("logic", ("logic", "glitch", "trick", "difficulty", "accessibility")),
-    ("cosmetic", ("color", "colour", "music", "sprite", "palette", "skin", "sfx", "sound")),
-    ("items", ("item", "starting_inventory", "start_inventory", "loot", "shop")),
-]
-
 
 def humanize(name: str) -> str:
     return name.replace("_", " ").strip().title()
 
 
-def first_sentence(doc: str | None) -> str:
+def clean_doc(doc: str | None) -> str:
+    """Preserve the full docstring (paragraphs + line breaks) while stripping
+    the uniform leading indentation that Python inserts. Used for option
+    descriptions — we no longer truncate to the first sentence because
+    APWorld authors rely on multi-line descriptions to explain choices."""
     if not doc:
         return ""
-    text = " ".join(line.strip() for line in doc.strip().splitlines() if line.strip())
-    if not text:
-        return ""
-    match = re.search(r"(.+?[.!?])(\s|$)", text)
-    return (match.group(1) if match else text).strip()
+    # inspect.cleandoc handles the usual docstring indentation + whitespace.
+    from inspect import cleandoc
 
-
-def guess_category(option_id: str) -> str:
-    lowered = option_id.lower()
-    for cat, keywords in CATEGORY_KEYWORDS:
-        for kw in keywords:
-            if kw in lowered:
-                return cat
-    return "general"
+    return cleandoc(doc).strip()
 
 
 def slug(name: str) -> str:
     s = re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
     return s or "world"
+
+
+def option_display_name(option_id: str, opt_cls: type) -> str:
+    """Prefer the author-set `display_name` class attribute. Otherwise fall
+    back to humanising the option id (same behaviour Archipelago's webhost
+    uses for auto_display_name=True options)."""
+    explicit = getattr(opt_cls, "display_name", None)
+    if isinstance(explicit, str) and explicit.strip():
+        return explicit
+    return humanize(option_id)
 
 
 def choice_label(opt_cls: type, key: str) -> str:
@@ -123,10 +119,11 @@ def safe_default_key(opt_cls: type) -> str | None:
     return None
 
 
-def map_option(option_id: str, opt_cls: type) -> dict[str, Any] | None:
+def map_option(option_id: str, opt_cls: type, category: str) -> dict[str, Any] | None:
     """Map an Archipelago option class to our schema's `type` block (plus the wrapping dict).
 
-    Returns None to indicate the option should be skipped.
+    `category` comes from the author-defined option group. Returns None to
+    indicate the option should be skipped.
     """
     # Skip Removed/hidden options.
     visibility = getattr(opt_cls, "visibility", None)
@@ -137,9 +134,8 @@ def map_option(option_id: str, opt_cls: type) -> dict[str, Any] | None:
         except Exception:
             pass
 
-    label = humanize(option_id)
-    description = first_sentence(opt_cls.__doc__)
-    category = guess_category(option_id)
+    label = option_display_name(option_id, opt_cls)
+    description = clean_doc(opt_cls.__doc__)
 
     type_block: dict[str, Any] | None = None
     advanced = False
@@ -226,14 +222,54 @@ def map_option(option_id: str, opt_cls: type) -> dict[str, Any] | None:
 
 
 def version_string(world_cls: type) -> str:
-    rcv = getattr(world_cls, "required_client_version", None)
-    if isinstance(rcv, tuple) and rcv:
-        return ".".join(str(int(x)) for x in rcv)
-    return "0.0.0"
+    """Return the APWorld's own release version (loaded from archipelago.json
+    into `world_version`), formatted as "MAJOR.MINOR.PATCH".
+
+    Worlds without an `archipelago.json` default to `Version(0, 0, 0)`, which
+    we report as an empty string so the UI can hide the version badge rather
+    than showing a misleading "v0.0.0".
+
+    We deliberately do NOT fall back to `required_client_version` — that is
+    the *minimum AP client* the world needs to run, not the world's release
+    version, and many unrelated APWorld updates share the same value."""
+    wv = getattr(world_cls, "world_version", None)
+    if wv is None:
+        return ""
+    try:
+        parts = (int(wv.major), int(wv.minor), int(wv.build))
+    except Exception:
+        return ""
+    if parts == (0, 0, 0):
+        return ""
+    return f"{parts[0]}.{parts[1]}.{parts[2]}"
+
+
+def build_category_map(world_cls: type) -> dict[str, str]:
+    """Return {option_id: author-defined group name}. Uses
+    `Options.get_option_groups()` so the grouping (and its order/labels) match
+    exactly what the APWorld author declared on `web.option_groups` and what
+    the AP webhost renders.
+
+    Falls back to an empty map if the world's options or option_groups can't
+    be resolved — callers should use "General" for anything we don't classify.
+    """
+    try:
+        groups = Options.get_option_groups(world_cls)
+    except Exception:
+        return {}
+    mapping: dict[str, str] = {}
+    for group_name, members in groups.items():
+        for option_id in members:
+            mapping[option_id] = group_name
+    return mapping
 
 
 def collect_advanced_option_ids(world_cls: type) -> set[str]:
-    """Pull option ids that the world has placed in an obviously-advanced group."""
+    """Pull option ids that the world has placed in an obviously-advanced group.
+
+    Kept separate from the category so we can still flag these as `advanced`
+    (hidden behind the 'Show advanced' toggle) while preserving the author's
+    own group name for display."""
     advanced: set[str] = set()
     web = getattr(world_cls, "web", None)
     if web is None:
@@ -252,18 +288,51 @@ def collect_advanced_option_ids(world_cls: type) -> set[str]:
     return advanced
 
 
-def build_schema(world_id: str, world_cls: type) -> dict[str, Any]:
+def tutorial_path(world_cls: type) -> str | None:
+    """Return the AP tutorial link for the first English tutorial, e.g.
+    "setup/en" or "multiworld/en". None if the world exposes no tutorial.
+
+    The archipelago.gg webhost renders tutorials at
+    `/tutorial/<game_name>/<link>`, so this is the path we need to build an
+    external setup-guide URL. Worlds without any tutorial shouldn't link
+    anywhere."""
+    web = getattr(world_cls, "web", None)
+    if web is None:
+        return None
+    tutorials = getattr(web, "tutorials", None) or []
+    english = None
+    for tut in tutorials:
+        lang = (getattr(tut, "language", "") or "").lower()
+        link = getattr(tut, "link", "")
+        if not link:
+            continue
+        if lang in ("english", "en"):
+            english = link
+            break
+        if english is None:
+            english = link  # any-language fallback
+    return english or None
+
+
+def build_schema(
+    world_id: str,
+    world_cls: type,
+    *,
+    is_official: bool,
+) -> dict[str, Any]:
     options_dc = getattr(world_cls, "options_dataclass", None)
     type_hints: dict[str, type] = {}
     if options_dc is not None:
         type_hints = dict(getattr(options_dc, "type_hints", {}) or {})
 
     advanced_ids = collect_advanced_option_ids(world_cls)
+    category_by_id = build_category_map(world_cls)
 
     options: list[dict[str, Any]] = []
     for option_id, opt_cls in type_hints.items():
+        category = category_by_id.get(option_id, "General")
         try:
-            entry = map_option(option_id, opt_cls)
+            entry = map_option(option_id, opt_cls, category)
         except Exception:
             continue
         if entry is None:
@@ -272,7 +341,11 @@ def build_schema(world_id: str, world_cls: type) -> dict[str, Any]:
             entry["advanced"] = True
         options.append(entry)
 
-    description = first_sentence(world_cls.__doc__) or ""
+    description = clean_doc(world_cls.__doc__)
+
+    item_names = sorted(getattr(world_cls, "item_name_to_id", {}).keys())
+
+    tut_path = tutorial_path(world_cls)
 
     return {
         "id": world_id,
@@ -284,9 +357,19 @@ def build_schema(world_id: str, world_cls: type) -> dict[str, Any]:
             "supported_versions": [],
             "wiki_url": None,
             "icon": "mdi:gamepad-variant",
+            # True = bundled with Archipelago; tutorials for these are hosted
+            # on archipelago.gg. False = user-installed custom apworld whose
+            # docs (if any) live inside the apworld itself, served only by a
+            # local webhost — we must not link to archipelago.gg for those.
+            "is_official": is_official,
+            # Author-defined English tutorial link ("setup/en", "multiworld/en",
+            # …). Null when the world declares no tutorial. The frontend
+            # combines this with the game name to build the archipelago.gg URL.
+            "tutorial_path": tut_path,
         },
         "options": options,
         "presets": [],
+        "items": item_names,
     }
 
 
@@ -364,6 +447,12 @@ def main(argv: list[str] | None = None) -> int:
     # Pre-import the worlds package so AutoWorldRegister fills up.
     # Importing each subpackage individually below populates the registry.
     world_dirs = list_world_dirs()
+    # Track which worlds came from the bundled worlds/ dir (= "official",
+    # available on archipelago.gg) vs custom_worlds/ (= user-installed, with
+    # docs/tutorials only served by a local webhost). This drives
+    # meta.is_official in the output schema and lets the UI hide setup-guide
+    # links that would 404 on archipelago.gg.
+    official_dirs: set[str] = set(world_dirs)
     if args.include_custom and CUSTOM_WORLDS_DIR.exists():
         for entry in sorted(os.listdir(CUSTOM_WORLDS_DIR)):
             full = CUSTOM_WORLDS_DIR / entry
@@ -412,7 +501,7 @@ def main(argv: list[str] | None = None) -> int:
             continue
         try:
             world_id = slug(d)
-            schema = build_schema(world_id, world_cls)
+            schema = build_schema(world_id, world_cls, is_official=d in official_dirs)
             out_path = out_dir / f"{world_id}.json"
             with out_path.open("w", encoding="utf-8") as fh:
                 json.dump(schema, fh, indent=2, ensure_ascii=False)

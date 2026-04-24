@@ -74,6 +74,14 @@ export const listCustomApworlds = () => invoke<CustomApworld[]>('list_custom_apw
 export const installApworldFromPath = (srcPath: string) =>
 	invoke<CustomApworld>('install_apworld_from_path', { srcPath });
 
+export type ApworldsFolderInstallResult = {
+	installed: CustomApworld[];
+	failed: { file_name: string; error: string }[];
+};
+
+export const installApworldsFromFolder = (folderPath: string) =>
+	invoke<ApworldsFolderInstallResult>('install_apworlds_from_folder', { folderPath });
+
 export const installApworldFromBytes = (fileName: string, bytesBase64: string) =>
 	invoke<CustomApworld>('install_apworld_from_bytes', { fileName, bytesBase64 });
 
