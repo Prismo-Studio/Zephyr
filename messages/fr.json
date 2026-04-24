@@ -593,6 +593,7 @@
 	"dashboard_viewMods": "Voir les mods",
 	"dashboard_games": "Jeux",
 	"dashboard_yourGames": "Vos jeux",
+	"dashboard_favoritesTitle": "Favoris",
 	"dashboard_favorites": "{count} favoris",
 	"dashboard_launch": "Lancer {name}",
 	"dialog_cancel": "Annuler",

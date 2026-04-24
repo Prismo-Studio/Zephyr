@@ -137,8 +137,7 @@
 		{#if favorites.length > 0}
 			<section class="z-section">
 				<div class="z-section-header">
-					<Icon icon="mdi:star" class="z-section-icon" />
-					<h3>{i18nState.locale && m.dashboard_yourGames()}</h3>
+					<h3>{i18nState.locale && m.dashboard_favoritesTitle()}</h3>
 					<Badge variant="accent">
 						{favorites.length}
 					</Badge>
@@ -187,7 +186,6 @@
 		<!-- All games grouped by loader -->
 		<section class="z-section z-section-flex">
 			<div class="z-section-header">
-				<Icon icon="mdi:gamepad-variant" class="z-section-icon" />
 				<h3>{i18nState.locale && m.dashboard_yourGames()}</h3>
 				<Badge variant="accent">{games.list.length}</Badge>
 				<div class="z-section-search">
