@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 use tracing::{info, warn};
 
-use super::process_ext::CommandExt as _;
+use crate::util::process::CommandExt as _;
 
 /// Persistent install location for the Archipelago runtime in packaged builds.
 /// On Linux that's `~/.local/share/<bundle-id>/randomizer/archipelago-runtime`;
@@ -924,6 +924,8 @@ impl ServerState {
 
         // Detach from parent so the server survives a Tauri rebuild / Zephyr restart.
         // On Windows: own process group + no console window.
+        // no_window() is not used here because this spawn ALSO needs
+        // CREATE_NEW_PROCESS_GROUP for detaching the long-running server.
         #[cfg(target_os = "windows")]
         {
             use std::os::windows::process::CommandExt;

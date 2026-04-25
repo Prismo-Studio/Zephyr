@@ -6,6 +6,7 @@ pub mod cmd;
 pub mod error;
 pub mod fs;
 pub mod path;
+pub mod process;
 pub mod window;
 pub mod keys;
 pub mod zip;

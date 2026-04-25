@@ -1,7 +1,6 @@
 use std::process::Command;
 
 pub trait CommandExt {
-    /// Suppress the console window on Windows. No-op on other platforms.
     fn no_window(&mut self) -> &mut Self;
 }
 

@@ -93,8 +93,12 @@ fn create_base_steam_command() -> Result<Command> {
         return Ok(Command::new(path));
     }
 
+    use crate::util::process::CommandExt as _;
+
     let mut flatpak_check = Command::new("flatpak");
-    flatpak_check.args(["info", "com.valvesoftware.Steam"]);
+    flatpak_check
+        .args(["info", "com.valvesoftware.Steam"])
+        .no_window();
 
     debug!("checking for steam flatpak installation with command {flatpak_check:?}");
 
@@ -214,21 +218,21 @@ fn xbox_game_dir(game: Game) -> Result<PathBuf> {
         bail!("{} is not available on Xbox Store", game.name)
     };
 
+    use crate::util::process::CommandExt as _;
+
     let name = xbox.identifier.unwrap_or(game.name);
     let mut query = Command::new("powershell.exe");
-    query.args([
-        "get-appxpackage",
-        "-Name",
-        name,
-        "|",
-        "select",
-        "-expand",
-        "InstallLocation",
-    ]);
-
-    use std::os::windows::process::CommandExt as _;
-    const CREATE_NO_WINDOW: u32 = 0x08000000;
-    query.creation_flags(CREATE_NO_WINDOW);
+    query
+        .args([
+            "get-appxpackage",
+            "-Name",
+            name,
+            "|",
+            "select",
+            "-expand",
+            "InstallLocation",
+        ])
+        .no_window();
 
     info!("querying path for {} with command {:?}", game.slug, query);
 

@@ -25,7 +25,7 @@ use tauri::{AppHandle, Emitter};
 use zip::ZipArchive;
 
 use super::ap_runner::{ap_dir, ap_install_dir, sanitize_python_env, venv_dir};
-use super::process_ext::CommandExt as _;
+use crate::util::process::CommandExt as _;
 
 /// Pinned python-build-standalone release that ships CPython 3.13.9.
 /// Archipelago supports Python 3.11–3.13; we pick 3.13 as the latest supported

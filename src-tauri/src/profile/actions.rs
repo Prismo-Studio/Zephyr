@@ -449,10 +449,9 @@ impl ManagedGame {
 
         #[cfg(target_os = "windows")]
         {
-            use std::os::windows::process::CommandExt;
             use std::process::Command;
 
-            const NO_WINDOW: u32 = 0x08000000;
+            use crate::util::process::CommandExt as _;
 
             let command = format!(
                 "$ws = New-Object -ComObject WScript.Shell; \
@@ -467,7 +466,7 @@ impl ManagedGame {
             );
 
             let result = Command::new("powershell")
-                .creation_flags(NO_WINDOW)
+                .no_window()
                 .arg("-Command")
                 .arg(&command)
                 .status()

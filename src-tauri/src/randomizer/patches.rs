@@ -26,7 +26,7 @@ use eyre::{bail, Context, Result};
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 
-use super::process_ext::CommandExt as _;
+use crate::util::process::CommandExt as _;
 use super::ap_runner::{
     ap_dir, detect_python, output_dir, ping_local_port, sanitize_python_env, ServerState,
 };

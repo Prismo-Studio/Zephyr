@@ -2,7 +2,6 @@ pub mod ap_runner;
 pub mod apworlds;
 pub mod commands;
 pub mod patches;
-pub mod process_ext;
 pub mod runtime;
 pub mod schema;
 pub mod types;
