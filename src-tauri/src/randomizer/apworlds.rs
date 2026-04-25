@@ -24,6 +24,7 @@ use tauri::AppHandle;
 use zip::ZipArchive;
 
 use super::ap_runner::{ap_dir, detect_python, sanitize_python_env};
+use super::process_ext::CommandExt as _;
 use super::schema::user_schemas_dir;
 
 /// Archipelago schema-extractor helper, embedded into the binary at build time
@@ -294,6 +295,7 @@ pub fn refresh_schemas(app: &AppHandle) -> Result<RefreshResult> {
         .stdin(Stdio::null())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
+        .no_window()
         .output()
         .context("run extract_ap_schemas.py")?;
 

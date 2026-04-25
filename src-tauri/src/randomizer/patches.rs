@@ -26,6 +26,7 @@ use eyre::{bail, Context, Result};
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 
+use super::process_ext::CommandExt as _;
 use super::ap_runner::{
     ap_dir, detect_python, output_dir, ping_local_port, sanitize_python_env, ServerState,
 };
@@ -277,6 +278,7 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
             .arg("--runtime")
             .arg(&dir)
             .stdin(Stdio::null())
+            .no_window()
             .output()
             .with_context(|| format!("run apply_patch.py for {}", patch_path.display()))?;
 
@@ -392,7 +394,8 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
     }
     cmd.stdin(Stdio::null())
         .stdout(Stdio::piped())
-        .stderr(Stdio::piped());
+        .stderr(Stdio::piped())
+        .no_window();
 
     match cmd.spawn() {
         Ok(mut child) => {
@@ -508,6 +511,7 @@ pub fn launch_component(app: &AppHandle, component_name: &str) -> Result<()> {
         .stdin(Stdio::null())
         .stdout(Stdio::null())
         .stderr(Stdio::null())
+        .no_window()
         .spawn()
         .with_context(|| format!("spawn launcher {component_name}"))?;
     Ok(())

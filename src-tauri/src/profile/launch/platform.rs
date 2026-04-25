@@ -226,6 +226,10 @@ fn xbox_game_dir(game: Game) -> Result<PathBuf> {
         "InstallLocation",
     ]);
 
+    use std::os::windows::process::CommandExt as _;
+    const CREATE_NO_WINDOW: u32 = 0x08000000;
+    query.creation_flags(CREATE_NO_WINDOW);
+
     info!("querying path for {} with command {:?}", game.slug, query);
 
     let out = query.output()?;
