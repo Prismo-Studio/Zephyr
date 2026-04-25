@@ -199,54 +199,58 @@ pub struct ProfileQuery {
 }
 
 #[command]
-pub fn query_profile(args: QueryModsArgs, app: AppHandle) -> Result<ProfileQuery> {
-    let manager = app.lock_manager();
-    let thunderstore = app.lock_thunderstore();
-    let install_queue = app.install_queue().handle();
+pub async fn query_profile(args: QueryModsArgs, app: AppHandle) -> Result<ProfileQuery> {
+    tauri::async_runtime::spawn_blocking(move || {
+        let manager = app.lock_manager();
+        let thunderstore = app.lock_thunderstore();
+        let install_queue = app.install_queue().handle();
 
-    let profile = manager.active_profile();
+        let profile = manager.active_profile();
 
-    let (mods, unknown_mods) = profile.query_mods(&args, &thunderstore);
-    let total_mod_count = profile.mods.len();
+        let (mods, unknown_mods) = profile.query_mods(&args, &thunderstore);
+        let total_mod_count = profile.mods.len();
 
-    let mut count_args = args.clone();
-    count_args.max_count = usize::MAX;
-    let (all_matching, _) = profile.query_mods(&count_args, &thunderstore);
-    let filtered_mod_count = all_matching.len();
+        let mut count_args = args.clone();
+        count_args.max_count = usize::MAX;
+        let (all_matching, _) = profile.query_mods(&count_args, &thunderstore);
+        let filtered_mod_count = all_matching.len();
 
-    let updates = profile
-        .mods
-        .iter()
-        .filter_map(|profile_mod| {
-            profile
-                .check_update(profile_mod.uuid(), false, &thunderstore, &install_queue)
-                .transpose()
+        let updates = profile
+            .mods
+            .iter()
+            .filter_map(|profile_mod| {
+                profile
+                    .check_update(profile_mod.uuid(), false, &thunderstore, &install_queue)
+                    .transpose()
+            })
+            .map_ok(|update| {
+                let ignore = profile.ignored_updates.contains(&update.latest.uuid);
+
+                FrontendAvailableUpdate {
+                    full_name: update.latest.ident.clone(),
+                    package_uuid: update.package.uuid,
+                    version_uuid: update.latest.uuid,
+                    old: update.current.parsed_version().clone(),
+                    new: update.latest.parsed_version().clone(),
+                    ignore,
+                }
+            })
+            .collect::<eyre::Result<Vec<_>>>()
+            .unwrap_or_else(|err| {
+                warn!("failed to check for updates: {:#}", err);
+                Vec::new()
+            });
+
+        Ok(ProfileQuery {
+            mods,
+            total_mod_count,
+            filtered_mod_count,
+            updates,
+            unknown_mods,
         })
-        .map_ok(|update| {
-            let ignore = profile.ignored_updates.contains(&update.latest.uuid);
-
-            FrontendAvailableUpdate {
-                full_name: update.latest.ident.clone(),
-                package_uuid: update.package.uuid,
-                version_uuid: update.latest.uuid,
-                old: update.current.parsed_version().clone(),
-                new: update.latest.parsed_version().clone(),
-                ignore,
-            }
-        })
-        .collect::<eyre::Result<Vec<_>>>()
-        .unwrap_or_else(|err| {
-            warn!("failed to check for updates: {:#}", err);
-            Vec::new()
-        });
-
-    Ok(ProfileQuery {
-        mods,
-        total_mod_count,
-        filtered_mod_count,
-        updates,
-        unknown_mods,
     })
+    .await
+    .map_err(|err| eyre!("query_profile join error: {err}"))?
 }
 
 #[command]
