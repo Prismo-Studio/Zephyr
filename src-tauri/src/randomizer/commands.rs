@@ -16,40 +16,71 @@ use super::{
 };
 use crate::util::cmd::Result;
 
-#[command]
-pub fn list_supported_games(app: AppHandle) -> Result<Vec<GameSummary>> {
-    let schemas = schema::load_all_schemas_merged(&app)?;
-    Ok(schemas.iter().map(schema::summarize).collect())
+/// Async wrapper around blocking work so the IPC thread doesn't stall while
+/// schemas / YAMLs / validators churn. Without this, switching tabs in the
+/// randomizer view freezes the UI for seconds on slow disks or large catalogs.
+async fn blocking<F, T>(f: F) -> Result<T>
+where
+    F: FnOnce() -> eyre::Result<T> + Send + 'static,
+    T: Send + 'static,
+{
+    let res = tauri::async_runtime::spawn_blocking(f)
+        .await
+        .map_err(|e| eyre::eyre!("join error: {e}"))?;
+    Ok(res?)
 }
 
 #[command]
-pub fn get_game_schema(app: AppHandle, game_id: String) -> Result<GameSchema> {
-    let schema = schema::load_schema_by_id_merged(&app, &game_id)?;
-    Ok(schema)
+pub async fn list_supported_games(app: AppHandle) -> Result<Vec<GameSummary>> {
+    blocking(move || {
+        let schemas = schema::load_all_schemas_merged(&app)?;
+        Ok(schemas.iter().map(schema::summarize).collect())
+    })
+    .await
 }
 
 #[command]
-pub fn generate_yaml(app: AppHandle, config: RandomizerConfig) -> Result<String> {
-    let schema = schema::load_schema_by_id_merged(&app, &config.game_id)?;
-    let yaml = yaml_gen::generate(&schema, &config)?;
-    Ok(yaml)
+pub async fn get_game_schema(app: AppHandle, game_id: String) -> Result<GameSchema> {
+    blocking(move || schema::load_schema_by_id_merged(&app, &game_id)).await
 }
 
 #[command]
-pub fn validate_config(app: AppHandle, config: RandomizerConfig) -> Result<Vec<ValidationError>> {
-    let schema = schema::load_schema_by_id_merged(&app, &config.game_id)?;
-    Ok(validation::validate(&schema, &config))
+pub async fn generate_yaml(app: AppHandle, config: RandomizerConfig) -> Result<String> {
+    blocking(move || {
+        let schema = schema::load_schema_by_id_merged(&app, &config.game_id)?;
+        yaml_gen::generate(&schema, &config)
+    })
+    .await
 }
 
 #[command]
-pub fn lint_yaml(app: AppHandle, game_id: String, yaml: String) -> Result<Vec<LintIssue>> {
-    let schema = schema::load_schema_by_id_merged(&app, &game_id)?;
-    Ok(yaml_gen::lint(&yaml, &schema))
+pub async fn validate_config(
+    app: AppHandle,
+    config: RandomizerConfig,
+) -> Result<Vec<ValidationError>> {
+    blocking(move || {
+        let schema = schema::load_schema_by_id_merged(&app, &config.game_id)?;
+        Ok(validation::validate(&schema, &config))
+    })
+    .await
 }
 
 #[command]
-pub fn check_python(app: AppHandle) -> PythonStatus {
-    ap_runner::check_python(&app)
+pub async fn lint_yaml(
+    app: AppHandle,
+    game_id: String,
+    yaml: String,
+) -> Result<Vec<LintIssue>> {
+    blocking(move || {
+        let schema = schema::load_schema_by_id_merged(&app, &game_id)?;
+        Ok(yaml_gen::lint(&yaml, &schema))
+    })
+    .await
+}
+
+#[command]
+pub async fn check_python(app: AppHandle) -> Result<PythonStatus> {
+    blocking(move || Ok(ap_runner::check_python(&app))).await
 }
 
 #[command]
@@ -59,8 +90,8 @@ pub fn save_player_yaml(app: AppHandle, slot_name: String, yaml: String) -> Resu
 }
 
 #[command]
-pub fn list_player_yamls(app: AppHandle) -> Result<Vec<PlayerFile>> {
-    Ok(ap_runner::list_player_yamls(&app)?)
+pub async fn list_player_yamls(app: AppHandle) -> Result<Vec<PlayerFile>> {
+    blocking(move || ap_runner::list_player_yamls(&app)).await
 }
 
 #[command]
@@ -76,8 +107,8 @@ pub fn rename_player_yaml(path: String, new_name: String) -> Result<String> {
 }
 
 #[command]
-pub fn generate_seed(app: AppHandle) -> Result<GenerateOutcome> {
-    Ok(ap_runner::run_generate(&app)?)
+pub async fn generate_seed(app: AppHandle) -> Result<GenerateOutcome> {
+    blocking(move || ap_runner::run_generate(&app)).await
 }
 
 #[command]
@@ -113,8 +144,8 @@ pub fn open_workspace_dir(app: AppHandle) -> Result<()> {
 }
 
 #[command]
-pub fn list_seeds(app: AppHandle) -> Result<Vec<SeedFile>> {
-    Ok(ap_runner::list_seeds(&app)?)
+pub async fn list_seeds(app: AppHandle) -> Result<Vec<SeedFile>> {
+    blocking(move || ap_runner::list_seeds(&app)).await
 }
 
 #[command]
@@ -377,8 +408,8 @@ pub async fn archipelago_gg_room_info(room_id: String) -> Result<ArchipelagoGgRo
 // --- Custom apworlds ---
 
 #[command]
-pub fn list_custom_apworlds(app: AppHandle) -> Result<Vec<CustomApworld>> {
-    Ok(apworlds::list_custom_apworlds(&app)?)
+pub async fn list_custom_apworlds(app: AppHandle) -> Result<Vec<CustomApworld>> {
+    blocking(move || apworlds::list_custom_apworlds(&app)).await
 }
 
 #[command]

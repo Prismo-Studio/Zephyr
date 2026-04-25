@@ -220,7 +220,7 @@ impl Default for Prefs {
             pull_before_launch: true,
 
             zoom_factor: 1.0,
-            dpi_scale: 1.0,
+            dpi_scale: 1.1,
             language: "en".to_string(),
             gamepad_enabled: false,
 

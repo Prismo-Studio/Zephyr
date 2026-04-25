@@ -256,7 +256,7 @@
 			</div>
 		{/if}
 
-		<div class="rdz-config-body">
+		<div class="rdz-config-body" data-tour="rdz-cfg-body">
 			{#each groupedOptions as group (group.category)}
 				{@const visibleCount = visibleOptionCount(group.options)}
 				{#if visibleCount > 0}
@@ -287,7 +287,7 @@
 			<StartInventoryEditor />
 		</div>
 
-		<footer class="rdz-config-footer">
+		<footer class="rdz-config-footer" data-tour="rdz-cfg-footer">
 			<Button variant="ghost" onclick={() => randomizerStore.resetToDefaults()}>
 				{#snippet icon()}
 					<Icon icon="mdi:restore" />

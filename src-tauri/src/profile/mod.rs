@@ -7,7 +7,6 @@ use std::{
 use chrono::{DateTime, Utc};
 use export::modpack::ModpackArgs;
 use eyre::{anyhow, ensure, eyre, Context, ContextCompat, OptionExt, Result};
-use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 use tracing::{info, warn};
@@ -19,7 +18,7 @@ use crate::{
     game::{self, mod_loader::ModLoader, Game},
     prefs::Prefs,
     state::ManagerExt,
-    thunderstore::{self, BorrowedMod, ModId, Thunderstore, VersionIdent},
+    thunderstore::{BorrowedMod, ModId, Thunderstore, VersionIdent},
     util::fs::PathExt,
 };
 
@@ -714,17 +713,6 @@ impl ModManager {
 
         self.games.insert(game, managed);
         Ok(())
-    }
-
-    fn cache_mods(&self, thunderstore: &Thunderstore, prefs: &Prefs) -> Result<()> {
-        let packages = self
-            .active_game()
-            .installed_mods(thunderstore)
-            .map(|borrowed| borrowed.package)
-            .unique()
-            .collect_vec();
-
-        thunderstore::cache::write_packages(&packages, self.active_game, prefs)
     }
 
     fn add_saved_game(&mut self, base_path: &Path, saved_game: db::ManagedGameData) -> Result<()> {

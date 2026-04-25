@@ -25,6 +25,7 @@ use tauri::{AppHandle, Emitter};
 use zip::ZipArchive;
 
 use super::ap_runner::{ap_dir, ap_install_dir, sanitize_python_env, venv_dir};
+use crate::util::process::CommandExt as _;
 
 /// Pinned python-build-standalone release that ships CPython 3.13.9.
 /// Archipelago supports Python 3.11–3.13; we pick 3.13 as the latest supported
@@ -561,6 +562,7 @@ fn provision_venv_at(
             .arg("pip")
             .arg("install")
             .arg("--upgrade")
+            .arg("--prefer-binary")
             .arg("pip")
             .arg("setuptools<81")
             .arg("wheel"),
@@ -576,6 +578,7 @@ fn provision_venv_at(
     let pkg_check = pkg_cmd
         .arg("-c")
         .arg("import pkg_resources")
+        .no_window()
         .output()
         .context("probe pkg_resources")?;
     if !pkg_check.status.success() {
@@ -596,6 +599,7 @@ fn provision_venv_at(
                 .arg("-m")
                 .arg("pip")
                 .arg("install")
+                .arg("--prefer-binary")
                 .arg("-r")
                 .arg(&main_req),
             emit,
@@ -644,6 +648,7 @@ fn provision_venv_at(
                         .arg("-m")
                         .arg("pip")
                         .arg("install")
+                        .arg("--prefer-binary")
                         .arg("-r")
                         .arg(req),
                     emit,
@@ -670,7 +675,7 @@ fn probe_python_version(candidate: &str, extra_args: &[&str]) -> Option<(u32, u3
     for arg in extra_args {
         cmd.arg(arg);
     }
-    let out = cmd.arg("--version").output().ok()?;
+    let out = cmd.arg("--version").no_window().output().ok()?;
     if !out.status.success() {
         return None;
     }
@@ -895,7 +900,8 @@ fn run_to_log(cmd: &mut Command, emit: &dyn Fn(ProgressEvent)) -> Result<()> {
         .env("PIP_DISABLE_PIP_VERSION_CHECK", "1")
         .stdin(Stdio::null())
         .stdout(Stdio::piped())
-        .stderr(Stdio::piped());
+        .stderr(Stdio::piped())
+        .no_window();
     let mut child = cmd.spawn().context("spawn pip")?;
 
     // Drain stderr in a background thread into a shared buffer so we don't

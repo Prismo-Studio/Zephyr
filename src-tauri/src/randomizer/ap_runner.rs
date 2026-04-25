@@ -22,6 +22,8 @@ use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 use tracing::{info, warn};
 
+use crate::util::process::CommandExt as _;
+
 /// Persistent install location for the Archipelago runtime in packaged builds.
 /// On Linux that's `~/.local/share/<bundle-id>/randomizer/archipelago-runtime`;
 /// Tauri's `app_data_dir` maps to the platform-appropriate equivalents on macOS
@@ -122,7 +124,7 @@ pub fn detect_python(app: &AppHandle) -> Option<(String, String)> {
     for candidate in &candidates {
         let mut cmd = Command::new(candidate);
         sanitize_python_env(&mut cmd);
-        if let Ok(out) = cmd.arg("--version").output() {
+        if let Ok(out) = cmd.arg("--version").no_window().output() {
             if out.status.success() {
                 let version = String::from_utf8_lossy(&out.stdout)
                     .trim()
@@ -217,6 +219,7 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
         .stdin(Stdio::null())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
+        .no_window()
         .output()
         .context("failed to spawn Generate.py")?;
 
@@ -921,6 +924,8 @@ impl ServerState {
 
         // Detach from parent so the server survives a Tauri rebuild / Zephyr restart.
         // On Windows: own process group + no console window.
+        // no_window() is not used here because this spawn ALSO needs
+        // CREATE_NEW_PROCESS_GROUP for detaching the long-running server.
         #[cfg(target_os = "windows")]
         {
             use std::os::windows::process::CommandExt;

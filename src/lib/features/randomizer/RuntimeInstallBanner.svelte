@@ -315,11 +315,8 @@
 	.rim-ok {
 		display: flex;
 		align-items: center;
-		gap: var(--space-xs);
-		padding: 6px 10px;
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-md);
-		background: var(--bg-surface);
+		gap: 6px;
+		padding: 4px 0;
 		font-size: 11px;
 		color: var(--text-muted);
 	}
@@ -327,18 +324,24 @@
 	.rim-ok :global(svg) {
 		font-size: 14px;
 		color: #65c88a;
+		flex-shrink: 0;
 	}
 
 	.rim-ok code {
-		background: var(--bg-base);
-		padding: 1px 6px;
-		border-radius: var(--radius-sm);
+		background: transparent;
+		padding: 0;
 		font-family: var(--font-mono, monospace);
 		font-size: 10px;
 		color: var(--text-secondary);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		min-width: 0;
 	}
 
 	.rim-ok-meta {
 		margin-left: auto;
+		flex-shrink: 0;
+		white-space: nowrap;
 	}
 </style>
