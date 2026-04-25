@@ -70,26 +70,49 @@
 		{ p: 7777, label: 'Games' }
 	];
 
-	// ── Quick Actions popover ──
 	let quickActionsOpen = $state(false);
 	let quickActionsEl: HTMLDivElement | null = $state(null);
 	let quickActionsBusy = $state(false);
 	let schemasRefreshing = $state(false);
+	let qaMenuPos = $state<{ top: number; right: number } | null>(null);
+
+	function updateQaMenuPos() {
+		if (!quickActionsEl) return;
+		const r = quickActionsEl.getBoundingClientRect();
+		qaMenuPos = {
+			top: r.bottom + 6,
+			right: window.innerWidth - r.right
+		};
+	}
 
 	function closeQuickActions(e: MouseEvent) {
 		if (!quickActionsOpen) return;
-		if (quickActionsEl && !quickActionsEl.contains(e.target as Node)) {
+		const target = e.target as Node;
+		const inWrapper = quickActionsEl?.contains(target);
+		const menu = document.getElementById('rdz-qa-menu');
+		const inMenu = menu?.contains(target);
+		if (!inWrapper && !inMenu) {
 			quickActionsOpen = false;
 		}
 	}
 
 	$effect(() => {
 		if (quickActionsOpen) {
+			updateQaMenuPos();
 			document.addEventListener('mousedown', closeQuickActions, true);
+			window.addEventListener('resize', updateQaMenuPos);
+			window.addEventListener('scroll', updateQaMenuPos, true);
 		} else {
+			qaMenuPos = null;
 			document.removeEventListener('mousedown', closeQuickActions, true);
+			window.removeEventListener('resize', updateQaMenuPos);
+			window.removeEventListener('scroll', updateQaMenuPos, true);
 		}
-		return () => document.removeEventListener('mousedown', closeQuickActions, true);
+		return () => {
+			document.removeEventListener('mousedown', closeQuickActions, true);
+			window.removeEventListener('resize', updateQaMenuPos);
+			window.removeEventListener('scroll', updateQaMenuPos, true);
+		};
 	});
 
 	async function quickPatchGame() {
@@ -466,7 +489,6 @@
 		</div>
 	{/if}
 	<header class="rdz-server-header">
-		<Icon icon="mdi:server-network" />
 		<h2>{i18nState.locale && m.randomizer_serverTitle()}</h2>
 		<div class="rdz-qa-wrapper" bind:this={quickActionsEl}>
 			<Button
@@ -478,8 +500,13 @@
 				{#snippet icon()}<Icon icon="mdi:menu" />{/snippet}
 				{i18nState.locale && m.randomizer_quickActions_title()}
 			</Button>
-			{#if quickActionsOpen}
-				<div class="rdz-qa-menu" role="menu">
+			{#if quickActionsOpen && qaMenuPos}
+				<div
+					id="rdz-qa-menu"
+					class="rdz-qa-menu"
+					role="menu"
+					style="top: {qaMenuPos.top}px; right: {qaMenuPos.right}px;"
+				>
 					<button
 						class="rdz-qa-item"
 						role="menuitem"
@@ -546,7 +573,6 @@
 	>
 		<div class="rdz-block" class:rdz-block-disabled={hostMode === 'remote'}>
 			<button class="rdz-block-header" onclick={() => toggleBlock('python')}>
-				<Icon icon="mdi:language-python" />
 				<span class="rdz-block-name">{i18nState.locale && m.randomizer_pythonRuntime()}</span>
 				{#if hostMode === 'remote'}
 					<span class="rdz-block-badge">
@@ -591,7 +617,6 @@
 	<div class="rdz-block">
 		<div class="rdz-block-row">
 			<button class="rdz-block-header" onclick={() => toggleBlock('players')}>
-				<Icon icon="mdi:account-multiple" />
 				<span class="rdz-block-name">
 					{i18nState.locale && m.randomizer_playerSlots()} <small>({players.length})</small>
 				</span>
@@ -625,7 +650,6 @@
 					<ul class="rdz-player-list">
 						{#each players as p (p.path)}
 							<li>
-								<Icon icon="mdi:file-document" />
 								<span class="rdz-player-name">{p.name}</span>
 								<span class="rdz-player-size">{Math.ceil(p.size / 102.4) / 10} KB</span>
 								<div class="rdz-seed-actions">
@@ -643,7 +667,7 @@
 										position="top"
 										delay={200}
 									>
-										<button class="rdz-icon-btn" onclick={() => deletePlayer(p)}>
+										<button class="rdz-icon-btn rdz-icon-danger" onclick={() => deletePlayer(p)}>
 											<Icon icon="mdi:delete" />
 										</button>
 									</Tooltip>
@@ -660,7 +684,6 @@
 	<div class="rdz-block">
 		<div class="rdz-block-row">
 			<button class="rdz-block-header" onclick={() => toggleBlock('seeds')}>
-				<Icon icon="mdi:dice-multiple" />
 				<span class="rdz-block-name">
 					{i18nState.locale && m.randomizer_seeds()} <small>({seeds.length})</small>
 				</span>
@@ -676,7 +699,7 @@
 					delay={200}
 				>
 					<button
-						class="rdz-icon-btn rdz-clear-all"
+						class="rdz-icon-btn rdz-icon-danger rdz-clear-all"
 						onclick={clearAllSeeds}
 						aria-label="Clear all seeds"
 					>
@@ -755,7 +778,7 @@
 										delay={200}
 									>
 										<button
-											class="rdz-icon-btn"
+											class="rdz-icon-btn rdz-icon-danger"
 											disabled={isHosted}
 											onclick={() => deleteOneSeed(s)}
 										>
@@ -796,7 +819,6 @@
 	<!-- Host -->
 	<div class="rdz-block">
 		<button class="rdz-block-header" onclick={() => toggleBlock('host')}>
-			<Icon icon="mdi:broadcast" />
 			<span class="rdz-block-name">{i18nState.locale && m.randomizer_host()}</span>
 			<Icon
 				icon="mdi:chevron-down"
@@ -1024,9 +1046,9 @@
 
 						<div class="rdz-cgnat-note">
 							<Icon icon="mdi:information-outline" />
-							<div>
-								<strong>{i18nState.locale && m.randomizer_cantConnect()}</strong><br />
-								{i18nState.locale && m.randomizer_cgnatExplanation()}
+							<div class="rdz-cgnat-content">
+								<strong>{i18nState.locale && m.randomizer_cantConnect()}</strong>
+								<span>{i18nState.locale && m.randomizer_cgnatExplanation()}</span>
 							</div>
 						</div>
 					{/if}
@@ -1108,15 +1130,32 @@
 	.rdz-server {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-md);
+		gap: 0;
 		position: relative;
+	}
+
+	.rdz-server :global(.z-btn-primary) {
+		background: transparent;
+		color: var(--accent-400);
+		border: 1px solid var(--accent-400);
+		font-weight: 600;
+		box-shadow: none;
+	}
+	.rdz-server :global(.z-btn-primary:hover:not(:disabled)) {
+		background: var(--bg-hover);
+		color: var(--accent-300);
+		border-color: var(--accent-300);
+		box-shadow: none;
+	}
+	.rdz-server :global(.z-btn-primary:disabled) {
+		opacity: 0.4;
 	}
 
 	.rdz-host-toggle {
 		display: flex;
 		gap: 2px;
 		padding: 2px;
-		background: var(--bg-base);
+		background: transparent;
 		border: 1px solid var(--border-subtle);
 		border-radius: var(--radius-md);
 	}
@@ -1127,15 +1166,17 @@
 		align-items: center;
 		justify-content: center;
 		gap: 6px;
-		padding: 6px 12px;
+		padding: 5px 12px;
 		border: none;
 		border-radius: var(--radius-sm);
 		background: transparent;
 		color: var(--text-muted);
 		font-size: 12px;
-		font-weight: 600;
+		font-weight: 500;
 		cursor: pointer;
-		transition: all var(--transition-fast);
+		transition:
+			color var(--transition-fast),
+			background var(--transition-fast);
 	}
 
 	.rdz-toggle-btn:hover {
@@ -1143,9 +1184,9 @@
 	}
 
 	.rdz-toggle-btn.active {
-		background: var(--bg-elevated);
+		background: var(--bg-hover);
 		color: var(--text-primary);
-		box-shadow: var(--shadow-sm);
+		box-shadow: none;
 	}
 
 	.rdz-server-header {
@@ -1153,6 +1194,7 @@
 		align-items: center;
 		gap: var(--space-sm);
 		padding-bottom: var(--space-sm);
+		margin-bottom: var(--space-sm);
 		border-bottom: 1px solid var(--border-subtle);
 		flex-wrap: wrap;
 	}
@@ -1161,8 +1203,10 @@
 		margin: 0;
 		flex: 1 1 auto;
 		min-width: 0;
-		font-size: 16px;
+		font-size: 14px;
+		font-weight: 600;
 		color: var(--text-primary);
+		letter-spacing: 0.02em;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -1172,10 +1216,8 @@
 		position: relative;
 	}
 
-	.rdz-qa-menu {
-		position: absolute;
-		top: calc(100% + 6px);
-		right: 0;
+	:global(#rdz-qa-menu.rdz-qa-menu) {
+		position: fixed;
 		min-width: 260px;
 		background: var(--bg-elevated);
 		border: 1px solid var(--border-default);
@@ -1184,7 +1226,7 @@
 		box-shadow:
 			0 8px 24px rgba(0, 0, 0, 0.45),
 			0 2px 6px rgba(0, 0, 0, 0.3);
-		z-index: var(--z-dropdown);
+		z-index: 9999;
 		animation: rdz-qa-in 150ms ease;
 	}
 
@@ -1279,43 +1321,51 @@
 	.rdz-block {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-sm);
-		padding: var(--space-md);
-		background: var(--bg-surface);
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-lg);
+		gap: var(--space-xs);
+		padding: var(--space-md) 0;
+		border-top: 1px solid var(--border-subtle);
 		transition: opacity var(--transition-fast);
 		position: relative;
-		overflow: hidden;
+	}
+
+	.rdz-block:first-child {
+		border-top: none;
+		padding-top: 0;
 	}
 
 	.rdz-block-disabled {
 		pointer-events: none;
+		overflow: hidden;
 	}
 
-	.rdz-block-disabled > *:not(.rdz-block-title) {
-		opacity: 0.4;
+	.rdz-block-disabled > :not(.rdz-block-row) {
+		opacity: 0.45;
 	}
 
-	.rdz-block-disabled .rdz-block-title :global(svg:first-child),
-	.rdz-block-disabled .rdz-block-title {
-		color: var(--text-muted);
+	.rdz-block-disabled .rdz-block-badge {
+		color: var(--text-primary);
+		position: relative;
+		z-index: 6;
 	}
 
 	.rdz-block-disabled::before {
 		content: '';
 		position: absolute;
 		inset: 0;
-		background: repeating-linear-gradient(
+		background-image: repeating-linear-gradient(
 			135deg,
 			transparent,
-			transparent 10px,
-			var(--bg-active) 10px,
-			var(--bg-active) 11px
+			transparent 6px,
+			rgba(255, 255, 255, 0.04) 6px,
+			rgba(255, 255, 255, 0.04) 12px
 		);
 		pointer-events: none;
-		z-index: 1;
-		opacity: 0.6;
+		z-index: 5;
+	}
+
+	.rdz-block-disabled .rdz-block-title :global(svg:first-child),
+	.rdz-block-disabled .rdz-block-title {
+		color: var(--text-muted);
 	}
 
 	.rdz-block-badge {
@@ -1324,17 +1374,11 @@
 		gap: 4px;
 		margin-left: auto;
 		padding: 2px 8px;
-		border-radius: var(--radius-full);
-		background: var(--bg-active);
-		border: 1px solid var(--border-accent);
-		color: var(--text-accent);
 		font-size: 10px;
 		font-weight: 700;
 		text-transform: none;
 		letter-spacing: 0;
-		position: relative;
-		z-index: 2;
-		opacity: 2; /* Compensate the parent's 0.5 opacity so badge stays at full opacity */
+		color: var(--text-muted);
 	}
 
 	.rdz-block-row {
@@ -1354,29 +1398,24 @@
 		align-items: center;
 		gap: var(--space-xs);
 		width: 100%;
-		padding: 8px 10px;
+		padding: 4px 0;
 		border: none;
 		background: transparent;
-		color: var(--text-primary);
+		color: var(--text-secondary);
 		font-family: var(--font-body);
-		font-size: 13px;
-		font-weight: 700;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		letter-spacing: 0.06em;
 		cursor: pointer;
-		border-radius: var(--radius-sm);
+		border-radius: 0;
 		text-align: left;
-		transition: background var(--transition-fast);
+		transition: color var(--transition-fast);
 	}
 
 	.rdz-block-header:hover {
-		background: var(--bg-hover);
-	}
-
-	.rdz-block-header :global(svg:first-child) {
-		font-size: 16px;
-		color: var(--accent-400);
-		flex-shrink: 0;
+		color: var(--text-primary);
+		background: transparent;
 	}
 
 	.rdz-block-name {
@@ -1405,7 +1444,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-sm);
-		padding: 0 4px 4px;
+		padding: 0;
 		animation: rdz-block-in 180ms ease;
 	}
 
@@ -1565,8 +1604,16 @@
 		gap: var(--space-sm);
 		padding: 6px 10px;
 		border-radius: var(--radius-sm);
-		background: var(--bg-base);
-		border: 1px solid var(--border-subtle);
+		border-bottom: 1px solid var(--border-subtle);
+		transition: background var(--transition-fast);
+	}
+
+	.rdz-player-list li:hover {
+		background: var(--bg-hover);
+	}
+
+	.rdz-player-list li:last-child {
+		border-bottom: none;
 	}
 
 	.rdz-player-list :global(svg) {
@@ -1599,19 +1646,26 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 26px;
-		height: 26px;
+		width: 24px;
+		height: 24px;
 		border-radius: var(--radius-sm);
-		border: 1px solid var(--border-default);
-		background: var(--bg-elevated);
+		border: none;
+		background: transparent;
 		color: var(--text-muted);
 		cursor: pointer;
-		transition: all var(--transition-fast);
+		transition:
+			color var(--transition-fast),
+			background var(--transition-fast);
 	}
 
 	.rdz-icon-btn:hover {
+		color: var(--text-primary);
+		background: var(--bg-hover);
+	}
+
+	.rdz-icon-btn.rdz-icon-danger:hover {
 		color: var(--error);
-		border-color: var(--error);
+		background: transparent;
 	}
 
 	.rdz-icon-btn:disabled {
@@ -1621,7 +1675,7 @@
 
 	.rdz-icon-btn:disabled:hover {
 		color: var(--text-muted);
-		border-color: var(--border-default);
+		background: transparent;
 	}
 
 	.rdz-clear-all {
@@ -1638,28 +1692,29 @@
 		padding: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 4px;
+		gap: 0;
 	}
 
 	.rdz-seed-item {
 		display: flex;
 		align-items: center;
 		gap: var(--space-xs);
-		padding: 4px;
-		border-radius: var(--radius-sm);
-		background: var(--bg-base);
-		border: 1px solid var(--border-subtle);
-		transition: all var(--transition-fast);
+		padding: 6px 8px;
+		border-radius: 0;
+		border-bottom: 1px solid var(--border-subtle);
+		transition: background var(--transition-fast);
+	}
+
+	.rdz-seed-item:hover {
+		background: var(--bg-hover);
+	}
+
+	.rdz-seed-item:last-child {
+		border-bottom: none;
 	}
 
 	.rdz-seed-item.selected {
-		border-color: var(--accent-400);
-		background: var(--bg-active);
-	}
-
-	.rdz-seed-item.hosted {
-		border-color: #66d9b0;
-		background: rgba(102, 217, 176, 0.06);
+		background: var(--bg-hover);
 	}
 
 	.rdz-seed-pick {
@@ -1754,40 +1809,47 @@
 		display: inline-flex;
 		align-items: baseline;
 		gap: 6px;
-		padding: 4px 10px;
-		border-radius: var(--radius-full);
-		border: 1px solid var(--border-default);
-		background: var(--bg-elevated);
+		padding: 3px 8px;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-base);
 		color: var(--text-muted);
 		cursor: pointer;
-		transition: all var(--transition-fast);
+		transition:
+			color var(--transition-fast),
+			background var(--transition-fast),
+			border-color var(--transition-fast);
 	}
 
 	.rdz-preset-port {
 		font-family: var(--font-mono, 'JetBrains Mono', monospace);
 		font-size: 11px;
-		font-weight: 700;
-		color: var(--text-primary);
+		font-weight: 600;
+		color: var(--text-secondary);
 	}
 
 	.rdz-preset-label {
 		font-size: 10px;
 		color: var(--text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
 	}
 
 	.rdz-preset-chip:hover {
-		border-color: var(--accent-400);
+		background: var(--bg-hover);
+		border-color: var(--border-default);
 	}
-	.rdz-preset-chip:hover .rdz-preset-port,
-	.rdz-preset-chip:hover .rdz-preset-label {
-		color: var(--accent-400);
+	.rdz-preset-chip:hover .rdz-preset-port {
+		color: var(--text-primary);
 	}
 
 	.rdz-preset-chip.active {
-		background: var(--bg-active);
+		background: var(--bg-base);
 		border-color: var(--accent-400);
 	}
-	.rdz-preset-chip.active .rdz-preset-port,
+	.rdz-preset-chip.active .rdz-preset-port {
+		color: var(--accent-400);
+	}
 	.rdz-preset-chip.active .rdz-preset-label {
 		color: var(--accent-400);
 	}
@@ -1826,13 +1888,10 @@
 	.rdz-cgnat-note {
 		display: flex;
 		align-items: flex-start;
-		gap: var(--space-sm);
+		gap: 6px;
 		margin-top: var(--space-sm);
-		padding: var(--space-sm) var(--space-md);
-		background: var(--bg-elevated);
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-md);
-		color: var(--text-secondary);
+		padding: 0;
+		color: var(--text-muted);
 		font-size: 11px;
 		line-height: 1.5;
 	}
@@ -1841,11 +1900,20 @@
 		font-size: 16px;
 		color: var(--accent-400);
 		flex-shrink: 0;
-		margin-top: 2px;
+		margin-top: 1px;
+	}
+
+	.rdz-cgnat-content {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+		flex: 1;
 	}
 
 	.rdz-cgnat-note strong {
 		color: var(--text-primary);
+		font-weight: 600;
 	}
 
 	.rdz-cgnat-note em {
@@ -1939,8 +2007,7 @@
 	}
 
 	.rdz-conn-recommended {
-		border-color: var(--accent-400);
-		background: var(--bg-active);
+		border-left: 2px solid var(--accent-400);
 	}
 
 	.rdz-conn-card small {

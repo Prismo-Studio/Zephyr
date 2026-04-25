@@ -161,9 +161,10 @@
 		class="rdz-right-pane"
 		class:collapsed={rightPaneCollapsed.current}
 		style={rightPaneCollapsed.current ? 'flex-basis: 38px;' : `flex-basis: ${rightWidth}px;`}
+		data-tour="rdz-right-pane"
 	>
 		{#if !rightPaneCollapsed.current}
-			<div class="rdz-right-tabs">
+			<div class="rdz-right-tabs" data-tour="rdz-right-tabs">
 				{#if randomizerStore.currentSchema}
 					<button
 						class="rdz-tab"

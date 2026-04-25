@@ -1,4 +1,8 @@
-use std::{fmt::Display, path::PathBuf, time::Instant};
+use std::{
+    fmt::Display,
+    path::{Path, PathBuf},
+    time::Instant,
+};
 
 use eyre::{Context, Result};
 use serde::Deserialize;
@@ -109,7 +113,10 @@ fn get_packages(game: Game, prefs: &Prefs) -> Result<Option<Vec<PackageListing>>
     Ok(Some(result))
 }
 
-pub fn write_packages(packages: &[&PackageListing], game: Game, prefs: &Prefs) -> Result<()> {
+pub fn write_packages_to_path<P>(packages: &[P], path: &Path) -> Result<()>
+where
+    P: serde::Serialize,
+{
     if packages.is_empty() {
         info!("no packages to write to cache");
         return Ok(());
@@ -117,7 +124,7 @@ pub fn write_packages(packages: &[&PackageListing], game: Game, prefs: &Prefs) -
 
     let start = Instant::now();
 
-    util::fs::write_json(cache_path(game, prefs), packages, JsonStyle::Compact)
+    util::fs::write_json(path.to_path_buf(), packages, JsonStyle::Compact)
         .context("failed to write mod cache")?;
 
     debug!(

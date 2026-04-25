@@ -147,7 +147,7 @@
 			</p>
 		</div>
 		<div class="rdz-catalog-actions">
-			<div class="rdz-search">
+			<div class="rdz-search" data-tour="rdz-search">
 				<Input
 					bind:value={search}
 					placeholder={i18nState.locale && m.randomizer_searchPlaceholder()}
@@ -157,7 +157,7 @@
 					{/snippet}
 				</Input>
 			</div>
-			<div class="rdz-install-wrap" bind:this={installMenuEl}>
+			<div class="rdz-install-wrap" bind:this={installMenuEl} data-tour="rdz-install-apworld">
 				<Button
 					size="md"
 					variant="primary"
@@ -199,12 +199,14 @@
 					</div>
 				{/if}
 			</div>
-			<Button size="md" variant="ghost" onclick={() => (showCustom = !showCustom)}>
-				{#snippet icon()}
-					<Icon icon={showCustom ? 'mdi:chevron-up' : 'mdi:chevron-down'} />
-				{/snippet}
-				{i18nState.locale && m.randomizer_manage()}
-			</Button>
+			<div data-tour="rdz-manage" style="display: inline-flex;">
+				<Button size="md" variant="ghost" onclick={() => (showCustom = !showCustom)}>
+					{#snippet icon()}
+						<Icon icon={showCustom ? 'mdi:chevron-up' : 'mdi:chevron-down'} />
+					{/snippet}
+					{i18nState.locale && m.randomizer_manage()}
+				</Button>
+			</div>
 			<Button
 				size="md"
 				variant="ghost"
@@ -219,7 +221,9 @@
 		</div>
 	</header>
 
-	<RuntimeInstallBanner />
+	<div data-tour="rdz-runtime-banner">
+		<RuntimeInstallBanner />
+	</div>
 
 	<CustomApworldsPanel
 		visible={showCustom}
@@ -247,7 +251,7 @@
 			>
 		</div>
 	{:else}
-		<div class="rdz-grid">
+		<div class="rdz-grid" data-tour="rdz-catalog-grid">
 			{#each filtered as game (game.id)}
 				<button class="rdz-card" onclick={() => onSelect(game.id)}>
 					<GameLogo id={game.id} name={game.name} size={64} />

@@ -562,6 +562,7 @@ fn provision_venv_at(
             .arg("pip")
             .arg("install")
             .arg("--upgrade")
+            .arg("--prefer-binary")
             .arg("pip")
             .arg("setuptools<81")
             .arg("wheel"),
@@ -598,6 +599,7 @@ fn provision_venv_at(
                 .arg("-m")
                 .arg("pip")
                 .arg("install")
+                .arg("--prefer-binary")
                 .arg("-r")
                 .arg(&main_req),
             emit,
@@ -646,6 +648,7 @@ fn provision_venv_at(
                         .arg("-m")
                         .arg("pip")
                         .arg("install")
+                        .arg("--prefer-binary")
                         .arg("-r")
                         .arg(req),
                     emit,

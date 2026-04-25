@@ -293,9 +293,27 @@ async fn handle_queue(app: AppHandle) {
 
         emit(InstallEvent::Hide { reason }, &app);
 
-        app.lock_manager()
-            .cache_mods(&app.lock_thunderstore(), &app.lock_prefs())
-            .ok();
+        let cache_payload = {
+            let manager = app.lock_manager();
+            let thunderstore = app.lock_thunderstore();
+            let prefs = app.lock_prefs();
+
+            let packages = manager
+                .active_game()
+                .installed_mods(&thunderstore)
+                .map(|borrowed| borrowed.package.clone())
+                .unique_by(|p| p.uuid)
+                .collect::<Vec<_>>();
+
+            (packages, manager.active_game, prefs.data_dir.get().to_path_buf())
+        };
+
+        let (packages, game, data_dir) = cache_payload;
+        let _ = tauri::async_runtime::spawn_blocking(move || {
+            let cache_path = data_dir.join(&*game.slug).join("thunderstore_cache.json");
+            crate::thunderstore::cache::write_packages_to_path(&packages, &cache_path)
+        })
+        .await;
 
         queue.notify_empty.notify_waiters();
     }

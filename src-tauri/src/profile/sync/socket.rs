@@ -153,26 +153,42 @@ async fn read(app: &AppHandle, mut receiver: SplitStream<WebSocket>) {
             ServerMessage::ProfileUpdated { metadata } => {
                 info!("got sync profile update event for {}", metadata.id);
 
-                let mut manager = app.lock_manager();
+                let snapshots = {
+                    let mut manager = app.lock_manager();
+                    let mut snapshots = Vec::new();
 
-                for profile in sync_profiles_with_id(&mut manager, &metadata.id) {
-                    let info = profile.sync.as_mut().unwrap();
-                    info.updated_at = metadata.updated_at;
-                    info.owner = metadata.owner.clone();
+                    for profile in sync_profiles_with_id(&mut manager, &metadata.id) {
+                        let info = profile.sync.as_mut().unwrap();
+                        info.updated_at = metadata.updated_at;
+                        info.owner = metadata.owner.clone();
 
-                    profile.save(app, true).ok();
-                }
+                        profile.notify_frontend(app).ok();
+
+                        snapshots.push((profile.id, profile.sync.clone()));
+                    }
+
+                    snapshots
+                };
+
+                persist_sync_snapshots(app, snapshots).await;
             }
             ServerMessage::ProfileNotFound { id } | ServerMessage::ProfileDeleted { id } => {
                 info!("got sync profile delete event for {}", id);
 
-                let mut manager = app.lock_manager();
+                let snapshots = {
+                    let mut manager = app.lock_manager();
+                    let mut snapshots = Vec::new();
 
-                for profile in sync_profiles_with_id(&mut manager, &id) {
-                    profile.sync.as_mut().unwrap().missing = true;
+                    for profile in sync_profiles_with_id(&mut manager, &id) {
+                        profile.sync.as_mut().unwrap().missing = true;
+                        profile.notify_frontend(app).ok();
+                        snapshots.push((profile.id, profile.sync.clone()));
+                    }
 
-                    profile.save(app, true).ok();
-                }
+                    snapshots
+                };
+
+                persist_sync_snapshots(app, snapshots).await;
             }
             ServerMessage::Error { message } => {
                 error!("got error from socket: {message}");
@@ -209,6 +225,28 @@ async fn send_queued_message(
     if let Err(err) = sender.send(msg).await {
         warn!("failed to send socket message: {err}");
     }
+}
+
+async fn persist_sync_snapshots(
+    app: &AppHandle,
+    snapshots: Vec<(i64, Option<super::SyncProfileData>)>,
+) {
+    if snapshots.is_empty() {
+        return;
+    }
+
+    let app = app.clone();
+    let _ = tauri::async_runtime::spawn_blocking(move || {
+        for (profile_id, sync_data) in snapshots {
+            if let Err(err) = app
+                .db()
+                .update_profile_sync_data(profile_id, sync_data.as_ref())
+            {
+                warn!("failed to persist sync data for profile {profile_id}: {err}");
+            }
+        }
+    })
+    .await;
 }
 
 fn sync_profiles_with_id<'a>(

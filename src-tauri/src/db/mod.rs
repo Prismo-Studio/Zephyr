@@ -314,6 +314,22 @@ impl Db {
         self.with_transaction(|tx| self.save_profiles(tx, iter::once(profile)))
     }
 
+    pub fn update_profile_sync_data(
+        &self,
+        profile_id: i64,
+        sync_data: Option<&profile::sync::SyncProfileData>,
+    ) -> Result<()> {
+        let serialized = sync_data.map(serde_json::to_string).transpose()?;
+
+        let conn = self.conn();
+        conn.execute(
+            "UPDATE profiles SET sync_data = ? WHERE id = ?",
+            params![serialized, profile_id],
+        )?;
+
+        Ok(())
+    }
+
     fn save_profiles<'a>(
         &self,
         tx: &rusqlite::Transaction,
