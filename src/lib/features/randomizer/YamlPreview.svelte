@@ -49,7 +49,7 @@
 	const highlightedLineIndex = $derived.by(() => {
 		const id = randomizerStore.lastChangedId;
 		if (!id || lines.length === 0) return -1;
-		const re = new RegExp(`^\\s+${id.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}:`);
+		const re = new RegExp(`^\\s*${id.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}:`);
 		return lines.findIndex((l) => re.test(l));
 	});
 
