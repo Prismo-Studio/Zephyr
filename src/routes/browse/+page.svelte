@@ -7,6 +7,7 @@
 	import { zephyrServerState } from '$lib/state/zephyrServer.svelte';
 
 	import Loader from '$lib/components/ui/Loader.svelte';
+	import ScrollToTop from '$lib/components/ui/ScrollToTop.svelte';
 	import ModCard from '$lib/components/mod-list/ModCard.svelte';
 	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
 	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
@@ -38,6 +39,7 @@
 	import { activeSourceState } from '$lib/state/source.svelte';
 	let activeSource = $derived(activeSourceState.current);
 
+	let browseContentEl: HTMLDivElement | undefined = $state();
 	let mods: Mod[] = $state([]);
 	let maxCount: number = $state(30);
 	let totalLoadedForCurrentQuery: number = $state(0);
@@ -779,7 +781,7 @@
 			{/snippet}
 		</Header>
 
-		<div class="z-browse-content">
+		<div class="z-browse-content" bind:this={browseContentEl}>
 			<div class="z-browse-filters">
 				<div class="z-browse-filters-row">
 					{#if !filtersExpanded}
@@ -921,6 +923,7 @@
 				{/if}
 			</div>
 		</div>
+		<ScrollToTop target={browseContentEl} lifted={selectedModIds.length >= 2} />
 	</div>
 
 	{#if selectedMod}
@@ -1055,6 +1058,7 @@
 		flex-direction: column;
 		overflow: hidden;
 		min-width: 0;
+		position: relative;
 	}
 
 	.z-browse-content {

@@ -2,6 +2,7 @@
 	import * as api from '$lib/api';
 	import type { Mod, ModId, SortBy, AvailableUpdate, ProfileQuery, Dependant } from '$lib/types';
 	import Icon from '@iconify/svelte';
+	import ScrollToTop from '$lib/components/ui/ScrollToTop.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import games from '$lib/state/game.svelte';
 
@@ -42,6 +43,7 @@
 	const sortOptions: SortBy[] = ['custom', 'name', 'author', 'installDate', 'diskSpace'];
 
 	// --- Drag & drop ---
+	let modsContentEl: HTMLDivElement | undefined = $state();
 	let draggedMod: Mod | null = $state(null);
 	let dragFromIndex = -1;
 	let insertPos = -1;
@@ -769,7 +771,7 @@
 				{/snippet}
 			</Header>
 
-			<div class="z-mods-content">
+			<div class="z-mods-content" bind:this={modsContentEl}>
 				<div class="z-mods-filters">
 					<div class="z-mods-filters-row">
 						{#if !filtersExpanded}
@@ -921,6 +923,7 @@
 					{/if}
 				</div>
 			</div>
+			<ScrollToTop target={modsContentEl} lifted={selectedModIds.length >= 2} />
 		</div>
 
 		{#if selectedMod}
@@ -1142,6 +1145,7 @@
 		flex-direction: column;
 		overflow: hidden;
 		min-width: 0;
+		position: relative;
 	}
 
 	.z-mods-content {
