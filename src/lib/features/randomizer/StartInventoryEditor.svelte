@@ -109,7 +109,7 @@
 	{#if isOpen}
 		<div class="rdz-inv-body">
 			<p class="rdz-inv-desc">
-				Items the player starts with at the beginning of the game. Item names must match exactly —
+				Items the player starts with at the beginning of the game. Item names must match exactly,
 				check the setup guide if unsure.
 			</p>
 

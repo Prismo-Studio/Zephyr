@@ -6,8 +6,15 @@
 	type Props = {
 		entry: LogEntry;
 		onFilterSource?: (source: string) => void;
+		onContextMenu?: (e: MouseEvent, entry: LogEntry) => void;
 	};
-	let { entry, onFilterSource }: Props = $props();
+	let { entry, onFilterSource, onContextMenu }: Props = $props();
+
+	function handleContextMenu(e: MouseEvent) {
+		if (!onContextMenu) return;
+		e.preventDefault();
+		onContextMenu(e, entry);
+	}
 
 	const time = $derived(() => {
 		const d = new Date(entry.ts);
@@ -18,7 +25,12 @@
 	});
 </script>
 
-<div class="zc-entry zc-level-{entry.level}" data-origin={entry.origin}>
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div
+	class="zc-entry zc-level-{entry.level}"
+	data-origin={entry.origin}
+	oncontextmenu={handleContextMenu}
+>
 	<span class="zc-time">{time()}</span>
 	{#if entry.source}
 		<button
@@ -45,6 +57,14 @@
 		line-height: 1.7;
 		color: var(--text-secondary);
 		border-left: 2px solid transparent;
+	}
+
+	.zc-entry,
+	.zc-entry .zc-time,
+	.zc-entry .zc-text,
+	.zc-entry .zc-badge {
+		user-select: text !important;
+		-webkit-user-select: text !important;
 	}
 
 	.zc-entry:hover {
