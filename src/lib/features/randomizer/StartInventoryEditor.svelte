@@ -3,6 +3,8 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import NumberInput from '$lib/components/ui/NumberInput.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { i18nState } from '$lib/i18nCore.svelte';
 	import { randomizerStore } from './randomizer.store.svelte';
 	import type { Value } from './types';
 
@@ -130,7 +132,7 @@
 <section class="rdz-group">
 	<button class="rdz-group-header" onclick={() => (isOpen = !isOpen)}>
 		<Icon icon="mdi:treasure-chest" />
-		<span class="rdz-group-name">Start Inventory</span>
+		<span class="rdz-group-name">{i18nState.locale && m.randomizer_inventory_title()}</span>
 		<span class="rdz-group-count">{itemCount}</span>
 		<Icon
 			icon="mdi:chevron-down"
@@ -141,8 +143,7 @@
 	{#if isOpen}
 		<div class="rdz-inv-body">
 			<p class="rdz-inv-desc">
-				Items the player starts with at the beginning of the game. Item names must match exactly,
-				check the setup guide if unsure.
+				{i18nState.locale && m.randomizer_inventory_desc()}
 			</p>
 
 			{#if rows.length > 0}
@@ -152,7 +153,7 @@
 							<div class="rdz-inv-name">
 								<Input
 									value={row.name}
-									placeholder="Item name…"
+									placeholder={i18nState.locale && m.randomizer_inventory_itemPlaceholder()}
 									onfocus={() => {
 										focusedRowId = row.id;
 										activeSuggestionIdx = 0;
@@ -199,7 +200,7 @@
 							<button
 								class="rdz-inv-remove"
 								onclick={() => removeRow(row.id)}
-								aria-label="Remove item"
+								aria-label={i18nState.locale && m.randomizer_inventory_remove()}
 							>
 								<Icon icon="mdi:close" />
 							</button>
@@ -211,24 +212,31 @@
 			<div class="rdz-inv-actions">
 				<button class="rdz-inv-add" onclick={addRow}>
 					<Icon icon="mdi:plus" />
-					Add Item
+					{i18nState.locale && m.randomizer_inventory_addItem()}
 				</button>
 				<button class="rdz-inv-browse" onclick={() => (browserOpen = true)}>
 					<Icon icon="mdi:format-list-bulleted" />
-					Browse items ({allItems.length})
+					{i18nState.locale && m.randomizer_inventory_browseItems()} ({allItems.length})
 				</button>
 			</div>
 		</div>
 	{/if}
 </section>
 
-<Modal bind:open={browserOpen} title="Available items">
+<Modal bind:open={browserOpen} title={i18nState.locale && m.randomizer_inventory_browseTitle()}>
 	<div class="rdz-inv-browser">
-		<Input bind:value={browserQuery} placeholder="Search items…">
+		<Input
+			bind:value={browserQuery}
+			placeholder={i18nState.locale && m.randomizer_inventory_browseSearch()}
+		>
 			{#snippet iconLeft()}<Icon icon="mdi:magnify" />{/snippet}
 		</Input>
 		<div class="rdz-inv-browser-meta">
-			{filteredItems.length} / {allItems.length} items
+			{i18nState.locale &&
+				m.randomizer_inventory_browseCount({
+					filtered: String(filteredItems.length),
+					total: String(allItems.length)
+				})}
 		</div>
 		<div class="rdz-inv-browser-list">
 			{#each filteredItems as item (item)}
@@ -246,7 +254,9 @@
 				</button>
 			{/each}
 			{#if filteredItems.length === 0}
-				<div class="rdz-inv-browser-empty">No items match "{browserQuery}"</div>
+				<div class="rdz-inv-browser-empty">
+					{i18nState.locale && m.randomizer_inventory_browseEmpty({ query: browserQuery })}
+				</div>
 			{/if}
 		</div>
 	</div>
