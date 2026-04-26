@@ -2,6 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import NumberInput from '$lib/components/ui/NumberInput.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
 	import { randomizerStore } from './randomizer.store.svelte';
 	import type { Value } from './types';
 
@@ -20,6 +21,8 @@
 	let isOpen = $state(false);
 	let focusedRowId = $state<number | null>(null);
 	let activeSuggestionIdx = $state(0);
+	let browserOpen = $state(false);
+	let browserQuery = $state('');
 
 	// Reset when store's start_inventory is cleared externally (reset to defaults, game change).
 	$effect(() => {
@@ -28,6 +31,16 @@
 	});
 
 	const allItems = $derived(randomizerStore.currentSchema?.items ?? []);
+
+	const isMetaArchipelago = $derived.by(() => {
+		const s = randomizerStore.currentSchema;
+		if (!s) return false;
+		const id = s.id?.toLowerCase();
+		const name = s.name?.toLowerCase();
+		return id === 'generic' || id === 'archipelago' || name === 'archipelago';
+	});
+
+	const showEditor = $derived(allItems.length > 0 && !isMetaArchipelago);
 
 	const suggestions = $derived.by(() => {
 		if (focusedRowId === null) return [] as string[];
@@ -51,6 +64,24 @@
 	function addRow() {
 		rows.push({ id: counter++, name: '', count: 1 });
 	}
+
+	function addRowFromBrowser(name: string) {
+		const existing = rows.find((r) => r.name === name);
+		if (existing) {
+			existing.count += 1;
+		} else {
+			rows.push({ id: counter++, name, count: 1 });
+		}
+		sync();
+	}
+
+	const filteredItems = $derived.by(() => {
+		const q = browserQuery.trim().toLowerCase();
+		if (!q) return allItems;
+		return allItems.filter((it) => it.toLowerCase().includes(q));
+	});
+
+	const addedSet = $derived(new Set(rows.filter((r) => r.name.trim()).map((r) => r.name)));
 
 	function removeRow(id: number) {
 		rows = rows.filter((r) => r.id !== id);
@@ -95,6 +126,7 @@
 	const itemCount = $derived(rows.filter((r) => r.name.trim() && r.count > 0).length);
 </script>
 
+{#if showEditor}
 <section class="rdz-group">
 	<button class="rdz-group-header" onclick={() => (isOpen = !isOpen)}>
 		<Icon icon="mdi:treasure-chest" />
@@ -176,13 +208,50 @@
 				</div>
 			{/if}
 
-			<button class="rdz-inv-add" onclick={addRow}>
-				<Icon icon="mdi:plus" />
-				Add Item
-			</button>
+			<div class="rdz-inv-actions">
+				<button class="rdz-inv-add" onclick={addRow}>
+					<Icon icon="mdi:plus" />
+					Add Item
+				</button>
+				<button class="rdz-inv-browse" onclick={() => (browserOpen = true)}>
+					<Icon icon="mdi:format-list-bulleted" />
+					Browse items ({allItems.length})
+				</button>
+			</div>
 		</div>
 	{/if}
 </section>
+
+<Modal bind:open={browserOpen} title="Available items">
+	<div class="rdz-inv-browser">
+		<Input bind:value={browserQuery} placeholder="Search items…">
+			{#snippet iconLeft()}<Icon icon="mdi:magnify" />{/snippet}
+		</Input>
+		<div class="rdz-inv-browser-meta">
+			{filteredItems.length} / {allItems.length} items
+		</div>
+		<div class="rdz-inv-browser-list">
+			{#each filteredItems as item (item)}
+				<button
+					class="rdz-inv-browser-item"
+					class:added={addedSet.has(item)}
+					onclick={() => addRowFromBrowser(item)}
+				>
+					<span class="rdz-inv-browser-name">{item}</span>
+					{#if addedSet.has(item)}
+						<Icon icon="mdi:plus-circle" />
+					{:else}
+						<Icon icon="mdi:plus" />
+					{/if}
+				</button>
+			{/each}
+			{#if filteredItems.length === 0}
+				<div class="rdz-inv-browser-empty">No items match "{browserQuery}"</div>
+			{/if}
+		</div>
+	</div>
+</Modal>
+{/if}
 
 <style>
 	.rdz-group {
@@ -344,5 +413,105 @@
 		border-color: var(--accent-400);
 		color: var(--accent-400);
 		background: var(--bg-active);
+	}
+
+	.rdz-inv-actions {
+		display: flex;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+
+	.rdz-inv-browse {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 14px;
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-md);
+		background: transparent;
+		color: var(--text-muted);
+		cursor: pointer;
+		font-size: 12px;
+		font-weight: 600;
+		transition: all var(--transition-fast);
+	}
+
+	.rdz-inv-browse:hover {
+		border-color: var(--accent-400);
+		color: var(--accent-400);
+	}
+
+	.rdz-inv-browser {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		min-width: 420px;
+		max-width: 540px;
+	}
+
+	.rdz-inv-browser-meta {
+		font-size: 11px;
+		color: var(--text-muted);
+		letter-spacing: 0.04em;
+	}
+
+	.rdz-inv-browser-list {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		max-height: 50vh;
+		overflow-y: auto;
+		padding-right: 4px;
+	}
+
+	.rdz-inv-browser-item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		padding: 7px 10px;
+		border: none;
+		border-radius: var(--radius-sm);
+		background: transparent;
+		color: var(--text-secondary);
+		font-size: 12px;
+		font-family: var(--font-mono, monospace);
+		text-align: left;
+		cursor: pointer;
+		transition: background var(--transition-fast), color var(--transition-fast);
+	}
+
+	.rdz-inv-browser-item:hover {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+	}
+
+	.rdz-inv-browser-item.added {
+		color: var(--accent-400);
+	}
+
+	.rdz-inv-browser-item :global(svg) {
+		font-size: 14px;
+		flex-shrink: 0;
+		opacity: 0.6;
+	}
+
+	.rdz-inv-browser-item:hover :global(svg) {
+		opacity: 1;
+	}
+
+	.rdz-inv-browser-name {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.rdz-inv-browser-empty {
+		padding: 24px 12px;
+		text-align: center;
+		color: var(--text-muted);
+		font-size: 12px;
 	}
 </style>
