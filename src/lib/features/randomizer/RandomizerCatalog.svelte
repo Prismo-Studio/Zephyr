@@ -119,11 +119,15 @@
 		}
 	}
 
+	function normalize(s: string): string {
+		return s.toLowerCase().replace(/[^a-z0-9]/g, '');
+	}
+
 	const filtered = $derived.by(() => {
-		const q = search.trim().toLowerCase();
+		const q = normalize(search.trim());
 		if (!q) return randomizerStore.catalog;
 		return randomizerStore.catalog.filter(
-			(g) => g.name.toLowerCase().includes(q) || g.id.toLowerCase().includes(q)
+			(g) => normalize(g.name).includes(q) || normalize(g.id).includes(q)
 		);
 	});
 
