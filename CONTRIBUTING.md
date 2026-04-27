@@ -94,7 +94,7 @@ Maintainers may use their own conventions (e.g. initials-based prefixes).
 
 ### Commit Messages
 
-Conventional Commits are encouraged but not strictly required. Keep messages short, in the imperative mood, and explain *why* in the body if it isn't obvious from the diff.
+Conventional Commits are encouraged but not strictly required. Keep messages short, in the imperative mood, and explain _why_ in the body if it isn't obvious from the diff.
 
 **Examples:**
 
@@ -129,25 +129,25 @@ If you do use a typed prefix (`feat`, `fix`, `refactor`, `docs`, `chore`, `perf`
 
 - Keep files focused. If a file grows beyond ~500 lines, consider splitting it
 - Avoid duplicated logic. Extract shared code into utilities or services
-- Comments should explain *why*, not *what*. The code itself should make the *what* obvious
+- Comments should explain _why_, not _what_. The code itself should make the _what_ obvious
 
 ## Available Scripts
 
 The following scripts are defined in `package.json`:
 
-| Script | Command | What it does |
-| --- | --- | --- |
-| Start (Tauri) | `pnpm start` | Run the desktop app in development mode (alias for `tauri dev`) |
-| Dev (web only) | `pnpm dev` | Run only the SvelteKit dev server (no Tauri shell) |
-| Build (Tauri) | `pnpm tauri:build` | Produce a production installer |
-| Format check | `pnpm lint` | Check formatting without writing (Prettier `--check`) |
-| Auto-fix formatting | `pnpm lint:fix` | Run Prettier with `--write --list-different` |
-| Format | `pnpm format` | Format the whole codebase with Prettier `--write` |
-| Type check | `pnpm check` | Run `svelte-check` against the TypeScript project |
-| Type check (watch) | `pnpm check:watch` | Same as above, re-runs on file changes |
-| Tests | `pnpm test` | Run the Vitest test suite once |
-| Tests (watch) | `pnpm test:watch` | Re-run tests on file changes |
-| Machine translate | `pnpm machine-translate` | Auto-fill missing translations via Inlang |
+| Script              | Command                  | What it does                                                    |
+| ------------------- | ------------------------ | --------------------------------------------------------------- |
+| Start (Tauri)       | `pnpm start`             | Run the desktop app in development mode (alias for `tauri dev`) |
+| Dev (web only)      | `pnpm dev`               | Run only the SvelteKit dev server (no Tauri shell)              |
+| Build (Tauri)       | `pnpm tauri:build`       | Produce a production installer                                  |
+| Format check        | `pnpm lint`              | Check formatting without writing (Prettier `--check`)           |
+| Auto-fix formatting | `pnpm lint:fix`          | Run Prettier with `--write --list-different`                    |
+| Format              | `pnpm format`            | Format the whole codebase with Prettier `--write`               |
+| Type check          | `pnpm check`             | Run `svelte-check` against the TypeScript project               |
+| Type check (watch)  | `pnpm check:watch`       | Same as above, re-runs on file changes                          |
+| Tests               | `pnpm test`              | Run the Vitest test suite once                                  |
+| Tests (watch)       | `pnpm test:watch`        | Re-run tests on file changes                                    |
+| Machine translate   | `pnpm machine-translate` | Auto-fill missing translations via Inlang                       |
 
 For Rust:
 
@@ -165,7 +165,7 @@ cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets --all-features -
 
 - [ ] Your branch is up to date with `upstream/dev`
 - [ ] The app builds (`pnpm tauri:build` succeeds, or at minimum `pnpm start` runs without errors)
-- [ ] Format check passes (`pnpm lint`)  run `pnpm lint:fix` if it doesn't
+- [ ] Format check passes (`pnpm lint`) run `pnpm lint:fix` if it doesn't
 - [ ] Type check passes (`pnpm check`)
 - [ ] Rust lints pass (`cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets --all-features -- -D warnings`)
 - [ ] Tests pass (`pnpm test`)
