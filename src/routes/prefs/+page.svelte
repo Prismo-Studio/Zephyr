@@ -806,6 +806,11 @@
 		padding: var(--space-xl) var(--space-xl) 0;
 	}
 
+	.z-settings-header-wrapper :global(.z-header) {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
 	.appearance_margin {
 		margin-top: var(--space-xl);
 	}

@@ -40,7 +40,7 @@
 			title: () => m.shortcuts_group_profiles(),
 			items: [
 				{
-					keys: [`${ctrl}+←`, `${ctrl}+→`],
+					keys: [`${ctrl} + "←"`, `${ctrl} + "→"`],
 					label: () => m.shortcuts_cycleProfiles()
 				}
 			]
@@ -49,11 +49,11 @@
 			title: () => m.shortcuts_group_display(),
 			items: [
 				{
-					keys: [`${ctrl} "+"`, `${ctrl} "wheel up"`],
+					keys: [`${ctrl} + "+"`, `${ctrl} + "wheel up"`],
 					label: () => m.shortcuts_zoomIn()
 				},
 				{
-					keys: [`${ctrl} "-"`, `${ctrl} "wheel down"`],
+					keys: [`${ctrl} + "-"`, `${ctrl} + "wheel down"`],
 					label: () => m.shortcuts_zoomOut()
 				}
 			]
