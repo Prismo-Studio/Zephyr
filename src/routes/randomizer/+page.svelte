@@ -105,8 +105,22 @@
 		}
 	}
 
+	function onGlobalKeydown(e: KeyboardEvent) {
+		// Ctrl+B (or Cmd+B on macOS): toggle the multiplayer/right pane.
+		// Ignore when typing in editable fields so it doesn't conflict with text editing.
+		if (!(e.ctrlKey || e.metaKey) || e.shiftKey || e.altKey) return;
+		if (e.key.toLowerCase() !== 'b') return;
+		const target = e.target as HTMLElement | null;
+		const tag = target?.tagName;
+		const editable = tag === 'INPUT' || tag === 'TEXTAREA' || !!target?.isContentEditable;
+		if (editable) return;
+		e.preventDefault();
+		rightPaneCollapsed.current = !rightPaneCollapsed.current;
+	}
+
 	onMount(() => {
 		window.addEventListener('rdz-player-saved', onPlayerSaved);
+		window.addEventListener('keydown', onGlobalKeydown);
 		try {
 			const saved = parseInt(localStorage.getItem(STORAGE_KEY) ?? '', 10);
 			if (!isNaN(saved)) rightWidth = clampWidth(saved);
@@ -117,6 +131,7 @@
 
 	onDestroy(() => {
 		window.removeEventListener('rdz-player-saved', onPlayerSaved);
+		window.removeEventListener('keydown', onGlobalKeydown);
 		window.removeEventListener('pointermove', onResizeMove);
 		window.removeEventListener('pointerup', stopResize);
 	});
