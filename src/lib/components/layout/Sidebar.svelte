@@ -59,6 +59,16 @@
 	let gameDropdownEl: HTMLDivElement | null = null;
 	let gameSearchInput: HTMLInputElement | null = null;
 
+	function normalizeName(s: string): string {
+		return s.toLowerCase().replace(/[^a-z0-9]/g, '');
+	}
+
+	const filteredGames = $derived.by(() => {
+		const q = normalizeName(gameSearchTerm);
+		if (!q) return games.list;
+		return games.list.filter((g) => normalizeName(g.name).includes(q));
+	});
+
 	$effect(() => {
 		if (gameMenuOpen && gameSearchInput) {
 			gameSearchInput.focus();
@@ -161,9 +171,7 @@
 				/>
 			</div>
 			<div class="z-game-dropdown-list">
-				{#each games.list.filter((g) => g.name
-						.toLowerCase()
-						.includes(gameSearchTerm.toLowerCase())) as game}
+				{#each filteredGames as game}
 					<button
 						class="z-game-dropdown-item"
 						class:active={game.slug === games.active?.slug}
@@ -180,11 +188,8 @@
 						{/if}
 					</button>
 				{/each}
-				{#if games.list.filter((g) => g.name
-						.toLowerCase()
-						.includes(gameSearchTerm.toLowerCase())).length === 0}
+				{#if filteredGames.length === 0}
 					<div class="z-game-dropdown-empty">
-						<Icon icon="mdi:magnify" />
 						<span>{i18nState.locale && m.sidebar_noGamesFound()}</span>
 					</div>
 				{/if}
@@ -438,13 +443,11 @@
 
 	.z-game-dropdown-empty {
 		display: flex;
-		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: var(--space-sm);
-		padding: var(--space-lg);
+		padding: var(--space-md);
 		color: var(--text-muted);
-		font-size: 13px;
+		font-size: 12px;
 		text-align: center;
 	}
 
