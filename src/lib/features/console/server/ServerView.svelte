@@ -171,15 +171,13 @@
 	}
 
 	.zc-source-dot {
-		width: 8px;
-		height: 8px;
+		width: 6px;
+		height: 6px;
 		border-radius: 50%;
-		background: var(--accent-400);
-		opacity: 0.6;
+		background: var(--text-muted);
 	}
 	.zc-source-btn.active .zc-source-dot {
-		opacity: 1;
-		box-shadow: 0 0 6px var(--accent-400);
+		background: var(--accent-400);
 	}
 
 	.zc-players footer {
@@ -201,8 +199,8 @@
 		color: var(--text-muted);
 	}
 	.zc-conn-dot {
-		width: 8px;
-		height: 8px;
+		width: 6px;
+		height: 6px;
 		border-radius: 50%;
 		background: var(--text-muted);
 	}
@@ -211,7 +209,6 @@
 	}
 	.zc-conn.on .zc-conn-dot {
 		background: var(--success, var(--accent-400));
-		box-shadow: 0 0 8px var(--success, var(--accent-400));
 	}
 
 	.zc-clear-btn {
