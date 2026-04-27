@@ -49,11 +49,11 @@
 			title: () => m.shortcuts_group_display(),
 			items: [
 				{
-					keys: [`${ctrl}+=`, `${ctrl}++`],
+					keys: [`${ctrl} "+"`, `${ctrl} "wheel up"`],
 					label: () => m.shortcuts_zoomIn()
 				},
 				{
-					keys: [`${ctrl}+-`],
+					keys: [`${ctrl} "-"`, `${ctrl} "wheel down"`],
 					label: () => m.shortcuts_zoomOut()
 				}
 			]
