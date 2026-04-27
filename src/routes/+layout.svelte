@@ -70,6 +70,8 @@
 
 	let currentDpiScale = 1;
 	const DPI_STEPS = [0.75, 0.85, 0.9, 1, 1.1, 1.15, 1.25, 1.5, 1.75, 2];
+	// Throttle Ctrl+wheel zoom so a single wheel notch only nudges once.
+	let lastZoomWheelAt = 0;
 
 	async function nudgeDpiScale(direction: number) {
 		const currentIdx = DPI_STEPS.indexOf(currentDpiScale);
@@ -215,6 +217,17 @@
 </script>
 
 <svelte:window
+	onwheel={(evt) => {
+		// Ctrl + wheel: zoom in/out (matches Ctrl+= / Ctrl+-).
+		if (!evt.ctrlKey || evt.shiftKey || evt.altKey || evt.metaKey) return;
+		if (evt.deltaY === 0) return;
+		evt.preventDefault();
+		// Throttle so trackpads / smooth wheels don't fire dozens of nudges.
+		const now = performance.now();
+		if (now - lastZoomWheelAt < 120) return;
+		lastZoomWheelAt = now;
+		nudgeDpiScale(evt.deltaY < 0 ? 1 : -1);
+	}}
 	onkeydown={(evt) => {
 		const k = evt.key.toLowerCase();
 		// Block F12 (devtools)

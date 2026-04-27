@@ -8,6 +8,7 @@
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import ColorPicker from '$lib/components/ui/ColorPicker.svelte';
+	import ShortcutsModal from '$lib/components/dialogs/ShortcutsModal.svelte';
 
 	import updates from '$lib/state/update.svelte';
 	import * as api from '$lib/api';
@@ -56,6 +57,7 @@
 
 	let prefs: Prefs | null = $state(null);
 	let showCurseForgeModal = $state(false);
+	let showShortcutsModal = $state(false);
 	let gamepadName = $state<string | null>(null);
 
 	const dpiScaleOptions = [
@@ -426,6 +428,19 @@
 				</div>
 				<Toggle checked={fullscreenState.active} onchange={(v) => setFullscreen(v)} />
 			</div>
+
+			{#key i18nState.locale}
+				<div class="z-settings-row">
+					<div class="z-settings-label">
+						<span>{m.prefs_window_shortcuts()}</span>
+						<span class="z-settings-desc">{m.prefs_window_shortcuts_desc()}</span>
+					</div>
+					<Button variant="secondary" size="sm" onclick={() => (showShortcutsModal = true)}>
+						{#snippet icon()}<Icon icon="mdi:keyboard" />{/snippet}
+						{#snippet children()}{m.prefs_window_shortcuts_button()}{/snippet}
+					</Button>
+				</div>
+			{/key}
 		</section>
 
 		<!-- Display / DPI Scaling -->
@@ -768,6 +783,8 @@
 	</Modal>
 {/if}
 
+<ShortcutsModal bind:open={showShortcutsModal} onclose={() => (showShortcutsModal = false)} />
+
 <style>
 	.z-settings-page {
 		display: flex;
@@ -787,6 +804,11 @@
 		max-width: 720px;
 		margin: 0 auto;
 		padding: var(--space-xl) var(--space-xl) 0;
+	}
+
+	.z-settings-header-wrapper :global(.z-header) {
+		padding-left: 0;
+		padding-right: 0;
 	}
 
 	.appearance_margin {

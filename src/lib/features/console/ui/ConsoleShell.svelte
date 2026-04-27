@@ -60,7 +60,6 @@
 		{/if}
 
 		<div class="zc-brand">
-			<span class="zc-brand-dot"></span>
 			<strong>Zephyr</strong>
 			<span class="zc-brand-sep">⟩</span>
 			<span class="zc-brand-title">Console</span>
@@ -157,14 +156,6 @@
 		gap: 8px;
 		font-family: var(--font-display, var(--font-body));
 		font-size: 14px;
-	}
-
-	.zc-brand-dot {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background: var(--accent-400);
-		box-shadow: 0 0 6px var(--accent-400);
 	}
 
 	.zc-brand strong {

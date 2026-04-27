@@ -2,6 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import type { ConnectParams } from './client-session.svelte';
@@ -69,7 +70,6 @@
 <div class="zc-cf">
 	<div class="zc-cf-card">
 		<header>
-			<Icon icon="mdi:connection" />
 			<h2>{i18nState.locale && m.console_client_connectTitle()}</h2>
 		</header>
 
@@ -107,13 +107,21 @@
 			</label>
 		</div>
 
-		<label class="zc-cf-toggle">
-			<input type="checkbox" bind:checked={useTracker} />
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<div
+			class="zc-cf-toggle"
+			role="checkbox"
+			aria-checked={useTracker}
+			tabindex="0"
+			onclick={() => (useTracker = !useTracker)}
+		>
+			<Checkbox bind:checked={useTracker} />
 			<div>
 				<strong>{i18nState.locale && m.console_client_trackerMode()}</strong>
 				<small>{i18nState.locale && m.console_client_trackerModeDesc()}</small>
 			</div>
-		</label>
+		</div>
 
 		{#if error}
 			<div class="zc-cf-error">
@@ -243,9 +251,9 @@
 		cursor: pointer;
 	}
 
-	.zc-cf-toggle input {
-		margin-top: 4px;
-		accent-color: var(--accent-400);
+	.zc-cf-toggle :global(.z-checkbox) {
+		margin-top: 2px;
+		flex-shrink: 0;
 	}
 
 	.zc-cf-toggle strong {
