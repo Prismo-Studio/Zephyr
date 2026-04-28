@@ -11,6 +11,7 @@
 	import { pushToast, pushInfoToast } from '$lib/toast';
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import * as api from './api';
+	import { randomizerStore } from './randomizer.store.svelte';
 	import type { GenerateOutcome, PlayerFile, PythonStatus, SeedFile, ServerStatus } from './types';
 	import { onDestroy, onMount, tick } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
@@ -197,6 +198,8 @@
 			const res = await api.refreshApworldSchemas();
 			if (res.success) {
 				pushInfoToast({ message: m.randomizer_customApworlds_refreshed() });
+				await randomizerStore.loadCatalog();
+				await randomizerStore.reloadCurrentSchema();
 			} else {
 				pushToast({
 					type: 'error',

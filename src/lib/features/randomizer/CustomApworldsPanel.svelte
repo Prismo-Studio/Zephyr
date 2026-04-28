@@ -128,6 +128,7 @@
 			} else {
 				pushInfoToast({ message: m.randomizer_customApworlds_refreshed() });
 				await randomizerStore.loadCatalog();
+				await randomizerStore.reloadCurrentSchema();
 			}
 			await refreshList();
 		} finally {

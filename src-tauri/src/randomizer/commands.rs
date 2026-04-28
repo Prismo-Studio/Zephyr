@@ -16,9 +16,6 @@ use super::{
 };
 use crate::util::cmd::Result;
 
-/// Async wrapper around blocking work so the IPC thread doesn't stall while
-/// schemas / YAMLs / validators churn. Without this, switching tabs in the
-/// randomizer view freezes the UI for seconds on slow disks or large catalogs.
 async fn blocking<F, T>(f: F) -> Result<T>
 where
     F: FnOnce() -> eyre::Result<T> + Send + 'static,
@@ -33,6 +30,9 @@ where
 #[command]
 pub async fn list_supported_games(app: AppHandle) -> Result<Vec<GameSummary>> {
     blocking(move || {
+        if let Err(err) = apworlds::prune_orphan_schemas(&app) {
+            tracing::warn!("prune_orphan_schemas failed: {err:#}");
+        }
         let schemas = schema::load_all_schemas_merged(&app)?;
         Ok(schemas.iter().map(schema::summarize).collect())
     })

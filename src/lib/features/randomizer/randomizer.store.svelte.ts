@@ -110,6 +110,17 @@ class RandomizerStore {
 		}
 	}
 
+	async reloadCurrentSchema() {
+		const id = this.currentSchema?.id;
+		if (!id) return;
+		this.loadingSchema = true;
+		try {
+			this.currentSchema = await api.getGameSchema(id);
+		} finally {
+			this.loadingSchema = false;
+		}
+	}
+
 	clearGame() {
 		this.currentSchema = null;
 		this.values = {};
