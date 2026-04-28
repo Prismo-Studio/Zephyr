@@ -11,6 +11,7 @@
 //!     picks them up.
 
 use std::{
+    collections::HashSet,
     fs,
     io::{Read, Write},
     path::{Path, PathBuf},
@@ -248,6 +249,78 @@ pub fn remove_apworld(app: &AppHandle, file_name: &str) -> Result<()> {
         }
     }
     Ok(())
+}
+
+pub fn prune_orphan_schemas(app: &AppHandle) -> Result<usize> {
+    let schemas_dir = user_schemas_dir(app);
+    if !schemas_dir.exists() {
+        return Ok(0);
+    }
+
+    let mut valid_ids: HashSet<String> = HashSet::new();
+
+    let custom_dir = custom_worlds_dir(app);
+    if custom_dir.exists() {
+        if let Ok(entries) = fs::read_dir(&custom_dir) {
+            for entry in entries.flatten() {
+                let path = entry.path();
+                if path.extension().and_then(|s| s.to_str()) != Some("apworld") {
+                    continue;
+                }
+                if let Ok((Some(id), _, _)) = inspect_apworld(&path) {
+                    valid_ids.insert(id);
+                }
+                if let Some(stem) = path.file_stem().and_then(|s| s.to_str()) {
+                    valid_ids.insert(stem.to_string());
+                }
+            }
+        }
+    }
+
+    let worlds_dir = ap_dir(app).join("worlds");
+    if worlds_dir.exists() {
+        if let Ok(entries) = fs::read_dir(&worlds_dir) {
+            for entry in entries.flatten() {
+                let path = entry.path();
+                if !path.is_dir() {
+                    continue;
+                }
+                let name = match path.file_name().and_then(|s| s.to_str()) {
+                    Some(s) => s,
+                    None => continue,
+                };
+                if name.starts_with('_') || name.starts_with('.') {
+                    continue;
+                }
+                valid_ids.insert(name.to_string());
+            }
+        }
+    }
+
+    let mut pruned = 0;
+    if let Ok(entries) = fs::read_dir(&schemas_dir) {
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.extension().and_then(|s| s.to_str()) != Some("json") {
+                continue;
+            }
+            let stem = match path.file_stem().and_then(|s| s.to_str()) {
+                Some(s) => s.to_string(),
+                None => continue,
+            };
+            if valid_ids.contains(&stem) {
+                continue;
+            }
+            match fs::remove_file(&path) {
+                Ok(_) => pruned += 1,
+                Err(err) => {
+                    tracing::warn!("failed to prune orphan schema {}: {err}", path.display());
+                }
+            }
+        }
+    }
+
+    Ok(pruned)
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

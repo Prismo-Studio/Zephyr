@@ -1,20 +1,19 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import { onDestroy, onMount } from 'svelte';
-	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
-	import { installRuntime, provisionRuntimeVenv, runtimeStatus } from './api';
-	import type { RuntimeProgress, RuntimeStatus } from './types';
+	import { onMount } from 'svelte';
 	import { randomizerStore } from './randomizer.store.svelte';
+	import { runtimeInstallStore } from './runtimeInstall.svelte';
+	import { refreshApworldSchemas } from './api';
 	import { pushToast } from '$lib/toast';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
-	let status: RuntimeStatus | null = $state(null);
-	let loading = $state(true);
-	let installing = $state(false);
-	let progress: RuntimeProgress | null = $state(null);
-	let unlisten: UnlistenFn | null = null;
+	const store = runtimeInstallStore;
+	const status = $derived(store.status);
+	const loading = $derived(store.loading);
+	const installing = $derived(store.installing);
+	const progress = $derived(store.progress);
 
 	function formatSize(bytes: number): string {
 		if (bytes < 1024) return `${bytes} B`;
@@ -64,63 +63,53 @@
 		return progress.stage === 'provisioning_venv' || progress.stage === 'installing_deps';
 	});
 
-	async function refresh() {
-		loading = true;
-		try {
-			status = await runtimeStatus();
-		} finally {
-			loading = false;
-		}
-	}
-
 	async function install() {
-		if (installing) return;
-		installing = true;
-		progress = null;
 		try {
-			status = await installRuntime();
+			await store.install();
 			await randomizerStore.loadCatalog();
+			void refreshSchemasInBackground();
 		} catch (err) {
 			console.error(err);
 			pushToast({
 				type: 'error',
 				name: m.randomizer_runtime_installFailed(),
-				message: (err as any)?.message ?? String(err)
+				message: (err as { message?: string })?.message ?? String(err)
 			});
-		} finally {
-			installing = false;
 		}
 	}
 
 	async function provisionDeps() {
-		if (installing) return;
-		installing = true;
-		progress = null;
 		try {
-			status = await provisionRuntimeVenv();
+			await store.provisionDeps();
 			await randomizerStore.loadCatalog();
 		} catch (err) {
 			console.error(err);
 			pushToast({
 				type: 'error',
 				name: m.randomizer_runtime_depsInstallFailed(),
-				message: (err as any)?.message ?? String(err)
+				message: (err as { message?: string })?.message ?? String(err)
 			});
-		} finally {
-			installing = false;
+		}
+	}
+
+	// First-time installs leave the user-overlay schemas dir empty, so per-game
+	// data like the start-inventory item list is blank until schemas get extracted.
+	async function refreshSchemasInBackground() {
+		try {
+			const res = await refreshApworldSchemas();
+			if (!res.success) return;
+			await randomizerStore.loadCatalog();
+			await randomizerStore.reloadCurrentSchema();
+		} catch (err) {
+			console.warn('background schema refresh after install failed:', err);
 		}
 	}
 
 	onMount(async () => {
-		await refresh();
-		const un = await listen<RuntimeProgress>('randomizer://runtime-progress', (event) => {
-			progress = event.payload;
-		});
-		unlisten = un;
-	});
-
-	onDestroy(() => {
-		unlisten?.();
+		await store.startListener();
+		if (store.status === null) {
+			await store.refresh();
+		}
 	});
 </script>
 
