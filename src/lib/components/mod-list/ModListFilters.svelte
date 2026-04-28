@@ -5,6 +5,7 @@
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import games from '$lib/state/game.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import { clickOutside } from '$lib/utils/clickOutside';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
@@ -77,15 +78,14 @@
 
 		<!-- Custom sort dropdown -->
 		<div class="z-sort-group">
-			<div class="z-sort-wrapper">
+			<div class="z-sort-wrapper" use:clickOutside={() => (sortOpen = false)}>
 				<button class="z-sort-trigger" onclick={() => (sortOpen = !sortOpen)}>
 					<span>{sortLabels[queryArgs.sortBy]}</span>
 					<Icon icon="mdi:chevron-down" class="z-sort-chevron {sortOpen ? 'open' : ''}" />
 				</button>
 
 				{#if sortOpen}
-					<!-- svelte-ignore a11y_no_static_element_interactions -->
-					<div class="z-sort-dropdown" onmouseleave={() => (sortOpen = false)}>
+					<div class="z-sort-dropdown">
 						{#each sortOptions as option}
 							<button
 								class="z-sort-option"
@@ -130,7 +130,7 @@
 		</div>
 
 		{#if pageSize !== undefined && pageSizeChoices && onChangePageSize}
-			<div class="z-sort-wrapper">
+			<div class="z-sort-wrapper" use:clickOutside={() => (pageSizeOpen = false)}>
 				<Tooltip text={i18nState.locale && m.mods_pageSize_label()} position="bottom" delay={200}>
 					<button
 						class="z-sort-trigger z-sort-trigger-solo"
@@ -143,8 +143,7 @@
 				</Tooltip>
 
 				{#if pageSizeOpen}
-					<!-- svelte-ignore a11y_no_static_element_interactions -->
-					<div class="z-sort-dropdown" onmouseleave={() => (pageSizeOpen = false)}>
+					<div class="z-sort-dropdown">
 						{#each pageSizeChoices as choice}
 							<button
 								class="z-sort-option"

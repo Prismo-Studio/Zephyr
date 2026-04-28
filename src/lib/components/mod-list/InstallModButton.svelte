@@ -4,6 +4,7 @@
 	import { shortenFileSize } from '$lib/util';
 	import Icon from '@iconify/svelte';
 	import Spinner from '$lib/components/ui/Spinner.svelte';
+	import { clickOutside } from '$lib/utils/clickOutside';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { installState } from '$lib/state/misc.svelte';
@@ -19,6 +20,7 @@
 
 	let loading = $state(false);
 	let downloadSize: number | null = $state(null);
+	let versionOpen = $state(false);
 
 	let disabled = $derived(mod.isInstalled || locked || loading || (!install && !onInstall));
 
@@ -110,18 +112,32 @@
 
 	<!-- Version dropdown -->
 	{#if mod.versions.length > 1 && !locked}
-		<details class="z-version-dropdown">
-			<summary class="z-version-trigger" class:installed={mod.isInstalled || locked}>
+		<div class="z-version-dropdown" use:clickOutside={() => (versionOpen = false)}>
+			<button
+				class="z-version-trigger"
+				class:installed={mod.isInstalled || locked}
+				onclick={() => (versionOpen = !versionOpen)}
+				aria-haspopup="menu"
+				aria-expanded={versionOpen}
+			>
 				<Icon icon="mdi:chevron-down" class="text-base" />
-			</summary>
-			<div class="z-version-list">
-				{#each mod.versions as version}
-					<button class="z-version-item" onclick={() => triggerInstall(version.uuid)}>
-						{version.name}
-					</button>
-				{/each}
-			</div>
-		</details>
+			</button>
+			{#if versionOpen}
+				<div class="z-version-list">
+					{#each mod.versions as version}
+						<button
+							class="z-version-item"
+							onclick={() => {
+								versionOpen = false;
+								triggerInstall(version.uuid);
+							}}
+						>
+							{version.name}
+						</button>
+					{/each}
+				</div>
+			{/if}
+		</div>
 	{/if}
 </div>
 
