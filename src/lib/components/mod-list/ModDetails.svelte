@@ -23,6 +23,7 @@
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import CachedImage from '$lib/components/ui/CachedImage.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
+	import { clickOutside } from '$lib/utils/clickOutside';
 	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { PersistedState } from 'runed';
@@ -241,7 +242,7 @@
 		<!-- Badges -->
 		<div class="z-details-badges">
 			{#if mod.version && mod.versions.length > 1 && mod.isInstalled && showVersionSelector && !isExternalMod(mod)}
-				<div class="z-version-selector">
+				<div class="z-version-selector" use:clickOutside={() => (versionDropdownOpen = false)}>
 					<button
 						class="z-version-btn"
 						disabled={changingVersion}
@@ -256,8 +257,7 @@
 					</button>
 
 					{#if versionDropdownOpen}
-						<!-- svelte-ignore a11y_no_static_element_interactions -->
-						<div class="z-version-dropdown" onmouseleave={() => (versionDropdownOpen = false)}>
+						<div class="z-version-dropdown">
 							{#each mod.versions as version}
 								<button
 									class="z-version-option"
