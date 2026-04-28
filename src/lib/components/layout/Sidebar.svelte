@@ -64,8 +64,13 @@
 
 	const filteredGames = $derived.by(() => {
 		const q = normalizeName(gameSearchTerm);
-		if (!q) return games.list;
-		return games.list.filter((g) => normalizeName(g.name).includes(q));
+		const matches = q
+			? games.list.filter((g) => normalizeName(g.name).includes(q))
+			: games.list.slice();
+		return matches.sort((a, b) => {
+			if (a.favorite !== b.favorite) return a.favorite ? -1 : 1;
+			return a.name.localeCompare(b.name);
+		});
 	});
 
 	$effect(() => {
