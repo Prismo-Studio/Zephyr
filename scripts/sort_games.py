@@ -1,12 +1,11 @@
-# Reorders the games.json file to the order shown in Gale's UI 
-# (alphabetical with popular games at the top)
+# Reorders the games.json file alphabetically by name.
 
 from utils import read_games, write_games
 
 def sort_games():
     (json_path, games) = read_games()
-    
-    sort = sorted(games, key=lambda game: (not (game.get('popular') or False), game['name']))
+
+    sort = sorted(games, key=lambda game: game['name'])
 
     write_games(json_path, sort)
 

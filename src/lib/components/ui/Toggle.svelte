@@ -5,7 +5,7 @@
 		onchange?: (checked: boolean) => void;
 	};
 
-	let { checked = $bindable(false), disabled = false, onchange }: Props = $props();
+	let { checked = false, disabled = false, onchange }: Props = $props();
 </script>
 
 <button
@@ -14,10 +14,7 @@
 	{disabled}
 	role="switch"
 	aria-checked={checked}
-	onclick={() => {
-		checked = !checked;
-		onchange?.(checked);
-	}}
+	onclick={() => onchange?.(!checked)}
 >
 	<span class="z-toggle-thumb"></span>
 </button>

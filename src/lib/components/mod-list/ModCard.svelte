@@ -11,6 +11,7 @@
 	import { isModPinned, installState } from '$lib/state/misc.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import CachedImage from '$lib/components/ui/CachedImage.svelte';
+	import Toggle from '$lib/components/ui/Toggle.svelte';
 
 	type Props = {
 		mod: Mod;
@@ -23,6 +24,7 @@
 		isDragging?: boolean;
 		onclick?: MouseEventHandler<HTMLDivElement>;
 		oninstall?: () => void;
+		ontoggle?: (mod: Mod) => void;
 		oncontextmenu?: (e: MouseEvent, mod: Mod) => void;
 		onpointerdownHandle?: (e: PointerEvent, mod: Mod) => void;
 		oncategoryclick?: (category: string, multi?: boolean) => void;
@@ -40,6 +42,7 @@
 		isDragging = false,
 		onclick,
 		oninstall,
+		ontoggle,
 		oncontextmenu,
 		onpointerdownHandle,
 		oncategoryclick,
@@ -160,9 +163,6 @@
 		role="button"
 		tabindex="0"
 	>
-		<!-- Drag handle — absolutely positioned in the left padding, vertically
-			 centered. Always visible (so it's discoverable), never animates
-			 width (so the row never shifts on hover). -->
 		{#if showDragHandle}
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			{#if isModPinned(mod.uuid)}
@@ -267,6 +267,18 @@
 				</div>
 			{/if}
 		</div>
+
+		<!-- Enable/disable toggle -->
+		{#if mod.isInstalled && ontoggle}
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
+			<div class="z-mod-toggle-wrapper" onclick={(e) => e.stopPropagation()}>
+				<Toggle
+					checked={mod.enabled !== false}
+					disabled={locked}
+					onchange={() => ontoggle?.(mod)}
+				/>
+			</div>
+		{/if}
 
 		<!-- Install button -->
 		{#if showInstallBtn && !mod.isInstalled && !locked}
@@ -515,6 +527,17 @@
 		display: flex;
 		align-items: center;
 		gap: 2px;
+	}
+
+	/* Enable/disable toggle */
+	.z-mod-toggle-wrapper {
+		display: none;
+		align-items: center;
+		flex-shrink: 0;
+	}
+
+	.z-mod-card:hover .z-mod-toggle-wrapper {
+		display: flex;
 	}
 
 	/* Install button */

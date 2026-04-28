@@ -414,7 +414,10 @@
 							>{i18nState.locale && m.prefs_window_nativeTitlebar_desc()}</span
 						>
 					</div>
-					<Toggle bind:checked={useNativeTitlebar.current} />
+					<Toggle
+						checked={useNativeTitlebar.current}
+						onchange={(v) => (useNativeTitlebar.current = v)}
+					/>
 				</div>
 			{/if}
 
@@ -542,7 +545,13 @@
 							>{i18nState.locale && m.prefs_miscellaneous_fetchMods_content_1()}</span
 						>
 					</div>
-					<Toggle bind:checked={prefs.fetchModsAutomatically} onchange={savePrefs} />
+					<Toggle
+						checked={prefs.fetchModsAutomatically}
+						onchange={(v) => {
+							prefs!.fetchModsAutomatically = v;
+							savePrefs();
+						}}
+					/>
 				</div>
 
 				<div class="z-settings-row">
@@ -552,7 +561,13 @@
 							>{i18nState.locale && m.prefs_miscellaneous_pullBeforeLaunch_content()}</span
 						>
 					</div>
-					<Toggle bind:checked={prefs.pullBeforeLaunch} onchange={savePrefs} />
+					<Toggle
+						checked={prefs.pullBeforeLaunch}
+						onchange={(v) => {
+							prefs!.pullBeforeLaunch = v;
+							savePrefs();
+						}}
+					/>
 				</div>
 			</section>
 

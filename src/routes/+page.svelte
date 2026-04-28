@@ -890,6 +890,7 @@
 									onclick={(evt: MouseEvent) => {
 										if (!draggedMod) handleModClick(evt, mod, i);
 									}}
+									ontoggle={toggleMod}
 									oncontextmenu={openModContextMenu}
 									onpointerdownHandle={handleDragHandleDown}
 									oncategoryclick={toggleCategoryFilter}
