@@ -9,7 +9,7 @@ const COMMON_OPTION_IDS: &[&str] = &["progression_balancing", "accessibility"];
 
 /// Per-game common keys (PerGameCommonOptions) that live in the game section but are
 /// not part of the game's own schema — always emitted when non-empty.
-const EXTRA_GAME_SECTION_KEYS: &[&str] = &["start_inventory", "start_inventory_from_pool"];
+pub const EXTRA_GAME_SECTION_KEYS: &[&str] = &["start_inventory", "start_inventory_from_pool"];
 
 fn value_to_yaml(value: &Value) -> YamlValue {
     match value {

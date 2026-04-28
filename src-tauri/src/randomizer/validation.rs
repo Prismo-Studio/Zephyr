@@ -4,6 +4,7 @@ use super::types::{
     Condition, Dependency, GameSchema, OptionDef, OptionType, RandomizerConfig, ValidationError,
     Value,
 };
+use super::yaml_gen::EXTRA_GAME_SECTION_KEYS;
 
 fn matches_condition(actual: &Value, condition: &Condition) -> bool {
     match condition {
@@ -64,12 +65,16 @@ pub fn validate(schema: &GameSchema, config: &RandomizerConfig) -> Vec<Validatio
 
     // 1. Unknown keys in config.values
     for key in config.values.keys() {
-        if !known_ids.contains(key.as_str()) {
-            errors.push(ValidationError {
-                option_id: key.clone(),
-                message: format!("unknown option '{key}' (not in schema)"),
-            });
+        if known_ids.contains(key.as_str()) {
+            continue;
         }
+        if EXTRA_GAME_SECTION_KEYS.contains(&key.as_str()) {
+            continue;
+        }
+        errors.push(ValidationError {
+            option_id: key.clone(),
+            message: format!("unknown option '{key}' (not in schema)"),
+        });
     }
 
     // 2. Per-option checks (type/range/choices + dep-stale state)
