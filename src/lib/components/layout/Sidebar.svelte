@@ -2,7 +2,6 @@
 	const { legendActive = false } = $props<{ legendActive?: boolean }>();
 	import Icon from '@iconify/svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
-	import VanillaFlowerIcon from '$lib/components/ui/VanillaFlowerIcon.svelte';
 	import games from '$lib/state/game.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import { gameIconSrc } from '$lib/util';
@@ -95,8 +94,42 @@
 	let profileMenuOpen = $state(false);
 
 	let launching = $state(false);
+	let playMenuOpen = $state(false);
+	let playBtnEl: HTMLButtonElement | null = $state(null);
+	let playMenuPos = $state<{ bottom: number; left: number } | null>(null);
 
-	async function launchGame() {
+	function togglePlayMenu() {
+		if (playMenuOpen) {
+			playMenuOpen = false;
+			return;
+		}
+		if (!playBtnEl) return;
+		const r = playBtnEl.getBoundingClientRect();
+		playMenuPos = {
+			bottom: window.innerHeight - r.bottom,
+			left: r.right + 10
+		};
+		playMenuOpen = true;
+	}
+
+	function closePlayMenu(e: MouseEvent) {
+		if (!playMenuOpen) return;
+		const target = e.target as Node;
+		if (playBtnEl?.contains(target)) return;
+		const menu = document.getElementById('z-play-menu');
+		if (menu?.contains(target)) return;
+		playMenuOpen = false;
+	}
+
+	$effect(() => {
+		if (playMenuOpen) {
+			document.addEventListener('mousedown', closePlayMenu, true);
+			return () => document.removeEventListener('mousedown', closePlayMenu, true);
+		}
+	});
+
+	async function launchModded() {
+		playMenuOpen = false;
 		launching = true;
 		try {
 			await launchGameWithBepInExFallback();
@@ -106,6 +139,7 @@
 	}
 
 	async function launchVanilla() {
+		playMenuOpen = false;
 		launching = true;
 		try {
 			await api.profile.launch.launchVanilla();
@@ -214,25 +248,108 @@
 
 	<!-- Bottom section -->
 	<div class="z-sidebar-bottom" class:legend-active={legendActive}>
-		<Tooltip text={i18nState.locale && m.toolBar_launchGame_button()} position="right" delay={300}>
-			<button class="z-launch-btn" onclick={launchGame}>
-				<svg
-					width="28"
-					height="28"
-					viewBox="0 0 24 24"
-					fill="currentColor"
-					class="z-custom-launch-icon"
-				>
-					<path d="M8 5v14l11-7z" />
-				</svg>
-			</button>
-		</Tooltip>
+		<button
+			class="z-launch-btn"
+			class:open={playMenuOpen}
+			onclick={togglePlayMenu}
+			bind:this={playBtnEl}
+			aria-haspopup="menu"
+			aria-expanded={playMenuOpen}
+			aria-label={i18nState.locale && m.toolBar_launchGame_button()}
+		>
+			<svg
+				width="28"
+				height="28"
+				viewBox="0 0 24 24"
+				fill="currentColor"
+				class="z-custom-launch-icon"
+			>
+				<path d="M8 5v14l11-7z" />
+			</svg>
+		</button>
 
-		<Tooltip text={i18nState.locale && m.sidebar_launchVanilla()} position="right" delay={300}>
-			<button class="z-launch-vanilla-btn" onclick={launchVanilla}>
-				<VanillaFlowerIcon />
-			</button>
-		</Tooltip>
+		{#if playMenuOpen && playMenuPos}
+			<div
+				id="z-play-menu"
+				class="z-play-menu"
+				role="menu"
+				style="bottom: {playMenuPos.bottom}px; left: {playMenuPos.left}px;"
+			>
+				{#if games.active || profiles.active}
+					<div class="z-play-menu-header">
+						{#if games.active}
+							<img
+								src={gameIconSrc(games.active)}
+								alt=""
+								aria-hidden="true"
+								class="z-play-menu-game-icon"
+							/>
+						{/if}
+						<div class="z-play-menu-header-text">
+							{#if games.active}
+								<span class="z-play-menu-game">{games.active.name}</span>
+							{/if}
+							{#if profiles.active}
+								<span class="z-play-menu-profile">{profiles.active.name}</span>
+							{/if}
+						</div>
+					</div>
+				{/if}
+
+				<button class="z-play-menu-item primary" role="menuitem" onclick={launchModded}>
+					<span class="z-play-menu-body">
+						<span class="z-play-menu-title">
+							{i18nState.locale && m.sidebar_playModded_title()}
+						</span>
+						<span class="z-play-menu-sub">
+							{#if profiles.active}
+								{i18nState.locale &&
+									m.sidebar_playModded_subCount({ count: String(profiles.active.modCount) })}
+							{:else}
+								{i18nState.locale && m.sidebar_playModded_subFallback()}
+							{/if}
+						</span>
+					</span>
+					<svg
+						class="z-play-menu-arrow"
+						width="14"
+						height="14"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M9 6l6 6-6 6" />
+					</svg>
+				</button>
+
+				<button class="z-play-menu-item" role="menuitem" onclick={launchVanilla}>
+					<span class="z-play-menu-body">
+						<span class="z-play-menu-title">
+							{i18nState.locale && m.sidebar_playVanilla_title()}
+						</span>
+						<span class="z-play-menu-sub">
+							{i18nState.locale && m.sidebar_playVanilla_sub()}
+						</span>
+					</span>
+					<svg
+						class="z-play-menu-arrow"
+						width="14"
+						height="14"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M9 6l6 6-6 6" />
+					</svg>
+				</button>
+			</div>
+		{/if}
 
 		<!-- Source toggle — disabled for v1 -->
 
@@ -615,35 +732,187 @@
 		transform: scale(0.97);
 	}
 
-	.z-launch-vanilla-btn {
-		width: 38px;
-		height: 38px;
-		border-radius: var(--radius-lg);
-		background: transparent;
-		border: 1.5px solid #f5d67b;
-		color: #f5d67b;
-		font-size: 20px;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all var(--transition-normal);
-	}
-
-	.z-launch-vanilla-btn:hover {
-		background: rgba(245, 214, 123, 0.1);
-		transform: translateY(-2px);
-		box-shadow: 0 4px 16px rgba(245, 214, 123, 0.15);
-		color: #ffe4a0;
-	}
-
-	.z-launch-vanilla-btn:active {
-		transform: scale(0.97);
+	.z-launch-btn.open {
+		box-shadow: 0 0 0 2px var(--accent-400);
 	}
 
 	.z-custom-launch-icon {
 		width: 28px;
 		height: 28px;
+	}
+
+	:global(.z-play-menu) {
+		position: fixed;
+		min-width: 240px;
+		max-width: 280px;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding: 6px;
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-default);
+		border-radius: var(--radius-lg);
+		box-shadow:
+			0 12px 32px rgba(0, 0, 0, 0.5),
+			0 2px 8px rgba(0, 0, 0, 0.3);
+		z-index: var(--z-dropdown, 9999);
+		animation: z-play-menu-in 160ms cubic-bezier(0.2, 0, 0, 1);
+	}
+
+	@keyframes z-play-menu-in {
+		from {
+			opacity: 0;
+			transform: translateX(-6px) scale(0.97);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0) scale(1);
+		}
+	}
+
+	:global(.z-play-menu .z-play-menu-header) {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 8px 10px;
+		margin-bottom: 4px;
+		border-bottom: 1px solid var(--border-subtle);
+	}
+
+	:global(.z-play-menu .z-play-menu-game-icon) {
+		width: 28px;
+		height: 28px;
+		border-radius: var(--radius-sm);
+		object-fit: cover;
+		flex-shrink: 0;
+	}
+
+	:global(.z-play-menu .z-play-menu-header-text) {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		flex: 1 1 auto;
+		gap: 1px;
+	}
+
+	:global(.z-play-menu .z-play-menu-game) {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-primary);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	:global(.z-play-menu .z-play-menu-profile) {
+		font-size: 11px;
+		color: var(--text-muted);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	:global(.z-play-menu .z-play-menu-item) {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 12px 10px 14px;
+		border: none;
+		border-radius: var(--radius-md);
+		background: transparent;
+		color: var(--text-secondary);
+		font-family: var(--font-body);
+		cursor: pointer;
+		text-align: left;
+		transition:
+			background var(--transition-fast),
+			color var(--transition-fast);
+	}
+
+	:global(.z-play-menu .z-play-menu-item::before) {
+		content: '';
+		position: absolute;
+		left: 4px;
+		top: 50%;
+		width: 2px;
+		height: 0;
+		border-radius: var(--radius-full);
+		background: var(--text-muted);
+		transform: translateY(-50%);
+		transition:
+			height var(--transition-fast),
+			background var(--transition-fast);
+	}
+
+	:global(.z-play-menu .z-play-menu-item.primary::before) {
+		background: var(--accent-400);
+		height: 18px;
+	}
+
+	:global(.z-play-menu .z-play-menu-item:hover::before) {
+		height: 24px;
+		background: var(--accent-300);
+	}
+
+	:global(.z-play-menu .z-play-menu-item:hover) {
+		background: var(--bg-hover);
+		color: var(--text-primary);
+	}
+
+	:global(.z-play-menu .z-play-menu-arrow) {
+		flex-shrink: 0;
+		color: var(--text-muted);
+		opacity: 0;
+		transform: translateX(-4px);
+		transition:
+			opacity var(--transition-fast),
+			transform var(--transition-fast);
+	}
+
+	:global(.z-play-menu .z-play-menu-item:hover .z-play-menu-arrow) {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	:global(.z-play-menu .z-play-menu-item.primary .z-play-menu-arrow) {
+		color: var(--accent-400);
+		opacity: 0.6;
+		transform: translateX(0);
+	}
+
+	:global(.z-play-menu .z-play-menu-item.primary:hover .z-play-menu-arrow) {
+		opacity: 1;
+	}
+
+	:global(.z-play-menu .z-play-menu-body) {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		flex: 1 1 auto;
+		gap: 1px;
+	}
+
+	:global(.z-play-menu .z-play-menu-title),
+	:global(.z-play-menu .z-play-menu-sub) {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	:global(.z-play-menu .z-play-menu-title) {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+
+	:global(.z-play-menu .z-play-menu-sub) {
+		font-size: 11px;
+		color: var(--text-muted);
+	}
+
+	:global(.z-play-menu .z-play-menu-item.primary .z-play-menu-title) {
+		color: var(--accent-400);
 	}
 
 	/* Profile switcher */
