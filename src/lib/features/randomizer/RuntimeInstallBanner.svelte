@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { randomizerStore } from './randomizer.store.svelte';
 	import { runtimeInstallStore } from './runtimeInstall.svelte';
+	import { refreshApworldSchemas } from './api';
 	import { pushToast } from '$lib/toast';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
@@ -66,6 +67,7 @@
 		try {
 			await store.install();
 			await randomizerStore.loadCatalog();
+			void refreshSchemasInBackground();
 		} catch (err) {
 			console.error(err);
 			pushToast({
@@ -87,6 +89,19 @@
 				name: m.randomizer_runtime_depsInstallFailed(),
 				message: (err as { message?: string })?.message ?? String(err)
 			});
+		}
+	}
+
+	// First-time installs leave the user-overlay schemas dir empty, so per-game
+	// data like the start-inventory item list is blank until schemas get extracted.
+	async function refreshSchemasInBackground() {
+		try {
+			const res = await refreshApworldSchemas();
+			if (!res.success) return;
+			await randomizerStore.loadCatalog();
+			await randomizerStore.reloadCurrentSchema();
+		} catch (err) {
+			console.warn('background schema refresh after install failed:', err);
 		}
 	}
 
