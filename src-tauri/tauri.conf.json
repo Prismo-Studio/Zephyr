@@ -12,7 +12,7 @@
 		"active": true,
 		"category": "Game",
 		"copyright": "",
-		"targets": ["nsis", "appimage", "deb", "dmg"],
+		"targets": ["nsis", "appimage", "deb", "dmg", "rpm"],
 		"externalBin": [],
 		"createUpdaterArtifacts": true,
 		"shortDescription": "A fast, modern mod manager for all your games",
