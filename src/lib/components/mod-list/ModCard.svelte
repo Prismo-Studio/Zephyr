@@ -163,15 +163,21 @@
 		role="button"
 		tabindex="0"
 	>
-		<!-- Drag handle -->
+		<!-- Drag handle — absolutely positioned in the left padding, vertically
+			 centered. Always visible (so it's discoverable), never animates
+			 width (so the row never shifts on hover). -->
 		{#if showDragHandle}
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			{#if isModPinned(mod.uuid)}
-				<div class="z-mod-drag-handle pinned-lock">
-					<Icon icon="mdi:cancel" />
+				<div class="z-mod-drag-rail pinned-lock" aria-label="Pinned, not draggable">
+					<Icon icon="mdi:pin" />
 				</div>
 			{:else}
-				<div class="z-mod-drag-handle" onpointerdown={(e) => onpointerdownHandle?.(e, mod)}>
+				<div
+					class="z-mod-drag-rail"
+					onpointerdown={(e) => onpointerdownHandle?.(e, mod)}
+					aria-label="Drag to reorder"
+				>
 					<Icon icon="mdi:drag-vertical" />
 				</div>
 			{/if}
@@ -336,54 +342,67 @@
 		transform: scale(0.98);
 	}
 
-	/* Drag handle */
-	.z-mod-drag-handle {
+	/* When a drag rail is present, push the card content right so the
+	   checkbox doesn't sit flush against the rail. */
+	.z-mod-card:has(.z-mod-drag-rail) {
+		padding-left: 24px;
+	}
+
+	/* Drag rail — full-height left strip on the card. The left corners are
+	   rounded to match the card's border-radius, so each rail is clearly
+	   bounded per card (no continuous-line illusion). Absolutely positioned
+	   so the flex flow stays untouched. */
+	.z-mod-drag-rail {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 14px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 0;
-		overflow: hidden;
-		flex-shrink: 0;
+		border-top-left-radius: var(--radius-lg);
+		border-bottom-left-radius: var(--radius-lg);
+		background-color: color-mix(in srgb, var(--text-muted) 12%, transparent);
 		color: var(--text-muted);
+		font-size: 18px;
 		cursor: grab;
-		opacity: 0;
-		transition:
-			width 150ms ease,
-			opacity 150ms ease,
-			color 120ms ease;
-		font-size: 24px;
 		touch-action: none;
 		user-select: none;
+		transition:
+			background-color 150ms ease,
+			color 120ms ease;
+		z-index: 2;
 	}
 
-	.z-mod-drag-handle:active {
+	.z-mod-drag-rail:active {
 		cursor: grabbing;
 	}
 
-	.z-mod-card:hover .z-mod-drag-handle {
-		width: 24px;
-		opacity: 0.5;
+	.z-mod-card:hover .z-mod-drag-rail {
+		background-color: color-mix(in srgb, var(--text-muted) 18%, transparent);
+		color: var(--text-secondary);
 	}
 
-	.z-mod-drag-handle:hover {
-		opacity: 1 !important;
-		color: var(--text-accent);
+	.z-mod-drag-rail:hover {
+		background-color: color-mix(in srgb, var(--accent-400) 25%, transparent) !important;
+		color: var(--accent-400) !important;
 	}
 
-	.z-mod-drag-handle.pinned-lock {
+	.z-mod-drag-rail.pinned-lock {
+		color: var(--accent-400);
+		font-size: 12px;
 		cursor: not-allowed;
-		opacity: 0;
-		color: var(--error);
+		background-color: color-mix(in srgb, var(--accent-400) 10%, transparent);
 	}
 
-	.z-mod-card:hover .z-mod-drag-handle.pinned-lock {
-		width: 24px;
-		opacity: 0.4;
+	.z-mod-card:hover .z-mod-drag-rail.pinned-lock {
+		background-color: color-mix(in srgb, var(--accent-400) 16%, transparent);
+		color: var(--accent-400);
 	}
 
-	.z-mod-drag-handle.pinned-lock:hover {
-		opacity: 0.7 !important;
-		color: var(--error);
+	.z-mod-drag-rail.pinned-lock:hover {
+		background-color: color-mix(in srgb, var(--accent-400) 16%, transparent) !important;
 	}
 
 	/* Checkbox */
