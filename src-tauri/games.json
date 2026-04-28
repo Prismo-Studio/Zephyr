@@ -1,143 +1,5 @@
 [
 	{
-		"name": "Content Warning",
-		"popular": true,
-		"modLoader": {
-			"name": "BepInEx"
-		},
-		"platforms": {
-			"steam": {
-				"id": 2881650
-			}
-		}
-	},
-	{
-		"name": "GTFO",
-		"slug": "gtfo",
-		"popular": true,
-		"modLoader": {
-			"name": "BepInEx",
-			"subdirs": [
-				{
-					"name": "Assets",
-					"target": "BepInEx/Assets",
-					"mode": "track"
-				},
-				{
-					"name": "GameData",
-					"target": "BepInEx/GameData"
-				}
-			]
-		},
-		"platforms": {
-			"steam": {
-				"id": 493520
-			}
-		}
-	},
-	{
-		"name": "H3VR",
-		"slug": "h3vr",
-		"r2dirName": "H3VR",
-		"popular": true,
-		"modLoader": {
-			"name": "BepInEx",
-			"subdirs": [
-				{
-					"name": "Sideloader",
-					"target": "BepInEx/Sideloader",
-					"mode": "track"
-				}
-			]
-		},
-		"platforms": {
-			"steam": {
-				"id": 450540
-			}
-		}
-	},
-	{
-		"name": "Lethal Company",
-		"popular": true,
-		"modLoader": {
-			"name": "BepInEx"
-		},
-		"platforms": {
-			"steam": {
-				"id": 1966720
-			}
-		}
-	},
-	{
-		"name": "R.E.P.O.",
-		"slug": "repo",
-		"popular": true,
-		"modLoader": {
-			"name": "BepInEx"
-		},
-		"platforms": {
-			"steam": {
-				"id": 3241660,
-				"dirName": "REPO"
-			}
-		}
-	},
-	{
-		"name": "Risk of Rain 2",
-		"slug": "riskofrain2",
-		"r2dirName": "RiskOfRain2",
-		"popular": true,
-		"modLoader": {
-			"name": "BepInEx",
-			"packageName": "bbepis-BepInExPack"
-		},
-		"platforms": {
-			"steam": {
-				"id": 632360
-			},
-			"epicGames": {
-				"identifier": "4b3dcc5723454a47a9112d8fe8fd5f5c"
-			}
-		}
-	},
-	{
-		"name": "Titanfall 2: Northstar",
-		"slug": "northstar",
-		"r2dirName": "Titanfall2",
-		"popular": true,
-		"modLoader": {
-			"name": "Northstar"
-		},
-		"platforms": {
-			"steam": {
-				"id": 1237970
-			},
-			"origin": {}
-		}
-	},
-	{
-		"name": "Valheim",
-		"popular": true,
-		"modLoader": {
-			"name": "BepInEx",
-			"packageName": "denikson-BepInExPack_Valheim",
-			"subdirs": [
-				{
-					"name": "SlimVML",
-					"target": "BepInEx/SlimVML"
-				}
-			]
-		},
-		"platforms": {
-			"steam": {
-				"id": 892970
-			},
-			"xboxStore": {
-				"identifier": "CoffeeStainStudios.Valheim"
-			}
-		}
-	},
-	{
 		"name": "20 Minutes Till Dawn",
 		"modLoader": {
 			"name": "BepInEx",
@@ -725,6 +587,18 @@
 		}
 	},
 	{
+		"name": "Content Warning",
+		"popular": true,
+		"modLoader": {
+			"name": "BepInEx"
+		},
+		"platforms": {
+			"steam": {
+				"id": 2881650
+			}
+		}
+	},
+	{
 		"name": "Core Keeper",
 		"modLoader": {
 			"name": "BepInEx"
@@ -985,6 +859,30 @@
 		}
 	},
 	{
+		"name": "GTFO",
+		"slug": "gtfo",
+		"popular": true,
+		"modLoader": {
+			"name": "BepInEx",
+			"subdirs": [
+				{
+					"name": "Assets",
+					"target": "BepInEx/Assets",
+					"mode": "track"
+				},
+				{
+					"name": "GameData",
+					"target": "BepInEx/GameData"
+				}
+			]
+		},
+		"platforms": {
+			"steam": {
+				"id": 493520
+			}
+		}
+	},
+	{
 		"name": "Gang Beasts",
 		"modLoader": {
 			"name": "MelonLoader"
@@ -1116,12 +1014,35 @@
 		}
 	},
 	{
+		"name": "H3VR",
+		"slug": "h3vr",
+		"r2dirName": "H3VR",
+		"popular": true,
+		"modLoader": {
+			"name": "BepInEx",
+			"subdirs": [
+				{
+					"name": "Sideloader",
+					"target": "BepInEx/Sideloader",
+					"mode": "track"
+				}
+			]
+		},
+		"platforms": {
+			"steam": {
+				"id": 450540
+			}
+		}
+	},
+	{
 		"name": "Hades II",
 		"slug": "hades-ii",
 		"modLoader": {
 			"name": "ReturnOfModding",
 			"packageName": "Hell2Modding-Hell2Modding",
-			"files": ["d3d12.dll"]
+			"files": [
+				"d3d12.dll"
+			]
 		},
 		"platforms": {
 			"steam": {
@@ -1286,6 +1207,18 @@
 		"platforms": {
 			"steam": {
 				"id": 1335830
+			}
+		}
+	},
+	{
+		"name": "Lethal Company",
+		"popular": true,
+		"modLoader": {
+			"name": "BepInEx"
+		},
+		"platforms": {
+			"steam": {
+				"id": 1966720
 			}
 		}
 	},
@@ -1833,6 +1766,20 @@
 		}
 	},
 	{
+		"name": "R.E.P.O.",
+		"slug": "repo",
+		"popular": true,
+		"modLoader": {
+			"name": "BepInEx"
+		},
+		"platforms": {
+			"steam": {
+				"id": 3241660,
+				"dirName": "REPO"
+			}
+		}
+	},
+	{
 		"name": "ROUNDS",
 		"modLoader": {
 			"name": "BepInEx"
@@ -1905,11 +1852,31 @@
 		"name": "Risk Of Rain Returns",
 		"modLoader": {
 			"name": "ReturnOfModding",
-			"files": ["version.dll"]
+			"files": [
+				"version.dll"
+			]
 		},
 		"platforms": {
 			"steam": {
 				"id": 1337520
+			}
+		}
+	},
+	{
+		"name": "Risk of Rain 2",
+		"slug": "riskofrain2",
+		"r2dirName": "RiskOfRain2",
+		"popular": true,
+		"modLoader": {
+			"name": "BepInEx",
+			"packageName": "bbepis-BepInExPack"
+		},
+		"platforms": {
+			"steam": {
+				"id": 632360
+			},
+			"epicGames": {
+				"identifier": "4b3dcc5723454a47a9112d8fe8fd5f5c"
 			}
 		}
 	},
@@ -2394,6 +2361,21 @@
 		}
 	},
 	{
+		"name": "Titanfall 2: Northstar",
+		"slug": "northstar",
+		"r2dirName": "Titanfall2",
+		"popular": true,
+		"modLoader": {
+			"name": "Northstar"
+		},
+		"platforms": {
+			"steam": {
+				"id": 1237970
+			},
+			"origin": {}
+		}
+	},
+	{
 		"name": "TouhouLostBranchOfLegend",
 		"modLoader": {
 			"name": "BepInEx"
@@ -2465,6 +2447,28 @@
 		"platforms": {
 			"steam": {
 				"id": 667970
+			}
+		}
+	},
+	{
+		"name": "Valheim",
+		"popular": true,
+		"modLoader": {
+			"name": "BepInEx",
+			"packageName": "denikson-BepInExPack_Valheim",
+			"subdirs": [
+				{
+					"name": "SlimVML",
+					"target": "BepInEx/SlimVML"
+				}
+			]
+		},
+		"platforms": {
+			"steam": {
+				"id": 892970
+			},
+			"xboxStore": {
+				"identifier": "CoffeeStainStudios.Valheim"
 			}
 		}
 	},
