@@ -19,12 +19,9 @@ class RuntimeInstallStore {
 		if (this.listenerStarted) return;
 		this.listenerStarted = true;
 		try {
-			this.unlisten = await listen<RuntimeProgress>(
-				'randomizer://runtime-progress',
-				(event) => {
-					this.progress = event.payload;
-				}
-			);
+			this.unlisten = await listen<RuntimeProgress>('randomizer://runtime-progress', (event) => {
+				this.progress = event.payload;
+			});
 		} catch {
 			this.listenerStarted = false;
 		}
