@@ -43,8 +43,14 @@
 
 	async function toggleFavorite(slug: string, e: MouseEvent) {
 		e.stopPropagation();
+		e.preventDefault();
 		await api.profile.favoriteGame(slug);
 		await games.refresh();
+	}
+
+	function swallow(e: Event) {
+		e.stopPropagation();
+		e.preventDefault();
 	}
 
 	let launching = $state(false);
@@ -162,6 +168,8 @@
 								<button
 									class="z-game-fav-btn"
 									onclick={(e) => toggleFavorite(game.slug, e)}
+									ondblclick={swallow}
+									onpointerdown={swallow}
 									aria-label="Toggle favorite"
 								>
 									<Icon icon="mdi:star" class="z-fav-icon fav" />
@@ -240,6 +248,8 @@
 									<button
 										class="z-game-fav-btn z-game-fav-btn-small"
 										onclick={(e) => toggleFavorite(game.slug, e)}
+										ondblclick={swallow}
+										onpointerdown={swallow}
 										aria-label="Toggle favorite"
 									>
 										<Icon

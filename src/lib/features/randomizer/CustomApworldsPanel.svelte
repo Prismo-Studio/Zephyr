@@ -8,6 +8,7 @@
 	import { getCurrentWebview } from '@tauri-apps/api/webview';
 	import { pushInfoToast, pushToast } from '$lib/toast';
 	import {
+		installApworldFromBytes,
 		installApworldFromPath,
 		listCustomApworlds,
 		openCustomWorldsDir,
@@ -37,6 +38,8 @@
 	let refreshLog = $state<string | null>(null);
 	let dragActive = $state(false);
 	let unlisten: (() => void) | null = null;
+	let nativeDropHandled = false;
+	let dragCounter = 0;
 
 	async function refreshList() {
 		loading = true;
@@ -157,8 +160,10 @@
 						p.toLowerCase().endsWith('.apworld')
 					);
 					if (paths.length) {
+						nativeDropHandled = true;
 						onAutoOpen?.();
 						await installPaths(paths);
+						setTimeout(() => (nativeDropHandled = false), 500);
 					}
 				}
 			});
@@ -167,6 +172,87 @@
 			// webview event API unavailable — drag-drop falls back to in-page HTML5 events
 		}
 	});
+
+	function arrayBufferToBase64(buf: ArrayBuffer): string {
+		const bytes = new Uint8Array(buf);
+		let binary = '';
+		const chunk = 0x8000;
+		for (let i = 0; i < bytes.length; i += chunk) {
+			binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + chunk)));
+		}
+		return btoa(binary);
+	}
+
+	async function installFiles(files: File[]) {
+		const apworlds = files.filter((f) => f.name.toLowerCase().endsWith('.apworld'));
+		if (!apworlds.length) return;
+		busy = true;
+		let ok = 0;
+		let failed = 0;
+		try {
+			for (const f of apworlds) {
+				try {
+					const buf = await f.arrayBuffer();
+					await installApworldFromBytes(f.name, arrayBufferToBase64(buf));
+					ok++;
+				} catch (err) {
+					console.error('install failed', f.name, err);
+					failed++;
+				}
+			}
+			if (ok > 0) {
+				pushInfoToast({
+					message:
+						ok === 1
+							? m.randomizer_customApworlds_installedSingle({ name: apworlds[0].name })
+							: m.randomizer_customApworlds_installedMulti({ count: String(ok) })
+				});
+				await randomizerStore.loadCatalog();
+				await randomizerStore.reloadCurrentSchema();
+			}
+			if (failed > 0) {
+				pushToast({
+					type: 'error',
+					name: m.randomizer_customApworlds_installFailed(),
+					message: m.randomizer_customApworlds_installFailedMsg({ count: String(failed) })
+				});
+			}
+			await refreshList();
+		} finally {
+			busy = false;
+		}
+	}
+
+	function onDragEnter(e: DragEvent) {
+		if (!e.dataTransfer) return;
+		e.preventDefault();
+		dragCounter++;
+		dragActive = true;
+	}
+
+	function onDragOver(e: DragEvent) {
+		if (!e.dataTransfer) return;
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'copy';
+	}
+
+	function onDragLeave(e: DragEvent) {
+		if (!e.dataTransfer) return;
+		e.preventDefault();
+		dragCounter = Math.max(0, dragCounter - 1);
+		if (dragCounter === 0) dragActive = false;
+	}
+
+	async function onDrop(e: DragEvent) {
+		e.preventDefault();
+		dragCounter = 0;
+		dragActive = false;
+		if (nativeDropHandled) return;
+		const files = Array.from(e.dataTransfer?.files ?? []);
+		if (!files.length) return;
+		onAutoOpen?.();
+		await installFiles(files);
+	}
 
 	onDestroy(() => {
 		unlisten?.();
@@ -202,6 +288,10 @@
 		class:is-busy={busy}
 		role="region"
 		aria-label={i18nState.locale && m.randomizer_customApworlds_dropTitle()}
+		ondragenter={onDragEnter}
+		ondragover={onDragOver}
+		ondragleave={onDragLeave}
+		ondrop={onDrop}
 	>
 		<Icon icon={busy ? 'mdi:loading' : 'mdi:tray-arrow-down'} class={busy ? 'apw-spin' : ''} />
 		<div class="apw-drop-body">
