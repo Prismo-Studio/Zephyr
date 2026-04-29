@@ -35,9 +35,9 @@ body:
   - type: textarea
     id: screenshots
     attributes:
-      label: Screenshots
-      description: If applicable, add screenshots to help explain the problem.
-      placeholder: Drag and drop images here...
+      label: Screenshots or Video
+      description: If applicable, add screenshots or a short video to help explain the problem.
+      placeholder: Drag and drop images or a video file here...
     validations:
       required: false
 
