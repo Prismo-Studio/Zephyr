@@ -13,7 +13,7 @@ import { m } from '$lib/paraglide/messages';
 /**
  * Owns the log store, the command registry, and the Tauri event subscription
  * for one Server view. Created by `ServerView.svelte` on mount, disposed on
- * destroy. Not a singleton — the companion window creates its own instance.
+ * destroy. Not a singleton. The companion window creates its own instance.
  */
 export class ServerSession {
 	log = new LogStore();
@@ -47,7 +47,7 @@ export class ServerSession {
 			}
 			this.connected = snapshot.length > 0;
 		} catch {
-			// no server running yet — fine, we just keep an empty feed
+			// no server running yet. Fine, we just keep an empty feed
 		}
 
 		// 2. Subscribe to live events.
@@ -74,7 +74,7 @@ export class ServerSession {
 
 	/** Execute what the user just typed. Dispatches via registry if recognized,
 	 *  otherwise writes the raw line to MultiServer stdin (AP parses everything
-	 *  that starts with `/` server-side — but we already handled that above). */
+	 *  that starts with `/` server-side. But we already handled that above). */
 	async submit(raw: string) {
 		const line = raw.trim();
 		if (!line) return;
@@ -84,7 +84,7 @@ export class ServerSession {
 		const parsed = parseLine(line);
 
 		if (parsed.kind === 'chat') {
-			// Echo locally; on the Server console there's no "chat send" — it
+			// Echo locally; on the Server console there's no "chat send". It
 			// gets dropped. We echo so the user knows we saw them type it.
 			this.log.append({
 				level: 'chat',

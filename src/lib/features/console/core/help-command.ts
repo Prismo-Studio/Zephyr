@@ -5,7 +5,7 @@ import type { LogStore } from './log-store.svelte';
 
 /**
  * The server (`/`) and client (`!`) command registries both ship an
- * identical `help` command — list all ready commands for the prefix, or
+ * identical `help` command. List all ready commands for the prefix, or
  * show the signature + summary of a specific one. Factor the logic here
  * so both sides register the same definition with only the prefix and
  * example strings varying.

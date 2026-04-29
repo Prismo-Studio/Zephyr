@@ -83,10 +83,4 @@ type ProfileManifestMod = {
 	};
 };
 
-export type R2ImportData = {
-	path: string;
-	profiles: string[];
-	include: boolean[];
-};
-
 export type MissingProfileAction = { type: 'locate'; newPath: string } | { type: 'delete' };

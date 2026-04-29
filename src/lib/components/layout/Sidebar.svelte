@@ -356,7 +356,7 @@
 			</div>
 		{/if}
 
-		<!-- Source toggle — disabled for v1 -->
+		<!-- Source toggle. Disabled for v1 -->
 
 		{#if profiles.active}
 			<!-- Profile switcher -->

@@ -22,7 +22,7 @@
 			randomizerStore.lastImpact.newlyHidden.includes(option.id)
 	);
 
-	// What this value currently means (selected choice description only — toggles speak for themselves)
+	// What this value currently means (selected choice description only. Toggles speak for themselves)
 	const currentExplain = $derived.by(() => {
 		if (option.type.kind === 'select' && typeof value === 'string') {
 			const choice = option.type.choices.find((c) => c.value === value);

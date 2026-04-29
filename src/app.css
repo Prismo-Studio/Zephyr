@@ -5,11 +5,11 @@
 @import 'tailwindcss';
 
 /* ============================================================
-   ZEPHYR v0.2 — Teal Storm Design System
+   ZEPHYR v0.2. Teal Storm Design System
    ============================================================ */
 
 /* ============================================================
-   CSS Custom Properties — Design Tokens
+   CSS Custom Properties. Design Tokens
    ============================================================ */
 :root {
 	/* ---- Typography ---- */
@@ -150,7 +150,7 @@
 }
 
 /* ============================================================
-   Theme: Zephyr (Signature — Glassmorphism)
+   Theme: Zephyr (Signature. Glassmorphism)
    ============================================================ */
 [data-theme='zephyr'] {
 	--bg-base: #060c18;
@@ -532,7 +532,7 @@ pre,
 	outline-offset: 2px;
 }
 
-/* Gamepad-driven focus — always show focus ring when gamepad is active */
+/* Gamepad-driven focus. Always show focus ring when gamepad is active */
 .gamepad-active :focus {
 	outline: 2px solid var(--accent-400);
 	outline-offset: 2px;

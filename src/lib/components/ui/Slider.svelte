@@ -76,7 +76,7 @@
 		outline: none;
 	}
 
-	/* Track — WebKit */
+	/* Track. WebKit */
 	.z-slider-input::-webkit-slider-runnable-track {
 		height: 4px;
 		border-radius: var(--radius-full);
@@ -90,7 +90,7 @@
 		border: none;
 	}
 
-	/* Track — Firefox */
+	/* Track. Firefox */
 	.z-slider-input::-moz-range-track {
 		height: 4px;
 		border-radius: var(--radius-full);
@@ -103,7 +103,7 @@
 		background: var(--accent-400);
 	}
 
-	/* Thumb — WebKit */
+	/* Thumb. WebKit */
 	.z-slider-input::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		appearance: none;
@@ -121,7 +121,7 @@
 		transform: scale(1.2);
 	}
 
-	/* Thumb — Firefox */
+	/* Thumb. Firefox */
 	.z-slider-input::-moz-range-thumb {
 		width: 16px;
 		height: 16px;

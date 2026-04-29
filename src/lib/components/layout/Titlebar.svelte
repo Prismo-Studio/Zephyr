@@ -39,7 +39,7 @@
 		// On macOS we keep native decorations on (with titleBarStyle=Overlay +
 		// hiddenTitle) so the OS renders the traffic-lights and supports native
 		// fullscreen. Our custom titlebar sits behind them. Don't toggle
-		// decorations there — the Native titlebar option is hidden on macOS.
+		// decorations there. The Native titlebar option is hidden on macOS.
 		if (isMac) return;
 		appWindow.setDecorations(useNativeTitlebar.current).catch(() => {});
 	});

@@ -5,7 +5,7 @@ import { helpCommand } from '../core/help-command';
  * Register every Server-side command into the session's registry.
  *
  * v1 covers the AP-native admin commands. Each one dispatches by writing the
- * raw line to `MultiServer.py`'s stdin — we trust AP's own parser, we only
+ * raw line to `MultiServer.py`'s stdin. We trust AP's own parser, we only
  * layer UX (echo, validation-light, help) on top.
  *
  * Zephyr extensions (Phase 2+) are registered as `status: 'coming-soon'` so
@@ -153,7 +153,7 @@ export function registerServerCommands(session: ServerSession) {
 		args: [{ name: 'slot' }]
 	});
 
-	// ── Zephyr v2 extensions — picked per Phase-0 §12 ──────────────────
+	// ── Zephyr v2 extensions. Picked per Phase-0 §12 ──────────────────
 	r.register({
 		prefix: '/',
 		name: 'chapter',
@@ -161,7 +161,7 @@ export function registerServerCommands(session: ServerSession) {
 		status: 'coming-soon',
 		summary: 'Emit a streamer chapter marker (OBS/Streamlabs-exploitable).',
 		args: [{ name: 'title' }],
-		examples: ['/chapter "Ch. 2 — Dark World Unlocked"']
+		examples: ['/chapter "Ch. 2. Dark World Unlocked"']
 	});
 
 	r.register({

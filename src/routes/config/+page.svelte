@@ -295,7 +295,7 @@
 											/>
 											{#if range}
 												<span class="z-entry-range">
-													{range.start} — {range.end}
+													{range.start}. {range.end}
 												</span>
 											{/if}
 										{:else if entry.value.type === 'enum'}

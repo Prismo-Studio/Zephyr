@@ -35,7 +35,7 @@ impl SourceId {
     }
 }
 
-/// A mod listing from any source — the universal mod representation.
+/// A mod listing from any source. The universal mod representation.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UnifiedMod {

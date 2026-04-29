@@ -46,7 +46,7 @@
 	}
 
 	async function fetchWikipediaImage(query: string): Promise<string | null> {
-		// REST summary endpoint — single GET, returns thumbnail if the page has one
+		// REST summary endpoint. Single GET, returns thumbnail if the page has one
 		const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(
 			query
 		)}?redirect=true`;

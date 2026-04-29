@@ -23,7 +23,7 @@
 
 	function handleTryTemplate(line: string) {
 		// Simulate typing it so the ghost hint fires.
-		// CommandInput has no public setter — we cheat via a CustomEvent bridge
+		// CommandInput has no public setter. We cheat via a CustomEvent bridge
 		// in the future; for now, directly submit once.
 		void session.submit(line);
 	}

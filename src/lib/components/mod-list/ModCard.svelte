@@ -348,7 +348,7 @@
 		padding-left: 24px;
 	}
 
-	/* Drag rail — full-height left strip on the card. The left corners are
+	/* Drag rail. Full-height left strip on the card. The left corners are
 	   rounded to match the card's border-radius, so each rail is clearly
 	   bounded per card (no continuous-line illusion). Absolutely positioned
 	   so the flex flow stays untouched. */

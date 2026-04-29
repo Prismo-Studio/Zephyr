@@ -16,7 +16,7 @@ Only the latest minor release of Zephyr receives security updates. We strongly r
 If you believe you have found a security vulnerability in Zephyr, please report it through one of the following private channels:
 
 - **GitHub Security Advisories** (preferred): use the [Report a vulnerability](https://github.com/Prismo-Studio/Zephyr/security/advisories/new) button on the Security tab of this repository.
-- **Email**: send your report to **contact@prismo-studios.dev** with the subject line `[SECURITY] Zephyr — <short description>`.
+- **Email**: send your report to **contact@prismo-studios.dev** with the subject line `[SECURITY] Zephyr. <short description>`.
 
 When reporting, please include as much of the following information as possible:
 
