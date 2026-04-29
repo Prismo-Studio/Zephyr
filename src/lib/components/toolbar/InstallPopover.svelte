@@ -37,7 +37,7 @@
 			switch (e.type) {
 				case 'show':
 					// addCount arrives before show due to async queue,
-					// so don't reset here — counters are already set
+					// so don't reset here. Counters are already set
 					visible = true;
 					installState.active = true;
 					break;

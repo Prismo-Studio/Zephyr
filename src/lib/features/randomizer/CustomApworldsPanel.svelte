@@ -169,7 +169,7 @@
 			});
 			unlisten = un;
 		} catch {
-			// webview event API unavailable — drag-drop falls back to in-page HTML5 events
+			// webview event API unavailable. Drag-drop falls back to in-page HTML5 events
 		}
 	});
 

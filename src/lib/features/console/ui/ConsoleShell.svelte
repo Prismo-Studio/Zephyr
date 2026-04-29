@@ -76,7 +76,7 @@
 	</header>
 
 	<!-- Keep both views mounted at all times so switching tabs doesn't unmount
-	     the inactive session — which would fire onDestroy → dispose() and
+	     the inactive session. Which would fire onDestroy → dispose() and
 	     drop its live WebSocket. We just hide the background view with CSS;
 	     its log keeps accumulating in the background and bridge-log events
 	     stay subscribed. -->

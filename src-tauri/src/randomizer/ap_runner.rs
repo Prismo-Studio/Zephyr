@@ -311,7 +311,7 @@ pub struct SeedFile {
     pub name: String,
     pub path: String,
     pub size: u64,
-    /// Unix epoch seconds — for sorting newest-first
+    /// Unix epoch seconds. For sorting newest-first
     pub modified: i64,
 }
 
@@ -399,7 +399,7 @@ pub fn rename_seed(path: &Path, new_name: &str) -> Result<PathBuf> {
     }
 
     // Rename per-player patches so they still group under the renamed seed.
-    // Archipelago emits them as `<old_stem>_P<n>_<slot>.ap<ext>` — we swap
+    // Archipelago emits them as `<old_stem>_P<n>_<slot>.ap<ext>`. We swap
     // the prefix while keeping everything after `_P`.
     if let Err(err) = rename_patch_siblings(parent, old_stem, &safe) {
         tracing::warn!("failed to rename patch siblings for {old_stem}: {err:#}");
@@ -432,7 +432,7 @@ fn rename_patch_siblings(parent: &Path, old_stem: &str, new_stem: &str) -> Resul
         if !ext.to_ascii_lowercase().starts_with("ap") {
             continue;
         }
-        // Replace the leading `old_stem` only — keep the `_Pn_slot.ext` suffix.
+        // Replace the leading `old_stem` only. Keep the `_Pn_slot.ext` suffix.
         let suffix = &name[old_stem.len()..];
         let new_name = format!("{new_stem}{suffix}");
         let new_path = parent.join(new_name);
@@ -587,7 +587,7 @@ struct RunningServer {
 }
 
 /// Payload emitted on the `"console://server-log"` Tauri event for every line
-/// MultiServer.py writes to stdout or stderr. Kept intentionally dumb — the
+/// MultiServer.py writes to stdout or stderr. Kept intentionally dumb. The
 /// console frontend does the parsing. This is the Phase 1 feed source; Phase 2
 /// will add a structured WebSocket-observer channel alongside.
 #[derive(Serialize, Clone, Debug)]
@@ -621,7 +621,7 @@ pub struct ServerStatus {
 }
 
 /// Detect the local LAN IP by opening a UDP socket "to" a public address.
-/// No traffic is actually sent — the OS picks the routable interface for us.
+/// No traffic is actually sent. The OS picks the routable interface for us.
 pub fn detect_local_ip() -> Option<String> {
     let socket = UdpSocket::bind("0.0.0.0:0").ok()?;
     socket.connect("8.8.8.8:80").ok()?;
@@ -640,7 +640,7 @@ pub fn detect_local_ip() -> Option<String> {
 pub fn update_host_yaml_port(ap_dir: &Path, port: u16) -> Result<()> {
     let path = ap_dir.join("host.yaml");
     if !path.exists() {
-        // nothing to do — AP will fall back to its compiled defaults
+        // nothing to do. AP will fall back to its compiled defaults
         return Ok(());
     }
 
@@ -703,7 +703,7 @@ pub fn extract_archipelago(zip_path: &Path) -> Result<PathBuf> {
 /// Returns `(archipelago_path, patch_paths)`:
 /// * `archipelago_path` is the `.archipelago` multidata MultiServer needs.
 /// * `patch_paths` are per-player patch files (e.g. `.apemerald`, `.apmw`,
-///   `.aptunic`) plus any spoiler/txt outputs — everything the Archipelago
+///   `.aptunic`) plus any spoiler/txt outputs. Everything the Archipelago
 ///   Launcher might need to apply a patch and spin up a client.
 ///
 /// Existing files are left in place so this is cheap to re-run.

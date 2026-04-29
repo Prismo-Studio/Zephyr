@@ -379,7 +379,7 @@
 					serverPage.items = [];
 				}
 
-				// Community mods — disabled for now
+				// Community mods. Disabled for now
 				// try {
 				// 	const communityResults = await api.sources.searchSources({
 				// 		searchTerm: modQuery.current.searchTerm,
@@ -550,7 +550,7 @@
 			try {
 				gameDir = await api.profile.launch.getGameDir();
 			} catch {
-				// Could not resolve game dir — let server use its default
+				// Could not resolve game dir. Let server use its default
 			}
 			await zephyrServer.installMod(modId, fileId, gameDir);
 			pushToast({ type: 'info', name: mod.name, message: 'Mod installed via Zephyr Server' });

@@ -255,8 +255,6 @@ pub fn run() {
             profile::import::commands::read_profile_base64,
             profile::import::commands::import_local_mod,
             profile::import::commands::import_local_mod_base64,
-            profile::import::commands::get_r2modman_info,
-            profile::import::commands::import_r2modman,
             profile::export::commands::export_code,
             profile::export::commands::export_file,
             profile::export::commands::export_pack,

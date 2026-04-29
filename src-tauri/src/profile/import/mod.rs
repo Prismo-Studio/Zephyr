@@ -27,7 +27,6 @@ use crate::{
 
 pub mod commands;
 mod local;
-mod r2modman;
 
 pub use local::{import_local_mod, import_local_mod_base64};
 

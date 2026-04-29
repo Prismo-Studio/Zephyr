@@ -95,10 +95,10 @@
 				// `randomizer://bridge-log` listener. Without this pause the
 				// early `[zephyr] Auto-connecting client to ...` diagnostic
 				// emits before anyone is listening and the user never sees
-				// it — only the later Launcher.py stdout stream survives.
+				// it. Only the later Launcher.py stdout stream survives.
 				await new Promise((r) => setTimeout(r, 500));
 			} catch {
-				// Non-fatal — the patch will still apply; the console just
+				// Non-fatal. The patch will still apply; the console just
 				// didn't pop up, user can open it manually.
 			}
 			await applyPatch(patch.path);
@@ -159,7 +159,7 @@
 		await refresh();
 	}
 
-	// Unique extensions seen in the current patch list — these are the games
+	// Unique extensions seen in the current patch list. These are the games
 	// for which the user might want to register a base ROM.
 	const extensionsSeen = $derived.by(() => {
 		const set = new Set<string>();

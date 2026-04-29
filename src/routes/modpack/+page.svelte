@@ -4,7 +4,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
-	/* Placeholder — modpack export/import page, minimal for now */
+	/* Placeholder. Modpack export/import page, minimal for now */
 </script>
 
 <div class="z-modpack-page">

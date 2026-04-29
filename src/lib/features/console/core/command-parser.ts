@@ -2,7 +2,7 @@
  * Tokenizer for Server (`/`) and Client (`!`) command lines.
  *
  * Supports quoted args ("two words" or 'two words') with `\"` / `\'` escapes
- * inside. Unquoted tokens split on whitespace. Leading prefix is mandatory —
+ * inside. Unquoted tokens split on whitespace. Leading prefix is mandatory ,
  * a raw line without `/` or `!` is treated as chat text, returned with
  * `kind: 'chat'`.
  */

@@ -434,7 +434,7 @@ fn inspect_apworld(
     }
 
     if !has_init {
-        bail!("missing __init__.py — not a valid apworld");
+        bail!("missing __init__.py. Not a valid apworld");
     }
 
     let (display_name, world_version) = if let Some(json) = manifest.as_ref() {

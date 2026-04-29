@@ -3,7 +3,7 @@
 //! Releases of Zephyr ship without the Archipelago runtime (~hundreds of MB
 //! of worlds + assets). This module pulls a zip tarball from a GitHub repo
 //! and extracts it into the per-user install location returned by
-//! [`super::ap_runner::ap_install_dir`] — for Linux that's
+//! [`super::ap_runner::ap_install_dir`]. For Linux that's
 //! `~/.local/share/<bundle-id>/randomizer/archipelago-runtime/`.
 //!
 //! The dev-tree copy (checked in under `src-tauri/archipelago-runtime`) still
@@ -89,8 +89,8 @@ fn patch_host_yaml(install_dir: &Path) -> Result<()> {
 /// Guard SNIClient.py's `args.connect = meta["server"]` line so the patch's
 /// baked-in server address (often empty for local seeds) doesn't clobber the
 /// `--connect host:port` Zephyr passes when spawning SNIClient. Without this,
-/// SNIClient always falls back to the embedded server field and — if that
-/// field is empty — sits at "no active multiworld server connection" forever
+/// SNIClient always falls back to the embedded server field and. If that
+/// field is empty. Sits at "no active multiworld server connection" forever
 /// even though Zephyr explicitly told it where to connect.
 fn patch_sniclient(install_dir: &Path) -> Result<()> {
     let path = install_dir.join("SNIClient.py");
@@ -105,7 +105,7 @@ fn patch_sniclient(install_dir: &Path) -> Result<()> {
         return Ok(());
     }
     if !contents.contains(original) {
-        // Upstream layout changed — bail rather than produce a broken file.
+        // Upstream layout changed. Bail rather than produce a broken file.
         tracing::warn!(
             "SNIClient.py --connect guard skipped: couldn't find the expected \
              `args.connect = meta[\"server\"]` line in {}. Upstream refactor?",
@@ -200,7 +200,7 @@ fn rewrite_git_requirement_line(line: &str) -> String {
     let url_body = &rest[..end];
     let tail = &rest[end..];
 
-    // url_body is "OWNER/REPO@REV" — split on the only `@` (GitHub names
+    // url_body is "OWNER/REPO@REV". Split on the only `@` (GitHub names
     // don't contain `@`, so this is unambiguous).
     let Some(at_idx) = url_body.find('@') else {
         return line.to_string();
@@ -244,7 +244,7 @@ pub fn status(app: &AppHandle) -> RuntimeStatus {
     let install = ap_install_dir(app);
     let installed = install.join("Generate.py").exists();
 
-    // Prefer whichever path `ap_dir` resolves to — dev checkout in dev builds,
+    // Prefer whichever path `ap_dir` resolves to. Dev checkout in dev builds,
     // the install dir in release. That way the UI reflects reality.
     let effective = ap_dir(app);
     let effective_installed = effective.join("Generate.py").exists();
@@ -440,7 +440,7 @@ pub async fn install(app: &AppHandle, url: Option<String>) -> Result<RuntimeStat
         let msg = format!("runtime extracted but venv provisioning failed: {err:#}");
         tracing::warn!("{msg}");
         emit(ProgressEvent::Failed { error: msg });
-        // Return the status anyway — partially installed is still usable once
+        // Return the status anyway. Partially installed is still usable once
         // the user runs provision_venv manually.
         return Ok(status(app));
     }
@@ -462,7 +462,7 @@ pub async fn provision_venv(app: &AppHandle) -> Result<RuntimeStatus> {
     let dir = ap_dir(app);
     if !dir.join("Generate.py").exists() {
         bail!(
-            "Archipelago runtime not installed at {} — download it first.",
+            "Archipelago runtime not installed at {}. Download it first.",
             dir.display()
         );
     }
@@ -519,7 +519,7 @@ fn provision_venv_at(
     // the venv first, so call it AFTER ruling the venv in/out.
     let venv = venv_dir(app);
     let system_python = if venv_python_path(runtime_dir).exists() {
-        // venv already exists — keep using it.
+        // venv already exists. Keep using it.
         venv_python_path(runtime_dir).to_string_lossy().to_string()
     } else {
         emit(ProgressEvent::ProvisioningVenv {
@@ -568,7 +568,7 @@ fn provision_venv_at(
             .arg("wheel"),
         emit,
     )
-    .context("upgrade pip/setuptools — base bootstrap failed; cannot continue")?;
+    .context("upgrade pip/setuptools. Base bootstrap failed; cannot continue")?;
 
     // Sanity check: confirm pkg_resources actually imports inside the venv.
     // If this fails we want a loud error, not a silent fallthrough that
@@ -607,7 +607,7 @@ fn provision_venv_at(
         .context("install core requirements")?;
     } else {
         tracing::warn!(
-            "no requirements.txt at {} — skipping core deps",
+            "no requirements.txt at {}. Skipping core deps",
             main_req.display()
         );
     }
@@ -662,7 +662,7 @@ fn provision_venv_at(
         }
     }
 
-    // Final marker — everything succeeded. `venv_ready` in status() keys off
+    // Final marker. Everything succeeded. `venv_ready` in status() keys off
     // this file so that a torn-down install doesn't masquerade as ready.
     fs::write(&marker, "full\n").ok();
     Ok(())
@@ -744,7 +744,7 @@ pub fn find_bootstrap_python() -> Option<(String, Vec<String>)> {
 
 /// Return the python-build-standalone target triple for the current platform,
 /// or `None` if we don't ship an asset for it (e.g. Linux on a musl libc host
-/// — those users can supply their own Python).
+///. Those users can supply their own Python).
 fn bundled_python_target_triple() -> Option<&'static str> {
     match (std::env::consts::OS, std::env::consts::ARCH) {
         ("linux", "x86_64") => Some("x86_64-unknown-linux-gnu"),
@@ -869,7 +869,7 @@ fn ensure_bundled_python(
 
     if !binary.exists() {
         bail!(
-            "Python extraction finished but {} is missing — unexpected tarball layout?",
+            "Python extraction finished but {} is missing. Unexpected tarball layout?",
             binary.display()
         );
     }
@@ -925,7 +925,7 @@ fn run_to_log(cmd: &mut Command, emit: &dyn Fn(ProgressEvent)) -> Result<()> {
         });
     }
 
-    // Stream stdout on the current thread — safe to call `emit` here.
+    // Stream stdout on the current thread. Safe to call `emit` here.
     if let Some(stdout) = child.stdout.take() {
         let reader = BufReader::new(stdout);
         for line in reader.lines().flatten() {

@@ -52,7 +52,7 @@ export type GameMeta = {
 	 *  the apworld itself. Backward-compat default is true. */
 	is_official?: boolean;
 	/** Author-defined English tutorial link (e.g. "setup/en"). Absent when the
-	 *  world defines no tutorial — in which case the UI must not render an
+	 *  world defines no tutorial. In which case the UI must not render an
 	 *  archipelago.gg link. */
 	tutorial_path?: string;
 };
