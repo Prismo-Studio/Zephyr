@@ -17,3 +17,10 @@ src-tauri/gen
 *.pyc
 *.pyo
 src-tauri/archipelago-runtime/
+
+# Local debug / scratch artifacts
+/svelte-errs*.txt
+/tsc_errors.txt
+/check_compiled.cjs
+/list_broken.cjs
+/language-fix/
