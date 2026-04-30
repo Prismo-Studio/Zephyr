@@ -6,7 +6,7 @@ use std::{
 
 use chrono::{DateTime, Utc};
 use export::modpack::ModpackArgs;
-use eyre::{anyhow, ensure, eyre, Context, ContextCompat, OptionExt, Result};
+use eyre::{ensure, eyre, Context, ContextCompat, OptionExt, Result};
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 use tracing::{info, warn};
@@ -430,12 +430,6 @@ impl ManagedGame {
             .iter()
             .position(|profile| profile.id == profile_id)
             .ok_or_else(|| eyre!("profile with id {} not found", profile_id))
-    }
-
-    fn profile_at(&self, index: usize) -> Result<&Profile> {
-        self.profiles
-            .get(index)
-            .ok_or_else(|| anyhow!("profile index {} is out of bounds", index))
     }
 
     fn profile_ok(&self, id: i64) -> Option<&Profile> {
