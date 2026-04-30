@@ -182,9 +182,6 @@
 									</span>
 								</div>
 							</div>
-							{#if game.slug === games.active?.slug}
-								<span class="z-game-active-pulse"></span>
-							{/if}
 						</div>
 					{/each}
 				</div>
@@ -622,28 +619,6 @@
 		background: var(--bg-overlay);
 	}
 
-	.z-game-active-pulse {
-		position: absolute;
-		top: 12px;
-		left: 12px;
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		background: var(--accent-400);
-		box-shadow: 0 0 0 4px var(--bg-active);
-		animation: pulse 2s ease-in-out infinite;
-	}
-
-	@keyframes pulse {
-		0%,
-		100% {
-			box-shadow: 0 0 0 4px var(--bg-active);
-		}
-		50% {
-			box-shadow: 0 0 0 8px transparent;
-		}
-	}
-
 	/* Games grid */
 	.z-games-grid {
 		display: grid;
@@ -713,14 +688,4 @@
 		color: #fbbf24;
 	}
 
-	.z-game-active-dot {
-		position: absolute;
-		bottom: 8px;
-		right: 8px;
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background: var(--accent-400);
-		box-shadow: 0 0 6px var(--accent-400);
-	}
 </style>
