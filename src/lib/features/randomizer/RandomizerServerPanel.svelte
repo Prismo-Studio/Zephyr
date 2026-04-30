@@ -8,7 +8,7 @@
 	import PlayerSlotsSection from './PlayerSlotsSection.svelte';
 	import SeedsSection from './SeedsSection.svelte';
 	import HostSection from './HostSection.svelte';
-	import { pushToast, pushInfoToast } from '$lib/toast';
+	import { pushToast, pushInfoToast } from '$lib/toast.svelte';
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import * as api from './api';
 	import { randomizerStore } from './randomizer.store.svelte';

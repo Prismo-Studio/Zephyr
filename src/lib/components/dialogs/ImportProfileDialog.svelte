@@ -7,7 +7,7 @@
 	import type { ImportData, LegacyImportData, SyncImportData } from '$lib/types';
 	import * as api from '$lib/api';
 	import profiles from '$lib/state/profile.svelte';
-	import { pushToast } from '$lib/toast';
+	import { pushToast } from '$lib/toast.svelte';
 	import { maybeSyncAfterImport } from '$lib/state/autoSync.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';

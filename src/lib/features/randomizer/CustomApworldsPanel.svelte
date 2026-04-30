@@ -6,7 +6,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { getCurrentWebview } from '@tauri-apps/api/webview';
-	import { pushInfoToast, pushToast } from '$lib/toast';
+	import { pushInfoToast, pushToast } from '$lib/toast.svelte';
 	import {
 		installApworldFromBytes,
 		installApworldFromPath,

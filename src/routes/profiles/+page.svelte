@@ -16,7 +16,7 @@
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import { pushToast } from '$lib/toast';
+	import { pushToast } from '$lib/toast.svelte';
 	import RestoreCloudDialog from '$lib/components/dialogs/RestoreCloudDialog.svelte';
 	import RestoreCrossGameDialog from '$lib/components/dialogs/RestoreCrossGameDialog.svelte';
 	import type { ListedSyncProfile, Game } from '$lib/types';

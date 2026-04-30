@@ -4,7 +4,7 @@
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import { open as openExternal } from '@tauri-apps/plugin-shell';
-	import { pushToast } from '$lib/toast';
+	import { pushToast } from '$lib/toast.svelte';
 	import * as api from './api';
 	import { randomizerStore, dependenciesSatisfied } from './randomizer.store.svelte';
 	import { CATEGORY_ICONS, CATEGORY_LABELS, CATEGORY_ORDER, type OptionDef } from './types';

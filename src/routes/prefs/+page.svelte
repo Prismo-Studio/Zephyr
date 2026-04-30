@@ -42,7 +42,7 @@
 	import { getLocale, locales, type Locale } from '$lib/paraglide/runtime';
 	import { onMount } from 'svelte';
 	import { open as selectDirectory } from '@tauri-apps/plugin-dialog';
-	import { pushInfoToast } from '$lib/toast';
+	import { pushInfoToast } from '$lib/toast.svelte';
 	import { shortenFileSize } from '$lib/util';
 	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 	import { getVersion } from '@tauri-apps/api/app';

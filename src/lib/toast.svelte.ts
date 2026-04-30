@@ -1,4 +1,3 @@
-import { writable, type Writable } from 'svelte/store';
 import {
 	TOAST_ERROR_DURATION_MS,
 	TOAST_INFO_DURATION_MS,
@@ -11,7 +10,14 @@ export type Toast = {
 	message: string;
 };
 
-export const toasts: Writable<(Toast & { id: number })[]> = writable([]);
+type ToastWithId = Toast & { id: number };
+
+const state = $state<{ list: ToastWithId[] }>({ list: [] });
+
+/** Reactive accessor for the current toast list. */
+export function toasts(): readonly ToastWithId[] {
+	return state.list;
+}
 
 export function pushInfoToast(toast: { name?: undefined; message: string }) {
 	pushToast({
@@ -23,34 +29,25 @@ export function pushInfoToast(toast: { name?: undefined; message: string }) {
 let nextId = 0;
 
 export function pushToast(toast: Toast) {
-	let id = nextId;
+	const id = nextId;
 	nextId++;
 
-	toasts.update((toasts) => {
-		toasts.push({ ...toast, id });
-		if (toasts.length > TOAST_MAX_COUNT) {
-			toasts.shift();
-		}
-		return toasts;
-	});
+	state.list.push({ ...toast, id });
+	if (state.list.length > TOAST_MAX_COUNT) {
+		state.list.shift();
+	}
 
 	setTimeout(
 		() => {
-			toasts.update((toasts) => {
-				let index = toasts.findIndex((toast) => toast.id == id);
-				if (index !== -1) {
-					toasts.splice(index, 1);
-				}
-				return toasts;
-			});
+			const index = state.list.findIndex((t) => t.id == id);
+			if (index !== -1) {
+				state.list.splice(index, 1);
+			}
 		},
 		toast.type === 'error' ? TOAST_ERROR_DURATION_MS : TOAST_INFO_DURATION_MS
 	);
 }
 
 export function clearToast(index: number) {
-	toasts.update((toasts) => {
-		toasts.splice(index, 1);
-		return toasts;
-	});
+	state.list.splice(index, 1);
 }

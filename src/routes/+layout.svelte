@@ -43,7 +43,7 @@
 	import { open } from '@tauri-apps/plugin-shell';
 	import { relaunch } from '@tauri-apps/plugin-process';
 	import { getVersion } from '@tauri-apps/api/app';
-	import { pushToast, pushInfoToast } from '$lib/toast';
+	import { pushToast, pushInfoToast } from '$lib/toast.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Icon from '@iconify/svelte';

@@ -15,7 +15,7 @@
 		setRomPath
 	} from './api';
 	import type { PatchFile } from './types';
-	import { pushInfoToast, pushToast } from '$lib/toast';
+	import { pushInfoToast, pushToast } from '$lib/toast.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 

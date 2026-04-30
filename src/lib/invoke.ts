@@ -1,6 +1,6 @@
 import { invoke as tauriInvoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
-import { pushToast } from './toast';
+import { pushToast } from './toast.svelte';
 import { toSentenceCase } from 'js-convert-case';
 import { m } from './paraglide/messages';
 import { i18nState } from './i18nCore.svelte';

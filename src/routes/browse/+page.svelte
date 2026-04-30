@@ -30,7 +30,7 @@
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import { pushToast } from '$lib/toast';
+	import { pushToast } from '$lib/toast.svelte';
 	import { handleMultiSelect } from '$lib/utils/multiSelect';
 	import { gamepadState } from '$lib/gamepad.svelte';
 

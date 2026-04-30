@@ -18,7 +18,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { togglePin, isModPinned } from '$lib/state/misc.svelte';
-	import { pushToast } from '$lib/toast';
+	import { pushToast } from '$lib/toast.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import CachedImage from '$lib/components/ui/CachedImage.svelte';

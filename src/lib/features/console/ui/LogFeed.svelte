@@ -5,7 +5,7 @@
 	import ContextMenu, { type ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import { pushInfoToast, pushToast } from '$lib/toast';
+	import { pushInfoToast, pushToast } from '$lib/toast.svelte';
 	import type { LogEntry as LogEntryType } from '../core/protocol';
 	import type { LogStore } from '../core/log-store.svelte';
 	import LogEntry from './LogEntry.svelte';

@@ -10,7 +10,7 @@
 	import games from '$lib/state/game.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import { pushToast } from '$lib/toast';
+	import { pushToast } from '$lib/toast.svelte';
 	import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
 	import { maybeSyncAfterImport } from '$lib/state/autoSync.svelte';
 

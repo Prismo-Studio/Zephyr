@@ -3,7 +3,7 @@ import * as sync from '$lib/api/profile/sync';
 import * as profileApi from '$lib/api/profile';
 import profiles from './profile.svelte';
 import auth from './auth.svelte';
-import { pushToast } from '$lib/toast';
+import { pushToast } from '$lib/toast.svelte';
 import { m } from '$lib/paraglide/messages';
 
 let pushTimer: ReturnType<typeof setTimeout> | null = null;
