@@ -230,8 +230,8 @@ pub async fn query_profile(args: QueryModsArgs, app: AppHandle) -> Result<Profil
                     full_name: update.latest.ident.clone(),
                     package_uuid: update.package.uuid,
                     version_uuid: update.latest.uuid,
-                    old: update.current.parsed_version().clone(),
-                    new: update.latest.parsed_version().clone(),
+                    old: update.current.parsed_version(),
+                    new: update.latest.parsed_version(),
                     ignore,
                 }
             })

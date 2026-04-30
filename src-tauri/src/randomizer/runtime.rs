@@ -316,7 +316,7 @@ pub async fn install(app: &AppHandle, url: Option<String>) -> Result<RuntimeStat
     let tmp_parent = install_dir
         .parent()
         .map(|p| p.to_path_buf())
-        .unwrap_or_else(|| std::env::temp_dir());
+        .unwrap_or_else(std::env::temp_dir);
     fs::create_dir_all(&tmp_parent).ok();
     let mut tmp = tempfile::Builder::new()
         .prefix("zephyr-ap-runtime-")

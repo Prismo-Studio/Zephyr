@@ -51,7 +51,7 @@ fn resolve_ap_target(app: &AppHandle) -> Option<(String, Option<String>)> {
         if let (true, Some(port)) = (st.running, st.port) {
             return Some((
                 format!("127.0.0.1:{port}"),
-                st.password.clone().filter(|p| !p.is_empty()),
+                st.password.filter(|p| !p.is_empty()),
             ));
         }
     }
