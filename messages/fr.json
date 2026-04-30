@@ -1074,5 +1074,14 @@
 	"shortcuts_toggleMultiplayer": "Afficher/masquer le panneau multijoueur",
 	"shortcuts_consoleServer": "Passer à la console serveur",
 	"shortcuts_consoleClient": "Passer à la console client",
-	"shortcuts_consoleToggle": "Basculer console serveur/client"
+	"shortcuts_consoleToggle": "Basculer console serveur/client",
+	"shortcuts_cycleProfilePrev": "Profil précédent",
+	"shortcuts_cycleProfileNext": "Profil suivant",
+	"shortcuts_edit": "Modifier",
+	"shortcuts_listening": "Appuyez sur une combinaison de touches (Échap pour annuler)",
+	"shortcuts_resetAll": "Tout réinitialiser",
+	"shortcuts_resetOne": "Réinitialiser",
+	"shortcuts_save": "Enregistrer",
+	"shortcuts_cancel": "Annuler",
+	"shortcuts_conflict": "Conflit avec un autre raccourci"
 }

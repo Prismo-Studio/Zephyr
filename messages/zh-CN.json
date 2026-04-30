@@ -1070,5 +1070,14 @@
 	"shortcuts_toggleMultiplayer": "显示/隐藏多人游戏面板",
 	"shortcuts_consoleServer": "切换到服务器控制台",
 	"shortcuts_consoleClient": "切换到客户端控制台",
-	"shortcuts_consoleToggle": "切换服务器/客户端控制台"
+	"shortcuts_consoleToggle": "切换服务器/客户端控制台",
+	"shortcuts_cycleProfilePrev": "上一个配置文件",
+	"shortcuts_cycleProfileNext": "下一个配置文件",
+	"shortcuts_edit": "编辑",
+	"shortcuts_listening": "按下一个组合键（按 Esc 取消）",
+	"shortcuts_resetAll": "全部重置为默认",
+	"shortcuts_resetOne": "重置",
+	"shortcuts_save": "保存",
+	"shortcuts_cancel": "取消",
+	"shortcuts_conflict": "与另一个快捷键冲突"
 }

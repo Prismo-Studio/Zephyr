@@ -1089,10 +1089,19 @@
 	"shortcuts_refreshData": "Refresh data",
 	"shortcuts_globalSearch": "Open search",
 	"shortcuts_cycleProfiles": "Cycle between profiles",
+	"shortcuts_cycleProfilePrev": "Previous profile",
+	"shortcuts_cycleProfileNext": "Next profile",
 	"shortcuts_zoomIn": "Zoom in",
 	"shortcuts_zoomOut": "Zoom out",
 	"shortcuts_toggleMultiplayer": "Toggle multiplayer panel",
 	"shortcuts_consoleServer": "Switch to server console",
 	"shortcuts_consoleClient": "Switch to client console",
-	"shortcuts_consoleToggle": "Toggle server/client console"
+	"shortcuts_consoleToggle": "Toggle server/client console",
+	"shortcuts_edit": "Edit",
+	"shortcuts_listening": "Press a key combo (Esc to cancel)",
+	"shortcuts_resetAll": "Reset all to defaults",
+	"shortcuts_resetOne": "Reset",
+	"shortcuts_save": "Save",
+	"shortcuts_cancel": "Cancel",
+	"shortcuts_conflict": "Conflicts with another shortcut"
 }

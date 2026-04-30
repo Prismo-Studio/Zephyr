@@ -1094,5 +1094,14 @@
 	"shortcuts_toggleMultiplayer": "إظهار/إخفاء لوحة اللعب الجماعي",
 	"shortcuts_consoleServer": "التبديل إلى وحدة تحكم الخادم",
 	"shortcuts_consoleClient": "التبديل إلى وحدة تحكم العميل",
-	"shortcuts_consoleToggle": "تبديل وحدة تحكم الخادم/العميل"
+	"shortcuts_consoleToggle": "تبديل وحدة تحكم الخادم/العميل",
+	"shortcuts_cycleProfilePrev": "الملف الشخصي السابق",
+	"shortcuts_cycleProfileNext": "الملف الشخصي التالي",
+	"shortcuts_edit": "تعديل",
+	"shortcuts_listening": "اضغط على مجموعة مفاتيح (Esc للإلغاء)",
+	"shortcuts_resetAll": "إعادة تعيين الكل إلى الافتراضي",
+	"shortcuts_resetOne": "إعادة تعيين",
+	"shortcuts_save": "حفظ",
+	"shortcuts_cancel": "إلغاء",
+	"shortcuts_conflict": "تعارض مع اختصار آخر"
 }

@@ -1079,5 +1079,14 @@
 	"shortcuts_toggleMultiplayer": "Показать/скрыть мультиплеер-панель",
 	"shortcuts_consoleServer": "Перейти в серверную консоль",
 	"shortcuts_consoleClient": "Перейти в клиентскую консоль",
-	"shortcuts_consoleToggle": "Переключить серверную/клиентскую консоль"
+	"shortcuts_consoleToggle": "Переключить серверную/клиентскую консоль",
+	"shortcuts_cycleProfilePrev": "Предыдущий профиль",
+	"shortcuts_cycleProfileNext": "Следующий профиль",
+	"shortcuts_edit": "Изменить",
+	"shortcuts_listening": "Нажмите сочетание клавиш (Esc для отмены)",
+	"shortcuts_resetAll": "Сбросить все по умолчанию",
+	"shortcuts_resetOne": "Сбросить",
+	"shortcuts_save": "Сохранить",
+	"shortcuts_cancel": "Отмена",
+	"shortcuts_conflict": "Конфликт с другим сочетанием"
 }

@@ -1010,5 +1010,14 @@
 	"shortcuts_toggleMultiplayer": "Mostrar/ocultar painel multijogador",
 	"shortcuts_consoleServer": "Mudar para console servidor",
 	"shortcuts_consoleClient": "Mudar para console cliente",
-	"shortcuts_consoleToggle": "Alternar console servidor/cliente"
+	"shortcuts_consoleToggle": "Alternar console servidor/cliente",
+	"shortcuts_cycleProfilePrev": "Perfil anterior",
+	"shortcuts_cycleProfileNext": "Próximo perfil",
+	"shortcuts_edit": "Editar",
+	"shortcuts_listening": "Pressione uma combinação de teclas (Esc para cancelar)",
+	"shortcuts_resetAll": "Restaurar todos os padrões",
+	"shortcuts_resetOne": "Restaurar",
+	"shortcuts_save": "Salvar",
+	"shortcuts_cancel": "Cancelar",
+	"shortcuts_conflict": "Conflito com outro atalho"
 }

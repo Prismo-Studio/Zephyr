@@ -1072,5 +1072,14 @@
 	"shortcuts_toggleMultiplayer": "Mostrar/ocultar panel multijugador",
 	"shortcuts_consoleServer": "Cambiar a consola servidor",
 	"shortcuts_consoleClient": "Cambiar a consola cliente",
-	"shortcuts_consoleToggle": "Alternar consola servidor/cliente"
+	"shortcuts_consoleToggle": "Alternar consola servidor/cliente",
+	"shortcuts_cycleProfilePrev": "Perfil anterior",
+	"shortcuts_cycleProfileNext": "Perfil siguiente",
+	"shortcuts_edit": "Editar",
+	"shortcuts_listening": "Pulsa una combinación de teclas (Esc para cancelar)",
+	"shortcuts_resetAll": "Restablecer todo",
+	"shortcuts_resetOne": "Restablecer",
+	"shortcuts_save": "Guardar",
+	"shortcuts_cancel": "Cancelar",
+	"shortcuts_conflict": "Conflicto con otro atajo"
 }
