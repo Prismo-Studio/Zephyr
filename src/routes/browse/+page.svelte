@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as api from '$lib/api';
 	import type { SortBy, Mod, ModId, Dependant } from '$lib/types';
-	import type { SourceId, UnifiedMod } from '$lib/api/sources';
 	import { curseForgeEnabled } from '$lib/themeSystem';
 	import * as zephyrServer from '$lib/api/zephyrServer';
 	import { zephyrServerState } from '$lib/state/zephyrServer.svelte';
@@ -10,21 +9,23 @@
 	import ScrollToTop from '$lib/components/ui/ScrollToTop.svelte';
 	import ModCard from '$lib/components/mod-list/ModCard.svelte';
 	import ModDetails from '$lib/components/mod-list/ModDetails.svelte';
-	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
 	import InstallModButton from '$lib/components/mod-list/InstallModButton.svelte';
 	import RemoveModDialog from '$lib/components/mod-list/RemoveModDialog.svelte';
 	import ToggleModDialog from '$lib/components/mod-list/ToggleModDialog.svelte';
+	import MultiViewNav from '$lib/components/mod-list/MultiViewNav.svelte';
 	import BatchActionBar from '$lib/components/ui/BatchActionBar.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
+
+	import BrowseFilterBar from '$lib/components/browse/BrowseFilterBar.svelte';
+	import BrowseEmptyState from '$lib/components/browse/BrowseEmptyState.svelte';
+	import BrowseLockedBanner from '$lib/components/browse/BrowseLockedBanner.svelte';
 
 	import { onMount } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import { modQuery, installState, viewMode } from '$lib/state/misc.svelte';
-	import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
-	import type { ContextMenuItem } from '$lib/components/ui/ContextMenu.svelte';
-	import Checkbox from '$lib/components/ui/Checkbox.svelte';
-	import { open } from '@tauri-apps/plugin-shell';
+	import { activeSourceState } from '$lib/state/source.svelte';
 	import profiles from '$lib/state/profile.svelte';
 	import games from '$lib/state/game.svelte';
 	import Icon from '@iconify/svelte';
@@ -33,26 +34,63 @@
 	import { pushToast } from '$lib/toast.svelte';
 	import { handleMultiSelect } from '$lib/utils/multiSelect';
 	import { gamepadState } from '$lib/gamepad.svelte';
+	import {
+		curseForgeModToMod,
+		unifiedToMod,
+		isServerMod
+	} from '$lib/utils/sourceMappers';
+	import { buildBrowseContextMenu } from '$lib/utils/browseContextMenu';
 
 	const sortOptions: SortBy[] = ['lastUpdated', 'newest', 'rating', 'downloads'];
+	const CF_PAGE_SIZE = 25;
+	const SERVER_PAGE_SIZE = 50;
 
-	import { activeSourceState } from '$lib/state/source.svelte';
+	type SourceSortBy = 'downloads' | 'rating' | 'newest' | 'updated' | 'name';
+	const sourceSortMap: Record<string, SourceSortBy> = {
+		lastUpdated: 'updated',
+		newest: 'newest',
+		rating: 'rating',
+		downloads: 'downloads',
+		name: 'name'
+	};
+
 	let activeSource = $derived(activeSourceState.current);
 
 	let browseContentEl: HTMLDivElement | undefined = $state();
 	let mods: Mod[] = $state([]);
 	let maxCount: number = $state(30);
-	let totalLoadedForCurrentQuery: number = $state(0);
 
 	let selectedModIds: string[] = $state([]);
 	let lastClickedIndex = -1;
 	let cachedSelectedMods: Map<string, Mod> = new Map();
 
+	type PaginatedSource = {
+		items: Mod[];
+		offset: number;
+		hasMore: boolean;
+		loading: boolean;
+	};
+	const emptyPage = (): PaginatedSource => ({ items: [], offset: 0, hasMore: true, loading: false });
+
+	let thunderstoreMods: Mod[] = $state([]);
+	let cfPage: PaginatedSource = $state(emptyPage());
+	let serverPage: PaginatedSource = $state(emptyPage());
+	let zephyrServerReachable: boolean | null = $state(null);
+	let communityMods: Mod[] = $state([]);
+
+	let showCurseForgeOnly = $state(false);
+	let hasRefreshed = $state(false);
+	let filtersExpanded = $state(false);
+
+	let displayedMods = $derived(
+		showCurseForgeOnly ? mods.filter((mm) => mm.uuid.startsWith('curseforge:') || isServerMod(mm)) : mods
+	);
+
 	let prevInstallActive = false;
 	$effect(() => {
 		if (prevInstallActive && !installState.active) {
 			const cachedIds = [...cachedSelectedMods.entries()].filter(
-				([uuid]) => !mods.find((m) => m.uuid === uuid)
+				([uuid]) => !mods.find((mm) => mm.uuid === uuid)
 			);
 			if (cachedIds.length > 0) {
 				Promise.all(
@@ -71,7 +109,7 @@
 								maxCount: 5
 							})
 							.then((results) => {
-								const updated = results.find((m) => m.uuid === uuid);
+								const updated = results.find((mm) => mm.uuid === uuid);
 								if (updated) cachedSelectedMods.set(uuid, updated);
 							})
 					)
@@ -85,7 +123,7 @@
 	});
 
 	function getSelectedMod(uuid: string): Mod | null {
-		const fresh = mods.find((m) => m.uuid === uuid);
+		const fresh = mods.find((mm) => mm.uuid === uuid);
 		if (fresh) {
 			cachedSelectedMods.set(uuid, fresh);
 			return fresh;
@@ -98,7 +136,6 @@
 		return selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null;
 	});
 
-	// Multi-select detail navigation
 	let multiViewIndex = $state(0);
 	let selectedMods = $derived(
 		selectedModIds.length > 1
@@ -116,23 +153,17 @@
 		selectedMods.length > 0 ? (selectedMods[multiViewIndex] ?? selectedMods[0]) : null
 	);
 
-	// Reset index when selection changes
 	$effect(() => {
 		selectedModIds;
 		multiViewIndex = 0;
 	});
 
-	let hasRefreshed = $state(false);
-	let filtersExpanded = $state(false);
-
 	function toggleCategoryFilter(category: string, multi = false) {
 		const cats = modQuery.current.includeCategories;
 		if (multi) {
-			if (cats.includes(category)) {
-				modQuery.current.includeCategories = cats.filter((c) => c !== category);
-			} else {
-				modQuery.current.includeCategories = [...cats, category];
-			}
+			modQuery.current.includeCategories = cats.includes(category)
+				? cats.filter((c) => c !== category)
+				: [...cats, category];
 		} else {
 			if (cats.includes(category) && cats.length === 1) {
 				modQuery.current.includeCategories = [];
@@ -142,27 +173,6 @@
 		}
 		filtersExpanded = true;
 	}
-	let showCurseForgeOnly = $state(false);
-	type PaginatedSource = {
-		items: Mod[];
-		offset: number;
-		hasMore: boolean;
-		loading: boolean;
-	};
-
-	function emptyPage(): PaginatedSource {
-		return { items: [], offset: 0, hasMore: true, loading: false };
-	}
-
-	let thunderstoreMods: Mod[] = $state([]);
-	let cfPage: PaginatedSource = $state(emptyPage());
-	let serverPage: PaginatedSource = $state(emptyPage());
-	let zephyrServerReachable: boolean | null = $state(null);
-	let communityMods: Mod[] = $state([]);
-
-	let displayedMods = $derived(
-		showCurseForgeOnly ? mods.filter((m) => isCurseForgeMod(m) || isServerMod(m)) : mods
-	);
 
 	function shouldUseZephyrServer(): boolean {
 		return zephyrServerState.current.enabled && zephyrServerReachable !== false;
@@ -172,7 +182,7 @@
 		return isServerMod(mod) || !mod.uuid.includes(':');
 	}
 
-	function syncThunderstoreBrowseMods() {
+	function syncBrowseMods() {
 		if (activeSource !== 'thunderstore') return;
 		mods = [
 			...thunderstoreMods,
@@ -181,33 +191,14 @@
 		];
 	}
 
-	function externalHasMore(): boolean {
-		return shouldUseZephyrServer() ? serverPage.hasMore : cfPage.hasMore;
-	}
-
-	function externalLoading(): boolean {
-		return shouldUseZephyrServer() ? serverPage.loading : cfPage.loading;
-	}
-
-	async function loadMoreExternalMods() {
-		if (shouldUseZephyrServer()) {
-			await loadMoreFromServer();
-			return;
-		}
-
-		await loadMoreCF();
-	}
-
 	async function ensureZephyrServerAvailable(force = false): Promise<boolean> {
 		if (!zephyrServerState.current.enabled) {
 			zephyrServerReachable = null;
 			return false;
 		}
-
 		if (!force && zephyrServerReachable !== null) {
 			return zephyrServerReachable;
 		}
-
 		const ok = await zephyrServer.healthCheck();
 		zephyrServerReachable = ok;
 		return ok;
@@ -227,7 +218,7 @@
 			mod.uuid,
 			index,
 			selectedModIds,
-			mods.map((m) => m.uuid),
+			mods.map((mm) => mm.uuid),
 			lastClickedIndex
 		);
 		selectedModIds = result.selection;
@@ -236,13 +227,11 @@
 
 	async function handleDepClick(author: string, name: string): Promise<boolean> {
 		let found = mods.find(
-			(m) =>
-				m.name.toLowerCase() === name.toLowerCase() &&
-				m.author?.toLowerCase() === author.toLowerCase()
+			(mm) =>
+				mm.name.toLowerCase() === name.toLowerCase() &&
+				mm.author?.toLowerCase() === author.toLowerCase()
 		);
-		if (!found) {
-			found = mods.find((m) => m.name.toLowerCase() === name.toLowerCase());
-		}
+		if (!found) found = mods.find((mm) => mm.name.toLowerCase() === name.toLowerCase());
 		if (!found) {
 			try {
 				const results = await api.thunderstore.query({
@@ -259,10 +248,10 @@
 				});
 				found =
 					results.find(
-						(m) =>
-							m.name.toLowerCase() === name.toLowerCase() &&
-							m.author?.toLowerCase() === author.toLowerCase()
-					) ?? results.find((m) => m.name.toLowerCase() === name.toLowerCase());
+						(mm) =>
+							mm.name.toLowerCase() === name.toLowerCase() &&
+							mm.author?.toLowerCase() === author.toLowerCase()
+					) ?? results.find((mm) => mm.name.toLowerCase() === name.toLowerCase());
 			} catch {}
 		}
 		if (found) {
@@ -273,10 +262,7 @@
 		return false;
 	}
 
-	// Remove-mod dialog state
 	let removeDialog: { open: boolean; mod: Mod; dependants: Dependant[] } | null = $state(null);
-
-	// Toggle-mod dialog state
 	let toggleDialog: {
 		open: boolean;
 		mod: Mod;
@@ -290,7 +276,7 @@
 		listen<Mod[]>('mod_query_result', (evt) => {
 			if (activeSource !== 'thunderstore') return;
 			thunderstoreMods = evt.payload;
-			syncThunderstoreBrowseMods();
+			syncBrowseMods();
 		}).then((unlisten) => {
 			unlistenFromQuery = unlisten;
 		});
@@ -303,9 +289,28 @@
 
 	let refreshing = false;
 	let pendingRefresh = false;
-
 	let lastGameSlug: string | null = null;
 	let lastQueryHash: string = '';
+
+	function resetState() {
+		mods = [];
+		thunderstoreMods = [];
+		cfPage = emptyPage();
+		serverPage = emptyPage();
+		communityMods = [];
+		hasRefreshed = false;
+		maxCount = 30;
+		showCurseForgeOnly = false;
+		selectedModIds = [];
+		cachedSelectedMods.clear();
+		multiViewIndex = 0;
+	}
+
+	function resetPagination() {
+		thunderstoreMods = [];
+		cfPage = emptyPage();
+		serverPage = emptyPage();
+	}
 
 	async function refresh() {
 		if (refreshing) {
@@ -315,118 +320,24 @@
 
 		const currentSlug = games.active?.slug ?? null;
 		if (currentSlug !== lastGameSlug) {
-			mods = [];
-			thunderstoreMods = [];
-			cfPage.items = [];
-			cfPage.offset = 0;
-			cfPage.hasMore = true;
-			serverPage.items = [];
-			serverPage.offset = 0;
-			serverPage.hasMore = true;
-			communityMods = [];
-			hasRefreshed = false;
+			resetState();
 			lastGameSlug = currentSlug;
-			maxCount = 30;
-			showCurseForgeOnly = false;
-			selectedModIds = [];
-			cachedSelectedMods.clear();
-			multiViewIndex = 0;
 		}
 
-		// Detect query changes to reset pagination
 		const queryHash = JSON.stringify(modQuery.current);
 		if (queryHash !== lastQueryHash) {
 			lastQueryHash = queryHash;
-			thunderstoreMods = [];
-			cfPage.items = [];
-			cfPage.offset = 0;
-			cfPage.hasMore = true;
-			serverPage.items = [];
-			serverPage.offset = 0;
-			serverPage.hasMore = true;
+			resetPagination();
 		}
 
 		refreshing = true;
-
 		try {
 			if (activeSource === 'thunderstore') {
-				thunderstoreMods = await api.thunderstore.query({ ...modQuery.current, maxCount });
-
-				// CurseForge mods: use Zephyr Server if enabled, otherwise Tauri backend
-				if (zephyrServerState.current.enabled) {
-					const serverAvailable = await ensureZephyrServerAvailable();
-					if (serverAvailable) {
-						cfPage.items = [];
-						if (serverPage.items.length === 0) {
-							serverPage.offset = 0;
-							await loadMoreFromServer();
-						}
-					} else {
-						serverPage.items = [];
-						if (cfPage.items.length === 0) {
-							cfPage.offset = 0;
-							await loadMoreCF();
-						}
-					}
-				} else if (curseForgeEnabled.current) {
-					serverPage.items = [];
-					if (cfPage.items.length === 0) {
-						cfPage.offset = 0;
-						await loadMoreCF();
-					}
-				} else {
-					cfPage.items = [];
-					serverPage.items = [];
-				}
-
-				// Community mods. Disabled for now
-				// try {
-				// 	const communityResults = await api.sources.searchSources({
-				// 		searchTerm: modQuery.current.searchTerm,
-				// 		categories: [],
-				// 		sortBy: 'downloads',
-				// 		sortOrder: 'descending',
-				// 		includeNsfw: modQuery.current.includeNsfw,
-				// 		includeDeprecated: modQuery.current.includeDeprecated,
-				// 		maxCount: 50,
-				// 		sources: ['github'],
-				// 		gameSlug: games.active?.slug
-				// 	});
-				// 	communityMods = communityResults.flatMap((r) =>
-				// 		r.mods.map((u) => unifiedToMod(u, 'zephyr'))
-				// 	);
-				// } catch {
-				// 	communityMods = [];
-				// }
-
-				syncThunderstoreBrowseMods();
+				await refreshThunderstore();
 			} else {
-				const sortMap: Record<string, 'downloads' | 'rating' | 'newest' | 'updated' | 'name'> = {
-					lastUpdated: 'updated',
-					newest: 'newest',
-					rating: 'rating',
-					downloads: 'downloads',
-					name: 'name'
-				};
-
-				const results = await api.sources.searchSources({
-					searchTerm: modQuery.current.searchTerm,
-					categories: modQuery.current.includeCategories,
-					sortBy: sortMap[modQuery.current.sortBy] ?? 'downloads',
-					sortOrder: modQuery.current.sortOrder === 'ascending' ? 'ascending' : 'descending',
-					includeNsfw: modQuery.current.includeNsfw,
-					includeDeprecated: modQuery.current.includeDeprecated,
-					maxCount,
-					sources: [activeSource],
-					gameSlug: games.active?.slug
-				});
-
-				thunderstoreMods = [];
-				mods = results.flatMap((r) => r.mods.map((u) => unifiedToMod(u)));
+				await refreshExternalSource();
 			}
-			totalLoadedForCurrentQuery = mods.length;
 		} catch {}
-
 		refreshing = false;
 		hasRefreshed = true;
 
@@ -436,22 +347,61 @@
 		}
 	}
 
-	const CF_PAGE_SIZE = 25;
+	async function refreshThunderstore() {
+		thunderstoreMods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+
+		if (zephyrServerState.current.enabled) {
+			const serverAvailable = await ensureZephyrServerAvailable();
+			if (serverAvailable) {
+				cfPage.items = [];
+				if (serverPage.items.length === 0) {
+					serverPage.offset = 0;
+					await loadMoreFromServer();
+				}
+			} else {
+				serverPage.items = [];
+				if (cfPage.items.length === 0) {
+					cfPage.offset = 0;
+					await loadMoreCF();
+				}
+			}
+		} else if (curseForgeEnabled.current) {
+			serverPage.items = [];
+			if (cfPage.items.length === 0) {
+				cfPage.offset = 0;
+				await loadMoreCF();
+			}
+		} else {
+			cfPage.items = [];
+			serverPage.items = [];
+		}
+
+		syncBrowseMods();
+	}
+
+	async function refreshExternalSource() {
+		const results = await api.sources.searchSources({
+			searchTerm: modQuery.current.searchTerm,
+			categories: modQuery.current.includeCategories,
+			sortBy: sourceSortMap[modQuery.current.sortBy] ?? 'downloads',
+			sortOrder: modQuery.current.sortOrder === 'ascending' ? 'ascending' : 'descending',
+			includeNsfw: modQuery.current.includeNsfw,
+			includeDeprecated: modQuery.current.includeDeprecated,
+			maxCount,
+			sources: [activeSource],
+			gameSlug: games.active?.slug
+		});
+		thunderstoreMods = [];
+		mods = results.flatMap((r) => r.mods.map((u) => unifiedToMod(u)));
+	}
 
 	async function loadMoreCF() {
 		cfPage.loading = true;
 		try {
-			const sortMap: Record<string, 'downloads' | 'rating' | 'newest' | 'updated' | 'name'> = {
-				lastUpdated: 'updated',
-				newest: 'newest',
-				rating: 'rating',
-				downloads: 'downloads',
-				name: 'name'
-			};
 			const cfResults = await api.sources.searchSources({
 				searchTerm: modQuery.current.searchTerm,
 				categories: [],
-				sortBy: sortMap[modQuery.current.sortBy] ?? 'downloads',
+				sortBy: sourceSortMap[modQuery.current.sortBy] ?? 'downloads',
 				sortOrder: modQuery.current.sortOrder === 'ascending' ? 'ascending' : 'descending',
 				includeNsfw: modQuery.current.includeNsfw,
 				includeDeprecated: modQuery.current.includeDeprecated,
@@ -464,53 +414,9 @@
 			cfPage.items = [...cfPage.items, ...newMods];
 			cfPage.offset += CF_PAGE_SIZE;
 			cfPage.hasMore = newMods.length >= CF_PAGE_SIZE;
-			syncThunderstoreBrowseMods();
+			syncBrowseMods();
 		} catch {}
 		cfPage.loading = false;
-	}
-
-	function isCurseForgeMod(mod: Mod): boolean {
-		return mod.uuid.startsWith('curseforge:');
-	}
-
-	function isServerMod(mod: Mod): boolean {
-		return mod.uuid.startsWith('zephyr-server:');
-	}
-
-	const SERVER_PAGE_SIZE = 50;
-
-	function curseForgeModToMod(cfMod: zephyrServer.CurseForgeMod): Mod {
-		return {
-			name: cfMod.name,
-			description: cleanDescription(cfMod.summary),
-			categories: cfMod.categories.map((c) => c.name),
-			version: cfMod.latestFiles[0]?.displayName ?? null,
-			author: cfMod.authors[0]?.name ?? null,
-			rating: cfMod.thumbsUpCount > 0 ? cfMod.thumbsUpCount : null,
-			downloads: cfMod.downloadCount,
-			fileSize: cfMod.latestFiles[0]?.fileLength ?? 0,
-			websiteUrl: cfMod.links.websiteUrl,
-			donateUrl: null,
-			dependencies:
-				cfMod.latestFiles[0]?.dependencies
-					?.filter((d) => d.relationType === 3)
-					.map((d) => String(d.modId)) ?? [],
-			isPinned: false,
-			isDeprecated: false,
-			isInstalled: undefined,
-			containsNsfw: false,
-			uuid: `zephyr-server:${cfMod.id}`,
-			versionUuid: String(cfMod.latestFiles[0]?.id ?? cfMod.id),
-			lastUpdated: cfMod.dateModified,
-			versions: cfMod.latestFiles.map((f) => ({
-				name: f.displayName,
-				uuid: String(f.id)
-			})),
-			type: 'remote' as any,
-			enabled: null,
-			icon: cfMod.logo?.thumbnailUrl ?? null,
-			configFile: null
-		};
 	}
 
 	async function loadMoreFromServer() {
@@ -520,9 +426,7 @@
 			const searchTerm = modQuery.current.searchTerm || '';
 			const cfGameId = zephyrServer.getCurseForgeGameId(games.active?.slug);
 			if (cfGameId === null) {
-				// Game not supported on CurseForge
 				serverPage.hasMore = false;
-				serverPage.loading = false;
 				return;
 			}
 			const page = Math.floor(serverPage.offset / SERVER_PAGE_SIZE);
@@ -531,7 +435,7 @@
 			serverPage.items = [...serverPage.items, ...newMods];
 			serverPage.offset += SERVER_PAGE_SIZE;
 			serverPage.hasMore = serverPage.offset < result.pagination.totalCount;
-			syncThunderstoreBrowseMods();
+			syncBrowseMods();
 		} catch (err) {
 			zephyrServerReachable = false;
 			console.warn('[ZephyrServer] Failed to load mods:', err);
@@ -540,7 +444,7 @@
 	}
 
 	async function installFromServer(mod: Mod, versionUuid?: string) {
-		if (!mod.uuid.startsWith('zephyr-server:')) return;
+		if (!isServerMod(mod)) return;
 		const modId = parseInt(mod.uuid.replace('zephyr-server:', ''), 10);
 		const fileId = parseInt(versionUuid ?? mod.versionUuid ?? mod.versions[0]?.uuid ?? '0', 10);
 		if (!modId || !fileId) return;
@@ -550,7 +454,7 @@
 			try {
 				gameDir = await api.profile.launch.getGameDir();
 			} catch {
-				// Could not resolve game dir. Let server use its default
+				// Fall back to the server's default install path
 			}
 			await zephyrServer.installMod(modId, fileId, gameDir);
 			pushToast({ type: 'info', name: mod.name, message: 'Mod installed via Zephyr Server' });
@@ -563,53 +467,12 @@
 		}
 	}
 
-	function cleanDescription(desc: string | null): string | null {
-		if (!desc) return null;
-		return desc
-			.replace(/<br\s*\/?>/gi, ' ')
-			.replace(/<[^>]*>/g, '')
-			.replace(/\[.*?\]/g, '')
-			.trim();
-	}
-
-	function unifiedToMod(u: UnifiedMod, source?: string): Mod {
-		const sourceId = source ?? u.sourceId ?? 'thunderstore';
-		return {
-			name: u.name,
-			description: cleanDescription(u.description),
-			categories: u.categories,
-			version: u.version,
-			author: u.author,
-			rating: u.rating ? Number(u.rating) : null,
-			downloads: u.downloads ? Number(u.downloads) : null,
-			fileSize: u.fileSize,
-			websiteUrl: u.websiteUrl,
-			donateUrl: null,
-			dependencies: u.dependencies,
-			isPinned: false,
-			isDeprecated: u.isDeprecated,
-			isInstalled: undefined,
-			containsNsfw: u.isNsfw,
-			uuid: `${sourceId}:${u.externalId}`,
-			versionUuid: u.versions[0]?.externalId ?? u.externalId,
-			lastUpdated: u.dateUpdated,
-			versions: u.versions.map((v) => ({ name: v.version, uuid: v.externalId })),
-			type: 'remote' as any,
-			enabled: null,
-			icon: u.iconUrl,
-			configFile: null
-		};
-	}
-
 	async function installLatest(mod: Mod) {
 		if (isServerMod(mod)) {
 			await installFromServer(mod);
 			return;
 		}
-		await install({
-			packageUuid: mod.uuid,
-			versionUuid: mod.versions[0].uuid
-		});
+		await install({ packageUuid: mod.uuid, versionUuid: mod.versions[0].uuid });
 	}
 
 	async function install(id: ModId) {
@@ -643,7 +506,7 @@
 	async function doBatchInstall() {
 		if (locked) return;
 		for (const uuid of selectedModIds) {
-			const mod = mods.find((m) => m.uuid === uuid);
+			const mod = mods.find((mm) => mm.uuid === uuid);
 			if (mod && !mod.isInstalled && mod.versions.length > 0) {
 				if (isServerMod(mod)) {
 					await installFromServer(mod);
@@ -660,18 +523,15 @@
 	}
 
 	function selectAll() {
-		selectedModIds = displayedMods.map((m) => m.uuid);
+		selectedModIds = displayedMods.map((mm) => mm.uuid);
 	}
 
 	let isAllSelected = $derived(
 		displayedMods.length > 0 && selectedModIds.length === displayedMods.length
 	);
+
 	function toggleSelectAll() {
-		if (isAllSelected) {
-			selectedModIds = [];
-		} else {
-			selectAll();
-		}
+		selectedModIds = isAllSelected ? [] : displayedMods.map((mm) => mm.uuid);
 	}
 
 	$effect(() => {
@@ -686,82 +546,56 @@
 
 	let locked = $derived(profiles.activeLocked);
 
-	// Context menu state
-	let ctxMenu: { items: ContextMenuItem[]; x: number; y: number } | null = $state(null);
+	let ctxMenu: { items: ReturnType<typeof buildBrowseContextMenu>; x: number; y: number } | null =
+		$state(null);
 
 	function openModContextMenu(e: MouseEvent, mod: Mod) {
-		const items: ContextMenuItem[] = [];
-		const isMulti = selectedModIds.length > 1 && selectedModIds.includes(mod.uuid);
-
-		if (isMulti) {
-			const selectedMods = selectedModIds
-				.map((id) => mods.find((m) => m.uuid === id))
-				.filter(Boolean) as Mod[];
-			const notInstalled = selectedMods.filter((m) => !m.isInstalled);
-			const installed = selectedMods.filter((m) => m.isInstalled);
-
-			if (notInstalled.length > 0 && !locked) {
-				items.push({
-					label: `${m.mods_contextMenu_install()} (${notInstalled.length})`,
-					icon: 'mdi:download',
-					onclick: () => doBatchInstall()
-				});
-			}
-
-			if (installed.length > 0) {
-				items.push({
-					label: `${m.mods_contextMenu_uninstall()} (${installed.length})`,
-					icon: 'mdi:delete',
-					danger: true,
-					disabled: locked,
-					onclick: async () => {
-						for (const im of installed) {
-							await api.profile.forceRemoveMods([im.uuid]);
-						}
-						await refresh();
-					}
-				});
-			}
-		} else {
-			if (!mod.isInstalled && !locked) {
-				items.push({
-					label: m.mods_contextMenu_install(),
-					icon: 'mdi:download',
-					onclick: () => installLatest(mod)
-				});
-			}
-
-			if (mod.isInstalled) {
-				items.push({
-					label: mod.enabled === false ? m.mods_contextMenu_enable() : m.mods_contextMenu_disable(),
-					icon: mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off',
-					disabled: locked,
-					onclick: () => toggleMod(mod)
-				});
-			}
-
-			if (mod.websiteUrl) {
-				items.push({
-					label: m.mods_contextMenu_openThunderstore(),
-					icon: 'mdi:open-in-new',
-					onclick: () => open(mod.websiteUrl!)
-				});
-			}
-
-			if (mod.isInstalled) {
-				items.push({ label: '', separator: true });
-				items.push({
-					label: m.mods_contextMenu_uninstall(),
-					icon: 'mdi:delete',
-					danger: true,
-					disabled: locked,
-					onclick: () => removeMod(mod)
-				});
-			}
-		}
-
-		ctxMenu = { items, x: e.clientX, y: e.clientY };
+		ctxMenu = {
+			items: buildBrowseContextMenu({
+				mod,
+				locked,
+				mods,
+				selectedModIds,
+				handlers: { installLatest, toggleMod, removeMod, doBatchInstall, refresh }
+			}),
+			x: e.clientX,
+			y: e.clientY
+		};
 	}
+
+	function loadMore() {
+		if (showCurseForgeOnly) {
+			if (shouldUseZephyrServer()) {
+				loadMoreFromServer();
+			} else {
+				loadMoreCF();
+			}
+			return;
+		}
+		maxCount += 30;
+		if (shouldUseZephyrServer() && serverPage.hasMore) {
+			loadMoreFromServer();
+		} else if (curseForgeEnabled.current && cfPage.hasMore) {
+			loadMoreCF();
+		} else if (zephyrServerState.current.enabled && cfPage.hasMore) {
+			loadMoreCF();
+		}
+	}
+
+	let externalHasMore = $derived(shouldUseZephyrServer() ? serverPage.hasMore : cfPage.hasMore);
+	let externalLoading = $derived(shouldUseZephyrServer() ? serverPage.loading : cfPage.loading);
+	let showCfToggle = $derived(
+		(curseForgeEnabled.current && cfPage.items.length > 0) ||
+			(zephyrServerState.current.enabled && serverPage.items.length > 0)
+	);
+	let showLoadMore = $derived(
+		showCurseForgeOnly
+			? externalHasMore
+			: displayedMods.length >= maxCount ||
+					(shouldUseZephyrServer()
+						? serverPage.hasMore
+						: curseForgeEnabled.current && cfPage.hasMore)
+	);
 </script>
 
 <div class="z-browse-page">
@@ -782,82 +616,19 @@
 		</Header>
 
 		<div class="z-browse-content" bind:this={browseContentEl}>
-			<div class="z-browse-filters">
-				<div class="z-browse-filters-row">
-					{#if !filtersExpanded}
-						<label class="z-master-checkbox-wrapper">
-							<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
-							<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
-						</label>
-					{/if}
-					<div class="flex-1"></div>
-					<ModListFilters
-						queryArgs={modQuery.current}
-						{sortOptions}
-						externalPanel
-						bind:expanded={filtersExpanded}
-						bind:viewMode={viewMode.current}
-					/>
-				</div>
-
-				{#if filtersExpanded}
-					<div class="z-browse-filter-panel">
-						<label class="z-filter-toggle">
-							<Checkbox bind:checked={modQuery.current.includeNsfw} />
-							<span>{i18nState.locale && m.modListFilters_options_NSFW()}</span>
-						</label>
-						<label class="z-filter-toggle">
-							<Checkbox bind:checked={modQuery.current.includeDeprecated} />
-							<span>{i18nState.locale && m.modListFilters_options_deprecated()}</span>
-						</label>
-						{#if (curseForgeEnabled.current && cfPage.items.length > 0) || (zephyrServerState.current.enabled && serverPage.items.length > 0)}
-							<label class="z-filter-toggle">
-								<Checkbox bind:checked={showCurseForgeOnly} />
-								<span>CurseForge</span>
-							</label>
-						{/if}
-
-						{#if games.categories.length > 0}
-							<div class="z-filter-categories">
-								{#each games.categories.slice(0, 20) as cat}
-									<button
-										class="z-category-chip"
-										class:active={modQuery.current.includeCategories.includes(cat.name)}
-										onclick={() => {
-											const idx = modQuery.current.includeCategories.indexOf(cat.name);
-											if (idx >= 0) {
-												modQuery.current.includeCategories =
-													modQuery.current.includeCategories.filter((c) => c !== cat.name);
-											} else {
-												modQuery.current.includeCategories = [
-													...modQuery.current.includeCategories,
-													cat.name
-												];
-											}
-										}}
-									>
-										{cat.name}
-									</button>
-								{/each}
-							</div>
-						{/if}
-					</div>
-
-					<div class="z-browse-select-row">
-						<label class="z-master-checkbox-wrapper">
-							<Checkbox checked={isAllSelected} onchange={toggleSelectAll} />
-							<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
-						</label>
-						<span class="z-browse-count">{displayedMods.length} mods</span>
-					</div>
-				{/if}
-			</div>
+			<BrowseFilterBar
+				bind:expanded={filtersExpanded}
+				bind:viewMode={viewMode.current}
+				{sortOptions}
+				{isAllSelected}
+				visibleCount={displayedMods.length}
+				bind:showCurseForgeOnly
+				showCurseForgeToggle={showCfToggle}
+				ontoggleSelectAll={toggleSelectAll}
+			/>
 
 			{#if locked}
-				<div class="z-locked-banner">
-					<Icon icon="mdi:lock" />
-					<span>{i18nState.locale && m.browse_lockedBanner()}</span>
-				</div>
+				<BrowseLockedBanner />
 			{/if}
 
 			<div class="z-browse-list" class:z-grid-layout={viewMode.current === 'grid'}>
@@ -866,17 +637,7 @@
 				{:else if cfPage.loading && showCurseForgeOnly && cfPage.items.length === 0}
 					<Loader />
 				{:else if displayedMods.length === 0 && hasRefreshed}
-					<div class="z-browse-empty">
-						<div class="z-browse-empty-icon">
-							<Icon icon="mdi:package-variant-remove" />
-						</div>
-						<p class="z-browse-empty-title">{i18nState.locale && m.browse_noMods()}</p>
-						<p class="z-browse-empty-desc">
-							{showCurseForgeOnly
-								? 'No CurseForge mods available for this game.'
-								: i18nState.locale && m.browse_noMods_desc()}
-						</p>
-					</div>
+					<BrowseEmptyState curseForgeOnly={showCurseForgeOnly} />
 				{:else}
 					{#each displayedMods as mod, index (mod.uuid)}
 						<ModCard
@@ -893,31 +654,11 @@
 						/>
 					{/each}
 
-					{#if showCurseForgeOnly}
-						{#if externalHasMore()}
-							<button
-								class="z-load-more"
-								onclick={loadMoreExternalMods}
-								disabled={externalLoading()}
-							>
-								{externalLoading() ? 'Loading...' : i18nState.locale && m.browse_loadMore()}
-							</button>
-						{/if}
-					{:else if displayedMods.length >= maxCount || (shouldUseZephyrServer() ? serverPage.hasMore : curseForgeEnabled.current && cfPage.hasMore)}
-						<button
-							class="z-load-more"
-							onclick={() => {
-								maxCount += 30;
-								if (shouldUseZephyrServer() && serverPage.hasMore) {
-									loadMoreFromServer();
-								} else if (curseForgeEnabled.current && cfPage.hasMore) {
-									loadMoreCF();
-								} else if (zephyrServerState.current.enabled && cfPage.hasMore) {
-									loadMoreCF();
-								}
-							}}
-						>
-							{i18nState.locale && m.browse_loadMore()}
+					{#if showLoadMore}
+						<button class="z-load-more" onclick={loadMore} disabled={showCurseForgeOnly && externalLoading}>
+							{showCurseForgeOnly && externalLoading
+								? 'Loading...'
+								: i18nState.locale && m.browse_loadMore()}
 						</button>
 					{/if}
 				{/if}
@@ -961,23 +702,12 @@
 			{:else if !multiViewMod.uuid.includes(':')}
 				<InstallModButton mod={multiViewMod} {install} {locked} />
 			{/if}
-			<div class="z-multi-nav">
-				<button
-					class="z-multi-nav-btn"
-					disabled={multiViewIndex <= 0}
-					onclick={() => multiViewIndex--}
-				>
-					<Icon icon="mdi:chevron-left" />
-				</button>
-				<span class="z-multi-nav-label">{multiViewIndex + 1} / {selectedMods.length}</span>
-				<button
-					class="z-multi-nav-btn"
-					disabled={multiViewIndex >= selectedMods.length - 1}
-					onclick={() => multiViewIndex++}
-				>
-					<Icon icon="mdi:chevron-right" />
-				</button>
-			</div>
+			<MultiViewNav
+				index={multiViewIndex}
+				total={selectedMods.length}
+				onprev={() => multiViewIndex--}
+				onnext={() => multiViewIndex++}
+			/>
 		</ModDetails>
 	{/if}
 
@@ -997,7 +727,6 @@
 	</BatchActionBar>
 </div>
 
-<!-- Remove mod confirmation dialog -->
 {#if removeDialog}
 	<RemoveModDialog
 		bind:open={removeDialog.open}
@@ -1018,12 +747,10 @@
 	/>
 {/if}
 
-<!-- Context menu -->
 {#if ctxMenu}
 	<ContextMenu items={ctxMenu.items} x={ctxMenu.x} y={ctxMenu.y} onclose={() => (ctxMenu = null)} />
 {/if}
 
-<!-- Toggle mod confirmation dialog -->
 {#if toggleDialog}
 	<ToggleModDialog
 		bind:open={toggleDialog.open}
@@ -1071,115 +798,6 @@
 		min-height: 0;
 	}
 
-	.z-browse-filters {
-		position: sticky;
-		top: 0;
-		z-index: 10;
-		padding-top: var(--space-sm);
-		padding-bottom: var(--space-xs);
-		background: var(--bg-base);
-		border-bottom: 1px solid var(--border-subtle);
-		margin-bottom: var(--space-sm);
-	}
-
-	.z-browse-filters-row {
-		display: flex;
-		align-items: center;
-		gap: var(--space-md);
-	}
-
-	.z-master-checkbox-wrapper {
-		display: flex;
-		align-items: center;
-		gap: var(--space-sm);
-		padding: var(--space-xs) var(--space-sm);
-		cursor: pointer;
-		color: var(--text-muted);
-		font-size: 13px;
-		font-weight: 500;
-		transition: color var(--transition-fast);
-	}
-
-	.z-master-checkbox-wrapper:hover {
-		color: var(--text-primary);
-	}
-
-	.z-master-checkbox-label {
-		user-select: none;
-	}
-
-	.z-browse-filter-panel {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-		gap: var(--space-sm);
-		padding: var(--space-md);
-		border-radius: var(--radius-md);
-		background: var(--bg-elevated);
-		border: 1px solid var(--border-subtle);
-		margin-top: var(--space-sm);
-	}
-
-	.z-filter-toggle {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		font-size: 12px;
-		color: var(--text-secondary);
-		cursor: pointer;
-		padding: 4px 10px;
-		border-radius: var(--radius-sm);
-		transition: background var(--transition-fast);
-	}
-
-	.z-filter-toggle:hover {
-		background: var(--bg-hover);
-	}
-
-	.z-filter-categories {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-		gap: 4px;
-		width: 100%;
-		padding-top: var(--space-sm);
-		border-top: 1px solid var(--border-subtle);
-	}
-
-	.z-category-chip {
-		padding: 3px 10px;
-		border-radius: var(--radius-full);
-		font-size: 11px;
-		border: 1px solid var(--border-subtle);
-		background: transparent;
-		color: var(--text-muted);
-		cursor: pointer;
-		transition: all var(--transition-fast);
-	}
-
-	.z-category-chip:hover {
-		border-color: var(--border-default);
-		color: var(--text-secondary);
-	}
-
-	.z-category-chip.active {
-		background: var(--bg-active);
-		border-color: var(--border-accent);
-		color: var(--text-accent);
-	}
-
-	.z-browse-select-row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding-top: var(--space-xs);
-	}
-
-	.z-browse-count {
-		font-size: 11px;
-		color: var(--text-muted);
-	}
-
 	.z-refresh-btn {
 		display: flex;
 		align-items: center;
@@ -1200,19 +818,6 @@
 		border-color: var(--border-accent);
 	}
 
-	.z-locked-banner {
-		display: flex;
-		align-items: center;
-		gap: var(--space-sm);
-		padding: var(--space-sm) var(--space-md);
-		border-radius: var(--radius-md);
-		background: rgba(255, 179, 71, 0.08);
-		border: 1px solid rgba(255, 179, 71, 0.2);
-		color: var(--warning);
-		font-size: 12px;
-		margin-bottom: var(--space-sm);
-	}
-
 	.z-browse-list {
 		display: flex;
 		flex-direction: column;
@@ -1227,7 +832,6 @@
 		gap: var(--space-md);
 	}
 
-	.z-browse-list.z-grid-layout .z-browse-empty,
 	.z-browse-list.z-grid-layout > :global(.z-loader) {
 		grid-column: 1 / -1;
 	}
@@ -1235,59 +839,6 @@
 	.z-browse-list > :global(.z-loader) {
 		flex: 1;
 		min-height: 50vh;
-	}
-
-	.z-browse-empty,
-	.z-browse-loading {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: var(--space-3xl);
-		gap: var(--space-sm);
-	}
-
-	.z-browse-empty-icon {
-		width: 64px;
-		height: 64px;
-		border-radius: var(--radius-xl);
-		background: var(--bg-elevated);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 28px;
-		color: var(--text-muted);
-	}
-
-	.z-browse-empty-title {
-		font-size: 15px;
-		font-weight: 600;
-		color: var(--text-secondary);
-	}
-	.z-browse-empty-desc {
-		font-size: 13px;
-		color: var(--text-muted);
-	}
-
-	.z-browse-loading {
-		flex-direction: row;
-		gap: var(--space-md);
-		color: var(--text-muted);
-		font-size: 13px;
-	}
-
-	.z-browse-spinner {
-		width: 18px;
-		height: 18px;
-		border: 2px solid var(--text-muted);
-		border-top-color: transparent;
-		border-radius: 50%;
-		animation: spin 0.6s linear infinite;
-	}
-
-	@keyframes spin {
-		to {
-			transform: rotate(360deg);
-		}
 	}
 
 	.z-load-more {
@@ -1313,48 +864,5 @@
 		opacity: 0.5;
 		cursor: not-allowed;
 		border-style: dotted;
-	}
-
-	.z-multi-nav {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: var(--space-sm);
-		padding: 8px 0;
-	}
-
-	.z-multi-nav-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 28px;
-		height: 28px;
-		border-radius: var(--radius-sm);
-		border: 1px solid var(--border-default);
-		background: var(--bg-elevated);
-		color: var(--text-secondary);
-		cursor: pointer;
-		transition: all var(--transition-fast);
-		font-size: 18px;
-	}
-
-	.z-multi-nav-btn:hover:not(:disabled) {
-		background: var(--bg-hover);
-		color: var(--text-primary);
-		border-color: var(--border-strong);
-	}
-
-	.z-multi-nav-btn:disabled {
-		opacity: 0.35;
-		cursor: not-allowed;
-	}
-
-	.z-multi-nav-label {
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--text-secondary);
-		min-width: 50px;
-		text-align: center;
-		font-family: var(--font-body);
 	}
 </style>

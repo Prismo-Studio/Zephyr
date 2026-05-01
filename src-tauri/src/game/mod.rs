@@ -25,10 +25,7 @@ pub mod platform;
 
 pub const CACHE_FILE_NAME: &str = "games.json";
 
-const GITHUB_API_URL: &str =
-    "https://api.github.com/repos/Prismo-Studio/Zephyr/commits?path=src-tauri/games.json&per_page=1";
-const GAMES_JSON_URL: &str =
-    "https://raw.githubusercontent.com/Prismo-Studio/Zephyr/refs/heads/dev/src-tauri/games.json";
+use crate::constants::{GAMES_JSON_COMMITS_URL, GAMES_JSON_RAW_URL};
 
 const BUNDLED_GAMES_JSON: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/games.json"));
 
@@ -81,7 +78,7 @@ pub async fn update_list_task(app: &AppHandle) -> Result<()> {
 
     let str = app
         .http()
-        .get(GAMES_JSON_URL)
+        .get(GAMES_JSON_RAW_URL)
         .send()
         .await?
         .error_for_status()?
@@ -123,7 +120,7 @@ async fn get_last_commit_date(app: &AppHandle) -> Result<DateTime<Utc>> {
 
     let response: Vec<ResponseEntry> = app
         .http()
-        .get(GITHUB_API_URL)
+        .get(GAMES_JSON_COMMITS_URL)
         .send()
         .await?
         .error_for_status()?

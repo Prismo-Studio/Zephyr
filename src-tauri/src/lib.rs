@@ -15,6 +15,7 @@ use gtk::prelude::GtkWindowExt;
 mod cli;
 mod config;
 mod console;
+mod constants;
 mod db;
 mod deep_link;
 mod game;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import { DOOM_SHAREWARE_EMBED_URL } from '$lib/constants/api.constants';
 
 	let open = $state(false);
 	let phase = $state<'idle' | 'glitch' | 'open'>('idle');
@@ -81,7 +82,7 @@
 				<button class="z-doom-close" onclick={close} type="button" aria-label="Close">×</button>
 			</div>
 			<iframe
-				src="https://archive.org/embed/DoomsharewareEpisode"
+				src={DOOM_SHAREWARE_EMBED_URL}
 				title="DOOM"
 				allow="autoplay; fullscreen; gamepad"
 				referrerpolicy="no-referrer"

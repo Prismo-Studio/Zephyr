@@ -20,6 +20,13 @@ export const DISCORD_AVATAR_URL = (discordId: string, avatar: string) =>
 
 export const ZEPHYR_SERVER_DEFAULT_URL = 'http://localhost:3000';
 
+export const ARCHIPELAGO_GG_BASE_URL = 'https://archipelago.gg';
+
+export const ARCHIPELAGO_TUTORIAL_URL = (gameName: string, path: string) =>
+	`${ARCHIPELAGO_GG_BASE_URL}/tutorial/${encodeURIComponent(gameName)}/${path}`;
+
+export const DOOM_SHAREWARE_EMBED_URL = 'https://archive.org/embed/DoomsharewareEpisode';
+
 export const CURSEFORGE_GAME_IDS: Record<string, number> = {
 	minecraft: 432,
 	'minecraft-bedrock': 78022,

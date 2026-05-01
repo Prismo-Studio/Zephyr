@@ -12,6 +12,7 @@
 	import StartInventoryEditor from './StartInventoryEditor.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { ARCHIPELAGO_TUTORIAL_URL } from '$lib/constants/api.constants';
 
 	// Hardcoded tutorial path overrides for older schemas that don't yet carry
 	// `meta.tutorial_path` (pre-refresh bundled schemas). Once the user runs
@@ -32,8 +33,8 @@
 		wargroove: 'wargroove/en'
 	};
 
-	function setupGuideUrl(id: string, name: string, path: string): string {
-		return `https://archipelago.gg/tutorial/${encodeURIComponent(name)}/${path}`;
+	function setupGuideUrl(_id: string, name: string, path: string): string {
+		return ARCHIPELAGO_TUTORIAL_URL(name, path);
 	}
 
 	function openSetupGuide(e: MouseEvent, id: string, name: string, path: string) {

@@ -16,6 +16,7 @@ use tracing::{trace, warn};
 use uuid::Uuid;
 
 use crate::{
+    constants::THUNDERSTORE_LEGACY_PROFILE_GET,
     profile::{
         export::{ProfileManifest, PROFILE_DATA_PREFIX},
         install::{InstallOptions, ModInstall},
@@ -84,9 +85,7 @@ fn read_base64(base64: &str) -> Result<ImportData> {
 pub async fn read_code(key: Uuid, app: &AppHandle) -> Result<ImportData> {
     let response = app
         .http()
-        .get(format!(
-            "https://thunderstore.io/api/experimental/legacyprofile/get/{key}/"
-        ))
+        .get(THUNDERSTORE_LEGACY_PROFILE_GET.replace("{key}", &key.to_string()))
         .send()
         .await?
         .error_for_status()

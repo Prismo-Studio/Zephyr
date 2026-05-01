@@ -6,7 +6,7 @@ use eyre::{eyre, Context};
 use tauri::{command, AppHandle};
 use tracing::warn;
 
-use crate::{state::ManagerExt, util::cmd::Result};
+use crate::{constants::CLOUDINARY_IMAGE_UPLOAD, state::ManagerExt, util::cmd::Result};
 
 /// Safely removes a local profile icon, validating that the path is under the profile directory.
 fn remove_local_icon(icon: &str, profile_path: &std::path::Path) {
@@ -104,7 +104,7 @@ pub async fn upload_profile_icon(
 
     let response = app
         .http()
-        .post("https://api.cloudinary.com/v1_1/djmsz47e5/image/upload")
+        .post(CLOUDINARY_IMAGE_UPLOAD)
         .multipart(form)
         .send()
         .await?

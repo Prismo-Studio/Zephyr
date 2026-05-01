@@ -1,33 +1,26 @@
 <script lang="ts">
-	import type { Mod, ModId } from '$lib/types';
+	import type { Mod } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import {
 		formatModName,
 		modIconSrc,
 		shortenNum,
 		shortenFileSize,
-		timeSince,
-		getMarkdown
+		timeSince
 	} from '$lib/util';
 	import Badge from '$lib/components/ui/Badge.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
 	import Tabs from '$lib/components/ui/Tabs.svelte';
-	import Spinner from '$lib/components/ui/Spinner.svelte';
-	import * as api from '$lib/api';
-	import type { Snippet } from 'svelte';
+	import CachedImage from '$lib/components/ui/CachedImage.svelte';
+	import { togglePin, isModPinned } from '$lib/state/misc.svelte';
+	import { loadModMarkdown } from '$lib/utils/loadModMarkdown';
+	import ModDependencyList from './ModDependencyList.svelte';
+	import ModVersionSelector from './ModVersionSelector.svelte';
+	import ModDetailsActions from './ModDetailsActions.svelte';
+	import ModExternalLinks from './ModExternalLinks.svelte';
+	import ModMarkdownView from './ModMarkdownView.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import { togglePin, isModPinned } from '$lib/state/misc.svelte';
-	import { pushToast } from '$lib/toast.svelte';
-	import Tooltip from '$lib/components/ui/Tooltip.svelte';
-	import Modal from '$lib/components/ui/Modal.svelte';
-	import CachedImage from '$lib/components/ui/CachedImage.svelte';
-	import Checkbox from '$lib/components/ui/Checkbox.svelte';
-	import { clickOutside } from '$lib/utils/clickOutside';
-	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
-	import { open } from '@tauri-apps/plugin-shell';
-	import { PersistedState } from 'runed';
-	import ModDependencyList from './ModDependencyList.svelte';
+	import type { Snippet } from 'svelte';
 
 	type Props = {
 		mod: Mod;
@@ -56,77 +49,13 @@
 	}: Props = $props();
 
 	let activeTab = $state('readme');
-	let versionDropdownOpen = $state(false);
-	let changingVersion = $state(false);
-	let confirmVersionChange: {
-		open: boolean;
-		targetVersion: { name: string; uuid: string } | null;
-	} = $state({ open: false, targetVersion: null });
-	let dontAskAgain = $state(false);
-	const skipVersionConfirm = new PersistedState('skipVersionConfirm', false);
-
-	async function selectVersion(version: { name: string; uuid: string }) {
-		if (changingVersion) return;
-		if (version.uuid === mod.versionUuid) {
-			versionDropdownOpen = false;
-			return;
-		}
-
-		versionDropdownOpen = false;
-
-		if (skipVersionConfirm.current) {
-			await doChangeVersion(version);
-		} else {
-			confirmVersionChange = { open: true, targetVersion: version };
-			dontAskAgain = false;
-		}
-	}
-
-	async function doChangeVersion(version: { name: string; uuid: string }) {
-		if (changingVersion) return;
-		changingVersion = true;
-		confirmVersionChange = { open: false, targetVersion: null };
-		const packageUuid = mod.uuid;
-		const modName = formatModName(mod.name);
-		try {
-			if (mod.isInstalled && !isExternalMod(mod)) {
-				await api.profile.forceRemoveMods([packageUuid]);
-			}
-			await api.profile.install.mod({
-				packageUuid,
-				versionUuid: version.uuid
-			});
-			pushToast({
-				type: 'info',
-				message:
-					(i18nState.locale &&
-						m.modDetails_versionChange_success({
-							mod: modName,
-							version: version.name
-						})) ||
-					`${modName} changed to ${version.name}`
-			});
-		} catch (err) {
-			pushToast({
-				type: 'error',
-				name: 'Version change failed',
-				message: err instanceof Error ? err.message : 'Unknown error'
-			});
-		} finally {
-			changingVersion = false;
-		}
-	}
-
-	function confirmAndChange() {
-		if (!confirmVersionChange.targetVersion || changingVersion) return;
-		if (dontAskAgain) skipVersionConfirm.current = true;
-		doChangeVersion(confirmVersionChange.targetVersion);
-	}
 	let markdown = $state('');
 	let loadingMarkdown = $state(false);
-	let copied = $state(false);
-	let copyTimeoutId: number | null = null;
 	let bodyEl: HTMLDivElement;
+
+	function isExternal(): boolean {
+		return mod.uuid.includes(':');
+	}
 
 	function scrollBodyToTop() {
 		if (bodyEl) bodyEl.scrollTop = 0;
@@ -142,76 +71,23 @@
 		}
 	]);
 
-	function isExternalMod(m: Mod): boolean {
-		return m.uuid.includes(':');
-	}
-
-	async function loadMarkdown(type: 'readme' | 'changelog') {
+	async function loadFor(type: 'readme' | 'changelog') {
 		loadingMarkdown = true;
-		try {
-			if (mod.uuid.startsWith('curseforge:')) {
-				const cfId = mod.uuid.replace('curseforge:', '');
-				if (type === 'readme') {
-					const desc = await api.sources.getSourceModDescription('curseforge', cfId);
-					markdown = desc ?? mod.description ?? '';
-				} else if (type === 'changelog' && mod.versions.length > 0) {
-					const fileId = mod.versions[0].uuid;
-					const cl = await api.sources.getSourceModChangelog('curseforge', cfId, fileId);
-					markdown = cl ?? '';
-				} else {
-					markdown = '';
-				}
-			} else if (mod.uuid.startsWith('zephyr:')) {
-				const slug = mod.uuid.replace('zephyr:', '');
-				if (type === 'readme') {
-					const desc = await api.sources.getSourceModDescription('github', slug);
-					markdown = desc ?? mod.description ?? '';
-				} else {
-					const cl = await api.sources.getSourceModChangelog('github', slug, '');
-					markdown = cl ?? '';
-				}
-			} else if (isExternalMod(mod)) {
-				markdown = type === 'readme' ? (mod.description ?? '') : '';
-			} else {
-				const result = await getMarkdown(mod, type);
-				markdown = result ?? '';
-			}
-		} catch {
-			markdown = '';
-		}
+		markdown = await loadModMarkdown(mod, type);
 		loadingMarkdown = false;
 	}
-
-	function stripHtml(html: string): string {
-		const doc = new DOMParser().parseFromString(html, 'text/html');
-		return doc.body.textContent ?? '';
-	}
-
-	const copyContent = async () => {
-		try {
-			await writeText(stripHtml(markdown));
-			copied = true;
-			if (copyTimeoutId !== null) clearTimeout(copyTimeoutId);
-			copyTimeoutId = window.setTimeout(() => {
-				copied = false;
-			}, 2000);
-		} catch (err) {
-			console.error('Failed to copy:', err);
-		}
-	};
 
 	$effect(() => {
 		if (mod) {
 			scrollBodyToTop();
 			if (activeTab !== 'dependencies') {
-				loadMarkdown(activeTab as 'readme' | 'changelog');
+				loadFor(activeTab as 'readme' | 'changelog');
 			}
 		}
 	});
 </script>
 
 <div class="z-mod-details">
-	<!-- Header -->
 	<div class="z-details-header">
 		<button class="z-details-close" onclick={onclose}>
 			<Icon icon="mdi:close" />
@@ -222,7 +98,7 @@
 			<div class="z-details-title">
 				<div class="z-details-name-row">
 					<h2>{formatModName(mod.name)}</h2>
-					{#if mod.isInstalled && !isExternalMod(mod)}
+					{#if mod.isInstalled && !isExternal()}
 						<button
 							class="z-pin-toggle"
 							class:pinned={isModPinned(mod.uuid)}
@@ -234,48 +110,16 @@
 					{/if}
 				</div>
 				{#if mod.author}
-					<span class="z-details-author">{i18nState.locale && m.modDetails_by()} {mod.author}</span>
+					<span class="z-details-author">
+						{i18nState.locale && m.modDetails_by()} {mod.author}
+					</span>
 				{/if}
 			</div>
 		</div>
 
-		<!-- Badges -->
 		<div class="z-details-badges">
-			{#if mod.version && mod.versions.length > 1 && mod.isInstalled && showVersionSelector && !isExternalMod(mod)}
-				<div class="z-version-selector" use:clickOutside={() => (versionDropdownOpen = false)}>
-					<button
-						class="z-version-btn"
-						disabled={changingVersion}
-						onclick={() => (versionDropdownOpen = !versionDropdownOpen)}
-					>
-						<Icon icon="mdi:tag" />
-						<span>{mod.version}</span>
-						<Icon
-							icon="mdi:chevron-down"
-							class="z-version-chevron {versionDropdownOpen ? 'open' : ''}"
-						/>
-					</button>
-
-					{#if versionDropdownOpen}
-						<div class="z-version-dropdown">
-							{#each mod.versions as version}
-								<button
-									class="z-version-option"
-									class:active={version.name === mod.version}
-									onclick={() => selectVersion(version)}
-								>
-									{#if version.name === mod.version}
-										<Icon icon="mdi:check" />
-									{/if}
-									<span>{version.name}</span>
-									{#if version.name === mod.versions[0].name}
-										<Badge variant="accent">{i18nState.locale && m.modDetails_latest()}</Badge>
-									{/if}
-								</button>
-							{/each}
-						</div>
-					{/if}
-				</div>
+			{#if mod.version && mod.versions.length > 1 && mod.isInstalled && showVersionSelector && !isExternal()}
+				<ModVersionSelector {mod} />
 			{:else if mod.version}
 				<Badge variant="accent">{mod.version}</Badge>
 			{/if}
@@ -287,7 +131,6 @@
 			{/if}
 		</div>
 
-		<!-- Stats -->
 		<div class="z-details-stats">
 			{#if mod.downloads != null}
 				<div class="z-stat">
@@ -313,7 +156,6 @@
 			{/if}
 		</div>
 
-		<!-- Categories -->
 		{#if mod.categories && mod.categories.length > 0}
 			<div class="z-details-categories">
 				{#each mod.categories as category}
@@ -329,98 +171,15 @@
 			</div>
 		{/if}
 
-		<!-- Action buttons -->
-		{#if mod.isInstalled && !isExternalMod(mod)}
-			<div class="z-details-actions">
-				<Tooltip
-					text={i18nState.locale &&
-						(mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable())}
-					position="bottom"
-					delay={300}
-				>
-					<button class="z-action-btn" class:disabled={locked} disabled={locked} onclick={ontoggle}>
-						<Icon icon={mod.enabled === false ? 'mdi:eye' : 'mdi:eye-off'} />
-						<span class="z-action-label"
-							>{i18nState.locale &&
-								(mod.enabled === false ? m.modDetails_enable() : m.modDetails_disable())}</span
-						>
-					</button>
-				</Tooltip>
-
-				<Tooltip text={i18nState.locale && m.modDetails_openFolder()} position="bottom" delay={300}>
-					<button class="z-action-btn" onclick={() => api.profile.openModDir(mod.uuid)}>
-						<Icon icon="mdi:folder-open" />
-						<span class="z-action-label">{i18nState.locale && m.modDetails_openFolder()}</span>
-					</button>
-				</Tooltip>
-
-				<Tooltip text={i18nState.locale && m.modDetails_uninstall()} position="bottom" delay={300}>
-					<button
-						class="z-action-btn danger"
-						class:disabled={locked}
-						disabled={locked}
-						onclick={onremove}
-					>
-						<Icon icon="mdi:delete" />
-						<span class="z-action-label">{i18nState.locale && m.modDetails_uninstall()}</span>
-					</button>
-				</Tooltip>
-			</div>
+		{#if mod.isInstalled && !isExternal()}
+			<ModDetailsActions {mod} {locked} {ontoggle} {onremove} />
 		{/if}
 
-		<!-- Install button slot -->
 		{#if children}{@render children()}{/if}
 
-		{#if mod.uuid.startsWith('zephyr:') && mod.websiteUrl}
-			<div class="z-external-buttons">
-				<a
-					href={mod.websiteUrl}
-					target="_blank"
-					rel="noopener"
-					class="z-external-link-btn"
-					onclick={(e) => {
-						e.preventDefault();
-						e.stopPropagation();
-						open(mod.websiteUrl!);
-					}}
-				>
-					<Icon icon="mdi:download" />
-					<span>Download</span>
-				</a>
-				<a
-					href={mod.websiteUrl.replace(/\/releases\/download\/.*$/, '')}
-					target="_blank"
-					rel="noopener"
-					class="z-external-link-btn z-external-link-secondary"
-					onclick={(e) => {
-						e.preventDefault();
-						e.stopPropagation();
-						open(mod.websiteUrl!.replace(/\/releases\/download\/.*$/, ''));
-					}}
-				>
-					<Icon icon="mdi:open-in-new" />
-					<span>GitHub</span>
-				</a>
-			</div>
-		{:else if isExternalMod(mod) && mod.websiteUrl}
-			<a
-				href={mod.websiteUrl}
-				target="_blank"
-				rel="noopener"
-				class="z-external-link-btn"
-				onclick={(e) => {
-					e.preventDefault();
-					e.stopPropagation();
-					open(mod.websiteUrl!);
-				}}
-			>
-				<Icon icon="mdi:open-in-new" />
-				<span>{i18nState.locale && m.mods_contextMenu_openThunderstore()}</span>
-			</a>
-		{/if}
+		<ModExternalLinks {mod} />
 	</div>
 
-	<!-- Tabs + Content -->
 	<div class="z-details-content">
 		<div class="z-details-tabs-row">
 			<Tabs
@@ -428,15 +187,9 @@
 				bind:active={activeTab}
 				onchange={(id) => {
 					scrollBodyToTop();
-					if (id !== 'dependencies') loadMarkdown(id as 'readme' | 'changelog');
+					if (id !== 'dependencies') loadFor(id as 'readme' | 'changelog');
 				}}
 			/>
-			{#if markdown && !loadingMarkdown && activeTab !== 'dependencies'}
-				<button class="z-copy-btn" class:copied onclick={copyContent} title="Copy content">
-					<Icon icon={copied ? 'mdi:check' : 'mdi:content-copy'} />
-					<span class="z-copy-text">{copied ? 'Copied!' : 'Copy'}</span>
-				</button>
-			{/if}
 		</div>
 
 		<div class="z-details-body" bind:this={bodyEl}>
@@ -449,58 +202,12 @@
 						return found ?? false;
 					}}
 				/>
-			{:else if loadingMarkdown}
-				<div class="z-details-loading">
-					<Spinner size={20} />
-				</div>
-			{:else if markdown}
-				<div class="markdown">
-					{@html markdown}
-				</div>
 			{:else}
-				<p class="z-details-empty">{i18nState.locale && m.modDetails_noContent()}</p>
+				<ModMarkdownView {markdown} loading={loadingMarkdown} />
 			{/if}
 		</div>
 	</div>
 </div>
-
-{#if confirmVersionChange.open && confirmVersionChange.targetVersion}
-	<Modal
-		bind:open={confirmVersionChange.open}
-		title={i18nState.locale && m.modDetails_versionChange_title()}
-		onclose={() => (confirmVersionChange = { open: false, targetVersion: null })}
-	>
-		{#snippet children()}
-			<div class="z-version-confirm-body">
-				<p>
-					{i18nState.locale &&
-						m.modDetails_versionChange_desc({
-							mod: formatModName(mod.name),
-							from: mod.version ?? '',
-							to: confirmVersionChange.targetVersion?.name ?? ''
-						})}
-				</p>
-				<label class="z-version-dont-ask">
-					<Checkbox bind:checked={dontAskAgain} />
-					<span>{i18nState.locale && m.modDetails_versionChange_dontAsk()}</span>
-				</label>
-			</div>
-		{/snippet}
-
-		{#snippet actions()}
-			<Button
-				variant="ghost"
-				onclick={() => (confirmVersionChange = { open: false, targetVersion: null })}
-			>
-				{i18nState.locale && m.modDetails_versionChange_cancel()}
-			</Button>
-			<Button variant="primary" onclick={confirmAndChange}>
-				{#snippet icon()}<Icon icon="mdi:swap-vertical" />{/snippet}
-				{i18nState.locale && m.modDetails_versionChange_confirm()}
-			</Button>
-		{/snippet}
-	</Modal>
-{/if}
 
 <style>
 	.z-mod-details {
@@ -677,60 +384,6 @@
 		border-color: var(--accent-400, var(--text-accent));
 	}
 
-	.z-details-actions {
-		display: flex;
-		gap: 6px;
-	}
-
-	.z-action-btn {
-		flex: 1;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
-		padding: var(--space-sm) var(--space-md);
-		border-radius: var(--radius-md);
-		border: 1px solid var(--border-subtle);
-		background: var(--bg-elevated);
-		color: var(--text-secondary);
-		font-family: var(--font-body);
-		font-size: 12px;
-		font-weight: 500;
-		cursor: pointer;
-		transition: all var(--transition-fast);
-		white-space: nowrap;
-		overflow: hidden;
-		min-width: 36px;
-	}
-
-	.z-action-label {
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	@container (max-width: 380px) {
-		.z-action-label {
-			display: none;
-		}
-	}
-
-	.z-action-btn:hover:not(:disabled) {
-		background: var(--bg-hover);
-		border-color: var(--border-default);
-		color: var(--text-primary);
-	}
-
-	.z-action-btn.danger:hover:not(:disabled) {
-		background: rgba(255, 92, 92, 0.1);
-		border-color: rgba(255, 92, 92, 0.3);
-		color: var(--error);
-	}
-
-	.z-action-btn:disabled {
-		opacity: 0.4;
-		cursor: not-allowed;
-	}
-
 	.z-details-content {
 		flex: 1;
 		display: flex;
@@ -747,196 +400,9 @@
 		gap: var(--space-md);
 	}
 
-	.z-copy-btn {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		padding: 6px 12px;
-		border-radius: var(--radius-sm);
-		border: 1px solid var(--border-subtle);
-		background: var(--bg-elevated);
-		color: var(--text-secondary);
-		font-family: var(--font-body);
-		font-size: 12px;
-		font-weight: 500;
-		cursor: pointer;
-		transition: all var(--transition-fast);
-		white-space: nowrap;
-	}
-
-	.z-copy-btn:hover:not(.copied) {
-		background: var(--bg-hover);
-		border-color: var(--border-default);
-		color: var(--text-primary);
-	}
-
-	.z-copy-btn.copied {
-		background: rgba(0, 212, 170, 0.1);
-		border-color: rgba(0, 212, 170, 0.3);
-		color: var(--success);
-	}
-
-	.z-copy-text {
-		display: none;
-	}
-
-	@media (min-width: 420px) {
-		.z-copy-text {
-			display: inline;
-		}
-	}
-
 	.z-details-body {
 		flex: 1;
 		overflow-y: auto;
 		padding-top: var(--space-sm);
-	}
-
-	.z-details-loading {
-		display: flex;
-		justify-content: center;
-		padding: var(--space-2xl);
-		color: var(--text-muted);
-	}
-
-	.z-details-empty {
-		text-align: center;
-		color: var(--text-muted);
-		font-size: 13px;
-		padding: var(--space-2xl);
-	}
-
-	.z-external-link-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: var(--space-sm);
-		padding: var(--space-sm) var(--space-lg);
-		border-radius: var(--radius-md);
-		background: var(--bg-active);
-		color: var(--text-accent);
-		font-size: 13px;
-		font-weight: 600;
-		text-decoration: none;
-		cursor: pointer;
-		transition: all var(--transition-fast);
-		border: 1px solid var(--border-accent);
-	}
-
-	.z-external-link-btn:hover {
-		background: var(--bg-active);
-	}
-
-	.z-external-buttons {
-		display: flex;
-		gap: 6px;
-	}
-
-	.z-external-buttons .z-external-link-btn {
-		flex: 1;
-	}
-
-	.z-external-link-secondary {
-		background: var(--bg-overlay);
-		color: var(--text-secondary);
-		border-color: var(--border-subtle);
-	}
-
-	.z-external-link-secondary:hover {
-		background: var(--bg-active);
-		color: var(--text-primary);
-	}
-
-	/* Version selector */
-	.z-version-selector {
-		position: relative;
-	}
-
-	.z-version-btn {
-		display: flex;
-		align-items: center;
-		gap: 4px;
-		padding: 3px 8px;
-		border-radius: var(--radius-full);
-		border: 1px solid var(--accent-400);
-		background: var(--bg-active);
-		color: var(--accent-400);
-		font-size: 11px;
-		font-weight: 600;
-		cursor: pointer;
-		transition: all var(--transition-fast);
-	}
-
-	.z-version-btn:hover {
-		background: var(--shadow-glow);
-	}
-
-	:global(.z-version-chevron) {
-		font-size: 14px;
-		transition: transform 150ms ease;
-	}
-
-	:global(.z-version-chevron.open) {
-		transform: rotate(180deg);
-	}
-
-	.z-version-dropdown {
-		position: absolute;
-		top: 100%;
-		left: 0;
-		margin-top: 4px;
-		background: var(--bg-elevated);
-		border: 1px solid var(--border-default);
-		border-radius: var(--radius-md);
-		padding: var(--space-xs);
-		min-width: 160px;
-		max-height: 240px;
-		overflow-y: auto;
-		z-index: var(--z-dropdown);
-		box-shadow: var(--shadow-lg);
-	}
-
-	.z-version-option {
-		display: flex;
-		align-items: center;
-		gap: var(--space-sm);
-		width: 100%;
-		padding: var(--space-xs) var(--space-sm);
-		border-radius: var(--radius-sm);
-		border: none;
-		background: transparent;
-		color: var(--text-secondary);
-		font-size: 12px;
-		cursor: pointer;
-		transition: all var(--transition-fast);
-		font-family: var(--font-body);
-	}
-
-	.z-version-option:hover {
-		background: var(--bg-hover);
-		color: var(--text-primary);
-	}
-
-	.z-version-option.active {
-		color: var(--text-accent);
-	}
-
-	/* Version change confirm */
-	.z-version-confirm-body {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-md);
-		font-size: 13px;
-		color: var(--text-secondary);
-		line-height: 1.5;
-	}
-
-	.z-version-dont-ask {
-		display: flex;
-		align-items: center;
-		gap: var(--space-sm);
-		font-size: 12px;
-		color: var(--text-muted);
-		cursor: pointer;
 	}
 </style>

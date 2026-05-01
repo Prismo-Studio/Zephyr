@@ -14,7 +14,10 @@ use super::{
     validation, yaml_gen,
     yaml_gen::LintIssue,
 };
-use crate::util::cmd::Result;
+use crate::{
+    constants::{ARCHIPELAGO_GG_BASE, ARCHIPELAGO_GG_UPLOADS},
+    util::cmd::Result,
+};
 
 async fn blocking<F, T>(f: F) -> Result<T>
 where
@@ -205,7 +208,7 @@ async fn archipelago_gg_host_inner(path: String) -> eyre::Result<ArchipelagoGgRo
     let form = reqwest::multipart::Form::new().part("file", part);
 
     let resp = client
-        .post("https://archipelago.gg/uploads")
+        .post(ARCHIPELAGO_GG_UPLOADS)
         .multipart(form)
         .send()
         .await
@@ -232,7 +235,7 @@ async fn archipelago_gg_host_inner(path: String) -> eyre::Result<ArchipelagoGgRo
         .to_string();
 
     let resp = client
-        .get(format!("https://archipelago.gg/new_room/{seed_id}"))
+        .get(format!("{ARCHIPELAGO_GG_BASE}/new_room/{seed_id}"))
         .send()
         .await
         .context("new_room request")?;
@@ -259,7 +262,7 @@ async fn archipelago_gg_host_inner(path: String) -> eyre::Result<ArchipelagoGgRo
     let (port, tracker_url) = fetch_room_details(&client, &room_id).await;
 
     Ok(ArchipelagoGgRoom {
-        room_url: format!("https://archipelago.gg/room/{room_id}"),
+        room_url: format!("{ARCHIPELAGO_GG_BASE}/room/{room_id}"),
         tracker_url,
         host: "archipelago.gg".to_string(),
         port: port.unwrap_or(0),
@@ -279,7 +282,7 @@ async fn fetch_room_details(
             tokio::time::sleep(std::time::Duration::from_millis(500)).await;
         }
         let Ok(resp) = client
-            .get(format!("https://archipelago.gg/room/{room_id}"))
+            .get(format!("{ARCHIPELAGO_GG_BASE}/room/{room_id}"))
             .send()
             .await
         else {
@@ -312,7 +315,7 @@ fn extract_tracker_url_from_html(html: &str) -> Option<String> {
                 .take_while(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | '/'))
                 .collect();
             if tail.starts_with("tracker/") && tail.len() > "tracker/".len() + 4 {
-                return Some(format!("https://archipelago.gg/{tail}"));
+                return Some(format!("{ARCHIPELAGO_GG_BASE}/{tail}"));
             }
         }
     }
@@ -321,7 +324,7 @@ fn extract_tracker_url_from_html(html: &str) -> Option<String> {
 
 async fn fetch_port_via_api(client: &reqwest::Client, room_id: &str) -> Option<u16> {
     let resp = client
-        .get(format!("https://archipelago.gg/api/room_status/{room_id}"))
+        .get(format!("{ARCHIPELAGO_GG_BASE}/api/room_status/{room_id}"))
         .send()
         .await
         .ok()?;
@@ -385,7 +388,7 @@ pub async fn archipelago_gg_room_info(room_id: String) -> Result<ArchipelagoGgRo
 
     let mut port = fetch_port_via_api(&client, &room_id).await;
     let html = if let Ok(resp) = client
-        .get(format!("https://archipelago.gg/room/{room_id}"))
+        .get(format!("{ARCHIPELAGO_GG_BASE}/room/{room_id}"))
         .send()
         .await
     {

@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 use tracing::{info, warn};
 
-use crate::util::process::CommandExt as _;
+use crate::{constants::PUBLIC_IP_PROVIDERS, util::process::CommandExt as _};
 
 /// Persistent install location for the Archipelago runtime in packaged builds.
 /// On Linux that's `~/.local/share/<bundle-id>/randomizer/archipelago-runtime`;
@@ -777,19 +777,13 @@ pub fn ping_local_port(port: u16) -> bool {
 pub fn detect_public_ip() -> Option<String> {
     use std::time::Duration;
 
-    let endpoints = [
-        "https://api.ipify.org",
-        "https://ifconfig.me/ip",
-        "https://icanhazip.com",
-    ];
-
     let client = reqwest::blocking::Client::builder()
         .timeout(Duration::from_secs(3))
         .build()
         .ok()?;
 
-    for url in endpoints {
-        if let Ok(resp) = client.get(url).send() {
+    for url in PUBLIC_IP_PROVIDERS {
+        if let Ok(resp) = client.get(*url).send() {
             if resp.status().is_success() {
                 if let Ok(text) = resp.text() {
                     let ip = text.trim().to_string();
