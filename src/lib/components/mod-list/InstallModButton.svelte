@@ -225,6 +225,12 @@
 
 	.z-version-trigger:hover {
 		background: var(--accent-500);
+		color: var(--text-inverse);
+	}
+
+	.z-version-trigger.installed:hover {
+		background: var(--bg-hover);
+		color: var(--text-primary);
 	}
 
 	.z-version-list {
