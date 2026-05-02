@@ -50,11 +50,41 @@ impl ManagedGame {
             warn!("failed to copy required files to game directory: {:#}", err);
         }
 
+        #[cfg(target_os = "linux")]
+        self.prepare_proton_doorstop(&game_dir);
+
         let (launch_mode, command) = self.launch_command(&game_dir, prefs)?;
         info!("launching {} with command {:?}", self.game.slug, command);
         do_launch(command, app, launch_mode)?;
 
         Ok(())
+    }
+
+    #[cfg(target_os = "linux")]
+    fn prepare_proton_doorstop(&self, game_dir: &Path) {
+        use crate::game::mod_loader::ModLoaderKind;
+
+        if !matches!(self.game.mod_loader.kind, ModLoaderKind::BepInEx { .. }) {
+            return;
+        }
+
+        match linux::is_proton(game_dir) {
+            Ok(true) => {}
+            Ok(false) => return,
+            Err(err) => {
+                warn!("failed to determine if game uses proton: {:#}", err);
+                return;
+            }
+        }
+
+        if let Err(err) =
+            linux::patch_doorstop_config_for_proton(game_dir, &self.active_profile().path)
+        {
+            warn!(
+                "failed to patch doorstop_config.ini for Proton: {:#}",
+                err
+            );
+        }
     }
 
     fn launch_command(&self, game_dir: &Path, prefs: &Prefs) -> Result<(LaunchMode, Command)> {
