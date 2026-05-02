@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
 
 use crate::{
+    constants::ZEPHYR_CLOUD_DEFAULT,
     profile::{import::ImportOptions, install::InstallOptions},
     state::ManagerExt,
 };
@@ -17,7 +18,7 @@ pub mod socket;
 
 static API_URL: LazyLock<Cow<'static, str>> = LazyLock::new(|| match env::var("ZEPHYR_SYNC_URL") {
     Ok(var) => var.into(),
-    Err(_) => "https://api.zephyr.prismo-studios.dev".into(),
+    Err(_) => ZEPHYR_CLOUD_DEFAULT.into(),
 });
 
 async fn request(method: Method, path: impl Display, app: &AppHandle) -> reqwest::RequestBuilder {

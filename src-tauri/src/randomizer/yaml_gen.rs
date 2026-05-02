@@ -8,7 +8,7 @@ use super::types::{GameSchema, OptionDef, OptionType, RandomizerConfig, Value};
 const COMMON_OPTION_IDS: &[&str] = &["progression_balancing", "accessibility"];
 
 /// Per-game common keys (PerGameCommonOptions) that live in the game section but are
-/// not part of the game's own schema — always emitted when non-empty.
+/// not part of the game's own schema. Always emitted when non-empty.
 pub const EXTRA_GAME_SECTION_KEYS: &[&str] = &["start_inventory", "start_inventory_from_pool"];
 
 fn value_to_yaml(value: &Value) -> YamlValue {

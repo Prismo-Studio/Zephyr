@@ -5,7 +5,7 @@
 	import { randomizerStore } from './randomizer.store.svelte';
 	import { runtimeInstallStore } from './runtimeInstall.svelte';
 	import { refreshApworldSchemas } from './api';
-	import { pushToast } from '$lib/toast';
+	import { pushToast } from '$lib/toast.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 

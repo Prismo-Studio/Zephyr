@@ -357,7 +357,7 @@ export class ClientSession {
 			return;
 		}
 
-		// Command path — must be `!` prefix for Client.
+		// Command path. Must be `!` prefix for Client.
 		if (parsed.prefix !== '!') {
 			this.log.appendSystem(m.console_msg_wrongPrefixClient({ name: parsed.name }), 'warn');
 			return;
@@ -388,7 +388,7 @@ export class ClientSession {
 			return;
 		}
 
-		// Unknown ! commands: forward raw as Say — AP's own parser handles
+		// Unknown ! commands: forward raw as Say. AP's own parser handles
 		// them server-side (same path as Text Client does).
 		if (this.status !== 'connected') {
 			this.log.appendSystem(m.console_msg_notConnectedCmd(), 'warn');

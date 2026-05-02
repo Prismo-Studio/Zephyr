@@ -10,6 +10,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { PersistedState } from 'runed';
+	import { matchesShortcut, isEditableTarget } from '$lib/state/shortcuts.svelte';
 
 	let rightTab: 'yaml' | 'server' = $state('server');
 	let serverPanelRef: RandomizerServerPanel | undefined = $state();
@@ -106,14 +107,10 @@
 	}
 
 	function onGlobalKeydown(e: KeyboardEvent) {
-		// Ctrl+B (or Cmd+B on macOS): toggle the multiplayer/right pane.
-		// Ignore when typing in editable fields so it doesn't conflict with text editing.
-		if (!(e.ctrlKey || e.metaKey) || e.shiftKey || e.altKey) return;
-		if (e.key.toLowerCase() !== 'b') return;
-		const target = e.target as HTMLElement | null;
-		const tag = target?.tagName;
-		const editable = tag === 'INPUT' || tag === 'TEXTAREA' || !!target?.isContentEditable;
-		if (editable) return;
+		// Toggle the multiplayer/right pane. Ignore when typing in editable
+		// fields so it doesn't conflict with text editing.
+		if (isEditableTarget(e.target)) return;
+		if (!matchesShortcut(e, 'toggleMultiplayer')) return;
 		e.preventDefault();
 		rightPaneCollapsed.current = !rightPaneCollapsed.current;
 	}

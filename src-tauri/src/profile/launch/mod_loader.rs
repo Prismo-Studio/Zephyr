@@ -57,7 +57,7 @@ fn add_bepisloader_args(command: &mut Command, profile_dir: &Path) -> Result<()>
     Ok(())
 }
 
-fn bepinex_preloader_path(profile_dir: &Path) -> Result<PathBuf> {
+pub(super) fn bepinex_preloader_path(profile_dir: &Path) -> Result<PathBuf> {
     let mut core_dir = profile_dir.to_path_buf();
 
     core_dir.push("BepInEx");

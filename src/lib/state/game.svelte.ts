@@ -1,6 +1,6 @@
 import type { FiltersResponse, Game, GameInfo, PackageCategory } from '$lib/types';
 import * as api from '$lib/api';
-import { pushToast } from '$lib/toast';
+import { pushToast } from '$lib/toast.svelte';
 import { fetch } from '@tauri-apps/plugin-http';
 import { THUNDERSTORE_CATEGORY_URL } from '$lib/constants/api.constants';
 

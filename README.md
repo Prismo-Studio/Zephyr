@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">Zephyr</h1>
-<p align="center"><strong>A fast, modern mod manager for all your games</strong></p>
+<p align="center"><strong>A modern mod manager for all your games.</strong></p>
 <p align="center">by <a href="https://prismo-studios.dev">Prismo Studios</a></p>
 
 <p align="center">

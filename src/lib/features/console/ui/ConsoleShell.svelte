@@ -7,6 +7,7 @@
 	import CompanionToggle from './CompanionToggle.svelte';
 	import ServerView from '../server/ServerView.svelte';
 	import ClientView from '../client/ClientView.svelte';
+	import { matchesShortcut } from '$lib/state/shortcuts.svelte';
 
 	type Mode = 'server' | 'client';
 	const STORAGE_KEY = 'zephyr-console-mode';
@@ -36,15 +37,13 @@
 	}
 
 	function onKey(e: KeyboardEvent) {
-		if (!e.ctrlKey || !e.shiftKey) return;
-		const k = e.key.toLowerCase();
-		if (k === 's') {
+		if (matchesShortcut(e, 'consoleServer')) {
 			e.preventDefault();
 			switchMode('server');
-		} else if (k === 'c') {
+		} else if (matchesShortcut(e, 'consoleClient')) {
 			e.preventDefault();
 			switchMode('client');
-		} else if (k === 't') {
+		} else if (matchesShortcut(e, 'consoleToggle')) {
 			e.preventDefault();
 			switchMode(mode === 'server' ? 'client' : 'server');
 		}
@@ -76,7 +75,7 @@
 	</header>
 
 	<!-- Keep both views mounted at all times so switching tabs doesn't unmount
-	     the inactive session — which would fire onDestroy → dispose() and
+	     the inactive session. Which would fire onDestroy → dispose() and
 	     drop its live WebSocket. We just hide the background view with CSS;
 	     its log keeps accumulating in the background and bridge-log events
 	     stay subscribed. -->

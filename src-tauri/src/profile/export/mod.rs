@@ -15,6 +15,7 @@ use zip::{write::SimpleFileOptions, ZipWriter};
 
 use super::{install::ModInstall, Profile, Result};
 use crate::{
+    constants::THUNDERSTORE_LEGACY_PROFILE_CREATE,
     game::Game,
     state::ManagerExt,
     thunderstore::{LegacyProfileCreateResponse, PackageIdent, Thunderstore, VersionIdent},
@@ -144,11 +145,9 @@ async fn export_code(app: &AppHandle) -> Result<Uuid> {
         base64
     };
 
-    const URL: &str = "https://thunderstore.io/api/experimental/legacyprofile/create/";
-
     let response = app
         .http()
-        .post(URL)
+        .post(THUNDERSTORE_LEGACY_PROFILE_CREATE)
         .header("Content-Type", "application/octet-stream")
         .body(base64)
         .send()

@@ -69,10 +69,6 @@ impl InstallOptions {
         self.cancel_behavior(CancelBehavior::Individual)
     }
 
-    pub fn prevent_cancel(self) -> Self {
-        self.cancel_behavior(CancelBehavior::Prevent)
-    }
-
     pub fn cancel_behavior(mut self, behavior: CancelBehavior) -> Self {
         self.cancel_behavior = behavior;
         self

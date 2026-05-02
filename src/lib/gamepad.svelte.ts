@@ -40,7 +40,7 @@ const BTN = {
 
 type Direction = 'up' | 'down' | 'left' | 'right';
 
-// Plain variables for the rAF poll loop (not $state — rAF reads must be synchronous)
+// Plain variables for the rAF poll loop (not $state. RAF reads must be synchronous)
 let _enabled = false;
 let _connectedGamepad: string | null = null;
 let _gamepadIndex: number | null = null;
@@ -318,7 +318,7 @@ function navigate(direction: Direction) {
 			if (multiSelectHeld) chainSelect(cards[nextIdx] as HTMLElement);
 			return;
 		}
-		// nextIdx < 0 means we're at the top — fall through to spatial navigation
+		// nextIdx < 0 means we're at the top. Fall through to spatial navigation
 	}
 
 	// Fallback: spatial navigation
@@ -610,7 +610,7 @@ function pollGamepads(timestamp: number) {
 		return;
 	}
 
-	// Virtual keyboard mode — handle inputs directly
+	// Virtual keyboard mode. Handle inputs directly
 	if (keyboardOpen) {
 		for (let i = 0; i < gp.buttons.length; i++) {
 			const pressed = isButtonPressed(gp.buttons[i]);
@@ -644,7 +644,7 @@ function pollGamepads(timestamp: number) {
 		return;
 	}
 
-	// Process buttons. Skip RT — it's handled separately below because Linux
+	// Process buttons. Skip RT. It's handled separately below because Linux
 	// Xbox analog triggers don't reliably set `pressed`.
 	for (let i = 0; i < gp.buttons.length; i++) {
 		if (i === BTN.RT) continue;
@@ -669,10 +669,10 @@ function pollGamepads(timestamp: number) {
 	// Track multi-select button held state for chain multi-select
 	multiSelectHeld = gp.buttons[BTN.Y] ? isButtonPressed(gp.buttons[BTN.Y]) : false;
 
-	// Left stick navigation (axes 0/1) — primary navigation method.
+	// Left stick navigation (axes 0/1). Primary navigation method.
 	// Uses hysteresis: must exceed DEADZONE to trigger/repeat, must drop below
 	// STICK_RELEASE to re-arm. The in-between range is a "settling" zone where
-	// nothing happens — important on Linux where Xbox sticks drift ~0.3–0.45.
+	// nothing happens. Important on Linux where Xbox sticks drift ~0.3–0.45.
 	const lx = gp.axes[0] ?? 0;
 	const ly = gp.axes[1] ?? 0;
 	const mag = Math.max(Math.abs(lx), Math.abs(ly));
@@ -720,7 +720,7 @@ function pollGamepads(timestamp: number) {
 		stickLowFrames = 0;
 	}
 
-	// D-pad axes fallback — some controllers report D-pad as axes 6/7 instead
+	// D-pad axes fallback. Some controllers report D-pad as axes 6/7 instead
 	// of buttons 12–15 (notably Xbox on Linux). Tracked independently from the
 	// left stick so the edge gate doesn't reset every other frame.
 	let dpadDir: Direction | null = null;

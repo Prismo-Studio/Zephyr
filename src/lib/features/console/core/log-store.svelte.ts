@@ -12,7 +12,7 @@ function nextId(): string {
  *  and Client views via distinct instances (see server-session / client-session). */
 export class LogStore {
 	entries: LogEntry[] = $state([]);
-	/** Active source filter — when set, only entries with that source are visible. */
+	/** Active source filter. When set, only entries with that source are visible. */
 	sourceFilter: string | null = $state(null);
 	/** Active free-text search. */
 	search = $state('');

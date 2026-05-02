@@ -109,7 +109,7 @@ pub struct GameMeta {
     /// archipelago.gg). False for user-installed `.apworld` files whose
     /// tutorials/setup docs are only served by a local webhost. Defaults to
     /// `true` for backwards compatibility with schemas generated before this
-    /// field existed — all pre-existing bundled schemas are official.
+    /// field existed. All pre-existing bundled schemas are official.
     #[serde(default = "default_true")]
     pub is_official: bool,
     /// Author-defined English tutorial link (e.g. "setup/en",

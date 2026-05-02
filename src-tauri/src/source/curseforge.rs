@@ -64,7 +64,7 @@ impl CurseForgeSource {
         if !resp.status().is_success() {
             let status = resp.status();
             let body = resp.text().await.unwrap_or_default();
-            return Err(eyre!("CurseForge API {} — {}", status, body));
+            return Err(eyre!("CurseForge API {}. {}", status, body));
         }
 
         resp.json::<T>()
@@ -95,7 +95,7 @@ impl CurseForgeSource {
         if !resp.status().is_success() {
             let status = resp.status();
             let body = resp.text().await.unwrap_or_default();
-            return Err(eyre!("CurseForge API {} — {}", status, body));
+            return Err(eyre!("CurseForge API {}. {}", status, body));
         }
 
         resp.json::<T>()

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { toasts, clearToast, type Toast } from '$lib/toast';
+	import { toasts, clearToast, type Toast } from '$lib/toast.svelte';
 	import Icon from '@iconify/svelte';
 
 	function toastIcon(type: Toast['type']): string {
@@ -8,7 +8,7 @@
 </script>
 
 <div class="z-toast-container">
-	{#each $toasts as toast, i (toast.id)}
+	{#each toasts() as toast, i (toast.id)}
 		<div class="z-toast z-toast-{toast.type}" role="alert">
 			<Icon icon={toastIcon(toast.type)} class="z-toast-icon" />
 			<div class="z-toast-content">

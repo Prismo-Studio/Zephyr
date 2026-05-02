@@ -2,7 +2,7 @@
 //!
 //! This bridges the gap between the original Thunderstore-specific code and
 //! Zephyr's multi-source abstraction. The existing query/fetch/cache infrastructure
-//! continues to work unchanged — this adapter just provides a unified interface.
+//! continues to work unchanged. This adapter just provides a unified interface.
 
 use eyre::{eyre, Result};
 use tauri::AppHandle;

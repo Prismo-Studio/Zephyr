@@ -5,6 +5,7 @@ use tauri::{command, AppHandle, Manager, Window};
 
 use super::Prefs;
 use crate::{
+    constants::CLOUDINARY_AUTO_UPLOAD,
     state::ManagerExt,
     util::{cmd::Result, fs::open_path, window::WindowExt},
 };
@@ -86,7 +87,7 @@ pub async fn upload_custom_background(file_path: String, app: AppHandle) -> Resu
 
     let response = app
         .http()
-        .post("https://api.cloudinary.com/v1_1/djmsz47e5/auto/upload")
+        .post(CLOUDINARY_AUTO_UPLOAD)
         .multipart(form)
         .send()
         .await?

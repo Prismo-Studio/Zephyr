@@ -149,7 +149,7 @@ pub fn file_name_owned(path: impl AsRef<Path>) -> String {
 
 /// Replace every char that isn't ASCII alphanumeric, `_`, `-`, or listed in
 /// `extra_allowed` with `_`. Does not trim, strip path separators, or apply
-/// any empty-string fallback — callers handle that when needed.
+/// any empty-string fallback. Callers handle that when needed.
 pub fn sanitize_filename_chars(name: &str, extra_allowed: &[char]) -> String {
     name.chars()
         .map(|c| {
@@ -243,7 +243,7 @@ pub fn open_path(path: impl AsRef<Path>) -> Result<()> {
         // When running from an AppImage, Tauri's AppRun sets LD_LIBRARY_PATH
         // (and related vars) to the bundled libs. xdg-open and its children
         // (gio, gvfs-open, dbus-launch, ...) inherit these and crash against
-        // the host's system libs — usually silently. Strip them so the spawned
+        // the host's system libs. Usually silently. Strip them so the spawned
         // process uses the host system's environment.
         if std::env::var_os("APPIMAGE").is_some() || std::env::var_os("APPDIR").is_some() {
             for var in [

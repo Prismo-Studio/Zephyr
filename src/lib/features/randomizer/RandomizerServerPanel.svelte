@@ -4,22 +4,38 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+
 	import PythonRuntimeSection from './PythonRuntimeSection.svelte';
 	import PlayerSlotsSection from './PlayerSlotsSection.svelte';
 	import SeedsSection from './SeedsSection.svelte';
 	import HostSection from './HostSection.svelte';
-	import { pushToast, pushInfoToast } from '$lib/toast';
-	import { open as openDialog } from '@tauri-apps/plugin-dialog';
+	import RandomizerQuickActions from './RandomizerQuickActions.svelte';
+	import CollapsibleBlock from './CollapsibleBlock.svelte';
+
+	import { pushToast } from '$lib/toast.svelte';
 	import * as api from './api';
-	import { randomizerStore } from './randomizer.store.svelte';
 	import type { GenerateOutcome, PlayerFile, PythonStatus, SeedFile, ServerStatus } from './types';
-	import { onDestroy, onMount, tick } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
 	export function refresh() {
 		refreshAll();
 	}
+
+	const PRESET_PORTS = [
+		{ p: 38281, label: 'AP default' },
+		{ p: 443, label: 'HTTPS' },
+		{ p: 80, label: 'HTTP' },
+		{ p: 25565, label: 'Minecraft' },
+		{ p: 7777, label: 'Games' }
+	];
+
+	const SERVER_POLL_MS = 5000;
+	const PORT_POLL_MS = 2000;
+	const PORT_POLL_MAX_ATTEMPTS = 30;
+
+	type ConnTarget = 'local' | 'lan' | 'public';
 
 	let openBlocks = $state<Record<string, boolean>>({
 		python: true,
@@ -31,9 +47,7 @@
 		openBlocks[key] = !openBlocks[key];
 	}
 
-	type ConnTarget = 'local' | 'lan' | 'public';
 	let connTarget: ConnTarget = $state('local');
-
 	let python: PythonStatus | null = $state(null);
 	let players: PlayerFile[] = $state([]);
 	let server: ServerStatus | null = $state(null);
@@ -43,11 +57,13 @@
 	let generating = $state(false);
 	let starting = $state(false);
 	let initialLoading = $state(true);
+	let schemasRefreshing = $state(false);
 
 	let hostMode: 'local' | 'remote' = $state('remote');
 	let remoteRoom: api.ArchipelagoGgRoom | null = $state(null);
 	let uploading = $state(false);
 	let remoteStarting = $state(false);
+	let remoteLog: string[] = $state([]);
 
 	let portStr = $state('38281');
 	const port = $derived.by(() => {
@@ -56,172 +72,9 @@
 	});
 	const portValid = $derived(port >= 1 && port <= 65535);
 	let password = $state('');
+
 	let pollHandle: ReturnType<typeof setInterval> | null = null;
-
-	const PRESET_PORTS = [
-		{ p: 38281, label: 'AP default' },
-		{ p: 443, label: 'HTTPS' },
-		{ p: 80, label: 'HTTP' },
-		{ p: 25565, label: 'Minecraft' },
-		{ p: 7777, label: 'Games' }
-	];
-
-	let quickActionsOpen = $state(false);
-	let quickActionsEl: HTMLDivElement | null = $state(null);
-	let quickActionsBusy = $state(false);
-	let schemasRefreshing = $state(false);
-	let qaMenuPos = $state<{ top: number; right: number } | null>(null);
-
-	function updateQaMenuPos() {
-		if (!quickActionsEl) return;
-		const r = quickActionsEl.getBoundingClientRect();
-		qaMenuPos = {
-			top: r.bottom + 6,
-			right: window.innerWidth - r.right
-		};
-	}
-
-	function closeQuickActions(e: MouseEvent) {
-		if (!quickActionsOpen) return;
-		const target = e.target as Node;
-		const inWrapper = quickActionsEl?.contains(target);
-		const menu = document.getElementById('rdz-qa-menu');
-		const inMenu = menu?.contains(target);
-		if (!inWrapper && !inMenu) {
-			quickActionsOpen = false;
-		}
-	}
-
-	$effect(() => {
-		if (quickActionsOpen) {
-			updateQaMenuPos();
-			document.addEventListener('mousedown', closeQuickActions, true);
-			window.addEventListener('resize', updateQaMenuPos);
-			window.addEventListener('scroll', updateQaMenuPos, true);
-		} else {
-			qaMenuPos = null;
-			document.removeEventListener('mousedown', closeQuickActions, true);
-			window.removeEventListener('resize', updateQaMenuPos);
-			window.removeEventListener('scroll', updateQaMenuPos, true);
-		}
-		return () => {
-			document.removeEventListener('mousedown', closeQuickActions, true);
-			window.removeEventListener('resize', updateQaMenuPos);
-			window.removeEventListener('scroll', updateQaMenuPos, true);
-		};
-	});
-
-	async function quickPatchGame() {
-		quickActionsOpen = false;
-		const picked = await openDialog({
-			filters: [
-				{
-					name: 'Archipelago patch',
-					extensions: [
-						'apemerald',
-						'apfirered',
-						'apleafgreen',
-						'appkmnrb',
-						'appkmnye',
-						'apcrystal',
-						'apgold',
-						'apsilver',
-						'apsms',
-						'apmw',
-						'apsmz3',
-						'aplttp',
-						'apz3',
-						'apdkc3',
-						'apkdl3',
-						'apeb',
-						'apsoe',
-						'apzl',
-						'aptloz',
-						'aptloz2',
-						'aptunic',
-						'apladx',
-						'aposrs',
-						'apterraria'
-					]
-				},
-				{ name: 'All files', extensions: ['*'] }
-			],
-			multiple: false
-		});
-		if (!picked || Array.isArray(picked)) return;
-		quickActionsBusy = true;
-		try {
-			try {
-				await api.openConsoleWindow();
-				await new Promise((r) => setTimeout(r, 500));
-			} catch {
-				// noop
-			}
-			await api.applyPatch(picked);
-			const fileName = picked.split(/[\\/]/).pop() ?? picked;
-			pushInfoToast({ message: m.randomizer_patches_launching({ name: fileName }) });
-		} catch (err) {
-			pushToast({
-				type: 'error',
-				name: m.randomizer_patches_applyFailed(),
-				message: (err as any)?.message ?? String(err)
-			});
-		} finally {
-			quickActionsBusy = false;
-		}
-	}
-
-	async function quickOpenConsole() {
-		quickActionsOpen = false;
-		quickActionsBusy = true;
-		try {
-			await api.openConsoleWindow();
-		} catch (err) {
-			pushToast({
-				type: 'error',
-				name: m.randomizer_quickActions_launchFailed(),
-				message: (err as any)?.message ?? String(err)
-			});
-		} finally {
-			quickActionsBusy = false;
-		}
-	}
-
-	async function quickRefreshSchemas() {
-		quickActionsOpen = false;
-		quickActionsBusy = true;
-		schemasRefreshing = true;
-		await tick();
-		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null))));
-		const shownAt = performance.now();
-		try {
-			const res = await api.refreshApworldSchemas();
-			if (res.success) {
-				pushInfoToast({ message: m.randomizer_customApworlds_refreshed() });
-				await randomizerStore.loadCatalog();
-				await randomizerStore.reloadCurrentSchema();
-			} else {
-				pushToast({
-					type: 'error',
-					name: m.randomizer_customApworlds_refreshFailed(),
-					message: (res.stderr || res.stdout || '').slice(0, 300)
-				});
-			}
-		} catch (err) {
-			pushToast({
-				type: 'error',
-				name: m.randomizer_customApworlds_refreshFailed(),
-				message: (err as any)?.message ?? String(err)
-			});
-		} finally {
-			const elapsed = performance.now() - shownAt;
-			if (elapsed < 400) {
-				await new Promise((r) => setTimeout(r, 400 - elapsed));
-			}
-			quickActionsBusy = false;
-			schemasRefreshing = false;
-		}
-	}
+	let portPollHandle: ReturnType<typeof setInterval> | null = null;
 
 	async function refreshAll() {
 		try {
@@ -243,7 +96,7 @@
 		refreshAll();
 		pollHandle = setInterval(() => {
 			api.serverStatus().then((s) => (server = s));
-		}, 5000);
+		}, SERVER_POLL_MS);
 	});
 
 	onDestroy(() => {
@@ -285,10 +138,6 @@
 		await generate();
 	}
 
-	let remoteLog: string[] = $state([]);
-
-	let portPollHandle: ReturnType<typeof setInterval> | null = null;
-
 	function stopPortPoll() {
 		if (portPollHandle) {
 			clearInterval(portPollHandle);
@@ -299,7 +148,6 @@
 	function startPortPoll(roomId: string) {
 		stopPortPoll();
 		let attempts = 0;
-		const maxAttempts = 30;
 		portPollHandle = setInterval(async () => {
 			attempts += 1;
 			try {
@@ -321,12 +169,12 @@
 					}
 				}
 			} catch {
-				// noop
+				// archipelago.gg may not have provisioned the room yet — keep polling
 			}
-			if (attempts >= maxAttempts) {
+			if (attempts >= PORT_POLL_MAX_ATTEMPTS) {
 				stopPortPoll();
 			}
-		}, 2000);
+		}, PORT_POLL_MS);
 	}
 
 	async function uploadAndStartRemote() {
@@ -382,12 +230,7 @@
 	}
 
 	let renameModal = $state<{ open: boolean; type: 'player' | 'seed'; path: string; value: string }>(
-		{
-			open: false,
-			type: 'player',
-			path: '',
-			value: ''
-		}
+		{ open: false, type: 'player', path: '', value: '' }
 	);
 
 	function openRenamePlayer(p: PlayerFile) {
@@ -435,10 +278,6 @@
 
 	let confirmClearSeeds = $state(false);
 
-	async function clearAllSeeds() {
-		confirmClearSeeds = true;
-	}
-
 	async function doConfirmClearSeeds() {
 		confirmClearSeeds = false;
 		await api.clearSeeds();
@@ -465,76 +304,10 @@
 			<span>{i18nState.locale && m.randomizer_quickActions_refreshSchemas()}…</span>
 		</div>
 	{/if}
+
 	<header class="rdz-server-header">
 		<h2>{i18nState.locale && m.randomizer_serverTitle()}</h2>
-		<div class="rdz-qa-wrapper" bind:this={quickActionsEl}>
-			<Button
-				size="sm"
-				variant="ghost"
-				onclick={() => (quickActionsOpen = !quickActionsOpen)}
-				disabled={quickActionsBusy}
-			>
-				{#snippet icon()}<Icon icon="mdi:menu" />{/snippet}
-				{i18nState.locale && m.randomizer_quickActions_title()}
-			</Button>
-			{#if quickActionsOpen && qaMenuPos}
-				<div
-					id="rdz-qa-menu"
-					class="rdz-qa-menu"
-					role="menu"
-					style="top: {qaMenuPos.top}px; right: {qaMenuPos.right}px;"
-				>
-					<button
-						class="rdz-qa-item"
-						role="menuitem"
-						onclick={quickPatchGame}
-						disabled={quickActionsBusy}
-					>
-						<Icon icon="mdi:puzzle" />
-						<div class="rdz-qa-item-body">
-							<span class="rdz-qa-item-title"
-								>{i18nState.locale && m.randomizer_quickActions_patchGame()}</span
-							>
-							<span class="rdz-qa-item-desc"
-								>{i18nState.locale && m.randomizer_quickActions_patchGameDesc()}</span
-							>
-						</div>
-					</button>
-					<button
-						class="rdz-qa-item"
-						role="menuitem"
-						onclick={quickOpenConsole}
-						disabled={quickActionsBusy}
-					>
-						<Icon icon="mdi:console-line" />
-						<div class="rdz-qa-item-body">
-							<span class="rdz-qa-item-title"
-								>{i18nState.locale && m.randomizer_quickActions_console()}</span
-							>
-							<span class="rdz-qa-item-desc"
-								>{i18nState.locale && m.randomizer_quickActions_consoleDesc()}</span
-							>
-						</div>
-					</button>
-					<button
-						class="rdz-qa-item"
-						role="menuitem"
-						onclick={quickRefreshSchemas}
-						disabled={quickActionsBusy}
-					>
-						<Icon icon="mdi:database-refresh" />
-						<div class="rdz-qa-item-body">
-							<span class="rdz-qa-item-title"
-								>{i18nState.locale && m.randomizer_quickActions_refreshSchemas()}</span
-							>
-							<span class="rdz-qa-item-desc"
-								>{i18nState.locale && m.randomizer_quickActions_refreshSchemasDesc()}</span
-							>
-						</div>
-					</button>
-				</div>
-			{/if}
-		</div>
+		<RandomizerQuickActions onschemaRefreshing={(active) => (schemasRefreshing = active)} />
 		<Button size="sm" variant="ghost" onclick={refreshAll}>
 			{#snippet icon()}<Icon icon="mdi:refresh" />{/snippet}
 			{i18nState.locale && m.randomizer_refresh()}
@@ -547,37 +320,24 @@
 		delay={300}
 		block
 	>
-		<div class="rdz-block" class:rdz-block-disabled={hostMode === 'remote'}>
-			<button class="rdz-block-header" onclick={() => toggleBlock('python')}>
-				<span class="rdz-block-name">{i18nState.locale && m.randomizer_pythonRuntime()}</span>
-				{#if hostMode === 'remote'}
-					<span class="rdz-block-badge">
-						<Icon icon="mdi:laptop" />
-						{i18nState.locale && m.randomizer_localOnly()}
-					</span>
-				{/if}
-				<Icon
-					icon="mdi:chevron-down"
-					class={openBlocks.python ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'}
-				/>
-			</button>
-			{#if openBlocks.python}
-				<PythonRuntimeSection {python} />
-			{/if}
-		</div>
+		<CollapsibleBlock
+			title={(i18nState.locale && m.randomizer_pythonRuntime()) ?? ''}
+			open={openBlocks.python}
+			disabled={hostMode === 'remote'}
+			disabledLabel={(i18nState.locale && m.randomizer_localOnly()) ?? ''}
+			ontoggle={() => toggleBlock('python')}
+		>
+			<PythonRuntimeSection {python} />
+		</CollapsibleBlock>
 	</Tooltip>
 
-	<div class="rdz-block">
-		<div class="rdz-block-row">
-			<button class="rdz-block-header" onclick={() => toggleBlock('players')}>
-				<span class="rdz-block-name">
-					{i18nState.locale && m.randomizer_playerSlots()} <small>({players.length})</small>
-				</span>
-				<Icon
-					icon="mdi:chevron-down"
-					class={openBlocks.players ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'}
-				/>
-			</button>
+	<CollapsibleBlock
+		title={(i18nState.locale && m.randomizer_playerSlots()) ?? ''}
+		open={openBlocks.players}
+		count={players.length}
+		ontoggle={() => toggleBlock('players')}
+	>
+		{#snippet extra()}
 			<Tooltip text={i18nState.locale && m.randomizer_openFolder()} position="top" delay={200}>
 				<button
 					class="rdz-icon-btn"
@@ -587,28 +347,23 @@
 					<Icon icon="mdi:folder-open" />
 				</button>
 			</Tooltip>
-		</div>
-		{#if openBlocks.players}
-			<PlayerSlotsSection
-				{players}
-				{initialLoading}
-				onRenamePlayer={openRenamePlayer}
-				onDeletePlayer={deletePlayer}
-			/>
-		{/if}
-	</div>
+		{/snippet}
 
-	<div class="rdz-block">
-		<div class="rdz-block-row">
-			<button class="rdz-block-header" onclick={() => toggleBlock('seeds')}>
-				<span class="rdz-block-name">
-					{i18nState.locale && m.randomizer_seeds()} <small>({seeds.length})</small>
-				</span>
-				<Icon
-					icon="mdi:chevron-down"
-					class={openBlocks.seeds ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'}
-				/>
-			</button>
+		<PlayerSlotsSection
+			{players}
+			{initialLoading}
+			onRenamePlayer={openRenamePlayer}
+			onDeletePlayer={deletePlayer}
+		/>
+	</CollapsibleBlock>
+
+	<CollapsibleBlock
+		title={(i18nState.locale && m.randomizer_seeds()) ?? ''}
+		open={openBlocks.seeds}
+		count={seeds.length}
+		ontoggle={() => toggleBlock('seeds')}
+	>
+		{#snippet extra()}
 			{#if seeds.length > 0}
 				<Tooltip
 					text={i18nState.locale && m.randomizer_deleteAllSeeds()}
@@ -617,70 +372,62 @@
 				>
 					<button
 						class="rdz-icon-btn rdz-icon-danger rdz-clear-all"
-						onclick={clearAllSeeds}
+						onclick={() => (confirmClearSeeds = true)}
 						aria-label="Clear all seeds"
 					>
 						<Icon icon="mdi:delete-sweep" />
 					</button>
 				</Tooltip>
 			{/if}
-		</div>
+		{/snippet}
 
-		{#if openBlocks.seeds}
-			<SeedsSection
-				{seeds}
-				{players}
-				{python}
-				{server}
-				bind:selectedSeed
-				{generating}
-				{generateLog}
-				{initialLoading}
-				{copiedKey}
-				onGenerate={generate}
-				onRenameSeed={openRenameSeed}
-				onDeleteSeed={deleteOneSeed}
-				onCopyText={copyText}
-			/>
-		{/if}
-	</div>
+		<SeedsSection
+			{seeds}
+			{players}
+			{python}
+			{server}
+			bind:selectedSeed
+			{generating}
+			{generateLog}
+			{initialLoading}
+			{copiedKey}
+			onGenerate={generate}
+			onRenameSeed={openRenameSeed}
+			onDeleteSeed={deleteOneSeed}
+			onCopyText={copyText}
+		/>
+	</CollapsibleBlock>
 
-	<div class="rdz-block">
-		<button class="rdz-block-header" onclick={() => toggleBlock('host')}>
-			<span class="rdz-block-name">{i18nState.locale && m.randomizer_host()}</span>
-			<Icon
-				icon="mdi:chevron-down"
-				class={openBlocks.host ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'}
-			/>
-		</button>
-
-		{#if openBlocks.host}
-			<HostSection
-				bind:hostMode
-				bind:connTarget
-				bind:portStr
-				bind:password
-				{port}
-				{portValid}
-				{python}
-				{server}
-				{selectedSeed}
-				{starting}
-				{copiedKey}
-				{remoteRoom}
-				{uploading}
-				{remoteStarting}
-				{remoteLog}
-				{PRESET_PORTS}
-				onCopyText={copyText}
-				onCopyRemoteLog={() => copyText(remoteLog.join('\n'), 'remote')}
-				onUploadAndStartRemote={uploadAndStartRemote}
-				onClearRemoteRoom={clearRemoteRoom}
-				onStartHost={startHost}
-				onStop={stop}
-			/>
-		{/if}
-	</div>
+	<CollapsibleBlock
+		title={(i18nState.locale && m.randomizer_host()) ?? ''}
+		open={openBlocks.host}
+		ontoggle={() => toggleBlock('host')}
+	>
+		<HostSection
+			bind:hostMode
+			bind:connTarget
+			bind:portStr
+			bind:password
+			{port}
+			{portValid}
+			{python}
+			{server}
+			{selectedSeed}
+			{starting}
+			{copiedKey}
+			{remoteRoom}
+			{uploading}
+			{remoteStarting}
+			{remoteLog}
+			{PRESET_PORTS}
+			onCopyText={copyText}
+			onCopyRemoteLog={() => copyText(remoteLog.join('\n'), 'remote')}
+			onUploadAndStartRemote={uploadAndStartRemote}
+			onClearRemoteRoom={clearRemoteRoom}
+			onStartHost={startHost}
+			onStop={stop}
+		/>
+	</CollapsibleBlock>
 </section>
 
 <Modal
@@ -701,12 +448,12 @@
 		}}
 	/>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (renameModal.open = false)}
-			>{i18nState.locale && m.randomizer_cancel()}</Button
-		>
-		<Button variant="primary" onclick={confirmRename}
-			>{i18nState.locale && m.randomizer_rename()}</Button
-		>
+		<Button variant="ghost" onclick={() => (renameModal.open = false)}>
+			{i18nState.locale && m.randomizer_cancel()}
+		</Button>
+		<Button variant="primary" onclick={confirmRename}>
+			{i18nState.locale && m.randomizer_rename()}
+		</Button>
 	{/snippet}
 </Modal>
 
@@ -717,12 +464,12 @@
 >
 	<p>{i18nState.locale && m.randomizer_deleteAllConfirm()}</p>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (confirmClearSeeds = false)}
-			>{i18nState.locale && m.randomizer_cancel()}</Button
-		>
-		<Button variant="primary" onclick={doConfirmClearSeeds}
-			>{i18nState.locale && m.randomizer_deleteAll()}</Button
-		>
+		<Button variant="ghost" onclick={() => (confirmClearSeeds = false)}>
+			{i18nState.locale && m.randomizer_cancel()}
+		</Button>
+		<Button variant="primary" onclick={doConfirmClearSeeds}>
+			{i18nState.locale && m.randomizer_deleteAll()}
+		</Button>
 	{/snippet}
 </Modal>
 
@@ -774,24 +521,6 @@
 		text-overflow: ellipsis;
 	}
 
-	.rdz-qa-wrapper {
-		position: relative;
-	}
-
-	:global(#rdz-qa-menu.rdz-qa-menu) {
-		position: fixed;
-		min-width: 260px;
-		background: var(--bg-elevated);
-		border: 1px solid var(--border-default);
-		border-radius: var(--radius-lg);
-		padding: 4px;
-		box-shadow:
-			0 8px 24px rgba(0, 0, 0, 0.45),
-			0 2px 6px rgba(0, 0, 0, 0.3);
-		z-index: 9999;
-		animation: rdz-qa-in 150ms ease;
-	}
-
 	.rdz-schema-loading {
 		position: fixed;
 		inset: 0;
@@ -813,193 +542,9 @@
 		animation: rdz-spin 0.8s linear infinite;
 	}
 
-	@keyframes rdz-qa-in {
-		from {
-			opacity: 0;
-			transform: translateY(-4px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.rdz-qa-item {
-		display: flex;
-		align-items: flex-start;
-		gap: var(--space-sm);
-		width: 100%;
-		padding: var(--space-sm) var(--space-md);
-		border: none;
-		border-radius: var(--radius-md);
-		background: transparent;
-		color: var(--text-secondary);
-		cursor: pointer;
-		text-align: left;
-		transition: all var(--transition-fast);
-		font-family: var(--font-body);
-	}
-
-	.rdz-qa-item:hover:not(:disabled) {
-		background: var(--bg-hover);
-		color: var(--text-primary);
-	}
-
-	.rdz-qa-item:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.rdz-qa-item :global(svg) {
-		font-size: 18px;
-		color: var(--accent-400);
-		flex-shrink: 0;
-		margin-top: 2px;
-	}
-
-	.rdz-qa-item-body {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		min-width: 0;
-	}
-
-	.rdz-qa-item-title {
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--text-primary);
-	}
-
-	.rdz-qa-item-desc {
-		font-size: 11px;
-		color: var(--text-muted);
-	}
-
 	.rdz-server-header :global(svg) {
 		font-size: 20px;
 		color: var(--accent-400);
-	}
-
-	.rdz-block {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-xs);
-		padding: var(--space-md) 0;
-		border-top: 1px solid var(--border-subtle);
-		transition: opacity var(--transition-fast);
-		position: relative;
-	}
-
-	.rdz-block:first-child {
-		border-top: none;
-		padding-top: 0;
-	}
-
-	.rdz-block-disabled {
-		pointer-events: none;
-		overflow: hidden;
-	}
-
-	.rdz-block-disabled > :not(.rdz-block-row) {
-		opacity: 0.45;
-	}
-
-	.rdz-block-disabled .rdz-block-badge {
-		color: var(--text-primary);
-		position: relative;
-		z-index: 6;
-	}
-
-	.rdz-block-disabled::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background-image: repeating-linear-gradient(
-			135deg,
-			transparent,
-			transparent 6px,
-			rgba(255, 255, 255, 0.04) 6px,
-			rgba(255, 255, 255, 0.04) 12px
-		);
-		pointer-events: none;
-		z-index: 5;
-	}
-
-	.rdz-block-disabled .rdz-block-title :global(svg:first-child),
-	.rdz-block-disabled .rdz-block-title {
-		color: var(--text-muted);
-	}
-
-	.rdz-block-badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-		margin-left: auto;
-		padding: 2px 8px;
-		font-size: 10px;
-		font-weight: 700;
-		text-transform: none;
-		letter-spacing: 0;
-		color: var(--text-muted);
-	}
-
-	.rdz-block-row {
-		display: flex;
-		align-items: center;
-		gap: var(--space-xs);
-		width: 100%;
-	}
-
-	.rdz-block-row > :global(.rdz-icon-btn) {
-		flex-shrink: 0;
-	}
-
-	.rdz-block-header {
-		flex: 1;
-		display: flex;
-		align-items: center;
-		gap: var(--space-xs);
-		width: 100%;
-		padding: 4px 0;
-		border: none;
-		background: transparent;
-		color: var(--text-secondary);
-		font-family: var(--font-body);
-		font-size: 11px;
-		font-weight: 600;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		cursor: pointer;
-		border-radius: 0;
-		text-align: left;
-		transition: color var(--transition-fast);
-	}
-
-	.rdz-block-header:hover {
-		color: var(--text-primary);
-		background: transparent;
-	}
-
-	.rdz-block-name {
-		flex: 1;
-		color: var(--text-primary);
-	}
-
-	.rdz-block-name small {
-		color: var(--text-muted);
-		font-weight: 600;
-		margin-left: 4px;
-	}
-
-	:global(.rdz-chev) {
-		font-size: 16px;
-		color: var(--text-muted);
-		transition: transform 180ms ease;
-		flex-shrink: 0;
-	}
-
-	:global(.rdz-chev-closed) {
-		transform: rotate(-90deg);
 	}
 
 	:global(.rdz-spin) {

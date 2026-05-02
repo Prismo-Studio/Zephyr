@@ -19,7 +19,7 @@ pub fn console_server_send_stdin(app: AppHandle, line: String) -> Result<()> {
 }
 
 /// Snapshot the most recent log lines (oldest first, capped internally at ~80).
-/// Used by the Console when it first mounts to backfill the feed — after that,
+/// Used by the Console when it first mounts to backfill the feed. After that,
 /// live updates arrive via the `"console://server-log"` Tauri event.
 #[command]
 pub fn console_server_recent_log(app: AppHandle) -> Vec<String> {
@@ -30,7 +30,7 @@ pub fn console_server_recent_log(app: AppHandle) -> Vec<String> {
 /// Open the Zephyr Console in a **standalone companion window**, Archipelago
 /// TextClient-style. The window uses native OS decorations (a real title bar)
 /// unlike the main Zephyr window, because this one is a secondary tool surface
-/// — it needs to be close/minimize/resize-familiar, not pretty.
+///. It needs to be close/minimize/resize-familiar, not pretty.
 ///
 /// Single-instance: calling this while the window is already open focuses the
 /// existing one instead of spawning a duplicate.

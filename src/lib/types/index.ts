@@ -36,7 +36,6 @@ export type {
 	ImportData,
 	LegacyImportData,
 	SyncImportData,
-	R2ImportData,
 	MissingProfileAction
 } from './profile.types';
 

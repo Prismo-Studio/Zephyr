@@ -36,13 +36,14 @@
 	import * as api from '$lib/api';
 	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import { initFullscreen, toggleFullscreen } from '$lib/fullscreen.svelte';
+	import { matchesShortcut, isEditableTarget } from '$lib/state/shortcuts.svelte';
 	import CustomBackground from '$lib/components/CustomBackground.svelte';
 	import { initCustomBg } from '$lib/design-system/customBg.svelte';
 	import { initErrorListener } from '$lib/invoke';
 	import { open } from '@tauri-apps/plugin-shell';
 	import { relaunch } from '@tauri-apps/plugin-process';
 	import { getVersion } from '@tauri-apps/api/app';
-	import { pushToast, pushInfoToast } from '$lib/toast';
+	import { pushToast, pushInfoToast } from '$lib/toast.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Icon from '@iconify/svelte';
@@ -120,19 +121,7 @@
 					e.preventDefault();
 					e.stopImmediatePropagation();
 				}
-				if (e.key === 'F11') {
-					e.preventDefault();
-					e.stopImmediatePropagation();
-					toggleFullscreen();
-				}
-				// macOS fullscreen shortcut: Cmd+F (no other modifier)
-				if (
-					e.metaKey &&
-					!e.ctrlKey &&
-					!e.altKey &&
-					!e.shiftKey &&
-					(e.key === 'f' || e.key === 'F')
-				) {
+				if (matchesShortcut(e, 'toggleFullscreen') && !isEditableTarget(e.target)) {
 					e.preventDefault();
 					e.stopImmediatePropagation();
 					toggleFullscreen();
@@ -240,36 +229,37 @@
 			evt.preventDefault();
 			return;
 		}
-		// Ctrl+R: soft refresh (reload data without full page reload)
-		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey && k === 'r') {
+		// Soft refresh: reload data without full page reload.
+		if (matchesShortcut(evt, 'refreshData')) {
 			evt.preventDefault();
 			profiles.refresh().catch(() => {});
 			games.refresh().catch(() => {});
 			return;
 		}
-		// Ctrl+Left / Ctrl+Right to cycle between profiles, except when the
-		// focus is in an editable field (let caret navigation work there).
-		if (evt.ctrlKey && !evt.shiftKey && !evt.altKey && !evt.metaKey) {
-			if (evt.key === 'ArrowLeft' || evt.key === 'ArrowRight') {
-				const target = evt.target as HTMLElement | null;
-				const tag = target?.tagName;
-				const editable = tag === 'INPUT' || tag === 'TEXTAREA' || !!target?.isContentEditable;
-				if (!editable) {
-					evt.preventDefault();
-					profiles.cycle(evt.key === 'ArrowRight' ? 1 : -1).catch(() => {});
-					return;
-				}
-			}
-		}
-		// Ctrl+=/Ctrl++ to increase DPI scale, Ctrl+- to decrease. Matches browser zoom shortcuts.
-		if (evt.ctrlKey && !evt.altKey) {
-			const isPlus = evt.key === '=' || evt.key === '+';
-			const isMinus = evt.key === '-' || evt.key === '_';
-			if (isPlus || isMinus) {
+		// Cycle between profiles. Skip when focus is in an editable field so
+		// caret navigation keeps working there.
+		if (!isEditableTarget(evt.target)) {
+			if (matchesShortcut(evt, 'cycleProfilePrev')) {
 				evt.preventDefault();
-				nudgeDpiScale(isPlus ? 1 : -1);
+				profiles.cycle(-1).catch(() => {});
 				return;
 			}
+			if (matchesShortcut(evt, 'cycleProfileNext')) {
+				evt.preventDefault();
+				profiles.cycle(1).catch(() => {});
+				return;
+			}
+		}
+		// DPI zoom shortcuts.
+		if (matchesShortcut(evt, 'zoomIn')) {
+			evt.preventDefault();
+			nudgeDpiScale(1);
+			return;
+		}
+		if (matchesShortcut(evt, 'zoomOut')) {
+			evt.preventDefault();
+			nudgeDpiScale(-1);
+			return;
 		}
 		// Block Ctrl+shortcuts except Ctrl+C/V/X/A/Z (standard editing).
 		// Exception: if the event originates from an editable element

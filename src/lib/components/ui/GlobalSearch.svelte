@@ -2,6 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { matchesShortcut } from '$lib/state/shortcuts.svelte';
 
 	let open = $state(false);
 	let query = $state('');
@@ -177,7 +178,7 @@
 
 	$effect(() => {
 		const handler = (e: KeyboardEvent) => {
-			if (e.ctrlKey && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 'f') {
+			if (matchesShortcut(e, 'globalSearch')) {
 				e.preventDefault();
 				e.stopImmediatePropagation();
 				toggle();

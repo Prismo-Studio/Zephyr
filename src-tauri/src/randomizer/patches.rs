@@ -1,8 +1,8 @@
 //! Per-player patch files + custom client launching.
 //!
 //! Archipelago seeds ship as a single zip containing:
-//!   * `AP_<seed>.archipelago` — multidata for MultiServer (handled elsewhere).
-//!   * `AP_<seed>_P<n>_<slot>.ap<ext>` — per-player ROM patch for games that
+//!   * `AP_<seed>.archipelago`. Multidata for MultiServer (handled elsewhere).
+//!   * `AP_<seed>_P<n>_<slot>.ap<ext>`. Per-player ROM patch for games that
 //!     need one (Pokémon Emerald, SMW, Tunic, …).
 //!   * optional spoiler / text files.
 //!
@@ -42,7 +42,7 @@ const DEFAULT_AP_PORT: u16 = 38281;
 ///   2. Anything listening on 127.0.0.1:38281 (external server, or one
 ///      started outside Zephyr).
 ///
-/// Returns `(host_port, password)` — SNIClient's `--connect` accepts
+/// Returns `(host_port, password)`. SNIClient's `--connect` accepts
 /// `host:port` form; no `ws://` prefix needed.
 fn resolve_ap_target(app: &AppHandle) -> Option<(String, Option<String>)> {
     use tauri::Manager;
@@ -51,7 +51,7 @@ fn resolve_ap_target(app: &AppHandle) -> Option<(String, Option<String>)> {
         if let (true, Some(port)) = (st.running, st.port) {
             return Some((
                 format!("127.0.0.1:{port}"),
-                st.password.clone().filter(|p| !p.is_empty()),
+                st.password.filter(|p| !p.is_empty()),
             ));
         }
     }
@@ -70,11 +70,11 @@ const APPLY_PATCH_PY: &str = include_str!("../../../scripts/apply_patch.py");
 /// files. They share the `.ap…` prefix so the regex-style filter below would
 /// catch them otherwise.
 ///
-/// * `archipelago` — multidata, handled by the seeds panel.
-/// * `apsave` — MultiServer's periodic save snapshot (server-side state).
-/// * `apbp` / `apmc` — internal patch-format intermediates that occasionally
+/// * `archipelago`. Multidata, handled by the seeds panel.
+/// * `apsave`. MultiServer's periodic save snapshot (server-side state).
+/// * `apbp` / `apmc`. Internal patch-format intermediates that occasionally
 ///   leak out in certain worlds; they aren't playable on their own.
-/// * `zip` — the raw generate output, stripped after extraction.
+/// * `zip`. The raw generate output, stripped after extraction.
 const NON_PATCH_EXTENSIONS: &[&str] = &["archipelago", "zip", "apsave", "apbp", "apmc"];
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -152,7 +152,7 @@ pub fn list_patches(app: &AppHandle) -> Result<Vec<PatchFile>> {
             extension: ext,
         });
     }
-    // Newest first — mirrors list_seeds.
+    // Newest first. Mirrors list_seeds.
     out.sort_by(|a, b| b.modified.cmp(&a.modified));
     Ok(out)
 }
@@ -161,7 +161,7 @@ pub fn delete_patch(path: &Path) -> Result<()> {
     if !path.exists() {
         bail!("not found: {}", path.display());
     }
-    // Only allow deletion inside the output dir to be safe — the caller should
+    // Only allow deletion inside the output dir to be safe. The caller should
     // have come from list_patches, but be defensive.
     fs::remove_file(path).with_context(|| format!("remove {}", path.display()))?;
     Ok(())
@@ -169,7 +169,7 @@ pub fn delete_patch(path: &Path) -> Result<()> {
 
 /// Extensions handled by Archipelago's external SNI Client (SNES/SFC games).
 /// This runtime doesn't bundle `SNIClient.py`, so Launcher.py can't spawn a
-/// client for these — we apply the patch directly and skip step 2 with a
+/// client for these. We apply the patch directly and skip step 2 with a
 /// friendly message instead of letting the user see a confusing
 /// `can't open 'SNIClient.py'` error in the Console.
 const SNI_EXTENSIONS: &[&str] = &[
@@ -206,7 +206,7 @@ fn is_sni_patch(path: &Path) -> bool {
 /// 1. **Direct patch** via `scripts/apply_patch.py`. This walks Archipelago's
 ///    `AutoPatchRegister`, finds the class for the patch's extension, and
 ///    writes the output ROM next to the patch. Works for every game whose
-///    world is installed — including SNI-based ones (ALttP, SMW, SM, etc.)
+///    world is installed. Including SNI-based ones (ALttP, SMW, SM, etc.)
 ///    that don't ship a launchable `SNIClient.py` in this runtime.
 /// 2. **Launcher.py** with `--nogui` to spawn the per-game client for its
 ///    emulator bridge (BizHawk connector, LADX bridge, …). If the Launcher
@@ -353,12 +353,12 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
     //
     // We pipe stdout/stderr so bridge events (BizHawk connect/disconnect,
     // item receive, deathlink) can be forwarded to the Zephyr Console as a
-    // log feed — see the `randomizer://bridge-log` event below.
+    // log feed. See the `randomizer://bridge-log` event below.
     // Build the Launcher.py invocation. After `--`, everything is forwarded
     // verbatim to the resolved component (SNIClient / BizHawkClient / ...).
     // We always pass `--nogui`, and when we can identify a running AP server
     // we also pass `--connect host:port` (+ `--password` if set) so the
-    // client doesn't sit at "no active multiworld server connection" —
+    // client doesn't sit at "no active multiworld server connection" ,
     // stdin is piped to null so the user can't type /connect manually.
     let mut cmd = Command::new(&python);
     sanitize_python_env(&mut cmd);
@@ -387,7 +387,7 @@ pub fn apply_and_launch(app: &AppHandle, patch_path: &Path) -> Result<()> {
             BridgeLog {
                 stream: "stdout",
                 text: format!(
-                    "[zephyr] No AP server detected on 127.0.0.1:{DEFAULT_AP_PORT} — start your server first, or use /connect inside the client."
+                    "[zephyr] No AP server detected on 127.0.0.1:{DEFAULT_AP_PORT}. Start your server first, or use /connect inside the client."
                 ),
             },
         );
@@ -612,7 +612,7 @@ fn guess_output_rom(patch_path: &Path) -> Option<String> {
         if fname != stem {
             continue;
         }
-        // Common ROM/output extensions — if it matches the patch's stem AND
+        // Common ROM/output extensions. If it matches the patch's stem AND
         // has a typical ROM suffix, treat it as the applied output.
         let Some(ext) = p.extension().and_then(|s| s.to_str()) else {
             continue;

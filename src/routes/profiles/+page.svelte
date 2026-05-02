@@ -1,12 +1,16 @@
 <script lang="ts">
 	import Header from '$lib/components/layout/Header.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
-	import Modal from '$lib/components/ui/Modal.svelte';
-	import Input from '$lib/components/ui/Input.svelte';
-	import Checkbox from '$lib/components/ui/Checkbox.svelte';
-	import Icon from '@iconify/svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
+	import Icon from '@iconify/svelte';
+
+	import ProfileAuthPill from '$lib/components/profiles/ProfileAuthPill.svelte';
+	import ProfileCard from '$lib/components/profiles/ProfileCard.svelte';
+	import CreateProfileModal from '$lib/components/profiles/CreateProfileModal.svelte';
+	import RenameProfileModal from '$lib/components/profiles/RenameProfileModal.svelte';
+	import DisconnectSyncModal from '$lib/components/profiles/DisconnectSyncModal.svelte';
+	import RestoreCloudDialog from '$lib/components/dialogs/RestoreCloudDialog.svelte';
+	import RestoreCrossGameDialog from '$lib/components/dialogs/RestoreCrossGameDialog.svelte';
 
 	import profiles from '$lib/state/profile.svelte';
 	import auth from '$lib/state/auth.svelte';
@@ -14,21 +18,17 @@
 	import * as api from '$lib/api';
 	import { m } from '$lib/paraglide/messages';
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
-	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import { pushToast } from '$lib/toast';
-	import RestoreCloudDialog from '$lib/components/dialogs/RestoreCloudDialog.svelte';
-	import RestoreCrossGameDialog from '$lib/components/dialogs/RestoreCrossGameDialog.svelte';
-	import type { ListedSyncProfile, Game } from '$lib/types';
+	import { pushToast } from '$lib/toast.svelte';
 	import { maybeSyncAfterImport } from '$lib/state/autoSync.svelte';
+	import { createProfileDrag } from '$lib/utils/useProfileDrag.svelte';
+	import type { ListedSyncProfile, Game } from '$lib/types';
 
 	const MAX_PROFILES = 20;
 
 	let createOpen = $state(false);
-	let newName = $state('');
 	let renameId: number | null = $state(null);
-	let renameName = $state('');
-	let autoSync = $state(false);
+	let renameInitialName = $state('');
 
 	let restoreOpen = $state(false);
 	let restoreItems: ListedSyncProfile[] = $state([]);
@@ -41,6 +41,24 @@
 	let disconnectName = $state('');
 	let disconnectAlsoDelete = $state(false);
 	let disconnectBusy = $state(false);
+
+	const drag = createProfileDrag({ refresh: () => profiles.refresh() });
+
+	function getProfileIndex(id: number): number {
+		return profiles.list.findIndex((p) => p.id === id);
+	}
+
+	function checkProfileLimit(): boolean {
+		if (profiles.list.length >= MAX_PROFILES) {
+			pushToast({
+				type: 'error',
+				name: m.sync_limitReached(),
+				message: m.sync_limitReachedDesc({ max: MAX_PROFILES.toString() })
+			});
+			return false;
+		}
+		return true;
+	}
 
 	function askDisconnect(id: number, name: string) {
 		disconnectId = id;
@@ -72,11 +90,7 @@
 			});
 			disconnectId = null;
 		} catch (e: any) {
-			pushToast({
-				type: 'error',
-				name: m.sync_unsyncFailed(),
-				message: e?.message ?? String(e)
-			});
+			pushToast({ type: 'error', name: m.sync_unsyncFailed(), message: e?.message ?? String(e) });
 		} finally {
 			disconnectBusy = false;
 		}
@@ -114,12 +128,7 @@
 				}
 				crossGameBuckets = Array.from(countBySlug.entries()).map(([slug, count]) => {
 					const game = games.list.find((g) => g.slug === slug) ?? null;
-					return {
-						slug,
-						name: game?.name ?? slug,
-						game,
-						count
-					};
+					return { slug, name: game?.name ?? slug, game, count };
 				});
 				crossGameOpen = true;
 				return;
@@ -141,6 +150,7 @@
 		}
 	}
 
+	let autoSync = $state(false);
 	(async () => {
 		try {
 			const p = await api.prefs.get();
@@ -148,26 +158,9 @@
 		} catch {}
 	})();
 
-	function getProfileIndex(id: number): number {
-		return profiles.list.findIndex((p) => p.id === id);
-	}
-
-	function checkProfileLimit(): boolean {
-		if (profiles.list.length >= MAX_PROFILES) {
-			pushToast({
-				type: 'error',
-				name: m.sync_limitReached(),
-				message: m.sync_limitReachedDesc({ max: MAX_PROFILES.toString() })
-			});
-			return false;
-		}
-		return true;
-	}
-
-	async function createProfile() {
-		if (!newName.trim()) return;
+	async function createProfile(name: string) {
 		if (!checkProfileLimit()) return;
-		await api.profile.create(newName.trim(), null);
+		await api.profile.create(name, null);
 		await profiles.refresh();
 		if (autoSync && auth.user) {
 			try {
@@ -181,7 +174,6 @@
 				});
 			}
 		}
-		newName = '';
 		createOpen = false;
 	}
 
@@ -214,11 +206,8 @@
 		const existingNames = new Set(profiles.list.map((p) => p.name));
 		const copyName = `${baseName} (copy)`;
 		if (!existingNames.has(copyName)) return copyName;
-
 		let i = 2;
-		while (existingNames.has(`${baseName} (copy ${i})`)) {
-			i++;
-		}
+		while (existingNames.has(`${baseName} (copy ${i})`)) i++;
 		return `${baseName} (copy ${i})`;
 	}
 
@@ -234,13 +223,13 @@
 		await maybeSyncAfterImport({ forceFork: true });
 	}
 
-	async function startRename(id: number, name: string) {
+	function startRename(id: number, name: string) {
 		renameId = id;
-		renameName = name;
+		renameInitialName = name;
 	}
 
-	async function confirmRename() {
-		if (!renameName.trim() || renameId === null) return;
+	async function confirmRename(newName: string) {
+		if (renameId === null) return;
 		const index = getProfileIndex(renameId);
 		if (index === -1) return;
 		const target = profiles.list.find((pr) => pr.id === renameId);
@@ -255,16 +244,12 @@
 		if (needsSwitch) {
 			await api.profile.setActive(index);
 		}
-		await api.profile.rename(renameName.trim());
+		await api.profile.rename(newName);
 		if (isOwnedSync) {
 			try {
 				await api.profile.sync.push();
 			} catch (e: any) {
-				pushToast({
-					type: 'error',
-					name: m.sync_syncFailed(),
-					message: e?.message ?? String(e)
-				});
+				pushToast({ type: 'error', name: m.sync_syncFailed(), message: e?.message ?? String(e) });
 			}
 		}
 		if (needsSwitch && previousActiveIndex !== -1) {
@@ -281,163 +266,57 @@
 		await profiles.refresh();
 	}
 
-	async function exportCode() {
-		const code = await api.profile.export.code();
-	}
-
 	async function pickIcon(profileId: number) {
 		const file = await openDialog({
 			filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp'] }],
 			multiple: false
 		});
+		if (!file) return;
 
-		if (file) {
+		pushToast({
+			type: 'info',
+			message: (i18nState.locale && m.profiles_uploadingIcon()) || 'Uploading...'
+		});
+		try {
+			await api.profile.uploadProfileIcon(profileId, file);
+			await profiles.refresh();
 			pushToast({
 				type: 'info',
-				message: (i18nState.locale && m.profiles_uploadingIcon()) || 'Uploading...'
+				message: (i18nState.locale && m.profiles_iconUploaded()) || 'Done!'
 			});
-			try {
-				await api.profile.uploadProfileIcon(profileId, file);
-				await profiles.refresh();
-				pushToast({
-					type: 'info',
-					message: (i18nState.locale && m.profiles_iconUploaded()) || 'Done!'
-				});
-			} catch (e) {
-				pushToast({ type: 'error', message: String(e) });
-			}
+		} catch (e) {
+			pushToast({ type: 'error', message: String(e) });
 		}
 	}
 
-	function profileIconSrc(icon: string | null): string | null {
-		if (!icon) return null;
-		if (icon.startsWith('http')) return icon;
-		return convertFileSrc(icon);
-	}
-
-	let draggingId: number | null = $state(null);
-	let dragOverIdx: number = $state(-1);
-	let ghostEl: HTMLDivElement | null = null;
-	let dragOffsetX = 0;
-	let dragOffsetY = 0;
-	let dragFromIdx = -1;
-	let dragStarted = false;
-	let pointerStartX = 0;
-	let pointerStartY = 0;
-	let pendingCard: HTMLElement | null = null;
-	let pendingProfileId: number | null = null;
-	const DRAG_THRESHOLD = 5;
-
-	function onPointerDown(e: PointerEvent, profile: { id: number }, idx: number) {
-		const target = e.target as HTMLElement;
-		if (target.closest('.z-profile-action, .z-profile-icon, input')) return;
-
-		const card = target.closest('.z-profile-card') as HTMLElement;
-		if (!card) return;
-
-		dragFromIdx = idx;
-		pendingProfileId = profile.id;
-		pendingCard = card;
-		pointerStartX = e.clientX;
-		pointerStartY = e.clientY;
-		dragStarted = false;
-
-		const rect = card.getBoundingClientRect();
-		dragOffsetX = e.clientX - rect.left;
-		dragOffsetY = e.clientY - rect.top;
-
-		window.addEventListener('pointermove', onPointerMove);
-		window.addEventListener('pointerup', onPointerUp);
-	}
-
-	function startDrag(e: PointerEvent) {
-		if (!pendingCard) return;
-		dragStarted = true;
-		draggingId = pendingProfileId;
-		const rect = pendingCard.getBoundingClientRect();
-		ghostEl = pendingCard.cloneNode(true) as HTMLDivElement;
-		ghostEl.style.cssText = `
-			position: fixed;
-			left: ${rect.left}px;
-			top: ${rect.top}px;
-			width: ${rect.width}px;
-			height: ${rect.height}px;
-			pointer-events: none;
-			z-index: 9999;
-			opacity: 0.95;
-			border: 2px solid var(--accent-400);
-			box-shadow: var(--shadow-glow-strong);
-			transform: scale(1.03);
-			cursor: grabbing;
-		`;
-		document.body.appendChild(ghostEl);
-		document.body.classList.add('dragging-active');
-		onPointerMove(e);
-	}
-
-	function onPointerMove(e: PointerEvent) {
-		if (!dragStarted) {
-			const dx = e.clientX - pointerStartX;
-			const dy = e.clientY - pointerStartY;
-			if (dx * dx + dy * dy < DRAG_THRESHOLD * DRAG_THRESHOLD) return;
-			startDrag(e);
-			return;
-		}
-		if (!ghostEl) return;
-		ghostEl.style.left = e.clientX - dragOffsetX + 'px';
-		ghostEl.style.top = e.clientY - dragOffsetY + 'px';
-
-		const cards = document.querySelectorAll<HTMLElement>('.z-profile-card[data-profile-idx]');
-		let bestIdx = -1;
-		let bestDist = Infinity;
-		cards.forEach((el) => {
-			const idx = parseInt(el.dataset.profileIdx!);
-			if (idx === dragFromIdx) return;
-			const r = el.getBoundingClientRect();
-			const cx = r.left + r.width / 2;
-			const cy = r.top + r.height / 2;
-			const d = (e.clientX - cx) ** 2 + (e.clientY - cy) ** 2;
-			if (d < bestDist) {
-				bestDist = d;
-				bestIdx = idx;
-			}
-		});
-		dragOverIdx = bestIdx;
-	}
-
-	async function onPointerUp() {
-		window.removeEventListener('pointermove', onPointerMove);
-		window.removeEventListener('pointerup', onPointerUp);
-
-		if (!dragStarted) {
-			pendingCard = null;
-			pendingProfileId = null;
-			dragFromIdx = -1;
-			return;
-		}
-
-		document.body.classList.remove('dragging-active');
-
-		if (ghostEl) {
-			ghostEl.remove();
-			ghostEl = null;
-		}
-
-		const from = dragFromIdx;
-		const to = dragOverIdx;
-		draggingId = null;
-		dragOverIdx = -1;
-		dragFromIdx = -1;
-		dragStarted = false;
-		pendingCard = null;
-		pendingProfileId = null;
-
-		if (from === -1 || to === -1 || from === to) return;
+	async function syncToCloud(profile: { id: number; name: string }) {
 		try {
-			await api.profile.reorderProfile(from, to);
+			if (profile.id !== profiles.activeId) {
+				const idx = getProfileIndex(profile.id);
+				if (idx !== -1) await api.profile.setActive(idx);
+			}
+			const id = await api.profile.sync.create();
+			pushToast({
+				type: 'info',
+				name: m.sync_synced(),
+				message: m.sync_uploaded({ name: profile.name, id: id.slice(0, 8) + '…' })
+			});
 			await profiles.refresh();
-		} catch (err) {
-			console.error('Failed to reorder profile:', err);
+		} catch (e: any) {
+			pushToast({ type: 'error', name: m.sync_syncFailed(), message: e?.message ?? String(e) });
+		}
+	}
+
+	async function signIn() {
+		try {
+			await auth.login();
+			pushToast({
+				type: 'info',
+				name: m.sync_signedIn(),
+				message: m.sync_welcome({ name: auth.user?.displayName ?? '' })
+			});
+		} catch (e: any) {
+			pushToast({ type: 'error', name: m.sync_signInFailed(), message: e?.message ?? String(e) });
 		}
 	}
 </script>
@@ -459,44 +338,9 @@
 						{i18nState.locale && m.sync_restore()}
 					</Button>
 				</Tooltip>
-				<div class="z-auth-pill">
-					{#if auth.user.avatar}
-						<img src={auth.user.avatar} alt={auth.user.displayName} />
-					{:else}
-						<Icon icon="mdi:account-circle" />
-					{/if}
-					<span>{auth.user.displayName}</span>
-					<button
-						class="z-auth-logout"
-						onclick={async () => {
-							await auth.logout();
-						}}
-						title={(i18nState.locale && m.sync_logOut()) || ''}
-					>
-						<Icon icon="mdi:logout" />
-					</button>
-				</div>
+				<ProfileAuthPill />
 			{:else}
-				<Button
-					variant="secondary"
-					size="sm"
-					onclick={async () => {
-						try {
-							await auth.login();
-							pushToast({
-								type: 'info',
-								name: m.sync_signedIn(),
-								message: m.sync_welcome({ name: auth.user?.displayName ?? '' })
-							});
-						} catch (e: any) {
-							pushToast({
-								type: 'error',
-								name: m.sync_signInFailed(),
-								message: e?.message ?? String(e)
-							});
-						}
-					}}
-				>
+				<Button variant="secondary" size="sm" onclick={signIn}>
 					{#snippet icon()}<Icon icon="mdi:discord" />{/snippet}
 					{i18nState.locale && m.sync_signIn()}
 				</Button>
@@ -511,279 +355,60 @@
 	<div class="z-profiles-content">
 		<div class="z-profiles-grid">
 			{#each profiles.list as profile, i (profile.id)}
-				<div
-					class="z-profile-card"
-					class:active={profile.id === profiles.activeId}
-					class:dragging={draggingId === profile.id}
-					class:drag-over={dragOverIdx === i && draggingId !== null && draggingId !== profile.id}
-					data-profile-idx={i}
-					onpointerdown={(e) => onPointerDown(e, profile, i)}
-				>
-					<button class="z-profile-select" onclick={() => selectProfile(profile.id)}>
-						<div class="z-profile-header">
-							<!-- svelte-ignore a11y_no_static_element_interactions -->
-							<div
-								class="z-profile-icon"
-								role="button"
-								tabindex="-1"
-								onclick={(e) => {
-									e.stopPropagation();
-									pickIcon(profile.id);
-								}}
-								onkeydown={() => {}}
-							>
-								{#if profile.icon}
-									<img
-										src={profileIconSrc(profile.icon)}
-										alt={profile.name}
-										class="z-profile-avatar"
-									/>
-								{:else}
-									<Icon icon="mdi:account-circle" />
-								{/if}
-								<span class="z-profile-icon-overlay">
-									<Icon icon="mdi:camera" />
-								</span>
-							</div>
-							<div class="z-profile-info">
-								<div class="z-profile-name-row">
-									<span class="z-profile-name">{profile.name}</span>
-									{#if profile.id === profiles.activeId}
-										<span class="z-profile-active-dot"></span>
-									{/if}
-									{#if profile.sync}
-										<Icon icon="mdi:cloud" class="z-profile-sync-icon" />
-									{/if}
-								</div>
-								<span class="z-profile-mods"
-									>{i18nState.locale &&
-										m.profiles_mods({ count: profile.modCount.toString() })}</span
-								>
-							</div>
-						</div>
-					</button>
-
-					<div class="z-profile-footer">
-						<div class="z-profile-badges">
-							{#if profile.id === profiles.activeId}
-								<span class="z-profile-badge accent">{i18nState.locale && m.profiles_active()}</span
-								>
-							{/if}
-							{#if profile.sync}
-								<span class="z-profile-badge info">{i18nState.locale && m.profiles_synced()}</span>
-							{/if}
-						</div>
-
-						<div class="z-profile-actions">
-							{#if auth.user && !profile.sync}
-								<Tooltip
-									text={(i18nState.locale && m.sync_toCloud()) || ''}
-									position="bottom"
-									delay={200}
-								>
-									<button
-										class="z-profile-action"
-										onclick={async () => {
-											try {
-												if (profile.id !== profiles.activeId) {
-													const idx = getProfileIndex(profile.id);
-													if (idx !== -1) await api.profile.setActive(idx);
-												}
-												const id = await api.profile.sync.create();
-												pushToast({
-													type: 'info',
-													name: m.sync_synced(),
-													message: m.sync_uploaded({
-														name: profile.name,
-														id: id.slice(0, 8) + '…'
-													})
-												});
-												await profiles.refresh();
-											} catch (e: any) {
-												pushToast({
-													type: 'error',
-													name: m.sync_syncFailed(),
-													message: e?.message ?? String(e)
-												});
-											}
-										}}
-									>
-										<Icon icon="mdi:cloud-upload" />
-									</button>
-								</Tooltip>
-							{/if}
-							{#if auth.user && profile.sync}
-								<Tooltip
-									text={(i18nState.locale && m.sync_stopSyncing()) || ''}
-									position="bottom"
-									delay={200}
-								>
-									<button
-										class="z-profile-action"
-										onclick={() => askDisconnect(profile.id, profile.name)}
-									>
-										<Icon icon="mdi:cloud-off-outline" />
-									</button>
-								</Tooltip>
-							{/if}
-							<Tooltip text={i18nState.locale && m.profiles_rename()} position="bottom" delay={200}>
-								<button
-									class="z-profile-action"
-									onclick={() => startRename(profile.id, profile.name)}
-								>
-									<Icon icon="mdi:pencil" />
-								</button>
-							</Tooltip>
-							<Tooltip
-								text={i18nState.locale && m.profiles_duplicate()}
-								position="bottom"
-								delay={200}
-							>
-								<button
-									class="z-profile-action"
-									onclick={() => duplicateProfile(profile.id, profile.name)}
-								>
-									<Icon icon="mdi:content-copy" />
-								</button>
-							</Tooltip>
-							{#if profiles.list.length > 1}
-								<Tooltip
-									text={i18nState.locale && m.profiles_delete()}
-									position="bottom"
-									delay={200}
-								>
-									<button class="z-profile-action danger" onclick={() => deleteProfile(profile.id)}>
-										<Icon icon="mdi:delete" />
-									</button>
-								</Tooltip>
-							{/if}
-						</div>
-					</div>
-				</div>
+				<ProfileCard
+					{profile}
+					index={i}
+					isActive={profile.id === profiles.activeId}
+					isDragging={drag.draggingId === profile.id}
+					isDragOver={drag.dragOverIdx === i &&
+						drag.draggingId !== null &&
+						drag.draggingId !== profile.id}
+					onpointerdown={(e, p, idx) => drag.onPointerDown(e, p.id, idx)}
+					onselect={selectProfile}
+					onpickIcon={pickIcon}
+					onsyncToCloud={syncToCloud}
+					onaskDisconnect={askDisconnect}
+					onstartRename={startRename}
+					onduplicate={duplicateProfile}
+					ondelete={deleteProfile}
+				/>
 			{/each}
 		</div>
 	</div>
 </div>
 
-<!-- Cloud restore dialog -->
 <RestoreCloudDialog
 	bind:open={restoreOpen}
 	items={restoreItems}
-	onclose={() => {
-		restoreItems = [];
-	}}
+	onclose={() => (restoreItems = [])}
 />
 
 <RestoreCrossGameDialog
 	bind:open={crossGameOpen}
 	buckets={crossGameBuckets}
-	onclose={() => {
-		crossGameBuckets = [];
-	}}
-	onPicked={() => {
-		checkForRestorable(false);
-	}}
+	onclose={() => (crossGameBuckets = [])}
+	onPicked={() => checkForRestorable(false)}
 />
 
-<!-- Create modal -->
-<Modal bind:open={createOpen} title={i18nState.locale && m.profiles_newProfile()}>
-	<div class="z-modal-form">
-		<Input
-			bind:value={newName}
-			placeholder={i18nState.locale && m.profiles_profileName()}
-			onkeydown={(e) => {
-				if (e.key === 'Enter') createProfile();
-			}}
-		/>
-	</div>
+<CreateProfileModal bind:open={createOpen} oncreate={createProfile} />
 
-	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (createOpen = false)}
-			>{i18nState.locale && m.dialog_cancel()}</Button
-		>
-		<Button variant="primary" onclick={createProfile} disabled={!newName.trim()}
-			>{i18nState.locale && m.profiles_create()}</Button
-		>
-	{/snippet}
-</Modal>
-
-<!-- Disconnect / unsync modal -->
-<Modal
+<DisconnectSyncModal
 	open={disconnectId !== null}
+	profileName={disconnectName}
+	bind:alsoDelete={disconnectAlsoDelete}
+	busy={disconnectBusy}
+	onconfirm={confirmDisconnect}
 	onclose={() => {
 		if (!disconnectBusy) disconnectId = null;
 	}}
-	title={(i18nState.locale && m.sync_unsyncTitle()) || ''}
->
-	<div class="z-modal-form">
-		<p class="z-unsync-text">
-			{i18nState.locale && m.sync_unsyncText({ name: disconnectName })}
-		</p>
-		<div
-			class="z-unsync-option"
-			role="button"
-			tabindex="0"
-			onclick={() => {
-				if (!disconnectBusy) disconnectAlsoDelete = !disconnectAlsoDelete;
-			}}
-			onkeydown={(e) => {
-				if (e.key === ' ' || e.key === 'Enter') {
-					e.preventDefault();
-					if (!disconnectBusy) disconnectAlsoDelete = !disconnectAlsoDelete;
-				}
-			}}
-		>
-			<Checkbox bind:checked={disconnectAlsoDelete} disabled={disconnectBusy} />
-			<span>
-				{i18nState.locale && m.sync_unsyncAlsoDelete()}
-				<span class="z-unsync-hint">
-					{i18nState.locale && m.sync_unsyncAlsoDeleteHint()}
-				</span>
-			</span>
-		</div>
-	</div>
+/>
 
-	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (disconnectId = null)} disabled={disconnectBusy}>
-			{i18nState.locale && m.dialog_cancel()}
-		</Button>
-		<Button
-			variant={disconnectAlsoDelete ? 'danger' : 'primary'}
-			onclick={confirmDisconnect}
-			loading={disconnectBusy}
-			disabled={disconnectBusy}
-		>
-			{i18nState.locale &&
-				(disconnectAlsoDelete ? m.sync_unsyncAndDeleteAction() : m.sync_unsyncAction())}
-		</Button>
-	{/snippet}
-</Modal>
-
-<!-- Rename modal -->
-<Modal
+<RenameProfileModal
 	open={renameId !== null}
+	initialName={renameInitialName}
+	onrename={confirmRename}
 	onclose={() => (renameId = null)}
-	title={i18nState.locale && m.profiles_renameProfile()}
->
-	<div class="z-modal-form">
-		<Input
-			bind:value={renameName}
-			placeholder={i18nState.locale && m.profiles_newName()}
-			onkeydown={(e) => {
-				if (e.key === 'Enter') confirmRename();
-			}}
-		/>
-	</div>
-
-	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (renameId = null)}
-			>{i18nState.locale && m.dialog_cancel()}</Button
-		>
-		<Button variant="primary" onclick={confirmRename} disabled={!renameName.trim()}
-			>{i18nState.locale && m.profiles_rename()}</Button
-		>
-	{/snippet}
-</Modal>
+/>
 
 <style>
 	.z-profiles-page {
@@ -798,297 +423,9 @@
 		padding: var(--space-xl);
 	}
 
-	.z-auth-pill {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		padding: 4px 4px 4px 12px;
-		border-radius: var(--radius-full);
-		background: var(--bg-active);
-		border: 1px solid var(--border-accent);
-		font-size: 12px;
-		font-weight: 600;
-		color: var(--text-primary);
-	}
-
-	.z-auth-pill img,
-	.z-auth-pill :global(svg:first-child) {
-		width: 20px;
-		height: 20px;
-		border-radius: 50%;
-		object-fit: cover;
-	}
-
-	.z-auth-logout {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 24px;
-		height: 24px;
-		border: none;
-		border-radius: 50%;
-		background: transparent;
-		color: var(--text-muted);
-		cursor: pointer;
-		transition: all var(--transition-fast);
-	}
-
-	.z-auth-logout:hover {
-		background: var(--bg-hover);
-		color: var(--error);
-	}
-
 	.z-profiles-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 		gap: var(--space-md);
-	}
-
-	.z-profile-card {
-		border-radius: var(--radius-lg);
-		background: var(--bg-surface);
-		border: 1px solid var(--border-subtle);
-		overflow: visible;
-		transition:
-			border-color var(--transition-fast),
-			box-shadow var(--transition-fast);
-		cursor: grab;
-		touch-action: none;
-		user-select: none;
-	}
-
-	.z-profile-card:active {
-		cursor: grabbing;
-	}
-
-	.z-profile-card.dragging {
-		opacity: 0.3;
-	}
-
-	.z-profile-card.drag-over {
-		border-color: var(--accent-400);
-		box-shadow: 0 0 0 2px var(--accent-400);
-	}
-
-	.z-profile-card:hover {
-		border-color: var(--border-default);
-	}
-
-	.z-profile-card.active {
-		border-color: var(--border-accent);
-		box-shadow: var(--shadow-glow);
-	}
-
-	.z-profile-select {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-sm);
-		width: 100%;
-		padding: var(--space-lg);
-		padding-bottom: var(--space-sm);
-		background: transparent;
-		border: none;
-		cursor: pointer;
-		text-align: left;
-		font-family: var(--font-body);
-	}
-
-	.z-profile-header {
-		display: flex;
-		align-items: center;
-		gap: var(--space-md);
-	}
-
-	.z-profile-icon {
-		width: 44px;
-		height: 44px;
-		border-radius: var(--radius-lg);
-		background: var(--bg-overlay);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 22px;
-		color: var(--text-muted);
-		flex-shrink: 0;
-		transition: all var(--transition-fast);
-		position: relative;
-		overflow: hidden;
-		cursor: pointer;
-		border: none;
-	}
-
-	.z-profile-icon:hover .z-profile-icon-overlay {
-		opacity: 1;
-	}
-
-	.z-profile-icon-overlay {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: rgba(0, 0, 0, 0.55);
-		color: white;
-		font-size: 16px;
-		opacity: 0;
-		transition: opacity var(--transition-fast);
-		border-radius: var(--radius-lg);
-	}
-
-	.z-profile-avatar {
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-		border-radius: var(--radius-lg);
-		padding: 4px;
-	}
-
-	.z-profile-card.active .z-profile-icon {
-		background: var(--bg-active);
-		color: var(--text-accent);
-	}
-
-	.z-profile-info {
-		display: flex;
-		flex-direction: column;
-		min-width: 0;
-		flex: 1;
-	}
-
-	.z-profile-name-row {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-	}
-
-	.z-profile-name {
-		font-weight: 600;
-		font-size: 14px;
-		color: var(--text-primary);
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-	.z-profile-active-dot {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background: var(--accent-400);
-		box-shadow: 0 0 6px var(--accent-400);
-		flex-shrink: 0;
-	}
-
-	:global(.z-profile-sync-icon) {
-		font-size: 12px;
-		color: var(--info);
-		flex-shrink: 0;
-	}
-
-	.z-profile-mods {
-		font-size: 12px;
-		color: var(--text-muted);
-		margin-top: 1px;
-	}
-
-	.z-profile-footer {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: var(--space-xs) var(--space-md) var(--space-md);
-	}
-
-	.z-profile-badges {
-		display: flex;
-		gap: 4px;
-	}
-
-	.z-profile-badge {
-		font-size: 10px;
-		font-weight: 600;
-		padding: 2px 8px;
-		border-radius: var(--radius-full);
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-	}
-
-	.z-profile-badge.accent {
-		background: var(--bg-active);
-		color: var(--accent-400);
-	}
-
-	.z-profile-badge.info {
-		background: rgba(59, 130, 246, 0.1);
-		color: var(--info);
-	}
-
-	.z-profile-actions {
-		display: flex;
-		gap: 2px;
-	}
-
-	.z-profile-action {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 28px;
-		height: 28px;
-		border-radius: var(--radius-sm);
-		border: none;
-		background: transparent;
-		color: var(--text-muted);
-		cursor: pointer;
-		transition: all var(--transition-fast);
-		font-size: 14px;
-	}
-
-	.z-profile-action:hover {
-		background: var(--bg-hover);
-		color: var(--text-primary);
-	}
-
-	.z-profile-action.danger:hover {
-		background: rgba(255, 92, 92, 0.1);
-		color: var(--error);
-	}
-
-	.z-modal-form {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-md);
-	}
-
-	.z-unsync-text {
-		font-size: 13px;
-		color: var(--text-secondary);
-		margin: 0;
-	}
-
-	.z-unsync-text strong {
-		color: var(--text-primary);
-	}
-
-	.z-unsync-option {
-		display: flex;
-		align-items: flex-start;
-		gap: var(--space-sm);
-		padding: var(--space-sm) var(--space-md);
-		border-radius: var(--radius-md);
-		background: var(--bg-surface);
-		border: 1px solid var(--border-subtle);
-		cursor: pointer;
-		font-size: 13px;
-	}
-
-	.z-unsync-option:hover {
-		border-color: var(--border-default);
-	}
-
-	.z-unsync-hint {
-		display: block;
-		font-size: 11px;
-		color: var(--text-muted);
-		margin-top: 2px;
-		line-height: 1.4;
 	}
 </style>

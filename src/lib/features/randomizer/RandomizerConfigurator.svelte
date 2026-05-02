@@ -4,7 +4,7 @@
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import { open as openExternal } from '@tauri-apps/plugin-shell';
-	import { pushToast } from '$lib/toast';
+	import { pushToast } from '$lib/toast.svelte';
 	import * as api from './api';
 	import { randomizerStore, dependenciesSatisfied } from './randomizer.store.svelte';
 	import { CATEGORY_ICONS, CATEGORY_LABELS, CATEGORY_ORDER, type OptionDef } from './types';
@@ -12,6 +12,7 @@
 	import StartInventoryEditor from './StartInventoryEditor.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { ARCHIPELAGO_TUTORIAL_URL } from '$lib/constants/api.constants';
 
 	// Hardcoded tutorial path overrides for older schemas that don't yet carry
 	// `meta.tutorial_path` (pre-refresh bundled schemas). Once the user runs
@@ -32,8 +33,8 @@
 		wargroove: 'wargroove/en'
 	};
 
-	function setupGuideUrl(id: string, name: string, path: string): string {
-		return `https://archipelago.gg/tutorial/${encodeURIComponent(name)}/${path}`;
+	function setupGuideUrl(_id: string, name: string, path: string): string {
+		return ARCHIPELAGO_TUTORIAL_URL(name, path);
 	}
 
 	function openSetupGuide(e: MouseEvent, id: string, name: string, path: string) {

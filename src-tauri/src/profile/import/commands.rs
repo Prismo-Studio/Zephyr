@@ -12,10 +12,7 @@ use crate::{
     util::cmd::Result,
 };
 
-use super::{
-    r2modman::{self},
-    ImportData,
-};
+use super::ImportData;
 
 #[derive(Debug, Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
@@ -106,19 +103,3 @@ pub async fn import_local_mod_base64(base64: String, app: AppHandle) -> Result<(
     Ok(())
 }
 
-#[command]
-pub fn get_r2modman_info(
-    path: Option<PathBuf>,
-    app: AppHandle,
-) -> Result<Option<r2modman::ProfileImportData>> {
-    let info = r2modman::gather_info(path, &app)?;
-
-    Ok(info)
-}
-
-#[command]
-pub async fn import_r2modman(path: PathBuf, include: Vec<bool>, app: AppHandle) -> Result<()> {
-    r2modman::import(path, &include, &app).await?;
-
-    Ok(())
-}

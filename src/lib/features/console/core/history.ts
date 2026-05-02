@@ -2,7 +2,7 @@
  * Persisted command-history helpers. Both client and server sessions cap
  * history at 100 entries, most-recent first, with entries deduped on push.
  * localStorage failures (quota, private mode, disabled storage) are silently
- * ignored — history is a nicety, not critical state.
+ * ignored. History is a nicety, not critical state.
  */
 
 const MAX_HISTORY = 100;

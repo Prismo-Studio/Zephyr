@@ -13,7 +13,7 @@
  * marked as spectator, which keeps the UX simple (no apworld edits).
  */
 
-/** Arbitrary JSON value — used in packet payloads we don't type fully. */
+/** Arbitrary JSON value. Used in packet payloads we don't type fully. */
 type JsonValue = string | number | boolean | null | JsonValue[] | { [k: string]: JsonValue };
 
 // ── Client → Server packets ──────────────────────────────────────────
@@ -157,10 +157,10 @@ export const PROTOCOL_VERSION = { major: 0, minor: 6, build: 0, class: 'Version'
 
 /**
  * items_handling bitmasks per AP network protocol:
- *   0b000 (0) — server does NOT send ReceivedItems. Correct for trackers /
+ *   0b000 (0). Server does NOT send ReceivedItems. Correct for trackers /
  *               admin consoles that sit alongside a real game client. The
  *               real client (SNIClient etc.) handles actual item delivery.
- *   0b111 (7) — full remote-items mode. Correct only when this client is the
+ *   0b111 (7). Full remote-items mode. Correct only when this client is the
  *               slot's actual item receiver and delivers them in-game.
  *
  * Using 0b111 for a tracker lies to the server about the slot's capabilities
@@ -172,7 +172,7 @@ export const PLAYER_ITEMS_HANDLING = 0b111;
 
 // ── Parsing helpers ──────────────────────────────────────────────────
 
-/** AP sends JSON arrays of packets. Parse defensively — drop anything that
+/** AP sends JSON arrays of packets. Parse defensively. Drop anything that
  *  isn't an object with a string `cmd`. */
 export function parseFrame(raw: string): ServerPacket[] {
 	try {
@@ -192,7 +192,7 @@ export function serializeFrame(packets: ClientPacket[]): string {
 }
 
 /** Generate a UUID-ish string that AP accepts as a client identifier. We
- *  don't need cryptographic strength — just uniqueness per session. */
+ *  don't need cryptographic strength. Just uniqueness per session. */
 export function generateUuid(): string {
 	if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
 		return crypto.randomUUID();

@@ -5,7 +5,7 @@
 	import Icon from '@iconify/svelte';
 	import * as api from '$lib/api';
 	import profiles from '$lib/state/profile.svelte';
-	import { pushToast } from '$lib/toast';
+	import { pushToast } from '$lib/toast.svelte';
 	import type { ListedSyncProfile } from '$lib/types';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';

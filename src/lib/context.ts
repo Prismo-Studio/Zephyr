@@ -1,4 +1,3 @@
-import { writable } from 'svelte/store';
 import type { ModContextItem } from './types';
 import { open } from '@tauri-apps/plugin-shell';
 import { m } from './paraglide/messages';
@@ -21,5 +20,3 @@ export const defaultContextItems: ModContextItem[] = [
 		showFor: (mod) => mod.donateUrl !== null
 	}
 ];
-
-export let activeContextMenu = writable<string | null>(null);

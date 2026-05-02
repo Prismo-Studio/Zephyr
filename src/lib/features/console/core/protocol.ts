@@ -1,5 +1,5 @@
 /**
- * Console protocol — Phase 1 surface.
+ * Console protocol. Phase 1 surface.
  *
  * Only the Server half is wired to real transport today. The Client half is
  * typed so the UI can be built against stable shapes, but the WebSocket AP
@@ -31,7 +31,7 @@ export type LogEntry = {
 	level: LogLevel;
 	source?: string; // e.g. "SRV", "YOU", "Slot#3", "CHAT"
 	text: string;
-	/** Origin of the entry — useful for filtering/debug. */
+	/** Origin of the entry. Useful for filtering/debug. */
 	origin:
 		| 'server-stdout'
 		| 'server-stderr'
@@ -47,7 +47,7 @@ export type LogEntry = {
  *
  * AP's MultiServer.py prints human-readable lines with a few recognizable
  * shapes. We recover the most useful structure (slot, level, event type)
- * from regex matching — knowing it's fragile, and that Phase 2 WebSocket
+ * from regex matching. Knowing it's fragile, and that Phase 2 WebSocket
  * observer will replace most of this once we connect as a real tracker
  * client.
  *
@@ -130,7 +130,7 @@ export function classifyLine(
 		return { level: 'admin', source: 'COUNT', text: count[1] };
 	}
 
-	// "(INFO) [Server]: ..." — catch-all AP log prefix
+	// "(INFO) [Server]: ...". Catch-all AP log prefix
 	const infoTag = raw.match(/^\((INFO|WARNING|ERROR)\)\s*(?:\[([^\]]+)\])?\s*:?\s*(.*)$/);
 	if (infoTag) {
 		const [, level, source, rest] = infoTag;

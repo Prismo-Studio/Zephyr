@@ -261,7 +261,7 @@ server_options:
     assert!(updated.contains("password: null"));
     assert!(updated.contains("general_options:"));
 
-    // Now with a trailing comment — should be preserved
+    // Now with a trailing comment. Should be preserved
     let yaml2 = "\
 server_options:
   port: 38281  # some comment
