@@ -72,11 +72,7 @@
 				onkeydown={() => {}}
 			>
 				{#if profile.icon}
-					<img
-						src={profileIconSrc(profile.icon)}
-						alt={profile.name}
-						class="z-profile-avatar"
-					/>
+					<img src={profileIconSrc(profile.icon)} alt={profile.name} class="z-profile-avatar" />
 				{:else}
 					<Icon icon="mdi:account-circle" />
 				{/if}

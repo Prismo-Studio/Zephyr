@@ -53,8 +53,7 @@
 			setCustomBg({ kind: uploaded.kind, url: uploaded.url });
 		} catch (err) {
 			const raw = err instanceof Error ? err.message : String(err);
-			error =
-				(i18nState.locale && m.prefs_custom_bgMedia_uploadFailed({ reason: raw })) || raw;
+			error = (i18nState.locale && m.prefs_custom_bgMedia_uploadFailed({ reason: raw })) || raw;
 		} finally {
 			uploading = false;
 		}

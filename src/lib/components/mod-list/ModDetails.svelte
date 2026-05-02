@@ -1,13 +1,7 @@
 <script lang="ts">
 	import type { Mod } from '$lib/types';
 	import Icon from '@iconify/svelte';
-	import {
-		formatModName,
-		modIconSrc,
-		shortenNum,
-		shortenFileSize,
-		timeSince
-	} from '$lib/util';
+	import { formatModName, modIconSrc, shortenNum, shortenFileSize, timeSince } from '$lib/util';
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import Tabs from '$lib/components/ui/Tabs.svelte';
 	import CachedImage from '$lib/components/ui/CachedImage.svelte';
@@ -111,7 +105,8 @@
 				</div>
 				{#if mod.author}
 					<span class="z-details-author">
-						{i18nState.locale && m.modDetails_by()} {mod.author}
+						{i18nState.locale && m.modDetails_by()}
+						{mod.author}
 					</span>
 				{/if}
 			</div>

@@ -60,11 +60,7 @@
 	}
 </script>
 
-<Modal
-	bind:open
-	title={m.mods_unknownMods({ count: mods.length.toString() })}
-	{onclose}
->
+<Modal bind:open title={m.mods_unknownMods({ count: mods.length.toString() })} {onclose}>
 	<div class="z-unknown-modal">
 		<p class="z-unknown-desc">
 			{i18nState.locale && m.mods_unknownMods_desc()}

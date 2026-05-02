@@ -33,11 +33,7 @@
 			>
 				<div class="z-profile-item-icon">
 					{#if profile.icon}
-						<img
-							src={profileIconSrc(profile.icon)}
-							alt={profile.name}
-							class="z-profile-item-img"
-						/>
+						<img src={profileIconSrc(profile.icon)} alt={profile.name} class="z-profile-item-img" />
 					{:else}
 						<Icon icon="mdi:account-circle" />
 					{/if}

@@ -53,8 +53,7 @@
 			? (i18nState.locale && m.randomizer_thisMachineDesc()) || ''
 			: connTarget === 'lan'
 				? (i18nState.locale && m.randomizer_lanDesc()) || ''
-				: (i18nState.locale &&
-						m.randomizer_publicDesc({ port: (server.port ?? 0).toString() })) ||
+				: (i18nState.locale && m.randomizer_publicDesc({ port: (server.port ?? 0).toString() })) ||
 					''
 	);
 

@@ -55,7 +55,7 @@
 		if (canDrag) onpointerdownHandle?.(e, mod);
 	}}
 	{onclick}
-	oncontextmenu={oncontextmenu}
+	{oncontextmenu}
 	role="button"
 	tabindex="0"
 >

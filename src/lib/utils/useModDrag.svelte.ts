@@ -7,11 +7,7 @@
  */
 import * as api from '$lib/api';
 import type { Mod } from '$lib/types';
-import {
-	createDragGhost,
-	computeInsertPosition,
-	resetGridPositions
-} from '$lib/utils/dragDrop';
+import { createDragGhost, computeInsertPosition, resetGridPositions } from '$lib/utils/dragDrop';
 
 const DRAG_THRESHOLD = 8;
 
@@ -75,9 +71,7 @@ export function createModDrag(opts: Opts) {
 			insertPos = -1;
 			state.placeholderIndex = -1;
 
-			const card = document.querySelector(
-				`[data-mod-uuid="${dragStartMod.uuid}"]`
-			) as HTMLElement;
+			const card = document.querySelector(`[data-mod-uuid="${dragStartMod.uuid}"]`) as HTMLElement;
 			if (!card) return;
 
 			const rect = card.getBoundingClientRect();

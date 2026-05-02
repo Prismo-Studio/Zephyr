@@ -87,17 +87,10 @@
 </script>
 
 <div class="z-version-selector" use:clickOutside={() => (dropdownOpen = false)}>
-	<button
-		class="z-version-btn"
-		disabled={changing}
-		onclick={() => (dropdownOpen = !dropdownOpen)}
-	>
+	<button class="z-version-btn" disabled={changing} onclick={() => (dropdownOpen = !dropdownOpen)}>
 		<Icon icon="mdi:tag" />
 		<span>{mod.version}</span>
-		<Icon
-			icon="mdi:chevron-down"
-			class="z-version-chevron {dropdownOpen ? 'open' : ''}"
-		/>
+		<Icon icon="mdi:chevron-down" class="z-version-chevron {dropdownOpen ? 'open' : ''}" />
 	</button>
 
 	{#if dropdownOpen}

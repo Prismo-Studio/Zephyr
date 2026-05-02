@@ -44,10 +44,7 @@
 	</PrefRow>
 
 	{#key i18nState.locale}
-		<PrefRow
-			title={m.prefs_window_shortcuts()}
-			description={m.prefs_window_shortcuts_desc()}
-		>
+		<PrefRow title={m.prefs_window_shortcuts()} description={m.prefs_window_shortcuts_desc()}>
 			{#snippet control()}
 				<Button variant="secondary" size="sm" onclick={() => (showShortcutsModal = true)}>
 					{#snippet icon()}<Icon icon="mdi:keyboard" />{/snippet}

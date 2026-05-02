@@ -14,14 +14,7 @@
 		onclose: () => void;
 	};
 
-	let {
-		open,
-		profileName,
-		alsoDelete = $bindable(),
-		busy,
-		onconfirm,
-		onclose
-	}: Props = $props();
+	let { open, profileName, alsoDelete = $bindable(), busy, onconfirm, onclose }: Props = $props();
 </script>
 
 <Modal {open} {onclose} title={(i18nState.locale && m.sync_unsyncTitle()) || ''}>
@@ -63,8 +56,7 @@
 			loading={busy}
 			disabled={busy}
 		>
-			{i18nState.locale &&
-				(alsoDelete ? m.sync_unsyncAndDeleteAction() : m.sync_unsyncAction())}
+			{i18nState.locale && (alsoDelete ? m.sync_unsyncAndDeleteAction() : m.sync_unsyncAction())}
 		</Button>
 	{/snippet}
 </Modal>

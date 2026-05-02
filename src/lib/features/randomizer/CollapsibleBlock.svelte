@@ -40,10 +40,7 @@
 					{disabledLabel}
 				</span>
 			{/if}
-			<Icon
-				icon="mdi:chevron-down"
-				class={open ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'}
-			/>
+			<Icon icon="mdi:chevron-down" class={open ? 'rdz-chev' : 'rdz-chev rdz-chev-closed'} />
 		</button>
 		{#if extra}{@render extra()}{/if}
 	</div>

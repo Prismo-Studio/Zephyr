@@ -14,10 +14,7 @@
 	let { prefs, onsave }: Props = $props();
 </script>
 
-<PrefSection
-	icon="mdi:cog"
-	title={(i18nState.locale && m.prefs_miscellaneous_title()) ?? ''}
->
+<PrefSection icon="mdi:cog" title={(i18nState.locale && m.prefs_miscellaneous_title()) ?? ''}>
 	<PrefRow
 		title={(i18nState.locale && m.prefs_miscellaneous_fetchMods_title()) ?? ''}
 		description={(i18nState.locale && m.prefs_miscellaneous_fetchMods_content_1()) ?? ''}

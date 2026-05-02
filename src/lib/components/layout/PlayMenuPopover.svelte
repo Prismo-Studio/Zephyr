@@ -15,12 +15,7 @@
 	let { bottom, left, onlaunchModded, onlaunchVanilla }: Props = $props();
 </script>
 
-<div
-	id="z-play-menu"
-	class="z-play-menu"
-	role="menu"
-	style="bottom: {bottom}px; left: {left}px;"
->
+<div id="z-play-menu" class="z-play-menu" role="menu" style="bottom: {bottom}px; left: {left}px;">
 	{#if games.active || profiles.active}
 		<div class="z-play-menu-header">
 			{#if games.active}

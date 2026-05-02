@@ -105,9 +105,7 @@
 												readonly
 												autofocus
 												onkeydown={onCaptureKeydown}
-												value={pending
-													? formatBinding(pending)
-													: m.shortcuts_listening()}
+												value={pending ? formatBinding(pending) : m.shortcuts_listening()}
 												aria-label={m.shortcuts_listening()}
 											/>
 											<button

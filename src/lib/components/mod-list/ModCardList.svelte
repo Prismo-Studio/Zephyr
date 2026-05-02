@@ -64,7 +64,7 @@
 	class:drop-below={dropIndicator === 'below'}
 	data-mod-uuid={mod.uuid}
 	{onclick}
-	oncontextmenu={oncontextmenu}
+	{oncontextmenu}
 	role="button"
 	tabindex="0"
 >
@@ -169,11 +169,7 @@
 	{#if mod.isInstalled && ontoggle}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div class="z-mod-toggle-wrapper" onclick={(e) => e.stopPropagation()}>
-			<Toggle
-				checked={mod.enabled !== false}
-				disabled={locked}
-				onchange={() => ontoggle?.(mod)}
-			/>
+			<Toggle checked={mod.enabled !== false} disabled={locked} onchange={() => ontoggle?.(mod)} />
 		</div>
 	{/if}
 

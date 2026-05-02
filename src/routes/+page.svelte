@@ -505,10 +505,7 @@
 				/>
 
 				{#if unknownMods.length > 0}
-					<UnknownModsBanner
-						count={unknownMods.length}
-						onclick={() => (unknownModalOpen = true)}
-					/>
+					<UnknownModsBanner count={unknownMods.length} onclick={() => (unknownModalOpen = true)} />
 				{/if}
 
 				<div class="z-mods-list" class:z-grid-layout={viewMode.current === 'grid'}>

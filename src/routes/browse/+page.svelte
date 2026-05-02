@@ -34,11 +34,7 @@
 	import { pushToast } from '$lib/toast.svelte';
 	import { handleMultiSelect } from '$lib/utils/multiSelect';
 	import { gamepadState } from '$lib/gamepad.svelte';
-	import {
-		curseForgeModToMod,
-		unifiedToMod,
-		isServerMod
-	} from '$lib/utils/sourceMappers';
+	import { curseForgeModToMod, unifiedToMod, isServerMod } from '$lib/utils/sourceMappers';
 	import { buildBrowseContextMenu } from '$lib/utils/browseContextMenu';
 
 	const sortOptions: SortBy[] = ['lastUpdated', 'newest', 'rating', 'downloads'];
@@ -70,7 +66,12 @@
 		hasMore: boolean;
 		loading: boolean;
 	};
-	const emptyPage = (): PaginatedSource => ({ items: [], offset: 0, hasMore: true, loading: false });
+	const emptyPage = (): PaginatedSource => ({
+		items: [],
+		offset: 0,
+		hasMore: true,
+		loading: false
+	});
 
 	let thunderstoreMods: Mod[] = $state([]);
 	let cfPage: PaginatedSource = $state(emptyPage());
@@ -83,7 +84,9 @@
 	let filtersExpanded = $state(false);
 
 	let displayedMods = $derived(
-		showCurseForgeOnly ? mods.filter((mm) => mm.uuid.startsWith('curseforge:') || isServerMod(mm)) : mods
+		showCurseForgeOnly
+			? mods.filter((mm) => mm.uuid.startsWith('curseforge:') || isServerMod(mm))
+			: mods
 	);
 
 	let prevInstallActive = false;
@@ -655,7 +658,11 @@
 					{/each}
 
 					{#if showLoadMore}
-						<button class="z-load-more" onclick={loadMore} disabled={showCurseForgeOnly && externalLoading}>
+						<button
+							class="z-load-more"
+							onclick={loadMore}
+							disabled={showCurseForgeOnly && externalLoading}
+						>
 							{showCurseForgeOnly && externalLoading
 								? 'Loading...'
 								: i18nState.locale && m.browse_loadMore()}

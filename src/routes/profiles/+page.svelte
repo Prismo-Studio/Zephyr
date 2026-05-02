@@ -328,7 +328,11 @@
 	>
 		{#snippet actions()}
 			{#if auth.user}
-				<Tooltip text={(i18nState.locale && m.sync_restoreTooltip()) || ''} position="bottom" delay={200}>
+				<Tooltip
+					text={(i18nState.locale && m.sync_restoreTooltip()) || ''}
+					position="bottom"
+					delay={200}
+				>
 					<Button variant="secondary" size="sm" onclick={() => checkForRestorable(false)}>
 						{#snippet icon()}<Icon icon="mdi:cloud-download" />{/snippet}
 						{i18nState.locale && m.sync_restore()}

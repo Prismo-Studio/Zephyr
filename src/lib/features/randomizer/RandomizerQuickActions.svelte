@@ -18,10 +18,30 @@
 	// File extensions for known Archipelago patch formats — kept here rather than
 	// in a constants file because they are specific to this picker's filter list.
 	const PATCH_EXTENSIONS = [
-		'apemerald', 'apfirered', 'apleafgreen', 'appkmnrb', 'appkmnye', 'apcrystal',
-		'apgold', 'apsilver', 'apsms', 'apmw', 'apsmz3', 'aplttp', 'apz3', 'apdkc3',
-		'apkdl3', 'apeb', 'apsoe', 'apzl', 'aptloz', 'aptloz2', 'aptunic', 'apladx',
-		'aposrs', 'apterraria'
+		'apemerald',
+		'apfirered',
+		'apleafgreen',
+		'appkmnrb',
+		'appkmnye',
+		'apcrystal',
+		'apgold',
+		'apsilver',
+		'apsms',
+		'apmw',
+		'apsmz3',
+		'aplttp',
+		'apz3',
+		'apdkc3',
+		'apkdl3',
+		'apeb',
+		'apsoe',
+		'apzl',
+		'aptloz',
+		'aptloz2',
+		'aptunic',
+		'apladx',
+		'aposrs',
+		'apterraria'
 	];
 
 	let open = $state(false);

@@ -11,10 +11,7 @@ import { getMarkdown } from '$lib/utils/mod';
  * - Other external (no slug recognized): use the mod's own description as fallback
  * - Native (Thunderstore + local): the standard `getMarkdown` helper
  */
-export async function loadModMarkdown(
-	mod: Mod,
-	type: MarkdownType
-): Promise<string> {
+export async function loadModMarkdown(mod: Mod, type: MarkdownType): Promise<string> {
 	try {
 		if (mod.uuid.startsWith('curseforge:')) {
 			const cfId = mod.uuid.replace('curseforge:', '');
