@@ -210,8 +210,8 @@
 		color: var(--text-inverse);
 		cursor: pointer;
 		margin-left: 1px;
-		transition: all var(--transition-fast);
 		list-style: none;
+		border: none;
 	}
 
 	.z-version-trigger::-webkit-details-marker {
@@ -224,7 +224,7 @@
 	}
 
 	.z-version-trigger:hover {
-		background: var(--accent-500);
+		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
 		color: var(--text-inverse);
 	}
 
