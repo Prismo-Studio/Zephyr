@@ -61,7 +61,7 @@
 	"util_timeSince_hour": "hour",
 	"util_timeSince_interval_null": "a moment",
 	"util_timeSince_interval_1": "a {str}",
-	"util_timeSince_interval_default": "{interval} {str}s",
+	"util_timeSince_interval_default": "{interval} {str}",
 	"modListFilters_searchBar_placeholder": "Search for mods...",
 	"modListFilters_options_deprecated": "Deprecated",
 	"modListFilters_options_NSFW": "NSFW",
@@ -617,5 +617,11 @@
 	"shortcuts_resetOne": "Reset",
 	"shortcuts_save": "Save",
 	"shortcuts_cancel": "Cancel",
-	"shortcuts_conflict": "Conflicts with another shortcut"
+	"shortcuts_conflict": "Conflicts with another shortcut",
+	"util_timeSince_year_plural": "years",
+	"util_timeSince_month_plural": "months",
+	"util_timeSince_week_plural": "weeks",
+	"util_timeSince_day_plural": "days",
+	"util_timeSince_hour_plural": "hours",
+	"util_timeSince_minute_plural": "minutes"
 }

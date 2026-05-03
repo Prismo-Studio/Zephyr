@@ -61,7 +61,7 @@
 	"util_timeSince_hour": "heure",
 	"util_timeSince_interval_null": "un instant",
 	"util_timeSince_interval_1": "un {str}",
-	"util_timeSince_interval_default": "{interval} {str}s",
+	"util_timeSince_interval_default": "{interval} {str}",
 	"modListFilters_searchBar_placeholder": "Rechercher des mods...",
 	"modListFilters_options_deprecated": "Obsolètes",
 	"modListFilters_options_NSFW": "NSFW",
@@ -607,5 +607,11 @@
 	"prefs_gamepad_enabled_title": "Activer la navigation à la manette",
 	"prefs_gamepad_enabled_desc": "Naviguez dans l'interface avec une manette Xbox ou PlayStation. Croix directionnelle / stick gauche pour se déplacer, A/Croix pour sélectionner, B/Cercle pour revenir.",
 	"prefs_gamepad_connected": "Connectée : {name}",
-	"prefs_gamepad_none": "Aucune manette détectée"
+	"prefs_gamepad_none": "Aucune manette détectée",
+	"util_timeSince_year_plural": "ans",
+	"util_timeSince_month_plural": "mois",
+	"util_timeSince_week_plural": "semaines",
+	"util_timeSince_day_plural": "jours",
+	"util_timeSince_hour_plural": "heures",
+	"util_timeSince_minute_plural": "minutes"
 }

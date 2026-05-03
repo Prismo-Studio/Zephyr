@@ -62,7 +62,7 @@
 	"util_timeSince_hour": "hora",
 	"util_timeSince_interval_null": "um momento",
 	"util_timeSince_interval_1": "um {str}",
-	"util_timeSince_interval_default": "{interval} {str}s",
+	"util_timeSince_interval_default": "{interval} {str}",
 	"modListFilters_searchBar_placeholder": "Pesquisar mods...",
 	"modListFilters_options_deprecated": "Descontinuado",
 	"modListFilters_options_NSFW": "NSFW",
@@ -548,5 +548,11 @@
 	"prefs_gamepad_enabled_title": "Ativar navegação por controle",
 	"prefs_gamepad_enabled_desc": "Navegue pela interface com controles Xbox ou PlayStation. D-pad/analógico esquerdo para mover, A/X para selecionar, B/Círculo para voltar.",
 	"prefs_gamepad_connected": "Conectado: {name}",
-	"prefs_gamepad_none": "Nenhum controle detectado"
+	"prefs_gamepad_none": "Nenhum controle detectado",
+	"util_timeSince_year_plural": "anos",
+	"util_timeSince_month_plural": "meses",
+	"util_timeSince_week_plural": "semanas",
+	"util_timeSince_day_plural": "dias",
+	"util_timeSince_hour_plural": "horas",
+	"util_timeSince_minute_plural": "minutos"
 }

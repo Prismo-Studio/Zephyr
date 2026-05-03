@@ -612,5 +612,11 @@
 	"prefs_gamepad_enabled_title": "启用手柄导航",
 	"prefs_gamepad_enabled_desc": "使用 Xbox 或 PlayStation 控制器导航界面。十字键/左摇杆移动，A/× 选择，B/○ 返回。",
 	"prefs_gamepad_connected": "已连接：{name}",
-	"prefs_gamepad_none": "未检测到控制器"
+	"prefs_gamepad_none": "未检测到控制器",
+	"util_timeSince_year_plural": "年",
+	"util_timeSince_month_plural": "月",
+	"util_timeSince_week_plural": "周",
+	"util_timeSince_day_plural": "天",
+	"util_timeSince_hour_plural": "小时",
+	"util_timeSince_minute_plural": "分"
 }

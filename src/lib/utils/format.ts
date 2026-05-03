@@ -45,40 +45,35 @@ export function shortenNum(value: number): string {
 export function timeSince(date: Date | string): string {
 	const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
 
-	const [interval, str] = (() => {
-		let interval = Math.floor(seconds / (60 * 60 * 24 * 365.25));
-		if (interval >= 1) return [interval, m.util_timeSince_year()];
+	const [interval, singular, plural] = (() => {
+		let i = Math.floor(seconds / (60 * 60 * 24 * 365.25));
+		if (i >= 1) return [i, m.util_timeSince_year(), m.util_timeSince_year_plural()];
 
-		interval = Math.floor(seconds / (60 * 60 * 24 * 30));
-		if (interval >= 1) return [interval, m.util_timeSince_month()];
+		i = Math.floor(seconds / (60 * 60 * 24 * 30));
+		if (i >= 1) return [i, m.util_timeSince_month(), m.util_timeSince_month_plural()];
 
-		interval = Math.floor(seconds / (60 * 60 * 24 * 7));
-		if (interval >= 1) return [interval, m.util_timeSince_week()];
+		i = Math.floor(seconds / (60 * 60 * 24 * 7));
+		if (i >= 1) return [i, m.util_timeSince_week(), m.util_timeSince_week_plural()];
 
-		interval = Math.floor(seconds / (60 * 60 * 24));
-		if (interval >= 1) return [interval, m.util_timeSince_day()];
+		i = Math.floor(seconds / (60 * 60 * 24));
+		if (i >= 1) return [i, m.util_timeSince_day(), m.util_timeSince_day_plural()];
 
-		interval = Math.floor(seconds / (60 * 60));
-		if (interval >= 1) return [interval, m.util_timeSince_hour()];
+		i = Math.floor(seconds / (60 * 60));
+		if (i >= 1) return [i, m.util_timeSince_hour(), m.util_timeSince_hour_plural()];
 
-		interval = Math.floor(seconds / 60);
-		if (interval >= 1) return [interval, m.util_timeSince_minute()];
+		i = Math.floor(seconds / 60);
+		if (i >= 1) return [i, m.util_timeSince_minute(), m.util_timeSince_minute_plural()];
 
-		return [null, null];
+		return [null, null, null];
 	})();
 
-	if (!interval || !str) {
-		return '';
+	if (interval === null) {
+		return m.util_timeSince_interval_null();
 	}
-
-	switch (interval) {
-		case null:
-			return m.util_timeSince_interval_null();
-		case 1:
-			return m.util_timeSince_interval_1({ str });
-		default:
-			return m.util_timeSince_interval_default({ interval, str });
+	if (interval === 1) {
+		return m.util_timeSince_interval_1({ str: singular! });
 	}
+	return m.util_timeSince_interval_default({ interval, str: plural! });
 }
 
 export function capitalize(str: string): string {

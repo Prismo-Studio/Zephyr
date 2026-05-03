@@ -612,5 +612,11 @@
 	"prefs_gamepad_enabled_title": "Включить навигацию геймпадом",
 	"prefs_gamepad_enabled_desc": "Перемещайтесь по интерфейсу с помощью контроллеров Xbox или PlayStation. Крестовина/левый стик для перемещения, A/Cross для выбора, B/Circle для возврата.",
 	"prefs_gamepad_connected": "Подключен: {name}",
-	"prefs_gamepad_none": "Контроллер не обнаружен"
+	"prefs_gamepad_none": "Контроллер не обнаружен",
+	"util_timeSince_year_plural": "год",
+	"util_timeSince_month_plural": "месяц",
+	"util_timeSince_week_plural": "неделя",
+	"util_timeSince_day_plural": "день",
+	"util_timeSince_hour_plural": "час",
+	"util_timeSince_minute_plural": "минута"
 }
