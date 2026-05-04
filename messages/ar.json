@@ -387,7 +387,7 @@
 	"randomizer_mode_random": "عشوائي",
 	"randomizer_mode_weighted": "موزون",
 	"randomizer_mode_randomDesc": "سيختار Archipelago قيمة عند التوليد.",
-	"randomizer_mode_weightedDesc": "يختار Archipelago قيمة واحدة لكل توليد بناءً على هذه الأوزان. الأوزان نسبية. 50/50 يعني توزيعاً متساوياً، 75/25 يفضّل الأول.",
+	"randomizer_mode_weightedDesc": "يختار Archipelago إحدى هذه القيم لكل توليد بناءً على هذه الأوزان (0-100). الأوزان نسبية: 50/50 توزيع متساوٍ، 75/25 يفضّل الأول.",
 	"randomizer_weighted_empty": "أضف إدخالاً واحداً على الأقل. الأوزان نسبية؛ مثلاً 50/50 يعني توزيعاً متساوياً، 75/25 يفضّل الأول.",
 	"randomizer_weighted_value": "القيمة",
 	"randomizer_weighted_addRow": "إضافة إدخال",

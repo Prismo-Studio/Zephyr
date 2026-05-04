@@ -25,8 +25,14 @@
 
 	function handleInput(e: Event) {
 		const target = e.currentTarget as HTMLInputElement;
-		const numVal = step < 1 ? parseFloat(target.value) : parseInt(target.value);
-		if (!isNaN(numVal)) onchange?.(numVal);
+		let numVal = step < 1 ? parseFloat(target.value) : parseInt(target.value);
+		if (isNaN(numVal)) return;
+		if (min != null) numVal = Math.max(numVal, min);
+		if (max != null) numVal = Math.min(numVal, max);
+		// Force the DOM to display the clamped value when the user typed
+		// something out of range (e.g. 100000 with max=100).
+		if (String(numVal) !== target.value) target.value = String(numVal);
+		onchange?.(numVal);
 	}
 </script>
 

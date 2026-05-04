@@ -369,7 +369,7 @@
 	"randomizer_mode_random": "Aléatoire",
 	"randomizer_mode_weighted": "Pondéré",
 	"randomizer_mode_randomDesc": "Archipelago choisira une valeur à la génération.",
-	"randomizer_mode_weightedDesc": "Archipelago choisit une valeur par génération, pondérée par ces nombres. Les poids sont relatifs : 50/50 c'est équitable, 75/25 favorise le premier.",
+	"randomizer_mode_weightedDesc": "Archipelago choisit l'une de ces valeurs par génération, pondérée par ces nombres (0-100). Les poids sont relatifs : 50/50 c'est équitable, 75/25 favorise le premier.",
 	"randomizer_weighted_empty": "Ajoute au moins une entrée. Les poids sont relatifs ; ex. 50/50 c'est équitable, 75/25 favorise le premier.",
 	"randomizer_weighted_value": "Valeur",
 	"randomizer_weighted_addRow": "Ajouter une entrée",

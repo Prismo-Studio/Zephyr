@@ -374,7 +374,7 @@
 	"randomizer_mode_random": "随机",
 	"randomizer_mode_weighted": "加权",
 	"randomizer_mode_randomDesc": "Archipelago 将在生成时选择一个值。",
-	"randomizer_mode_weightedDesc": "Archipelago 在每次生成时按这些权重选择一个值。权重为相对值。50/50 表示均等，75/25 偏向前者。",
+	"randomizer_mode_weightedDesc": "Archipelago 在每次生成时按这些权重（0-100）从这些值中选择一个。权重为相对值：50/50 表示均等，75/25 偏向前者。",
 	"randomizer_weighted_empty": "至少添加一项。权重为相对值；例如 50/50 表示均等，75/25 偏向前者。",
 	"randomizer_weighted_value": "值",
 	"randomizer_weighted_addRow": "添加条目",

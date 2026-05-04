@@ -5,6 +5,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import Slider from '$lib/components/ui/Slider.svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import WeightedValueEditor from './WeightedValueEditor.svelte';
 	import type { OptionDef, RandomVariant, Value, ValueMode } from './types';
 	import {
@@ -167,40 +168,52 @@
 		</div>
 
 		{#if supportsRand}
-			<div class="rdz-mode-tabs" role="tablist">
-				<button
-					type="button"
-					role="tab"
-					class="rdz-mode-tab"
-					class:active={mode === 'fixed'}
-					aria-selected={mode === 'fixed'}
-					onclick={() => setMode('fixed')}
-				>
-					<Icon icon="mdi:target" />
-					<span>{i18nState.locale && m.randomizer_mode_fixed()}</span>
-				</button>
-				<button
-					type="button"
-					role="tab"
-					class="rdz-mode-tab"
-					class:active={mode === 'random'}
-					aria-selected={mode === 'random'}
-					onclick={() => setMode('random')}
-				>
-					<Icon icon="mdi:dice-multiple" />
-					<span>{i18nState.locale && m.randomizer_mode_random()}</span>
-				</button>
-				<button
-					type="button"
-					role="tab"
-					class="rdz-mode-tab"
-					class:active={mode === 'weighted'}
-					aria-selected={mode === 'weighted'}
-					onclick={() => setMode('weighted')}
-				>
-					<Icon icon="mdi:chart-pie" />
-					<span>{i18nState.locale && m.randomizer_mode_weighted()}</span>
-				</button>
+			<div class="rdz-mode-row">
+				<div class="rdz-mode-tabs" role="tablist">
+					<button
+						type="button"
+						role="tab"
+						class="rdz-mode-tab"
+						class:active={mode === 'fixed'}
+						aria-selected={mode === 'fixed'}
+						onclick={() => setMode('fixed')}
+					>
+						<Icon icon="mdi:target" />
+						<span>{i18nState.locale && m.randomizer_mode_fixed()}</span>
+					</button>
+					<button
+						type="button"
+						role="tab"
+						class="rdz-mode-tab"
+						class:active={mode === 'random'}
+						aria-selected={mode === 'random'}
+						onclick={() => setMode('random')}
+					>
+						<Icon icon="mdi:dice-multiple" />
+						<span>{i18nState.locale && m.randomizer_mode_random()}</span>
+					</button>
+					<button
+						type="button"
+						role="tab"
+						class="rdz-mode-tab"
+						class:active={mode === 'weighted'}
+						aria-selected={mode === 'weighted'}
+						onclick={() => setMode('weighted')}
+					>
+						<Icon icon="mdi:chart-pie" />
+						<span>{i18nState.locale && m.randomizer_mode_weighted()}</span>
+					</button>
+				</div>
+				{#if mode === 'weighted'}
+					<Tooltip
+						text={i18nState.locale ? m.randomizer_mode_weightedDesc() : ''}
+						position="top"
+					>
+						<span class="rdz-mode-info" aria-label="Weighted mode help">
+							<Icon icon="mdi:information-outline" />
+						</span>
+					</Tooltip>
+				{/if}
 			</div>
 		{/if}
 
@@ -219,10 +232,6 @@
 					</div>
 				{/if}
 			{:else if mode === 'weighted'}
-				<div class="rdz-weighted-hint">
-					<Icon icon="mdi:information-outline" />
-					<span>{i18nState.locale && m.randomizer_mode_weightedDesc()}</span>
-				</div>
 				<WeightedValueEditor
 					{option}
 					value={isWeightedMap(value) ? value : {}}
@@ -390,6 +399,13 @@
 	}
 
 	/* Mode tabs (Fixed / Random / Weighted) */
+	.rdz-mode-row {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		flex-wrap: wrap;
+	}
+
 	.rdz-mode-tabs {
 		display: inline-flex;
 		gap: 2px;
@@ -397,7 +413,26 @@
 		border-radius: var(--radius-md);
 		background: var(--bg-elevated);
 		border: 1px solid var(--border-subtle);
-		align-self: flex-start;
+	}
+
+	.rdz-mode-info {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		border-radius: var(--radius-full);
+		color: var(--text-muted);
+		cursor: help;
+		transition: color var(--transition-fast);
+	}
+
+	.rdz-mode-info:hover {
+		color: var(--accent-400);
+	}
+
+	.rdz-mode-info :global(svg) {
+		font-size: 14px;
 	}
 
 	.rdz-mode-tab {
@@ -446,27 +481,6 @@
 
 	.rdz-random-fixed :global(svg) {
 		font-size: 14px;
-	}
-
-	.rdz-weighted-hint {
-		display: flex;
-		align-items: flex-start;
-		gap: 6px;
-		padding: 6px 10px;
-		margin-bottom: var(--space-xs);
-		border-radius: var(--radius-sm);
-		background: var(--bg-active);
-		border-left: 2px solid var(--accent-400);
-		color: var(--text-secondary);
-		font-size: 11px;
-		line-height: 1.4;
-	}
-
-	.rdz-weighted-hint :global(svg) {
-		font-size: 13px;
-		color: var(--accent-400);
-		flex-shrink: 0;
-		margin-top: 1px;
 	}
 
 	/* Toggle */

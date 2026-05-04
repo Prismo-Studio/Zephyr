@@ -7,6 +7,8 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
+	const MAX_ENTRIES = 3;
+
 	type Props = {
 		option: OptionDef;
 		value: Record<string, Value>;
@@ -91,11 +93,14 @@
 	}
 
 	function addRow() {
+		if (rows.length >= MAX_ENTRIES) return;
 		const key = nextDefaultKey();
 		const next = [...rows, { id: counter++, key, weight: 50 }];
 		rows = next;
 		emit(next);
 	}
+
+	const canAdd = $derived(rows.length < MAX_ENTRIES);
 
 	function removeRow(id: number) {
 		const next = rows.filter((r) => r.id !== id);
@@ -176,7 +181,7 @@
 		</div>
 	{/if}
 
-	<button class="rdz-weighted-add" onclick={addRow}>
+	<button class="rdz-weighted-add" onclick={addRow} disabled={!canAdd}>
 		<Icon icon="mdi:plus" />
 		{i18nState.locale && m.randomizer_weighted_addRow()}
 	</button>
@@ -269,9 +274,14 @@
 		transition: all var(--transition-fast);
 	}
 
-	.rdz-weighted-add:hover {
+	.rdz-weighted-add:hover:not(:disabled) {
 		border-color: var(--accent-400);
 		color: var(--accent-400);
 		background: var(--bg-active);
+	}
+
+	.rdz-weighted-add:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
 	}
 </style>

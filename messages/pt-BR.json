@@ -303,7 +303,7 @@
 	"randomizer_mode_random": "Aleatório",
 	"randomizer_mode_weighted": "Ponderado",
 	"randomizer_mode_randomDesc": "O Archipelago escolherá um valor na geração.",
-	"randomizer_mode_weightedDesc": "O Archipelago escolhe um valor por geração, ponderado por estes números. Os pesos são relativos: 50/50 é igual, 75/25 favorece o primeiro.",
+	"randomizer_mode_weightedDesc": "O Archipelago escolhe um destes valores por geração, ponderado por estes números (0-100). Os pesos são relativos: 50/50 é igual, 75/25 favorece o primeiro.",
 	"randomizer_weighted_empty": "Adicione pelo menos uma entrada. Os pesos são relativos; por ex. 50/50 é igual, 75/25 favorece o primeiro.",
 	"randomizer_weighted_value": "Valor",
 	"randomizer_weighted_addRow": "Adicionar entrada",

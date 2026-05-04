@@ -374,7 +374,7 @@
 	"randomizer_mode_random": "Случайно",
 	"randomizer_mode_weighted": "С весами",
 	"randomizer_mode_randomDesc": "Archipelago выберет значение при генерации.",
-	"randomizer_mode_weightedDesc": "Archipelago выбирает одно значение на генерацию с учётом этих весов. Веса относительные. 50/50 поровну, 75/25 в пользу первого.",
+	"randomizer_mode_weightedDesc": "Archipelago выбирает одно из этих значений за генерацию с учётом этих весов (0-100). Веса относительные: 50/50 поровну, 75/25 в пользу первого.",
 	"randomizer_weighted_empty": "Добавьте хотя бы одну запись. Веса относительные; напр. 50/50 — поровну, 75/25 — в пользу первого.",
 	"randomizer_weighted_value": "Значение",
 	"randomizer_weighted_addRow": "Добавить запись",
