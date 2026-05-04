@@ -44,6 +44,7 @@
 	import { relaunch } from '@tauri-apps/plugin-process';
 	import { getVersion } from '@tauri-apps/api/app';
 	import { pushToast, pushInfoToast } from '$lib/toast.svelte';
+	import { initTelemetry, captureEvent } from '$lib/telemetry.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Icon from '@iconify/svelte';
@@ -146,7 +147,12 @@
 		games.refresh().catch(() => {});
 		auth.refresh().catch(() => {});
 		updates.refresh().catch(() => {});
-		getVersion().then((v) => (appVersion = v));
+		getVersion().then(async (v) => {
+			appVersion = v;
+			// Anonymous opt-in telemetry. No-op unless user has enabled the toggle.
+			await initTelemetry();
+			captureEvent('app_started', { version: v });
+		});
 		initTheme();
 		refreshFont();
 		refreshColor('accent');

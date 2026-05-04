@@ -627,5 +627,8 @@
 	"util_timeSince_week_plural": "неделя",
 	"util_timeSince_day_plural": "день",
 	"util_timeSince_hour_plural": "час",
-	"util_timeSince_minute_plural": "минута"
+	"util_timeSince_minute_plural": "минута",
+	"prefs_privacy_title": "Конфиденциальность",
+	"prefs_privacy_telemetry_title": "Анонимные данные об использовании",
+	"prefs_privacy_telemetry_description": "Помогите улучшить Zephyr, делясь анонимными событиями использования (популярные игры и моды, версия, язык). Никакой личной информации, никаких IP, никаких имён пользователей Discord. Данные хранятся в ЕС."
 }

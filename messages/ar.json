@@ -632,5 +632,8 @@
 	"util_timeSince_week_plural": "أسبوع",
 	"util_timeSince_day_plural": "يوم",
 	"util_timeSince_hour_plural": "ساعة",
-	"util_timeSince_minute_plural": "دقيقة"
+	"util_timeSince_minute_plural": "دقيقة",
+	"prefs_privacy_title": "الخصوصية",
+	"prefs_privacy_telemetry_title": "بيانات الاستخدام المجهولة",
+	"prefs_privacy_telemetry_description": "ساعد في تحسين Zephyr من خلال مشاركة أحداث الاستخدام المجهولة (الألعاب والمودات الشائعة، الإصدار، اللغة). لا معلومات شخصية، لا IP، لا اسم مستخدم Discord. البيانات مستضافة في الاتحاد الأوروبي."
 }

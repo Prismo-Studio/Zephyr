@@ -627,5 +627,8 @@
 	"util_timeSince_week_plural": "周",
 	"util_timeSince_day_plural": "天",
 	"util_timeSince_hour_plural": "小时",
-	"util_timeSince_minute_plural": "分"
+	"util_timeSince_minute_plural": "分",
+	"prefs_privacy_title": "隐私",
+	"prefs_privacy_telemetry_title": "匿名使用数据",
+	"prefs_privacy_telemetry_description": "通过分享匿名使用事件（热门游戏和模组、版本、语言）来帮助改进 Zephyr。无个人信息、无 IP、无 Discord 用户名。数据托管在欧盟。"
 }

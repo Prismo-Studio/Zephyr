@@ -10,6 +10,7 @@
 	import BehaviorSection from '$lib/components/prefs/BehaviorSection.svelte';
 	import PathsSection from '$lib/components/prefs/PathsSection.svelte';
 	import ActionsSection from '$lib/components/prefs/ActionsSection.svelte';
+	import PrivacySection from '$lib/components/prefs/PrivacySection.svelte';
 	import AboutSection from '$lib/components/prefs/AboutSection.svelte';
 	import CustomThemeModal from '$lib/components/prefs/CustomThemeModal.svelte';
 
@@ -49,6 +50,7 @@
 			<PathsSection {prefs} onsave={savePrefs} />
 		{/if}
 		<ActionsSection />
+		<PrivacySection />
 		<AboutSection />
 	</div>
 </div>

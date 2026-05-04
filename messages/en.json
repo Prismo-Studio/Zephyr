@@ -632,5 +632,8 @@
 	"util_timeSince_week_plural": "weeks",
 	"util_timeSince_day_plural": "days",
 	"util_timeSince_hour_plural": "hours",
-	"util_timeSince_minute_plural": "minutes"
+	"util_timeSince_minute_plural": "minutes",
+	"prefs_privacy_title": "Privacy",
+	"prefs_privacy_telemetry_title": "Anonymous usage data",
+	"prefs_privacy_telemetry_description": "Help improve Zephyr by sharing anonymous usage events (which game/mods are popular, app version, locale). No personal information, no IP, no Discord username. Data is hosted in the EU."
 }
