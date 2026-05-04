@@ -35,7 +35,7 @@ fn yaml_generation_includes_game_section() {
     let schema = load_alttp();
     let mut values: HashMap<String, Value> = HashMap::new();
     values.insert("goal".into(), Value::String("ganon".into()));
-    values.insert("crystals_ganon".into(), Value::Int(7));
+    values.insert("crystals_needed_for_ganon".into(), Value::Int(7));
 
     let cfg = RandomizerConfig {
         game_id: "alttp".into(),
@@ -85,7 +85,7 @@ fn yaml_generation_includes_game_section() {
 fn validation_flags_out_of_range() {
     let schema = load_alttp();
     let mut values: HashMap<String, Value> = HashMap::new();
-    values.insert("crystals_ganon".into(), Value::Int(99));
+    values.insert("crystals_needed_for_ganon".into(), Value::Int(99));
     let cfg = RandomizerConfig {
         game_id: "alttp".into(),
         seed: None,
@@ -94,7 +94,7 @@ fn validation_flags_out_of_range() {
         player_name: None,
     };
     let errors = validation::validate(&schema, &cfg);
-    assert!(errors.iter().any(|e| e.option_id == "crystals_ganon"));
+    assert!(errors.iter().any(|e| e.option_id == "crystals_needed_for_ganon"));
 }
 
 #[test]
@@ -194,6 +194,253 @@ fn validation_flags_stale_dependency() {
     };
     let errors = validation::validate(&schema, &cfg);
     assert!(errors.iter().any(|e| e.option_id == "entrance_shuffle"));
+}
+
+#[test]
+fn validation_accepts_random_string_for_any_option() {
+    let schema = load_alttp();
+    // crystals_ganon is a Range, goal is a Select
+    for variant in ["random", "random-low", "random-middle", "random-high"] {
+        let mut values: HashMap<String, Value> = HashMap::new();
+        values.insert("crystals_needed_for_ganon".into(), Value::String(variant.into()));
+        values.insert("goal".into(), Value::String("random".into()));
+        let cfg = RandomizerConfig {
+            game_id: "alttp".into(),
+            seed: None,
+            values,
+            preset_id: None,
+            player_name: None,
+        };
+        let errors = validation::validate(&schema, &cfg);
+        let relevant: Vec<_> = errors
+            .iter()
+            .filter(|e| e.option_id == "crystals_needed_for_ganon" || e.option_id == "goal")
+            .collect();
+        assert!(
+            relevant.is_empty(),
+            "variant={variant} should be accepted, got {relevant:?}"
+        );
+    }
+}
+
+#[test]
+fn validation_accepts_weighted_dict_for_select() {
+    let schema = load_alttp();
+    // goal is a select; weighted dict between two valid choices.
+    let mut weighted: HashMap<String, Value> = HashMap::new();
+    weighted.insert("ganon".into(), Value::Int(50));
+    weighted.insert("pedestal".into(), Value::Int(50));
+    let mut values: HashMap<String, Value> = HashMap::new();
+    values.insert("goal".into(), Value::Map(weighted));
+    let cfg = RandomizerConfig {
+        game_id: "alttp".into(),
+        seed: None,
+        values,
+        preset_id: None,
+        player_name: None,
+    };
+    let errors = validation::validate(&schema, &cfg);
+    assert!(
+        errors.iter().all(|e| e.option_id != "goal"),
+        "weighted goal should be valid, got {errors:?}"
+    );
+}
+
+#[test]
+fn validation_rejects_invalid_choice_in_weighted_dict() {
+    let schema = load_alttp();
+    let mut weighted: HashMap<String, Value> = HashMap::new();
+    weighted.insert("not_a_real_goal".into(), Value::Int(50));
+    let mut values: HashMap<String, Value> = HashMap::new();
+    values.insert("goal".into(), Value::Map(weighted));
+    let cfg = RandomizerConfig {
+        game_id: "alttp".into(),
+        seed: None,
+        values,
+        preset_id: None,
+        player_name: None,
+    };
+    let errors = validation::validate(&schema, &cfg);
+    assert!(errors.iter().any(|e| e.option_id == "goal"));
+}
+
+#[test]
+fn validation_rejects_weighted_dict_with_no_positive_weights() {
+    let schema = load_alttp();
+    let mut weighted: HashMap<String, Value> = HashMap::new();
+    weighted.insert("ganon".into(), Value::Int(0));
+    weighted.insert("pedestal".into(), Value::Int(0));
+    let mut values: HashMap<String, Value> = HashMap::new();
+    values.insert("goal".into(), Value::Map(weighted));
+    let cfg = RandomizerConfig {
+        game_id: "alttp".into(),
+        seed: None,
+        values,
+        preset_id: None,
+        player_name: None,
+    };
+    let errors = validation::validate(&schema, &cfg);
+    assert!(errors.iter().any(|e| e.option_id == "goal"));
+}
+
+#[test]
+fn validation_rejects_negative_weight() {
+    let schema = load_alttp();
+    let mut weighted: HashMap<String, Value> = HashMap::new();
+    weighted.insert("ganon".into(), Value::Int(-10));
+    weighted.insert("pedestal".into(), Value::Int(50));
+    let mut values: HashMap<String, Value> = HashMap::new();
+    values.insert("goal".into(), Value::Map(weighted));
+    let cfg = RandomizerConfig {
+        game_id: "alttp".into(),
+        seed: None,
+        values,
+        preset_id: None,
+        player_name: None,
+    };
+    let errors = validation::validate(&schema, &cfg);
+    assert!(errors.iter().any(|e| e.option_id == "goal"));
+}
+
+#[test]
+fn validation_accepts_random_as_weighted_key() {
+    let schema = load_alttp();
+    let mut weighted: HashMap<String, Value> = HashMap::new();
+    weighted.insert("ganon".into(), Value::Int(50));
+    weighted.insert("random".into(), Value::Int(25));
+    let mut values: HashMap<String, Value> = HashMap::new();
+    values.insert("goal".into(), Value::Map(weighted));
+    let cfg = RandomizerConfig {
+        game_id: "alttp".into(),
+        seed: None,
+        values,
+        preset_id: None,
+        player_name: None,
+    };
+    let errors = validation::validate(&schema, &cfg);
+    assert!(
+        errors.iter().all(|e| e.option_id != "goal"),
+        "random key in weighted dict should be allowed, got {errors:?}"
+    );
+}
+
+#[test]
+fn validation_rejects_out_of_range_weighted_key() {
+    let schema = load_alttp();
+    // crystals_ganon range is [0, 7]; key "99" is out of range.
+    let mut weighted: HashMap<String, Value> = HashMap::new();
+    weighted.insert("99".into(), Value::Int(50));
+    let mut values: HashMap<String, Value> = HashMap::new();
+    values.insert("crystals_needed_for_ganon".into(), Value::Map(weighted));
+    let cfg = RandomizerConfig {
+        game_id: "alttp".into(),
+        seed: None,
+        values,
+        preset_id: None,
+        player_name: None,
+    };
+    let errors = validation::validate(&schema, &cfg);
+    assert!(errors.iter().any(|e| e.option_id == "crystals_needed_for_ganon"));
+}
+
+#[test]
+fn yaml_generation_emits_random_string() {
+    let schema = load_alttp();
+    let mut values: HashMap<String, Value> = HashMap::new();
+    values.insert("goal".into(), Value::String("random".into()));
+    let cfg = RandomizerConfig {
+        game_id: "alttp".into(),
+        seed: None,
+        values,
+        preset_id: None,
+        player_name: Some("Tester".into()),
+    };
+    let yaml = yaml_gen::generate(&schema, &cfg).expect("yaml gen ok");
+    let parsed: serde_yaml::Value = serde_yaml::from_str(&yaml).expect("yaml parses");
+    let game_section = parsed
+        .get(serde_yaml::Value::from("A Link to the Past"))
+        .and_then(|v| v.as_mapping())
+        .expect("game section");
+    let goal = game_section
+        .get(serde_yaml::Value::from("goal"))
+        .expect("goal key present");
+    assert_eq!(goal.as_str(), Some("random"));
+}
+
+#[test]
+fn yaml_generation_emits_toggle_weighted_dict() {
+    // swordless is a Toggle in alttp; weighted random between true/false.
+    let schema = load_alttp();
+    let mut weighted: HashMap<String, Value> = HashMap::new();
+    weighted.insert("true".into(), Value::Int(50));
+    weighted.insert("false".into(), Value::Int(50));
+    let mut values: HashMap<String, Value> = HashMap::new();
+    values.insert("swordless".into(), Value::Map(weighted));
+
+    let cfg = RandomizerConfig {
+        game_id: "alttp".into(),
+        seed: None,
+        values,
+        preset_id: None,
+        player_name: Some("Tester".into()),
+    };
+    let errors = validation::validate(&schema, &cfg);
+    assert!(
+        errors.iter().all(|e| e.option_id != "swordless"),
+        "weighted toggle should validate, got {errors:?}"
+    );
+    let yaml = yaml_gen::generate(&schema, &cfg).expect("yaml gen ok");
+    // Re-parse to confirm valid YAML and the structure round-trips.
+    let parsed: serde_yaml::Value = serde_yaml::from_str(&yaml).expect("yaml parses");
+    let game_section = parsed
+        .get(serde_yaml::Value::from("A Link to the Past"))
+        .and_then(|v| v.as_mapping())
+        .expect("game section");
+    let weighted_out = game_section
+        .get(serde_yaml::Value::from("swordless"))
+        .and_then(|v| v.as_mapping())
+        .expect("swordless is a mapping");
+    // Keys may parse as either strings or bools depending on YAML quoting,
+    // but Archipelago accepts both — what matters is that both branches are present.
+    assert_eq!(weighted_out.len(), 2, "two weighted entries expected");
+}
+
+#[test]
+fn yaml_generation_emits_weighted_dict() {
+    let schema = load_alttp();
+    let mut weighted: HashMap<String, Value> = HashMap::new();
+    weighted.insert("ganon".into(), Value::Int(50));
+    weighted.insert("pedestal".into(), Value::Int(25));
+    let mut values: HashMap<String, Value> = HashMap::new();
+    values.insert("goal".into(), Value::Map(weighted));
+
+    let cfg = RandomizerConfig {
+        game_id: "alttp".into(),
+        seed: None,
+        values,
+        preset_id: None,
+        player_name: Some("Tester".into()),
+    };
+    let yaml = yaml_gen::generate(&schema, &cfg).expect("yaml gen ok");
+    let parsed: serde_yaml::Value = serde_yaml::from_str(&yaml).expect("yaml parses");
+    let game_section = parsed
+        .get(serde_yaml::Value::from("A Link to the Past"))
+        .and_then(|v| v.as_mapping())
+        .expect("game section");
+    let goal = game_section
+        .get(serde_yaml::Value::from("goal"))
+        .and_then(|v| v.as_mapping())
+        .expect("goal is a mapping (weighted dict)");
+    assert_eq!(
+        goal.get(serde_yaml::Value::from("ganon"))
+            .and_then(|v| v.as_i64()),
+        Some(50)
+    );
+    assert_eq!(
+        goal.get(serde_yaml::Value::from("pedestal"))
+            .and_then(|v| v.as_i64()),
+        Some(25)
+    );
 }
 
 #[test]
