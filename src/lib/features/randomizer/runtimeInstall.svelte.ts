@@ -1,5 +1,6 @@
 import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 import { installRuntime, provisionRuntimeVenv, runtimeStatus } from './api';
+import { captureEvent } from '$lib/telemetry.svelte';
 import type { RuntimeProgress, RuntimeStatus } from './types';
 
 type Mode = 'install' | 'venv' | null;
@@ -50,6 +51,7 @@ class RuntimeInstallStore {
 		this.lastError = null;
 		try {
 			this.status = await installRuntime();
+			captureEvent('ap_runtime_installed');
 		} catch (err) {
 			this.lastError = (err as { message?: string })?.message ?? String(err);
 			throw err;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { captureEvent } from '$lib/telemetry.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
@@ -57,6 +58,11 @@
 		} catch {
 			// ignore
 		}
+		captureEvent('ap_client_connected', {
+			has_password: !!password.trim(),
+			use_tracker: useTracker,
+			game: game.trim() || null
+		});
 		onsubmit({
 			host: h,
 			slot: s,

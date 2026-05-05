@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as api from '$lib/api';
+	import { captureEvent } from '$lib/telemetry.svelte';
 	import type { SortBy, Mod, ModId, Dependant } from '$lib/types';
 	import { curseForgeEnabled } from '$lib/themeSystem';
 	import * as zephyrServer from '$lib/api/zephyrServer';
@@ -480,6 +481,7 @@
 
 	async function install(id: ModId) {
 		await api.profile.install.mod(id);
+		captureEvent('mod_installed', { via: 'browse' });
 		await refresh();
 	}
 
@@ -500,6 +502,7 @@
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
+			captureEvent('mod_removed');
 			await refresh();
 		} else if (response.type === 'confirm') {
 			removeDialog = { open: true, mod, dependants: response.dependants };

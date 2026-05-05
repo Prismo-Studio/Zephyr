@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as api from '$lib/api';
+	import { captureEvent } from '$lib/telemetry.svelte';
 	import type { Mod, ModId, SortBy, AvailableUpdate, ProfileQuery, Dependant } from '$lib/types';
 	import Icon from '@iconify/svelte';
 	import ScrollToTop from '$lib/components/ui/ScrollToTop.svelte';
@@ -162,6 +163,7 @@
 
 	async function install(id: ModId) {
 		await api.profile.install.mod(id);
+		captureEvent('mod_installed', { via: 'mod_list' });
 		await refresh();
 	}
 
@@ -193,6 +195,7 @@
 	async function removeMod(mod: Mod) {
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
+			captureEvent('mod_removed');
 			await refresh();
 		} else if (response.type === 'confirm') {
 			removeDialog = { open: true, mod, dependants: response.dependants };
@@ -203,6 +206,7 @@
 		const uuids = updates.filter((u) => !u.ignore).map((u) => u.packageUuid);
 		if (uuids.length > 0) {
 			await api.profile.update.mods(uuids, true);
+			captureEvent('mod_updated', { count: uuids.length, batch: true });
 			await refresh();
 		}
 	}

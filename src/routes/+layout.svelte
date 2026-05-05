@@ -110,7 +110,36 @@
 	let unlistenProfiles: UnlistenFn | null;
 	let unlistenGames: UnlistenFn | null;
 
+	/** Track in-app navigation. SvelteKit routes via History API, so we intercept
+	 *  pushState/replaceState/popstate. Fires once for the initial load too. */
+	function setupPageTracking() {
+		let lastPath = location.pathname;
+
+		const fire = (type: string) => {
+			const path = location.pathname;
+			if (path === lastPath) return;
+			captureEvent('page_viewed', { path, from: lastPath, type });
+			lastPath = path;
+		};
+
+		// Initial page (covers the first render in addition to app_started).
+		captureEvent('page_viewed', { path: lastPath, from: null, type: 'enter' });
+
+		const origPush = history.pushState.bind(history);
+		const origReplace = history.replaceState.bind(history);
+		history.pushState = function (state, title, url) {
+			origPush(state, title, url);
+			fire('push');
+		};
+		history.replaceState = function (state, title, url) {
+			origReplace(state, title, url);
+			fire('replace');
+		};
+		window.addEventListener('popstate', () => fire('popstate'));
+	}
+
 	onMount(() => {
+		setupPageTracking();
 		document.addEventListener(
 			'keydown',
 			(e) => {

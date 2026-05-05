@@ -7,6 +7,7 @@
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 	import type { Mod } from '$lib/types';
 	import * as api from '$lib/api';
+	import { captureEvent } from '$lib/telemetry.svelte';
 	import { m } from '$lib/paraglide/messages';
 
 	let open = $state(false);
@@ -27,6 +28,10 @@
 		await api.profile.install.mod({
 			packageUuid: mod.uuid,
 			versionUuid: mod.versions[0].uuid
+		});
+		captureEvent('mod_installed', {
+			source: 'thunderstore',
+			via: 'install_dialog'
 		});
 		open = false;
 	}
