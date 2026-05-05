@@ -25,8 +25,8 @@ use tauri::AppHandle;
 use zip::ZipArchive;
 
 use super::ap_runner::{ap_dir, detect_python, sanitize_python_env};
-use crate::util::process::CommandExt as _;
 use super::schema::user_schemas_dir;
+use crate::util::process::CommandExt as _;
 
 /// Archipelago schema-extractor helper, embedded into the binary at build time
 /// so release builds don't need `scripts/` on disk. Materialised next to the
@@ -236,9 +236,7 @@ pub fn remove_apworld(app: &AppHandle, file_name: &str) -> Result<()> {
     }
 
     // Figure out world_id so we can prune the generated schema.
-    let world_id = inspect_apworld(&target)
-        .ok()
-        .and_then(|(id, _, _)| id);
+    let world_id = inspect_apworld(&target).ok().and_then(|(id, _, _)| id);
 
     fs::remove_file(&target).with_context(|| format!("remove {}", target.display()))?;
 
@@ -396,9 +394,7 @@ fn sanitize_filename(name: &str) -> String {
 
 /// Peek inside a `.apworld` zip and pull out (world_id, display_name, world_version).
 /// Fails only when the zip is unreadable; missing fields become `None`.
-fn inspect_apworld(
-    path: &Path,
-) -> Result<(Option<String>, Option<String>, Option<String>)> {
+fn inspect_apworld(path: &Path) -> Result<(Option<String>, Option<String>, Option<String>)> {
     let file = fs::File::open(path).with_context(|| format!("open {}", path.display()))?;
     let mut zip = ZipArchive::new(file).context("not a valid zip")?;
 
@@ -440,7 +436,9 @@ fn inspect_apworld(
     let (display_name, world_version) = if let Some(json) = manifest.as_ref() {
         match serde_json::from_str::<serde_json::Value>(json) {
             Ok(v) => (
-                v.get("game").and_then(|g| g.as_str()).map(|s| s.to_string()),
+                v.get("game")
+                    .and_then(|g| g.as_str())
+                    .map(|s| s.to_string()),
                 v.get("world_version")
                     .and_then(|g| g.as_str())
                     .map(|s| s.to_string()),

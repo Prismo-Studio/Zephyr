@@ -94,10 +94,7 @@ pub fn generate(schema: &GameSchema, config: &RandomizerConfig) -> Result<String
     for key in EXTRA_GAME_SECTION_KEYS {
         if let Some(Value::Map(m)) = config.values.get(*key) {
             if !m.is_empty() {
-                game_section.insert(
-                    YamlValue::from(*key),
-                    value_to_yaml(&Value::Map(m.clone())),
-                );
+                game_section.insert(YamlValue::from(*key), value_to_yaml(&Value::Map(m.clone())));
             }
         }
     }
@@ -154,10 +151,7 @@ pub fn lint(yaml: &str, schema: &GameSchema) -> Vec<LintIssue> {
         }
     }
 
-    if let Some(name) = map
-        .get(YamlValue::from("name"))
-        .and_then(|v| v.as_str())
-    {
+    if let Some(name) = map.get(YamlValue::from("name")).and_then(|v| v.as_str()) {
         if name.trim().is_empty() {
             issues.push(LintIssue {
                 level: "warning".into(),
@@ -166,7 +160,10 @@ pub fn lint(yaml: &str, schema: &GameSchema) -> Vec<LintIssue> {
         } else if name.len() > 16 {
             issues.push(LintIssue {
                 level: "warning".into(),
-                message: format!("player name is {} chars (Archipelago limit is 16)", name.len()),
+                message: format!(
+                    "player name is {} chars (Archipelago limit is 16)",
+                    name.len()
+                ),
             });
         }
     }

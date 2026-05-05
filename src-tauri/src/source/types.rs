@@ -202,7 +202,10 @@ mod tests {
 
     #[test]
     fn sort_direction_default_is_descending() {
-        assert!(matches!(SortDirection::default(), SortDirection::Descending));
+        assert!(matches!(
+            SortDirection::default(),
+            SortDirection::Descending
+        ));
     }
 
     #[test]

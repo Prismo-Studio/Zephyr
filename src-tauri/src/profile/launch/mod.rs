@@ -80,10 +80,7 @@ impl ManagedGame {
         if let Err(err) =
             linux::patch_doorstop_config_for_proton(game_dir, &self.active_profile().path)
         {
-            warn!(
-                "failed to patch doorstop_config.ini for Proton: {:#}",
-                err
-            );
+            warn!("failed to patch doorstop_config.ini for Proton: {:#}", err);
         }
     }
 
@@ -271,12 +268,7 @@ fn find_executable(game_dir: &Path) -> Result<PathBuf> {
             .into_iter()
             .filter_map(Result::ok)
             .filter(|entry| entry.file_type().is_dir())
-            .find(|entry| {
-                entry
-                    .path()
-                    .extension()
-                    .is_some_and(|ext| ext == "app")
-            })
+            .find(|entry| entry.path().extension().is_some_and(|ext| ext == "app"))
         {
             return Ok(app.into_path());
         }

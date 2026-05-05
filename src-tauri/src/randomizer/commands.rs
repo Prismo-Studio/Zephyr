@@ -69,11 +69,7 @@ pub async fn validate_config(
 }
 
 #[command]
-pub async fn lint_yaml(
-    app: AppHandle,
-    game_id: String,
-    yaml: String,
-) -> Result<Vec<LintIssue>> {
+pub async fn lint_yaml(app: AppHandle, game_id: String, yaml: String) -> Result<Vec<LintIssue>> {
     blocking(move || {
         let schema = schema::load_schema_by_id_merged(&app, &game_id)?;
         Ok(yaml_gen::lint(&yaml, &schema))
@@ -171,8 +167,7 @@ pub fn clear_seeds(app: AppHandle) -> Result<usize> {
 #[command]
 pub fn read_file_base64(path: String) -> Result<String> {
     use base64::Engine;
-    let bytes = std::fs::read(&path)
-        .map_err(|e| eyre::eyre!("read {path}: {e}"))?;
+    let bytes = std::fs::read(&path).map_err(|e| eyre::eyre!("read {path}: {e}"))?;
     Ok(base64::engine::general_purpose::STANDARD.encode(&bytes))
 }
 
@@ -437,8 +432,7 @@ pub fn install_apworlds_from_folder(
     app: AppHandle,
     folder_path: String,
 ) -> Result<ApworldsFolderInstallResult> {
-    let (installed, failed_raw) =
-        apworlds::install_from_folder(&app, &PathBuf::from(folder_path))?;
+    let (installed, failed_raw) = apworlds::install_from_folder(&app, &PathBuf::from(folder_path))?;
     let failed = failed_raw
         .into_iter()
         .map(|(file_name, error)| ApworldInstallFailure { file_name, error })
@@ -452,7 +446,11 @@ pub fn install_apworld_from_bytes(
     file_name: String,
     bytes_base64: String,
 ) -> Result<CustomApworld> {
-    Ok(apworlds::install_from_bytes(&app, &file_name, &bytes_base64)?)
+    Ok(apworlds::install_from_bytes(
+        &app,
+        &file_name,
+        &bytes_base64,
+    )?)
 }
 
 #[command]
@@ -543,4 +541,3 @@ pub fn remove_runtime(app: AppHandle) -> Result<()> {
     runtime::remove(&app)?;
     Ok(())
 }
-

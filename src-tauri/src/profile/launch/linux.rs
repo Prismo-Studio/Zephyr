@@ -118,8 +118,8 @@ pub fn patch_doorstop_config_for_proton(game_dir: &Path, profile_dir: &Path) -> 
     };
 
     let wine_target = unix_path_to_wine(&preloader);
-    let text = fs::read_to_string(&config_path)
-        .fs_context("reading doorstop_config.ini", &config_path)?;
+    let text =
+        fs::read_to_string(&config_path).fs_context("reading doorstop_config.ini", &config_path)?;
     let new_text = replace_target_assembly(&text, &wine_target);
 
     if new_text == text {

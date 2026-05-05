@@ -189,7 +189,11 @@ impl ModSource for NexusModsSource {
         let domain = filters
             .game_slug
             .as_deref()
-            .and_then(|slug| game_domain_from_slug(slug).map(|d| d.to_string()).or_else(|| Some(slug.to_string())))
+            .and_then(|slug| {
+                game_domain_from_slug(slug)
+                    .map(|d| d.to_string())
+                    .or_else(|| Some(slug.to_string()))
+            })
             .or_else(|| self.game_domain.clone());
         let domain = domain.as_deref();
 
@@ -229,7 +233,11 @@ impl ModSource for NexusModsSource {
                 }
                 if !filters.search_term.is_empty() {
                     let term = filters.search_term.to_lowercase();
-                    let name_match = m.name.as_ref().map(|n| n.to_lowercase().contains(&term)).unwrap_or(false);
+                    let name_match = m
+                        .name
+                        .as_ref()
+                        .map(|n| n.to_lowercase().contains(&term))
+                        .unwrap_or(false);
                     let desc_match = m
                         .summary
                         .as_ref()
@@ -341,7 +349,11 @@ impl ModSource for NexusModsSource {
         Ok(Vec::new())
     }
 
-    async fn get_trending(&self, _period: TrendingPeriod, max_count: usize) -> Result<Vec<UnifiedMod>> {
+    async fn get_trending(
+        &self,
+        _period: TrendingPeriod,
+        max_count: usize,
+    ) -> Result<Vec<UnifiedMod>> {
         if self.api_key.is_empty() {
             return Ok(Vec::new());
         }
@@ -375,7 +387,10 @@ mod tests {
     fn known_slugs_map_correctly() {
         assert_eq!(game_domain_from_slug("riskofrain2"), Some("riskofrain2"));
         assert_eq!(game_domain_from_slug("valheim"), Some("valheim"));
-        assert_eq!(game_domain_from_slug("lethalcompany"), Some("lethalcompany"));
+        assert_eq!(
+            game_domain_from_slug("lethalcompany"),
+            Some("lethalcompany")
+        );
         assert_eq!(game_domain_from_slug("titanfall2"), Some("titanfall2"));
     }
 
@@ -386,7 +401,10 @@ mod tests {
 
     #[test]
     fn content_warning_strips_dash() {
-        assert_eq!(game_domain_from_slug("content-warning"), Some("contentwarning"));
+        assert_eq!(
+            game_domain_from_slug("content-warning"),
+            Some("contentwarning")
+        );
     }
 
     #[test]

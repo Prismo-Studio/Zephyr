@@ -26,10 +26,10 @@ use eyre::{bail, Context, Result};
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 
-use crate::util::process::CommandExt as _;
 use super::ap_runner::{
     ap_dir, detect_python, output_dir, ping_local_port, sanitize_python_env, ServerState,
 };
+use crate::util::process::CommandExt as _;
 
 /// Archipelago's default MultiServer port. Used as a fallback when
 /// Zephyr's `ServerState` doesn't track a running child (external server,
@@ -115,7 +115,10 @@ pub fn list_patches(app: &AppHandle) -> Result<Vec<PatchFile>> {
             continue;
         };
         let ext = ext_raw.to_string();
-        if NON_PATCH_EXTENSIONS.iter().any(|e| e.eq_ignore_ascii_case(&ext)) {
+        if NON_PATCH_EXTENSIONS
+            .iter()
+            .any(|e| e.eq_ignore_ascii_case(&ext))
+        {
             continue;
         }
         // We treat a file as a "patch" if its extension starts with "ap".
@@ -539,15 +542,17 @@ pub fn load_rom_paths(app: &AppHandle) -> Result<std::collections::HashMap<Strin
     if !path.exists() {
         return Ok(std::collections::HashMap::new());
     }
-    let raw = fs::read_to_string(&path)
-        .with_context(|| format!("read {}", path.display()))?;
+    let raw = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
     let parsed: RomPaths = serde_json::from_str(&raw).unwrap_or_default();
     Ok(parsed.paths)
 }
 
 pub fn set_rom_path(app: &AppHandle, extension: &str, rom_path: &str) -> Result<()> {
     let mut map = load_rom_paths(app).unwrap_or_default();
-    map.insert(extension.trim_start_matches('.').to_string(), rom_path.to_string());
+    map.insert(
+        extension.trim_start_matches('.').to_string(),
+        rom_path.to_string(),
+    );
     save_rom_paths(app, &map)
 }
 
@@ -557,17 +562,12 @@ pub fn clear_rom_path(app: &AppHandle, extension: &str) -> Result<()> {
     save_rom_paths(app, &map)
 }
 
-fn save_rom_paths(
-    app: &AppHandle,
-    map: &std::collections::HashMap<String, String>,
-) -> Result<()> {
+fn save_rom_paths(app: &AppHandle, map: &std::collections::HashMap<String, String>) -> Result<()> {
     let path = rom_paths_file(app);
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent).ok();
     }
-    let value = RomPaths {
-        paths: map.clone(),
-    };
+    let value = RomPaths { paths: map.clone() };
     let raw = serde_json::to_string_pretty(&value).context("serialize rom paths")?;
     fs::write(&path, raw).with_context(|| format!("write {}", path.display()))?;
     Ok(())
@@ -619,7 +619,18 @@ fn guess_output_rom(patch_path: &Path) -> Option<String> {
         };
         if matches!(
             ext.to_ascii_lowercase().as_str(),
-            "gba" | "gbc" | "gb" | "sfc" | "smc" | "nes" | "z64" | "n64" | "nds" | "iso" | "bin" | "exe"
+            "gba"
+                | "gbc"
+                | "gb"
+                | "sfc"
+                | "smc"
+                | "nes"
+                | "z64"
+                | "n64"
+                | "nds"
+                | "iso"
+                | "bin"
+                | "exe"
         ) {
             return Some(p.to_string_lossy().to_string());
         }

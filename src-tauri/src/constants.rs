@@ -21,10 +21,8 @@ pub const ARCHIPELAGO_GG_UPLOADS: &str = "https://archipelago.gg/uploads";
 
 // ── Cloudinary (Zephyr media bucket) ──────────────────────────────────────
 
-pub const CLOUDINARY_AUTO_UPLOAD: &str =
-    "https://api.cloudinary.com/v1_1/djmsz47e5/auto/upload";
-pub const CLOUDINARY_IMAGE_UPLOAD: &str =
-    "https://api.cloudinary.com/v1_1/djmsz47e5/image/upload";
+pub const CLOUDINARY_AUTO_UPLOAD: &str = "https://api.cloudinary.com/v1_1/djmsz47e5/auto/upload";
+pub const CLOUDINARY_IMAGE_UPLOAD: &str = "https://api.cloudinary.com/v1_1/djmsz47e5/image/upload";
 
 // ── GitHub (games.json discovery) ─────────────────────────────────────────
 

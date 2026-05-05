@@ -207,7 +207,6 @@ impl Profile {
     fn installer_for(&self, profile_mod: &ProfileMod) -> Box<dyn PackageInstaller> {
         self.game.mod_loader.installer_for(&profile_mod.full_name())
     }
-
 }
 
 fn handle_reorder_event(event: tauri::Event, app: &AppHandle) -> Result<()> {

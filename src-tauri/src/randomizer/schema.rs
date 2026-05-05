@@ -40,7 +40,10 @@ pub fn schemas_dir(app: &AppHandle) -> PathBuf {
                 return c.clone();
             }
         }
-        tracing::warn!("schemas_dir: no resource path found, resource_dir={}", resource_dir.display());
+        tracing::warn!(
+            "schemas_dir: no resource path found, resource_dir={}",
+            resource_dir.display()
+        );
     }
 
     let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));

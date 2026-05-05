@@ -76,9 +76,7 @@ fn yaml_generation_includes_game_section() {
         Some("ganon")
     );
     // unset options fall back to defaults
-    assert!(game_section
-        .get(serde_yaml::Value::from("mode"))
-        .is_some());
+    assert!(game_section.get(serde_yaml::Value::from("mode")).is_some());
 }
 
 #[test]
@@ -94,7 +92,9 @@ fn validation_flags_out_of_range() {
         player_name: None,
     };
     let errors = validation::validate(&schema, &cfg);
-    assert!(errors.iter().any(|e| e.option_id == "crystals_needed_for_ganon"));
+    assert!(errors
+        .iter()
+        .any(|e| e.option_id == "crystals_needed_for_ganon"));
 }
 
 #[test]
@@ -150,7 +150,11 @@ fn validation_flags_stale_dependency() {
                 category: "general".into(),
                 option_type: OptionType::Select {
                     choices: vec![
-                        Choice { value: "open".into(), label: "Open".into(), description: None },
+                        Choice {
+                            value: "open".into(),
+                            label: "Open".into(),
+                            description: None,
+                        },
                         Choice {
                             value: "inverted".into(),
                             label: "Inverted".into(),
@@ -202,7 +206,10 @@ fn validation_accepts_random_string_for_any_option() {
     // crystals_ganon is a Range, goal is a Select
     for variant in ["random", "random-low", "random-middle", "random-high"] {
         let mut values: HashMap<String, Value> = HashMap::new();
-        values.insert("crystals_needed_for_ganon".into(), Value::String(variant.into()));
+        values.insert(
+            "crystals_needed_for_ganon".into(),
+            Value::String(variant.into()),
+        );
         values.insert("goal".into(), Value::String("random".into()));
         let cfg = RandomizerConfig {
             game_id: "alttp".into(),
@@ -340,7 +347,9 @@ fn validation_rejects_out_of_range_weighted_key() {
         player_name: None,
     };
     let errors = validation::validate(&schema, &cfg);
-    assert!(errors.iter().any(|e| e.option_id == "crystals_needed_for_ganon"));
+    assert!(errors
+        .iter()
+        .any(|e| e.option_id == "crystals_needed_for_ganon"));
 }
 
 #[test]
