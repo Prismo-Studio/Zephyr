@@ -1,6 +1,6 @@
 {
 	"name": "zephyr",
-	"version": "1.2.12",
+	"version": "1.2.13",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -28,7 +28,7 @@
 		"@inlang/cli": "^3.1.4",
 		"@inlang/paraglide-js": "2.3.0",
 		"@sveltejs/adapter-static": "^3.0.10",
-		"@sveltejs/kit": "^2.50.1",
+		"@sveltejs/kit": "^2.59.1",
 		"@sveltejs/vite-plugin-svelte": "^4.0.4",
 		"@tailwindcss/vite": "^4.2.2",
 		"@tauri-apps/cli": "^2.10.1",
