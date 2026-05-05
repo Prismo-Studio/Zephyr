@@ -71,7 +71,11 @@ pub async fn upload_custom_background(file_path: String, app: AppHandle) -> Resu
 
     let size = std::fs::metadata(&src).context("stat file")?.len();
     let is_video = mime.starts_with("video/");
-    let limit = if is_video { MAX_VIDEO_BYTES } else { MAX_IMAGE_BYTES };
+    let limit = if is_video {
+        MAX_VIDEO_BYTES
+    } else {
+        MAX_IMAGE_BYTES
+    };
     if size > limit {
         return Err(eyre!("file_too_large").into());
     }
@@ -155,9 +159,7 @@ pub fn set_dpi_scale(value: f32, app: AppHandle) -> Result<f32> {
     prefs.dpi_scale = new_dpi;
     let effective_zoom = prefs.zoom_factor as f64 * new_dpi as f64;
     if let Some(window) = app.get_webview_window("main") {
-        window
-            .zoom(effective_zoom)
-            .map_err(|err| anyhow!(err))?;
+        window.zoom(effective_zoom).map_err(|err| anyhow!(err))?;
     }
     prefs.save(app.db())?;
     Ok(new_dpi)
@@ -172,6 +174,6 @@ pub fn get_system_fonts() -> Result<Vec<String>> {
 
 #[command]
 pub fn open_dir(path: std::path::PathBuf) -> Result<()> {
-	open_path(path)?;
-	Ok(())
+    open_path(path)?;
+    Ok(())
 }

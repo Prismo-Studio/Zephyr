@@ -80,7 +80,10 @@ pub fn create_bepinex_wrapper(profile_dir: &Path) -> Result<Option<PathBuf>> {
             .fs_context("setting permissions on wrapper", &wrapper_path)?;
     }
 
-    info!("created macOS BepInEx wrapper at {}", wrapper_path.display());
+    info!(
+        "created macOS BepInEx wrapper at {}",
+        wrapper_path.display()
+    );
     Ok(Some(wrapper_path))
 }
 

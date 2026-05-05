@@ -65,9 +65,7 @@
 		}
 	});
 
-	const randomKeyChoices = $derived(
-		RANDOM_VARIANTS.map((v) => ({ value: v, label: v }))
-	);
+	const randomKeyChoices = $derived(RANDOM_VARIANTS.map((v) => ({ value: v, label: v })));
 
 	const allKeyChoices = $derived([...baseKeyChoices, ...randomKeyChoices]);
 
@@ -149,17 +147,12 @@
 								class="rdz-weighted-range-input"
 								type="text"
 								value={row.key}
-								oninput={(e) =>
-									setRangeKey(row.id, (e.currentTarget as HTMLInputElement).value)}
+								oninput={(e) => setRangeKey(row.id, (e.currentTarget as HTMLInputElement).value)}
 								placeholder={i18nState.locale && m.randomizer_weighted_value()}
 							/>
 						{/if}
 					{:else}
-						<Dropdown
-							options={allKeyChoices}
-							value={row.key}
-							onchange={(v) => setKey(row.id, v)}
-						/>
+						<Dropdown options={allKeyChoices} value={row.key} onchange={(v) => setKey(row.id, v)} />
 					{/if}
 					<div class="rdz-weighted-weight">
 						<NumberInput

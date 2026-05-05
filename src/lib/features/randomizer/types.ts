@@ -214,12 +214,7 @@ export const CATEGORY_ICONS: Record<string, string> = {
 };
 
 /** Archipelago's universal "random" sentinel and its skewed variants. */
-export const RANDOM_VARIANTS = [
-	'random',
-	'random-low',
-	'random-middle',
-	'random-high'
-] as const;
+export const RANDOM_VARIANTS = ['random', 'random-low', 'random-middle', 'random-high'] as const;
 export type RandomVariant = (typeof RANDOM_VARIANTS)[number];
 
 export type ValueMode = 'fixed' | 'random' | 'weighted';

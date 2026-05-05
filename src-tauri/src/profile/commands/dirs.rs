@@ -5,11 +5,7 @@ use eyre::{Context, OptionExt};
 use tauri::{command, AppHandle};
 use uuid::Uuid;
 
-use crate::{
-    state::ManagerExt,
-    thunderstore::cache::MarkdownKind,
-    util::cmd::Result,
-};
+use crate::{state::ManagerExt, thunderstore::cache::MarkdownKind, util::cmd::Result};
 
 #[command]
 pub fn open_profile_dir(app: AppHandle) -> Result<()> {

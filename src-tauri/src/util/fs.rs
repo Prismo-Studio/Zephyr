@@ -5,9 +5,9 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use eyre::Result;
 #[cfg(target_os = "linux")]
 use eyre::Context;
+use eyre::Result;
 
 use serde::{de::DeserializeOwned, Serialize};
 use tracing::warn;
@@ -270,8 +270,7 @@ pub fn open_path(path: impl AsRef<Path>) -> Result<()> {
             }
         }
 
-        cmd.spawn()
-            .context("failed to open path with xdg-open")?;
+        cmd.spawn().context("failed to open path with xdg-open")?;
     }
     #[cfg(not(target_os = "linux"))]
     {
@@ -354,7 +353,13 @@ mod tests {
         fs::create_dir(src.path().join("sub")).unwrap();
         fs::write(src.path().join("sub/b.txt"), "world").unwrap();
 
-        copy_dir(src.path(), dest.path().join("out"), Overwrite::Yes, UseLinks::No).unwrap();
+        copy_dir(
+            src.path(),
+            dest.path().join("out"),
+            Overwrite::Yes,
+            UseLinks::No,
+        )
+        .unwrap();
 
         assert!(dest.path().join("out/a.txt").exists());
         assert!(dest.path().join("out/sub/b.txt").exists());

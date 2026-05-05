@@ -142,10 +142,7 @@ pub async fn get_curseforge_games(app: AppHandle) -> Result<Vec<SourceGame>> {
 
     let response = http
         .get("https://api.curseforge.com/v1/games?pageSize=500")
-        .header(
-            "x-api-key",
-            &crate::util::keys::curseforge_key(),
-        )
+        .header("x-api-key", &crate::util::keys::curseforge_key())
         .header("Accept", "application/json")
         .send()
         .await?;

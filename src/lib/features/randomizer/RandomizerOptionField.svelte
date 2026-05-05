@@ -108,9 +108,7 @@
 		set(v);
 	}
 
-	const currentRandomVariant = $derived<RandomVariant>(
-		isRandomString(value) ? value : 'random'
-	);
+	const currentRandomVariant = $derived<RandomVariant>(isRandomString(value) ? value : 'random');
 
 	type DescSegment = { kind: 'text' | 'link'; value: string };
 
@@ -205,10 +203,7 @@
 					</button>
 				</div>
 				{#if mode === 'weighted'}
-					<Tooltip
-						text={i18nState.locale ? m.randomizer_mode_weightedDesc() : ''}
-						position="top"
-					>
+					<Tooltip text={i18nState.locale ? m.randomizer_mode_weightedDesc() : ''} position="top">
 						<span class="rdz-mode-info" aria-label="Weighted mode help">
 							<Icon icon="mdi:information-outline" />
 						</span>

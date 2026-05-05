@@ -31,7 +31,8 @@ export type EventName =
 type EventProps = Record<string, string | number | boolean | null | undefined>;
 
 const KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined;
-const HOST = (import.meta.env.VITE_POSTHOG_HOST as string | undefined) ?? 'https://eu.i.posthog.com';
+const HOST =
+	(import.meta.env.VITE_POSTHOG_HOST as string | undefined) ?? 'https://eu.i.posthog.com';
 
 /** User-controlled toggle. Persisted in localStorage. Defaults to enabled. */
 export const telemetryEnabled = new PersistedState<boolean>('telemetry.enabled', true);

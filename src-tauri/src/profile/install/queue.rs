@@ -305,7 +305,11 @@ async fn handle_queue(app: AppHandle) {
                 .unique_by(|p| p.uuid)
                 .collect::<Vec<_>>();
 
-            (packages, manager.active_game, prefs.data_dir.get().to_path_buf())
+            (
+                packages,
+                manager.active_game,
+                prefs.data_dir.get().to_path_buf(),
+            )
         };
 
         let (packages, game, data_dir) = cache_payload;

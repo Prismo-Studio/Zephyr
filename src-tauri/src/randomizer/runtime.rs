@@ -172,8 +172,7 @@ fn patch_git_requirements(install_dir: &Path) -> Result<()> {
             rewritten
         };
         if rewritten != contents {
-            fs::write(&path, &rewritten)
-                .with_context(|| format!("write {}", path.display()))?;
+            fs::write(&path, &rewritten).with_context(|| format!("write {}", path.display()))?;
             tracing::info!(
                 "rewrote git+ URLs in {} (pip no longer needs the git binary)",
                 path.display()
@@ -258,8 +257,7 @@ pub fn status(app: &AppHandle) -> RuntimeStatus {
         // file is present. The marker is written at the end of a successful
         // provisioning run, so a half-installed venv still shows as "not
         // ready" and gives the user an obvious "Install dependencies" action.
-        venv_ready: venv_python_path(&effective).exists()
-            && provision_marker(&effective).exists(),
+        venv_ready: venv_python_path(&effective).exists() && provision_marker(&effective).exists(),
         path: effective.to_string_lossy().to_string(),
         bytes_on_disk: bytes,
         world_count,
@@ -274,12 +272,27 @@ fn provision_marker(runtime_dir: &Path) -> PathBuf {
 #[derive(Serialize, Clone, Debug)]
 #[serde(tag = "stage", rename_all = "snake_case")]
 pub enum ProgressEvent {
-    Downloading { received: u64, total: Option<u64> },
-    Extracting { entry: String, done: u32, total: u32 },
-    ProvisioningVenv { message: String },
-    InstallingDeps { message: String },
-    Installed { path: String },
-    Failed { error: String },
+    Downloading {
+        received: u64,
+        total: Option<u64>,
+    },
+    Extracting {
+        entry: String,
+        done: u32,
+        total: u32,
+    },
+    ProvisioningVenv {
+        message: String,
+    },
+    InstallingDeps {
+        message: String,
+    },
+    Installed {
+        path: String,
+    },
+    Failed {
+        error: String,
+    },
 }
 
 /// Download a zip from `url` and extract it into the user install dir.
@@ -307,10 +320,7 @@ pub async fn install(app: &AppHandle, url: Option<String>) -> Result<RuntimeStat
         bail!("download failed: HTTP {}", resp.status());
     }
     let total = resp.content_length();
-    emit(ProgressEvent::Downloading {
-        received: 0,
-        total,
-    });
+    emit(ProgressEvent::Downloading { received: 0, total });
 
     // Stream into a temp file so we don't need to hold the whole zip in RAM.
     let tmp_parent = install_dir
@@ -331,10 +341,7 @@ pub async fn install(app: &AppHandle, url: Option<String>) -> Result<RuntimeStat
         let chunk = chunk.context("download chunk")?;
         tmp.as_file_mut().write_all(&chunk).context("write chunk")?;
         received += chunk.len() as u64;
-        emit(ProgressEvent::Downloading {
-            received,
-            total,
-        });
+        emit(ProgressEvent::Downloading { received, total });
     }
     tmp.as_file_mut().sync_all().ok();
 
@@ -376,10 +383,7 @@ pub async fn install(app: &AppHandle, url: Option<String>) -> Result<RuntimeStat
         let out_path = install_dir.join(&stripped);
 
         if !is_enclosed(&out_path, &install_dir) {
-            tracing::warn!(
-                "skipping zip entry that escapes install dir: {}",
-                stripped
-            );
+            tracing::warn!("skipping zip entry that escapes install dir: {}", stripped);
             continue;
         }
 
@@ -681,7 +685,11 @@ fn probe_python_version(candidate: &str, extra_args: &[&str]) -> Option<(u32, u3
     }
     let stdout = String::from_utf8_lossy(&out.stdout).to_string();
     let stderr = String::from_utf8_lossy(&out.stderr).to_string();
-    let text = if stdout.trim().is_empty() { stderr } else { stdout };
+    let text = if stdout.trim().is_empty() {
+        stderr
+    } else {
+        stdout
+    };
     let digits = text
         .trim()
         .trim_start_matches("Python ")
@@ -789,14 +797,12 @@ fn bundled_python_marker_expected() -> String {
 /// not already present. Idempotent: a previously-extracted install is reused
 /// without touching the network, as long as the marker file matches the
 /// currently pinned version.
-fn ensure_bundled_python(
-    runtime_dir: &Path,
-    emit: &dyn Fn(ProgressEvent),
-) -> Result<PathBuf> {
+fn ensure_bundled_python(runtime_dir: &Path, emit: &dyn Fn(ProgressEvent)) -> Result<PathBuf> {
     let binary = bundled_python_binary(runtime_dir);
     let marker = bundled_python_marker(runtime_dir);
-    if binary.exists() && fs::read_to_string(&marker).ok().as_deref()
-        == Some(bundled_python_marker_expected().as_str())
+    if binary.exists()
+        && fs::read_to_string(&marker).ok().as_deref()
+            == Some(bundled_python_marker_expected().as_str())
     {
         return Ok(binary);
     }
@@ -818,9 +824,7 @@ fn ensure_bundled_python(
     let url = format!("{BUNDLED_PYTHON_BASE_URL}/{BUNDLED_PYTHON_TAG}/{asset}");
 
     emit(ProgressEvent::ProvisioningVenv {
-        message: format!(
-            "Downloading bundled Python {BUNDLED_PYTHON_VERSION} ({triple})…"
-        ),
+        message: format!("Downloading bundled Python {BUNDLED_PYTHON_VERSION} ({triple})…"),
     });
     tracing::info!("fetching bundled python tarball from {url}");
 
@@ -856,8 +860,7 @@ fn ensure_bundled_python(
         fs::remove_dir_all(&target_root)
             .with_context(|| format!("wipe {}", target_root.display()))?;
     }
-    fs::create_dir_all(runtime_dir)
-        .with_context(|| format!("create {}", runtime_dir.display()))?;
+    fs::create_dir_all(runtime_dir).with_context(|| format!("create {}", runtime_dir.display()))?;
 
     // install_only tarballs extract to `python/` at the top level, so
     // unpacking into `<runtime>/` lands everything at `<runtime>/python/`.
@@ -955,7 +958,9 @@ fn run_to_log(cmd: &mut Command, emit: &dyn Fn(ProgressEvent)) -> Result<()> {
 /// If every entry in the zip starts with the same top-level segment (e.g.
 /// `archipelago-runtime-main/`), return that prefix so we can strip it
 /// during extraction. Returns `None` if the zip is already flat.
-fn detect_root_prefix<R: std::io::Read + std::io::Seek>(archive: &mut ZipArchive<R>) -> Option<String> {
+fn detect_root_prefix<R: std::io::Read + std::io::Seek>(
+    archive: &mut ZipArchive<R>,
+) -> Option<String> {
     let mut prefix: Option<String> = None;
     for i in 0..archive.len() {
         let Ok(entry) = archive.by_index(i) else {

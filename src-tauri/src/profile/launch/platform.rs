@@ -6,12 +6,12 @@ use std::{
 use eyre::{bail, Context, OptionExt, Result};
 use tracing::info;
 
+#[cfg(not(target_os = "macos"))]
+use crate::util::fs::PathExt;
 use crate::{
     game::{platform::Platform, Game},
     prefs::Prefs,
 };
-#[cfg(not(target_os = "macos"))]
-use crate::util::fs::PathExt;
 
 pub fn create_launch_command(
     game_dir: &Path,
@@ -44,9 +44,8 @@ fn create_steam_command(game_dir: &Path, game: Game, prefs: &Prefs) -> Result<Co
             warn!("failed to determine if game uses proton: {:#}", err);
             false
         }) {
-            linux::ensure_wine_override(steam.id as u64, proxy_dll, game_dir).unwrap_or_else(
-                |err| warn!("failed to ensure wine dll override: {:#}", err),
-            );
+            linux::ensure_wine_override(steam.id as u64, proxy_dll, game_dir)
+                .unwrap_or_else(|err| warn!("failed to ensure wine dll override: {:#}", err));
 
             command.env("WINEDLLOVERRIDES", format!("{proxy_dll}=native,builtin"));
         }

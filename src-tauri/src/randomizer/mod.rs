@@ -10,4 +10,3 @@ pub mod yaml_gen;
 
 #[cfg(test)]
 mod tests;
-

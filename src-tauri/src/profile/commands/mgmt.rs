@@ -6,11 +6,7 @@ use std::path::PathBuf;
 use eyre::eyre;
 use tauri::{command, AppHandle};
 
-use crate::{
-    profile::FrontendManagedGame,
-    state::ManagerExt,
-    util::cmd::Result,
-};
+use crate::{profile::FrontendManagedGame, state::ManagerExt, util::cmd::Result};
 
 #[command]
 pub fn get_profile_info(app: AppHandle) -> FrontendManagedGame {

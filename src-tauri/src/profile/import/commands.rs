@@ -102,4 +102,3 @@ pub async fn import_local_mod_base64(base64: String, app: AppHandle) -> Result<(
 
     Ok(())
 }
-

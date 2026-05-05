@@ -290,11 +290,7 @@ impl ModSource for CurseForgeSource {
             });
         }
 
-        let cf_game_id = match filters
-            .game_slug
-            .as_deref()
-            .and_then(game_id_from_slug)
-        {
+        let cf_game_id = match filters.game_slug.as_deref().and_then(game_id_from_slug) {
             Some(id) => id,
             None => {
                 return Ok(SearchResult {
@@ -355,8 +351,7 @@ impl ModSource for CurseForgeSource {
     }
 
     async fn get_mod(&self, external_id: &str) -> Result<UnifiedMod> {
-        let response: CfResponse<CfMod> =
-            self.get(&format!("/v1/mods/{}", external_id)).await?;
+        let response: CfResponse<CfMod> = self.get(&format!("/v1/mods/{}", external_id)).await?;
         Ok(response.data.to_unified())
     }
 
@@ -381,7 +376,11 @@ impl ModSource for CurseForgeSource {
         Ok(Vec::new())
     }
 
-    async fn get_trending(&self, _period: TrendingPeriod, max_count: usize) -> Result<Vec<UnifiedMod>> {
+    async fn get_trending(
+        &self,
+        _period: TrendingPeriod,
+        max_count: usize,
+    ) -> Result<Vec<UnifiedMod>> {
         let filters = SearchFilters {
             sort_by: SortField::Downloads,
             sort_order: SortDirection::Descending,

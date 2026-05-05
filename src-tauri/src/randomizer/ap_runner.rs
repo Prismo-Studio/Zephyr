@@ -119,7 +119,11 @@ pub fn detect_python(app: &AppHandle) -> Option<(String, String)> {
         candidates.push(venv_py.to_string_lossy().to_string());
     }
     // 2. System fallbacks
-    candidates.extend(["python".to_string(), "python3".to_string(), "py".to_string()]);
+    candidates.extend([
+        "python".to_string(),
+        "python3".to_string(),
+        "py".to_string(),
+    ]);
 
     for candidate in &candidates {
         let mut cmd = Command::new(candidate);
@@ -178,7 +182,9 @@ pub struct GenerateOutcome {
 /// in the bundled Archipelago directory and return the produced `.zip` path.
 pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
     let (python, _) = detect_python(app).ok_or_else(|| {
-        eyre::eyre!("python is not installed on this machine; install Python 3.11+ to generate seeds")
+        eyre::eyre!(
+            "python is not installed on this machine; install Python 3.11+ to generate seeds"
+        )
     })?;
 
     let dir = ap_dir(app);
@@ -248,11 +254,7 @@ pub fn run_generate(app: &AppHandle) -> Result<GenerateOutcome> {
     let new_zip = after
         .into_iter()
         .filter(|p| !before.contains(p))
-        .max_by_key(|p| {
-            std::fs::metadata(p)
-                .and_then(|m| m.modified())
-                .ok()
-        });
+        .max_by_key(|p| std::fs::metadata(p).and_then(|m| m.modified()).ok());
 
     // Auto-extract the entire AP_*.zip next to itself. The `.archipelago`
     // multidata is what MultiServer.py needs; the other entries are per-player
@@ -293,7 +295,11 @@ pub fn save_player_yaml(app: &AppHandle, slot_name: &str, yaml: &str) -> Result<
     let dir = players_dir(app);
     std::fs::create_dir_all(&dir)?;
     let safe = crate::util::fs::sanitize_filename_chars(slot_name, &[]);
-    let safe = if safe.is_empty() { "player".to_string() } else { safe };
+    let safe = if safe.is_empty() {
+        "player".to_string()
+    } else {
+        safe
+    };
     let path = dir.join(format!("{safe}.yaml"));
     std::fs::write(&path, yaml).with_context(|| format!("write {}", path.display()))?;
     Ok(path)
@@ -377,7 +383,11 @@ pub fn rename_seed(path: &Path, new_name: &str) -> Result<PathBuf> {
     let parent = path.parent().ok_or_else(|| eyre::eyre!("no parent"))?;
     let old_stem = path.file_stem().and_then(|s| s.to_str()).unwrap_or("");
     let safe = crate::util::fs::sanitize_filename_chars(new_name, &['.']);
-    let safe = if safe.is_empty() { "seed".to_string() } else { safe };
+    let safe = if safe.is_empty() {
+        "seed".to_string()
+    } else {
+        safe
+    };
 
     // Rename the .archipelago file
     let new_path = parent.join(format!("{safe}.archipelago"));
@@ -542,11 +552,15 @@ pub fn rename_player_yaml(path: &Path, new_name: &str) -> Result<PathBuf> {
         bail!("player file not found: {}", path.display());
     }
     let safe = crate::util::fs::sanitize_filename_chars(new_name, &[]);
-    let safe = if safe.is_empty() { "player".to_string() } else { safe };
+    let safe = if safe.is_empty() {
+        "player".to_string()
+    } else {
+        safe
+    };
 
     // Update the `name:` field inside the YAML content to match the new name
-    let content = std::fs::read_to_string(path)
-        .with_context(|| format!("read {}", path.display()))?;
+    let content =
+        std::fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
     let updated: String = content
         .lines()
         .map(|line| {
@@ -558,8 +572,7 @@ pub fn rename_player_yaml(path: &Path, new_name: &str) -> Result<PathBuf> {
         })
         .collect::<Vec<_>>()
         .join("\n");
-    std::fs::write(path, &updated)
-        .with_context(|| format!("write {}", path.display()))?;
+    std::fs::write(path, &updated).with_context(|| format!("write {}", path.display()))?;
 
     let new_path = path.with_file_name(format!("{safe}.yaml"));
     if new_path != path {
@@ -644,8 +657,8 @@ pub fn update_host_yaml_port(ap_dir: &Path, port: u16) -> Result<()> {
         return Ok(());
     }
 
-    let content = std::fs::read_to_string(&path)
-        .with_context(|| format!("read {}", path.display()))?;
+    let content =
+        std::fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
 
     let mut out = String::with_capacity(content.len());
     let mut in_server_options = false;
@@ -712,10 +725,9 @@ pub fn extract_seed_contents(zip_path: &Path) -> Result<(Option<PathBuf>, Vec<Pa
         .parent()
         .ok_or_else(|| eyre::eyre!("zip has no parent dir: {}", zip_path.display()))?;
 
-    let file = File::open(zip_path)
-        .with_context(|| format!("open zip {}", zip_path.display()))?;
-    let mut archive = ZipArchive::new(file)
-        .with_context(|| format!("read zip {}", zip_path.display()))?;
+    let file = File::open(zip_path).with_context(|| format!("open zip {}", zip_path.display()))?;
+    let mut archive =
+        ZipArchive::new(file).with_context(|| format!("read zip {}", zip_path.display()))?;
 
     let mut archipelago: Option<PathBuf> = None;
     let mut patches: Vec<PathBuf> = Vec::new();
@@ -731,8 +743,8 @@ pub fn extract_seed_contents(zip_path: &Path) -> Result<(Option<PathBuf>, Vec<Pa
         };
         let target = parent.join(file_name);
         if !target.exists() {
-            let mut out = File::create(&target)
-                .with_context(|| format!("create {}", target.display()))?;
+            let mut out =
+                File::create(&target).with_context(|| format!("create {}", target.display()))?;
             io::copy(&mut entry, &mut out)
                 .with_context(|| format!("extract to {}", target.display()))?;
         }
@@ -770,7 +782,6 @@ pub fn ping_local_port(port: u16) -> bool {
     }
     false
 }
-
 
 /// Best-effort public IP fetch via a few free no-auth endpoints.
 /// Synchronous, short timeout. Returns None on any failure.
@@ -876,7 +887,9 @@ impl ServerState {
         let _ = self.stop();
 
         let (python, _) = detect_python(app).ok_or_else(|| {
-            eyre::eyre!("python is not installed on this machine; install Python 3.11+ to host a server")
+            eyre::eyre!(
+                "python is not installed on this machine; install Python 3.11+ to host a server"
+            )
         })?;
 
         let dir = ap_dir(app);

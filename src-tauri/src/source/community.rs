@@ -1,4 +1,4 @@
-use eyre::{Result, bail};
+use eyre::{bail, Result};
 use reqwest::Client;
 use serde::Deserialize;
 use tracing::info;
@@ -132,9 +132,7 @@ impl ModSource for CommunitySource {
             .filter(|m| {
                 // Filter by game
                 if !game_slug.is_empty() {
-                    let matches_game = m.games.iter().any(|g| {
-                        g.eq_ignore_ascii_case(game_slug)
-                    });
+                    let matches_game = m.games.iter().any(|g| g.eq_ignore_ascii_case(game_slug));
                     if !matches_game {
                         return false;
                     }
@@ -153,9 +151,10 @@ impl ModSource for CommunitySource {
 
                 // Filter by categories
                 if !filters.categories.is_empty() {
-                    let has_cat = filters.categories.iter().any(|c| {
-                        m.categories.iter().any(|mc| mc.eq_ignore_ascii_case(c))
-                    });
+                    let has_cat = filters
+                        .categories
+                        .iter()
+                        .any(|c| m.categories.iter().any(|mc| mc.eq_ignore_ascii_case(c)));
                     if !has_cat {
                         return false;
                     }
@@ -243,9 +242,18 @@ impl ModSource for CommunitySource {
 
     async fn get_categories(&self) -> Result<Vec<SourceCategory>> {
         Ok(vec![
-            SourceCategory { name: "Mods".to_string(), slug: "mods".to_string() },
-            SourceCategory { name: "Tools".to_string(), slug: "tools".to_string() },
-            SourceCategory { name: "Libraries".to_string(), slug: "libraries".to_string() },
+            SourceCategory {
+                name: "Mods".to_string(),
+                slug: "mods".to_string(),
+            },
+            SourceCategory {
+                name: "Tools".to_string(),
+                slug: "tools".to_string(),
+            },
+            SourceCategory {
+                name: "Libraries".to_string(),
+                slug: "libraries".to_string(),
+            },
         ])
     }
 
@@ -279,7 +287,12 @@ impl ModSource for CommunitySource {
         }
 
         let bytes = resp.bytes().await?;
-        let file_name = m.download.split('/').next_back().unwrap_or("mod.dll").to_string();
+        let file_name = m
+            .download
+            .split('/')
+            .next_back()
+            .unwrap_or("mod.dll")
+            .to_string();
 
         let temp_dir = std::env::temp_dir().join("zephyr-downloads");
         std::fs::create_dir_all(&temp_dir)?;
