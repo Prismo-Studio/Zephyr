@@ -67,6 +67,7 @@
 		align-items: center;
 		gap: var(--space-md);
 		padding: var(--space-md);
+		padding-right: 36px; /* room for the absolute fav button */
 		border-radius: var(--radius-lg);
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
@@ -117,6 +118,9 @@
 	}
 
 	.z-game-fav-btn-small {
+		position: absolute;
+		top: 8px;
+		right: 8px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -128,6 +132,7 @@
 		color: var(--text-muted);
 		cursor: pointer;
 		transition: all var(--transition-fast);
+		z-index: 2;
 	}
 
 	.z-game-fav-btn-small:hover {

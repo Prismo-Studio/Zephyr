@@ -1,6 +1,7 @@
 import type { FiltersResponse, Game, GameInfo, PackageCategory } from '$lib/types';
 import * as api from '$lib/api';
 import { pushToast } from '$lib/toast.svelte';
+import { captureEvent } from '$lib/telemetry.svelte';
 import { fetch } from '@tauri-apps/plugin-http';
 import { THUNDERSTORE_CATEGORY_URL } from '$lib/constants/api.constants';
 
@@ -50,6 +51,7 @@ class GamesState {
 	setActive = async (slug: string) => {
 		await api.profile.setActiveGame(slug);
 		await this.refresh();
+		captureEvent('game_selected', { game_slug: slug });
 	};
 }
 

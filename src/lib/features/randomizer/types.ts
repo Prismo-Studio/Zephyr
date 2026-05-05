@@ -212,3 +212,33 @@ export const CATEGORY_ICONS: Record<string, string> = {
 	cosmetic: 'mdi:palette',
 	advanced: 'mdi:tune-variant'
 };
+
+/** Archipelago's universal "random" sentinel and its skewed variants. */
+export const RANDOM_VARIANTS = [
+	'random',
+	'random-low',
+	'random-middle',
+	'random-high'
+] as const;
+export type RandomVariant = (typeof RANDOM_VARIANTS)[number];
+
+export type ValueMode = 'fixed' | 'random' | 'weighted';
+
+export function isRandomString(v: unknown): v is RandomVariant {
+	return typeof v === 'string' && (RANDOM_VARIANTS as readonly string[]).includes(v);
+}
+
+export function isWeightedMap(v: unknown): v is Record<string, Value> {
+	return !!v && typeof v === 'object' && !Array.isArray(v);
+}
+
+export function valueMode(v: Value | undefined): ValueMode {
+	if (isRandomString(v)) return 'random';
+	if (isWeightedMap(v)) return 'weighted';
+	return 'fixed';
+}
+
+/** Option types that support random / weighted modes. multi_select and text don't. */
+export function supportsRandomization(opt: OptionDef): boolean {
+	return opt.type.kind === 'toggle' || opt.type.kind === 'range' || opt.type.kind === 'select';
+}

@@ -161,10 +161,8 @@
 		font-weight: 700;
 		font-family: var(--font-body);
 		cursor: pointer;
-		transition: all var(--transition-normal);
 		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
 		color: var(--text-inverse);
-		box-shadow: 0 0 12px var(--shadow-glow);
 	}
 
 	.z-install-main.has-dropdown {
@@ -172,8 +170,7 @@
 	}
 
 	.z-install-main:hover:not(:disabled) {
-		box-shadow: 0 0 24px var(--accent-400);
-		transform: translateY(-1px);
+		background: linear-gradient(135deg, var(--accent-300), var(--accent-500));
 	}
 
 	.z-install-main:disabled {
@@ -206,12 +203,12 @@
 		height: 100%;
 		padding: 0 var(--space-sm);
 		border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-		background: linear-gradient(135deg, var(--accent-600), var(--accent-700));
+		background: linear-gradient(135deg, var(--accent-500), var(--accent-700));
 		color: var(--text-inverse);
 		cursor: pointer;
 		margin-left: 1px;
-		transition: all var(--transition-fast);
 		list-style: none;
+		border: none;
 	}
 
 	.z-version-trigger::-webkit-details-marker {
@@ -224,7 +221,7 @@
 	}
 
 	.z-version-trigger:hover {
-		background: var(--accent-500);
+		background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
 		color: var(--text-inverse);
 	}
 

@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::collections::HashSet;
 
 use super::types::{
@@ -25,7 +26,86 @@ pub fn dependencies_satisfied(deps: &[Dependency], config: &RandomizerConfig) ->
     })
 }
 
+/// Archipelago's "random" sentinel and its skewed variants. Accepted for any
+/// option type — Archipelago resolves them to a concrete value at generation.
+fn is_random_string(s: &str) -> bool {
+    matches!(s, "random" | "random-low" | "random-high" | "random-middle")
+}
+
+fn validate_weighted_key(opt: &OptionDef, key: &str) -> Option<String> {
+    // "random" (and variants) are always valid weighted keys
+    if is_random_string(key) {
+        return None;
+    }
+    match &opt.option_type {
+        OptionType::Toggle { .. } => {
+            if matches!(key, "true" | "false" | "on" | "off") {
+                None
+            } else {
+                Some(format!(
+                    "'{key}' is not a valid toggle key (use true/false)"
+                ))
+            }
+        }
+        OptionType::Range { min, max, .. } => match key.parse::<i64>() {
+            Ok(i) if i >= *min && i <= *max => None,
+            Ok(i) => Some(format!("weighted key {i} out of range [{min}, {max}]")),
+            Err(_) => Some(format!(
+                "'{key}' is not a valid range key (expected a number in [{min}, {max}])"
+            )),
+        },
+        OptionType::Select { choices, .. } => {
+            if choices.iter().any(|c| c.value == key) {
+                None
+            } else {
+                Some(format!("'{key}' is not a valid choice"))
+            }
+        }
+        // Weighted dicts on multi_select / text are unusual; allow any key.
+        OptionType::MultiSelect { .. } | OptionType::Text { .. } => None,
+    }
+}
+
+fn validate_weighted_map(opt: &OptionDef, m: &HashMap<String, Value>) -> Option<String> {
+    if m.is_empty() {
+        return Some("weighted dict must have at least one entry".to_string());
+    }
+    let mut any_positive = false;
+    for (key, weight) in m {
+        let w = match weight {
+            Value::Int(i) => *i,
+            _ => return Some(format!("weight for '{key}' must be an integer")),
+        };
+        if w < 0 {
+            return Some(format!("weight for '{key}' cannot be negative"));
+        }
+        if w > 0 {
+            any_positive = true;
+        }
+        if let Some(msg) = validate_weighted_key(opt, key) {
+            return Some(msg);
+        }
+    }
+    if !any_positive {
+        return Some("weighted dict must have at least one positive weight".to_string());
+    }
+    None
+}
+
 fn validate_value(opt: &OptionDef, value: &Value) -> Option<String> {
+    // "random" (and skewed variants) is universally accepted by Archipelago
+    // regardless of the option's natural type.
+    if let Value::String(s) = value {
+        if is_random_string(s) {
+            return None;
+        }
+    }
+
+    // Weighted random dict — accepted for any option type that supports it.
+    if let Value::Map(m) = value {
+        return validate_weighted_map(opt, m);
+    }
+
     match (&opt.option_type, value) {
         (OptionType::Toggle { .. }, Value::Bool(_)) => None,
         (OptionType::Range { min, max, .. }, Value::Int(i)) => {

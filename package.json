@@ -1,6 +1,6 @@
 {
 	"name": "zephyr",
-	"version": "1.2.12",
+	"version": "1.2.13",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -28,7 +28,7 @@
 		"@inlang/cli": "^3.1.4",
 		"@inlang/paraglide-js": "2.3.0",
 		"@sveltejs/adapter-static": "^3.0.10",
-		"@sveltejs/kit": "^2.50.1",
+		"@sveltejs/kit": "^2.59.1",
 		"@sveltejs/vite-plugin-svelte": "^4.0.4",
 		"@tailwindcss/vite": "^4.2.2",
 		"@tauri-apps/cli": "^2.10.1",
@@ -62,6 +62,7 @@
 		"highlight.js": "^11.11.1",
 		"js-convert-case": "^4.2.0",
 		"marked": "^17.0.5",
+		"posthog-js": "^1.219.0",
 		"rehype-highlight": "^7.0.2",
 		"rehype-raw": "^7.0.0",
 		"runed": "^0.29.2",
