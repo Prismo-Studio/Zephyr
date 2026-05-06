@@ -31,6 +31,7 @@
 		<Input
 			bind:value={name}
 			placeholder={i18nState.locale && m.profiles_profileName()}
+			maxlength={25}
 			onkeydown={(e) => {
 				if (e.key === 'Enter') submit();
 			}}

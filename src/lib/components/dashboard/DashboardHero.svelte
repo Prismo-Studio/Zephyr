@@ -19,7 +19,7 @@
 					{#if profiles.active}
 						<span class="z-hero-profile">
 							<Icon icon="mdi:account-circle" />
-							{profiles.active.name}
+							<span class="z-hero-profile-name">{profiles.active.name}</span>
 							<span class="z-hero-mods">· {profiles.active.modCount} mods</span>
 						</span>
 					{/if}
@@ -89,6 +89,15 @@
 		gap: 4px;
 		font-size: 13px;
 		color: rgba(255, 255, 255, 0.8);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.z-hero-profile-name {
+		max-width: 280px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.z-hero-mods {

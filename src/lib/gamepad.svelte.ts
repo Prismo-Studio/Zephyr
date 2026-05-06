@@ -437,7 +437,20 @@ function pressButton(button: number) {
 
 		case BTN.START: {
 			const launchBtn = document.querySelector<HTMLElement>('.z-launch-btn');
-			if (launchBtn) focusElement(launchBtn);
+			if (!launchBtn) break;
+			// If the menu is already open, just close it; otherwise open it and
+			// focus the first item so dpad navigation works immediately.
+			const isOpen = launchBtn.getAttribute('aria-expanded') === 'true';
+			launchBtn.click();
+			if (!isOpen) {
+				// Wait one tick for the popover to mount, then focus the primary item.
+				queueMicrotask(() => {
+					const firstItem = document.querySelector<HTMLElement>(
+						'#z-play-menu .z-play-menu-item.primary, #z-play-menu .z-play-menu-item'
+					);
+					if (firstItem) focusElement(firstItem);
+				});
+			}
 			break;
 		}
 
@@ -617,6 +630,12 @@ function pollGamepads(timestamp: number) {
 			const was = prevButtons[i] ?? false;
 			if (pressed && !was) {
 				window.dispatchEvent(new CustomEvent('gamepad-kb', { detail: { button: i } }));
+				// Pre-arm the repeat timer for d-pad keys so the next frame's
+				// `handleRepeat` doesn't fire immediately (which would cause a
+				// spurious second event right after the edge press).
+				if ([12, 13, 14, 15].includes(i)) {
+					repeatTimers.set(`kb${i}`, { last: timestamp, started: timestamp });
+				}
 			}
 			if (pressed && was && [12, 13, 14, 15].includes(i)) {
 				handleRepeat(`kb${i}`, timestamp, () =>
@@ -723,8 +742,13 @@ function pollGamepads(timestamp: number) {
 	// D-pad axes fallback. Some controllers report D-pad as axes 6/7 instead
 	// of buttons 12–15 (notably Xbox on Linux). Tracked independently from the
 	// left stick so the edge gate doesn't reset every other frame.
+	//
+	// IMPORTANT: skip when buttons 12–15 are present, otherwise Standard Mapping
+	// controllers (Xbox/DualShock on Windows) fire navigation twice per press —
+	// once via the button handler above, once here.
 	let dpadDir: Direction | null = null;
-	if (gp.axes.length > 7) {
+	const dpadOnButtons = gp.mapping === 'standard' && gp.buttons.length >= 16;
+	if (!dpadOnButtons && gp.axes.length > 7) {
 		const dpadX = gp.axes[6] ?? 0;
 		const dpadY = gp.axes[7] ?? 0;
 		if (Math.abs(dpadX) > Math.abs(dpadY)) {

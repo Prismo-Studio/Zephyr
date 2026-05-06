@@ -70,7 +70,7 @@
 <style>
 	.z-scroll-top {
 		position: absolute;
-		right: var(--space-md);
+		left: var(--space-md);
 		bottom: var(--space-md);
 		display: inline-flex;
 		align-items: center;

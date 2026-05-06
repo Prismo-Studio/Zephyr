@@ -67,6 +67,7 @@
 		border-radius: var(--radius-lg);
 		padding: var(--space-xs);
 		min-width: 200px;
+		max-width: 320px;
 		max-height: 320px;
 		overflow-y: auto;
 		z-index: var(--z-dropdown);
