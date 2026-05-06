@@ -25,5 +25,9 @@ src-tauri/archipelago-runtime/
 /list_broken.cjs
 /language-fix/
 
-# Inlang manages its own .gitignore locally (paraglide-js >=2.5)
+# Inlang regenerates its workspace on every build. Only settings.json is
+# user-edited and should be tracked.
 project.inlang/.gitignore
+project.inlang/.meta.json
+project.inlang/README.md
+project.inlang/cache/
