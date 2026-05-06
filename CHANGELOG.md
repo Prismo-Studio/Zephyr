@@ -4,7 +4,7 @@ All notable changes to Zephyr are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [1.2.14] — 2026-05-06
+## [1.2.14] - 2026-05-06
 
 ### Added
 
@@ -20,7 +20,7 @@ All notable changes to Zephyr are documented here. The format follows
   - `cookie` → 0.7.2 (out-of-bounds character handling)
   - `esbuild` → 0.25.12 (dev-server request leak)
 
-## [1.2.13] — 2026-05-05
+## [1.2.13] - 2026-05-05
 
 ### Added
 
@@ -37,7 +37,7 @@ All notable changes to Zephyr are documented here. The format follows
   layout overflow.
 - Scroll-to-top button moved to bottom-left on Mods and Browse pages so it
   doesn't compete with the version dropdown chevron.
-- `project.inlang/.gitignore` is now untracked — Inlang manages it locally
+- `project.inlang/.gitignore` is now untracked - Inlang manages it locally
   starting v2.5+, eliminating spurious "file changed" diffs after each build.
 
 ### Fixed
@@ -63,7 +63,7 @@ All notable changes to Zephyr are documented here. The format follows
   `esbuild` → 0.25.12. Bumped `@inlang/paraglide-js` → 2.18 to drop the old
   vulnerable `kysely` 0.27 transitive dependency.
 
-## [1.2.12] — 2026-05-02
+## [1.2.12] - 2026-05-02
 
 ### Added
 
@@ -79,7 +79,7 @@ All notable changes to Zephyr are documented here. The format follows
 - Plural forms in `timeSince` no longer produce broken strings like "moiss"
   or "mêss" in localized "X months ago" labels.
 
-## [1.2.11] — 2026-04-29
+## [1.2.11] - 2026-04-29
 
 ### Added
 
@@ -109,7 +109,7 @@ All notable changes to Zephyr are documented here. The format follows
 - Dead code, unused imports, and 486 orphan i18n keys across all locales
   (about a 44% reduction of the message catalog).
 
-## [1.2.10] — 2026-04-28
+## [1.2.10] - 2026-04-28
 
 ### Added
 
@@ -129,7 +129,7 @@ All notable changes to Zephyr are documented here. The format follows
 - ApWorld drag-and-drop installation reliability on Windows.
 - Dropdowns no longer stay open after the cursor leaves their bounds.
 
-## [1.2.9] — 2026-04-28
+## [1.2.9] - 2026-04-28
 
 ### Added
 
@@ -145,7 +145,7 @@ All notable changes to Zephyr are documented here. The format follows
 
 - Start inventory validation no longer rejects valid configurations.
 
-## [1.2.8] — 2026-04-26
+## [1.2.8] - 2026-04-26
 
 ### Added
 
@@ -173,7 +173,7 @@ All notable changes to Zephyr are documented here. The format follows
 
 - Console UI polish across the server and client views.
 
-## [1.2.7] — 2026-04-25
+## [1.2.7] - 2026-04-25
 
 ### Added
 
@@ -196,7 +196,7 @@ All notable changes to Zephyr are documented here. The format follows
   subprocess console windows.
 - Randomizer UI no longer freezes mid-install.
 
-## [1.2.6] — 2026-04-24
+## [1.2.6] - 2026-04-24
 
 ### Added
 
@@ -218,14 +218,14 @@ All notable changes to Zephyr are documented here. The format follows
 - Custom folder selection for multi-ApWorld setups.
 - Duplicate "Your Games" title and section icons cleaned up on the dashboard.
 
-## [1.2.5] — 2026-04-22
+## [1.2.5] - 2026-04-22
 
 ### Changed
 
 - Replaced Railway remote hosting with archipelago.gg as the default remote
   Archipelago server.
 
-## [1.2.4] — 2026-04-19
+## [1.2.4] - 2026-04-19
 
 ### Added
 
@@ -243,7 +243,7 @@ All notable changes to Zephyr are documented here. The format follows
 - macOS fullscreen behaviour.
 - Pointer cursor on README/changelog links inside mod details.
 
-## [1.2.3] — 2026-04-19
+## [1.2.3] - 2026-04-19
 
 ### Added
 
@@ -256,7 +256,7 @@ All notable changes to Zephyr are documented here. The format follows
 - AppImage Python integration.
 - Randomizer host configuration patch.
 
-## [1.2.2] — 2026-04-18
+## [1.2.2] - 2026-04-18
 
 ### Added
 
@@ -280,7 +280,7 @@ All notable changes to Zephyr are documented here. The format follows
 - Tracker `items_handling` set to 0 so the real game client receives items.
 - Removed `target="_blank"` on guide URLs that opened blank tabs.
 
-## [1.2.1] — 2026-04-17
+## [1.2.1] - 2026-04-17
 
 ### Added
 
@@ -291,7 +291,7 @@ All notable changes to Zephyr are documented here. The format follows
 - Deep link handling on macOS via Apple Events.
 - Auth callback channel capacity increased to avoid dropped login redirects.
 
-## [1.2.0] — 2026-04-17
+## [1.2.0] - 2026-04-17
 
 ### Added
 
@@ -321,18 +321,18 @@ All notable changes to Zephyr are documented here. The format follows
 - Restore dialogs now close after their action via `bind:open`.
 - Cross-game restore dialog only opens on manual click, not on mount.
 
-## [1.1.3] — 2026-04-07
+## [1.1.3] - 2026-04-07
 
 Maintenance release; superseded shortly by 1.1.2.
 
-## [1.1.2] — 2026-04-07
+## [1.1.2] - 2026-04-07
 
 ### Changed
 
 - Drag-and-drop adjustment on the mod list.
 - Reorder profile interaction polish.
 
-## [1.1.1] — 2026-04-07
+## [1.1.1] - 2026-04-07
 
 ### Added
 
@@ -342,7 +342,7 @@ Maintenance release; superseded shortly by 1.1.2.
 
 - Quick actions reactivity on the randomizer page.
 
-## [1.1.0] — 2026-04-06
+## [1.1.0] - 2026-04-06
 
 ### Added
 
@@ -352,7 +352,7 @@ Maintenance release; superseded shortly by 1.1.2.
 
 - Updated launch icon.
 
-## [1.0.2] — 2026-04-06
+## [1.0.2] - 2026-04-06
 
 ### Added
 
@@ -375,7 +375,7 @@ Maintenance release; superseded shortly by 1.1.2.
 
 - API keys obfuscated in the bundled binary.
 
-## [1.0.1] — 2026-04-05
+## [1.0.1] - 2026-04-05
 
 ### Added
 
@@ -391,13 +391,13 @@ Maintenance release; superseded shortly by 1.1.2.
 - Version change no longer deletes the mod or hides the load-more button.
 - Multiple-tag selection on browse.
 
-## [1.0.0] — 2026-04-05
+## [1.0.0] - 2026-04-05
 
 First stable release of the Zephyr fork. Per-game config and auto-update
 infrastructure stabilised, packaging cleaned up, internal `cargo check`
 errors resolved.
 
-## [0.9.0] — 2026-04-04
+## [0.9.0] - 2026-04-04
 
 ### Added
 
@@ -410,7 +410,7 @@ errors resolved.
 - CurseForge filter only shown on supported games.
 - Tag selection edge cases.
 
-## [0.8.0] — 2026-04-04
+## [0.8.0] - 2026-04-04
 
 ### Added
 
@@ -433,7 +433,7 @@ errors resolved.
 - NexusMods integration is temporarily commented out pending a rework.
 - CurseForge toggle visually marked "coming soon" via tooltip.
 
-## [0.7.0] — 2026-04-03
+## [0.7.0] - 2026-04-03
 
 Initial public release of the Zephyr fork.
 
