@@ -106,10 +106,6 @@ pnpm tauri build
 | Backend   | Rust                  |
 | Styling   | CSS Custom Properties |
 
-## Fork Info
-
-Zephyr is forked from [Gale](https://github.com/Kesomannen/gale) by [Kesomannen](https://github.com/Kesomannen).
-
 ## License
 
 This project is licensed under [GPL-3.0](LICENSE.md).

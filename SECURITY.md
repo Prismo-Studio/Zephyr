@@ -50,7 +50,6 @@ The following are **out of scope**:
 
 - Vulnerabilities in third-party mods installed through Zephyr (please report those to the mod authors)
 - Vulnerabilities in upstream dependencies that have not been disclosed publicly (please report those upstream first)
-- Issues in the original Gale project that have not been carried over into Zephyr
 
 ## Safe Harbor
 
