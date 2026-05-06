@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { captureEvent } from '$lib/telemetry.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import { onMount, onDestroy } from 'svelte';
@@ -67,6 +68,7 @@
 			for (const p of paths) {
 				try {
 					await installApworldFromPath(p);
+					captureEvent('ap_apworld_imported', { source: 'path' });
 					ok++;
 				} catch {
 					failed++;
@@ -194,6 +196,7 @@
 				try {
 					const buf = await f.arrayBuffer();
 					await installApworldFromBytes(f.name, arrayBufferToBase64(buf));
+					captureEvent('ap_apworld_imported', { source: 'drop' });
 					ok++;
 				} catch (err) {
 					console.error('install failed', f.name, err);

@@ -19,12 +19,24 @@ import { PersistedState } from 'runed';
 // autocomplete + typo protection.
 export type EventName =
 	| 'app_started'
+	| 'page_viewed'
 	| 'game_selected'
 	| 'mod_installed'
 	| 'mod_removed'
+	| 'mod_updated'
 	| 'profile_created'
 	| 'profile_synced'
-	| 'randomizer_started'
+	| 'profile_unsynced'
+	| 'profile_launched'
+	| 'discord_login'
+	| 'discord_logout'
+	| 'ap_server_started'
+	| 'ap_server_stopped'
+	| 'ap_client_connected'
+	| 'ap_seed_generated'
+	| 'ap_apworld_imported'
+	| 'ap_runtime_installed'
+	| 'modal_opened'
 	| 'feature_used'
 	| 'error_occurred';
 

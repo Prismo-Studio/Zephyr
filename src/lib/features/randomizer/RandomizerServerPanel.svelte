@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { captureEvent } from '$lib/telemetry.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
@@ -110,6 +111,10 @@
 		try {
 			const outcome: GenerateOutcome = await api.generateSeed();
 			generateLog = (outcome.stdout + '\n' + outcome.stderr).trim();
+			captureEvent('ap_seed_generated', {
+				success: outcome.success,
+				player_count: players.length
+			});
 			if (outcome.success && outcome.zip_path) {
 				const playerNames = players.map((p) => p.name).join('_') || 'seed';
 				const now = new Date();
@@ -208,11 +213,15 @@
 		remoteLog = [];
 	}
 
+	let serverStartedAt: number | null = null;
+
 	async function startHost() {
 		if (!selectedSeed || !portValid) return;
 		starting = true;
 		try {
 			server = await api.startServer(selectedSeed, port, password.trim() || null);
+			serverStartedAt = Date.now();
+			captureEvent('ap_server_started', { port, has_password: !!password.trim() });
 		} catch (e: any) {
 			pushToast({
 				type: 'error',
@@ -225,8 +234,11 @@
 	}
 
 	async function stop() {
+		const duration = serverStartedAt ? Math.round((Date.now() - serverStartedAt) / 1000) : null;
 		await api.stopServer();
 		server = await api.serverStatus();
+		serverStartedAt = null;
+		captureEvent('ap_server_stopped', { duration_seconds: duration });
 	}
 
 	let renameModal = $state<{ open: boolean; type: 'player' | 'seed'; path: string; value: string }>(

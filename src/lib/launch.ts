@@ -1,5 +1,6 @@
 import * as api from '$lib/api';
 import { installState } from '$lib/state/misc.svelte';
+import { captureEvent } from '$lib/telemetry.svelte';
 
 function waitForInstallEnd(): Promise<void> {
 	return new Promise((resolve) => {
@@ -43,6 +44,7 @@ async function installBepInEx(): Promise<boolean> {
 }
 
 export async function launchGameWithBepInExFallback(): Promise<void> {
+	captureEvent('profile_launched');
 	try {
 		await api.profile.launch.launchGameSilent();
 	} catch (err: unknown) {

@@ -16,6 +16,7 @@
 	import auth from '$lib/state/auth.svelte';
 	import games from '$lib/state/game.svelte';
 	import * as api from '$lib/api';
+	import { captureEvent } from '$lib/telemetry.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import { i18nState } from '$lib/i18nCore.svelte';
@@ -80,6 +81,7 @@
 				await api.profile.setActive(idx);
 			}
 			await api.profile.sync.disconnect(disconnectAlsoDelete);
+			captureEvent('profile_unsynced', { also_delete: disconnectAlsoDelete });
 			await profiles.refresh();
 			pushToast({
 				type: 'info',
@@ -161,10 +163,12 @@
 	async function createProfile(name: string) {
 		if (!checkProfileLimit()) return;
 		await api.profile.create(name, null);
+		captureEvent('profile_created', { auto_sync: autoSync && !!auth.user });
 		await profiles.refresh();
 		if (autoSync && auth.user) {
 			try {
 				await api.profile.sync.create();
+				captureEvent('profile_synced', { trigger: 'auto_on_create' });
 				await profiles.refresh();
 			} catch (e: any) {
 				pushToast({

@@ -7,6 +7,7 @@
 		type?: string;
 		disabled?: boolean;
 		class?: string;
+		maxlength?: number;
 		oninput?: (e: Event & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (e: KeyboardEvent) => void;
 		onfocus?: (e: FocusEvent & { currentTarget: HTMLInputElement }) => void;
@@ -21,6 +22,7 @@
 		type = 'text',
 		disabled = false,
 		class: className = '',
+		maxlength,
 		oninput,
 		onkeydown,
 		onfocus,
@@ -41,6 +43,7 @@
 		{type}
 		{placeholder}
 		{disabled}
+		{maxlength}
 		bind:value
 		{oninput}
 		{onkeydown}
