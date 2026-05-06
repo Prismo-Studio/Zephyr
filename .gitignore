@@ -24,3 +24,6 @@ src-tauri/archipelago-runtime/
 /check_compiled.cjs
 /list_broken.cjs
 /language-fix/
+
+# Inlang manages its own .gitignore locally (paraglide-js >=2.5)
+project.inlang/.gitignore
