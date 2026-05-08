@@ -31,7 +31,7 @@
 
 	$effect(() => {
 		loading = false;
-		if (onInstall) {
+		if (onInstall || mod.isInstalled) {
 			downloadSize = null;
 			return;
 		}

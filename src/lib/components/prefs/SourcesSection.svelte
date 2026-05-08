@@ -5,7 +5,7 @@
 	import Toggle from '$lib/components/ui/Toggle.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
-	import { curseForgeEnabled } from '$lib/themeSystem';
+	import { curseForgeEnabled, zephyrModsEnabled } from '$lib/themeSystem';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
@@ -21,6 +21,18 @@
 </script>
 
 <PrefSection icon="mdi:store-search" title={(i18nState.locale && m.prefs_sources_title()) ?? ''}>
+	<PrefRow
+		title="Zephyr Mods"
+		description="Curated community mods from the Zephyr Mods registry. SHA-256 verified GitHub Releases."
+	>
+		{#snippet control()}
+			<Toggle
+				checked={zephyrModsEnabled.current}
+				onchange={() => (zephyrModsEnabled.current = !zephyrModsEnabled.current)}
+			/>
+		{/snippet}
+	</PrefRow>
+
 	<PrefRow
 		title="CurseForge"
 		description={(i18nState.locale && m.prefs_sources_curseforge_desc()) ?? ''}
@@ -65,6 +77,20 @@
 {/if}
 
 <style>
+	.z-source-badge {
+		display: inline-flex;
+		align-items: center;
+		padding: 4px 10px;
+		border-radius: var(--radius-full);
+		background: var(--bg-active);
+		border: 1px solid var(--border-accent);
+		color: var(--accent-400);
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
 	.z-cf-modal {
 		display: flex;
 		flex-direction: column;

@@ -198,6 +198,8 @@ pub fn run() {
             logger::log_err,
             source::commands::get_sources,
             source::commands::search_sources,
+            source::commands::install_source_mod,
+            source::commands::get_source_mod_info,
             source::commands::get_source_mod_description,
             source::commands::get_source_mod_changelog,
             source::commands::get_nexusmods_games,

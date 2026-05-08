@@ -378,6 +378,10 @@ pub struct LocalMod {
     pub file_size: u64,
     pub readme: Option<String>,
     pub changelog: Option<String>,
+    #[serde(default)]
+    pub source: Option<String>,
+    #[serde(default)]
+    pub external_id: Option<String>,
 }
 
 impl LocalMod {

@@ -1,6 +1,6 @@
 import { invoke } from '$lib/invoke';
 
-export type SourceId = 'thunderstore' | 'nexusmods' | 'curseforge' | 'github' | 'local';
+export type SourceId = 'thunderstore' | 'nexusmods' | 'curseforge' | 'zephyrmods' | 'local';
 
 export type SourceInfo = {
 	id: SourceId;
@@ -70,6 +70,12 @@ export const getSources = () => invoke<SourceInfo[]>('get_sources');
 
 export const searchSources = (filters: SearchFilters) =>
 	invoke<SearchResult[]>('search_sources', { filters });
+
+export const installSourceMod = (source: SourceId, externalId: string, version: string) =>
+	invoke<void>('install_source_mod', { source, externalId, version });
+
+export const getSourceModInfo = (source: SourceId, externalId: string) =>
+	invoke<UnifiedMod | null>('get_source_mod_info', { source, externalId });
 
 export const getSourceModDescription = (source: SourceId, externalId: string) =>
 	invoke<string | null>('get_source_mod_description', { source, externalId });

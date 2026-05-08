@@ -11,9 +11,18 @@
 		locked: boolean;
 		ontoggle?: () => void;
 		onremove?: () => void;
+		onopenfolder?: () => void;
 	};
 
-	let { mod, locked, ontoggle, onremove }: Props = $props();
+	let { mod, locked, ontoggle, onremove, onopenfolder }: Props = $props();
+
+	function handleOpenFolder() {
+		if (onopenfolder) {
+			onopenfolder();
+		} else {
+			api.profile.openModDir(mod.uuid);
+		}
+	}
 </script>
 
 <div class="z-details-actions">
@@ -33,7 +42,7 @@
 	</Tooltip>
 
 	<Tooltip text={i18nState.locale && m.modDetails_openFolder()} position="bottom" delay={300}>
-		<button class="z-action-btn" onclick={() => api.profile.openModDir(mod.uuid)}>
+		<button class="z-action-btn" onclick={handleOpenFolder}>
 			<Icon icon="mdi:folder-open" />
 			<span class="z-action-label">{i18nState.locale && m.modDetails_openFolder()}</span>
 		</button>

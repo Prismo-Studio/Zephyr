@@ -43,9 +43,10 @@
 
 	let installing = $state(false);
 
-	// Reset the local installing flag when the global install cycle ends OR
-	// the mod becomes installed (covers both success and external completion).
 	$effect(() => {
+		mod.uuid;
+		mod.isInstalled;
+		installState.active;
 		if (!installState.active || mod.isInstalled) {
 			installing = false;
 		}

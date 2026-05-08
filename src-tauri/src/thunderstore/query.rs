@@ -206,6 +206,8 @@ impl IntoFrontendMod for BorrowedMod<'_> {
                 .collect(),
             kind: FrontendModKind::Remote,
             icon: None,
+            source: None,
+            external_id: None,
         }
     }
 }
@@ -220,6 +222,8 @@ impl IntoFrontendMod for LocalMod {
             uuid,
             dependencies,
             icon,
+            source,
+            external_id,
             ..
         } = self;
 
@@ -231,7 +235,10 @@ impl IntoFrontendMod for LocalMod {
             uuid,
             dependencies,
             icon,
+            is_installed: true,
             kind: FrontendModKind::Local,
+            source,
+            external_id,
             ..Default::default()
         }
     }

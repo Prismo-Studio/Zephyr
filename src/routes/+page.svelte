@@ -83,9 +83,40 @@
 		return cachedSelectedMods.get(uuid) ?? null;
 	}
 
+	let zephyrModVersions: Map<string, { name: string; uuid: string }[]> = $state(new Map());
+
 	let selectedMod = $derived.by(() => {
 		mods;
-		return selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null;
+		const m = selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null;
+		if (m && m.source === 'zephyrmods' && m.externalId) {
+			const cached = zephyrModVersions.get(m.externalId);
+			if (cached) return { ...m, versions: cached };
+		}
+		return m;
+	});
+
+	$effect(() => {
+		const m = selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null;
+		if (
+			m &&
+			m.source === 'zephyrmods' &&
+			m.externalId &&
+			!zephyrModVersions.has(m.externalId)
+		) {
+			const externalId = m.externalId;
+			api.sources
+				.getSourceModInfo('zephyrmods', externalId)
+				.then((info) => {
+					if (info) {
+						zephyrModVersions.set(
+							externalId,
+							info.versions.map((v) => ({ name: v.version, uuid: v.externalId }))
+						);
+						zephyrModVersions = new Map(zephyrModVersions);
+					}
+				})
+				.catch(() => {});
+		}
 	});
 
 	let multiViewIndex = $state(0);
@@ -196,6 +227,8 @@
 		const response = await api.profile.removeMod(mod.uuid);
 		if (response.type === 'done') {
 			captureEvent('mod_removed');
+			cachedSelectedMods.delete(mod.uuid);
+			selectedModIds = selectedModIds.filter((id) => id !== mod.uuid);
 			await refresh();
 		} else if (response.type === 'confirm') {
 			removeDialog = { open: true, mod, dependants: response.dependants };
@@ -587,12 +620,14 @@
 				activeCategories={profileQuery.current.includeCategories}
 			>
 				<InstallModButton mod={multiViewMod} {install} {locked} />
-				<MultiViewNav
-					index={multiViewIndex}
-					total={selectedMods.length}
-					onprev={() => multiViewIndex--}
-					onnext={() => multiViewIndex++}
-				/>
+				{#snippet footer()}
+					<MultiViewNav
+						index={multiViewIndex}
+						total={selectedMods.length}
+						onprev={() => multiViewIndex--}
+						onnext={() => multiViewIndex++}
+					/>
+				{/snippet}
 			</ModDetails>
 		{/if}
 

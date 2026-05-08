@@ -15,6 +15,8 @@
 		visibleCount: number;
 		showCurseForgeOnly: boolean;
 		showCurseForgeToggle: boolean;
+		showZephyrModsOnly: boolean;
+		showZephyrModsToggle: boolean;
 		ontoggleSelectAll: () => void;
 	};
 
@@ -26,6 +28,8 @@
 		visibleCount,
 		showCurseForgeOnly = $bindable(),
 		showCurseForgeToggle,
+		showZephyrModsOnly = $bindable(),
+		showZephyrModsToggle,
 		ontoggleSelectAll
 	}: Props = $props();
 
@@ -69,6 +73,12 @@
 				<label class="z-filter-toggle">
 					<Checkbox bind:checked={showCurseForgeOnly} />
 					<span>CurseForge</span>
+				</label>
+			{/if}
+			{#if showZephyrModsToggle}
+				<label class="z-filter-toggle">
+					<Checkbox bind:checked={showZephyrModsOnly} />
+					<span>Zephyr Mods</span>
 				</label>
 			{/if}
 

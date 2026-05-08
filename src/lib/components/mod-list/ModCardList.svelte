@@ -113,7 +113,7 @@
 			{#if isModPinned(mod.uuid)}
 				<Icon icon="mdi:pin" class="z-mod-badge-icon pinned" />
 			{/if}
-			<ModSourceIcon uuid={mod.uuid} extraClass="z-mod-source-icon" />
+			<ModSourceIcon uuid={mod.uuid} icon={mod.icon} extraClass="z-mod-source-icon" />
 			{#if mod.isDeprecated}
 				<Icon icon="mdi:alert" class="z-mod-badge-icon deprecated" />
 			{/if}

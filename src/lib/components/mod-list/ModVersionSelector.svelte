@@ -9,6 +9,7 @@
 	import * as api from '$lib/api';
 	import { formatModName } from '$lib/util';
 	import { pushToast } from '$lib/toast.svelte';
+	import { installState } from '$lib/state/misc.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import type { Mod } from '$lib/types';
@@ -54,10 +55,24 @@
 		const packageUuid = mod.uuid;
 		const modName = formatModName(mod.name);
 		try {
-			if (mod.isInstalled && !isExternal()) {
-				await api.profile.forceRemoveMods([packageUuid]);
+			const isZephyrmodsByUuid = mod.uuid.startsWith('zephyrmods:');
+			const isZephyrmodsBySource = mod.source === 'zephyrmods' && !!mod.externalId;
+			if (isZephyrmodsByUuid || isZephyrmodsBySource) {
+				const externalId = isZephyrmodsByUuid
+					? mod.uuid.replace('zephyrmods:', '')
+					: mod.externalId!;
+				installState.active = true;
+				try {
+					await api.sources.installSourceMod('zephyrmods', externalId, version.uuid);
+				} finally {
+					installState.active = false;
+				}
+			} else {
+				if (mod.isInstalled && !isExternal()) {
+					await api.profile.forceRemoveMods([packageUuid]);
+				}
+				await api.profile.install.mod({ packageUuid, versionUuid: version.uuid });
 			}
-			await api.profile.install.mod({ packageUuid, versionUuid: version.uuid });
 			pushToast({
 				type: 'info',
 				message:

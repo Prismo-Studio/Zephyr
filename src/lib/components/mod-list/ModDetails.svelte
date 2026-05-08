@@ -14,6 +14,7 @@
 	import ModMarkdownView from './ModMarkdownView.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 	import type { Snippet } from 'svelte';
 
 	type Props = {
@@ -23,10 +24,12 @@
 		onclose?: () => void;
 		ontoggle?: () => void;
 		onremove?: () => void;
+		onopenfolder?: () => void;
 		oncategoryclick?: (category: string, multi?: boolean) => void;
 		ondepclick?: (author: string, name: string) => Promise<boolean> | boolean;
 		activeCategories?: string[];
 		children?: Snippet;
+		footer?: Snippet;
 	};
 
 	let {
@@ -36,10 +39,12 @@
 		onclose,
 		ontoggle,
 		onremove,
+		onopenfolder,
 		oncategoryclick,
 		ondepclick,
 		activeCategories = [],
-		children
+		children,
+		footer
 	}: Props = $props();
 
 	let activeTab = $state('readme');
@@ -70,6 +75,27 @@
 		markdown = await loadModMarkdown(mod, type);
 		loadingMarkdown = false;
 	}
+
+	let copied = $state(false);
+	let copyTimeoutId: number | null = null;
+
+	function stripHtml(html: string): string {
+		const doc = new DOMParser().parseFromString(html, 'text/html');
+		return doc.body.textContent ?? '';
+	}
+
+	async function copyMarkdown() {
+		try {
+			await writeText(stripHtml(markdown));
+			copied = true;
+			if (copyTimeoutId !== null) clearTimeout(copyTimeoutId);
+			copyTimeoutId = window.setTimeout(() => (copied = false), 2000);
+		} catch (err) {
+			console.error('Failed to copy:', err);
+		}
+	}
+
+	let showCopy = $derived(activeTab !== 'dependencies' && !!markdown && !loadingMarkdown);
 
 	$effect(() => {
 		if (mod) {
@@ -113,7 +139,7 @@
 		</div>
 
 		<div class="z-details-badges">
-			{#if mod.version && mod.versions.length > 1 && mod.isInstalled && showVersionSelector && !isExternal()}
+			{#if mod.version && mod.versions.length > 1 && mod.isInstalled && showVersionSelector && (!isExternal() || mod.uuid.startsWith('zephyrmods:'))}
 				<ModVersionSelector {mod} />
 			{:else if mod.version}
 				<Badge variant="accent">{mod.version}</Badge>
@@ -166,13 +192,15 @@
 			</div>
 		{/if}
 
-		{#if mod.isInstalled && !isExternal()}
-			<ModDetailsActions {mod} {locked} {ontoggle} {onremove} />
+		{#if mod.isInstalled && (!isExternal() || mod.uuid.startsWith('zephyrmods:'))}
+			<ModDetailsActions {mod} {locked} {ontoggle} {onremove} {onopenfolder} />
 		{/if}
 
 		{#if children}{@render children()}{/if}
 
 		<ModExternalLinks {mod} />
+
+		{#if footer}{@render footer()}{/if}
 	</div>
 
 	<div class="z-details-content">
@@ -185,6 +213,17 @@
 					if (id !== 'dependencies') loadFor(id as 'readme' | 'changelog');
 				}}
 			/>
+			{#if showCopy}
+				<button
+					class="z-tabs-copy-btn"
+					class:copied
+					onclick={copyMarkdown}
+					title="Copy content"
+				>
+					<Icon icon={copied ? 'mdi:check' : 'mdi:content-copy'} />
+					<span class="z-copy-text">{copied ? 'Copied!' : 'Copy'}</span>
+				</button>
+			{/if}
 		</div>
 
 		<div class="z-details-body" bind:this={bodyEl}>
@@ -393,6 +432,46 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-md);
+	}
+
+	.z-tabs-copy-btn {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 12px;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-elevated);
+		color: var(--text-secondary);
+		font-family: var(--font-body);
+		font-size: 12px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	.z-tabs-copy-btn:hover:not(.copied) {
+		background: var(--bg-hover);
+		border-color: var(--border-default);
+		color: var(--text-primary);
+	}
+
+	.z-tabs-copy-btn.copied {
+		background: rgba(0, 212, 170, 0.1);
+		border-color: rgba(0, 212, 170, 0.3);
+		color: var(--success);
+	}
+
+	.z-copy-text {
+		display: none;
+	}
+
+	@container (min-width: 420px) {
+		.z-copy-text {
+			display: inline;
+		}
 	}
 
 	.z-details-body {
