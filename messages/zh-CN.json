@@ -118,6 +118,8 @@
 	"prefs_sources_title": "来源",
 	"prefs_sources_zephyrmods_desc": "来自 Zephyr Mods 注册表的精选社区模组。经 SHA-256 校验的 GitHub Releases。",
 	"prefs_sources_zephyrmods_submit": "提交你的模组",
+	"randomizer_optionCount_tooltip": "生成种子前可调整的 {count} 个选项",
+	"randomizer_presetCount_tooltip": "{count} 个现成的选项预设",
 	"prefs_sources_curseforge_desc": "浏览模组时包含 CurseForge 的结果。",
 	"prefs_curseforge_modal_title": "启用 CurseForge",
 	"prefs_curseforge_modal_desc": "CurseForge 模组将在浏览中与 Thunderstore 一起显示。",

@@ -2,6 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import { onMount } from 'svelte';
 	import { open as openDialog } from '@tauri-apps/plugin-dialog';
 	import { randomizerStore } from './randomizer.store.svelte';
@@ -270,15 +271,31 @@
 							{game.description || (i18nState.locale && m.randomizer_noDescription())}
 						</p>
 						<div class="rdz-card-badges">
-							<span class="rdz-badge">
-								<Icon icon="mdi:tune" />
-								{game.option_count}
-							</span>
-							{#if game.preset_count > 0}
-								<span class="rdz-badge rdz-badge-soft">
-									<Icon icon="mdi:bookmark-multiple" />
-									{game.preset_count}
+							<Tooltip
+								text={(i18nState.locale &&
+									m.randomizer_optionCount_tooltip({ count: String(game.option_count) })) ??
+									''}
+								position="top"
+								delay={150}
+							>
+								<span class="rdz-badge">
+									<Icon icon="mdi:tune" />
+									{game.option_count}
 								</span>
+							</Tooltip>
+							{#if game.preset_count > 0}
+								<Tooltip
+									text={(i18nState.locale &&
+										m.randomizer_presetCount_tooltip({ count: String(game.preset_count) })) ??
+										''}
+									position="top"
+									delay={150}
+								>
+									<span class="rdz-badge rdz-badge-soft">
+										<Icon icon="mdi:bookmark-multiple" />
+										{game.preset_count}
+									</span>
+								</Tooltip>
 							{/if}
 						</div>
 					</div>

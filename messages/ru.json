@@ -118,6 +118,8 @@
 	"prefs_sources_title": "Источники",
 	"prefs_sources_zephyrmods_desc": "Курируемые сообществом моды из реестра Zephyr Mods. GitHub Releases с проверкой SHA-256.",
 	"prefs_sources_zephyrmods_submit": "Опубликовать свой мод",
+	"randomizer_optionCount_tooltip": "{count} настраиваемых параметров перед генерацией сида",
+	"randomizer_presetCount_tooltip": "{count} готовых пресетов настроек",
 	"prefs_sources_curseforge_desc": "Показывать результаты из CurseForge при просмотре модов.",
 	"prefs_curseforge_modal_title": "Включить CurseForge",
 	"prefs_curseforge_modal_desc": "Моды из CurseForge будут отображаться в каталоге наряду с Thunderstore.",

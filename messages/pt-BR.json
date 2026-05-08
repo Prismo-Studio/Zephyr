@@ -152,6 +152,8 @@
 	"prefs_sources_title": "Fontes",
 	"prefs_sources_zephyrmods_desc": "Mods da comunidade selecionados do registro Zephyr Mods. GitHub Releases verificados por SHA-256.",
 	"prefs_sources_zephyrmods_submit": "Enviar seu mod",
+	"randomizer_optionCount_tooltip": "{count} opções que você pode ajustar antes de gerar uma seed",
+	"randomizer_presetCount_tooltip": "{count} predefinições de opções prontas",
 	"prefs_sources_curseforge_desc": "Incluir resultados do CurseForge ao navegar pelos mods.",
 	"prefs_curseforge_modal_title": "Ativar CurseForge",
 	"prefs_curseforge_modal_desc": "Mods do CurseForge aparecerão no Explorar junto com o Thunderstore.",
