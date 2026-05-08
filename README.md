@@ -56,11 +56,18 @@ Built-in Archipelago multiworld randomizer with Python runtime bundled. Generate
 
 - **Multi-game support** -- 198+ games from Thunderstore, including Lethal Company, R.E.P.O., and Risk of Rain 2
 - **Thunderstore integration** -- Browse, install, and update mods directly from Thunderstore
+- **Zephyr Mods registry** -- Curated community mods with SHA-256 verified GitHub Releases. Anyone can submit
 - **Profile management** -- Create and switch between mod profiles for each game
 - **Config editor** -- Edit mod configuration files with a built-in, structured editor
 - **Custom themes** -- 4 built-in themes with full CSS custom property support
 - **Multi-language support** -- Available in 7 languages
 - **Fast Rust backend** -- Native performance powered by Tauri 2 and Rust
+
+## Publish your mod
+
+You wrote a mod for a game Zephyr supports? You can publish it to the **[Zephyr Mods registry](https://github.com/Prismo-Studio/zephyr-mods)** and have it appear in Zephyr's Browse page for everyone, no Thunderstore account needed.
+
+The registry is a plain GitHub repo with a CLI wizard. You point it at your mod's GitHub release, it computes the SHA-256, opens a PR, CI verifies ownership, and once merged Zephyr picks it up. See the [zephyr-mods README](https://github.com/Prismo-Studio/zephyr-mods#readme) for the full guide.
 
 ## Quick Start
 

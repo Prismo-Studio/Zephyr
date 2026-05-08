@@ -116,6 +116,8 @@
 	"sidebar_playVanilla_title": "Jouer en vanilla",
 	"sidebar_playVanilla_sub": "Aucun mod, jeu d'origine",
 	"prefs_sources_title": "Sources",
+	"prefs_sources_zephyrmods_desc": "Mods communautaires triés depuis le registre Zephyr Mods. GitHub Releases vérifiées par SHA-256.",
+	"prefs_sources_zephyrmods_submit": "Soumettre votre mod",
 	"prefs_sources_curseforge_desc": "Inclure les résultats CurseForge lors de la recherche de mods.",
 	"prefs_curseforge_modal_title": "Activer CurseForge",
 	"prefs_curseforge_modal_desc": "Les mods CurseForge apparaitront dans Explorer aux cotes de Thunderstore.",

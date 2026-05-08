@@ -116,6 +116,8 @@
 	"sidebar_playVanilla_title": "اللعب الأصلي",
 	"sidebar_playVanilla_sub": "بدون مودات، لعبة أصلية",
 	"prefs_sources_title": "المصادر",
+	"prefs_sources_zephyrmods_desc": "تعديلات مجتمعية مختارة من سجل Zephyr Mods. إصدارات GitHub موثقة بـ SHA-256.",
+	"prefs_sources_zephyrmods_submit": "أرسل التعديل الخاص بك",
 	"prefs_sources_curseforge_desc": "تضمين نتائج CurseForge عند تصفح التعديلات.",
 	"prefs_curseforge_modal_title": "تفعيل CurseForge",
 	"prefs_curseforge_modal_desc": "ستظهر تعديلات CurseForge في التصفح بجانب Thunderstore.",

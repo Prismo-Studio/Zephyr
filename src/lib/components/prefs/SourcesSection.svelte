@@ -5,9 +5,11 @@
 	import Toggle from '$lib/components/ui/Toggle.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
+	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import { curseForgeEnabled, zephyrModsEnabled } from '$lib/themeSystem';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import { open as openExternal } from '@tauri-apps/plugin-shell';
 
 	let showCurseForgeModal = $state(false);
 
@@ -23,13 +25,28 @@
 <PrefSection icon="mdi:store-search" title={(i18nState.locale && m.prefs_sources_title()) ?? ''}>
 	<PrefRow
 		title="Zephyr Mods"
-		description="Curated community mods from the Zephyr Mods registry. SHA-256 verified GitHub Releases."
+		description={(i18nState.locale && m.prefs_sources_zephyrmods_desc()) ?? ''}
 	>
 		{#snippet control()}
-			<Toggle
-				checked={zephyrModsEnabled.current}
-				onchange={() => (zephyrModsEnabled.current = !zephyrModsEnabled.current)}
-			/>
+			<div class="z-source-controls">
+				<Tooltip
+					text={(i18nState.locale && m.prefs_sources_zephyrmods_submit()) ?? ''}
+					position="left"
+					delay={150}
+				>
+					<button
+						class="z-source-link"
+						onclick={() => openExternal('https://github.com/Prismo-Studio/zephyr-mods')}
+						aria-label="Open Zephyr Mods registry"
+					>
+						<Icon icon="mdi:open-in-new" />
+					</button>
+				</Tooltip>
+				<Toggle
+					checked={zephyrModsEnabled.current}
+					onchange={() => (zephyrModsEnabled.current = !zephyrModsEnabled.current)}
+				/>
+			</div>
 		{/snippet}
 	</PrefRow>
 
@@ -77,6 +94,33 @@
 {/if}
 
 <style>
+	.z-source-controls {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+	}
+
+	.z-source-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 30px;
+		height: 30px;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--border-subtle);
+		background: var(--bg-elevated);
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		font-size: 16px;
+	}
+
+	.z-source-link:hover {
+		background: var(--bg-hover);
+		border-color: var(--border-default);
+		color: var(--text-accent);
+	}
+
 	.z-source-badge {
 		display: inline-flex;
 		align-items: center;
