@@ -261,16 +261,17 @@
 			evt.preventDefault();
 			return;
 		}
-		// Block F5 (refresh via F5)
-		if (k === 'f5') {
-			evt.preventDefault();
-			return;
-		}
-		// Soft refresh: reload data without full page reload.
-		if (matchesShortcut(evt, 'refreshData')) {
+		// Soft refresh: reload data without full page reload. Triggered by
+		// the configured `refreshData` shortcut (default Ctrl+R) or F5.
+		// Dispatches `app:refresh` so pages with their own data sources
+		// (e.g. the mod browser) can opt in by listening for it.
+		if (k === 'f5' || matchesShortcut(evt, 'refreshData')) {
 			evt.preventDefault();
 			profiles.refresh().catch(() => {});
 			games.refresh().catch(() => {});
+			plugins.refetch().catch(() => {});
+			window.dispatchEvent(new CustomEvent('app:refresh'));
+			pushInfoToast({ message: m.app_toast_dataRefreshed() });
 			return;
 		}
 		// Cycle between profiles. Skip when focus is in an editable field so

@@ -649,5 +649,6 @@
 	"plugins_uninstall_builtIn_note": "Esta función integrada se ocultará de la aplicación. Puedes reinstalarla desde esta página en cualquier momento.",
 	"plugins_uninstall_external_note": "Sus archivos se eliminarán y la función se ocultará de la aplicación.",
 	"plugins_uninstall_cancel": "Cancelar",
-	"plugins_description_archipelago": "Aleatorizador multimundo con runtime de Python integrado, generación de semillas, alojamiento de servidor y configurador YAML."
+	"plugins_description_archipelago": "Aleatorizador multimundo con runtime de Python integrado, generación de semillas, alojamiento de servidor y configurador YAML.",
+	"app_toast_dataRefreshed": "Datos actualizados"
 }

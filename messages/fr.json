@@ -650,5 +650,6 @@
 	"plugins_uninstall_builtIn_note": "Cette fonctionnalité intégrée sera masquée dans l'application. Vous pouvez la réinstaller depuis cette page à tout moment.",
 	"plugins_uninstall_external_note": "Ses fichiers seront supprimés et la fonctionnalité sera masquée dans l'application.",
 	"plugins_uninstall_cancel": "Annuler",
-	"plugins_description_archipelago": "Randomiseur multimonde avec runtime Python intégré, génération de seeds, hébergement de serveur et configurateur YAML."
+	"plugins_description_archipelago": "Randomiseur multimonde avec runtime Python intégré, génération de seeds, hébergement de serveur et configurateur YAML.",
+	"app_toast_dataRefreshed": "Données actualisées"
 }

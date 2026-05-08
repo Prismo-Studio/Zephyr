@@ -25,6 +25,12 @@ class PluginsState {
 		await this.refresh();
 	};
 
+	// Re-fetch the registry from GitHub. The Rust side emits `plugins_changed`
+	// on success, which our existing listener picks up to refresh the list.
+	refetch = async () => {
+		await api.plugins.refresh();
+	};
+
 	init = async () => {
 		await this.refresh();
 		if (!this.#unlisten) {

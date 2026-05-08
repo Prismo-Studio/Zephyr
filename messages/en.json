@@ -660,5 +660,6 @@
 	"plugins_uninstall_builtIn_note": "This bundled feature will be hidden from the app. You can reinstall it from this page at any time.",
 	"plugins_uninstall_external_note": "Its files will be removed and the feature will be hidden from the app.",
 	"plugins_uninstall_cancel": "Cancel",
-	"plugins_description_archipelago": "Multiworld randomizer with bundled Python runtime, seed generation, server hosting, and YAML configurator."
+	"plugins_description_archipelago": "Multiworld randomizer with bundled Python runtime, seed generation, server hosting, and YAML configurator.",
+	"app_toast_dataRefreshed": "Data refreshed"
 }

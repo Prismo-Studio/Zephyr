@@ -32,7 +32,7 @@
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import { pushToast } from '$lib/toast.svelte';
+	import { pushToast, pushInfoToast } from '$lib/toast.svelte';
 	import { handleMultiSelect } from '$lib/utils/multiSelect';
 	import { gamepadState } from '$lib/gamepad.svelte';
 	import { curseForgeModToMod, unifiedToMod, isServerMod } from '$lib/utils/sourceMappers';
@@ -285,9 +285,13 @@
 			unlistenFromQuery = unlisten;
 		});
 
+		const handleAppRefresh = () => refresh();
+		window.addEventListener('app:refresh', handleAppRefresh);
+
 		return () => {
 			unlistenFromQuery?.();
 			api.thunderstore.stopQuerying();
+			window.removeEventListener('app:refresh', handleAppRefresh);
 		};
 	});
 
@@ -613,6 +617,7 @@
 					onclick={() => {
 						if (activeSource === 'thunderstore') api.thunderstore.triggerModFetch();
 						refresh();
+						pushInfoToast({ message: m.app_toast_dataRefreshed() });
 					}}
 					title="Refresh"
 				>

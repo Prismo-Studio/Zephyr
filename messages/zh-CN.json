@@ -655,5 +655,6 @@
 	"plugins_uninstall_builtIn_note": "此内置功能将从应用中隐藏。您可以随时在此页面重新安装。",
 	"plugins_uninstall_external_note": "其文件将被删除，且该功能将从应用中隐藏。",
 	"plugins_uninstall_cancel": "取消",
-	"plugins_description_archipelago": "多世界随机化器，内置 Python 运行时、种子生成、服务器托管和 YAML 配置器。"
+	"plugins_description_archipelago": "多世界随机化器，内置 Python 运行时、种子生成、服务器托管和 YAML 配置器。",
+	"app_toast_dataRefreshed": "数据已刷新"
 }

@@ -591,5 +591,6 @@
 	"plugins_uninstall_builtIn_note": "Esse recurso integrado será ocultado do aplicativo. Você pode reinstalá-lo nesta página a qualquer momento.",
 	"plugins_uninstall_external_note": "Os arquivos serão removidos e o recurso ficará oculto no aplicativo.",
 	"plugins_uninstall_cancel": "Cancelar",
-	"plugins_description_archipelago": "Randomizador multimundo com runtime Python integrado, geração de seeds, hospedagem de servidor e configurador YAML."
+	"plugins_description_archipelago": "Randomizador multimundo com runtime Python integrado, geração de seeds, hospedagem de servidor e configurador YAML.",
+	"app_toast_dataRefreshed": "Dados atualizados"
 }

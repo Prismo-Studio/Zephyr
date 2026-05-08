@@ -71,24 +71,9 @@ pub fn is_built_in_feature(entry: &RegistryEntry) -> bool {
 }
 
 /// Used when the network fetch and the local cache both fail (first launch
-/// offline, etc.) so the Plugins page still shows the built-in feature(s).
+/// offline, etc.). Returning an empty list means the Plugins page is empty
+/// in that degraded state, which makes the dependency on the remote
+/// registry visible during testing.
 pub fn fallback_registry() -> Vec<RegistryEntry> {
-    vec![RegistryEntry {
-        id: "archipelago".to_string(),
-        name: "Archipelago".to_string(),
-        version: "0.6.7".to_string(),
-        kind: PluginType::Feature,
-        author: RegistryAuthor {
-            name: "ArchipelagoMW".to_string(),
-            url: Some("https://github.com/ArchipelagoMW/Archipelago".to_string()),
-        },
-        description: "Multiworld randomizer with bundled Python runtime, seed generation, server hosting, and YAML configurator.".to_string(),
-        // Local bundled icon used until the remote registry has been fetched
-        // (offline / first-launch / repo not yet pushed). The successful
-        // registry response will replace this with a GitHub raw URL.
-        icon: "/plugin-icons/archipelago.webp".to_string(),
-        default_installed: true,
-        removable: true,
-        path: "features/archipelago".to_string(),
-    }]
+    vec![]
 }

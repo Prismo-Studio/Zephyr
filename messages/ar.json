@@ -660,5 +660,6 @@
 	"plugins_uninstall_builtIn_note": "ستُخفى هذه الميزة المضمّنة من التطبيق. يمكنك إعادة تثبيتها من هذه الصفحة في أي وقت.",
 	"plugins_uninstall_external_note": "ستُحذف ملفاتها وستُخفى الميزة من التطبيق.",
 	"plugins_uninstall_cancel": "إلغاء",
-	"plugins_description_archipelago": "موزّع عشوائي متعدّد العوالم مع بيئة تشغيل Python مضمّنة، وتوليد البذور، واستضافة الخادم، ومُعدّ ملفات YAML."
+	"plugins_description_archipelago": "موزّع عشوائي متعدّد العوالم مع بيئة تشغيل Python مضمّنة، وتوليد البذور، واستضافة الخادم، ومُعدّ ملفات YAML.",
+	"app_toast_dataRefreshed": "تم تحديث البيانات"
 }
