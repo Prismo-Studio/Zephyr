@@ -17,6 +17,7 @@ src-tauri/gen
 *.pyc
 *.pyo
 src-tauri/archipelago-runtime/
+wiki/
 
 # Local debug / scratch artifacts
 /svelte-errs*.txt

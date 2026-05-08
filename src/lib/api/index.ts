@@ -1,6 +1,7 @@
 export * as config from './config';
 export * as iconCache from './iconCache';
 export * as logger from './logger';
+export * as plugins from './plugins';
 export * as prefs from './prefs';
 export * as profile from './profile';
 export * as sources from './sources';

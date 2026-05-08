@@ -10,6 +10,7 @@ export type Prefs = {
 	language: string;
 	gamepadEnabled: boolean;
 	gamePrefs: Map<string, GamePrefs>;
+	disabledPlugins: string[];
 };
 
 export type GamePrefs = {

@@ -4,8 +4,14 @@
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import plugins from '$lib/state/plugins.svelte';
 
-	type NavItem = { path: string; icon: string; label: () => string };
+	type NavItem = {
+		path: string;
+		icon: string;
+		label: () => string;
+		requiresPlugin?: string;
+	};
 
 	const navItems: NavItem[] = [
 		{ path: '/dashboard', icon: 'mdi:view-dashboard', label: () => m.navBar_label_home() },
@@ -13,9 +19,19 @@
 		{ path: '/browse', icon: 'mdi:store-search', label: () => m.navBar_label_browse() },
 		{ path: '/profiles', icon: 'mdi:account-group', label: () => m.menuBar_profile_title() },
 		{ path: '/config', icon: 'mdi:cog', label: () => m.navBar_label_config() },
-		{ path: '/randomizer', icon: 'mdi:dice-multiple', label: () => m.randomizer_title() },
+		{
+			path: '/randomizer',
+			icon: 'mdi:dice-multiple',
+			label: () => m.randomizer_title(),
+			requiresPlugin: 'archipelago'
+		},
+		{ path: '/plugins', icon: 'mdi:puzzle', label: () => m.navBar_label_plugins() },
 		{ path: '/prefs', icon: 'mdi:tune-vertical', label: () => m.navBar_label_settings() }
 	];
+
+	const visibleItems = $derived(
+		navItems.filter((item) => !item.requiresPlugin || plugins.isEnabled(item.requiresPlugin))
+	);
 
 	let currentPath = $state(window.location.pathname);
 
@@ -44,7 +60,7 @@
 </script>
 
 <nav class="z-sidebar-nav">
-	{#each navItems as item}
+	{#each visibleItems as item (item.path)}
 		<Tooltip text={i18nState.locale && item.label()} position="right" delay={300}>
 			<a href={item.path} class="z-nav-item" class:active={isActive(item.path)}>
 				<Icon icon={item.icon} class="z-nav-icon" />

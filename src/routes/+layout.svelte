@@ -26,6 +26,7 @@
 	import profiles from '$lib/state/profile.svelte';
 	import games from '$lib/state/game.svelte';
 	import auth from '$lib/state/auth.svelte';
+	import plugins from '$lib/state/plugins.svelte';
 	import { updateBanner } from '$lib/state/misc.svelte';
 	import updates from '$lib/state/update.svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
@@ -176,6 +177,7 @@
 		games.refresh().catch(() => {});
 		auth.refresh().catch(() => {});
 		updates.refresh().catch(() => {});
+		plugins.init().catch(() => {});
 		getVersion().then(async (v) => {
 			appVersion = v;
 			// Anonymous opt-in telemetry. No-op unless user has enabled the toggle.
