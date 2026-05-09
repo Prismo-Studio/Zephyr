@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 pub mod commands;
+pub mod install;
 pub mod registry;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -31,12 +32,21 @@ pub struct RegistryEntry {
     pub kind: PluginType,
     pub author: RegistryAuthor,
     pub description: String,
-    pub icon: String,
+    /// Optional so a plugin author who forgets `icon` doesn't break the whole
+    /// registry parse for everyone else. Resolved to a type-specific Iconify
+    /// fallback when missing.
+    #[serde(default)]
+    pub icon: Option<String>,
     #[serde(default)]
     pub default_installed: bool,
     #[serde(default = "default_true")]
     pub removable: bool,
     pub path: String,
+    /// For themes (and other asset-based plugins): filename of the asset under
+    /// the plugin folder, e.g. "theme.css". Optional so older registry entries
+    /// without it still deserialize.
+    #[serde(default)]
+    pub entry: Option<String>,
 }
 
 fn default_true() -> bool {

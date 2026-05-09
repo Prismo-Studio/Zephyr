@@ -4,12 +4,21 @@ use eyre::{Context, Result};
 use tauri::{AppHandle, Manager};
 use tracing::{info, warn};
 
-use super::RegistryEntry;
+use super::{PluginType, RegistryEntry};
 use crate::{
     constants::{PLUGIN_REGISTRY_RAW_BASE, PLUGIN_REGISTRY_URL},
     state::ManagerExt,
     util,
 };
+
+fn fallback_iconify(kind: PluginType) -> &'static str {
+    match kind {
+        PluginType::Feature => "mdi:puzzle",
+        PluginType::Theme => "mdi:palette",
+        PluginType::Game => "mdi:gamepad-variant",
+        PluginType::Mod => "mdi:package-variant",
+    }
+}
 
 const CACHE_FILE_NAME: &str = "plugin-registry.json";
 
@@ -24,14 +33,14 @@ struct RegistryFile {
 }
 
 pub fn icon_url(entry: &RegistryEntry) -> String {
+    let Some(icon) = entry.icon.as_deref() else {
+        return fallback_iconify(entry.kind).to_string();
+    };
     // Absolute URL or app-root path (local static asset) → use as-is.
-    if entry.icon.starts_with("http://")
-        || entry.icon.starts_with("https://")
-        || entry.icon.starts_with('/')
-    {
-        return entry.icon.clone();
+    if icon.starts_with("http://") || icon.starts_with("https://") || icon.starts_with('/') {
+        return icon.to_string();
     }
-    format!("{}{}/{}", PLUGIN_REGISTRY_RAW_BASE, entry.path, entry.icon)
+    format!("{}{}/{}", PLUGIN_REGISTRY_RAW_BASE, entry.path, icon)
 }
 
 fn cache_path() -> PathBuf {

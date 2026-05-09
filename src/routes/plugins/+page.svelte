@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/components/layout/Header.svelte';
+	import Icon from '@iconify/svelte';
 	import PluginCard from '$lib/components/plugins/PluginCard.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -11,6 +12,7 @@
 
 	let busyId: string | null = $state(null);
 	let confirmTarget: Plugin | null = $state(null);
+	let refreshing = $state(false);
 
 	const grouped = $derived.by(() => {
 		const order: Plugin['kind'][] = ['feature', 'theme', 'game', 'mod'];
@@ -34,7 +36,13 @@
 	async function uninstall(plugin: Plugin) {
 		busyId = plugin.id;
 		try {
-			await plugins.setEnabled(plugin.id, false);
+			// Built-in features just toggle off; everything else is a real uninstall
+			// that removes the on-disk asset and registry-installed flag.
+			if (plugin.builtIn) {
+				await plugins.setEnabled(plugin.id, false);
+			} else {
+				await plugins.uninstall(plugin.id);
+			}
 		} finally {
 			busyId = null;
 			confirmTarget = null;
@@ -44,14 +52,30 @@
 	async function reinstall(plugin: Plugin) {
 		busyId = plugin.id;
 		try {
-			await plugins.setEnabled(plugin.id, true);
+			if (plugin.builtIn) {
+				await plugins.setEnabled(plugin.id, true);
+			} else {
+				await plugins.install(plugin.id);
+			}
 		} finally {
 			busyId = null;
 		}
 	}
 
+	async function refreshRegistry() {
+		if (refreshing) return;
+		refreshing = true;
+		try {
+			await plugins.refetch();
+		} finally {
+			refreshing = false;
+		}
+	}
+
 	onMount(() => {
-		plugins.refresh();
+		// Re-pull from GitHub when the page opens so manifest edits show up
+		// without requiring an app restart. Falls back silently if offline.
+		plugins.refetch().catch(() => plugins.refresh());
 	});
 </script>
 
@@ -60,7 +84,16 @@
 		<Header
 			title={i18nState.locale && m.plugins_page_title()}
 			subtitle={i18nState.locale && m.plugins_page_subtitle()}
-		/>
+		>
+			{#snippet actions()}
+				<Button variant="ghost" size="sm" loading={refreshing} onclick={refreshRegistry}>
+					<span class="z-plugins-refresh-label">
+						<Icon icon="mdi:refresh" />
+						{i18nState.locale && m.plugins_action_refresh()}
+					</span>
+				</Button>
+			{/snippet}
+		</Header>
 	</div>
 
 	<div class="z-plugins-content">
@@ -131,6 +164,12 @@
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: var(--space-xl) var(--space-xl) 0;
+	}
+
+	.z-plugins-refresh-label {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-xs);
 	}
 
 	.z-plugins-content {

@@ -195,6 +195,9 @@ pub struct Prefs {
 
     #[serde(default)]
     pub disabled_plugins: HashSet<String>,
+
+    #[serde(default)]
+    pub installed_plugins: HashSet<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
@@ -230,6 +233,7 @@ impl Default for Prefs {
             game_prefs: HashMap::new(),
 
             disabled_plugins: HashSet::new(),
+            installed_plugins: HashSet::new(),
         }
     }
 }
@@ -311,6 +315,7 @@ impl Prefs {
         self.pull_before_launch = value.pull_before_launch;
         self.gamepad_enabled = value.gamepad_enabled;
         self.disabled_plugins = value.disabled_plugins;
+        self.installed_plugins = value.installed_plugins;
 
         self.save(app.db()).context("failed save prefs")
     }

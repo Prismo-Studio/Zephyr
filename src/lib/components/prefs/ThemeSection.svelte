@@ -2,7 +2,8 @@
 	import Icon from '@iconify/svelte';
 	import PrefSection from './PrefSection.svelte';
 	import { onMount } from 'svelte';
-	import { getTheme, setTheme, getVisibleThemes, type ThemeId } from '$lib/design-system/tokens';
+	import { getTheme, setTheme, getVisibleThemes } from '$lib/design-system/tokens';
+	import pluginThemes from '$lib/design-system/pluginThemes.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
@@ -12,10 +13,15 @@
 
 	let { onpickCustom }: Props = $props();
 
-	let visibleThemes = $state(getVisibleThemes());
-	let currentTheme: ThemeId = $state(getTheme());
+	let builtinThemes = $state(getVisibleThemes());
+	let currentTheme: string = $state(getTheme());
 
-	function switchTheme(id: ThemeId) {
+	const allThemes = $derived([
+		...builtinThemes,
+		...pluginThemes.list.map((t) => ({ id: t.id, label: t.name }))
+	]);
+
+	function switchTheme(id: string) {
 		currentTheme = id;
 		setTheme(id);
 		if (id === 'custom') onpickCustom();
@@ -43,7 +49,7 @@
 		requestAnimationFrame(() => requestAnimationFrame(scrollToActiveTheme));
 
 		const onHotdog = () => {
-			visibleThemes = getVisibleThemes();
+			builtinThemes = getVisibleThemes();
 			currentTheme = 'hotdog';
 		};
 		window.addEventListener('hotdog-unlocked', onHotdog);
@@ -61,7 +67,7 @@
 			<Icon icon="mdi:chevron-left" />
 		</button>
 		<div class="z-theme-carousel">
-			{#each visibleThemes as theme}
+			{#each allThemes as theme}
 				<button
 					class="z-theme-option"
 					class:active={currentTheme === theme.id}

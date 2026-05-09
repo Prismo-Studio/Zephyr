@@ -11,6 +11,7 @@ export type Prefs = {
 	gamepadEnabled: boolean;
 	gamePrefs: Map<string, GamePrefs>;
 	disabledPlugins: string[];
+	installedPlugins: string[];
 };
 
 export type GamePrefs = {

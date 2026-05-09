@@ -180,7 +180,9 @@ export function initEasterEgg() {
 	window.addEventListener('keydown', listener);
 }
 
-export function setTheme(theme: ThemeId) {
+// Theme ids accept any string so plugin-provided themes (whose ids are
+// only known at runtime) can be set the same way as built-ins.
+export function setTheme(theme: ThemeId | string) {
 	if (theme === 'custom') {
 		applyCustomTheme(getCustomColors());
 	}
@@ -188,10 +190,8 @@ export function setTheme(theme: ThemeId) {
 	localStorage.setItem('zephyr-theme', theme);
 }
 
-export function getTheme(): ThemeId {
-	const saved = localStorage.getItem('zephyr-theme') as ThemeId | null;
-	if (saved && themes.some((t) => t.id === saved)) return saved;
-	return 'dark';
+export function getTheme(): string {
+	return localStorage.getItem('zephyr-theme') ?? 'dark';
 }
 
 export function initTheme() {

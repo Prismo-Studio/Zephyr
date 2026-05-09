@@ -658,6 +658,7 @@
 	"plugins_action_required": "Required",
 	"plugins_action_install": "Install",
 	"plugins_action_uninstall": "Uninstall",
+	"plugins_action_refresh": "Refresh registry",
 	"plugins_meta_versionBy": "v{version} by {author}",
 	"plugins_uninstall_title": "Uninstall plugin",
 	"plugins_uninstall_question": "Uninstall {name}?",

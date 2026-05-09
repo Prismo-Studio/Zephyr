@@ -347,6 +347,9 @@ pub fn run() {
             plugins::commands::get_plugins,
             plugins::commands::set_plugin_enabled,
             plugins::commands::refresh_plugins,
+            plugins::commands::install_plugin,
+            plugins::commands::uninstall_plugin,
+            plugins::commands::get_installed_themes,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())
