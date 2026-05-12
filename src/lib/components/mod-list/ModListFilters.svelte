@@ -241,6 +241,7 @@
 
 	:global(.z-search-input) {
 		flex: 1;
+		min-width: 380px;
 	}
 
 	.z-filter-btn {

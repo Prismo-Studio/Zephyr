@@ -43,12 +43,10 @@
 
 <div class="z-browse-filters">
 	<div class="z-browse-filters-row">
-		{#if !expanded}
-			<label class="z-master-checkbox-wrapper">
-				<Checkbox checked={isAllSelected} onchange={ontoggleSelectAll} />
-				<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
-			</label>
-		{/if}
+		<label class="z-master-checkbox-wrapper">
+			<Checkbox checked={isAllSelected} onchange={ontoggleSelectAll} />
+			<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
+		</label>
 		<div class="flex-1"></div>
 		<ModListFilters
 			queryArgs={modQuery.current}
@@ -98,10 +96,6 @@
 		</div>
 
 		<div class="z-browse-select-row">
-			<label class="z-master-checkbox-wrapper">
-				<Checkbox checked={isAllSelected} onchange={ontoggleSelectAll} />
-				<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
-			</label>
 			<span class="z-browse-count">{visibleCount} mods</span>
 		</div>
 	{/if}
@@ -112,11 +106,10 @@
 		position: sticky;
 		top: 0;
 		z-index: 10;
-		padding-top: var(--space-sm);
-		padding-bottom: var(--space-xs);
+		padding: var(--space-sm) var(--space-xl) var(--space-xs);
+		margin: 0 calc(var(--space-xl) * -1) var(--space-sm);
 		background: var(--bg-base);
 		border-bottom: 1px solid var(--border-subtle);
-		margin-bottom: var(--space-sm);
 	}
 
 	.z-browse-filters-row {
@@ -208,7 +201,7 @@
 	.z-browse-select-row {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: flex-end;
 		padding-top: var(--space-xs);
 	}
 

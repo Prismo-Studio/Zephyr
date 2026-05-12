@@ -183,6 +183,19 @@
 			filteredModCount = result.filteredModCount;
 			updates = result.updates;
 			unknownMods = result.unknownMods;
+
+			// Drop selections that no longer match any installed mod. Without
+			// this, the side panel and BatchActionBar stay open with stale
+			// uuids after an uninstall, and re-triggering a batch action on
+			// them errors with "Mod not found in profile".
+			const liveUuids = new Set(mods.map((m) => m.uuid));
+			const filtered = selectedModIds.filter((id) => liveUuids.has(id));
+			if (filtered.length !== selectedModIds.length) {
+				selectedModIds = filtered;
+				for (const uuid of [...cachedSelectedMods.keys()]) {
+					if (!liveUuids.has(uuid)) cachedSelectedMods.delete(uuid);
+				}
+			}
 		} catch {}
 		refreshing = false;
 
@@ -291,8 +304,11 @@
 		if (extraDeps.length > 0) {
 			batchToggleDialog = { open: true, extraDependants: extraDeps };
 		} else {
-			await api.profile.forceToggleMods(selectedModIds);
-			await refresh();
+			try {
+				await api.profile.forceToggleMods(selectedModIds);
+			} finally {
+				await refresh();
+			}
 		}
 	}
 
