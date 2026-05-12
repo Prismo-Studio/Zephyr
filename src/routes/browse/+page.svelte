@@ -86,13 +86,22 @@
 	let hasRefreshed = $state(false);
 	let filtersExpanded = $state(false);
 
-	let displayedMods = $derived(
+	let sourceFilteredMods = $derived(
 		showZephyrModsOnly
 			? mods.filter((mm) => mm.uuid.startsWith('zephyrmods:'))
 			: showCurseForgeOnly
 				? mods.filter((mm) => mm.uuid.startsWith('curseforge:') || isServerMod(mm))
 				: mods
 	);
+
+	let displayedMods = $derived.by(() => {
+		const selected = modQuery.current.includeCategories;
+		if (!selected || selected.length === 0) return sourceFilteredMods;
+		const lower = selected.map((c) => c.toLowerCase());
+		return sourceFilteredMods.filter((mm) =>
+			mm.categories?.some((c) => lower.includes(c.toLowerCase()))
+		);
+	});
 
 	let prevInstallActive = false;
 	$effect(() => {
@@ -721,6 +730,7 @@
 				showCurseForgeToggle={showCfToggle}
 				bind:showZephyrModsOnly
 				showZephyrModsToggle={zephyrModsEnabled.current && communityMods.length > 0}
+				{mods}
 				ontoggleSelectAll={toggleSelectAll}
 			/>
 

@@ -5,7 +5,7 @@
 	import { modQuery } from '$lib/state/misc.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import type { SortBy } from '$lib/types';
+	import type { Mod, SortBy } from '$lib/types';
 
 	type Props = {
 		expanded: boolean;
@@ -17,6 +17,7 @@
 		showCurseForgeToggle: boolean;
 		showZephyrModsOnly: boolean;
 		showZephyrModsToggle: boolean;
+		mods?: Mod[];
 		ontoggleSelectAll: () => void;
 	};
 
@@ -30,8 +31,38 @@
 		showCurseForgeToggle,
 		showZephyrModsOnly = $bindable(),
 		showZephyrModsToggle,
+		mods = [],
 		ontoggleSelectAll
 	}: Props = $props();
+
+	// Show Thunderstore's category catalog by default. When the user filters
+	// to a single non-TS source (CurseForge / Zephyr Mods), surface that
+	// source's taxonomy instead since it lives on the mods themselves.
+	let availableCategories = $derived.by(() => {
+		const seen = new Set<string>();
+		const out: { name: string }[] = [];
+		const add = (name: string) => {
+			const key = name.toLowerCase();
+			if (!seen.has(key)) {
+				seen.add(key);
+				out.push({ name });
+			}
+		};
+
+		for (const c of games.categories) add(c.name);
+
+		if (showCurseForgeOnly || showZephyrModsOnly) {
+			for (const m of mods) {
+				const isCf = m.uuid.startsWith('curseforge:') || m.uuid.startsWith('zephyr-server:');
+				const isZm = m.uuid.startsWith('zephyrmods:');
+				if ((showCurseForgeOnly && isCf) || (showZephyrModsOnly && isZm)) {
+					for (const c of m.categories ?? []) add(c);
+				}
+			}
+		}
+
+		return out;
+	});
 
 	function toggleCategory(name: string) {
 		const cats = modQuery.current.includeCategories;
@@ -80,9 +111,9 @@
 				</label>
 			{/if}
 
-			{#if games.categories.length > 0}
+			{#if availableCategories.length > 0}
 				<div class="z-filter-categories">
-					{#each games.categories.slice(0, 20) as cat}
+					{#each availableCategories.slice(0, 30) as cat}
 						<button
 							class="z-category-chip"
 							class:active={modQuery.current.includeCategories.includes(cat.name)}
