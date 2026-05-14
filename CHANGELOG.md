@@ -4,6 +4,62 @@ All notable changes to Zephyr are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] - 2026-05-14
+
+### Added
+
+- **Plugin system**: framework for community-built features that ship outside
+  the Zephyr binary. Plugins run in a sandboxed iframe with a postMessage
+  bridge to Zephyr core, get their own sidebar slot, and access host
+  capabilities through an explicit typed API.
+- **Plugin SDK** (`@zephyr-plugin/sdk`): Svelte components matching Zephyr
+  (`Toggle`, `Select`, `Button`, `Card`, `Row`, `StatusPill`, `StatCard`),
+  design tokens that follow the active theme, and a typed bridge client.
+- **Plugin Dev Mode**: load a plugin folder from disk, watch it for changes,
+  hot-reload the iframe without re-publishing.
+- **Event bus** exposed to plugins via `zephyr.on(event, cb)`:
+  `game.launched`, `game.exited`, `game.changed`, `profile.switched`,
+  `locale.changed`, `theme.changed`.
+- **Pull accessors** for plugins: `zephyr.locale()`, `zephyr.activeGame()`,
+  `zephyr.activeProfile()`, `zephyr.plugin()`.
+- **Native screen recording** capability (`zephyr.recording.start/stop`)
+  backed by ffmpeg, with automatic window detection on Windows via
+  `EnumWindows` (substring match on the game name).
+- **Theme propagation**: plugins inherit Zephyr's active theme automatically.
+- **Welcome modal** on first launch in all 7 locales, with a single soft
+  prompt toward the GitHub repo.
+- **Captures plugin** (1.2.0) shipped as the first community feature: native
+  screen recording, configurable quality (720p to 2160p) and framerate
+  (30/60 fps), local mp4 output, preview modal.
+
+### Changed
+
+- **Version selector** now reflects the installed version of a mod rather
+  than always showing the latest available (Thunderstore + Zephyr Mods).
+- **Zephyr Mods installed mods** get a working version dropdown that fetches
+  the version list on-demand from the registry.
+- **Browse & Mods pages** refresh automatically after a version change.
+- **Modal backdrops** cover the full window instead of leaving the sidebar
+  visible.
+- **Sidebar items** for community features show the icon from the plugin
+  manifest (`sidebarIcon`).
+- `SvelteKit` adapter-static switched to SPA fallback so dynamic plugin
+  routes work.
+
+### Fixed
+
+- Version dropdown in the multi-view carousel works for Zephyr Mods entries.
+- Manual capture in the Captures plugin no longer triggers the native
+  recording branch by accident.
+
+### Under the hood
+
+- New Rust modules: `plugins/dev.rs`, `plugins/recording.rs`, plus a
+  `plugin-feature` install path.
+- Filesystem watcher for dev plugins via `notify-debouncer-mini`.
+- ffmpeg bundling via `ffmpeg-sidecar` (auto-downloads on first recording).
+- New community plugin registry repo: `Prismo-Studio/Zephyr-plugin`.
+
 ## [1.2.14] - 2026-05-06
 
 ### Added
