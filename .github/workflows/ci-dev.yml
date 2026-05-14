@@ -67,7 +67,15 @@ jobs:
           cache: pnpm
 
       - name: Install Rust stable
+        if: matrix.platform != 'macos-latest'
         uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Rust stable (macOS)
+        if: matrix.platform == 'macos-latest'
+        shell: bash
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --profile minimal --no-modify-path
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
