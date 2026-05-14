@@ -65,6 +65,33 @@ pub fn read_dev_theme(dev: &super::dev::DevPlugin) -> Result<String> {
     fs::read_to_string(path).context("read dev theme css")
 }
 
+pub async fn install_feature(app: &AppHandle, entry: &RegistryEntry) -> Result<PathBuf> {
+    let url = format!("{}{}/dist/index.html", PLUGIN_REGISTRY_RAW_BASE, entry.path);
+    info!("downloading feature {} from {}", entry.id, url);
+
+    let html = app
+        .http()
+        .get(&url)
+        .send()
+        .await
+        .context("download feature")?
+        .error_for_status()
+        .context("feature download returned non-2xx")?
+        .text()
+        .await
+        .context("read feature body")?;
+
+    let dir = plugin_dir(&entry.id);
+    fs::create_dir_all(&dir).context("create plugin dir")?;
+    let path = dir.join("index.html");
+    fs::write(&path, &html).context("write feature html")?;
+    Ok(path)
+}
+
+pub fn feature_index_path(id: &str) -> PathBuf {
+    plugin_dir(id).join("index.html")
+}
+
 pub fn uninstall(id: &str) -> Result<()> {
     let dir = plugin_dir(id);
     if dir.exists() {

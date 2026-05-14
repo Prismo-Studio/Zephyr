@@ -158,7 +158,12 @@ pub async fn install_plugin(id: String, app: AppHandle) -> CmdResult<InstalledTh
                 super::install::install_theme(&app, &entry).await?
             }
         }
-        PluginType::Feature => String::new(),
+        PluginType::Feature => {
+            if dev.is_none() {
+                super::install::install_feature(&app, &entry).await?;
+            }
+            String::new()
+        }
         PluginType::Game | PluginType::Mod => {
             return Err(eyre!(
                 "install pipeline for {:?} plugins is not implemented yet",
@@ -332,17 +337,13 @@ pub fn get_plugin_ui_url(id: String, app: AppHandle) -> CmdResult<String> {
         return Ok(String::new());
     }
 
-    let state = app.state::<PluginRegistryState>();
-    let entries = state.entries.lock().unwrap();
-    let entry = entries
-        .iter()
-        .find(|e| e.id == id)
-        .ok_or_else(|| eyre!("unknown plugin id: {id}"))?;
-    Ok(format!(
-        "{}{}/dist/index.html",
-        crate::constants::PLUGIN_REGISTRY_RAW_BASE,
-        entry.path
-    ))
+    let local = super::install::feature_index_path(&id);
+    if local.exists() {
+        let normalised = local.to_string_lossy().replace('\\', "/");
+        return Ok(format!("file://{}", normalised));
+    }
+
+    Err(eyre!("plugin {id} is not installed").into())
 }
 
 fn plugin_storage_path(id: &str) -> std::path::PathBuf {
