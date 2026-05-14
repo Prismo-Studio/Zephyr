@@ -53,4 +53,6 @@ export type { SortBy, SortOrder, QueryModsArgs, QueryModsArgsWithoutMax } from '
 
 export type { Prefs, GamePrefs, Zoom } from './settings.types';
 
+export type { Plugin, PluginType } from './plugin.types';
+
 export type { ContextItem, ModContextItem } from './ui.types';

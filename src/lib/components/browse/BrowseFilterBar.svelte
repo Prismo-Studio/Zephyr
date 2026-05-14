@@ -5,7 +5,7 @@
 	import { modQuery } from '$lib/state/misc.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import type { SortBy } from '$lib/types';
+	import type { Mod, SortBy } from '$lib/types';
 
 	type Props = {
 		expanded: boolean;
@@ -15,6 +15,9 @@
 		visibleCount: number;
 		showCurseForgeOnly: boolean;
 		showCurseForgeToggle: boolean;
+		showZephyrModsOnly: boolean;
+		showZephyrModsToggle: boolean;
+		mods?: Mod[];
 		ontoggleSelectAll: () => void;
 	};
 
@@ -26,8 +29,40 @@
 		visibleCount,
 		showCurseForgeOnly = $bindable(),
 		showCurseForgeToggle,
+		showZephyrModsOnly = $bindable(),
+		showZephyrModsToggle,
+		mods = [],
 		ontoggleSelectAll
 	}: Props = $props();
+
+	// Show Thunderstore's category catalog by default. When the user filters
+	// to a single non-TS source (CurseForge / Zephyr Mods), surface that
+	// source's taxonomy instead since it lives on the mods themselves.
+	let availableCategories = $derived.by(() => {
+		const seen = new Set<string>();
+		const out: { name: string }[] = [];
+		const add = (name: string) => {
+			const key = name.toLowerCase();
+			if (!seen.has(key)) {
+				seen.add(key);
+				out.push({ name });
+			}
+		};
+
+		for (const c of games.categories) add(c.name);
+
+		if (showCurseForgeOnly || showZephyrModsOnly) {
+			for (const m of mods) {
+				const isCf = m.uuid.startsWith('curseforge:') || m.uuid.startsWith('zephyr-server:');
+				const isZm = m.uuid.startsWith('zephyrmods:');
+				if ((showCurseForgeOnly && isCf) || (showZephyrModsOnly && isZm)) {
+					for (const c of m.categories ?? []) add(c);
+				}
+			}
+		}
+
+		return out;
+	});
 
 	function toggleCategory(name: string) {
 		const cats = modQuery.current.includeCategories;
@@ -39,12 +74,10 @@
 
 <div class="z-browse-filters">
 	<div class="z-browse-filters-row">
-		{#if !expanded}
-			<label class="z-master-checkbox-wrapper">
-				<Checkbox checked={isAllSelected} onchange={ontoggleSelectAll} />
-				<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
-			</label>
-		{/if}
+		<label class="z-master-checkbox-wrapper">
+			<Checkbox checked={isAllSelected} onchange={ontoggleSelectAll} />
+			<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
+		</label>
 		<div class="flex-1"></div>
 		<ModListFilters
 			queryArgs={modQuery.current}
@@ -71,10 +104,16 @@
 					<span>CurseForge</span>
 				</label>
 			{/if}
+			{#if showZephyrModsToggle}
+				<label class="z-filter-toggle">
+					<Checkbox bind:checked={showZephyrModsOnly} />
+					<span>Zephyr Mods</span>
+				</label>
+			{/if}
 
-			{#if games.categories.length > 0}
+			{#if availableCategories.length > 0}
 				<div class="z-filter-categories">
-					{#each games.categories.slice(0, 20) as cat}
+					{#each availableCategories.slice(0, 30) as cat}
 						<button
 							class="z-category-chip"
 							class:active={modQuery.current.includeCategories.includes(cat.name)}
@@ -88,10 +127,6 @@
 		</div>
 
 		<div class="z-browse-select-row">
-			<label class="z-master-checkbox-wrapper">
-				<Checkbox checked={isAllSelected} onchange={ontoggleSelectAll} />
-				<span class="z-master-checkbox-label">{i18nState.locale && m.batch_selectAll()}</span>
-			</label>
 			<span class="z-browse-count">{visibleCount} mods</span>
 		</div>
 	{/if}
@@ -102,11 +137,10 @@
 		position: sticky;
 		top: 0;
 		z-index: 10;
-		padding-top: var(--space-sm);
-		padding-bottom: var(--space-xs);
+		padding: var(--space-sm) var(--space-xl) var(--space-xs);
+		margin: 0 calc(var(--space-xl) * -1) var(--space-sm);
 		background: var(--bg-base);
 		border-bottom: 1px solid var(--border-subtle);
-		margin-bottom: var(--space-sm);
 	}
 
 	.z-browse-filters-row {
@@ -198,7 +232,7 @@
 	.z-browse-select-row {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: flex-end;
 		padding-top: var(--space-xs);
 	}
 

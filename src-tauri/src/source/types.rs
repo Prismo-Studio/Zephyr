@@ -9,7 +9,7 @@ pub enum SourceId {
     Thunderstore,
     NexusMods,
     CurseForge,
-    GitHub,
+    ZephyrMods,
     Local,
 }
 
@@ -19,7 +19,7 @@ impl SourceId {
             SourceId::Thunderstore => "Thunderstore",
             SourceId::NexusMods => "NexusMods",
             SourceId::CurseForge => "CurseForge",
-            SourceId::GitHub => "GitHub Releases",
+            SourceId::ZephyrMods => "Zephyr Mods",
             SourceId::Local => "Local",
         }
     }
@@ -29,7 +29,7 @@ impl SourceId {
             SourceId::Thunderstore => "thunderstore",
             SourceId::NexusMods => "nexusmods",
             SourceId::CurseForge => "curseforge",
-            SourceId::GitHub => "github",
+            SourceId::ZephyrMods => "zephyrmods",
             SourceId::Local => "local",
         }
     }
@@ -182,7 +182,7 @@ mod tests {
         assert_eq!(SourceId::Thunderstore.display_name(), "Thunderstore");
         assert_eq!(SourceId::NexusMods.display_name(), "NexusMods");
         assert_eq!(SourceId::CurseForge.display_name(), "CurseForge");
-        assert_eq!(SourceId::GitHub.display_name(), "GitHub Releases");
+        assert_eq!(SourceId::ZephyrMods.display_name(), "Zephyr Mods");
         assert_eq!(SourceId::Local.display_name(), "Local");
     }
 
@@ -191,7 +191,7 @@ mod tests {
         assert_eq!(SourceId::Thunderstore.as_str(), "thunderstore");
         assert_eq!(SourceId::NexusMods.as_str(), "nexusmods");
         assert_eq!(SourceId::CurseForge.as_str(), "curseforge");
-        assert_eq!(SourceId::GitHub.as_str(), "github");
+        assert_eq!(SourceId::ZephyrMods.as_str(), "zephyrmods");
         assert_eq!(SourceId::Local.as_str(), "local");
     }
 
@@ -225,7 +225,7 @@ mod tests {
             SourceId::Thunderstore,
             SourceId::NexusMods,
             SourceId::CurseForge,
-            SourceId::GitHub,
+            SourceId::ZephyrMods,
             SourceId::Local,
         ];
         for id in ids {

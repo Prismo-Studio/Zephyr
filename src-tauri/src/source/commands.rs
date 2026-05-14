@@ -1,7 +1,14 @@
 use serde::Serialize;
 use tauri::{command, AppHandle};
 
-use crate::{state::ManagerExt, util::cmd::Result};
+use crate::{
+    profile::{
+        import::{import_local_mod_with_meta, LocalModMeta},
+        install::InstallOptions,
+    },
+    state::ManagerExt,
+    util::cmd::Result,
+};
 
 use super::types::*;
 
@@ -17,22 +24,7 @@ pub struct SourceGame {
 #[command]
 pub fn get_sources(app: AppHandle) -> Vec<SourceInfo> {
     let registry = app.source_registry();
-    let mut sources = registry.list_sources();
-
-    let registered_ids: Vec<_> = sources.iter().map(|s| s.id.clone()).collect();
-
-    if !registered_ids.contains(&SourceId::GitHub) {
-        sources.push(SourceInfo {
-            id: SourceId::GitHub,
-            display_name: "GitHub Releases".to_string(),
-            is_enabled: false,
-            requires_auth: false,
-            is_authenticated: true,
-            supported_games: None,
-        });
-    }
-
-    sources
+    registry.list_sources()
 }
 
 #[command]
@@ -48,6 +40,98 @@ pub async fn search_sources(
     let registry = app.source_registry();
     let results = registry.search(&filters).await?;
     Ok(results)
+}
+
+#[command]
+pub async fn install_source_mod(
+    source: SourceId,
+    external_id: String,
+    version: String,
+    app: AppHandle,
+) -> Result<()> {
+    let (download, unified, readme, changelog) = {
+        let registry = app.source_registry();
+        let src = registry
+            .get(&source)
+            .ok_or_else(|| eyre::eyre!("Source not registered: {:?}", source))?;
+        let download = src.download(&external_id, &version).await?;
+        let unified = src.get_mod(&external_id).await.ok();
+        let readme = src.get_readme(&external_id, &version).await.ok().flatten();
+        let changelog = src
+            .get_changelog(&external_id, &version)
+            .await
+            .ok()
+            .flatten();
+        (download, unified, readme, changelog)
+    };
+
+    let source_str = match source {
+        SourceId::ZephyrMods => "zephyrmods".to_string(),
+        SourceId::CurseForge => "curseforge".to_string(),
+        SourceId::Thunderstore => "thunderstore".to_string(),
+        SourceId::NexusMods => "nexusmods".to_string(),
+        SourceId::Local => "local".to_string(),
+    };
+    let ext_id_clone = external_id.clone();
+    let installed_version = if version.is_empty() {
+        unified.as_ref().map(|u| u.version.clone())
+    } else {
+        Some(version.clone())
+    };
+    let parsed_version = installed_version
+        .as_deref()
+        .and_then(|v| v.parse::<semver::Version>().ok());
+    let meta = Some(match unified {
+        Some(u) => {
+            let deps: Vec<crate::thunderstore::VersionIdent> = u
+                .dependencies
+                .iter()
+                .filter_map(|d| d.parse().ok())
+                .collect();
+            LocalModMeta {
+                name: u.name,
+                author: Some(u.author),
+                version: parsed_version,
+                description: u.description,
+                icon: u.icon_url.map(std::path::PathBuf::from),
+                readme,
+                changelog,
+                dependencies: if deps.is_empty() { None } else { Some(deps) },
+                source: Some(source_str),
+                external_id: Some(ext_id_clone),
+            }
+        }
+        None => LocalModMeta {
+            name: ext_id_clone.rsplit('/').next().unwrap_or(&ext_id_clone).to_string(),
+            author: None,
+            version: parsed_version,
+            description: None,
+            icon: None,
+            readme,
+            changelog,
+            dependencies: None,
+            source: Some(source_str),
+            external_id: Some(ext_id_clone),
+        },
+    });
+
+    import_local_mod_with_meta(download.path, None, meta, &app, InstallOptions::default()).await?;
+    Ok(())
+}
+
+#[command]
+pub async fn get_source_mod_info(
+    source: SourceId,
+    external_id: String,
+    app: AppHandle,
+) -> Result<Option<UnifiedMod>> {
+    let registry = app.source_registry();
+    if let Some(src) = registry.get(&source) {
+        let m = src.get_mod(&external_id).await.ok();
+        Ok(m)
+    } else {
+        Ok(None)
+    }
 }
 
 #[command]

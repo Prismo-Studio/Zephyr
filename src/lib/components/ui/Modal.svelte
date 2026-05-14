@@ -27,13 +27,22 @@
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') handleBackdrop();
 	}
+
+	function portal(node: HTMLElement) {
+		document.body.appendChild(node);
+		return {
+			destroy() {
+				node.remove();
+			}
+		};
+	}
 </script>
 
 <svelte:window onkeydown={open ? handleKeydown : undefined} />
 
 {#if open}
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="z-modal-backdrop" onclick={handleBackdrop} onkeydown={() => {}}>
+	<div class="z-modal-backdrop" onclick={handleBackdrop} onkeydown={() => {}} use:portal>
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div class="z-modal {className}" onclick={(e) => e.stopPropagation()} onkeydown={() => {}}>
 			{#if title}
@@ -68,7 +77,10 @@
 <style>
 	.z-modal-backdrop {
 		position: fixed;
-		inset: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
 		background: rgba(0, 0, 0, 0.6);
 		backdrop-filter: blur(4px);
 		display: flex;

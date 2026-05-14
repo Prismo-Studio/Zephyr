@@ -160,7 +160,17 @@ impl Queryable for BorrowedMod<'_> {
 impl IntoFrontendMod for BorrowedMod<'_> {
     fn into_frontend(self, profile: Option<&Profile>) -> FrontendMod {
         let pkg = self.package;
-        let vers = pkg.get_version(self.version.uuid).unwrap();
+        let installed_version_uuid = profile.and_then(|p| {
+            p.mods.iter().find_map(|m| match &m.kind {
+                crate::profile::ProfileModKind::Thunderstore(ts) if ts.id.package_uuid == pkg.uuid => {
+                    Some(ts.id.version_uuid)
+                }
+                _ => None,
+            })
+        });
+        let vers = installed_version_uuid
+            .and_then(|uuid| pkg.get_version(uuid))
+            .unwrap_or_else(|| pkg.get_version(self.version.uuid).unwrap());
         FrontendMod {
             name: pkg.name().to_owned(),
             description: Some(vers.description.to_string()),
@@ -206,6 +216,8 @@ impl IntoFrontendMod for BorrowedMod<'_> {
                 .collect(),
             kind: FrontendModKind::Remote,
             icon: None,
+            source: None,
+            external_id: None,
         }
     }
 }
@@ -220,6 +232,8 @@ impl IntoFrontendMod for LocalMod {
             uuid,
             dependencies,
             icon,
+            source,
+            external_id,
             ..
         } = self;
 
@@ -231,7 +245,10 @@ impl IntoFrontendMod for LocalMod {
             uuid,
             dependencies,
             icon,
+            is_installed: true,
             kind: FrontendModKind::Local,
+            source,
+            external_id,
             ..Default::default()
         }
     }

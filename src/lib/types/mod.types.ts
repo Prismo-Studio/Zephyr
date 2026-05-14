@@ -22,6 +22,8 @@ export type Mod = {
 	enabled?: boolean | null;
 	icon: string | null;
 	configFile: string | null;
+	source?: string;
+	externalId?: string;
 };
 
 export type ModVersion = {

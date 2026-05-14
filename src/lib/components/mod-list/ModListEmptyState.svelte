@@ -22,42 +22,51 @@
 		flex-direction: column;
 		align-items: center;
 		padding: var(--space-3xl) var(--space-xl);
-		gap: var(--space-sm);
+		max-width: 360px;
+		margin: 0 auto;
 	}
 
 	.z-empty-icon {
-		width: 64px;
-		height: 64px;
-		border-radius: var(--radius-xl);
-		background: var(--bg-elevated);
+		width: 88px;
+		height: 88px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 28px;
-		color: var(--text-muted);
-		margin-bottom: var(--space-sm);
+		font-size: 40px;
+		color: var(--text-secondary);
+		margin-bottom: var(--space-md);
+		background: radial-gradient(
+			circle at center,
+			color-mix(in srgb, var(--text-primary) 6%, transparent) 0%,
+			transparent 70%
+		);
 	}
 
 	.z-empty-title {
 		font-family: var(--font-display);
-		font-size: 16px;
-		font-weight: 700;
+		font-size: 15px;
+		font-weight: 600;
 		color: var(--text-primary);
+		margin: 0 0 var(--space-xs);
+		text-align: center;
 	}
 
 	.z-empty-desc {
 		font-size: 13px;
 		color: var(--text-muted);
+		line-height: 1.5;
+		text-align: center;
+		margin: 0 0 var(--space-xl);
 	}
 
 	.z-empty-action {
-		display: flex;
+		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		margin-top: var(--space-md);
+		gap: var(--space-sm);
 		padding: var(--space-sm) var(--space-lg);
 		border-radius: var(--radius-md);
 		background: var(--bg-active);
+		border: 1px solid var(--border-accent);
 		color: var(--text-accent);
 		font-size: 13px;
 		font-weight: 600;
@@ -66,7 +75,6 @@
 	}
 
 	.z-empty-action:hover {
-		background: var(--bg-active);
 		box-shadow: var(--shadow-glow);
 	}
 </style>

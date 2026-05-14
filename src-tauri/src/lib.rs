@@ -21,6 +21,7 @@ mod deep_link;
 mod game;
 mod icon_cache;
 mod logger;
+mod plugins;
 mod prefs;
 mod profile;
 mod randomizer;
@@ -51,6 +52,48 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 
     use tauri::Manager;
     app.manage(crate::randomizer::ap_runner::ServerState::default());
+
+    // Plugin registry: seed from local cache, fall back to a hardcoded list
+    // containing only the built-in features. The remote fetch below replaces
+    // this once the network is reachable.
+    let initial_plugins = crate::plugins::registry::load_cache()
+        .unwrap_or_else(crate::plugins::fallback_registry);
+    app.manage(crate::plugins::registry::PluginRegistryState {
+        entries: std::sync::Mutex::new(initial_plugins),
+    });
+    app.manage(crate::plugins::dev::DevPluginState::default());
+    app.manage(crate::plugins::recording::RecordingState::default());
+
+    {
+        use tauri::Manager;
+        let handle = app.handle().to_owned();
+        let saved = crate::plugins::dev::load_paths();
+        let dev_state = handle.state::<crate::plugins::dev::DevPluginState>();
+        let mut list = dev_state.entries.lock().unwrap();
+        let mut watchers = dev_state.watchers.lock().unwrap();
+        for path in saved {
+            if !path.is_dir() {
+                continue;
+            }
+            let manifest = match crate::plugins::dev::read_manifest(&path) {
+                Ok(m) => m,
+                Err(err) => {
+                    warn!("dev plugin replay failed for {}: {:#}", path.display(), err);
+                    continue;
+                }
+            };
+            list.push(crate::plugins::dev::DevPlugin {
+                path: path.clone(),
+                manifest: manifest.clone(),
+            });
+            match crate::plugins::dev::spawn_watcher(handle.clone(), manifest.id.clone(), path.clone()) {
+                Ok(w) => {
+                    watchers.insert(manifest.id, w);
+                }
+                Err(err) => warn!("dev plugin watcher: {err:#}"),
+            }
+        }
+    }
 
     if let Err(err) = state::setup(app.handle()) {
         error!("setup error: {:?}", err);
@@ -104,6 +147,13 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
     tauri::async_runtime::spawn(async move {
         if let Err(err) = game::update_list_task(&handle).await {
             warn!("failed to update games list: {err}");
+        }
+    });
+
+    let handle = app.handle().to_owned();
+    tauri::async_runtime::spawn(async move {
+        if let Err(err) = plugins::registry::fetch_and_update(handle).await {
+            warn!("failed to fetch plugin registry: {err:#}");
         }
     });
 
@@ -181,6 +231,8 @@ pub fn run() {
             logger::log_err,
             source::commands::get_sources,
             source::commands::search_sources,
+            source::commands::install_source_mod,
+            source::commands::get_source_mod_info,
             source::commands::get_source_mod_description,
             source::commands::get_source_mod_changelog,
             source::commands::get_nexusmods_games,
@@ -325,6 +377,26 @@ pub fn run() {
             console::commands::console_server_send_stdin,
             console::commands::console_server_recent_log,
             console::commands::open_console_window,
+            plugins::commands::get_plugins,
+            plugins::commands::set_plugin_enabled,
+            plugins::commands::refresh_plugins,
+            plugins::commands::install_plugin,
+            plugins::commands::uninstall_plugin,
+            plugins::commands::get_installed_themes,
+            plugins::commands::register_local_plugin,
+            plugins::commands::unregister_local_plugin,
+            plugins::commands::reload_local_plugin,
+            plugins::commands::get_plugin_ui_url,
+            plugins::commands::plugin_storage_get,
+            plugins::commands::plugin_storage_set,
+            plugins::commands::plugin_open_external,
+            plugins::commands::plugin_fs_write_blob,
+            plugins::commands::plugin_fs_list,
+            plugins::commands::plugin_fs_delete,
+            plugins::commands::plugin_fs_get_url,
+            plugins::commands::plugin_fs_open_folder,
+            plugins::recording::plugin_recording_start,
+            plugins::recording::plugin_recording_stop,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())

@@ -4,8 +4,14 @@
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
+	import plugins from '$lib/state/plugins.svelte';
 
-	type NavItem = { path: string; icon: string; label: () => string };
+	type NavItem = {
+		path: string;
+		icon: string;
+		label: () => string;
+		requiresPlugin?: string;
+	};
 
 	const navItems: NavItem[] = [
 		{ path: '/dashboard', icon: 'mdi:view-dashboard', label: () => m.navBar_label_home() },
@@ -13,9 +19,41 @@
 		{ path: '/browse', icon: 'mdi:store-search', label: () => m.navBar_label_browse() },
 		{ path: '/profiles', icon: 'mdi:account-group', label: () => m.menuBar_profile_title() },
 		{ path: '/config', icon: 'mdi:cog', label: () => m.navBar_label_config() },
-		{ path: '/randomizer', icon: 'mdi:dice-multiple', label: () => m.randomizer_title() },
+		{
+			path: '/randomizer',
+			icon: 'mdi:dice-multiple',
+			label: () => m.randomizer_title(),
+			requiresPlugin: 'archipelago'
+		},
+		{ path: '/plugins', icon: 'mdi:puzzle', label: () => m.navBar_label_plugins() },
 		{ path: '/prefs', icon: 'mdi:tune-vertical', label: () => m.navBar_label_settings() }
 	];
+
+	const visibleItems = $derived.by(() => {
+		const base = navItems.filter(
+			(item) => !item.requiresPlugin || plugins.isEnabled(item.requiresPlugin)
+		);
+
+		// Dynamic items for feature plugins (dev or registry). The label comes
+		// from the manifest's optional `sidebarLabel` field, falling back to
+		// `name`. Built-in features (archipelago) own their slot above so we
+		// skip them here.
+		const dynamic: NavItem[] = plugins.list
+			.filter((p) => p.kind === 'feature' && p.enabled && !p.builtIn)
+			.map((p) => ({
+				path: `/plugins/feature/${p.id}`,
+				icon: p.sidebarIcon || 'mdi:puzzle-outline',
+				label: () => p.sidebarLabel || p.name
+			}));
+
+		// Insert dynamic items just before the Plugins nav so they live with
+		// the other content pages, not after Settings.
+		const pluginsIdx = base.findIndex((i) => i.path === '/plugins');
+		if (pluginsIdx >= 0 && dynamic.length > 0) {
+			return [...base.slice(0, pluginsIdx), ...dynamic, ...base.slice(pluginsIdx)];
+		}
+		return [...base, ...dynamic];
+	});
 
 	let currentPath = $state(window.location.pathname);
 
@@ -39,12 +77,19 @@
 
 	function isActive(path: string): boolean {
 		if (path === '/') return currentPath === '/';
-		return currentPath.startsWith(path);
+		if (currentPath !== path && !currentPath.startsWith(path + '/')) return false;
+		const longer = visibleItems.find(
+			(i) =>
+				i.path !== path &&
+				i.path.length > path.length &&
+				(currentPath === i.path || currentPath.startsWith(i.path + '/'))
+		);
+		return !longer;
 	}
 </script>
 
 <nav class="z-sidebar-nav">
-	{#each navItems as item}
+	{#each visibleItems as item (item.path)}
 		<Tooltip text={i18nState.locale && item.label()} position="right" delay={300}>
 			<a href={item.path} class="z-nav-item" class:active={isActive(item.path)}>
 				<Icon icon={item.icon} class="z-nav-icon" />

@@ -66,7 +66,7 @@
 				<Icon icon="mdi:check-circle" class="text-[12px]" />
 			</span>
 		{/if}
-		<ModSourceIcon uuid={mod.uuid} extraClass="z-grid-source" />
+		<ModSourceIcon uuid={mod.uuid} icon={mod.icon} extraClass="z-grid-source" />
 	</div>
 
 	<div class="z-grid-body">

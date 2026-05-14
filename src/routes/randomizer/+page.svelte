@@ -7,10 +7,17 @@
 	import RandomizerServerPanel from '$lib/features/randomizer/RandomizerServerPanel.svelte';
 	import YamlPreview from '$lib/features/randomizer/YamlPreview.svelte';
 	import { randomizerStore } from '$lib/features/randomizer/randomizer.store.svelte';
+	import plugins from '$lib/state/plugins.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import { PersistedState } from 'runed';
 	import { matchesShortcut, isEditableTarget } from '$lib/state/shortcuts.svelte';
+
+	$effect(() => {
+		if (plugins.ready && !plugins.isEnabled('archipelago')) {
+			window.location.href = '/plugins';
+		}
+	});
 
 	let rightTab: 'yaml' | 'server' = $state('server');
 	let serverPanelRef: RandomizerServerPanel | undefined = $state();

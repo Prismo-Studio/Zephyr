@@ -57,6 +57,21 @@ impl ManagedGame {
         info!("launching {} with command {:?}", self.game.slug, command);
         do_launch(command, app, launch_mode)?;
 
+        use tauri::Emitter;
+        let _ = app.emit(
+            "zephyr_game_launched",
+            serde_json::json!({
+                "gameId": self.game.slug,
+                "gameName": self.game.name,
+            }),
+        );
+
+        crate::plugins::recording::spawn_exit_watcher(
+            app.clone(),
+            self.game.slug.to_string(),
+            self.game.name.to_string(),
+        );
+
         Ok(())
     }
 

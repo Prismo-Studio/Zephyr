@@ -2,7 +2,7 @@
 	import * as api from '$lib/api';
 	import { captureEvent } from '$lib/telemetry.svelte';
 	import type { SortBy, Mod, ModId, Dependant } from '$lib/types';
-	import { curseForgeEnabled } from '$lib/themeSystem';
+	import { curseForgeEnabled, zephyrModsEnabled } from '$lib/themeSystem';
 	import * as zephyrServer from '$lib/api/zephyrServer';
 	import { zephyrServerState } from '$lib/state/zephyrServer.svelte';
 
@@ -32,7 +32,7 @@
 	import Icon from '@iconify/svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
-	import { pushToast } from '$lib/toast.svelte';
+	import { pushToast, pushInfoToast } from '$lib/toast.svelte';
 	import { handleMultiSelect } from '$lib/utils/multiSelect';
 	import { gamepadState } from '$lib/gamepad.svelte';
 	import { curseForgeModToMod, unifiedToMod, isServerMod } from '$lib/utils/sourceMappers';
@@ -79,16 +79,29 @@
 	let serverPage: PaginatedSource = $state(emptyPage());
 	let zephyrServerReachable: boolean | null = $state(null);
 	let communityMods: Mod[] = $state([]);
+	let installedLocalByName: Map<string, Mod> = new Map();
 
 	let showCurseForgeOnly = $state(false);
+	let showZephyrModsOnly = $state(false);
 	let hasRefreshed = $state(false);
 	let filtersExpanded = $state(false);
 
-	let displayedMods = $derived(
-		showCurseForgeOnly
-			? mods.filter((mm) => mm.uuid.startsWith('curseforge:') || isServerMod(mm))
-			: mods
+	let sourceFilteredMods = $derived(
+		showZephyrModsOnly
+			? mods.filter((mm) => mm.uuid.startsWith('zephyrmods:'))
+			: showCurseForgeOnly
+				? mods.filter((mm) => mm.uuid.startsWith('curseforge:') || isServerMod(mm))
+				: mods
 	);
+
+	let displayedMods = $derived.by(() => {
+		const selected = modQuery.current.includeCategories;
+		if (!selected || selected.length === 0) return sourceFilteredMods;
+		const lower = selected.map((c) => c.toLowerCase());
+		return sourceFilteredMods.filter((mm) =>
+			mm.categories?.some((c) => lower.includes(c.toLowerCase()))
+		);
+	});
 
 	let prevInstallActive = false;
 	$effect(() => {
@@ -183,7 +196,20 @@
 	}
 
 	function canInstallDirectly(mod: Mod): boolean {
-		return isServerMod(mod) || !mod.uuid.includes(':');
+		return isServerMod(mod) || mod.uuid.startsWith('zephyrmods:') || !mod.uuid.includes(':');
+	}
+
+	async function installFromZephyrMods(mod: Mod, versionUuid?: string) {
+		const externalId = mod.uuid.replace('zephyrmods:', '');
+		const version = versionUuid ?? mod.versions[0]?.name ?? mod.version ?? '';
+		try {
+			await api.sources.installSourceMod('zephyrmods', externalId, version);
+			captureEvent('mod_installed', { via: 'browse', source: 'zephyrmods' });
+			pushToast({ type: 'info', message: `Installed ${mod.name} ${version}` });
+			await refresh();
+		} catch (err) {
+			pushToast({ type: 'error', message: `Failed to install: ${err}` });
+		}
 	}
 
 	function syncBrowseMods() {
@@ -285,9 +311,13 @@
 			unlistenFromQuery = unlisten;
 		});
 
+		const handleAppRefresh = () => refresh();
+		window.addEventListener('app:refresh', handleAppRefresh);
+
 		return () => {
 			unlistenFromQuery?.();
 			api.thunderstore.stopQuerying();
+			window.removeEventListener('app:refresh', handleAppRefresh);
 		};
 	});
 
@@ -305,6 +335,7 @@
 		hasRefreshed = false;
 		maxCount = 30;
 		showCurseForgeOnly = false;
+		showZephyrModsOnly = false;
 		selectedModIds = [];
 		cachedSelectedMods.clear();
 		multiViewIndex = 0;
@@ -351,8 +382,59 @@
 		}
 	}
 
+	async function refreshZephyrMods() {
+		if (!zephyrModsEnabled.current) {
+			communityMods = [];
+			return;
+		}
+		try {
+			const results = await api.sources.searchSources({
+				searchTerm: modQuery.current.searchTerm,
+				categories: modQuery.current.includeCategories,
+				sortBy: sourceSortMap[modQuery.current.sortBy] ?? 'updated',
+				sortOrder: modQuery.current.sortOrder === 'ascending' ? 'ascending' : 'descending',
+				includeNsfw: modQuery.current.includeNsfw,
+				includeDeprecated: modQuery.current.includeDeprecated,
+				maxCount: 100,
+				sources: ['zephyrmods'],
+				gameSlug: games.active?.slug
+			});
+			const fetched = results.flatMap((r) => r.mods.map((u) => unifiedToMod(u)));
+			try {
+				const installed = await api.profile.query({
+					searchTerm: '',
+					includeCategories: [],
+					excludeCategories: [],
+					includeNsfw: true,
+					includeDeprecated: true,
+					includeDisabled: true,
+					includeEnabled: true,
+					sortBy: 'name',
+					sortOrder: 'ascending',
+					maxCount: 9999
+				});
+				installedLocalByName.clear();
+				for (const local of installed.mods) {
+					installedLocalByName.set(local.name.toLowerCase(), local);
+				}
+				for (const mm of fetched) {
+					const local = installedLocalByName.get(mm.name.toLowerCase());
+					if (local) {
+						mm.isInstalled = true;
+						mm.enabled = local.enabled;
+					}
+				}
+			} catch {}
+			communityMods = fetched;
+		} catch {
+			communityMods = [];
+		}
+	}
+
 	async function refreshThunderstore() {
 		thunderstoreMods = await api.thunderstore.query({ ...modQuery.current, maxCount });
+		await refreshZephyrMods();
+		syncBrowseMods();
 
 		if (zephyrServerState.current.enabled) {
 			const serverAvailable = await ensureZephyrServerAvailable();
@@ -476,6 +558,10 @@
 			await installFromServer(mod);
 			return;
 		}
+		if (mod.uuid.startsWith('zephyrmods:')) {
+			await installFromZephyrMods(mod);
+			return;
+		}
 		await install({ packageUuid: mod.uuid, versionUuid: mod.versions[0].uuid });
 	}
 
@@ -485,8 +571,16 @@
 		await refresh();
 	}
 
+	function resolveLocalUuid(mod: Mod): string {
+		if (mod.uuid.startsWith('zephyrmods:')) {
+			return installedLocalByName.get(mod.name.toLowerCase())?.uuid ?? mod.uuid;
+		}
+		return mod.uuid;
+	}
+
 	async function toggleMod(mod: Mod) {
-		const response = await api.profile.toggleMod(mod.uuid);
+		const uuid = resolveLocalUuid(mod);
+		const response = await api.profile.toggleMod(uuid);
 		if (response.type === 'done') {
 			await refresh();
 		} else if (response.type === 'confirm') {
@@ -500,7 +594,8 @@
 	}
 
 	async function removeMod(mod: Mod) {
-		const response = await api.profile.removeMod(mod.uuid);
+		const uuid = resolveLocalUuid(mod);
+		const response = await api.profile.removeMod(uuid);
 		if (response.type === 'done') {
 			captureEvent('mod_removed');
 			await refresh();
@@ -516,6 +611,8 @@
 			if (mod && !mod.isInstalled && mod.versions.length > 0) {
 				if (isServerMod(mod)) {
 					await installFromServer(mod);
+				} else if (mod.uuid.startsWith('zephyrmods:')) {
+					await installFromZephyrMods(mod);
 				} else {
 					await api.profile.install.mod({
 						packageUuid: mod.uuid,
@@ -613,6 +710,7 @@
 					onclick={() => {
 						if (activeSource === 'thunderstore') api.thunderstore.triggerModFetch();
 						refresh();
+						pushInfoToast({ message: m.app_toast_dataRefreshed() });
 					}}
 					title="Refresh"
 				>
@@ -630,6 +728,9 @@
 				visibleCount={displayedMods.length}
 				bind:showCurseForgeOnly
 				showCurseForgeToggle={showCfToggle}
+				bind:showZephyrModsOnly
+				showZephyrModsToggle={zephyrModsEnabled.current && communityMods.length > 0}
+				{mods}
 				ontoggleSelectAll={toggleSelectAll}
 			/>
 
@@ -681,16 +782,27 @@
 		<ModDetails
 			mod={selectedMod}
 			{locked}
-			showVersionSelector={false}
+			showVersionSelector={true}
 			onclose={() => (selectedModIds = [])}
-			ontoggle={!selectedMod.uuid.includes(':') ? () => toggleMod(selectedMod!) : undefined}
-			onremove={!selectedMod.uuid.includes(':') ? () => removeMod(selectedMod!) : undefined}
+			ontoggle={!selectedMod.uuid.includes(':') ||
+			(selectedMod.uuid.startsWith('zephyrmods:') && selectedMod.isInstalled)
+				? () => toggleMod(selectedMod!)
+				: undefined}
+			onremove={!selectedMod.uuid.includes(':') ||
+			(selectedMod.uuid.startsWith('zephyrmods:') && selectedMod.isInstalled)
+				? () => removeMod(selectedMod!)
+				: undefined}
+			onopenfolder={selectedMod.uuid.startsWith('zephyrmods:')
+				? () => api.profile.openModDir(resolveLocalUuid(selectedMod!))
+				: undefined}
 			oncategoryclick={toggleCategoryFilter}
 			ondepclick={handleDepClick}
 			activeCategories={modQuery.current.includeCategories}
 		>
 			{#if isServerMod(selectedMod)}
 				<InstallModButton mod={selectedMod} {locked} onInstall={installFromServer} />
+			{:else if selectedMod.uuid.startsWith('zephyrmods:')}
+				<InstallModButton mod={selectedMod} {locked} onInstall={installFromZephyrMods} />
 			{:else if !selectedMod.uuid.includes(':')}
 				<InstallModButton mod={selectedMod} {install} {locked} />
 			{/if}
@@ -699,25 +811,38 @@
 		<ModDetails
 			mod={multiViewMod}
 			{locked}
-			showVersionSelector={false}
+			showVersionSelector={true}
 			onclose={() => (selectedModIds = [])}
-			ontoggle={!multiViewMod.uuid.includes(':') ? () => toggleMod(multiViewMod!) : undefined}
-			onremove={!multiViewMod.uuid.includes(':') ? () => removeMod(multiViewMod!) : undefined}
+			ontoggle={!multiViewMod.uuid.includes(':') ||
+			(multiViewMod.uuid.startsWith('zephyrmods:') && multiViewMod.isInstalled)
+				? () => toggleMod(multiViewMod!)
+				: undefined}
+			onremove={!multiViewMod.uuid.includes(':') ||
+			(multiViewMod.uuid.startsWith('zephyrmods:') && multiViewMod.isInstalled)
+				? () => removeMod(multiViewMod!)
+				: undefined}
+			onopenfolder={multiViewMod.uuid.startsWith('zephyrmods:')
+				? () => api.profile.openModDir(resolveLocalUuid(multiViewMod!))
+				: undefined}
 			oncategoryclick={toggleCategoryFilter}
 			ondepclick={handleDepClick}
 			activeCategories={modQuery.current.includeCategories}
 		>
 			{#if isServerMod(multiViewMod)}
 				<InstallModButton mod={multiViewMod} {locked} onInstall={installFromServer} />
+			{:else if multiViewMod.uuid.startsWith('zephyrmods:')}
+				<InstallModButton mod={multiViewMod} {locked} onInstall={installFromZephyrMods} />
 			{:else if !multiViewMod.uuid.includes(':')}
 				<InstallModButton mod={multiViewMod} {install} {locked} />
 			{/if}
-			<MultiViewNav
-				index={multiViewIndex}
-				total={selectedMods.length}
-				onprev={() => multiViewIndex--}
-				onnext={() => multiViewIndex++}
-			/>
+			{#snippet footer()}
+				<MultiViewNav
+					index={multiViewIndex}
+					total={selectedMods.length}
+					onprev={() => multiViewIndex--}
+					onnext={() => multiViewIndex++}
+				/>
+			{/snippet}
 		</ModDetails>
 	{/if}
 

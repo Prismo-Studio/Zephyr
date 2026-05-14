@@ -267,6 +267,10 @@ pub struct FrontendMod {
     pub icon: Option<PathBuf>,
     #[serde(rename = "type")]
     pub kind: FrontendModKind,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub source: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub external_id: Option<String>,
 }
 
 #[derive(Debug, Serialize, Clone)]

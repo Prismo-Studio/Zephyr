@@ -113,7 +113,7 @@
 			{#if isModPinned(mod.uuid)}
 				<Icon icon="mdi:pin" class="z-mod-badge-icon pinned" />
 			{/if}
-			<ModSourceIcon uuid={mod.uuid} extraClass="z-mod-source-icon" />
+			<ModSourceIcon uuid={mod.uuid} icon={mod.icon} extraClass="z-mod-source-icon" />
 			{#if mod.isDeprecated}
 				<Icon icon="mdi:alert" class="z-mod-badge-icon deprecated" />
 			{/if}
@@ -162,6 +162,11 @@
 						{category}
 					</button>
 				{/each}
+				{#if mod.categories.length > 3}
+					<Tooltip text={mod.categories.slice(3).join(', ')} position="top" delay={150}>
+						<span class="z-mod-category-more">+{mod.categories.length - 3}</span>
+					</Tooltip>
+				{/if}
 			</div>
 		{/if}
 	</div>
@@ -489,5 +494,16 @@
 	.z-mod-category-tag.active {
 		color: var(--text-accent);
 		border-color: var(--accent-400, var(--text-accent));
+	}
+
+	.z-mod-category-more {
+		display: inline-flex;
+		align-items: center;
+		padding: 1px 6px;
+		border-radius: var(--radius-full);
+		font-size: 10px;
+		font-weight: 500;
+		color: var(--text-muted);
+		user-select: none;
 	}
 </style>

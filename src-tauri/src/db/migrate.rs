@@ -238,6 +238,8 @@ impl From<legacy::LocalMod> for LocalMod {
             file_size: legacy.file_size,
             readme: None,
             changelog: None,
+            source: None,
+            external_id: None,
         }
     }
 }

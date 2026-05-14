@@ -9,6 +9,7 @@
 	import * as api from '$lib/api';
 	import { formatModName } from '$lib/util';
 	import { pushToast } from '$lib/toast.svelte';
+	import { installState } from '$lib/state/misc.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import type { Mod } from '$lib/types';
@@ -27,6 +28,32 @@
 	});
 	let dontAskAgain = $state(false);
 	const skipConfirm = new PersistedState('skipVersionConfirm', false);
+
+	let remoteVersions = $state<{ name: string; uuid: string }[] | null>(null);
+	let fetchingVersions = $state(false);
+
+	let versions = $derived.by(() => {
+		if (remoteVersions && remoteVersions.length > 0) return remoteVersions;
+		return mod.versions ?? [];
+	});
+
+	async function ensureVersions() {
+		if (versions.length > 1 || fetchingVersions) return;
+		if (mod.source !== 'zephyrmods' || !mod.externalId) return;
+		fetchingVersions = true;
+		try {
+			const info = await api.sources.getSourceModInfo('zephyrmods', mod.externalId);
+			if (info?.versions) {
+				remoteVersions = info.versions.map((v: any) => ({
+					name: v.version ?? v.versionNumber ?? v.name ?? '',
+					uuid: v.externalId ?? v.uuid ?? v.id ?? v.version ?? ''
+				}));
+			}
+		} catch {
+		} finally {
+			fetchingVersions = false;
+		}
+	}
 
 	function isExternal(): boolean {
 		return mod.uuid.includes(':');
@@ -54,10 +81,24 @@
 		const packageUuid = mod.uuid;
 		const modName = formatModName(mod.name);
 		try {
-			if (mod.isInstalled && !isExternal()) {
-				await api.profile.forceRemoveMods([packageUuid]);
+			const isZephyrmodsByUuid = mod.uuid.startsWith('zephyrmods:');
+			const isZephyrmodsBySource = mod.source === 'zephyrmods' && !!mod.externalId;
+			if (isZephyrmodsByUuid || isZephyrmodsBySource) {
+				const externalId = isZephyrmodsByUuid
+					? mod.uuid.replace('zephyrmods:', '')
+					: mod.externalId!;
+				installState.active = true;
+				try {
+					await api.sources.installSourceMod('zephyrmods', externalId, version.uuid);
+				} finally {
+					installState.active = false;
+				}
+			} else {
+				if (mod.isInstalled && !isExternal()) {
+					await api.profile.forceRemoveMods([packageUuid]);
+				}
+				await api.profile.install.mod({ packageUuid, versionUuid: version.uuid });
 			}
-			await api.profile.install.mod({ packageUuid, versionUuid: version.uuid });
 			pushToast({
 				type: 'info',
 				message:
@@ -68,6 +109,7 @@
 						})) ||
 					`${modName} changed to ${version.name}`
 			});
+			window.dispatchEvent(new CustomEvent('app:refresh'));
 		} catch (err) {
 			pushToast({
 				type: 'error',
@@ -87,7 +129,14 @@
 </script>
 
 <div class="z-version-selector" use:clickOutside={() => (dropdownOpen = false)}>
-	<button class="z-version-btn" disabled={changing} onclick={() => (dropdownOpen = !dropdownOpen)}>
+	<button
+		class="z-version-btn"
+		disabled={changing}
+		onclick={() => {
+			dropdownOpen = !dropdownOpen;
+			if (dropdownOpen) ensureVersions();
+		}}
+	>
 		<Icon icon="mdi:tag" />
 		<span>{mod.version}</span>
 		<Icon icon="mdi:chevron-down" class="z-version-chevron {dropdownOpen ? 'open' : ''}" />
@@ -95,21 +144,25 @@
 
 	{#if dropdownOpen}
 		<div class="z-version-dropdown">
-			{#each mod.versions as version}
-				<button
-					class="z-version-option"
-					class:active={version.name === mod.version}
-					onclick={() => selectVersion(version)}
-				>
-					{#if version.name === mod.version}
-						<Icon icon="mdi:check" />
-					{/if}
-					<span>{version.name}</span>
-					{#if version.name === mod.versions[0].name}
-						<Badge variant="accent">{i18nState.locale && m.modDetails_latest()}</Badge>
-					{/if}
-				</button>
-			{/each}
+			{#if fetchingVersions && versions.length <= 1}
+				<div class="z-version-empty">…</div>
+			{:else}
+				{#each versions as version}
+					<button
+						class="z-version-option"
+						class:active={version.name === mod.version}
+						onclick={() => selectVersion(version)}
+					>
+						{#if version.name === mod.version}
+							<Icon icon="mdi:check" />
+						{/if}
+						<span>{version.name}</span>
+						{#if version.name === versions[0]?.name}
+							<Badge variant="accent">{i18nState.locale && m.modDetails_latest()}</Badge>
+						{/if}
+					</button>
+				{/each}
+			{/if}
 		</div>
 	{/if}
 </div>

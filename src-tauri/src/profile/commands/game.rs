@@ -93,7 +93,16 @@ pub fn set_active_game(slug: &str, app: AppHandle) -> Result<()> {
     app.sync_socket().subscribe(managed_game.active_profile());
 
     managed_game.update_window_title(&app)?;
+    let game_slug = managed_game.game.slug.to_string();
+    let game_name = managed_game.game.name.to_string();
     manager.save_all(&app)?;
+    drop(manager);
+
+    use tauri::Emitter;
+    let _ = app.emit(
+        "zephyr_game_changed",
+        serde_json::json!({ "gameId": game_slug, "gameName": game_name }),
+    );
 
     Ok(())
 }

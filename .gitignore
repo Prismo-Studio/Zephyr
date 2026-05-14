@@ -17,6 +17,7 @@ src-tauri/gen
 *.pyc
 *.pyo
 src-tauri/archipelago-runtime/
+wiki/
 
 # Local debug / scratch artifacts
 /svelte-errs*.txt
@@ -31,3 +32,4 @@ project.inlang/.gitignore
 project.inlang/.meta.json
 project.inlang/README.md
 project.inlang/cache/
+.claude/

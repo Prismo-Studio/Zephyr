@@ -39,13 +39,66 @@ pub async fn import_local_mod_base64(
     .await
 }
 
+pub struct LocalModMeta {
+    pub name: String,
+    pub author: Option<String>,
+    pub version: Option<semver::Version>,
+    pub description: Option<String>,
+    pub icon: Option<PathBuf>,
+    pub readme: Option<String>,
+    pub changelog: Option<String>,
+    pub dependencies: Option<Vec<crate::thunderstore::VersionIdent>>,
+    pub source: Option<String>,
+    pub external_id: Option<String>,
+}
+
 pub async fn import_local_mod(
     path: PathBuf,
     override_kind: Option<LocalModKind>,
     app: &AppHandle,
     options: InstallOptions,
 ) -> Result<()> {
+    import_local_mod_with_meta(path, override_kind, None, app, options).await
+}
+
+pub async fn import_local_mod_with_meta(
+    path: PathBuf,
+    override_kind: Option<LocalModKind>,
+    meta: Option<LocalModMeta>,
+    app: &AppHandle,
+    options: InstallOptions,
+) -> Result<()> {
     let (mut local_mod, kind) = read_local_mod(&path, override_kind)?;
+    if let Some(m) = meta {
+        local_mod.name = m.name;
+        if m.author.is_some() {
+            local_mod.author = m.author;
+        }
+        if m.version.is_some() {
+            local_mod.version = m.version;
+        }
+        if m.description.is_some() {
+            local_mod.description = m.description;
+        }
+        if m.icon.is_some() {
+            local_mod.icon = m.icon;
+        }
+        if m.readme.is_some() {
+            local_mod.readme = m.readme;
+        }
+        if m.changelog.is_some() {
+            local_mod.changelog = m.changelog;
+        }
+        if m.dependencies.is_some() {
+            local_mod.dependencies = m.dependencies;
+        }
+        if m.source.is_some() {
+            local_mod.source = m.source;
+        }
+        if m.external_id.is_some() {
+            local_mod.external_id = m.external_id;
+        }
+    }
 
     if let Some(deps) = &local_mod.dependencies {
         let (profile_id, mods) = {
@@ -84,6 +137,7 @@ pub async fn import_local_mod(
         profile
             .force_remove_mod(uuid)
             .context("failed to remove existing version")?;
+        local_mod.uuid = uuid;
     }
 
     match kind {

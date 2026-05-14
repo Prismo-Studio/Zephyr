@@ -1,10 +1,11 @@
 <script lang="ts">
 	type Props = {
 		uuid: string;
+		icon?: string | null;
 		extraClass?: string;
 	};
 
-	let { uuid, extraClass = '' }: Props = $props();
+	let { uuid, icon, extraClass = '' }: Props = $props();
 
 	let kind = $derived.by(() => {
 		if (uuid.startsWith('curseforge:') || uuid.startsWith('zephyr-server:')) {
@@ -13,8 +14,11 @@
 		if (uuid.startsWith('nexusmods:')) {
 			return { src: '/logos/nexusmods.png', alt: 'NX' };
 		}
-		if (uuid.startsWith('zephyr:')) {
-			return { src: '/logo.png', alt: 'Z' };
+		if (uuid.startsWith('zephyrmods:')) {
+			return { src: '/logo.png', alt: 'Zephyr Mods' };
+		}
+		if (icon && icon.includes('Prismo-Studio/zephyr-mods')) {
+			return { src: '/logo.png', alt: 'Zephyr Mods' };
 		}
 		return null;
 	});

@@ -1,6 +1,12 @@
 import type { Mod, MarkdownType } from '$lib/types';
 import * as api from '$lib/api';
 import { getMarkdown } from '$lib/utils/mod';
+import { marked } from 'marked';
+
+async function md(raw: string | null | undefined): Promise<string> {
+	if (!raw) return '';
+	return await marked(raw);
+}
 
 /**
  * Resolves readme/changelog markdown for a mod, regardless of source.
@@ -27,14 +33,23 @@ export async function loadModMarkdown(mod: Mod, type: MarkdownType): Promise<str
 			return '';
 		}
 
-		if (mod.uuid.startsWith('zephyr:')) {
-			const slug = mod.uuid.replace('zephyr:', '');
+		if (mod.uuid.startsWith('zephyrmods:')) {
+			const slug = mod.uuid.replace('zephyrmods:', '');
 			if (type === 'readme') {
-				const desc = await api.sources.getSourceModDescription('github', slug);
-				return desc ?? mod.description ?? '';
+				const desc = await api.sources.getSourceModDescription('zephyrmods', slug);
+				return await md(desc ?? mod.description ?? '');
 			}
-			const cl = await api.sources.getSourceModChangelog('github', slug, '');
-			return cl ?? '';
+			const cl = await api.sources.getSourceModChangelog('zephyrmods', slug, '');
+			return await md(cl ?? '');
+		}
+
+		if (mod.source === 'zephyrmods' && mod.externalId) {
+			if (type === 'readme') {
+				const desc = await api.sources.getSourceModDescription('zephyrmods', mod.externalId);
+				return await md(desc ?? mod.description ?? '');
+			}
+			const cl = await api.sources.getSourceModChangelog('zephyrmods', mod.externalId, '');
+			return await md(cl ?? '');
 		}
 
 		if (mod.uuid.includes(':')) {

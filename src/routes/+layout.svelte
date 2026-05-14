@@ -12,6 +12,7 @@
 	// <DoomEasterEgg /> mount below + the DOOM_SEQUENCE block in tokens.ts to enable.
 	// import DoomEasterEgg from '$lib/components/dialogs/DoomEasterEgg.svelte';
 	import GlobalSearch from '$lib/components/ui/GlobalSearch.svelte';
+	import PluginHost from '$lib/components/plugins/PluginHost.svelte';
 
 	import { onMount, type Snippet } from 'svelte';
 	import { refreshColor, refreshFont } from '$lib/themeSystem';
@@ -26,6 +27,7 @@
 	import profiles from '$lib/state/profile.svelte';
 	import games from '$lib/state/game.svelte';
 	import auth from '$lib/state/auth.svelte';
+	import plugins from '$lib/state/plugins.svelte';
 	import { updateBanner } from '$lib/state/misc.svelte';
 	import updates from '$lib/state/update.svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
@@ -58,6 +60,21 @@
 
 	let updateInstalling = $state(false);
 	let appVersion = $state('');
+
+	const welcomeSeen = new PersistedState('hasSeenWelcome', false);
+	let welcomeOpen = $state(false);
+
+	function dismissWelcome() {
+		welcomeSeen.current = true;
+		welcomeOpen = false;
+	}
+
+	async function starOnGitHub() {
+		try {
+			await open('https://github.com/Prismo-Studio/Zephyr');
+		} catch {}
+		dismissWelcome();
+	}
 
 	$effect(() => {
 		profiles.active;
@@ -163,6 +180,12 @@
 		initFullscreen();
 		initCustomBg();
 
+		if (!isStandalone && !welcomeSeen.current) {
+			setTimeout(() => {
+				welcomeOpen = true;
+			}, 600);
+		}
+
 		getCurrentWindow()
 			.isVisible()
 			.then((visible) => {
@@ -176,6 +199,7 @@
 		games.refresh().catch(() => {});
 		auth.refresh().catch(() => {});
 		updates.refresh().catch(() => {});
+		plugins.init().catch(() => {});
 		getVersion().then(async (v) => {
 			appVersion = v;
 			// Anonymous opt-in telemetry. No-op unless user has enabled the toggle.
@@ -259,16 +283,17 @@
 			evt.preventDefault();
 			return;
 		}
-		// Block F5 (refresh via F5)
-		if (k === 'f5') {
-			evt.preventDefault();
-			return;
-		}
-		// Soft refresh: reload data without full page reload.
-		if (matchesShortcut(evt, 'refreshData')) {
+		// Soft refresh: reload data without full page reload. Triggered by
+		// the configured `refreshData` shortcut (default Ctrl+R) or F5.
+		// Dispatches `app:refresh` so pages with their own data sources
+		// (e.g. the mod browser) can opt in by listening for it.
+		if (k === 'f5' || matchesShortcut(evt, 'refreshData')) {
 			evt.preventDefault();
 			profiles.refresh().catch(() => {});
 			games.refresh().catch(() => {});
+			plugins.refetch().catch(() => {});
+			window.dispatchEvent(new CustomEvent('app:refresh'));
+			pushInfoToast({ message: m.app_toast_dataRefreshed() });
 			return;
 		}
 		// Cycle between profiles. Skip when focus is in an editable field so
@@ -363,6 +388,7 @@
 			<div class="z-main">
 				<div class="z-content">
 					{@render children?.()}
+					<PluginHost />
 				</div>
 				<Statusbar />
 			</div>
@@ -420,6 +446,29 @@
 				onsubmit={(val) => gamepadKeyboard.submit(val)}
 				oncancel={() => gamepadKeyboard.cancel()}
 			/>
+		{/if}
+
+		{#if welcomeOpen}
+			<Modal
+				open={welcomeOpen}
+				onclose={dismissWelcome}
+				title={i18nState.locale && m.welcome_title()}
+			>
+				{#snippet children()}
+					<div class="z-welcome-modal">
+						<p>{i18nState.locale && m.welcome_body()}</p>
+					</div>
+				{/snippet}
+				{#snippet actions()}
+					<Button variant="ghost" onclick={dismissWelcome}>
+						{i18nState.locale && m.welcome_dismiss()}
+					</Button>
+					<Button variant="primary" onclick={starOnGitHub}>
+						{#snippet icon()}<Icon icon="mdi:star" />{/snippet}
+						{i18nState.locale && m.welcome_star()}
+					</Button>
+				{/snippet}
+			</Modal>
 		{/if}
 
 		{#if updates.next?.available}
@@ -502,6 +551,7 @@
 		flex: 1;
 		overflow-y: auto;
 		overflow-x: hidden;
+		position: relative;
 	}
 
 	/* DPI scaling is handled via WebView zoom in the backend */

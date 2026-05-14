@@ -32,6 +32,14 @@ pub const GAMES_JSON_COMMITS_URL: &str =
 pub const GAMES_JSON_RAW_URL: &str =
     "https://raw.githubusercontent.com/Prismo-Studio/Zephyr/refs/heads/dev/src-tauri/games.json";
 
+// ── Zephyr plugin registry ────────────────────────────────────────────────
+
+pub const PLUGIN_REGISTRY_URL: &str =
+    "https://raw.githubusercontent.com/Prismo-Studio/Zephyr-plugin/main/registry.json";
+
+pub const PLUGIN_REGISTRY_RAW_BASE: &str =
+    "https://raw.githubusercontent.com/Prismo-Studio/Zephyr-plugin/main/";
+
 // ── Zephyr cloud ──────────────────────────────────────────────────────────
 
 pub const ZEPHYR_CLOUD_DEFAULT: &str = "https://api.zephyr.prismo-studios.dev";

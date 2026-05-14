@@ -29,7 +29,7 @@ use crate::{
 pub mod commands;
 mod local;
 
-pub use local::{import_local_mod, import_local_mod_base64};
+pub use local::{import_local_mod, import_local_mod_base64, import_local_mod_with_meta, LocalModMeta};
 
 use super::{
     export::{self, IncludeExtensions, IncludeGenerated},

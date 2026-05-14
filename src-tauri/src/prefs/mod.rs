@@ -1,5 +1,5 @@
 use std::{
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     fs,
     ops::Deref,
     path::{Path, PathBuf},
@@ -192,6 +192,12 @@ pub struct Prefs {
     pub gamepad_enabled: bool,
 
     pub game_prefs: HashMap<String, GamePrefs>,
+
+    #[serde(default)]
+    pub disabled_plugins: HashSet<String>,
+
+    #[serde(default)]
+    pub installed_plugins: HashSet<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
@@ -225,6 +231,9 @@ impl Default for Prefs {
             gamepad_enabled: false,
 
             game_prefs: HashMap::new(),
+
+            disabled_plugins: HashSet::new(),
+            installed_plugins: HashSet::new(),
         }
     }
 }
@@ -254,6 +263,10 @@ impl Prefs {
 
     fn save(&self, db: &Db) -> Result<()> {
         db.save_prefs(self)
+    }
+
+    pub fn save_to_db(&self, db: &Db) -> Result<()> {
+        self.save(db)
     }
 
     fn set(&mut self, value: Self, app: &AppHandle) -> Result<()> {
@@ -301,6 +314,8 @@ impl Prefs {
         self.fetch_mods_automatically = value.fetch_mods_automatically;
         self.pull_before_launch = value.pull_before_launch;
         self.gamepad_enabled = value.gamepad_enabled;
+        self.disabled_plugins = value.disabled_plugins;
+        self.installed_plugins = value.installed_plugins;
 
         self.save(app.db()).context("failed save prefs")
     }
