@@ -69,6 +69,30 @@ You wrote a mod for a game Zephyr supports? You can publish it to the **[Zephyr 
 
 The registry is a plain GitHub repo with a CLI wizard. You point it at your mod's GitHub release, it computes the SHA-256, opens a PR, CI verifies ownership, and once merged Zephyr picks it up. See the [zephyr-mods README](https://github.com/Prismo-Studio/zephyr-mods#readme) for the full guide.
 
+## Write a plugin
+
+Zephyr ships with a community plugin system. Plugins live in a separate repo, **[Zephyr-plugin](https://github.com/Prismo-Studio/Zephyr-plugin)**, and come in four flavors:
+
+- **Themes**: a single CSS file that restyles Zephyr.
+- **Features**: full Svelte mini-apps that get their own sidebar item, run in a sandboxed iframe, and talk to Zephyr through a postMessage bridge (screen capture, file storage, notifications, …).
+- **Games**: declarative game definitions Zephyr can target.
+- **Mods**: entries for the Zephyr Mods registry (see above).
+
+A shared SDK (`@zephyr-plugin/sdk`) gives plugin authors Svelte components styled like Zephyr, design tokens, and a typed bridge client, so a new feature plugin feels native without anyone touching the Zephyr binary.
+
+Quickstart:
+
+```bash
+git clone https://github.com/Prismo-Studio/Zephyr-plugin.git
+cd Zephyr-plugin
+pnpm install
+pnpm new-plugin               # interactive wizard
+```
+
+Then open **Plugins → Dev Mode → Load plugin** in Zephyr and pick your folder. Edits hot-reload.
+
+Full docs: **[Zephyr-plugin README](https://github.com/Prismo-Studio/Zephyr-plugin#readme)** · **[Plugin authoring guide on the wiki](https://github.com/Prismo-Studio/Zephyr/wiki/Plugins)**.
+
 ## Quick Start
 
 ### Download
