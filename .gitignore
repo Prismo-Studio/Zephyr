@@ -32,3 +32,4 @@ project.inlang/.gitignore
 project.inlang/.meta.json
 project.inlang/README.md
 project.inlang/cache/
+.claude/

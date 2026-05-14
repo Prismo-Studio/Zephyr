@@ -90,9 +90,7 @@
 					filename: payload.filename
 				})) as string;
 				// Plugin receives an asset:// URL ready for <video src=…>.
-				return raw.startsWith('file://')
-					? convertFileSrc(raw.slice('file://'.length))
-					: raw;
+				return raw.startsWith('file://') ? convertFileSrc(raw.slice('file://'.length)) : raw;
 			}
 			case 'zephyr.fs.openFolder':
 				return await invoke('plugin_fs_open_folder', { id: pluginId });
@@ -111,9 +109,7 @@
 			}
 			// Local dev plugin: raw is `file://<abs-path>`. Convert to the
 			// WebView-serveable URL via Tauri's asset protocol.
-			const url = raw.startsWith('file://')
-				? convertFileSrc(raw.slice('file://'.length))
-				: raw;
+			const url = raw.startsWith('file://') ? convertFileSrc(raw.slice('file://'.length)) : raw;
 			iframeUrl = `${url}?t=${bust || Date.now()}`;
 			loadFailed = false;
 		} catch {

@@ -45,8 +45,7 @@
 			await plugins.reloadLocal(plugin.id);
 			pushToast({
 				type: 'success',
-				message:
-					(i18nState.locale && m.plugins_devMode_toast_reloaded({ name: plugin.name })) || ''
+				message: (i18nState.locale && m.plugins_devMode_toast_reloaded({ name: plugin.name })) || ''
 			});
 		} catch (err) {
 			pushToast({

@@ -214,12 +214,7 @@
 				}}
 			/>
 			{#if showCopy}
-				<button
-					class="z-tabs-copy-btn"
-					class:copied
-					onclick={copyMarkdown}
-					title="Copy content"
-				>
+				<button class="z-tabs-copy-btn" class:copied onclick={copyMarkdown} title="Copy content">
 					<Icon icon={copied ? 'mdi:check' : 'mdi:content-copy'} />
 					<span class="z-copy-text">{copied ? 'Copied!' : 'Copy'}</span>
 				</button>

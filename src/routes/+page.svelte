@@ -97,12 +97,7 @@
 
 	$effect(() => {
 		const m = selectedModIds.length === 1 ? getSelectedMod(selectedModIds[0]) : null;
-		if (
-			m &&
-			m.source === 'zephyrmods' &&
-			m.externalId &&
-			!zephyrModVersions.has(m.externalId)
-		) {
+		if (m && m.source === 'zephyrmods' && m.externalId && !zephyrModVersions.has(m.externalId)) {
 			const externalId = m.externalId;
 			api.sources
 				.getSourceModInfo('zephyrmods', externalId)
