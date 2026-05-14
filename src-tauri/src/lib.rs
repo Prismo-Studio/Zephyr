@@ -62,6 +62,7 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         entries: std::sync::Mutex::new(initial_plugins),
     });
     app.manage(crate::plugins::dev::DevPluginState::default());
+    app.manage(crate::plugins::recording::RecordingState::default());
 
     {
         use tauri::Manager;
@@ -394,6 +395,8 @@ pub fn run() {
             plugins::commands::plugin_fs_delete,
             plugins::commands::plugin_fs_get_url,
             plugins::commands::plugin_fs_open_folder,
+            plugins::recording::plugin_recording_start,
+            plugins::recording::plugin_recording_stop,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())

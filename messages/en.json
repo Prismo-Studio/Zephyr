@@ -1,6 +1,10 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"language_name": "English",
+	"welcome_title": "Thanks for installing Zephyr!",
+	"welcome_body": "Zephyr is open source and built by a tiny team. If it's useful to you, a GitHub star helps a lot. It costs nothing and it lets more modders find the project.",
+	"welcome_star": "Star on GitHub",
+	"welcome_dismiss": "Maybe later",
 	"page_modContextItem_openWebsite": "Open website",
 	"page_modContextItem_donate": "Donate",
 	"menuBar_file_item_4": "Open Zephyr log",

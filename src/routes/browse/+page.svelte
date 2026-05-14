@@ -205,7 +205,7 @@
 		try {
 			await api.sources.installSourceMod('zephyrmods', externalId, version);
 			captureEvent('mod_installed', { via: 'browse', source: 'zephyrmods' });
-			pushToast({ type: 'success', message: `Installed ${mod.name} ${version}` });
+			pushToast({ type: 'info', message: `Installed ${mod.name} ${version}` });
 			await refresh();
 		} catch (err) {
 			pushToast({ type: 'error', message: `Failed to install: ${err}` });

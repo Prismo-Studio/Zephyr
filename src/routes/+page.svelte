@@ -200,6 +200,12 @@
 		}
 	}
 
+	$effect(() => {
+		const handler = () => refresh();
+		window.addEventListener('app:refresh', handler);
+		return () => window.removeEventListener('app:refresh', handler);
+	});
+
 	async function install(id: ModId) {
 		await api.profile.install.mod(id);
 		captureEvent('mod_installed', { via: 'mod_list' });

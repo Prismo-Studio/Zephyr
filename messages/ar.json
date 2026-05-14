@@ -1,6 +1,10 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"language_name": "العربية",
+	"welcome_title": "شكراً لتثبيت Zephyr!",
+	"welcome_body": "Zephyr مفتوح المصدر ويطوره فريق صغير. إذا كان مفيداً لك، فإن نجمة على GitHub تساعد كثيراً. مجاناً، وتساعد المزيد من المطورين على اكتشاف المشروع.",
+	"welcome_star": "أضف نجمة على GitHub",
+	"welcome_dismiss": "ربما لاحقاً",
 	"page_modContextItem_openWebsite": "فتح الموقع",
 	"page_modContextItem_donate": "تبرع",
 	"menuBar_file_item_4": "فتح سجل Zephyr",

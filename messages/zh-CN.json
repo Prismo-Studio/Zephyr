@@ -1,6 +1,10 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"language_name": "简体中文",
+	"welcome_title": "感谢安装 Zephyr！",
+	"welcome_body": "Zephyr 是开源项目，由一个小团队维护。如果你觉得它好用，在 GitHub 上点个 Star 会很有帮助。免费，也能让更多的 modder 发现这个项目。",
+	"welcome_star": "在 GitHub 加星",
+	"welcome_dismiss": "稍后再说",
 	"page_modContextItem_openWebsite": "打开网站",
 	"page_modContextItem_donate": "赞助",
 	"menuBar_file_item_4": "打开 Zephyr 日志",

@@ -139,7 +139,7 @@
 		</div>
 
 		<div class="z-details-badges">
-			{#if mod.version && mod.versions.length > 1 && mod.isInstalled && showVersionSelector && (!isExternal() || mod.uuid.startsWith('zephyrmods:'))}
+			{#if mod.version && mod.isInstalled && showVersionSelector && (mod.source === 'zephyrmods' || mod.uuid.startsWith('zephyrmods:') ? !!mod.externalId : mod.versions.length > 1 && !isExternal())}
 				<ModVersionSelector {mod} />
 			{:else if mod.version}
 				<Badge variant="accent">{mod.version}</Badge>

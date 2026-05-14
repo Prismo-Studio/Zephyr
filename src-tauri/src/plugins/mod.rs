@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 pub mod commands;
 pub mod dev;
 pub mod install;
+pub mod recording;
 pub mod registry;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

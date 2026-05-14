@@ -25,7 +25,7 @@
 			devBusy = true;
 			await plugins.registerLocal(picked);
 			pushToast({
-				type: 'success',
+				type: 'info',
 				message: (i18nState.locale && m.plugins_devMode_toast_loaded()) || ''
 			});
 		} catch (err) {
@@ -44,7 +44,7 @@
 		try {
 			await plugins.reloadLocal(plugin.id);
 			pushToast({
-				type: 'success',
+				type: 'info',
 				message: (i18nState.locale && m.plugins_devMode_toast_reloaded({ name: plugin.name })) || ''
 			});
 		} catch (err) {

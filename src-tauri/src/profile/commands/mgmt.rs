@@ -40,6 +40,15 @@ pub async fn set_active_profile(index: usize, app: AppHandle) -> Result<()> {
 
     game.save(&app)?;
     game.update_window_title(&app)?;
+    let profile_name = game.active_profile().name.clone();
+    let profile_index = index;
+    drop(manager);
+
+    use tauri::Emitter;
+    let _ = app.emit(
+        "zephyr_profile_switched",
+        serde_json::json!({ "profileName": profile_name, "profileIndex": profile_index }),
+    );
 
     Ok(())
 }

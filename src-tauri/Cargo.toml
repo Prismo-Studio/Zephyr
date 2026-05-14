@@ -42,6 +42,10 @@ futures-util = { version = "0.3", features = ["io", "sink"] }
 indexmap = { version = "2", features = ["serde"] }
 open = "5"
 itertools = "0.13"
+ffmpeg-sidecar = "2"
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.58", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging"] }
 zip = { version = "2", features = ["deflate"] }
 mime_guess = "2"
 sha2 = "0.10"
