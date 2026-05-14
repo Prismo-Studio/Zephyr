@@ -14,4 +14,5 @@ export type Plugin = {
 	dev?: boolean;
 	devPath?: string;
 	sidebarLabel?: string;
+	sidebarIcon?: string;
 };

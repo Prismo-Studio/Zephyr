@@ -42,7 +42,7 @@
 			.filter((p) => p.kind === 'feature' && p.enabled && !p.builtIn)
 			.map((p) => ({
 				path: `/plugins/feature/${p.id}`,
-				icon: 'mdi:puzzle-outline',
+				icon: p.sidebarIcon || 'mdi:puzzle-outline',
 				label: () => p.sidebarLabel || p.name
 			}));
 

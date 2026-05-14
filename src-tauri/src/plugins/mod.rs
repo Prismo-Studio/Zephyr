@@ -50,6 +50,8 @@ pub struct RegistryEntry {
     pub entry: Option<String>,
     #[serde(default)]
     pub sidebar_label: Option<String>,
+    #[serde(default)]
+    pub sidebar_icon: Option<String>,
 }
 
 fn default_true() -> bool {
@@ -76,6 +78,8 @@ pub struct PluginEntry {
     pub dev_path: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub sidebar_label: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub sidebar_icon: Option<String>,
 }
 
 /// Feature ids whose runtime code is shipped in the Zephyr binary. These

@@ -49,6 +49,8 @@ struct RawManifest {
     entry: Option<String>,
     #[serde(default)]
     sidebar_label: Option<String>,
+    #[serde(default)]
+    sidebar_icon: Option<String>,
 }
 
 /// Spawn a debounced filesystem watcher on a dev plugin folder. Emits
@@ -147,5 +149,6 @@ pub fn read_manifest(path: &PathBuf) -> Result<RegistryEntry> {
         path: path.to_string_lossy().to_string(),
         entry: raw.entry,
         sidebar_label: raw.sidebar_label,
+        sidebar_icon: raw.sidebar_icon,
     })
 }

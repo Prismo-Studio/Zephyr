@@ -45,6 +45,7 @@ fn collect(app: &AppHandle) -> Vec<PluginEntry> {
             dev: false,
             dev_path: String::new(),
             sidebar_label: entry.sidebar_label.clone(),
+            sidebar_icon: entry.sidebar_icon.clone(),
         });
     }
 
@@ -65,6 +66,7 @@ fn collect(app: &AppHandle) -> Vec<PluginEntry> {
             dev: true,
             dev_path: d.path.to_string_lossy().to_string(),
             sidebar_label: entry.sidebar_label.clone(),
+            sidebar_icon: entry.sidebar_icon.clone(),
         });
     }
 
