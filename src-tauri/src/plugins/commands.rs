@@ -158,9 +158,7 @@ pub async fn install_plugin(id: String, app: AppHandle) -> CmdResult<InstalledTh
                 super::install::install_theme(&app, &entry).await?
             }
         }
-        PluginType::Feature => {
-            return Err(eyre!("feature plugins are bundled, not installable").into())
-        }
+        PluginType::Feature => String::new(),
         PluginType::Game | PluginType::Mod => {
             return Err(eyre!(
                 "install pipeline for {:?} plugins is not implemented yet",
