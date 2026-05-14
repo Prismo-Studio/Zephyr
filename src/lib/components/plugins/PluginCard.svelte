@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import type { Plugin } from '$lib/types';
@@ -33,6 +34,14 @@
 
 	// Iconify ids look like "prefix:name". Anything else (paths, URLs) renders as an image.
 	const isIconifyId = $derived(/^[a-z0-9-]+:[a-z0-9-]+$/i.test(plugin.icon));
+
+	// Dev plugins send the icon as `file://<absolute-path>` so the backend
+	// doesn't have to know about Tauri's asset URL format. Convert here.
+	const iconSrc = $derived(
+		plugin.icon.startsWith('file://')
+			? convertFileSrc(plugin.icon.slice('file://'.length))
+			: plugin.icon
+	);
 </script>
 
 <article class="z-plugin-card">
@@ -41,7 +50,7 @@
 			{#if isIconifyId}
 				<Icon icon={plugin.icon} />
 			{:else}
-				<img src={plugin.icon} alt="" class="z-plugin-icon-img" />
+				<img src={iconSrc} alt="" class="z-plugin-icon-img" />
 			{/if}
 		</div>
 
@@ -57,6 +66,9 @@
 				{#if plugin.builtIn}
 					<span class="z-plugin-builtin">{i18nState.locale && m.plugins_badge_builtIn()}</span>
 				{/if}
+				{#if plugin.dev}
+					<span class="z-plugin-dev">Dev</span>
+				{/if}
 				{#if plugin.enabled}
 					<span class="z-plugin-status">{i18nState.locale && m.plugins_badge_installed()}</span>
 				{/if}
@@ -67,7 +79,13 @@
 	<p class="z-plugin-desc">{description}</p>
 
 	<div class="z-plugin-actions">
-		{#if !plugin.removable}
+		{#if plugin.dev}
+			<!-- Dev plugins are managed exclusively from the Dev Mode panel
+			     above (Reload / Remove). Showing Uninstall here would be
+			     misleading — it would unregister from dev mode AND delete the
+			     installed-flag bookkeeping, which isn't what the author wants
+			     while iterating. -->
+		{:else if !plugin.removable}
 			<Button variant="ghost" size="sm" disabled>
 				{i18nState.locale && m.plugins_action_required()}
 			</Button>
@@ -157,7 +175,8 @@
 
 	.z-plugin-type,
 	.z-plugin-builtin,
-	.z-plugin-status {
+	.z-plugin-status,
+	.z-plugin-dev {
 		display: inline-flex;
 		align-items: center;
 		padding: 2px 8px;
@@ -166,6 +185,11 @@
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
 		border-radius: var(--radius-sm);
+	}
+
+	.z-plugin-dev {
+		background: color-mix(in srgb, #a855f7 18%, transparent);
+		color: #c084fc;
 	}
 
 	.z-plugin-type {

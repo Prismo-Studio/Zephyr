@@ -11,4 +11,7 @@ export type Plugin = {
 	builtIn: boolean;
 	removable: boolean;
 	enabled: boolean;
+	dev?: boolean;
+	devPath?: string;
+	sidebarLabel?: string;
 };

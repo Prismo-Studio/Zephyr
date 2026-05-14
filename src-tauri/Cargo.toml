@@ -81,6 +81,7 @@ internment = { version = "0.8.6", features = ["serde"] }
 reqwest-websocket = { version = "0.6.0", features = ["json"] }
 async-trait = "0.1"
 urlencoding = "2"
+notify-debouncer-mini = "0.7.0"
 
 [target.'cfg(target_os="windows")'.dependencies]
 winreg = "0.52"

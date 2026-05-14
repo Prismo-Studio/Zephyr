@@ -35,10 +35,10 @@ pub const GAMES_JSON_RAW_URL: &str =
 // ── Zephyr plugin registry ────────────────────────────────────────────────
 
 pub const PLUGIN_REGISTRY_URL: &str =
-    "https://raw.githubusercontent.com/Prismo-Studio/zephyr-plugin/main/registry.json";
+    "https://raw.githubusercontent.com/Prismo-Studio/Zephyr-plugin/main/registry.json";
 
 pub const PLUGIN_REGISTRY_RAW_BASE: &str =
-    "https://raw.githubusercontent.com/Prismo-Studio/zephyr-plugin/main/";
+    "https://raw.githubusercontent.com/Prismo-Studio/Zephyr-plugin/main/";
 
 // ── Zephyr cloud ──────────────────────────────────────────────────────────
 

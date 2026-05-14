@@ -59,11 +59,21 @@ fn save_cache(plugins: &[RegistryEntry]) -> Result<()> {
 }
 
 pub async fn fetch_and_update(app: AppHandle) -> Result<()> {
-    info!("fetching plugin registry from {}", PLUGIN_REGISTRY_URL);
+    // Append a timestamp query param so raw.githubusercontent.com's CDN
+    // doesn't serve a stale registry.json for up to 5 minutes after the
+    // bot rebuilds. Combined with the Cache-Control: no-cache header for
+    // belt-and-braces.
+    let bust = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0);
+    let url = format!("{}?_t={}", PLUGIN_REGISTRY_URL, bust);
+    info!("fetching plugin registry from {}", url);
 
     let response: RegistryFile = app
         .http()
-        .get(PLUGIN_REGISTRY_URL)
+        .get(&url)
+        .header("Cache-Control", "no-cache")
         .send()
         .await?
         .error_for_status()?

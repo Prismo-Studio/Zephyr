@@ -55,6 +55,16 @@ pub fn read_theme_css(entry: &RegistryEntry) -> Result<String> {
     fs::read_to_string(path).context("read theme css")
 }
 
+pub fn read_dev_theme(dev: &super::dev::DevPlugin) -> Result<String> {
+    let entry = &dev.manifest;
+    let asset = entry.entry.as_deref().unwrap_or("theme.css");
+    let path = dev.path.join(asset);
+    if !path.exists() {
+        bail!("dev theme asset missing: {}", path.display());
+    }
+    fs::read_to_string(path).context("read dev theme css")
+}
+
 pub fn uninstall(id: &str) -> Result<()> {
     let dir = plugin_dir(id);
     if dir.exists() {

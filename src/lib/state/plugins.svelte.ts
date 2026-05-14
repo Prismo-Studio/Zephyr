@@ -51,6 +51,25 @@ class PluginsState {
 		await api.plugins.refresh();
 	};
 
+	registerLocal = async (path: string) => {
+		await api.plugins.registerLocalPlugin(path);
+		await this.loadInstalledThemes();
+		await this.refresh();
+	};
+
+	unregisterLocal = async (id: string) => {
+		await api.plugins.unregisterLocalPlugin(id);
+		pluginThemes.unregister(id);
+		if (getTheme() === id) setTheme('dark');
+		await this.refresh();
+	};
+
+	reloadLocal = async (id: string) => {
+		await api.plugins.reloadLocalPlugin(id);
+		await this.loadInstalledThemes();
+		await this.refresh();
+	};
+
 	loadInstalledThemes = async () => {
 		try {
 			const themes = await api.plugins.getInstalledThemes();
@@ -63,6 +82,8 @@ class PluginsState {
 		}
 	};
 
+	#unlistenDevChanged: UnlistenFn | null = null;
+
 	init = async () => {
 		await Promise.all([this.refresh(), this.loadInstalledThemes()]);
 		if (!this.#unlisten) {
@@ -70,11 +91,21 @@ class PluginsState {
 				this.list = evt.payload;
 			});
 		}
+		if (!this.#unlistenDevChanged) {
+			this.#unlistenDevChanged = await listen<{ id: string }>('dev_plugin_changed', (evt) => {
+				// Filesystem watcher detected a change in the dev plugin folder.
+				// Re-read the manifest and re-fetch its theme css so the UI updates
+				// without the author clicking Reload manually.
+				this.reloadLocal(evt.payload.id).catch(() => {});
+			});
+		}
 	};
 
 	dispose = () => {
 		this.#unlisten?.();
 		this.#unlisten = null;
+		this.#unlistenDevChanged?.();
+		this.#unlistenDevChanged = null;
 	};
 }
 

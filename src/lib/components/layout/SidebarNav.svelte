@@ -29,9 +29,31 @@
 		{ path: '/prefs', icon: 'mdi:tune-vertical', label: () => m.navBar_label_settings() }
 	];
 
-	const visibleItems = $derived(
-		navItems.filter((item) => !item.requiresPlugin || plugins.isEnabled(item.requiresPlugin))
-	);
+	const visibleItems = $derived.by(() => {
+		const base = navItems.filter(
+			(item) => !item.requiresPlugin || plugins.isEnabled(item.requiresPlugin)
+		);
+
+		// Dynamic items for feature plugins (dev or registry). The label comes
+		// from the manifest's optional `sidebarLabel` field, falling back to
+		// `name`. Built-in features (archipelago) own their slot above so we
+		// skip them here.
+		const dynamic: NavItem[] = plugins.list
+			.filter((p) => p.kind === 'feature' && p.enabled && !p.builtIn)
+			.map((p) => ({
+				path: `/plugins/feature/${p.id}`,
+				icon: 'mdi:puzzle-outline',
+				label: () => p.sidebarLabel || p.name
+			}));
+
+		// Insert dynamic items just before the Plugins nav so they live with
+		// the other content pages, not after Settings.
+		const pluginsIdx = base.findIndex((i) => i.path === '/plugins');
+		if (pluginsIdx >= 0 && dynamic.length > 0) {
+			return [...base.slice(0, pluginsIdx), ...dynamic, ...base.slice(pluginsIdx)];
+		}
+		return [...base, ...dynamic];
+	});
 
 	let currentPath = $state(window.location.pathname);
 

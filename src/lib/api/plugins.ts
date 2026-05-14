@@ -19,3 +19,14 @@ export const install = (id: string) => invoke<InstalledTheme>('install_plugin', 
 export const uninstall = (id: string) => invoke('uninstall_plugin', { id });
 
 export const getInstalledThemes = () => invoke<InstalledTheme[]>('get_installed_themes');
+
+export const registerLocalPlugin = (path: string) =>
+	invoke<Plugin>('register_local_plugin', { path });
+
+export const unregisterLocalPlugin = (id: string) =>
+	invoke('unregister_local_plugin', { id });
+
+export const reloadLocalPlugin = (id: string) =>
+	invoke<Plugin>('reload_local_plugin', { id });
+
+export const getPluginUiUrl = (id: string) => invoke<string>('get_plugin_ui_url', { id });

@@ -61,6 +61,38 @@ fn setup(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
     app.manage(crate::plugins::registry::PluginRegistryState {
         entries: std::sync::Mutex::new(initial_plugins),
     });
+    app.manage(crate::plugins::dev::DevPluginState::default());
+
+    {
+        use tauri::Manager;
+        let handle = app.handle().to_owned();
+        let saved = crate::plugins::dev::load_paths();
+        let dev_state = handle.state::<crate::plugins::dev::DevPluginState>();
+        let mut list = dev_state.entries.lock().unwrap();
+        let mut watchers = dev_state.watchers.lock().unwrap();
+        for path in saved {
+            if !path.is_dir() {
+                continue;
+            }
+            let manifest = match crate::plugins::dev::read_manifest(&path) {
+                Ok(m) => m,
+                Err(err) => {
+                    warn!("dev plugin replay failed for {}: {:#}", path.display(), err);
+                    continue;
+                }
+            };
+            list.push(crate::plugins::dev::DevPlugin {
+                path: path.clone(),
+                manifest: manifest.clone(),
+            });
+            match crate::plugins::dev::spawn_watcher(handle.clone(), manifest.id.clone(), path.clone()) {
+                Ok(w) => {
+                    watchers.insert(manifest.id, w);
+                }
+                Err(err) => warn!("dev plugin watcher: {err:#}"),
+            }
+        }
+    }
 
     if let Err(err) = state::setup(app.handle()) {
         error!("setup error: {:?}", err);
@@ -350,6 +382,18 @@ pub fn run() {
             plugins::commands::install_plugin,
             plugins::commands::uninstall_plugin,
             plugins::commands::get_installed_themes,
+            plugins::commands::register_local_plugin,
+            plugins::commands::unregister_local_plugin,
+            plugins::commands::reload_local_plugin,
+            plugins::commands::get_plugin_ui_url,
+            plugins::commands::plugin_storage_get,
+            plugins::commands::plugin_storage_set,
+            plugins::commands::plugin_open_external,
+            plugins::commands::plugin_fs_write_blob,
+            plugins::commands::plugin_fs_list,
+            plugins::commands::plugin_fs_delete,
+            plugins::commands::plugin_fs_get_url,
+            plugins::commands::plugin_fs_open_folder,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())

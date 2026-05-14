@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 pub mod commands;
+pub mod dev;
 pub mod install;
 pub mod registry;
 
@@ -47,6 +48,8 @@ pub struct RegistryEntry {
     /// without it still deserialize.
     #[serde(default)]
     pub entry: Option<String>,
+    #[serde(default)]
+    pub sidebar_label: Option<String>,
 }
 
 fn default_true() -> bool {
@@ -67,6 +70,12 @@ pub struct PluginEntry {
     pub built_in: bool,
     pub removable: bool,
     pub enabled: bool,
+    #[serde(default)]
+    pub dev: bool,
+    #[serde(default)]
+    pub dev_path: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub sidebar_label: Option<String>,
 }
 
 /// Feature ids whose runtime code is shipped in the Zephyr binary. These
