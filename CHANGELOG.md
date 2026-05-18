@@ -4,6 +4,12 @@ All notable changes to Zephyr are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [1.3.1] - 2026-05-14
+
+### Fixed
+
+- macOS app icons in the bundle (Dock, Finder, About panel).
+
 ## [1.3.0] - 2026-05-14
 
 ### Added
