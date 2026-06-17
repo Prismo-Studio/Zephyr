@@ -821,7 +821,8 @@
 		gap: var(--space-md);
 	}
 
-	.z-mods-list.z-grid-layout > :global(.z-loader) {
+	.z-mods-list.z-grid-layout > :global(.z-loader),
+	.z-mods-list.z-grid-layout > :global(.z-mods-empty) {
 		grid-column: 1 / -1;
 	}
 

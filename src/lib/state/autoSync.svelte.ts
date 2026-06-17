@@ -49,7 +49,8 @@ async function doPush() {
 			pushToast({
 				type: 'error',
 				name: m.sync_autoSyncFailed(),
-				message: 'Reconnect Discord in Settings to re-enable cloud sync. Auto-sync paused for this session.'
+				message:
+					'Reconnect Discord in Settings to re-enable cloud sync. Auto-sync paused for this session.'
 			});
 		} else {
 			pushToast({

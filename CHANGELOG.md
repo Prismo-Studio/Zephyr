@@ -4,6 +4,15 @@ All notable changes to Zephyr are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [1.3.2] - 2026-05-18
+
+### Fixed
+
+- Cloud sync no longer spams an error toast on every action when the Discord
+  token is expired. Auto-sync pauses for the session after the first 401 and
+  resumes automatically after re-login.
+- "No mods installed" empty state is now properly centered in grid view.
+
 ## [1.3.1] - 2026-05-14
 
 ### Fixed
