@@ -10,6 +10,17 @@ let pushTimer: ReturnType<typeof setTimeout> | null = null;
 let pushing = false;
 const DEBOUNCE_MS = 1500;
 
+let sessionDisabled = false;
+
+function isAuthError(err: unknown): boolean {
+	const msg = (err instanceof Error ? err.message : String(err ?? '')).toLowerCase();
+	return msg.includes('401') || msg.includes('unauthorized');
+}
+
+export function resetAutoSyncBlock() {
+	sessionDisabled = false;
+}
+
 async function shouldAutoPush(): Promise<boolean> {
 	try {
 		const p = await prefs.get();
@@ -26,24 +37,34 @@ async function shouldAutoPush(): Promise<boolean> {
 }
 
 async function doPush() {
-	if (pushing) return;
+	if (pushing || sessionDisabled) return;
 	pushing = true;
 	try {
 		if (!(await shouldAutoPush())) return;
 		await sync.push();
 		await profiles.refresh();
 	} catch (e: any) {
-		pushToast({
-			type: 'error',
-			name: m.sync_autoSyncFailed(),
-			message: e?.message ?? String(e)
-		});
+		if (isAuthError(e)) {
+			sessionDisabled = true;
+			pushToast({
+				type: 'error',
+				name: m.sync_autoSyncFailed(),
+				message: 'Reconnect Discord in Settings to re-enable cloud sync. Auto-sync paused for this session.'
+			});
+		} else {
+			pushToast({
+				type: 'error',
+				name: m.sync_autoSyncFailed(),
+				message: e?.message ?? String(e)
+			});
+		}
 	} finally {
 		pushing = false;
 	}
 }
 
 export function maybeAutoPush() {
+	if (sessionDisabled) return;
 	if (pushTimer) clearTimeout(pushTimer);
 	pushTimer = setTimeout(() => {
 		pushTimer = null;
