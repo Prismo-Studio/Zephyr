@@ -457,6 +457,8 @@
 	"restore_completeSuccess": "{count} profile(s) restored from cloud",
 	"restore_completePartial": "{ok} restored, {fail} failed",
 	"import_title": "Import Profile",
+	"sync_sessionExpired": "Session expired",
+	"sync_sessionExpiredDesc": "Your Discord session expired and you were logged out. Sign in again in Settings to resume cloud sync.",
 	"import_cancel": "Cancel",
 	"import_newProfile": "New profile",
 	"import_replaceActive": "Replace active",

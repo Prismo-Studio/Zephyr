@@ -442,6 +442,8 @@
 	"restore_action": "Восстановить",
 	"restore_complete": "Восстановление завершено",
 	"restore_completeSuccess": "{count} профилей восстановлено из облака",
+	"sync_sessionExpired": "Сессия истекла",
+	"sync_sessionExpiredDesc": "Срок действия сессии Discord истёк, выполнен выход. Войдите снова в настройках, чтобы возобновить облачную синхронизацию.",
 	"restore_completePartial": "Успешно: {ok}, ошибок: {fail}",
 	"import_title": "Импортировать профиль",
 	"import_cancel": "Отмена",

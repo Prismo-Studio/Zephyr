@@ -436,6 +436,8 @@
 	"restore_action": "Restaurar",
 	"restore_complete": "Restauración completada",
 	"restore_completeSuccess": "{count} perfil(es) restaurado(s) desde la nube",
+	"sync_sessionExpired": "Sesión caducada",
+	"sync_sessionExpiredDesc": "Tu sesión de Discord ha caducado y se ha cerrado. Vuelve a iniciar sesión en Ajustes para reanudar la sincronización en la nube.",
 	"restore_completePartial": "{ok} restaurado(s), {fail} con error",
 	"import_title": "Importar perfil",
 	"import_cancel": "Cancelar",

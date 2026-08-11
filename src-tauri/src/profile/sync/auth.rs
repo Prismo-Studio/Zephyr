@@ -7,8 +7,9 @@ use std::{
 use base64::{prelude::BASE64_URL_SAFE_NO_PAD, Engine};
 use chrono::{DateTime, Utc};
 use eyre::{eyre, Context, OptionExt, Result};
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Manager, Url};
+use tauri::{AppHandle, Emitter, Manager, Url};
 use tokio::sync::broadcast;
 use tracing::{debug, error, info, warn};
 
@@ -180,8 +181,40 @@ pub async fn access_token(app: &AppHandle) -> Option<String> {
         Ok(token) => Some(token),
         Err(err) => {
             error!("failed to refresh access token: {:#}", err);
+
+            // Only a rejection from the server means the session is really gone.
+            // Network failures must keep the credentials so offline users stay
+            // logged in and recover once they are back online.
+            if is_session_rejected(&err) {
+                end_expired_session(app);
+            }
+
             None
         }
+    }
+}
+
+fn is_session_rejected(err: &eyre::Report) -> bool {
+    err.downcast_ref::<reqwest::Error>()
+        .and_then(|err| err.status())
+        .is_some_and(|status| status == StatusCode::UNAUTHORIZED || status == StatusCode::FORBIDDEN)
+}
+
+/// Logs the user out after the server refused to renew their session.
+///
+/// Without this the credentials would linger, `user_info` would keep reporting
+/// a logged in user and every sync request would silently go out unauthenticated
+/// and fail with a 401 until the user logged out and back in by hand.
+fn end_expired_session(app: &AppHandle) {
+    warn!("refresh token was rejected, logging out");
+
+    if let Err(err) = app.sync_auth().set_creds(None, app.db()) {
+        error!("failed to clear expired credentials: {:#}", err);
+        return;
+    }
+
+    if let Err(err) = app.emit("sync_auth_expired", ()) {
+        error!("failed to emit session expiry event: {:#}", err);
     }
 }
 

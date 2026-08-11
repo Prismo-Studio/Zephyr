@@ -11,10 +11,13 @@ class ProfilesState {
 		this.list.find((profile) => profile.id === this.activeId) ?? null
 	);
 
+	// Locking only guards against editing a synced profile owned by someone else.
+	// Logged out we cannot tell who owns it, and local edits are harmless since
+	// pushing requires auth anyway, so keep the profile usable instead.
 	activeLocked = $derived.by(() => {
 		if (this.active === null) return false;
 		if (this.active.sync === null) return false;
-		if (auth.user === null) return true;
+		if (auth.user === null) return false;
 
 		return this.active.sync.owner.discordId != auth.user.discordId;
 	});

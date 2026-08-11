@@ -30,6 +30,7 @@ export type EventName =
 	| 'profile_launched'
 	| 'discord_login'
 	| 'discord_logout'
+	| 'discord_session_expired'
 	| 'ap_server_started'
 	| 'ap_server_stopped'
 	| 'ap_client_connected'

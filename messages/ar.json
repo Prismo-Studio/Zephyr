@@ -457,6 +457,8 @@
 	"restore_completeSuccess": "تم استعادة {count} ملف من السحابة",
 	"restore_completePartial": "نجح: {ok}, فشل: {fail}",
 	"import_title": "استيراد ملف",
+	"sync_sessionExpired": "انتهت الجلسة",
+	"sync_sessionExpiredDesc": "انتهت صلاحية جلسة Discord وتم تسجيل خروجك. سجّل الدخول مرة أخرى من الإعدادات لاستئناف المزامنة السحابية.",
 	"import_cancel": "إلغاء",
 	"import_newProfile": "ملف جديد",
 	"import_replaceActive": "استبدال النشط",

@@ -437,6 +437,8 @@
 	"restore_action": "Restaurer",
 	"restore_complete": "Restauration terminée",
 	"restore_completeSuccess": "{count} profil(s) restauré(s) depuis le cloud",
+	"sync_sessionExpired": "Session expirée",
+	"sync_sessionExpiredDesc": "Votre session Discord a expiré et vous avez été déconnecté. Reconnectez-vous dans les paramètres pour relancer la synchronisation cloud.",
 	"restore_completePartial": "{ok} restauré(s), {fail} en échec",
 	"import_title": "Importer un profil",
 	"import_cancel": "Annuler",

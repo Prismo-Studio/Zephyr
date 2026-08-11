@@ -21,6 +21,10 @@ export function resetAutoSyncBlock() {
 	sessionDisabled = false;
 }
 
+export function blockAutoSync() {
+	sessionDisabled = true;
+}
+
 async function shouldAutoPush(): Promise<boolean> {
 	try {
 		const p = await prefs.get();

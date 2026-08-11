@@ -126,6 +126,7 @@
 
 	let unlistenProfiles: UnlistenFn | null;
 	let unlistenGames: UnlistenFn | null;
+	let unlistenAuthExpired: UnlistenFn | null;
 
 	/** Track in-app navigation. SvelteKit routes via History API, so we intercept
 	 *  pushState/replaceState/popstate. Fires once for the initial load too. */
@@ -257,9 +258,20 @@
 			profiles.update(evt.payload);
 		}).then((callback) => (unlistenGames = callback));
 
+		listen('sync_auth_expired', () => {
+			if (!auth.sessionExpired()) return;
+
+			pushToast({
+				type: 'error',
+				name: m.sync_sessionExpired(),
+				message: m.sync_sessionExpiredDesc()
+			});
+		}).then((callback) => (unlistenAuthExpired = callback));
+
 		return () => {
 			unlistenProfiles?.();
 			unlistenGames?.();
+			unlistenAuthExpired?.();
 		};
 	});
 </script>
