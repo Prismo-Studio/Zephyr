@@ -4,6 +4,26 @@ All notable changes to Zephyr are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [1.3.3] - 2026-08-11
+
+### Added
+
+- **Configurable Archipelago folders**: the randomizer runtime directory and
+  the player slot directory can be picked from the app, with the choice kept
+  across restarts.
+- **Random ranges in randomizer options**: numeric options accept a random
+  range, and weighted value lists are no longer capped to a fixed number of
+  entries.
+- **Compact layout** option for the config manager, in Preferences > Display.
+
+### Fixed
+
+- Cloud sync now logs out on its own when the Discord session expires instead
+  of holding on to a dead token.
+- Data folder and cache folder settings survive a restart.
+- Mod tags in Browse keep a stable alphabetical order. They were stored in a
+  hash set, so every re-fetch of the package list reshuffled them.
+
 ## [1.3.2] - 2026-05-18
 
 ### Fixed
