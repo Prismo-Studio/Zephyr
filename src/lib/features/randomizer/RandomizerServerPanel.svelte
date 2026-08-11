@@ -7,6 +7,7 @@
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 
 	import PythonRuntimeSection from './PythonRuntimeSection.svelte';
+	import RandomizerFoldersSection from './RandomizerFoldersSection.svelte';
 	import PlayerSlotsSection from './PlayerSlotsSection.svelte';
 	import SeedsSection from './SeedsSection.svelte';
 	import HostSection from './HostSection.svelte';
@@ -40,6 +41,7 @@
 
 	let openBlocks = $state<Record<string, boolean>>({
 		python: true,
+		folders: false,
 		players: true,
 		seeds: true,
 		host: true
@@ -344,6 +346,14 @@
 	</Tooltip>
 
 	<CollapsibleBlock
+		title={(i18nState.locale && m.randomizer_folders_title()) ?? ''}
+		open={openBlocks.folders}
+		ontoggle={() => toggleBlock('folders')}
+	>
+		<RandomizerFoldersSection onchange={refreshAll} />
+	</CollapsibleBlock>
+
+	<CollapsibleBlock
 		title={(i18nState.locale && m.randomizer_playerSlots()) ?? ''}
 		open={openBlocks.players}
 		count={players.length}
@@ -353,7 +363,7 @@
 			<Tooltip text={i18nState.locale && m.randomizer_openFolder()} position="top" delay={200}>
 				<button
 					class="rdz-icon-btn"
-					onclick={() => api.openWorkspaceDir()}
+					onclick={() => api.openRandomizerDir('players')}
 					aria-label="Open folder"
 				>
 					<Icon icon="mdi:folder-open" />

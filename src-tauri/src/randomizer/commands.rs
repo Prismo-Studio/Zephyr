@@ -10,6 +10,7 @@ use super::{
     patches::{self, PatchFile},
     runtime::{self, RuntimeStatus},
     schema,
+    settings::{self, DirChange, RandomizerDirs},
     types::*,
     validation, yaml_gen,
     yaml_gen::LintIssue,
@@ -132,14 +133,6 @@ pub fn stop_server(app: AppHandle) -> Result<()> {
 pub fn server_status(app: AppHandle) -> ServerStatus {
     let state = app.state::<ServerState>();
     state.status()
-}
-
-#[command]
-pub fn open_workspace_dir(app: AppHandle) -> Result<()> {
-    let dir = ap_runner::workspace_dir(&app);
-    std::fs::create_dir_all(&dir)?;
-    crate::util::fs::open_path(dir)?;
-    Ok(())
 }
 
 #[command]
@@ -539,5 +532,51 @@ pub async fn provision_runtime_venv(app: AppHandle) -> Result<RuntimeStatus> {
 #[command]
 pub fn remove_runtime(app: AppHandle) -> Result<()> {
     runtime::remove(&app)?;
+    Ok(())
+}
+
+// --- Randomizer folders -----------------------------------------------------
+
+#[command]
+pub fn randomizer_dirs(app: AppHandle) -> RandomizerDirs {
+    settings::dirs(&app)
+}
+
+/// Move or adopt the Archipelago runtime directory. `dir: None` restores the
+/// default location. Refuses while a server is running, because the runtime's
+/// Python is the process serving it.
+#[command]
+pub async fn set_randomizer_runtime_dir(
+    app: AppHandle,
+    dir: Option<String>,
+    move_existing: bool,
+) -> Result<DirChange> {
+    if app.state::<ServerState>().status().running {
+        return Err(eyre::eyre!("stop the multiplayer server before moving the runtime").into());
+    }
+    blocking(move || settings::set_runtime_dir(&app, dir.map(PathBuf::from), move_existing)).await
+}
+
+/// Move or adopt the player slot YAML directory. `dir: None` restores the
+/// default location.
+#[command]
+pub async fn set_randomizer_players_dir(
+    app: AppHandle,
+    dir: Option<String>,
+    move_existing: bool,
+) -> Result<DirChange> {
+    blocking(move || settings::set_players_dir(&app, dir.map(PathBuf::from), move_existing)).await
+}
+
+/// Reveal one of the randomizer directories in the OS file manager.
+#[command]
+pub fn open_randomizer_dir(app: AppHandle, kind: String) -> Result<()> {
+    let dir = match kind.as_str() {
+        "runtime" => ap_runner::ap_dir(&app),
+        "players" => ap_runner::players_dir(&app),
+        other => return Err(eyre::eyre!("unknown randomizer directory '{other}'").into()),
+    };
+    std::fs::create_dir_all(&dir)?;
+    crate::util::fs::open_path(dir)?;
     Ok(())
 }

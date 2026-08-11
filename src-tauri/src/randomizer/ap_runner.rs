@@ -24,26 +24,40 @@ use tracing::{info, warn};
 
 use crate::{constants::PUBLIC_IP_PROVIDERS, util::process::CommandExt as _};
 
-/// Persistent install location for the Archipelago runtime in packaged builds.
+/// Built-in install location for the Archipelago runtime in packaged builds.
 /// On Linux that's `~/.local/share/<bundle-id>/randomizer/archipelago-runtime`;
 /// Tauri's `app_data_dir` maps to the platform-appropriate equivalents on macOS
 /// (`~/Library/Application Support/...`) and Windows (`%APPDATA%/...`).
-pub fn ap_install_dir(app: &AppHandle) -> PathBuf {
+///
+/// This ignores the user's directory setting; use [`ap_install_dir`] for the
+/// effective location.
+pub fn default_ap_install_dir(app: &AppHandle) -> PathBuf {
     let base = app
         .path()
         .app_data_dir()
         .unwrap_or_else(|_| std::env::temp_dir());
-    base.join("randomizer").join("archipelago-runtime")
+    base.join(super::DATA_DIR_NAME).join("archipelago-runtime")
+}
+
+/// Where the Archipelago runtime is installed: the directory the user picked in
+/// the randomizer folder settings, or [`default_ap_install_dir`].
+pub fn ap_install_dir(app: &AppHandle) -> PathBuf {
+    super::settings::runtime_dir_override(app).unwrap_or_else(|| default_ap_install_dir(app))
 }
 
 /// Resolve the directory of the Archipelago runtime.
 ///
 /// Priority:
-/// 1. A checked-out runtime at a dev-relative path (so `cargo tauri dev`
+/// 1. An explicitly configured runtime directory. Picking one is a deliberate
+///    act, so it outranks everything else.
+/// 2. A checked-out runtime at a dev-relative path (so `cargo tauri dev`
 ///    still uses the in-tree copy).
-/// 2. The user-install dir under `app_data_dir`. Releases ship without the
+/// 3. The user-install dir under `app_data_dir`. Releases ship without the
 ///    runtime to keep the binary small; the user downloads it on demand.
 pub fn ap_dir(app: &AppHandle) -> PathBuf {
+    if let Some(configured) = super::settings::runtime_dir_override(app) {
+        return configured;
+    }
     let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
     let dev_candidates = [
         cwd.join("archipelago-runtime"),
@@ -55,7 +69,7 @@ pub fn ap_dir(app: &AppHandle) -> PathBuf {
             return c.clone();
         }
     }
-    ap_install_dir(app)
+    default_ap_install_dir(app)
 }
 
 /// Path to the Python venv inside the Archipelago runtime directory.
@@ -79,11 +93,18 @@ pub fn workspace_dir(app: &AppHandle) -> PathBuf {
         .path()
         .app_data_dir()
         .unwrap_or_else(|_| std::env::temp_dir());
-    base.join("randomizer")
+    base.join(super::DATA_DIR_NAME)
 }
 
-pub fn players_dir(app: &AppHandle) -> PathBuf {
+/// Built-in player-slot location, ignoring the user's directory setting.
+pub fn default_players_dir(app: &AppHandle) -> PathBuf {
     workspace_dir(app).join("Players")
+}
+
+/// Where player slot YAMLs live: the directory the user picked in the
+/// randomizer folder settings, or [`default_players_dir`].
+pub fn players_dir(app: &AppHandle) -> PathBuf {
+    super::settings::players_dir_override(app).unwrap_or_else(|| default_players_dir(app))
 }
 
 pub fn output_dir(app: &AppHandle) -> PathBuf {

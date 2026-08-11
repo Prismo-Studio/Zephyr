@@ -10,6 +10,8 @@ import type {
 	PlayerFile,
 	PythonStatus,
 	RandomizerConfig,
+	RandomizerDirChange,
+	RandomizerDirs,
 	RuntimeStatus,
 	SeedFile,
 	ServerStatus,
@@ -51,8 +53,6 @@ export const startServer = (multidata: string, port: number, password: string | 
 export const stopServer = () => invoke('stop_server');
 
 export const serverStatus = () => invoke<ServerStatus>('server_status');
-
-export const openWorkspaceDir = () => invoke('open_workspace_dir');
 
 export const listSeeds = () => invoke<SeedFile[]>('list_seeds');
 
@@ -118,6 +118,21 @@ export const installRuntime = (url?: string) => invoke<RuntimeStatus>('install_r
 export const provisionRuntimeVenv = () => invoke<RuntimeStatus>('provision_runtime_venv');
 
 export const removeRuntime = () => invoke('remove_runtime');
+
+// --- Randomizer folders ---
+
+export const randomizerDirs = () => invoke<RandomizerDirs>('randomizer_dirs');
+
+/** `dir: null` restores the default location. When `moveExisting` is true the
+ *  current folder's contents are moved into the new one, which must be empty. */
+export const setRandomizerRuntimeDir = (dir: string | null, moveExisting: boolean) =>
+	invoke<RandomizerDirChange>('set_randomizer_runtime_dir', { dir, moveExisting });
+
+export const setRandomizerPlayersDir = (dir: string | null, moveExisting: boolean) =>
+	invoke<RandomizerDirChange>('set_randomizer_players_dir', { dir, moveExisting });
+
+export const openRandomizerDir = (kind: 'runtime' | 'players') =>
+	invoke('open_randomizer_dir', { kind });
 
 export type ArchipelagoGgRoom = {
 	room_id: string;
