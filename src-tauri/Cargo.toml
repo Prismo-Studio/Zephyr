@@ -1,6 +1,6 @@
 [package]
 name = "zephyr"
-version = "1.3.2"
+version = "1.3.3"
 description = "A fast, modern mod manager for all your games"
 authors = ["Prismo Studio"]
 license = "GPL-3.0"
