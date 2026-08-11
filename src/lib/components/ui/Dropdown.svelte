@@ -11,15 +11,36 @@
 		value: string;
 		onchange: (value: string) => void;
 		placeholder?: string;
+		/** Also accept a value that isn't in the list. The options become
+		 *  suggestions, filtered as the user types. */
+		editable?: boolean;
+		invalid?: boolean;
 	};
 
-	let { options, value, onchange, placeholder = 'Select...' }: Props = $props();
+	let {
+		options,
+		value,
+		onchange,
+		placeholder = 'Select...',
+		editable = false,
+		invalid = false
+	}: Props = $props();
 
 	let open = $state(false);
 	let wrapperEl: HTMLDivElement | undefined = $state();
 	let dropdownEl: HTMLDivElement | undefined = $state();
 
 	let selectedLabel = $derived(options.find((o) => o.value === value)?.label ?? placeholder);
+
+	/** Narrow the suggestions to what has been typed so far, but never show an
+	 *  empty menu - a value of the user's own making still deserves the list. */
+	let visibleOptions = $derived.by(() => {
+		if (!editable || !value) return options;
+
+		const needle = value.toLowerCase();
+		const matches = options.filter((option) => option.label.toLowerCase().includes(needle));
+		return matches.length > 0 ? matches : options;
+	});
 
 	function select(option: Option) {
 		onchange(option.value);
@@ -31,6 +52,12 @@
 		if (open) {
 			requestAnimationFrame(clampToViewport);
 		}
+	}
+
+	function reveal() {
+		if (open) return;
+		open = true;
+		requestAnimationFrame(clampToViewport);
 	}
 
 	function handleClickOutside(e: MouseEvent) {
@@ -69,14 +96,38 @@
 </script>
 
 <div class="z-dropdown-wrapper" bind:this={wrapperEl}>
-	<button class="z-dropdown-trigger" onclick={toggle}>
-		<span class="z-dropdown-label">{selectedLabel}</span>
-		<Icon icon="mdi:chevron-down" class="z-dropdown-chevron {open ? 'open' : ''}" />
-	</button>
+	{#if editable}
+		<div class="z-dropdown-trigger z-dropdown-combo" class:invalid>
+			<input
+				class="z-dropdown-input"
+				type="text"
+				{value}
+				{placeholder}
+				spellcheck="false"
+				autocomplete="off"
+				oninput={(e) => {
+					reveal();
+					onchange(e.currentTarget.value);
+				}}
+				onfocus={reveal}
+				onkeydown={(e) => e.key === 'Escape' && (open = false)}
+			/>
+			<Icon
+				icon="mdi:chevron-down"
+				class="z-dropdown-chevron {open ? 'open' : ''}"
+				aria-hidden="true"
+			/>
+		</div>
+	{:else}
+		<button class="z-dropdown-trigger" onclick={toggle}>
+			<span class="z-dropdown-label">{selectedLabel}</span>
+			<Icon icon="mdi:chevron-down" class="z-dropdown-chevron {open ? 'open' : ''}" />
+		</button>
+	{/if}
 
 	{#if open}
 		<div class="z-dropdown-menu" style={dropdownStyle} bind:this={dropdownEl}>
-			{#each options as option}
+			{#each visibleOptions as option}
 				<button
 					class="z-dropdown-option"
 					class:active={value === option.value}
@@ -127,6 +178,38 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		text-align: left;
+	}
+
+	/* Same shell as the plain trigger, with the label swapped for a text field
+	   so the value can be typed as well as picked. */
+	.z-dropdown-combo {
+		cursor: text;
+	}
+
+	.z-dropdown-combo:focus-within {
+		border-color: var(--accent-400);
+		background: var(--bg-overlay);
+	}
+
+	.z-dropdown-combo.invalid {
+		border-color: var(--color-error, #e05252);
+	}
+
+	.z-dropdown-input {
+		flex: 1;
+		min-width: 0;
+		border: none;
+		background: transparent;
+		color: inherit;
+		font-family: var(--font-mono, monospace);
+		font-size: 12px;
+		outline: none;
+		padding: 0;
+	}
+
+	.z-dropdown-input::placeholder {
+		color: var(--text-muted);
+		font-family: var(--font-body);
 	}
 
 	:global(.z-dropdown-chevron) {

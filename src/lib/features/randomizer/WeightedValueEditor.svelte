@@ -3,11 +3,14 @@
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
 	import NumberInput from '$lib/components/ui/NumberInput.svelte';
 	import type { OptionDef, Value } from './types';
-	import { RANDOM_VARIANTS } from './types';
+	import { RANDOM_VARIANTS, formatRandomRange, isRandomString, parseRandomRange } from './types';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
-	const MAX_ENTRIES = 3;
+	/** Rows above this get a scrollbar instead of pushing the rest of the form
+	 *  off screen. Not a cap: Archipelago happily takes as many branches as you
+	 *  can name, so the list itself is unbounded. */
+	const SCROLL_AFTER_ROWS = 8;
 
 	type Props = {
 		option: OptionDef;
@@ -71,6 +74,55 @@
 
 	const isRange = $derived(option.type.kind === 'range');
 
+	const rangeType = $derived(option.type.kind === 'range' ? option.type : null);
+
+	/** Suggestions offered on the editable key field of a range option: the
+	 *  bounds and midpoint, then every random keyword Archipelago accepts. Any
+	 *  other number in range can still be typed. */
+	const rangeSuggestions = $derived.by((): { value: string; label: string }[] => {
+		const t = rangeType;
+		if (!t) return [];
+		const mid = Math.round((t.min + t.max) / 2);
+		const numbers = [t.min, mid, t.max].filter((v, i, a) => a.indexOf(v) === i).map(String);
+		return [
+			...numbers,
+			...RANDOM_VARIANTS,
+			formatRandomRange({ skew: 'even', min: t.min, max: t.max }),
+			formatRandomRange({ skew: 'low', min: t.min, max: t.max }),
+			formatRandomRange({ skew: 'middle', min: t.min, max: t.max }),
+			formatRandomRange({ skew: 'high', min: t.min, max: t.max })
+		].map((suggestion) => ({ value: suggestion, label: suggestion }));
+	});
+
+	/** Mirrors the backend's weighted-key validation so a bad key is obvious
+	 *  before the YAML is regenerated. Only range options can go wrong here;
+	 *  every other type picks its key from a dropdown. */
+	function keyInvalid(key: string): boolean {
+		const t = rangeType;
+		if (!t) return false;
+		if (isRandomString(key)) return false;
+		const range = parseRandomRange(key);
+		if (range) return range.min > range.max || range.min < t.min || range.max > t.max;
+		if (/^\d+$/.test(key.trim())) {
+			const n = parseInt(key, 10);
+			return n < t.min || n > t.max;
+		}
+		return true;
+	}
+
+	/** Keys used by more than one row. YAML mappings can't hold duplicates, so
+	 *  these silently collapse — call it out rather than losing a row. */
+	const duplicateKeys = $derived.by((): Set<string> => {
+		const seen = new Set<string>();
+		const dupes = new Set<string>();
+		for (const row of rows) {
+			if (!row.key) continue;
+			if (seen.has(row.key)) dupes.add(row.key);
+			else seen.add(row.key);
+		}
+		return dupes;
+	});
+
 	function emit(next: Row[]) {
 		const map: Record<string, Value> = {};
 		for (const r of next) {
@@ -82,23 +134,30 @@
 	}
 
 	function nextDefaultKey(): string {
-		// Pick the first key not already used
 		const used = new Set(rows.map((r) => r.key));
 		for (const c of baseKeyChoices) {
 			if (!used.has(c.value)) return c.value;
+		}
+		// Base choices exhausted: fall back to the random keywords, then to any
+		// remaining number in a range, so a new row never lands on a duplicate.
+		for (const v of RANDOM_VARIANTS) {
+			if (!used.has(v)) return v;
+		}
+		const t = rangeType;
+		if (t) {
+			for (let n = t.min; n <= t.max; n += t.step || 1) {
+				if (!used.has(String(n))) return String(n);
+			}
 		}
 		return baseKeyChoices[0]?.value ?? 'random';
 	}
 
 	function addRow() {
-		if (rows.length >= MAX_ENTRIES) return;
 		const key = nextDefaultKey();
 		const next = [...rows, { id: counter++, key, weight: 50 }];
 		rows = next;
 		emit(next);
 	}
-
-	const canAdd = $derived(rows.length < MAX_ENTRIES);
 
 	function removeRow(id: number) {
 		const next = rows.filter((r) => r.id !== id);
@@ -132,25 +191,18 @@
 			{i18nState.locale && m.randomizer_weighted_empty()}
 		</div>
 	{:else}
-		<div class="rdz-weighted-list">
+		<div class="rdz-weighted-list" class:scrollable={rows.length > SCROLL_AFTER_ROWS}>
 			{#each rows as row (row.id)}
 				<div class="rdz-weighted-row">
 					{#if isRange}
-						{#if (RANDOM_VARIANTS as readonly string[]).includes(row.key)}
-							<Dropdown
-								options={allKeyChoices}
-								value={row.key}
-								onchange={(v) => setRangeKey(row.id, v)}
-							/>
-						{:else}
-							<input
-								class="rdz-weighted-range-input"
-								type="text"
-								value={row.key}
-								oninput={(e) => setRangeKey(row.id, (e.currentTarget as HTMLInputElement).value)}
-								placeholder={i18nState.locale && m.randomizer_weighted_value()}
-							/>
-						{/if}
+						<Dropdown
+							editable
+							options={rangeSuggestions}
+							value={row.key}
+							onchange={(v) => setRangeKey(row.id, v)}
+							invalid={keyInvalid(row.key)}
+							placeholder={i18nState.locale && m.randomizer_weighted_value()}
+						/>
 					{:else}
 						<Dropdown options={allKeyChoices} value={row.key} onchange={(v) => setKey(row.id, v)} />
 					{/if}
@@ -172,9 +224,16 @@
 				</div>
 			{/each}
 		</div>
+		{#if duplicateKeys.size > 0}
+			<p class="rdz-weighted-warn">
+				<Icon icon="mdi:alert-circle-outline" />
+				{i18nState.locale &&
+					m.randomizer_weighted_duplicate({ keys: [...duplicateKeys].join(', ') })}
+			</p>
+		{/if}
 	{/if}
 
-	<button class="rdz-weighted-add" onclick={addRow} disabled={!canAdd}>
+	<button class="rdz-weighted-add" onclick={addRow}>
 		<Icon icon="mdi:plus" />
 		{i18nState.locale && m.randomizer_weighted_addRow()}
 	</button>
@@ -200,29 +259,33 @@
 		gap: var(--space-xs);
 	}
 
+	/* Long weight tables stay inside the option card instead of stretching it. */
+	.rdz-weighted-list.scrollable {
+		max-height: 296px;
+		overflow-y: auto;
+		padding-right: 4px;
+	}
+
+	.rdz-weighted-warn {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		margin: 0;
+		font-size: 11px;
+		font-weight: 600;
+		color: #ffb74d;
+	}
+
+	.rdz-weighted-warn :global(svg) {
+		font-size: 13px;
+		flex-shrink: 0;
+	}
+
 	.rdz-weighted-row {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto auto;
 		align-items: center;
 		gap: var(--space-sm);
-	}
-
-	.rdz-weighted-range-input {
-		width: 100%;
-		padding: 6px 10px;
-		border: 1px solid var(--border-default);
-		border-radius: var(--radius-sm);
-		background: var(--bg-elevated);
-		color: var(--text-primary);
-		font-size: 12px;
-		font-family: var(--font-mono, monospace);
-		outline: none;
-		box-sizing: border-box;
-		transition: border-color var(--transition-fast);
-	}
-
-	.rdz-weighted-range-input:focus {
-		border-color: var(--accent-400);
 	}
 
 	.rdz-weighted-weight {

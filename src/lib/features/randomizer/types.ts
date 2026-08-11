@@ -175,6 +175,29 @@ export type PatchFile = {
 	output_rom_path: string | null;
 };
 
+/** One configurable randomizer directory, as reported by `randomizer_dirs`. */
+export type RandomizerDirSetting = {
+	/** The user's pick, or null when the default location is in use. */
+	configured: string | null;
+	effective: string;
+	default: string;
+	writable: boolean;
+	/** Set when a configured directory had to be ignored (missing, read-only). */
+	fallback_reason: string | null;
+};
+
+export type RandomizerDirs = {
+	runtime: RandomizerDirSetting;
+	players: RandomizerDirSetting;
+};
+
+export type RandomizerDirChange = {
+	dirs: RandomizerDirs;
+	/** Previous directory whose contents were deliberately not moved. */
+	left_behind: string | null;
+	moved: boolean;
+};
+
 export type RuntimeProgress =
 	| { stage: 'downloading'; received: number; total: number | null }
 	| { stage: 'extracting'; entry: string; done: number; total: number }
@@ -217,10 +240,38 @@ export const CATEGORY_ICONS: Record<string, string> = {
 export const RANDOM_VARIANTS = ['random', 'random-low', 'random-middle', 'random-high'] as const;
 export type RandomVariant = (typeof RANDOM_VARIANTS)[number];
 
+/** Bias applied when rolling a `random-range-...` keyword. `even` is the
+ *  unqualified `random-range-<min>-<max>` form. */
+export const RANDOM_RANGE_SKEWS = ['even', 'low', 'middle', 'high'] as const;
+export type RandomRangeSkew = (typeof RANDOM_RANGE_SKEWS)[number];
+
+export type RandomRangeSpec = { skew: RandomRangeSkew; min: number; max: number };
+
+/** Mirror of `random_value::format_range` in the Rust backend. */
+export function formatRandomRange(spec: RandomRangeSpec): string {
+	const infix = spec.skew === 'even' ? '' : `${spec.skew}-`;
+	return `random-range-${infix}${spec.min}-${spec.max}`;
+}
+
+/** Parse `random-range-[low|middle|high-]<min>-<max>`. Returns null for
+ *  anything else, including malformed range keywords. */
+export function parseRandomRange(v: unknown): RandomRangeSpec | null {
+	if (typeof v !== 'string') return null;
+	const match = /^random-range-(low-|middle-|high-)?(\d+)-(\d+)$/.exec(v.trim().toLowerCase());
+	if (!match) return null;
+	const skew = (match[1]?.slice(0, -1) ?? 'even') as RandomRangeSkew;
+	return { skew, min: parseInt(match[2], 10), max: parseInt(match[3], 10) };
+}
+
 export type ValueMode = 'fixed' | 'random' | 'weighted';
 
 export function isRandomString(v: unknown): v is RandomVariant {
 	return typeof v === 'string' && (RANDOM_VARIANTS as readonly string[]).includes(v);
+}
+
+/** True for any of Archipelago's random keywords, plain or ranged. */
+export function isRandomValue(v: unknown): boolean {
+	return isRandomString(v) || parseRandomRange(v) !== null;
 }
 
 export function isWeightedMap(v: unknown): v is Record<string, Value> {
@@ -228,7 +279,7 @@ export function isWeightedMap(v: unknown): v is Record<string, Value> {
 }
 
 export function valueMode(v: Value | undefined): ValueMode {
-	if (isRandomString(v)) return 'random';
+	if (isRandomValue(v)) return 'random';
 	if (isWeightedMap(v)) return 'weighted';
 	return 'fixed';
 }

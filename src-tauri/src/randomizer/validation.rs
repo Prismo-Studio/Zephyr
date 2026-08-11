@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::collections::HashSet;
 
+use super::random_value::{self, RandomCheck};
 use super::types::{
     Condition, Dependency, GameSchema, OptionDef, OptionType, RandomizerConfig, ValidationError,
     Value,
@@ -26,16 +27,13 @@ pub fn dependencies_satisfied(deps: &[Dependency], config: &RandomizerConfig) ->
     })
 }
 
-/// Archipelago's "random" sentinel and its skewed variants. Accepted for any
-/// option type — Archipelago resolves them to a concrete value at generation.
-fn is_random_string(s: &str) -> bool {
-    matches!(s, "random" | "random-low" | "random-high" | "random-middle")
-}
-
 fn validate_weighted_key(opt: &OptionDef, key: &str) -> Option<String> {
-    // "random" (and variants) are always valid weighted keys
-    if is_random_string(key) {
-        return None;
+    // "random" and the random-range-... forms are valid weighted keys wherever
+    // the option itself accepts them.
+    match random_value::check_for_option(opt, key) {
+        RandomCheck::Valid => return None,
+        RandomCheck::Invalid(msg) => return Some(msg),
+        RandomCheck::NotRandom => {}
     }
     match &opt.option_type {
         OptionType::Toggle { .. } => {
@@ -51,7 +49,8 @@ fn validate_weighted_key(opt: &OptionDef, key: &str) -> Option<String> {
             Ok(i) if i >= *min && i <= *max => None,
             Ok(i) => Some(format!("weighted key {i} out of range [{min}, {max}]")),
             Err(_) => Some(format!(
-                "'{key}' is not a valid range key (expected a number in [{min}, {max}])"
+                "'{key}' is not a valid range key (expected a number in [{min}, {max}], \
+                 'random' or 'random-range-{min}-{max}')"
             )),
         },
         OptionType::Select { choices, .. } => {
@@ -93,11 +92,13 @@ fn validate_weighted_map(opt: &OptionDef, m: &HashMap<String, Value>) -> Option<
 }
 
 fn validate_value(opt: &OptionDef, value: &Value) -> Option<String> {
-    // "random" (and skewed variants) is universally accepted by Archipelago
-    // regardless of the option's natural type.
+    // "random" (and its skewed / ranged variants) is accepted by Archipelago
+    // in place of a concrete value.
     if let Value::String(s) = value {
-        if is_random_string(s) {
-            return None;
+        match random_value::check_for_option(opt, s) {
+            RandomCheck::Valid => return None,
+            RandomCheck::Invalid(msg) => return Some(msg),
+            RandomCheck::NotRandom => {}
         }
     }
 

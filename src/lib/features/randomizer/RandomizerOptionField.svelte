@@ -5,13 +5,17 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Checkbox from '$lib/components/ui/Checkbox.svelte';
 	import Slider from '$lib/components/ui/Slider.svelte';
+	import NumberInput from '$lib/components/ui/NumberInput.svelte';
 	import Tooltip from '$lib/components/ui/Tooltip.svelte';
 	import WeightedValueEditor from './WeightedValueEditor.svelte';
-	import type { OptionDef, RandomVariant, Value, ValueMode } from './types';
+	import type { OptionDef, RandomRangeSkew, Value, ValueMode } from './types';
 	import {
 		RANDOM_VARIANTS,
+		formatRandomRange,
 		isRandomString,
+		isRandomValue,
 		isWeightedMap,
+		parseRandomRange,
 		supportsRandomization,
 		valueMode
 	} from './types';
@@ -79,7 +83,7 @@
 	function seedWeightedFromCurrent(): Record<string, Value> {
 		if (typeof value === 'boolean') return { [value ? 'true' : 'false']: 50 };
 		if (typeof value === 'number') return { [String(value)]: 50 };
-		if (typeof value === 'string' && !isRandomString(value)) return { [value]: 50 };
+		if (typeof value === 'string' && !isRandomValue(value)) return { [value]: 50 };
 		// Fall back to the default
 		switch (option.type.kind) {
 			case 'toggle':
@@ -104,11 +108,52 @@
 		}
 	}
 
-	function setRandomVariant(v: RandomVariant) {
-		set(v);
+	const rangeType = $derived(option.type.kind === 'range' ? option.type : null);
+
+	/** The keyword families Archipelago accepts on a numeric option. The
+	 *  `random-range-*` entries are templates: picking one reveals the min/max
+	 *  inputs that complete the keyword. */
+	const RANDOM_KINDS = [
+		...RANDOM_VARIANTS,
+		'random-range',
+		'random-range-low',
+		'random-range-middle',
+		'random-range-high'
+	] as const;
+
+	const randomKindChoices = $derived(RANDOM_KINDS.map((v) => ({ value: v, label: v })));
+
+	const currentRange = $derived(parseRandomRange(value));
+
+	const currentRandomKind = $derived(
+		currentRange
+			? currentRange.skew === 'even'
+				? 'random-range'
+				: `random-range-${currentRange.skew}`
+			: isRandomString(value)
+				? value
+				: 'random'
+	);
+
+	const rangeBoundsInvalid = $derived(!!currentRange && currentRange.min > currentRange.max);
+
+	function setRandomKind(kind: string) {
+		if (!kind.startsWith('random-range')) {
+			set(kind);
+			return;
+		}
+		const suffix = kind.slice('random-range'.length).replace(/^-/, '');
+		const skew = (suffix || 'even') as RandomRangeSkew;
+		// Default to the option's own bounds so the keyword is valid on sight.
+		const min = currentRange?.min ?? rangeType?.min ?? 0;
+		const max = currentRange?.max ?? rangeType?.max ?? 0;
+		set(formatRandomRange({ skew, min, max }));
 	}
 
-	const currentRandomVariant = $derived<RandomVariant>(isRandomString(value) ? value : 'random');
+	function setRangeBound(which: 'min' | 'max', v: number) {
+		if (!currentRange) return;
+		set(formatRandomRange({ ...currentRange, [which]: v }));
+	}
 
 	type DescSegment = { kind: 'text' | 'link'; value: string };
 
@@ -215,11 +260,55 @@
 		<div class="rdz-field-control">
 			{#if mode === 'random'}
 				{#if supportsRandomVariants}
-					<Dropdown
-						options={RANDOM_VARIANTS.map((v) => ({ value: v, label: v }))}
-						value={currentRandomVariant}
-						onchange={(v) => setRandomVariant(v as RandomVariant)}
-					/>
+					<div class="rdz-random-kind">
+						<Dropdown
+							options={randomKindChoices}
+							value={currentRandomKind}
+							onchange={setRandomKind}
+						/>
+						{#if currentRange && rangeType}
+							<div class="rdz-random-bounds">
+								<span class="rdz-random-bound">
+									<span class="rdz-random-bound-label">
+										{i18nState.locale && m.randomizer_random_rangeMin()}
+									</span>
+									<NumberInput
+										value={currentRange.min}
+										min={rangeType.min}
+										max={rangeType.max}
+										step={rangeType.step}
+										onchange={(v) => setRangeBound('min', v)}
+									/>
+								</span>
+								<span class="rdz-random-bound">
+									<span class="rdz-random-bound-label">
+										{i18nState.locale && m.randomizer_random_rangeMax()}
+									</span>
+									<NumberInput
+										value={currentRange.max}
+										min={rangeType.min}
+										max={rangeType.max}
+										step={rangeType.step}
+										onchange={(v) => setRangeBound('max', v)}
+									/>
+								</span>
+							</div>
+							{#if rangeBoundsInvalid}
+								<p class="rdz-random-error">
+									<Icon icon="mdi:alert-circle-outline" />
+									{i18nState.locale && m.randomizer_random_rangeInvalid()}
+								</p>
+							{:else}
+								<p class="rdz-random-hint">
+									{i18nState.locale &&
+										m.randomizer_random_rangeHint({
+											min: currentRange.min,
+											max: currentRange.max
+										})}
+								</p>
+							{/if}
+						{/if}
+					</div>
 				{:else}
 					<div class="rdz-random-fixed">
 						<Icon icon="mdi:dice-multiple" />
@@ -476,6 +565,54 @@
 
 	.rdz-random-fixed :global(svg) {
 		font-size: 14px;
+	}
+
+	/* random-range-<min>-<max> bounds editor */
+	.rdz-random-kind {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.rdz-random-bounds {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		flex-wrap: wrap;
+	}
+
+	.rdz-random-bound {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	.rdz-random-bound-label {
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--text-muted);
+	}
+
+	.rdz-random-hint {
+		margin: 0;
+		font-size: 11px;
+		color: var(--text-muted);
+	}
+
+	.rdz-random-error {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		margin: 0;
+		font-size: 11px;
+		font-weight: 600;
+		color: var(--color-error, #e05252);
+	}
+
+	.rdz-random-error :global(svg) {
+		font-size: 13px;
 	}
 
 	/* Toggle */

@@ -1,6 +1,7 @@
 use eyre::Result;
 use serde_yaml::{Mapping, Value as YamlValue};
 
+use super::random_value::{self, RandomCheck};
 use super::types::{GameSchema, OptionDef, OptionType, RandomizerConfig, Value};
 
 /// Option ids that Archipelago expects at the YAML root, not inside the game block.
@@ -195,6 +196,49 @@ pub fn lint(yaml: &str, schema: &GameSchema) -> Vec<LintIssue> {
                 }
             }
         }
+    }
+
+    // Every `random...` keyword that made it into the document has to resolve
+    // against the option it sits on, otherwise Generate.py aborts the whole
+    // multiworld rather than just that slot.
+    for opt in &schema.options {
+        let holder = if COMMON_OPTION_IDS.contains(&opt.id.as_str()) {
+            Some(map)
+        } else {
+            game_section
+        };
+        let Some(value) = holder.and_then(|m| m.get(YamlValue::from(opt.id.clone()))) else {
+            continue;
+        };
+        issues.extend(lint_random_keywords(opt, value));
+    }
+
+    issues
+}
+
+/// Check the `random...` keywords used by one option, either as its value or
+/// as the keys of its weighted dict.
+fn lint_random_keywords(opt: &OptionDef, value: &YamlValue) -> Vec<LintIssue> {
+    let mut issues = Vec::new();
+    let mut check = |text: &str| {
+        if let RandomCheck::Invalid(message) = random_value::check_for_option(opt, text) {
+            issues.push(LintIssue {
+                level: "error".into(),
+                message: format!("{}: {message}", opt.id),
+            });
+        }
+    };
+
+    match value {
+        YamlValue::String(s) => check(s),
+        YamlValue::Mapping(entries) => {
+            for (k, _) in entries {
+                if let Some(key) = k.as_str() {
+                    check(key);
+                }
+            }
+        }
+        _ => {}
     }
 
     issues
