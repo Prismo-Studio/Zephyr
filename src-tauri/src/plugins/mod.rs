@@ -6,6 +6,16 @@ pub mod install;
 pub mod recording;
 pub mod registry;
 
+/// Everything the plugin system stores in the *default* app data dir. These are
+/// resolved from that directory no matter where the user points their data
+/// folder, so they must not travel with it.
+pub const DATA_FILE_NAMES: &[&str] = &[
+    install::ROOT_DIR_NAME,
+    commands::STORAGE_DIR_NAME,
+    registry::CACHE_FILE_NAME,
+    dev::PERSIST_FILE,
+];
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RegistryAuthor {

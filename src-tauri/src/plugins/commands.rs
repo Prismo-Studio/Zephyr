@@ -348,9 +348,11 @@ pub fn get_plugin_ui_url(id: String, app: AppHandle) -> CmdResult<String> {
     Err(eyre!("plugin {id} is not installed").into())
 }
 
+pub const STORAGE_DIR_NAME: &str = "plugin-storage";
+
 fn plugin_storage_path(id: &str) -> std::path::PathBuf {
     crate::util::path::default_app_data_dir()
-        .join("plugin-storage")
+        .join(STORAGE_DIR_NAME)
         .join(format!("{id}.json"))
 }
 
@@ -387,7 +389,7 @@ pub fn plugin_open_external(url: String, app: AppHandle) -> CmdResult<()> {
 
 fn plugin_files_dir(id: &str) -> std::path::PathBuf {
     crate::util::path::default_app_data_dir()
-        .join("plugin-storage")
+        .join(STORAGE_DIR_NAME)
         .join(id)
         .join("files")
 }

@@ -92,7 +92,7 @@ fn safe_filename(name: &str) -> Result<String> {
 
 fn plugin_files_dir(id: &str) -> PathBuf {
     crate::util::path::default_app_data_dir()
-        .join("plugin-storage")
+        .join(super::commands::STORAGE_DIR_NAME)
         .join(id)
         .join("files")
 }

@@ -5,7 +5,7 @@
 	import type { Prefs } from '$lib/types';
 	import { open as selectDirectory } from '@tauri-apps/plugin-dialog';
 	import { writeText } from '@tauri-apps/plugin-clipboard-manager';
-	import { pushInfoToast } from '$lib/toast.svelte';
+	import { pushInfoToast, pushToast } from '$lib/toast.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 
@@ -15,6 +15,8 @@
 	};
 
 	let { prefs, onsave }: Props = $props();
+
+	let fallbacks = $derived(prefs.dirFallbacks ?? []);
 
 	async function copyPath(path: string) {
 		await writeText(path);
@@ -31,14 +33,34 @@
 			multiple: false,
 			defaultPath: prefs[field]
 		});
-		if (selected && typeof selected === 'string') {
-			prefs[field] = selected;
+		if (!selected || typeof selected !== 'string') return;
+
+		const previous = prefs[field];
+		prefs[field] = selected;
+
+		try {
 			await onsave();
+		} catch {
+			// the backend refused the move, so put the folder that is actually in
+			// use back on screen instead of letting it look like it was saved
+			prefs[field] = previous;
+			pushToast({
+				type: 'error',
+				name: m.prefs_locations_changeFailed(),
+				message: m.prefs_locations_changeFailed_desc({ path: selected })
+			});
 		}
 	}
 </script>
 
 <PrefSection icon="mdi:folder" title={(i18nState.locale && m.prefs_locations_title()) ?? ''}>
+	{#each fallbacks as fallback (fallback.field)}
+		<p class="z-settings-path-warning">
+			<Icon icon="mdi:alert-outline" />
+			<span>{m.prefs_locations_unavailable({ path: fallback.configured })}</span>
+		</p>
+	{/each}
+
 	<div class="z-settings-path">
 		<div class="z-settings-path-header">
 			<span class="z-settings-path-label">
@@ -84,6 +106,20 @@
 		flex-direction: column;
 		gap: 4px;
 		margin-bottom: var(--space-md);
+	}
+
+	.z-settings-path-warning {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		margin-bottom: var(--space-md);
+		padding: var(--space-sm) var(--space-md);
+		font-size: 12px;
+		color: var(--text-secondary);
+		background: var(--bg-elevated);
+		border: 1px solid var(--border-subtle);
+		border-left: 2px solid var(--error);
+		border-radius: var(--radius-sm);
 	}
 
 	.z-settings-path-label {

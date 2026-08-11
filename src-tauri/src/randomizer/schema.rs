@@ -17,7 +17,7 @@ pub fn user_schemas_dir(app: &AppHandle) -> PathBuf {
         .path()
         .app_data_dir()
         .unwrap_or_else(|_| std::env::temp_dir());
-    base.join("randomizer").join("schemas")
+    base.join(super::DATA_DIR_NAME).join("schemas")
 }
 
 /// Resolve the directory containing schema JSON files.

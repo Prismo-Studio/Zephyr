@@ -1,8 +1,17 @@
 import type { LaunchMode, Platform } from './game.types';
 
+/** A directory that was unavailable on startup and got reset to its default. */
+export type DirFallback = {
+	field: 'dataDir' | 'cacheDir';
+	configured: string;
+	fallback: string;
+};
+
 export type Prefs = {
 	dataDir: string;
 	cacheDir: string;
+	/** Read-only, only sent by the backend. Absent when nothing fell back. */
+	dirFallbacks?: DirFallback[];
 	fetchModsAutomatically: boolean;
 	pullBeforeLaunch: boolean;
 	zoomFactor: number;

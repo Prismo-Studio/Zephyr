@@ -20,7 +20,7 @@ fn fallback_iconify(kind: PluginType) -> &'static str {
     }
 }
 
-const CACHE_FILE_NAME: &str = "plugin-registry.json";
+pub const CACHE_FILE_NAME: &str = "plugin-registry.json";
 
 #[derive(Default)]
 pub struct PluginRegistryState {

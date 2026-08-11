@@ -19,7 +19,7 @@ use tracing::warn;
 
 use super::RegistryEntry;
 
-const PERSIST_FILE: &str = "dev-plugins.json";
+pub const PERSIST_FILE: &str = "dev-plugins.json";
 
 #[derive(Debug, Clone)]
 pub struct DevPlugin {

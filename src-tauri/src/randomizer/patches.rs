@@ -533,7 +533,7 @@ fn rom_paths_file(app: &AppHandle) -> PathBuf {
     app.path()
         .app_data_dir()
         .unwrap_or_else(|_| std::env::temp_dir())
-        .join("randomizer")
+        .join(super::DATA_DIR_NAME)
         .join("rom_paths.json")
 }
 

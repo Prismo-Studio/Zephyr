@@ -7,8 +7,10 @@ use tracing::info;
 use super::RegistryEntry;
 use crate::{constants::PLUGIN_REGISTRY_RAW_BASE, state::ManagerExt, util};
 
+pub const ROOT_DIR_NAME: &str = "plugins";
+
 fn plugins_root() -> PathBuf {
-    util::path::default_app_data_dir().join("plugins")
+    util::path::default_app_data_dir().join(ROOT_DIR_NAME)
 }
 
 pub fn plugin_dir(id: &str) -> PathBuf {
