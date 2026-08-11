@@ -653,6 +653,8 @@
 	"plugins_section_builtIn": "Fonctionnalités intégrées",
 	"plugins_section_feature": "Fonctionnalités communautaires",
 	"plugins_section_theme": "Thèmes",
+	"prefs_display_compactConfig_title": "Disposition compacte des configurations",
+	"prefs_display_compactConfig_desc": "Affiche les entrées de configuration en lignes denses et bien séparées, pour en voir plus à l'écran.",
 	"plugins_section_game": "Jeux",
 	"plugins_section_mod": "Mods",
 	"plugins_type_feature": "Fonctionnalité",

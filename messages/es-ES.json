@@ -652,6 +652,8 @@
 	"plugins_section_builtIn": "Funciones integradas",
 	"plugins_section_feature": "Funciones comunitarias",
 	"plugins_section_theme": "Temas",
+	"prefs_display_compactConfig_title": "Diseño compacto de configuración",
+	"prefs_display_compactConfig_desc": "Muestra las opciones de configuración como filas densas y bien separadas para que quepan más en pantalla.",
 	"plugins_section_game": "Juegos",
 	"plugins_section_mod": "Mods",
 	"plugins_type_feature": "Función",

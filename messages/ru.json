@@ -658,6 +658,8 @@
 	"plugins_section_builtIn": "Встроенные функции",
 	"plugins_section_feature": "Функции сообщества",
 	"plugins_section_theme": "Темы",
+	"prefs_display_compactConfig_title": "Компактный вид конфигурации",
+	"prefs_display_compactConfig_desc": "Показывать параметры конфигурации плотными строками с чёткими разделителями, чтобы на экран помещалось больше.",
 	"plugins_section_game": "Игры",
 	"plugins_section_mod": "Моды",
 	"plugins_type_feature": "Функция",

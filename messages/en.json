@@ -282,6 +282,8 @@
 	"prefs_gamepad_title": "Gamepad",
 	"prefs_gamepad_enabled_title": "Enable gamepad navigation",
 	"prefs_gamepad_enabled_desc": "Navigate the interface using Xbox or PlayStation controllers. Use D-pad/left stick to move, A/Cross to select, B/Circle to go back.",
+	"prefs_display_compactConfig_title": "Compact config layout",
+	"prefs_display_compactConfig_desc": "Show config entries as dense, clearly separated rows so more fit on screen.",
 	"prefs_gamepad_connected": "Connected: {name}",
 	"prefs_gamepad_none": "No controller detected",
 	"gamepad_legend_select": "Select",

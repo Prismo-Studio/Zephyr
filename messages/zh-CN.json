@@ -658,6 +658,8 @@
 	"plugins_section_builtIn": "内置功能",
 	"plugins_section_feature": "社区功能",
 	"plugins_section_theme": "主题",
+	"prefs_display_compactConfig_title": "紧凑的配置布局",
+	"prefs_display_compactConfig_desc": "以紧凑且清晰分隔的行显示配置项，让屏幕上能显示更多内容。",
 	"plugins_section_game": "游戏",
 	"plugins_section_mod": "模组",
 	"plugins_type_feature": "功能",

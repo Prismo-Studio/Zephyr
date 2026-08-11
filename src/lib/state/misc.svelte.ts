@@ -89,6 +89,10 @@ export function isModPinned(uuid: string): boolean {
 
 export const viewMode = new PersistedState<'list' | 'grid'>('modViewMode', 'list');
 
+export type ConfigDensity = 'comfortable' | 'compact';
+
+export const configDensity = new PersistedState<ConfigDensity>('configDensity', 'comfortable');
+
 // Global install state. Lets components react to install start/end
 export const installState = $state({
 	active: false

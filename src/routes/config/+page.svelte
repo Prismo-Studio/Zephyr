@@ -13,6 +13,9 @@
 	import { m } from '$lib/paraglide/messages';
 	import { i18nState } from '$lib/i18nCore.svelte';
 	import games from '$lib/state/game.svelte';
+	import { configDensity } from '$lib/state/misc.svelte';
+
+	let isCompact = $derived(configDensity.current === 'compact');
 
 	let configFiles: ConfigFile[] = $state([]);
 	let selectedFile: ConfigFile | null = $state(null);
@@ -222,7 +225,7 @@
 		</div>
 
 		<!-- Config editor -->
-		<div class="z-config-editor">
+		<div class="z-config-editor" data-density={configDensity.current}>
 			{#if selectedFile}
 				{#if selectedFile.type === 'ok'}
 					{#each selectedFile.sections as section}
@@ -243,7 +246,9 @@
 										{/if}
 									</div>
 									{#if entry.description}
-										<p class="z-entry-desc">{entry.description}</p>
+										<p class="z-entry-desc" title={isCompact ? entry.description : undefined}>
+											{entry.description}
+										</p>
 									{/if}
 
 									<div class="z-entry-value">
@@ -478,13 +483,34 @@
 
 	/* Editor */
 	.z-config-editor {
+		/* Density tokens, overridden by the compact variant below */
+		--cfg-pad: var(--space-xl);
+		--cfg-section-gap: var(--space-2xl);
+		--cfg-entry-pad-y: var(--space-md);
+		--cfg-entry-pad-x: var(--space-md);
+		--cfg-entry-gap: var(--space-xs);
+		--cfg-entry-name-size: 13px;
+		--cfg-entry-desc-size: 11px;
+		--cfg-entry-value-gap: var(--space-sm);
+
 		flex: 1;
 		overflow-y: auto;
-		padding: var(--space-xl);
+		padding: var(--cfg-pad);
+	}
+
+	.z-config-editor[data-density='compact'] {
+		--cfg-pad: var(--space-md);
+		--cfg-section-gap: var(--space-lg);
+		--cfg-entry-pad-y: 6px;
+		--cfg-entry-pad-x: var(--space-md);
+		--cfg-entry-gap: 0px;
+		--cfg-entry-name-size: 12px;
+		--cfg-entry-desc-size: 11px;
+		--cfg-entry-value-gap: 0px;
 	}
 
 	.z-config-section {
-		margin-bottom: var(--space-2xl);
+		margin-bottom: var(--cfg-section-gap);
 	}
 
 	.z-section-title {
@@ -498,9 +524,9 @@
 	}
 
 	.z-config-entry {
-		padding: var(--space-md);
+		padding: var(--cfg-entry-pad-y) var(--cfg-entry-pad-x);
 		border-radius: var(--radius-md);
-		margin-bottom: var(--space-xs);
+		margin-bottom: var(--cfg-entry-gap);
 		transition: background var(--transition-fast);
 	}
 
@@ -516,7 +542,7 @@
 
 	.z-entry-name {
 		font-weight: 600;
-		font-size: 13px;
+		font-size: var(--cfg-entry-name-size);
 		color: var(--text-primary);
 	}
 
@@ -540,14 +566,14 @@
 	}
 
 	.z-entry-desc {
-		font-size: 11px;
+		font-size: var(--cfg-entry-desc-size);
 		color: var(--text-muted);
 		margin-top: 2px;
 		line-height: 1.4;
 	}
 
 	.z-entry-value {
-		margin-top: var(--space-sm);
+		margin-top: var(--cfg-entry-value-gap);
 		display: flex;
 		align-items: center;
 		gap: var(--space-sm);
@@ -610,6 +636,72 @@
 		font-family: var(--font-mono);
 		font-size: 12px;
 		color: var(--text-secondary);
+	}
+
+	/* Compact density: entries collapse to single rows, kept legible with
+	   dividers between them and a sticky header per section group. */
+	.z-config-editor[data-density='compact'] .z-config-section {
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-md);
+		background: var(--bg-surface);
+	}
+
+	.z-config-editor[data-density='compact'] .z-section-title {
+		position: sticky;
+		top: 0;
+		z-index: 1;
+		margin-bottom: 0;
+		padding: var(--space-sm) var(--space-md);
+		border-radius: var(--radius-md) var(--radius-md) 0 0;
+		background: var(--bg-elevated);
+		font-size: 12px;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--text-secondary);
+	}
+
+	.z-config-editor[data-density='compact'] .z-config-entry {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-areas:
+			'name value'
+			'desc value';
+		align-items: center;
+		column-gap: var(--space-lg);
+		border-top: 1px solid var(--border-subtle);
+		border-radius: 0;
+	}
+
+	.z-config-editor[data-density='compact'] .z-config-entry:first-of-type {
+		border-top: none;
+	}
+
+	.z-config-editor[data-density='compact'] .z-config-entry:last-child {
+		border-radius: 0 0 var(--radius-md) var(--radius-md);
+	}
+
+	.z-config-editor[data-density='compact'] .z-entry-header {
+		grid-area: name;
+		justify-content: flex-start;
+		gap: var(--space-xs);
+		min-width: 0;
+	}
+
+	.z-config-editor[data-density='compact'] .z-entry-name,
+	.z-config-editor[data-density='compact'] .z-entry-desc {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.z-config-editor[data-density='compact'] .z-entry-desc {
+		grid-area: desc;
+		margin-top: 0;
+	}
+
+	.z-config-editor[data-density='compact'] .z-entry-value {
+		grid-area: value;
+		justify-content: flex-end;
 	}
 
 	.z-config-error,

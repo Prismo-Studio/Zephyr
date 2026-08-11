@@ -594,6 +594,8 @@
 	"plugins_section_builtIn": "Recursos integrados",
 	"plugins_section_feature": "Recursos da comunidade",
 	"plugins_section_theme": "Temas",
+	"prefs_display_compactConfig_title": "Layout compacto das configurações",
+	"prefs_display_compactConfig_desc": "Exibe as entradas de configuração como linhas densas e bem separadas, para caber mais na tela.",
 	"plugins_section_game": "Jogos",
 	"plugins_section_mod": "Mods",
 	"plugins_type_feature": "Recurso",

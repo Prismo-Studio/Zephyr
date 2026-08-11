@@ -2,6 +2,8 @@
 	import PrefSection from './PrefSection.svelte';
 	import PrefRow from './PrefRow.svelte';
 	import Dropdown from '$lib/components/ui/Dropdown.svelte';
+	import Toggle from '$lib/components/ui/Toggle.svelte';
+	import { configDensity } from '$lib/state/misc.svelte';
 	import * as api from '$lib/api';
 	import type { Prefs } from '$lib/types';
 	import { onMount } from 'svelte';
@@ -53,6 +55,18 @@
 				value={String(prefs.dpiScale)}
 				onchange={changeDpiScale}
 				placeholder="100%"
+			/>
+		{/snippet}
+	</PrefRow>
+
+	<PrefRow
+		title={(i18nState.locale && m.prefs_display_compactConfig_title()) ?? ''}
+		description={(i18nState.locale && m.prefs_display_compactConfig_desc()) ?? ''}
+	>
+		{#snippet control()}
+			<Toggle
+				checked={configDensity.current === 'compact'}
+				onchange={(v) => (configDensity.current = v ? 'compact' : 'comfortable')}
 			/>
 		{/snippet}
 	</PrefRow>

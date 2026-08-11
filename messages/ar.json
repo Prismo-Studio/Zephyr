@@ -282,6 +282,8 @@
 	"prefs_gamepad_title": "وحدة التحكم",
 	"prefs_gamepad_enabled_title": "تفعيل التنقل بوحدة التحكم",
 	"prefs_gamepad_enabled_desc": "تنقل في الواجهة باستخدام وحدات تحكم Xbox أو PlayStation. استخدم لوحة الاتجاهات/العصا اليسرى للتحرك، A/Cross للتحديد، B/Circle للعودة.",
+	"prefs_display_compactConfig_title": "تخطيط مضغوط للإعدادات",
+	"prefs_display_compactConfig_desc": "عرض إدخالات الإعدادات في صفوف مضغوطة وواضحة الفصل ليظهر عدد أكبر منها على الشاشة.",
 	"prefs_gamepad_connected": "متصل: {name}",
 	"prefs_gamepad_none": "لم يتم اكتشاف وحدة تحكم",
 	"gamepad_legend_select": "تحديد",
