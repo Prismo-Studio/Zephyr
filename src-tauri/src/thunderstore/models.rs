@@ -51,6 +51,17 @@ impl PackageListing {
         self.categories.iter().any(|str| **str == "Modpacks")
     }
 
+    /// Categories in a stable, alphabetical order.
+    ///
+    /// They are stored in a `HashSet`, and two sets built from the same values
+    /// do not iterate in the same order, so anything reading `categories`
+    /// directly reshuffles its tags every time the package list is re-fetched.
+    pub fn sorted_categories(&self) -> Vec<String> {
+        let mut categories: Vec<String> = self.categories.iter().map(|c| c.to_string()).collect();
+        categories.sort_unstable();
+        categories
+    }
+
     pub fn get_version(&self, uuid: Uuid) -> Option<&PackageVersion> {
         self.versions.iter().find(|v| v.uuid == uuid)
     }
@@ -291,4 +302,45 @@ pub struct FrontendProfileMod {
 
 pub trait IntoFrontendMod {
     fn into_frontend(self, profile: Option<&Profile>) -> FrontendMod;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn listing_with_categories(categories: &[&str]) -> PackageListing {
+        PackageListing {
+            ident: PackageIdent::new("owner", "name"),
+            categories: categories
+                .iter()
+                .map(|name| Intern::new(name.to_string()))
+                .collect(),
+            date_created: Utc::now(),
+            date_updated: Utc::now(),
+            donation_link: None,
+            has_nsfw_content: false,
+            is_deprecated: false,
+            is_pinned: false,
+            package_url: String::new(),
+            rating_score: 0,
+            uuid: Uuid::nil(),
+            versions: Vec::new(),
+        }
+    }
+
+    /// Every listing owns its own set, and two sets holding the same categories
+    /// iterate in different orders. Refetching the package list therefore used
+    /// to reshuffle the tags shown on a mod, so build a fresh listing on each
+    /// round to make sure the order no longer depends on the set.
+    #[test]
+    fn categories_keep_the_same_order_across_listings() {
+        for _ in 0..16 {
+            let listing = listing_with_categories(&["Tools", "Mods", "Audio", "Libraries", "Misc"]);
+
+            assert_eq!(
+                listing.sorted_categories(),
+                ["Audio", "Libraries", "Misc", "Mods", "Tools"]
+            );
+        }
+    }
 }

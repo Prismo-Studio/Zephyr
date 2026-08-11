@@ -175,12 +175,7 @@ impl IntoFrontendMod for BorrowedMod<'_> {
             name: pkg.name().to_owned(),
             description: Some(vers.description.to_string()),
             version: Some(vers.parsed_version()),
-            categories: Some(
-                pkg.categories
-                    .iter()
-                    .map(|intern| intern.to_string())
-                    .collect(),
-            ),
+            categories: Some(pkg.sorted_categories()),
             author: Some(pkg.owner().to_owned()),
             rating: Some(pkg.rating_score),
             downloads: Some(pkg.total_downloads()),

@@ -122,7 +122,7 @@ impl ModSource for ThunderstoreSource {
                             file_size: v.file_size,
                         })
                         .collect(),
-                    categories: pkg.categories.iter().map(|c| c.to_string()).collect(),
+                    categories: pkg.sorted_categories(),
                     downloads: Some(pkg.total_downloads() as u64),
                     rating: Some(pkg.rating_score),
                     icon_url: None, // Icons are handled separately by the existing infrastructure
@@ -198,7 +198,7 @@ impl ModSource for ThunderstoreSource {
                     file_size: v.file_size,
                 })
                 .collect(),
-            categories: pkg.categories.iter().map(|c| c.to_string()).collect(),
+            categories: pkg.sorted_categories(),
             downloads: Some(pkg.total_downloads() as u64),
             rating: Some(pkg.rating_score),
             icon_url: None,
